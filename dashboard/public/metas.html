@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0e2b22" />
+    <meta name="description" content="Acompanhamento do cumprimento das metas da Estratégia Amazônia 2050 em cada um dos nove estados." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Metas — Estratégia 2050" />
+    <meta property="og:description" content="Onde cada estado da Amazônia Legal já cumpre as metas da Estratégia e onde ainda há distância." />
+    <meta property="og:image" content="https://estrategia-amazonia-2050.vercel.app/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://estrategia-amazonia-2050.vercel.app/og.png" />
+    <title>Metas — Estratégia 2050</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="/" class="brand" aria-label="Estratégia 2050 do Consórcio da Amazônia Legal, início">
+          <img class="brand-logo" src="/logo-consorcio-clara.avif" alt="" />
+          <span class="brand-product">Estratégia 2050</span>
+        </a>
+
+        <nav class="topnav" aria-label="Navegação principal">
+          <a href="/">Panorama</a>
+          <a class="is-active" href="/metas" aria-current="page">Metas</a>
+          <a href="/indicadores">Indicadores</a>
+          <a href="/metodologia">Metodologia</a>
+        </nav>
+
+        <div class="topbar-actions">
+          <a class="outline-button action-link" href="/metodologia#a-estrategia">Sobre a Estratégia</a>
+        </div>
+        <button class="menu-button" type="button" aria-expanded="false" aria-label="Abrir menu">Menu</button>
+      </div>
+    </header>
+
+    <main id="conteudo" class="goals-page">
+      <div class="section-shell">
+        <section class="goals-hero">
+          <div>
+            <p class="eyebrow">Cumprimento das metas</p>
+            <h1>Metas - <em>onde cada estado já chegou.</em></h1>
+            <p class="lead">Este painel não classifica os estados entre si: para cada meta da Estratégia com patamar mensurável, ele mostra se o estado já a cumpre e, quando não, quanto falta. Os prazos das metas vão de 2030 a 2050, então o quadro é a posição de hoje no caminho até o horizonte, não um resultado final.</p>
+          </div>
+          <div class="goals-hero-figures" id="goals-summary" aria-live="polite">
+            <p class="method-loading">Carregando metas…</p>
+          </div>
+        </section>
+
+        <div class="goals-toolbar">
+          <div class="goals-filter" role="group" aria-label="Filtrar metas por eixo">
+            <span>Eixo</span>
+            <div id="goals-axis-filter" class="goals-chips"></div>
+          </div>
+          <label class="goals-focus">
+            <span>Estado em foco</span>
+            <div class="native-select-wrap">
+              <select id="goals-state" aria-label="Estado em foco"></select>
+            </div>
+          </label>
+        </div>
+
+        <section class="goals-matrix-card card" aria-labelledby="goals-matrix-title">
+          <div class="card-heading">
+            <div>
+              <h2 id="goals-matrix-title">Quadro de cumprimento</h2>
+              <p>Cada linha é uma meta; cada coluna, um estado. O preenchimento indica o avanço em direção à meta; a base do cálculo está indicada em cada linha e detalhada nos cartões abaixo.</p>
+            </div>
+            <ul class="goals-legend" aria-label="Legenda">
+              <li><i class="is-met" aria-hidden="true"></i>Meta cumprida</li>
+              <li><i class="is-progress" aria-hidden="true"></i>Em curso</li>
+              <li><i class="is-empty" aria-hidden="true"></i>Sem dado</li>
+            </ul>
+          </div>
+          <div class="goals-matrix-scroll">
+            <div id="goals-matrix" class="goals-matrix" aria-live="polite">
+              <p class="method-loading">Carregando quadro…</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="goals-detail" aria-labelledby="goals-detail-title">
+          <div class="goals-detail-head">
+            <div>
+              <p class="eyebrow">Detalhe por meta</p>
+              <h2 id="goals-detail-title">Metas do estado em foco</h2>
+            </div>
+          </div>
+          <div id="goals-cards" class="goals-cards" aria-live="polite">
+            <p class="method-loading">Carregando metas do estado…</p>
+          </div>
+        </section>
+
+        <section class="goals-coverage card" aria-labelledby="goals-coverage-title">
+          <div class="goals-coverage-head">
+            <p class="eyebrow">Cobertura</p>
+            <h2 id="goals-coverage-title">O que ainda não é possível avaliar</h2>
+            <p id="goals-coverage-lead">—</p>
+          </div>
+          <details class="goals-coverage-list">
+            <summary>Ver os indicadores fora do quadro e o motivo</summary>
+            <div id="goals-excluded"></div>
+          </details>
+        </section>
+      </div>
+    </main>
+
+    <div class="river-ornament" aria-hidden="true"><i></i><i></i></div>
+    <footer>
+      <span>Estratégia 2050</span>
+      <span>Estratégia Amazônia 2050 · Consórcio da Amazônia Legal</span>
+    </footer>
+
+    <script type="module" src="/metas.js"></script>
+  </body>
+</html>

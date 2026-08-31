@@ -1,0 +1,17 @@
+{
+  "name": "observatorio-amazonia-2050",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dashboard de resultados para os estados da Amazônia Legal.",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node --check server.mjs && node --check metas.mjs && node --check build-static.mjs && node --check public/app.js && node --check public/indicadores.js && node --check public/metodologia.js && node --check public/metas.js",
+    "prepare-data": "node server.mjs --validate",
+    "snapshot": "node snapshot.mjs",
+    "build:static": "node build-static.mjs"
+  },
+  "dependencies": {
+    "shapefile": "^0.6.6"
+  }
+}

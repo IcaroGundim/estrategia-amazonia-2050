@@ -1,0 +1,29 @@
+# Dependências e ambientes (recriáveis)
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# Sistema / editor
+Thumbs.db
+.DS_Store
+
+# ---------------------------------------------------------------------------
+# O repositório publica apenas o site (`dashboard/`), que já carrega os dados
+# congelados em `dashboard/public/data/`. As pastas de trabalho abaixo ficam
+# somente na máquina local: são as fontes que alimentam `npm run build:static`.
+# Para versioná-las mais tarde, basta remover a linha correspondente.
+# ---------------------------------------------------------------------------
+/dados/
+/entregaveis/
+/fontes_originais/
+/scripts/
+/BR_UF_2025 (2)/
+/Bandeiras - Amazônia Legal-*/
+/Identidade visual Consórcio Amazônia Legal/
+/RELATORIO_DE_COLETA.md
+/package-lock.json
+*.zip
+*.7z
+*.pptx
+/Logomarca Consórcio Horizontal CLARA.avif
