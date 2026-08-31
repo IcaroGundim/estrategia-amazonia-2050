@@ -8,9 +8,11 @@ interface Props {
   ogDescription?: string;
   mainClass?: string;
   pagina: 'index' | 'metas' | 'indicadores' | 'metodologia';
+  /** JSONs que o script da página busca; pré-carregados para não esperarem o JS. */
+  dados?: string[];
 }
 
-const { title, description, ogTitle, ogDescription, mainClass, pagina } = Astro.props;
+const { title, description, ogTitle, ogDescription, mainClass, pagina, dados = [] } = Astro.props;
 
 // `Astro.site` vem de astro.config.mjs. A URL absoluta é obrigatória no Open Graph:
 // antes ela era injetada por uma substituição de texto no build-static.mjs.
@@ -49,6 +51,11 @@ const acao = ACOES[pagina];
     <meta name="twitter:description" content={ogDescription ?? description} />
     <meta name="twitter:image" content={ogImage} />
     <title>{title}</title>
+    {/* Sem isto o download só começa depois que o módulo da página é baixado e
+        avaliado: três idas à rede em série antes da primeira renderização. */}
+    {dados.map((nome) => (
+      <link rel="preload" as="fetch" type="application/json" href={`/data/${nome}.json`} />
+    ))}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

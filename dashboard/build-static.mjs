@@ -18,6 +18,22 @@ const deliverablesRoot = join(workspaceRoot, 'entregaveis');
 
 const kb = (text) => `${(Buffer.byteLength(text) / 1024).toFixed(0)} kB`;
 
+// As coordenadas vêm do shapefile com 15 dígitos. Na escala do mapa (720px para
+// 32° de longitude) um pixel vale 0,045°, então 4 casas decimais deslocam a
+// geometria em 0,002 pixel e cortam o arquivo pela metade.
+function arredondaCoordenadas(geometria, casas = 4) {
+  const ajusta = (lista) => {
+    if (typeof lista[0] === 'number') {
+      lista[0] = Number(lista[0].toFixed(casas));
+      lista[1] = Number(lista[1].toFixed(casas));
+      return;
+    }
+    lista.forEach(ajusta);
+  };
+  ajusta(geometria.coordinates);
+  return geometria;
+}
+
 async function writeJson(name, payload) {
   const text = JSON.stringify(payload);
   await writeFile(join(dataOut, name), text);
@@ -33,7 +49,10 @@ async function main() {
   console.log('Gerando JSON do painel...');
   const [dashboard, geo, catalogo] = await Promise.all([buildDashboard(), loadGeo(), loadCatalogo()]);
   await writeJson('dashboard.json', dashboard);
-  await writeJson('geo.json', geo);
+  await writeJson('geo.json', {
+    ...geo,
+    features: geo.features.map((feature) => ({ ...feature, geometry: arredondaCoordenadas(feature.geometry) }))
+  });
   await writeJson('catalogo.json', catalogo);
   await writeJson('metas.json', buildMetas(catalogo, dashboard));
 
