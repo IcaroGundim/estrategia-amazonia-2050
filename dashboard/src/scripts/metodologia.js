@@ -1,4 +1,4 @@
-import { bindMenu, escape } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, escape, sinalDaPagina } from './shared.js';
 
 function bindSectionNavigation() {
   const links = [...document.querySelectorAll('.methodology-index nav a')];
@@ -16,9 +16,9 @@ function bindSectionNavigation() {
     if (ticking) return;
     ticking = true;
     window.requestAnimationFrame(updateActiveSection);
-  }, { passive: true });
-  window.addEventListener('resize', updateActiveSection);
-  window.addEventListener('hashchange', updateActiveSection);
+  }, { passive: true, signal: sinalDaPagina() });
+  window.addEventListener('resize', updateActiveSection, { signal: sinalDaPagina() });
+  window.addEventListener('hashchange', updateActiveSection, { signal: sinalDaPagina() });
   updateActiveSection();
 }
 
@@ -40,7 +40,9 @@ async function init() {
     </article>`).join('');
 }
 
-init().catch((error) => {
+const ANCORA = '#method-dimensions';
+
+aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
   document.querySelector('#method-dimensions').innerHTML = `<p class="load-error">${escape(error.message)} Atualize a página para tentar novamente.</p>`;
   document.querySelector('[data-method-sources]').textContent = 'As fontes não puderam ser carregadas.';
-});
+}));

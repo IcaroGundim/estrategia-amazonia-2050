@@ -1,4 +1,4 @@
-import { bindMenu, escape } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, escape, sinalDaPagina } from './shared.js';
 
 const view = {
   catalogo: null,
@@ -147,7 +147,7 @@ function bindEvents() {
     if (status) { view.status = status.dataset.status; view.page = 1; renderAll(); }
     const page = event.target.closest('[data-page]');
     if (page && !page.disabled) { view.page += page.dataset.page === 'next' ? 1 : -1; renderTable(); document.querySelector('.indicators-table-card').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
+  }, { signal: sinalDaPagina() });
   document.querySelector('#indicator-state').addEventListener('change', (event) => { view.uf = event.target.value; view.page = 1; renderTable(); });
   document.querySelector('#indicator-search').addEventListener('input', (event) => { view.query = event.target.value; view.page = 1; renderTable(); });
   document.querySelector('#export-csv').addEventListener('click', exportCsv);
@@ -164,6 +164,8 @@ async function init() {
   renderAll();
 }
 
-init().catch((error) => {
+const ANCORA = '#indicator-table-body';
+
+aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
   document.querySelector('#indicator-table-body').innerHTML = `<div class="indicator-empty">${escape(error.message)} Atualize a página para tentar novamente.</div>`;
-});
+}));

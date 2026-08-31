@@ -1,4 +1,4 @@
-import { bindMenu, escape, flagImage, readResponse } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', selected: null, panelView: 'state' };
@@ -175,8 +175,8 @@ function createDropdown(container, options, initialValue, onChange) {
     }
     if (event.key === 'Escape') { close(); trigger.focus(); }
   });
-  document.addEventListener('click', (event) => { if (!root.contains(event.target)) close(); });
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && root.classList.contains('is-open')) { close(); trigger.focus(); } });
+  document.addEventListener('click', (event) => { if (!root.contains(event.target)) close(); }, { signal: sinalDaPagina() });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && root.classList.contains('is-open')) { close(); trigger.focus(); } }, { signal: sinalDaPagina() });
 
   paint();
   return { setValue(next) { value = next; paint(); } };
@@ -203,7 +203,7 @@ function statesByMetric() {
     const first = valueAt(a, metric.field);
     const second = valueAt(b, metric.field);
     return metric.direction === 'high' ? second - first : first - second;
-  });
+  }, { signal: sinalDaPagina() });
 }
 
 const PANEL_VIEWS = ['state', 'ranking', 'profile'];
@@ -484,7 +484,7 @@ function bindEvents() {
     }
     const metricButton = event.target.closest('[data-metric]');
     if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
+  }, { signal: sinalDaPagina() });
   document.addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selectState(event.target.dataset.state); }
     if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && event.target.matches('[data-panel-view]')) {
@@ -494,7 +494,7 @@ function bindEvents() {
       selectPanelView(nextView);
       document.querySelector(`[data-panel-view="${nextView}"]`).focus();
     }
-  });
+  }, { signal: sinalDaPagina() });
   const map = document.querySelector('#map');
   map.addEventListener('pointermove', (event) => {
     const shape = event.target.closest('.state-shape');
@@ -511,6 +511,8 @@ function bindEvents() {
   bindMenu();
 }
 
-init().catch((error) => {
+const ANCORA = '#map';
+
+aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
   document.querySelector('#ranking-list').innerHTML = `<li class="load-error">${escape(error.message)} Atualize a página para tentar novamente.</li>`;
-});
+}));

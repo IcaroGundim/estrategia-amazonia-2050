@@ -1,4 +1,4 @@
-import { bindMenu, decimals, escape, number, readResponse } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, decimals, escape, number, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 // `foco` é null (leitura regional, o padrão) ou a sigla de um estado.
@@ -201,6 +201,8 @@ async function init() {
   bindEvents();
 }
 
-init().catch((error) => {
+const ANCORA = '#goals-map';
+
+aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
   document.querySelector('#goals-reading').innerHTML = `<p class="load-error">${escape(error.message)} Atualize a página para tentar novamente.</p>`;
-});
+}));

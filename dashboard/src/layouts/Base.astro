@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -51,6 +52,9 @@ const acao = ACOES[pagina];
     <meta name="twitter:description" content={ogDescription ?? description} />
     <meta name="twitter:image" content={ogImage} />
     <title>{title}</title>
+    {/* Troca só o <body> entre rotas: o documento, o CSS, as fontes e os módulos
+        já avaliados permanecem, em vez de serem reconstruídos a cada clique. */}
+    <ClientRouter />
     {/* Sem isto o download só começa depois que o módulo da página é baixado e
         avaliado: três idas à rede em série antes da primeira renderização. */}
     {dados.map((nome) => (

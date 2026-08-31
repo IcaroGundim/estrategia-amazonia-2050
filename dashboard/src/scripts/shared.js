@@ -42,3 +42,43 @@ export function bindMenu() {
     menuButton.textContent = 'Menu';
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Ciclo de vida das páginas com o ClientRouter do Astro.
+//
+// Na navegação SPA o documento não é recriado: o Astro troca o <body> e mantém
+// window, document, CSS e módulos já avaliados. Duas consequências:
+//
+// 1. O módulo de uma página roda uma vez só. A inicialização precisa acontecer
+//    a cada entrada, e o módulo pode ser avaliado antes ou depois do evento
+//    astro:page-load, dependendo de já estar no cache. O par abaixo cobre as
+//    duas ordens sem inicializar duas vezes.
+// 2. Listeners em window/document sobrevivem à troca e se acumulariam a cada
+//    navegação. `sinalDaPagina()` devolve um AbortSignal que é cancelado na
+//    saída, então basta passá-lo ao addEventListener.
+// ---------------------------------------------------------------------------
+
+let ciclo = new AbortController();
+
+// Sem sinal, de propósito: este listener é quem cancela os outros. Com sinal,
+// ele se cancelaria na primeira navegação e o ciclo morreria em silêncio.
+document.addEventListener('astro:before-swap', () => {
+  ciclo.abort();
+  ciclo = new AbortController();
+});
+
+export function sinalDaPagina() {
+  return ciclo.signal;
+}
+
+export function aoEntrarNaPagina(seletorAncora, iniciar) {
+  let feito = false;
+  const executar = () => {
+    if (feito || !document.querySelector(seletorAncora)) return;
+    feito = true;
+    iniciar();
+  };
+  document.addEventListener('astro:before-swap', () => { feito = false; });
+  document.addEventListener('astro:page-load', executar);
+  executar();
+}
