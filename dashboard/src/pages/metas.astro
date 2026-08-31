@@ -4,63 +4,41 @@ import Base from '../layouts/Base.astro';
 
 <Base title="Metas — Estratégia 2050" description="Acompanhamento do cumprimento das metas da Estratégia Amazônia 2050 na região e em cada estado." ogDescription="Onde a Amazônia Legal já cumpre as metas da Estratégia e onde ainda há distância." mainClass="goals-page" pagina="metas">
   <div class="section-shell">
-    <section class="goals-hero">
-      <div>
-        <p class="eyebrow">Cumprimento das metas</p>
-        <h1>Metas - <em>onde a Amazônia Legal já chegou.</em></h1>
-        <p class="lead">A leitura padrão é regional: cada meta é avaliada para a Amazônia Legal como um todo. Os prazos vão de 2030 a 2050, então o quadro é a posição de hoje no caminho até o horizonte, não um resultado final. Use o recorte abaixo para focar um estado.</p>
-      </div>
-      <div class="goals-hero-figures" id="goals-summary" aria-live="polite">
-        <p class="method-loading">Carregando metas…</p>
-      </div>
+    <section class="goals-head">
+      <h1>Metas - <em>Amazônia Legal.</em></h1>
+      <p class="lead">Escolha uma meta na lista para ver como a região está e quais estados já a cumprem. Os prazos vão de 2030 a 2050: o que aparece aqui é a posição de hoje.</p>
     </section>
 
-    <div class="goals-toolbar">
-      <label class="goals-focus">
-        <span>Recorte</span>
-        <div class="native-select-wrap">
-          <select id="goals-scope" aria-label="Recorte territorial"></select>
+    <div class="goals-board">
+      <article class="goals-map-card card">
+        <div id="goals-reading" class="goals-reading" aria-live="polite">
+          <p class="method-loading">Carregando metas…</p>
         </div>
-      </label>
-      <div class="goals-filter" role="group" aria-label="Filtrar metas por eixo">
-        <span>Eixo</span>
-        <div id="goals-axis-filter" class="goals-chips"></div>
-      </div>
+        <div class="goals-map-canvas">
+          <svg id="goals-map" viewBox="0 0 720 500" role="img" aria-label="Mapa da Amazônia Legal com a situação de cada estado na meta selecionada."></svg>
+        </div>
+        <div class="goals-map-foot">
+          <ul class="goals-legend" aria-label="Legenda do mapa">
+            <li><i class="is-met" aria-hidden="true"></i>Cumpre a meta</li>
+            <li><i class="is-progress" aria-hidden="true"></i>Em curso</li>
+            <li><i class="is-empty" aria-hidden="true"></i>Sem dado</li>
+          </ul>
+          <button type="button" id="goals-clear" class="goals-clear" hidden>Voltar à leitura regional</button>
+        </div>
+      </article>
+
+      <section class="goals-list-card card" aria-labelledby="goals-list-title">
+        <div class="goals-list-head">
+          <h2 id="goals-list-title">As metas avaliáveis</h2>
+          <p id="goals-list-sub">—</p>
+        </div>
+        <ol id="goals-list" class="goals-list" aria-label="Metas com patamar mensurável"></ol>
+      </section>
     </div>
 
-    <section class="goals-detail" aria-labelledby="goals-detail-title">
-      <div class="goals-detail-head"></div>
-      <div id="goals-cards" class="goals-cards" aria-live="polite">
-        <p class="method-loading">Carregando metas…</p>
-      </div>
-    </section>
-
-    <section class="goals-matrix-card card" aria-labelledby="goals-matrix-title">
-      <div class="card-heading">
-        <div>
-          <p class="eyebrow">Distribuição interna</p>
-          <h2 id="goals-matrix-title">Comparação por estado</h2>
-          <p>Cada linha é uma meta; cada coluna, um estado. O preenchimento indica o avanço em direção à meta; a base do cálculo está indicada em cada linha e detalhada nos cartões acima.</p>
-        </div>
-        <ul class="goals-legend" aria-label="Legenda">
-          <li><i class="is-met" aria-hidden="true"></i>Meta cumprida</li>
-          <li><i class="is-progress" aria-hidden="true"></i>Em curso</li>
-          <li><i class="is-empty" aria-hidden="true"></i>Sem dado</li>
-        </ul>
-      </div>
-      <div class="goals-matrix-scroll">
-        <div id="goals-matrix" class="goals-matrix" aria-live="polite">
-          <p class="method-loading">Carregando quadro…</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="goals-coverage card" aria-labelledby="goals-coverage-title">
-      <div class="goals-coverage-head">
-        <p class="eyebrow">Cobertura</p>
-        <h2 id="goals-coverage-title">O que ainda não é possível avaliar</h2>
-        <p id="goals-coverage-lead">—</p>
-      </div>
+    <section class="goals-coverage" aria-labelledby="goals-coverage-title">
+      <h2 id="goals-coverage-title">O que ainda não é possível avaliar</h2>
+      <p id="goals-coverage-lead">—</p>
       <details class="goals-coverage-list">
         <summary>Ver os indicadores fora do quadro e o motivo</summary>
         <div id="goals-excluded"></div>

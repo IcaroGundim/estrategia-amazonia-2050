@@ -1,4 +1,5 @@
 import { bindMenu, escape, flagImage, readResponse } from './shared.js';
+import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', selected: null, panelView: 'state' };
 
@@ -307,72 +308,10 @@ function colorAt(t) {
   return `rgb(${start.map((item, index) => Math.round(item + (end[index] - item) * factor)).join(',')})`;
 }
 
-function ringArea(ring) {
-  let sum = 0;
-  for (let i = 0; i < ring.length - 1; i += 1) {
-    const [x1, y1] = ring[i]; const [x2, y2] = ring[i + 1];
-    sum += x1 * y2 - x2 * y1;
-  }
-  return sum / 2;
-}
-
-function ringCentroid(ring) {
-  const area = ringArea(ring);
-  if (area === 0) {
-    const fallback = ring.reduce((sum, [x, y]) => [sum[0] + x, sum[1] + y], [0, 0]);
-    return [fallback[0] / ring.length, fallback[1] / ring.length];
-  }
-  let cx = 0; let cy = 0;
-  for (let i = 0; i < ring.length - 1; i += 1) {
-    const [x1, y1] = ring[i]; const [x2, y2] = ring[i + 1];
-    const cross = x1 * y2 - x2 * y1;
-    cx += (x1 + x2) * cross;
-    cy += (y1 + y2) * cross;
-  }
-  return [cx / (6 * area), cy / (6 * area)];
-}
-
-function centroidOf(geometry) {
-  const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
-  const largestPolygon = polygons.reduce((largest, polygon) => Math.abs(ringArea(polygon[0])) > Math.abs(ringArea(largest[0])) ? polygon : largest);
-  return ringCentroid(largestPolygon[0]);
-}
-
-function coordinatesOf(geometry) {
-  const points = [];
-  const walk = (coordinates) => {
-    if (typeof coordinates[0] === 'number') points.push(coordinates);
-    else coordinates.forEach(walk);
-  };
-  walk(geometry.coordinates);
-  return points;
-}
-
-function mapPath(geometry, project) {
-  const ringPath = (ring) => `${ring.map((coordinate, index) => `${index ? 'L' : 'M'}${project(coordinate).join(',')}`).join('')}Z`;
-  if (geometry.type === 'Polygon') return geometry.coordinates.map(ringPath).join('');
-  if (geometry.type === 'MultiPolygon') return geometry.coordinates.flatMap((polygon) => polygon.map(ringPath)).join('');
-  return '';
-}
-
-function extent(points, index) {
-  let min = Infinity; let max = -Infinity;
-  for (const point of points) {
-    const value = point[index];
-    if (value < min) min = value;
-    if (value > max) max = value;
-  }
-  return [min, max];
-}
-
 function renderMap() {
   const svg = document.querySelector('#map');
-  const all = state.geo.features.flatMap((feature) => coordinatesOf(feature.geometry));
-  const padding = 34; const width = 720; const height = 500;
-  const [minX, maxX] = extent(all, 0); const [minY, maxY] = extent(all, 1);
-  const scale = Math.min((width - padding * 2) / (maxX - minX), (height - padding * 2) / (maxY - minY));
-  const offsetX = (width - (maxX - minX) * scale) / 2; const offsetY = (height - (maxY - minY) * scale) / 2;
-  const project = ([x, y]) => [offsetX + (x - minX) * scale, height - offsetY - (y - minY) * scale];
+  const width = 720; const height = 500;
+  const project = projecaoPara(state.geo.features, { width, height });
   const groups = state.geo.features.map((feature) => {
     const uf = feature.properties.uf;
     const item = state.data.states.find((candidate) => candidate.uf === uf);
