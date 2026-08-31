@@ -1,7 +1,7 @@
-// Gera os artefatos estáticos consumidos pelo deploy (Vercel serve apenas `public/`).
+// Gera os artefatos de dados consumidos pelas páginas.
 // Roda localmente, onde `dados/`, `entregaveis/`, o shapefile e as bandeiras existem;
-// o resultado é versionado no git e publicado sem build remoto.
-import { mkdir, readFile, writeFile, copyFile, rm, readdir } from 'node:fs/promises';
+// o resultado é versionado em `public/` e o Astro o copia para `dist/` no build.
+import { mkdir, writeFile, copyFile, rm, readdir } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDashboard, loadGeo, loadCatalogo } from './server.mjs';
@@ -15,7 +15,6 @@ const flagsOut = join(publicRoot, 'flags');
 const downloadsOut = join(publicRoot, 'downloads');
 const flagsSrc = join(workspaceRoot, 'Bandeiras - Amazônia Legal-20260820T011546Z-1-001', 'Bandeiras - Amazônia Legal');
 const deliverablesRoot = join(workspaceRoot, 'entregaveis');
-const siteUrl = (process.env.SITE_URL || 'https://estrategia-amazonia-2050.vercel.app').replace(/\/+$/, '');
 
 const kb = (text) => `${(Buffer.byteLength(text) / 1024).toFixed(0)} kB`;
 
@@ -50,16 +49,7 @@ async function main() {
   ];
   for (const [name, fullPath] of downloads) await copyFile(fullPath, join(downloadsOut, name));
 
-  console.log('Resolvendo metatags Open Graph...');
-  for (const page of (await readdir(publicRoot)).filter((name) => name.endsWith('.html'))) {
-    const fullPath = join(publicRoot, page);
-    const html = await readFile(fullPath, 'utf8');
-    // O servidor local injeta a URL por requisição; no estático ela é gravada no arquivo.
-    const next = html.replace(/(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(")/g, `$1${siteUrl}/og.png$2`);
-    if (next !== html) await writeFile(fullPath, next);
-  }
-
-  console.log(`Pronto. Site base: ${siteUrl}`);
+  console.log('Pronto. Os artefatos estão em public/ e o Astro os copia para dist/.');
 }
 
 main().catch((error) => {

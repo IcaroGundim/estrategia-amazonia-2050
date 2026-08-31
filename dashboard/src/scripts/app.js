@@ -1,3 +1,5 @@
+import { bindMenu, escape, flagImage, readResponse } from './shared.js';
+
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', selected: null, panelView: 'state' };
 
 const metrics = {
@@ -60,18 +62,11 @@ function number(value, digits = 0) { return new Intl.NumberFormat('pt-BR', { max
 function percent(value, digits = 0) { return `${number(value, digits)}%`; }
 function compactPopulation(value) { return `${new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(value)} pessoas`; }
 function compactNumber(value) { return new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(value); }
-function escape(value) { return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char]); }
-function flagImage(item, alt) {
-  const version = item.flagVersion ? `?v=${item.flagVersion}` : '';
-  const ratio = item.flagRatio ? ` style="aspect-ratio:${item.flagRatio}"` : '';
-  return `<img src="/flags/${encodeURIComponent(item.flag)}${version}"${ratio} alt="${escape(alt || '')}">`;
-}
-
 async function init() {
   const [dashboard, geo, catalogo] = await Promise.all([
-    fetch('/api/dashboard').then(readResponse),
-    fetch('/api/geo').then(readResponse),
-    fetch('/api/catalogo').then(readResponse)
+    fetch('/data/dashboard.json').then(readResponse),
+    fetch('/data/geo.json').then(readResponse),
+    fetch('/data/catalogo.json').then(readResponse)
   ]);
   state.data = dashboard;
   state.geo = geo;
@@ -99,11 +94,6 @@ function syncSidebarHeight() {
   const apply = () => grid.style.setProperty('--sidebar-max', `${Math.round(primary.getBoundingClientRect().height)}px`);
   new ResizeObserver(apply).observe(primary);
   apply();
-}
-
-async function readResponse(response) {
-  if (!response.ok) throw new Error('Falha ao carregar o painel.');
-  return response.json();
 }
 
 function createDropdown(container, options, initialValue, onChange) {
@@ -579,17 +569,7 @@ function bindEvents() {
     showMapTooltip(event.target.dataset.state, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
   });
   map.addEventListener('focusout', hideMapTooltip);
-  const menuButton = document.querySelector('.menu-button');
-  menuButton.addEventListener('click', () => {
-    const isOpen = document.body.classList.toggle('menu-open');
-    menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.textContent = isOpen ? 'Fechar' : 'Menu';
-  });
-  document.querySelectorAll('.topnav a, .topnav button').forEach((link) => link.addEventListener('click', () => {
-    document.body.classList.remove('menu-open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = 'Menu';
-  }));
+  bindMenu();
 }
 
 init().catch((error) => {

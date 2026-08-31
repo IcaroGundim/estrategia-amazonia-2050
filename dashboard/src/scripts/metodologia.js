@@ -1,20 +1,4 @@
-function escape(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char]);
-}
-
-function bindMenu() {
-  const menuButton = document.querySelector('.menu-button');
-  menuButton.addEventListener('click', () => {
-    const isOpen = document.body.classList.toggle('menu-open');
-    menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.textContent = isOpen ? 'Fechar' : 'Menu';
-  });
-  document.querySelectorAll('.topnav a').forEach((link) => link.addEventListener('click', () => {
-    document.body.classList.remove('menu-open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = 'Menu';
-  }));
-}
+import { bindMenu, escape } from './shared.js';
 
 function bindSectionNavigation() {
   const links = [...document.querySelectorAll('.methodology-index nav a')];
@@ -41,7 +25,7 @@ function bindSectionNavigation() {
 async function init() {
   bindMenu();
   bindSectionNavigation();
-  const response = await fetch('/api/dashboard');
+  const response = await fetch('/data/dashboard.json');
   if (!response.ok) throw new Error('Não foi possível carregar a nota metodológica.');
   const data = await response.json();
   document.querySelectorAll('[data-updated]').forEach((element) => { element.textContent = data.updatedAt; });

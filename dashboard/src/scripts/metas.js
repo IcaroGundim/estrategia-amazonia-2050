@@ -1,25 +1,6 @@
+import { bindMenu, decimals, escape, flagImage, number, readResponse } from './shared.js';
+
 const state = { data: null, eixo: 'todos', uf: null };
-
-function escape(value) {
-  return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char]);
-}
-
-async function readResponse(response) {
-  if (!response.ok) throw new Error('Não foi possível carregar as metas.');
-  return response.json();
-}
-
-function decimals(value) {
-  const absolute = Math.abs(value);
-  if (absolute >= 1000) return 0;
-  if (absolute >= 100) return 1;
-  if (absolute >= 1) return 2;
-  return 3;
-}
-
-function number(value, casas = decimals(value)) {
-  return value.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: casas });
-}
 
 function valorFormatado(meta, value) {
   if (typeof value === 'string') return value;
@@ -46,12 +27,6 @@ function unidadeCurta(meta) {
   const unidade = String(meta.unidade || '').trim();
   if (ehPercentual(meta)) return 'pontos percentuais';
   return UNIDADES[unidade] || '';
-}
-
-function flagImage(estado) {
-  const version = estado.flagVersion ? `?v=${estado.flagVersion}` : '';
-  const ratio = estado.flagRatio ? ` style="aspect-ratio:${estado.flagRatio}"` : '';
-  return `<img src="/flags/${encodeURIComponent(estado.flag)}${version}"${ratio} alt="">`;
 }
 
 function metasVisiveis() {
@@ -264,21 +239,11 @@ function bindEvents() {
     document.querySelector('#goals-state').value = state.uf;
     renderAll();
   });
-  const menuButton = document.querySelector('.menu-button');
-  menuButton.addEventListener('click', () => {
-    const isOpen = document.body.classList.toggle('menu-open');
-    menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.textContent = isOpen ? 'Fechar' : 'Menu';
-  });
-  document.querySelectorAll('.topnav a').forEach((link) => link.addEventListener('click', () => {
-    document.body.classList.remove('menu-open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = 'Menu';
-  }));
+  bindMenu();
 }
 
 async function init() {
-  state.data = await fetch('/api/metas').then(readResponse);
+  state.data = await fetch('/data/metas.json').then(readResponse);
   state.uf = state.data.estados[0]?.uf || null;
   renderStateSelect();
   renderCoverage();

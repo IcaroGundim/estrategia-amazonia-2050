@@ -1,3 +1,5 @@
+import { bindMenu, escape } from './shared.js';
+
 const view = {
   catalogo: null,
   indicadores: [],
@@ -17,10 +19,6 @@ const STATUS = {
   pendente: { label: 'Pendente', cls: 'is-pending' },
   manual: { label: 'Coleta manual', cls: 'is-manual' }
 };
-
-function escape(value) {
-  return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char]);
-}
 
 function normalise(value) {
   return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -154,16 +152,11 @@ function bindEvents() {
   document.querySelector('#indicator-search').addEventListener('input', (event) => { view.query = event.target.value; view.page = 1; renderTable(); });
   document.querySelector('#export-csv').addEventListener('click', exportCsv);
 
-  const menuButton = document.querySelector('.menu-button');
-  menuButton.addEventListener('click', () => {
-    const isOpen = document.body.classList.toggle('menu-open');
-    menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.textContent = isOpen ? 'Fechar' : 'Menu';
-  });
+  bindMenu();
 }
 
 async function init() {
-  const response = await fetch('/api/catalogo');
+  const response = await fetch('/data/catalogo.json');
   if (!response.ok) throw new Error('Não foi possível carregar o catálogo.');
   view.catalogo = await response.json();
   view.indicadores = view.catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((indicador) => ({ ...indicador, eixoNumero: eixo.numero, eixoNome: eixo.nome })));

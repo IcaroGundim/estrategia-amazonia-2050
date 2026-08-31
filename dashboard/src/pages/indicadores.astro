@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Indicadores — Estratégia 2050" description="Catálogo dos indicadores oficiais da Estratégia Amazônia 2050." ogDescription="Consulte, filtre e exporte os indicadores dos nove estados da Amazônia Legal." mainClass="indicators-page" pagina="indicadores">
+    <section class="indicators-hero section-shell">
+      <div>
+        <h1>Indicadores - <em>metas comuns.</em></h1>
+      </div>
+    </section>
+
+    <section class="indicators-workspace section-shell" aria-label="Consulta de indicadores">
+      <aside class="filters-card card" aria-label="Filtros dos indicadores">
+        <div class="filter-group">
+          <p class="filter-title">Eixo</p>
+          <div id="indicator-eixo-filters" class="filter-options"></div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-title" for="indicator-state">Estado</label>
+          <div class="native-select-wrap">
+            <select id="indicator-state" aria-label="Filtrar por estado">
+              <option value="all">Todos os nove</option>
+              <option value="AC">Acre</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="PA">Pará</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="TO">Tocantins</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <p class="filter-title">Disponibilidade</p>
+          <div id="indicator-status-filters" class="status-filter-list"></div>
+        </div>
+
+        <div class="filter-group export-group">
+          <button id="export-csv" class="export-primary" type="button">Exportar seleção em CSV</button>
+          <a href="/downloads/Indicadores_Resultado_Eixo1_Amazonia2050.xlsx">Workbook Eixo 1 · XLSX</a>
+          <a href="/downloads/Indicadores_Resultado_Eixo2_Amazonia2050.xlsx">Workbook Eixo 2 · XLSX</a>
+          <a href="/downloads/Indicadores_Resultado_Eixo3_Amazonia2050.xlsx">Workbook Eixo 3 · XLSX</a>
+          <a href="/downloads/Indicadores_Resultado_Eixo4_Amazonia2050.xlsx">Workbook Eixo 4 · XLSX</a>
+          <a href="/downloads/Indicadores_Resultado_Eixo5_Amazonia2050.xlsx">Workbook Eixo 5 · XLSX</a>
+        </div>
+      </aside>
+
+      <div class="indicators-table-card card">
+        <div class="indicators-toolbar">
+          <div>
+            <h2><span data-filtered-count>59</span> indicadores</h2>
+            <p>Base consolidada em 30 ago. 2026</p>
+          </div>
+          <label class="indicator-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="indicator-search" type="search" placeholder="Buscar indicador, código ou meta" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="indicator-table" role="table" aria-label="Indicadores da Estratégia Amazônia 2050">
+          <div class="indicator-table-head" role="row">
+            <span role="columnheader">Indicador</span>
+            <span role="columnheader">Eixo</span>
+            <span role="columnheader">Valor</span>
+            <span role="columnheader">Meta</span>
+            <span role="columnheader">Situação</span>
+          </div>
+          <div id="indicator-table-body" class="indicator-table-body" role="rowgroup" aria-live="polite"></div>
+        </div>
+
+        <div class="indicator-pagination">
+          <span data-page-summary>—</span>
+          <div>
+            <button type="button" data-page="prev">Anterior</button>
+            <button type="button" data-page="next">Próxima</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <script>
+    import '../scripts/indicadores.js';
+  </script>
+</Base>

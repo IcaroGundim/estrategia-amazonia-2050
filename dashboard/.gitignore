@@ -1,2 +1,6 @@
 node_modules/
 npm-debug.log*
+
+# Saída do Astro e cache de tipos gerados
+dist/
+.astro/

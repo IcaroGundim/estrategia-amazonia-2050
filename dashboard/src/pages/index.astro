@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Estratégia 2050 — Amazônia Legal" description="Painel de metas e indicadores dos nove estados da Amazônia Legal." ogDescription="Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal." pagina="index">
+    <section class="panorama" id="inicio">
+      <div class="section-shell">
+        <div class="dashboard-grid">
+          <div class="dashboard-primary">
+            <article class="map-card card" aria-labelledby="map-title">
+              <div class="card-heading panorama-heading">
+                <div>
+                  <h1 id="map-title">Panorama - <em>Amazônia Legal.</em></h1>
+                  <p class="lead">Explore os indicadores oficiais, compare os nove estados e abra o perfil detalhado de cada território.</p>
+                </div>
+                <div class="select-wrap">
+                  <span class="select-wrap-label">Indicador exibido</span>
+                  <div id="metric-select"></div>
+                </div>
+              </div>
+              <div class="map-body">
+                <aside id="map-indicator-card" class="map-indicator-card" aria-live="polite">
+                  <p>Carregando indicador…</p>
+                </aside>
+                <div class="map-canvas">
+                  <svg id="map" viewBox="0 0 720 500" role="img" aria-label="Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral."></svg>
+                  <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
+                </div>
+              </div>
+              <div class="map-legend" aria-label="Escala de desempenho relativo">
+                <span>menor desempenho</span>
+                <i class="legend-ramp" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></i>
+                <span>maior desempenho</span>
+              </div>
+            </article>
+
+            <section class="overview" aria-label="Resumo regional">
+              <article class="card">
+                <p class="metric-label">População observada</p>
+                <p class="metric-value" data-population>—</p>
+                <p>projeção IBGE para 2025</p>
+              </article>
+              <article class="card">
+                <p class="metric-label">Território</p>
+                <p class="metric-value" data-territorio>—</p>
+                <p>área total dos nove estados</p>
+              </article>
+              <article class="card">
+                <p class="metric-label">Municípios</p>
+                <p class="metric-value" data-municipios>—</p>
+                <p>na Amazônia Legal · base AdaptaBrasil</p>
+              </article>
+              <article class="card">
+                <p class="metric-label">Unidades de conservação</p>
+                <p class="metric-value" data-ucs>—</p>
+                <p>federais e estaduais · CNUC/MMA 2026</p>
+              </article>
+            </section>
+
+          </div>
+
+          <aside class="dashboard-sidebar card" aria-label="Detalhes e comparação estadual">
+            <div class="sidebar-tabs" role="tablist" aria-label="Conteúdo da coluna lateral">
+              <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="state-panel" data-panel-view="state">Estado selecionado</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="ranking" data-panel-view="ranking">Comparação estadual</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="state-profile" data-panel-view="profile">Perfil completo</button>
+            </div>
+
+            <section id="state-panel" class="state-panel sidebar-panel" role="tabpanel" aria-live="polite" aria-label="Estado selecionado">
+              <div class="state-panel-loading">Carregando perfil estadual…</div>
+            </section>
+
+            <section id="ranking" class="ranking-card sidebar-panel" role="tabpanel" aria-label="Comparação estadual" hidden>
+              <div class="ranking-panel-head">
+                <div>
+                  <p class="eyebrow">Comparação estadual</p>
+                  <h2 data-ranking-title>Síntese comparativa</h2>
+                  <small data-ranking-subtitle>maior pontuação = melhor posição</small>
+                </div>
+                <a class="text-button" href="/metodologia#calculo">Critérios <span aria-hidden="true">↗</span></a>
+              </div>
+              <ol id="ranking-list" class="ranking-list" aria-live="polite"></ol>
+            </section>
+
+            <section id="state-profile" class="state-profile sidebar-panel" role="tabpanel" aria-label="Perfil completo do estado" aria-live="polite" hidden></section>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+
+  <script>
+    import '../scripts/app.js';
+  </script>
+</Base>

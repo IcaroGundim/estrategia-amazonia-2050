@@ -1,6 +1,6 @@
 # Observatório Amazônia 2050
 
-Dashboard em Node.js e JavaScript nativo para os nove estados da Amazônia Legal. A interface não utiliza framework de frontend nem biblioteca de mapas: o servidor lê os arquivos da pesquisa, entrega os indicadores e converte o shapefile em GeoJSON para a visualização interativa.
+Dashboard dos nove estados da Amazônia Legal, construído em [Astro](https://astro.build) com JavaScript nativo no cliente. Não há biblioteca de mapas nem framework de UI no navegador: o Astro gera HTML estático no build e as páginas leem JSONs pré-gerados. O mapa é SVG desenhado a partir do shapefile convertido em GeoJSON.
 
 > **Escopo deste repositório.** Aqui está apenas o site: `dashboard/`, com os dados já
 > congelados em `public/data/`. As pastas de trabalho que alimentam o gerador (`dados/`,
@@ -9,16 +9,44 @@ Dashboard em Node.js e JavaScript nativo para os nove estados da Amazônia Legal
 > e `npm run build:static` não rodam; o site publicado, sim, porque não depende de
 > nenhuma delas em tempo de execução.
 
+## Estrutura
+
+```
+src/
+  layouts/Base.astro     head, topbar, navegação, rodapé — um único lugar
+  pages/*.astro          uma página por rota; só o conteúdo do <main>
+  scripts/*.js           JS de cliente, um módulo por página
+  scripts/shared.js      escape, number, flagImage, readResponse, bindMenu
+  styles/global.css      folha única, importada pelo layout
+public/                  copiado literalmente para dist/ (data, flags, downloads, og)
+build-static.mjs         gera public/data/* a partir das fontes locais
+server.mjs               pipeline de dados (CSVs, shapefile, catálogo)
+metas.mjs                parametrização e avaliação das metas
+```
+
+As páginas **não** leem dados no frontmatter do Astro: todo carregamento é no cliente, via `fetch('/data/*.json')`. Isso é deliberado — as fontes (`dados/`, shapefile, `entregaveis/`) não estão neste repositório, então qualquer leitura em tempo de build quebraria o deploy na Vercel enquanto passaria na máquina local.
+
 ## Como executar
 
 No diretório `dashboard`:
 
 ```powershell
 npm install
-npm start
+npm run dev
 ```
 
-Abra `http://localhost:4173`.
+Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run build && npm run preview`.
+
+### Scripts
+
+| Script | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento do Astro (é o que a Vercel **não** roda). |
+| `npm run build` | `astro build` → gera `dist/`. É o comando que a Vercel executa. |
+| `npm run preview` | Serve `dist/` para conferir o resultado do build. |
+| `npm run build:static` | Regenera os dados em `public/data/` a partir das fontes locais. |
+| `npm run snapshot` | Grava o snapshot de auditoria do payload do painel. |
+| `npm run prepare-data` | Valida a leitura das bases sem gerar nada. |
 
 ## O que está no painel
 
@@ -51,7 +79,7 @@ O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a parti
 | `/flags/*` | 9 SVGs na pasta de bandeiras |
 | `/downloads/*` | 5 workbooks de `entregaveis/` + `RELATORIO_DE_COLETA.md` |
 
-**Deploy na Vercel** — o site é publicado como estático puro: `dashboard/public/` é a única pasta enviada, sem build e sem Node em execução na Vercel. Os arquivos pesados (`dados/`, o shapefile, `entregaveis/`) ficam fora do deploy: eles são consumidos **na sua máquina** pelo gerador `build-static.mjs`, que congela o resultado dentro de `public/`.
+**Deploy na Vercel** — a Vercel roda `npm install && npm run build` (`astro build`) e publica `dist/`. Os arquivos pesados (`dados/`, o shapefile, `entregaveis/`) ficam fora do repositório: eles são consumidos **na sua máquina** pelo `build-static.mjs`, que congela o resultado em `public/`, e o Astro copia `public/` para `dist/` no build.
 
 1. Gere os artefatos (sempre que os dados ou os workbooks mudarem):
 
@@ -61,19 +89,15 @@ O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a parti
    npm run build:static
    ```
 
-   Isso escreve, dentro de `public/`: `data/dashboard.json`, `data/geo.json`, `data/catalogo.json`, `data/metas.json`, `flags/*.svg`, `downloads/*` (5 XLSX + `RELATORIO_DE_COLETA.md`) e grava a URL absoluta da imagem Open Graph nos HTMLs.
+   Isso escreve, dentro de `public/`: `data/dashboard.json`, `data/geo.json`, `data/catalogo.json`, `data/metas.json`, `flags/*.svg` e `downloads/*` (5 XLSX + `RELATORIO_DE_COLETA.md`).
 
 2. Versione o resultado no git — **`public/data/`, `public/flags/` e `public/downloads/` precisam estar commitados**, pois são a carga do deploy.
 
-3. Na Vercel, crie o projeto apontando para este repositório e defina **Root Directory = `dashboard`**. O `vercel.json` já cuida do resto: sem build command, `outputDirectory: public`, `cleanUrls` (que resolve `/indicadores` e `/metodologia`), reescritas de `/api/dashboard|geo|catalogo|metas` para os JSONs em `/data/` e `Content-Disposition: attachment` em `/downloads/*`.
+3. Na Vercel, crie o projeto apontando para este repositório e defina **Root Directory = `dashboard`**. O preset Astro é detectado sozinho; o `vercel.json` define `outputDirectory: dist`, `cleanUrls`, `Content-Disposition: attachment` em `/downloads/*` e mantém as reescritas de `/api/dashboard|geo|catalogo|metas` para os JSONs em `/data/` — hoje as páginas já buscam `/data/*.json` direto, as reescritas ficam só para não quebrar links antigos.
 
-O domínio usado nas metatags Open Graph é `https://estrategia-amazonia-2050.vercel.app`. Para publicar em outro domínio, rode o gerador com a variável `SITE_URL`:
+O domínio das metatags Open Graph vem de `site` em `astro.config.mjs`. Para publicar em outro domínio, altere esse valor — o layout monta a URL absoluta a partir dele.
 
-```powershell
-$env:SITE_URL = "https://seu-dominio.com"; npm run build:static
-```
-
-**Desenvolvimento local** continua idêntico: `npm start` sobe o `server.mjs`, que serve `/api/*`, `/flags/*` e `/downloads/*` dinamicamente a partir das pastas originais. O gerador apenas importa as mesmas funções do servidor, então as duas rotas de execução leem exatamente os mesmos dados.
+> **Nota:** `node server.mjs` ainda sobe o servidor HTTP antigo, mas ele não serve mais as páginas (não há HTML em `public/`). Use `npm run dev`. O `server.mjs` permanece como pipeline de dados, importado por `build-static.mjs` e `snapshot.mjs`.
 
 **Deploy em servidor Node** (alternativa, se preferir o servidor dinâmico em vez da Vercel): copie o projeto mantendo a estrutura — `dashboard/`, `dados/`, `entregaveis/`, `BR_UF_2025 (2)/`, a pasta `Bandeiras - Amazônia Legal-…/` e `RELATORIO_DE_COLETA.md` (dispensa `.venv/` e `fontes_originais/`) — e rode `cd dashboard && npm install && npm start` (porta via `PORT`; padrão 4173). Python não é necessário no servidor.
 

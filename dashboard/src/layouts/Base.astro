@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  mainClass?: string;
+  pagina: 'index' | 'metas' | 'indicadores' | 'metodologia';
+}
+
+const { title, description, ogTitle, ogDescription, mainClass, pagina } = Astro.props;
+
+// `Astro.site` vem de astro.config.mjs. A URL absoluta é obrigatória no Open Graph:
+// antes ela era injetada por uma substituição de texto no build-static.mjs.
+const ogImage = new URL('/og.png', Astro.site).href;
+
+const NAVEGACAO = [
+  { href: '/', rotulo: 'Panorama', chave: 'index' },
+  { href: '/metas', rotulo: 'Metas', chave: 'metas' },
+  { href: '/indicadores', rotulo: 'Indicadores', chave: 'indicadores' },
+  { href: '/metodologia', rotulo: 'Metodologia', chave: 'metodologia' }
+];
+
+const ACOES = {
+  index: { href: '/metodologia', rotulo: 'Como ler os dados' },
+  metas: { href: '/metodologia#a-estrategia', rotulo: 'Sobre a Estratégia' },
+  indicadores: { href: '/downloads/Indicadores_Resultado_Eixo1_Amazonia2050.xlsx', rotulo: 'Baixar dados' },
+  metodologia: { href: '/downloads/RELATORIO_DE_COLETA.md', rotulo: 'Baixar nota técnica' }
+};
+
+const acao = ACOES[pagina];
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0e2b22" />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    <meta name="twitter:description" content={ogDescription ?? description} />
+    <meta name="twitter:image" content={ogImage} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="/" class="brand" aria-label="Estratégia 2050 do Consórcio da Amazônia Legal, início">
+          <img class="brand-logo" src="/logo-consorcio-clara.avif" alt="" />
+          <span class="brand-product">Estratégia 2050</span>
+        </a>
+
+        <nav class="topnav" aria-label="Navegação principal">
+          {NAVEGACAO.map(({ href, rotulo, chave }) => (
+            <a
+              href={href}
+              class={chave === pagina ? 'is-active' : undefined}
+              aria-current={chave === pagina ? 'page' : undefined}
+            >{rotulo}</a>
+          ))}
+        </nav>
+
+        <div class="topbar-actions">
+          <a class="outline-button action-link" href={acao.href}>{acao.rotulo}</a>
+        </div>
+        <button class="menu-button" type="button" aria-expanded="false" aria-label="Abrir menu">Menu</button>
+      </div>
+    </header>
+
+    <main id="conteudo" class={mainClass}>
+      <slot />
+    </main>
+
+    <div class="river-ornament" aria-hidden="true"><i></i><i></i></div>
+    <footer>
+      <span>Estratégia 2050</span>
+      <span>Estratégia Amazônia 2050 · Consórcio da Amazônia Legal</span>
+    </footer>
+  </body>
+</html>
