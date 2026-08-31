@@ -11,12 +11,18 @@
 // tipo: 'declarada' = o número está escrito na meta; 'inferida' = a meta é qualitativa
 // ou regional e foi operacionalizada aqui; 'derivada' = calculada por estado a partir
 // de uma baseline da própria série.
+//
+// agregacao: como o valor da Amazônia Legal como um todo é obtido a partir dos nove
+// estados. O método viaja com o número até a página, porque uma soma e uma média
+// simples não têm o mesmo peso de evidência. Quando a ponderação correta exigiria um
+// denominador que não temos, isso fica dito em `notaAgregacao`.
 const PARAMETROS = [
   {
     codigo: 'I1.1.2',
     alvo: 40,
     direcao: 'maior',
     tipo: 'inferida',
+    agregacao: 'razaoUc',
     nota: 'A meta é regional (40% das UCs estaduais da Amazônia Legal). Aqui ela é aplicada como referência para cada estado, o que não equivale ao compromisso pactuado no agregado.'
   },
   {
@@ -24,6 +30,8 @@ const PARAMETROS = [
     alvo: 52.1,
     direcao: 'menor',
     tipo: 'declarada',
+    agregacao: 'media',
+    notaAgregacao: 'Média simples dos nove estados: o catálogo traz a média estadual já consolidada, não o número de municípios prioritários que a compõe.',
     nota: 'Convergência para 52,1 pontos, a média do grupo menos vulnerável. O valor estadual é a média dos municípios prioritários, o mesmo recorte citado na meta.'
   },
   {
@@ -31,6 +39,7 @@ const PARAMETROS = [
     alvo: 0,
     direcao: 'menor',
     tipo: 'declarada',
+    agregacao: 'soma',
     baselineAno: 2020,
     nota: 'Meta de desmatamento ilegal zero. O progresso é medido contra a área de 2020, primeiro ano da série disponível.'
   },
@@ -38,6 +47,7 @@ const PARAMETROS = [
     codigo: 'I1.3.4',
     direcao: 'menor',
     tipo: 'derivada',
+    agregacao: 'soma',
     alvoPorEstado: (serie) => {
       const anos = Object.entries(serie || {}).filter(([ano, valor]) => Number(ano) >= 2015 && Number.isFinite(valor));
       if (!anos.length) return null;
@@ -47,18 +57,27 @@ const PARAMETROS = [
     valorPorEstado: (serie) => ultimoDaSerie(serie)?.valor ?? null,
     nota: 'Redução de 30% sobre a média histórica de cada estado. A meta cita a baseline 2015–2025; a série consolidada termina em 2024, então a janela usada é 2015–2024.'
   },
-  { codigo: 'I2.1.1', alvo: 3, direcao: 'menor', tipo: 'declarada' },
+  { codigo: 'I2.1.1', alvo: 3, direcao: 'menor', tipo: 'declarada', agregacao: 'populacao' },
   {
     codigo: 'I2.3.2',
     alvo: 100,
     direcao: 'maior',
     tipo: 'inferida',
+    agregacao: 'populacao',
+    notaAgregacao: 'Ponderação pela população total de cada estado, e não pela população de 4 a 17 anos, que não está na base consolidada.',
     nota: 'A meta fala em universalizar o acesso, sem número. Adotamos 100% de atendimento como leitura da universalização; um patamar de 98%, por exemplo, produziria outro resultado.'
   },
-  { codigo: 'I2.4.1', alvo: 10, direcao: 'menor', tipo: 'declarada' },
-  { codigo: 'I4.1.1', alvo: 80, direcao: 'maior', tipo: 'declarada', baselineAno: 2021 },
-  { codigo: 'I4.3.2', alvo: 80, direcao: 'maior', tipo: 'declarada' },
-  { codigo: 'I4.4.1', alvo: 80, direcao: 'maior', tipo: 'declarada' },
+  { codigo: 'I2.4.1', alvo: 10, direcao: 'menor', tipo: 'declarada', agregacao: 'razaoCvli' },
+  { codigo: 'I4.1.1', alvo: 80, direcao: 'maior', tipo: 'declarada', agregacao: 'populacao', baselineAno: 2021 },
+  {
+    codigo: 'I4.3.2',
+    alvo: 80,
+    direcao: 'maior',
+    tipo: 'declarada',
+    agregacao: 'media',
+    notaAgregacao: 'Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.'
+  },
+  { codigo: 'I4.4.1', alvo: 80, direcao: 'maior', tipo: 'declarada', agregacao: 'populacao' },
   {
     codigo: 'I5.4.1',
     alvo: 1,
@@ -66,12 +85,15 @@ const PARAMETROS = [
     tipo: 'declarada',
     fonteValor: 'dashboard',
     unidade: '% do PIB',
+    agregacao: 'media',
+    notaAgregacao: 'Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.',
     nota: 'Os valores de I5.4.1 no catálogo estão em R$ milhões, não em percentual do PIB. Para confrontar com a meta de 1% do PIB usamos o campo pct_pib da mesma base (MCTI), já consolidado pelo painel.'
   },
   {
     codigo: 'I5.5.1',
     direcao: 'categoria',
     tipo: 'declarada',
+    agregacao: 'contagem',
     categoriasCumpre: ['A+', 'A', 'B+', 'B'],
     nota: 'A meta do indicador é CAPAG A ou B. Notas com sinal (A+, B+) são contadas dentro da faixa correspondente.'
   }
@@ -115,6 +137,64 @@ function progressoEntre(baseline, atual, alvo) {
   return Math.max(0, Math.min(1, razao));
 }
 
+const ROTULO_AGREGACAO = {
+  soma: 'soma dos nove estados',
+  populacao: 'média ponderada pela população',
+  media: 'média simples dos nove estados',
+  razaoUc: 'unidades com plano e conselho sobre o total de unidades',
+  razaoCvli: 'total de CVLI sobre a população regional',
+  contagem: 'sem valor regional: a meta é uma classificação por estado'
+};
+
+// Valor da Amazônia Legal como um todo. Devolve null quando a agregação não é
+// defensável — nesse caso a página mostra apenas a contagem de estados.
+function agregaRegional(parametro, indicador, estados, contexto) {
+  const { populacaoPorUf, cvliPorUf } = contexto;
+  const celulas = Object.entries(estados).filter(([, item]) => item && !item.categoria);
+  if (!parametro.agregacao || parametro.agregacao === 'contagem' || !celulas.length) return null;
+
+  const soma = (fn) => celulas.reduce((total, entrada) => total + (fn(entrada) || 0), 0);
+  let valor = null;
+  let alvo = parametro.alvo ?? null;
+
+  if (parametro.agregacao === 'soma') {
+    valor = soma(([, item]) => item.valor);
+    alvo = soma(([, item]) => item.alvo);
+  } else if (parametro.agregacao === 'populacao') {
+    const peso = soma(([uf]) => populacaoPorUf[uf]);
+    if (!peso) return null;
+    valor = soma(([uf, item]) => item.valor * (populacaoPorUf[uf] || 0)) / peso;
+  } else if (parametro.agregacao === 'media') {
+    valor = soma(([, item]) => item.valor) / celulas.length;
+  } else if (parametro.agregacao === 'razaoUc') {
+    const total = soma(([uf]) => indicador.extra?.[uf]?.total);
+    if (!total) return null;
+    valor = soma(([uf]) => indicador.extra?.[uf]?.comAmbos) / total * 100;
+  } else if (parametro.agregacao === 'razaoCvli') {
+    const peso = soma(([uf]) => populacaoPorUf[uf]);
+    if (!peso) return null;
+    valor = soma(([uf]) => cvliPorUf[uf]) / peso * 100000;
+  }
+
+  if (!Number.isFinite(valor) || !Number.isFinite(alvo)) return null;
+
+  const cumpre = parametro.direcao === 'menor' ? valor <= alvo : valor >= alvo;
+  const razao = parametro.direcao === 'menor'
+    ? (alvo > 0 ? Math.min(1, alvo / valor) : null)
+    : (alvo > 0 ? Math.min(1, valor / alvo) : null);
+  return {
+    valor,
+    alvo,
+    cumpre,
+    distancia: parametro.direcao === 'menor' ? valor - alvo : alvo - valor,
+    escala: cumpre ? 1 : razao,
+    escalaTipo: 'alvo',
+    metodo: parametro.agregacao,
+    metodoRotulo: ROTULO_AGREGACAO[parametro.agregacao],
+    nota: parametro.notaAgregacao || null
+  };
+}
+
 export function buildMetas(catalogo, dashboard) {
   const ufs = (dashboard?.states || []).map((estado) => estado.uf);
   const porCodigo = new Map();
@@ -124,6 +204,10 @@ export function buildMetas(catalogo, dashboard) {
     }
   }
   const pdPorUf = Object.fromEntries((dashboard?.states || []).map((estado) => [estado.uf, estado.pdPctPib]));
+  const contexto = {
+    populacaoPorUf: Object.fromEntries((dashboard?.states || []).map((estado) => [estado.uf, estado.population])),
+    cvliPorUf: Object.fromEntries((dashboard?.states || []).map((estado) => [estado.uf, estado.cvli]))
+  };
 
   const metas = [];
   for (const parametro of PARAMETROS) {
@@ -196,7 +280,9 @@ export function buildMetas(catalogo, dashboard) {
       alvoPorEstado: Boolean(parametro.alvoPorEstado),
       estados,
       cumpridas,
-      avaliados
+      avaliados,
+      regional: agregaRegional(parametro, indicador, estados, contexto),
+      agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null
     });
   }
 
@@ -228,6 +314,8 @@ export function buildMetas(catalogo, dashboard) {
     }];
   }));
 
+  const comRegional = metas.filter((meta) => meta.regional);
+
   return {
     updatedAt: dashboard?.updatedAt || null,
     estados: (dashboard?.states || []).map(({ uf, name, capital, flag, flagVersion, flagRatio }) => ({ uf, name, capital, flag, flagVersion, flagRatio })),
@@ -237,6 +325,11 @@ export function buildMetas(catalogo, dashboard) {
       totalIndicadores: porCodigo.size,
       metasAvaliadas: metas.length,
       comValores: [...porCodigo.values()].filter((indicador) => indicador.valores).length,
+      regional: {
+        comValorRegional: comRegional.length,
+        cumpridas: comRegional.filter((meta) => meta.regional.cumpre).length,
+        semValorRegional: metas.length - comRegional.length
+      },
       porEstado
     }
   };
