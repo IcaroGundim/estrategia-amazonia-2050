@@ -30,7 +30,9 @@ export function flagImage(item, alt) {
 
 export function bindMenu() {
   const menuButton = document.querySelector('.menu-button');
-  if (!menuButton) return;
+  // Idempotente: páginas podem ter mais de um módulo chamando bindMenu.
+  if (!menuButton || menuButton.dataset.menuBound) return;
+  menuButton.dataset.menuBound = '1';
   menuButton.addEventListener('click', () => {
     const isOpen = document.body.classList.toggle('menu-open');
     menuButton.setAttribute('aria-expanded', String(isOpen));

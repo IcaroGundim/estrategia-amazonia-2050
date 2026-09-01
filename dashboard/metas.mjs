@@ -40,8 +40,12 @@ const PARAMETROS = [
     direcao: 'menor',
     tipo: 'declarada',
     agregacao: 'soma',
-    baselineAno: 2020,
-    nota: 'Meta de desmatamento ilegal zero. O progresso é medido contra a área de 2020, primeiro ano da série disponível.'
+    // Sem baseline: a meta é eliminar o desmatamento ilegal, e não declara ano de
+    // partida. Medir "percurso" exigiria eleger um ano arbitrário — 2020 era o
+    // primeiro da série, não uma referência pactuada — e daria a estados com áreas
+    // muito diferentes percentuais que não se comparam. A leitura fica sendo a
+    // área que ainda falta zerar.
+    nota: 'A meta é desmatamento ilegal zero e não define ano de partida, então não há percentual de percurso: o que se lê é a área que falta zerar.'
   },
   {
     codigo: 'I1.3.4',

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups — As metas avaliáveis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+  --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff;
+  --linha: #ddd3c6; --linha-2: #ede6dc;
+  --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078;
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Libre Franklin", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--areia); color: var(--tinta); font: 400 15px/1.55 var(--text); }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 100px; }
+.mock-head h1 { font-size: 34px; }
+.mock-head h1 em { font-style: normal; color: var(--urucum); }
+.mock-head p { max-width: 78ch; color: var(--tinta-3); font-size: 13.5px; }
+.mock-nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0; background: linear-gradient(var(--areia) 82%, rgba(245,240,232,0)); }
+.mock-nav a { padding: 7px 14px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--tinta-2); font-size: 12px; font-weight: 600; text-decoration: none; }
+.mock-nav a:hover { border-color: var(--mata-500); color: var(--mata); }
+section { margin-top: 44px; }
+.opt-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.opt-head .tag { padding: 3px 10px; border-radius: 999px; background: var(--mata); color: var(--areia); font: 700 11px var(--display); letter-spacing: .06em; }
+.opt-head h2 { font-size: 21px; }
+.opt-note { max-width: 82ch; margin: 6px 0 0; color: var(--tinta-3); font-size: 12.5px; }
+.opt-pros { margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--tinta-4); font-size: 11px; }
+.opt-pros li::before { content: "·"; margin-right: 6px; color: var(--urucum); }
+.demo { margin-top: 16px; padding: 22px 24px 18px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
+.card-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.card-title h3 { font-size: 15px; }
+.card-title span { color: var(--tinta-4); font-size: 11px; }
+
+/* ---------- A. lista atual (referência) ---------- */
+.listA { margin: 0; padding: 0; list-style: none; }
+.listA li + li { border-top: 1px solid var(--linha-2); }
+.rowA { width: 100%; padding: 12px 0 14px; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: baseline; gap: 12px; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; }
+.rowA .nome { font-size: 13px; font-weight: 500; }
+.rowA .nome small { display: block; margin-top: 3px; color: var(--tinta-4); font-size: 10px; font-weight: 400; }
+.rowA .valor { color: var(--mata); font: 800 14px var(--display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rowA .bar { grid-column: 1/-1; height: 3px; border-radius: 2px; background: var(--linha-2); overflow: hidden; }
+.rowA .bar b { display: block; height: 100%; background: var(--mata-500); }
+
+/* ---------- B. bullet / régua ---------- */
+.listB { display: grid; gap: 10px; }
+.bullet { padding: 13px 16px 15px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); }
+.bullet-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.bullet-top .nome { font-size: 13px; font-weight: 600; }
+.bullet-top .prazo { color: var(--tinta-4); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.bullet-track { position: relative; height: 26px; margin-top: 9px; border-radius: 7px; background: var(--linha-2); overflow: hidden; }
+.bullet-fill { position: absolute; inset: 0 auto 0 0; display: flex; align-items: center; padding-left: 10px; border-radius: 7px 3px 3px 7px; background: linear-gradient(90deg, var(--mata-700), var(--mata-500)); color: var(--areia); font: 800 12px var(--display); font-variant-numeric: tabular-nums; }
+.bullet-fill.sem { background: repeating-linear-gradient(45deg, var(--mata-100) 0 6px, var(--linha-2) 6px 12px); color: var(--tinta-3); }
+.bullet-meta { position: absolute; top: -4px; bottom: -4px; right: 0; width: 2.5px; border-radius: 2px; background: var(--urucum); }
+.bullet-meta::after { content: "meta"; position: absolute; top: -14px; right: -12px; color: var(--urucum); font-size: 8.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.bullet-sub { display: flex; justify-content: space-between; gap: 10px; margin-top: 7px; color: var(--tinta-4); font-size: 10.5px; }
+.bullet-sub b { color: var(--tinta-2); font-weight: 600; }
+
+/* ---------- C. anéis ---------- */
+.gridC { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; }
+.ring-card { padding: 16px 14px 13px; display: flex; flex-direction: column; align-items: center; gap: 4px; border: 1px solid var(--linha-2); border-radius: 12px; text-align: center; }
+.ring-wrap { position: relative; width: 92px; height: 92px; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-wrap .ring-bg { stroke: var(--linha-2); }
+.ring-wrap .ring-fg { stroke: var(--mata-500); transition: stroke-dashoffset .4s; }
+.ring-val { position: absolute; inset: 0; display: grid; place-content: center; }
+.ring-val b { font: 800 19px/1 var(--display); color: var(--mata); font-variant-numeric: tabular-nums; }
+.ring-val small { color: var(--tinta-4); font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase; }
+.ring-card .nome { font-size: 12px; font-weight: 600; line-height: 1.3; }
+.ring-card .ler { color: var(--tinta-4); font-size: 10.5px; }
+.ring-card .eixo { margin-top: 2px; color: var(--tinta-4); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+
+/* ---------- D. segmentos ---------- */
+.gridD { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.seg-card { padding: 15px 16px 14px; border: 1px solid var(--linha-2); border-radius: 12px; }
+.seg-top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+.seg-top .nome { font-size: 12.5px; font-weight: 600; line-height: 1.3; }
+.seg-badge { flex: none; padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--ocre) 22%, var(--papel)); color: #7c5a14; font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.seg-big { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
+.seg-big b { font: 800 24px/1 var(--display); color: var(--mata); font-variant-numeric: tabular-nums; }
+.seg-big span { color: var(--tinta-4); font-size: 10px; }
+.seg-track { display: flex; gap: 3px; margin-top: 9px; }
+.seg-track i { flex: 1; height: 8px; border-radius: 2px; background: var(--linha-2); }
+.seg-track i.on { background: var(--mata-500); }
+.seg-foot { display: flex; justify-content: space-between; margin-top: 7px; color: var(--tinta-4); font-size: 10px; }
+
+/* ---------- E. por eixo ---------- */
+.eixo-group + .eixo-group { margin-top: 18px; }
+.eixo-head { display: flex; align-items: center; gap: 10px; padding-bottom: 7px; border-bottom: 2px solid var(--mata); }
+.eixo-head .num { display: grid; place-content: center; width: 22px; height: 22px; border-radius: 6px; background: var(--mata); color: var(--areia); font: 800 12px var(--display); }
+.eixo-head h3 { font-size: 13px; letter-spacing: .02em; }
+.eixo-head span { color: var(--tinta-4); font-size: 10.5px; }
+.itemE { display: grid; grid-template-columns: minmax(0,1fr) 260px auto; align-items: center; gap: 16px; padding: 11px 0; }
+.itemE + .itemE { border-top: 1px solid var(--linha-2); }
+.itemE .nome { font-size: 12.5px; font-weight: 500; }
+.itemE .nome small { display: block; margin-top: 2px; color: var(--tinta-4); font-size: 10px; font-weight: 400; }
+.itemE .nome small b { color: var(--mata); font-weight: 700; }
+.dual { position: relative; height: 14px; border-radius: 4px; background: var(--linha-2); overflow: hidden; }
+.dual .resta { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 5px, rgba(192,69,31,.12) 5px 10px); }
+.dual .feito { position: absolute; inset: 0 auto 0 0; border-radius: 4px 2px 2px 4px; background: var(--mata-500); }
+.dual .val { position: absolute; top: 50%; font: 700 10px/1 var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }
+.dual .val.dentro { color: var(--areia); transform: translate(calc(-100% - 6px), -50%); }
+.dual .val.fora { color: var(--tinta-2); transform: translate(6px, -50%); }
+.dual .val.sem { color: var(--tinta); font-weight: 600; font-style: italic; background: none; padding: 0; box-shadow: none; }
+.itemE .ler { text-align: right; white-space: nowrap; }
+.itemE .ler b { display: block; font: 800 14px var(--display); color: var(--mata); font-variant-numeric: tabular-nums; }
+.itemE .ler small { color: var(--tinta-4); font-size: 10px; }
+
+/* ---------- F. tabela densa ---------- */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th { padding: 8px 10px; border-bottom: 2px solid var(--mata); color: var(--tinta-3); font-size: 9.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; text-align: left; }
+.tbl td { padding: 10px; border-bottom: 1px solid var(--linha-2); vertical-align: middle; }
+.tbl .n { font-weight: 600; }
+.tbl .n small { display: block; color: var(--tinta-4); font-size: 10px; font-weight: 400; }
+.tbl .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl .hoje { font: 800 13px var(--display); color: var(--mata); }
+.mini { width: 110px; height: 6px; border-radius: 3px; background: var(--linha-2); overflow: hidden; }
+.mini b { display: block; height: 100%; background: var(--mata-500); }
+.pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 9.5px; font-weight: 700; letter-spacing: .04em; }
+.pill.curso { background: color-mix(in srgb, var(--ocre) 20%, var(--papel)); color: #7c5a14; }
+.pill.ok { background: var(--mata); color: var(--areia); }
+.pill.cat { background: color-mix(in srgb, var(--mata-300) 30%, var(--papel)); color: var(--mata-700); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mock-head">
+    <h1>Mockups — <em>As metas avaliáveis.</em></h1>
+    <p>Seis formas de visualizar a progressão em relação às metas, com os valores reais de <code>/data/metas.json</code>. A opção A é a lista atual, de referência. Prazos, direções (maior/menor) e unidades seguem o painel.</p>
+  </header>
+  <nav class="mock-nav">
+    <a href="#a">A · Lista atual</a>
+    <a href="#b">B · Régua com meta</a>
+    <a href="#c">C · Anéis</a>
+    <a href="#d">D · Segmentos</a>
+    <a href="#e">E · Por eixo</a>
+    <a href="#f">F · Tabela densa</a>
+  </nav>
+
+  <section id="a">
+    <div class="opt-head"><span class="tag">A</span><h2>Lista atual (referência)</h2></div>
+    <p class="opt-note">Nome + valor + barra fina de 3px. Compacta, mas a barra quase não comunica distância — o peso visual fica todo no nome.</p>
+    <div class="demo">
+      <div class="card-title"><h3>As metas avaliáveis</h3><span>12 de 59 indicadores têm meta mensurável</span></div>
+      <ol class="listA" id="outA"></ol>
+    </div>
+  </section>
+
+  <section id="b">
+    <div class="opt-head"><span class="tag">B</span><h2>Régua com marcador de meta (bullet)</h2></div>
+    <p class="opt-note">Cada meta vira uma régua grossa: o valor de hoje fica dentro da barra, a posição da meta é marcada em laranja na ponta e o prazo acompanha. A barra hachurada indica jornada sem escala calculada (desmatamento ilegal).</p>
+    <ul class="opt-pros"><li>Distância até a meta é óbvia</li><li>Valor e meta na mesma linha de leitura</li><li>Boa para direção “menor” e “maior”</li></ul>
+    <div class="demo"><div class="listB" id="outB"></div></div>
+  </section>
+
+  <section id="c">
+    <div class="opt-head"><span class="tag">C</span><h2>Anéis de progressão</h2></div>
+    <p class="opt-note">Grade de cartões com anel: o número central é a % da jornada percorrida; embaixo, a leitura “hoje → meta”. Sensação de painel executivo.</p>
+    <ul class="opt-pros"><li>Comparação visual instantânea entre metas</li><li>% da jornada independe da unidade</li><li>Ocupa bem telas largas; menos denso</li></ul>
+    <div class="demo"><div class="gridC" id="outC"></div></div>
+  </section>
+
+  <section id="d">
+    <div class="opt-head"><span class="tag">D</span><h2>Cartões com trilha de segmentos</h2></div>
+    <p class="opt-note">Número grande em destaque + trilha de 20 segmentos (cada um = 5% da jornada). Badge de status no canto. Meio-termo entre lista e painel.</p>
+    <ul class="opt-pros"><li>Número de hoje é o herói do cartão</li><li>Segmentos dão textura de “quanto falta”</li><li>Facilmente clicável como seletor de meta</li></ul>
+    <div class="demo"><div class="gridD" id="outD"></div></div>
+  </section>
+
+  <section id="e">
+    <div class="opt-head"><span class="tag">E</span><h2>Agrupado por eixo, barra dupla</h2></div>
+    <p class="opt-note">Seções por eixo da Estratégia, com cabeçalho numerado. O valor do indicador fica <b>dentro da barra</b>, encostado na ponta do preenchimento — quando o avanço é curto demais, o valor aparece logo ao lado dele. A hachura segue mostrando o que falta até a meta.</p>
+    <ul class="opt-pros"><li>Contexto estratégico (eixos) embutido</li><li>“Feito vs. falta” na mesma barra</li><li>Mantém a densidade de lista</li></ul>
+    <div class="demo"><div id="outE"></div></div>
+  </section>
+
+  <section id="f">
+    <div class="opt-head"><span class="tag">F</span><h2>Tabela densa</h2></div>
+    <p class="opt-note">Formato tabela: hoje, meta, prazo, jornada com micro-barra e status. Máxima densidade de informação — parece relatório, não painel.</p>
+    <ul class="opt-pros"><li>Comparação coluna a coluna</li><li>Boa para exportação/impressão</li><li>Menos “convidativa” ao clique</li></ul>
+    <div class="demo">
+      <table class="tbl">
+        <thead><tr><th>Meta</th><th>Hoje</th><th>Meta</th><th>Prazo</th><th>Jornada</th><th>Status</th></tr></thead>
+        <tbody id="outF"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+const METAS = [
+  { codigo:"I1.1.2", eixo:1, nome:"UCs estaduais com plano de manejo e conselho gestor", hoje:"21,11%", alvo:"40%", prazo:2035, pct:53, unidade:"%" },
+  { codigo:"I1.3.1", eixo:1, nome:"Vulnerabilidade climática municipal (IIVCM)", hoje:"59,32 pts", alvo:"52,1 pts", prazo:2050, pct:88 },
+  { codigo:"I1.3.2", eixo:1, nome:"Desmatamento ilegal", hoje:"6.518 ha", alvo:"0 ha", prazo:2030, pct:null },
+  { codigo:"I1.3.4", eixo:1, nome:"Focos de calor", hoje:"198.972", alvo:"≤ 98.543", prazo:2035, pct:50 },
+  { codigo:"I2.1.1", eixo:2, nome:"Pobreza (CadÚnico)", hoje:"14,03%", alvo:"≤ 3%", prazo:2050, pct:21 },
+  { codigo:"I2.3.2", eixo:2, nome:"Atendimento escolar 4-17 anos", hoje:"96,39%", alvo:"100%", prazo:2050, pct:96 },
+  { codigo:"I2.4.1", eixo:2, nome:"CVLI", hoje:"21,1", alvo:"≤ 10 /100 mil", prazo:2050, pct:47 },
+  { codigo:"I4.1.1", eixo:4, nome:"Conectividade digital (IBC-AMZ)", hoje:"53,5 pts", alvo:"80 pts", prazo:2050, pct:67 },
+  { codigo:"I4.3.2", eixo:4, nome:"Participação de renováveis (PER)", hoje:"60,94%", alvo:"80%", prazo:2035, pct:76 },
+  { codigo:"I4.4.1", eixo:4, nome:"Saneamento básico e gestão de riscos (ISGR)", hoje:"47,2 pts", alvo:"80 pts", prazo:2050, pct:59 },
+  { codigo:"I5.4.1", eixo:5, nome:"Dispêndio em P&D (% do PIB estadual)", hoje:"0,063%", alvo:"1%", prazo:2050, pct:6 },
+  { codigo:"I5.5.1", eixo:5, nome:"CAPAG A ou B (capacidade de pagamento)", hoje:"8 de 9", alvo:"9 de 9", prazo:2050, pct:null, categoria:true }
+];
+const EIXOS = { 1:"Território, Ambiente e Clima", 2:"Pessoas e Bem-estar", 4:"Infraestrutura e integração regional", 5:"Governança e parcerias" };
+const sub = m => m.categoria ? "Eixo " + m.eixo + " · meta por estado" : "Eixo " + m.eixo + " · meta " + m.alvo + " até " + m.prazo;
+const pctLabel = m => m.categoria ? "8/9" : (m.pct === null ? "—" : m.pct + "%");
+
+// A — lista atual
+outA.innerHTML = METAS.map(m => `<li><button class="rowA" type="button">
+  <span class="nome">${m.nome}<small>${sub(m)}</small></span>
+  <span class="valor">${m.hoje}</span>
+  <i class="bar"><b style="width:${m.pct ?? 0}%"></b></i></button></li>`).join("");
+
+// B — bullet
+outB.innerHTML = METAS.map(m => `<div class="bullet">
+  <div class="bullet-top"><span class="nome">${m.nome}</span><span class="prazo">meta até ${m.prazo}</span></div>
+  <div class="bullet-track">
+    <div class="bullet-fill ${m.pct === null ? "sem" : ""}" style="width:${m.categoria ? 89 : (m.pct ?? 0)}%">${m.hoje}</div>
+    <i class="bullet-meta"></i>
+  </div>
+  <div class="bullet-sub"><span>Meta: <b>${m.alvo}</b></span><span>Jornada: <b>${pctLabel(m)}</b></span></div>
+</div>`).join("");
+
+// C — anéis
+const CIRC = 2 * Math.PI * 40;
+outC.innerHTML = METAS.map(m => {
+  const p = m.categoria ? 89 : (m.pct ?? 0);
+  return `<div class="ring-card">
+    <div class="ring-wrap">
+      <svg width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
+        <circle class="ring-bg" cx="46" cy="46" r="40" fill="none" stroke-width="8"/>
+        <circle class="ring-fg" cx="46" cy="46" r="40" fill="none" stroke-width="8" stroke-linecap="round"
+          stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="${(CIRC * (1 - p / 100)).toFixed(1)}"/>
+      </svg>
+      <div class="ring-val"><b>${pctLabel(m)}</b><small>jornada</small></div>
+    </div>
+    <span class="nome">${m.nome}</span>
+    <span class="ler">${m.hoje} → ${m.alvo}</span>
+    <span class="eixo">Eixo ${m.eixo} · até ${m.prazo}</span>
+  </div>`;
+}).join("");
+
+// D — segmentos
+outD.innerHTML = METAS.map(m => {
+  const p = m.categoria ? 89 : (m.pct ?? 0);
+  const on = Math.round(p / 5);
+  return `<div class="seg-card">
+    <div class="seg-top"><span class="nome">${m.nome}</span><span class="seg-badge">em curso</span></div>
+    <div class="seg-big"><b>${m.hoje}</b><span>hoje · meta ${m.alvo}</span></div>
+    <div class="seg-track">${Array.from({length: 20}, (_, i) => `<i class="${i < on ? "on" : ""}"></i>`).join("")}</div>
+    <div class="seg-foot"><span>Eixo ${m.eixo}</span><span>jornada ${pctLabel(m)} · até ${m.prazo}</span></div>
+  </div>`;
+}).join("");
+
+// E — por eixo
+const largura = m => m.categoria ? 89 : (m.pct ?? 0);
+const rotulo = (m, p) => {
+  if (m.categoria) return `<em class="val dentro" style="left:${p}%">8 de 9</em>`;
+  if (m.pct === null) return `<em class="val sem fora" style="left:0%">${m.hoje} · sem escala</em>`;
+  return p >= 22
+    ? `<em class="val dentro" style="left:${p}%">${m.hoje}</em>`
+    : `<em class="val fora" style="left:${p}%">${m.hoje}</em>`;
+};
+outE.innerHTML = Object.keys(EIXOS).map(eixo => {
+  const itens = METAS.filter(m => m.eixo === Number(eixo));
+  return `<div class="eixo-group">
+    <div class="eixo-head"><span class="num">${eixo}</span><h3>${EIXOS[eixo]}</h3><span>${itens.length} metas</span></div>
+    ${itens.map(m => {
+      const p = m.categoria ? 89 : (m.pct ?? 0);
+      return `<div class="itemE">
+        <span class="nome">${m.nome}<small>meta <b>${m.alvo}</b> até ${m.prazo}</small></span>
+        <span class="dual"><i class="resta"></i><i class="feito" style="width:${p}%"></i>${rotulo(m, p)}</span>
+        <span class="ler"><b>${pctLabel(m)}</b><small>jornada</small></span>
+      </div>`;
+    }).join("")}
+  </div>`;
+}).join("");
+
+// F — tabela
+outF.innerHTML = METAS.map(m => `<tr>
+  <td class="n">${m.nome}<small>${m.codigo} · Eixo ${m.eixo}</small></td>
+  <td class="num hoje">${m.hoje}</td>
+  <td class="num">${m.alvo}</td>
+  <td class="num">${m.prazo}</td>
+  <td><span class="mini"><b style="width:${m.categoria ? 89 : (m.pct ?? 0)}%"></b></span> <span class="num">${pctLabel(m)}</span></td>
+  <td><span class="pill ${m.categoria ? "cat" : "curso"}">${m.categoria ? "8/9 estados" : "em curso"}</span></td>
+</tr>`).join("");
+</script>
+</body>
+</html>

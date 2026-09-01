@@ -5,16 +5,17 @@ import Base from '../layouts/Base.astro';
 <Base title="Metas — Estratégia 2050" description="Acompanhamento do cumprimento das metas da Estratégia Amazônia 2050 na região e em cada estado." ogDescription="Onde a Amazônia Legal já cumpre as metas da Estratégia e onde ainda há distância." mainClass="goals-page" pagina="metas" dados={['metas', 'geo']}>
   <div class="section-shell">
     <div class="goals-board">
-      <article class="goals-map-card card">
+      <article class="goals-map-card card" hidden>
         <div class="goals-map-head">
-          <h1>Metas - <em>Amazônia Legal.</em></h1>
           <h2 id="goals-meta-name" aria-live="polite"></h2>
         </div>
         <div id="goals-reading" class="goals-reading" aria-live="polite">
           <p class="method-loading">Carregando metas…</p>
         </div>
-        <div class="goals-map-canvas">
-          <svg id="goals-map" viewBox="0 0 720 500" role="img" aria-label="Mapa da Amazônia Legal com a situação de cada estado na meta selecionada."></svg>
+        <div class="goals-map-body">
+          <div class="goals-map-canvas">
+            <svg id="goals-map" viewBox="0 0 720 500" role="img" aria-label="Mapa da Amazônia Legal com a situação de cada estado na meta selecionada."></svg>
+          </div>
         </div>
         <div class="goals-map-foot">
           <ul class="goals-legend" aria-label="Legenda do mapa">
@@ -26,12 +27,12 @@ import Base from '../layouts/Base.astro';
         </div>
       </article>
 
-      <section class="goals-list-card card" aria-labelledby="goals-list-title">
+      <section class="goals-list-card card" aria-label="Metas com patamar mensurável">
         <div class="goals-list-head">
-          <h2 id="goals-list-title">As metas avaliáveis</h2>
-          <p id="goals-list-sub">—</p>
+          <h1>Metas - <em>Amazônia Legal.</em></h1>
+          <div id="goals-flags" class="goals-flags" role="group" aria-label="Estado exibido na progressão das metas"></div>
         </div>
-        <ol id="goals-list" class="goals-list" aria-label="Metas com patamar mensurável"></ol>
+        <div id="goals-list" class="goals-list" role="list" aria-label="Metas com patamar mensurável"></div>
       </section>
     </div>
 
