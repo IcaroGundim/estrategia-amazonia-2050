@@ -237,6 +237,7 @@ function statesByMetric() {
 const PANEL_VIEWS = ['state', 'ranking', 'profile'];
 
 function renderAll() {
+  renderYearSelect();
   renderIndicatorCard();
   renderMap();
   renderStatePanel();
@@ -245,23 +246,22 @@ function renderAll() {
   renderRanking();
 }
 
-function renderIndicatorCard() {
+function renderYearSelect() {
   const metric = currentMetric();
   const { anos, parciais } = anosDaMetrica(metric);
   const temSerie = Boolean(metric.serie) && anos.length > 1;
+  const wrap = document.querySelector('#year-select-wrap');
+  wrap.hidden = !temSerie;
+  if (!temSerie) return;
+  document.querySelector('#year-select').innerHTML = [...anos].reverse()
+    .map((ano) => `<option value="${ano}"${ano === state.ano ? ' selected' : ''}>${ano}${parciais.includes(ano) ? ' · parcial' : ''}</option>`)
+    .join('');
+}
+
+function renderIndicatorCard() {
+  const metric = currentMetric();
+  const { parciais } = anosDaMetrica(metric);
   const parcial = parciais.includes(state.ano);
-
-  // Só indicadores com histórico ganham seletor; os demais são de um momento só.
-  const seletor = !temSerie ? '' : `
-    <div class="map-year">
-      <label for="map-year-select">Ano exibido</label>
-      <div class="native-select-wrap">
-        <select id="map-year-select" data-map-year>
-          ${[...anos].reverse().map((ano) => `<option value="${ano}"${ano === state.ano ? ' selected' : ''}>${ano}${parciais.includes(ano) ? ' · parcial' : ''}</option>`).join('')}
-        </select>
-      </div>
-    </div>`;
-
   const fonte = metric.serie && state.ano ? `${metric.source} · ${state.ano}` : metric.source;
 
   document.querySelector('#map-indicator-card').innerHTML = `
@@ -271,7 +271,6 @@ function renderIndicatorCard() {
       <div><dt>Leitura</dt><dd>${escape(metric.subtitle)}</dd></div>
       <div><dt>Fonte</dt><dd>${escape(fonte)}</dd></div>
     </dl>
-    ${seletor}
     ${parcial ? '<p class="map-year-warning">Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.</p>' : ''}
     <a href="/metodologia#calculo">Entenda o cálculo <span aria-hidden="true">↗</span></a>`;
 }

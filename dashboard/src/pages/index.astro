@@ -13,9 +13,17 @@ import Base from '../layouts/Base.astro';
                   <h1 id="map-title">Panorama - <em>Amazônia Legal.</em></h1>
                   <p class="lead">Explore os indicadores oficiais, compare os nove estados e abra o perfil detalhado de cada território.</p>
                 </div>
-                <div class="select-wrap">
-                  <span class="select-wrap-label">Indicador exibido</span>
-                  <div id="metric-select"></div>
+                <div class="map-controls">
+                  <div class="select-wrap">
+                    <span class="select-wrap-label">Indicador exibido</span>
+                    <div id="metric-select"></div>
+                  </div>
+                  <div class="select-wrap is-year" id="year-select-wrap" hidden>
+                    <span class="select-wrap-label">Ano exibido</span>
+                    <div class="native-select-wrap">
+                      <select id="year-select" data-map-year aria-label="Ano exibido"></select>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="map-body">
