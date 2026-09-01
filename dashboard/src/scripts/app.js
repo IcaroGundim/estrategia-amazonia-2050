@@ -246,16 +246,36 @@ function renderAll() {
   renderRanking();
 }
 
+let yearDropdown = null;
+let anoMontadoPara = null;
+
+// Mesmo componente do seletor de indicador. Ele é remontado só quando a lista de
+// anos muda, isto é, quando o indicador muda — recriar a cada render acumularia
+// listeners de clique fora no document.
 function renderYearSelect() {
   const metric = currentMetric();
   const { anos, parciais } = anosDaMetrica(metric);
   const temSerie = Boolean(metric.serie) && anos.length > 1;
   const wrap = document.querySelector('#year-select-wrap');
   wrap.hidden = !temSerie;
-  if (!temSerie) return;
-  document.querySelector('#year-select').innerHTML = [...anos].reverse()
-    .map((ano) => `<option value="${ano}"${ano === state.ano ? ' selected' : ''}>${ano}${parciais.includes(ano) ? ' · parcial' : ''}</option>`)
-    .join('');
+  if (!temSerie) { yearDropdown = null; anoMontadoPara = null; return; }
+
+  if (anoMontadoPara !== state.metric) {
+    const options = [...anos].reverse().map((ano) => ({
+      value: String(ano),
+      label: String(ano),
+      group: parciais.includes(ano) ? 'parcial' : 'fechado',
+      groupLabel: parciais.includes(ano) ? 'Ano em curso' : 'Série histórica'
+    }));
+    // O componente devolve o valor como texto; o resto do painel trabalha com número.
+    yearDropdown = createDropdown(document.querySelector('#year-select'), options, String(state.ano), (valor) => {
+      state.ano = Number(valor);
+      renderAll();
+    });
+    anoMontadoPara = state.metric;
+    return;
+  }
+  yearDropdown.setValue(String(state.ano));
 }
 
 function renderIndicatorCard() {
@@ -534,11 +554,6 @@ function bindEvents() {
     }
     const metricButton = event.target.closest('[data-metric]');
     if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); ajustaAno(); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  }, { signal: sinalDaPagina() });
-  document.addEventListener('change', (event) => {
-    if (!event.target.matches('[data-map-year]')) return;
-    state.ano = Number(event.target.value);
-    renderAll();
   }, { signal: sinalDaPagina() });
   document.addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selectState(event.target.dataset.state); }

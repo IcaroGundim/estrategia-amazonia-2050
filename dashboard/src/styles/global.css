@@ -276,7 +276,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .filter-option.is-active { color: var(--mata); font-weight: 600; }
 .filter-option.is-active i { border-color: var(--mata); background: var(--mata); }
 .map-controls { display: flex; align-items: end; gap: 12px; flex: 0 0 auto; }
-.select-wrap.is-year { width: 118px; flex: 0 0 118px; }
+.select-wrap.is-year { width: 152px; flex: 0 0 152px; }
 .map-year-warning { margin: 12px 0 0; padding: 8px 10px; border-left: 2px solid var(--ocre); background: rgba(224, 168, 60, 0.12); color: var(--tinta-3); font-size: 9.5px; line-height: 1.45; }
 
 .native-select-wrap { position: relative; }
@@ -593,7 +593,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
   .section-shell { width: 100%; padding-inline: 20px; }
   .select-wrap { width: 100%; flex-basis: auto; }
   .map-controls { width: 100%; }
-  .select-wrap.is-year { width: 118px; flex: 0 0 118px; }
+  .select-wrap.is-year { width: 152px; flex: 0 0 152px; }
   .dashboard-grid { grid-template-columns: 1fr; }
   .dashboard-sidebar { position: static; height: auto; max-height: none; }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
