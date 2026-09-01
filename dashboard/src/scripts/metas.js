@@ -46,10 +46,8 @@ function contagem(meta) {
 
 function renderReading() {
   const meta = metaAtual();
-  const { cumprem, total } = contagem(meta);
   const regional = meta.regional;
   const item = state.foco ? meta.estados[state.foco] : regional;
-  const titulo = state.foco ? nomeEstado(state.foco) : 'Amazônia Legal';
 
   const situacao = !item
     ? `<p class="goals-reading-empty">${state.foco ? 'Sem dado coletado para este estado.' : 'Esta meta é uma classificação por estado e não tem valor regional único.'}</p>`
@@ -68,7 +66,6 @@ function renderReading() {
     : '';
 
   document.querySelector('#goals-reading').innerHTML = `
-    <p class="goals-reading-kicker">${escape(titulo)} · ${cumprem} de ${total} estados cumprem</p>
     <h2>${escape(meta.nome)}</h2>
     ${situacao}
     ${agregacao}`;

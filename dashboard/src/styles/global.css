@@ -480,15 +480,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 /* ---------- Página de metas ---------- */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .goals-page { padding: 40px 0 88px; background: var(--areia); }
-.goals-head { max-width: 780px; }
-.goals-head h1 { max-width: none; font-size: clamp(30px, 2.7vw, 50px); }
-.goals-head .lead { margin-top: 14px; font-size: 15px; }
+.goals-board { margin-top: 4px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr); align-items: start; gap: clamp(16px, 1.6vw, 28px); }
 
-.goals-board { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr); align-items: start; gap: clamp(16px, 1.6vw, 28px); }
-
-.goals-map-card { padding: 24px 26px 18px; }
-.goals-reading-kicker { margin: 0; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-.goals-reading h2 { margin-top: 9px; max-width: 22ch; font-size: clamp(22px, 2vw, 31px); line-height: 1.06; }
+.goals-map-card { padding: 26px 26px 18px; }
+.goals-map-card > h1 { max-width: none; margin-bottom: 20px; font-size: clamp(28px, 2.4vw, 44px); }
+.goals-reading h2 { margin-top: 0; max-width: 22ch; font-size: clamp(22px, 2vw, 31px); line-height: 1.06; }
 .goals-reading-figure { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
 .goals-reading-figure strong { color: var(--mata); font: 800 clamp(30px, 3vw, 44px)/1 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .goals-reading-figure b { margin-left: 12px; color: var(--tinta-3); font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; }
