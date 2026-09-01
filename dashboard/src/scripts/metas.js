@@ -1,8 +1,9 @@
 import { aoEntrarNaPagina, bindMenu, decimals, escape, number, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
-// `foco` é null (leitura regional, o padrão) ou a sigla de um estado.
-const state = { data: null, geo: null, meta: null, foco: null };
+// A página é sempre da Amazônia Legal: o mapa mostra a distribuição da meta
+// selecionada, mas não é um filtro. Passar o mouse revela o valor do estado.
+const state = { data: null, geo: null, meta: null };
 
 const UNIDADES = {
   '% / ha': 'hectares',
@@ -46,11 +47,10 @@ function contagem(meta) {
 
 function renderReading() {
   const meta = metaAtual();
-  const regional = meta.regional;
-  const item = state.foco ? meta.estados[state.foco] : regional;
+  const item = meta.regional;
 
   const situacao = !item
-    ? `<p class="goals-reading-empty">${state.foco ? 'Sem dado coletado para este estado.' : 'Esta meta é uma classificação por estado e não tem valor regional único.'}</p>`
+    ? '<p class="goals-reading-empty">Esta meta é uma classificação por estado e não tem valor regional único.</p>'
     : `<p class="goals-reading-figure">
         <strong>${escape(valor(meta, item.valor))}</strong>
         <span>hoje</span>
@@ -61,18 +61,14 @@ function renderReading() {
         ${item.cumpre ? 'Meta cumprida' : `Faltam ${number(Math.abs(item.distancia))} ${escape(unidadeCurta(meta))}`}
       </p>`;
 
-  const agregacao = !state.foco && regional?.metodoRotulo
-    ? `<p class="goals-reading-note">Valor regional por ${escape(regional.metodoRotulo)}.${regional.nota ? ` ${escape(regional.nota)}` : ''}</p>`
+  const agregacao = item?.metodoRotulo
+    ? `<p class="goals-reading-note">Valor regional por ${escape(item.metodoRotulo)}.${item.nota ? ` ${escape(item.nota)}` : ''}</p>`
     : '';
 
   document.querySelector('#goals-reading').innerHTML = `
     <h2>${escape(meta.nome)}</h2>
     ${situacao}
     ${agregacao}`;
-
-  const limpar = document.querySelector('#goals-clear');
-  limpar.hidden = !state.foco;
-  limpar.textContent = 'Voltar à leitura regional';
 }
 
 // ---------- mapa ----------
@@ -87,7 +83,6 @@ function renderMap() {
   const formas = state.geo.features.map((feature) => {
     const uf = feature.properties.uf;
     const item = meta.estados[uf];
-    const foco = state.foco === uf;
     const classe = !item ? 'is-empty' : (item.cumpre ? 'is-met' : 'is-progress');
     // Em curso: a opacidade do preenchimento mostra o quanto já foi percorrido.
     const avanco = item && !item.cumpre && Number.isFinite(item.escala) ? item.escala : null;
@@ -96,8 +91,8 @@ function renderMap() {
     const leitura = item
       ? `${nomeEstado(uf)}: ${valor(meta, item.valor)}${item.cumpre ? ' · cumpre a meta' : ` · meta ${valor(meta, item.alvo)}`}`
       : `${nomeEstado(uf)}: sem dado`;
-    return `<g class="goals-state ${classe}${foco ? ' is-focused' : ''}"${estilo}>
-      <path tabindex="0" role="button" aria-pressed="${foco}" aria-label="${escape(leitura)}" data-uf="${uf}" d="${mapPath(feature.geometry, project)}"><title>${escape(leitura)}</title></path>
+    return `<g class="goals-state ${classe}"${estilo}>
+      <path aria-label="${escape(leitura)}" d="${mapPath(feature.geometry, project)}"><title>${escape(leitura)}</title></path>
       <text x="${x}" y="${y}">${uf}</text>
     </g>`;
   }).join('');
@@ -114,7 +109,7 @@ function renderList() {
     `${regional.cumpridas} das ${regional.comValorRegional} com leitura regional já cumpridas. ${metas.length} de ${state.data.resumo.totalIndicadores} indicadores da matriz têm meta mensurável.`;
 
   document.querySelector('#goals-list').innerHTML = metas.map((meta) => {
-    const item = state.foco ? meta.estados[state.foco] : meta.regional;
+    const item = meta.regional;
     const { cumprem, total } = contagem(meta);
     const escala = item && Number.isFinite(item.escala) ? Math.round(item.escala * 100) : 0;
     const classe = !item ? 'is-empty' : (item.cumpre ? 'is-met' : 'is-progress');
@@ -162,24 +157,6 @@ function bindEvents() {
     const button = event.target.closest('button[data-meta]');
     if (!button) return;
     state.meta = button.dataset.meta;
-    renderAll();
-  });
-  document.querySelector('#goals-map').addEventListener('click', (event) => {
-    const forma = event.target.closest('path[data-uf]');
-    if (!forma) return;
-    state.foco = state.foco === forma.dataset.uf ? null : forma.dataset.uf;
-    renderAll();
-  });
-  document.querySelector('#goals-map').addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    const forma = event.target.closest('path[data-uf]');
-    if (!forma) return;
-    event.preventDefault();
-    state.foco = state.foco === forma.dataset.uf ? null : forma.dataset.uf;
-    renderAll();
-  });
-  document.querySelector('#goals-clear').addEventListener('click', () => {
-    state.foco = null;
     renderAll();
   });
   bindMenu();

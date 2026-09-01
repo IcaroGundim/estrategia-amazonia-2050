@@ -497,15 +497,14 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 
 .goals-map-canvas { margin-top: 6px; }
 #goals-map { width: 100%; height: clamp(330px, 21vw, 430px); display: block; }
-.goals-state path { stroke: var(--areia); stroke-width: 1.1; fill: var(--linha-2); cursor: pointer; transition: fill 160ms ease; }
+.goals-state path { stroke: var(--areia); stroke-width: 1.1; fill: var(--linha-2); transition: fill 160ms ease; }
 .goals-state.is-met path { fill: var(--mata); }
 .goals-state.is-progress path { fill: var(--mata-500); fill-opacity: var(--avanco, 0.3); }
 @supports (color: color-mix(in srgb, red 50%, blue)) {
   .goals-state.is-progress path { fill: color-mix(in srgb, var(--mata-500) calc(var(--avanco, 0.3) * 100%), var(--papel)); fill-opacity: 1; }
 }
 .goals-state.is-empty path { fill: var(--linha-2); cursor: default; }
-.goals-state path:hover, .goals-state path:focus-visible { stroke: var(--mata); stroke-width: 2; outline: none; }
-.goals-state.is-focused path { stroke: var(--urucum); stroke-width: 2.4; }
+.goals-state path:hover { stroke: var(--mata); stroke-width: 2; }
 .goals-state text { font: 800 12px var(--display); text-anchor: middle; dominant-baseline: middle; fill: var(--tinta-3); pointer-events: none; }
 .goals-state.is-met text { fill: var(--areia); }
 
@@ -516,8 +515,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-legend .is-met { background: var(--mata); }
 .goals-legend .is-progress { background: color-mix(in srgb, var(--mata-500) 45%, var(--papel)); }
 .goals-legend .is-empty { background: var(--linha-2); }
-.goals-clear { min-height: 30px; padding: 0 12px; border: 1px solid var(--linha); border-radius: 6px; background: transparent; color: var(--mata); font-size: 11px; font-weight: 600; }
-.goals-clear:hover, .goals-clear:focus-visible { border-color: var(--mata); outline: none; }
+.goals-map-hint { color: var(--tinta-4); font-size: 10.5px; }
 
 .goals-list-card { padding: 24px 12px 16px 26px; }
 .goals-list-head { padding-right: 14px; }
