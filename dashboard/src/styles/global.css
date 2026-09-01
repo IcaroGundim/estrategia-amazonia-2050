@@ -483,8 +483,9 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-board { margin-top: 4px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr); align-items: start; gap: clamp(16px, 1.6vw, 28px); }
 
 .goals-map-card { padding: 26px 26px 18px; }
-.goals-map-card > h1 { max-width: none; margin-bottom: 20px; font-size: clamp(28px, 2.4vw, 44px); }
-.goals-reading h2 { margin-top: 0; max-width: 22ch; font-size: clamp(22px, 2vw, 31px); line-height: 1.06; }
+.goals-map-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(20px, 2.4vw, 44px); margin-bottom: 18px; }
+.goals-map-head h1 { max-width: none; font-size: clamp(26px, 2.2vw, 40px); }
+#goals-meta-name { max-width: 24ch; padding-top: 4px; font-size: clamp(18px, 1.55vw, 25px); line-height: 1.12; text-wrap: balance; }
 .goals-reading-figure { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
 .goals-reading-figure strong { color: var(--mata); font: 800 clamp(30px, 3vw, 44px)/1 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .goals-reading-figure b { margin-left: 12px; color: var(--tinta-3); font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; }
@@ -579,6 +580,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
   .indicators-workspace { grid-template-columns: 1fr; }
   .panorama-heading h1, .indicators-hero h1 { font-size: clamp(26px, 4.4vw, 32px); }
   .goals-board { grid-template-columns: 1fr; }
+  .goals-map-head { grid-template-columns: 1fr; gap: 10px; }
   .filters-card { position: static; display: grid; grid-template-columns: repeat(2, 1fr); }
   .filter-group + .filter-group { padding-top: 0; padding-left: 18px; border-top: 0; border-left: 1px solid var(--linha-2); }
   .export-group { grid-column: 1 / -1; padding-top: 18px !important; padding-left: 0 !important; border-top: 1px solid var(--linha-2) !important; border-left: 0 !important; display: grid; grid-template-columns: repeat(3, 1fr); }

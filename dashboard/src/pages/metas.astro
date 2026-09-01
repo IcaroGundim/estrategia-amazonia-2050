@@ -6,7 +6,10 @@ import Base from '../layouts/Base.astro';
   <div class="section-shell">
     <div class="goals-board">
       <article class="goals-map-card card">
-        <h1>Metas - <em>Amazônia Legal.</em></h1>
+        <div class="goals-map-head">
+          <h1>Metas - <em>Amazônia Legal.</em></h1>
+          <h2 id="goals-meta-name" aria-live="polite"></h2>
+        </div>
         <div id="goals-reading" class="goals-reading" aria-live="polite">
           <p class="method-loading">Carregando metas…</p>
         </div>

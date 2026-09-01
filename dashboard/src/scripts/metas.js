@@ -65,8 +65,8 @@ function renderReading() {
     ? `<p class="goals-reading-note">Valor regional por ${escape(item.metodoRotulo)}.${item.nota ? ` ${escape(item.nota)}` : ''}</p>`
     : '';
 
+  document.querySelector('#goals-meta-name').textContent = meta.nome;
   document.querySelector('#goals-reading').innerHTML = `
-    <h2>${escape(meta.nome)}</h2>
     ${situacao}
     ${agregacao}`;
 }
