@@ -27,3 +27,6 @@ Thumbs.db
 *.7z
 *.pptx
 /Logomarca Consórcio Horizontal CLARA.avif
+
+# Canvas da identidade visual, gerado a partir da pasta de identidade
+/identidade-estrategia-2050.html
