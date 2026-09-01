@@ -277,6 +277,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .filter-option.is-active i { border-color: var(--mata); background: var(--mata); }
 .map-controls { display: flex; align-items: end; gap: 12px; flex: 0 0 auto; }
 .select-wrap.is-year { width: 152px; flex: 0 0 152px; }
+/* O piso de 420px do menu existe para os rótulos longos do seletor de indicador.
+   Um ano tem quatro caracteres: aqui o menu acompanha a largura do gatilho. */
+.select-wrap.is-year .dropdown-menu { width: 100%; }
 .map-year-warning { margin: 12px 0 0; padding: 8px 10px; border-left: 2px solid var(--ocre); background: rgba(224, 168, 60, 0.12); color: var(--tinta-3); font-size: 9.5px; line-height: 1.45; }
 
 .native-select-wrap { position: relative; }
