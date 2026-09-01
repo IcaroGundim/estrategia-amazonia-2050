@@ -36,6 +36,22 @@ const STATES = {
   TO: { name: 'Tocantins', capital: 'Palmas', flag: 'Bandeira_do_Tocantins.svg' }
 };
 
+// Ano que cada indicador com série usa como padrão: o mesmo que o painel já exibia
+// antes de existir seletor de ano.
+const ANO_DE_REFERENCIA = {
+  prodesRate: 2025,
+  cvliRate: 2025,
+  ibc: 2025,
+  pevsBilhoes: 2024,
+  piaBilhoes: 2024,
+  pdPctPib: 2023
+};
+
+// Anos que estão na base mas ainda em curso. O CVLI de 2026 tem cerca de metade do
+// volume de 2025 (Pará com 956 contra 1.757), então comparar sem ressalva sugeriria
+// uma queda que não aconteceu.
+const ANOS_PARCIAIS = { cvliRate: [2026] };
+
 const stateByName = Object.fromEntries(
   Object.entries(STATES).flatMap(([uf, state]) => [
     [normaliseKey(state.name), uf],
@@ -250,6 +266,14 @@ export async function buildDashboard() {
   ]);
 
   const population = asByUf(populationRows.filter((row) => Number(row.ano) === 2025), (row) => row.uf, (row) => parseNumber(row.populacao));
+  const populationByYear = {};
+  for (const row of populationRows) {
+    const uf = row.uf;
+    const ano = Number(row.ano);
+    const valor = parseNumber(row.populacao);
+    if (!STATES[uf] || !Number.isFinite(ano) || !Number.isFinite(valor)) continue;
+    (populationByYear[uf] ||= {})[ano] = valor;
+  }
   const prodes = Object.groupBy(prodesRows, (row) => row.uf);
   const focos = Object.groupBy(focusRows, (row) => row.uf);
   const cvli = Object.groupBy(cvliRows, (row) => row.uf);
@@ -267,6 +291,10 @@ export async function buildDashboard() {
     }
     return map;
   };
+  const pevsByUf = Object.groupBy(pevsRows, (row) => row.uf);
+  const piaByUf = Object.groupBy(piaRows.filter((row) => row.cnae_nome === 'Total'), (row) => row.uf);
+  const ibcByUf = Object.groupBy(ibcRows, (row) => row.uf);
+  const pdByUf = Object.groupBy(pdRows, (row) => row.uf);
   const pevs = latestByUf(pevsRows, 2024, (row) => parseNumber(row.valor_mil_rs));
   const pia = latestByUf(piaRows.filter((row) => row.cnae_nome === 'Total'), 2024, (row) => parseNumber(row.valor_transf_ind_mil_rs));
   const ibc = latestByUf(ibcRows, 2025, (row) => parseNumber(row.ibc_ponderado_pop));
@@ -330,6 +358,17 @@ export async function buildDashboard() {
     const populationValue = population[uf];
     const area = areaByUf[uf];
     const rate = (value, base, factor = 100000) => Number.isFinite(value) && Number.isFinite(base) && base > 0 ? value / base * factor : null;
+    const serieDe = (rows, campo, derivar) => {
+      const saida = {};
+      for (const row of rows || []) {
+        const ano = Number(row.ano);
+        const valor = parseNumber(row[campo]);
+        if (!Number.isFinite(ano) || !Number.isFinite(valor)) continue;
+        const derivado = derivar(valor, ano);
+        if (Number.isFinite(derivado)) saida[ano] = derivado;
+      }
+      return saida;
+    };
     const conservation = conservationByUf[uf];
     return {
       uf,
@@ -360,6 +399,17 @@ export async function buildDashboard() {
       isgr: isgr[uf] ?? null,
       pdPctPib: pdPctPib[uf] ?? null,
       pdPctPibAno: pdPctPibAno[uf] ?? null,
+      // Valores por ano dos indicadores com histórico, já na unidade do campo plano
+      // acima. Derivar aqui evita repetir no cliente a conta das taxas — e cvliRate
+      // depende da população do ano exibido, não da de 2025.
+      series: {
+        prodesRate: serieDe(prodes[uf], 'taxa_km2', (valor) => rate(valor, area, 1000)),
+        cvliRate: serieDe(cvli[uf], 'cvli', (valor, ano) => rate(valor, populationByYear[uf]?.[ano])),
+        ibc: serieDe(ibcByUf[uf], 'ibc_ponderado_pop', (valor) => valor),
+        pevsBilhoes: serieDe(pevsByUf[uf], 'valor_mil_rs', (valor) => valor / 1e6),
+        piaBilhoes: serieDe(piaByUf[uf], 'valor_transf_ind_mil_rs', (valor) => valor / 1e6),
+        pdPctPib: serieDe(pdByUf[uf], 'pct_pib', (valor) => valor)
+      },
       ranks: {}
     };
   });
@@ -412,8 +462,14 @@ export async function buildDashboard() {
   const municipalities = new Set(vulnerabilityRows.filter((row) => STATES[row.uf]).map((row) => String(row.codigo_ibge || row.nome_municipio))).size;
   const conservationUnits = Object.values(conservationByUf).reduce((sum, item) => sum + item.total, 0);
 
+  const metricYears = Object.fromEntries(Object.keys(ANO_DE_REFERENCIA).map((metrica) => {
+    const anos = [...new Set(states.flatMap((estado) => Object.keys(estado.series[metrica] || {}).map(Number)))].sort((a, b) => a - b);
+    return [metrica, { anos, referencia: ANO_DE_REFERENCIA[metrica], parciais: ANOS_PARCIAIS[metrica] || [] }];
+  }));
+
   return {
     updatedAt: '30 ago. 2026',
+    metricYears,
     states: states.sort((a, b) => a.ranks.score - b.ranks.score),
     summary: {
       population: totalPopulation,

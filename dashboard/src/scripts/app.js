@@ -1,22 +1,22 @@
 import { aoEntrarNaPagina, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
-const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', selected: null, panelView: 'state' };
+const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state' };
 
 const metrics = {
-  prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE · referência 2025', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
+  prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
   poverty: { label: 'Pobreza', subtitle: 'menor percentual = melhor posição', description: 'Percentual da população abaixo da linha monetária de pobreza usada na base consolidada.', source: 'IBGE/SIS · referência 2024', field: 'poverty', direction: 'low', formatter: (value) => percent(value, 1) },
   school: { label: 'Frequência escolar 15–17', subtitle: 'maior percentual = melhor posição', description: 'Parcela das pessoas de 15 a 17 anos que frequentam a escola em cada estado.', source: 'IBGE/SIS · referência 2024', field: 'school', direction: 'high', formatter: (value) => percent(value, 1) },
-  cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ · referência 2025', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / 100 mil` },
+  cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ', serie: 'cvliRate', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / 100 mil` },
   esfRate: { label: 'Atenção primária', subtitle: 'mais equipes = melhor posição', description: 'Equipes de Saúde da Família e de Atenção Primária para cada 100 mil habitantes.', source: 'CNES/DATASUS · jul. 2026', field: 'esfRate', direction: 'high', formatter: (value) => `${number(value, 1)} / 100 mil` },
   vulnerability: { label: 'Vulnerabilidade climática', subtitle: 'menor índice = melhor posição', description: 'Média estadual do índice municipal de vulnerabilidade às mudanças climáticas.', source: 'AdaptaBrasil · linha de base 2025', field: 'vulnerability', direction: 'low', formatter: (value) => number(value, 1) },
   conservationManaged: { label: 'Gestão de unidades de conservação', subtitle: 'maior percentual = melhor posição', description: 'Percentual de unidades estaduais com plano de manejo e conselho gestor registrados.', source: 'CNUC/MMA · referência 2026', field: 'conservationManaged', direction: 'high', formatter: (value) => percent(value, 0) },
-  ibc: { label: 'Conectividade digital (IBC-AMZ)', subtitle: 'maior índice = melhor posição', description: 'Índice de Conectividade da Amazônia Legal ponderado pela população municipal.', source: 'ANATEL · referência 2025', field: 'ibc', direction: 'high', formatter: (value) => `${number(value, 1)} pts` },
+  ibc: { label: 'Conectividade digital (IBC-AMZ)', subtitle: 'maior índice = melhor posição', description: 'Índice de Conectividade da Amazônia Legal ponderado pela população municipal.', source: 'ANATEL', serie: 'ibc', field: 'ibc', direction: 'high', formatter: (value) => `${number(value, 1)} pts` },
   perRenovavel: { label: 'Renovabilidade da matriz elétrica', subtitle: 'maior percentual = melhor posição', description: 'Participação de fontes renováveis na potência de geração fiscalizada em operação.', source: 'ANEEL/SIGA · base ago. 2026', field: 'perRenovavel', direction: 'high', formatter: (value) => percent(value, 1) },
   isgr: { label: 'Saneamento e gestão de riscos', subtitle: 'maior percentual = melhor posição', description: 'Proxy do ISGR com água e esgoto adequados (Censo 2022) e fatores climáticos e de governança (MUNIC 2024).', source: 'IBGE · Censo 2022 + MUNIC 2024', field: 'isgr', direction: 'high', formatter: (value) => percent(value, 1) },
-  pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS · referência 2024', field: 'pevsBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
-  piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa · referência 2024', field: 'piaBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
-  pdPctPib: { label: 'P&D estadual (% do PIB)', subtitle: 'maior percentual = melhor posição', description: 'Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).', source: 'MCTI + IBGE/SIDRA · 2022-2023', field: 'pdPctPib', direction: 'high', formatter: (value) => percent(value, 2) },
+  pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS', serie: 'pevsBilhoes', field: 'pevsBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
+  piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa', serie: 'piaBilhoes', field: 'piaBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
+  pdPctPib: { label: 'P&D estadual (% do PIB)', subtitle: 'maior percentual = melhor posição', description: 'Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).', source: 'MCTI + IBGE/SIDRA', serie: 'pdPctPib', field: 'pdPctPib', direction: 'high', formatter: (value) => percent(value, 2) },
   territorio: { label: 'Dimensão · Território e clima', subtitle: 'maior pontuação = melhor posição', description: 'Síntese relativa de desmatamento, focos de calor e gestão de unidades de conservação.', source: 'Cálculo experimental do painel', field: 'dimensions.territorio', direction: 'high', formatter: (value) => `${value} pts` },
   pessoas: { label: 'Dimensão · Pessoas', subtitle: 'maior pontuação = melhor posição', description: 'Síntese relativa de pobreza, frequência escolar e cobertura da atenção primária.', source: 'Cálculo experimental do painel', field: 'dimensions.pessoas', direction: 'high', formatter: (value) => `${value} pts` },
   score: { label: 'Síntese geral', subtitle: 'maior pontuação = melhor posição', description: 'Combinação experimental dos oito indicadores disponíveis em uma escala relativa de 0 a 100.', source: 'Cálculo experimental do painel', field: 'score', direction: 'high', formatter: (value) => `${value} pts` }
@@ -73,6 +73,7 @@ async function init() {
   state.geo = geo;
   state.catalogo = catalogo;
   state.selected = dashboard.states[0]?.uf;
+  ajustaAno();
   populateSelect();
   document.querySelectorAll('[data-updated]').forEach((element) => { element.textContent = dashboard.updatedAt; });
   document.querySelector('[data-population]').textContent = compactPopulation(dashboard.summary.population);
@@ -193,17 +194,44 @@ function populateSelect() {
     group: experimental.has(key) ? 'sinteses' : 'indicadores',
     groupLabel: experimental.has(key) ? 'Sínteses experimentais' : 'Indicadores oficiais'
   }));
-  metricDropdown = createDropdown(document.querySelector('#metric-select'), options, state.metric, (value) => { state.metric = value; renderAll(); });
+  metricDropdown = createDropdown(document.querySelector('#metric-select'), options, state.metric, (value) => { state.metric = value; ajustaAno(); renderAll(); });
 }
 
 function currentMetric() { return metrics[state.metric]; }
+
+// Indicadores com série leem o ano selecionado; os demais, o campo plano.
+// Devolve null quando o estado não tem dado naquele ano — o P&D de 2021 e 2023,
+// por exemplo, não cobre o Acre.
+function valorDoIndicador(item, metric) {
+  if (!metric.serie) return valueAt(item, metric.field);
+  const serie = item.series?.[metric.serie];
+  const valor = serie?.[state.ano ?? anosDaMetrica(metric).referencia];
+  return Number.isFinite(valor) ? valor : null;
+}
+
+function textoDoValor(metric, valor) {
+  return valor === null || valor === undefined ? '—' : metric.formatter(valor);
+}
+
+function anosDaMetrica(metric) {
+  return state.data?.metricYears?.[metric.serie] || { anos: [], referencia: null, parciais: [] };
+}
+
+// Ao trocar de indicador o ano corrente pode não existir na nova série.
+function ajustaAno() {
+  const metric = currentMetric();
+  if (!metric.serie) { state.ano = null; return; }
+  const { anos, referencia } = anosDaMetrica(metric);
+  if (!anos.includes(state.ano)) state.ano = anos.includes(referencia) ? referencia : anos.at(-1) ?? null;
+}
 function statesByMetric() {
   const metric = currentMetric();
   return [...state.data.states].sort((a, b) => {
-    const first = valueAt(a, metric.field);
-    const second = valueAt(b, metric.field);
+    const first = valorDoIndicador(a, metric);
+    const second = valorDoIndicador(b, metric);
+    if (first === null || second === null) return (first === null ? 1 : 0) - (second === null ? 1 : 0);
     return metric.direction === 'high' ? second - first : first - second;
-  }, { signal: sinalDaPagina() });
+  });
 }
 
 const PANEL_VIEWS = ['state', 'ranking', 'profile'];
@@ -219,13 +247,32 @@ function renderAll() {
 
 function renderIndicatorCard() {
   const metric = currentMetric();
+  const { anos, parciais } = anosDaMetrica(metric);
+  const temSerie = Boolean(metric.serie) && anos.length > 1;
+  const parcial = parciais.includes(state.ano);
+
+  // Só indicadores com histórico ganham seletor; os demais são de um momento só.
+  const seletor = !temSerie ? '' : `
+    <div class="map-year">
+      <label for="map-year-select">Ano exibido</label>
+      <div class="native-select-wrap">
+        <select id="map-year-select" data-map-year>
+          ${[...anos].reverse().map((ano) => `<option value="${ano}"${ano === state.ano ? ' selected' : ''}>${ano}${parciais.includes(ano) ? ' · parcial' : ''}</option>`).join('')}
+        </select>
+      </div>
+    </div>`;
+
+  const fonte = metric.serie && state.ano ? `${metric.source} · ${state.ano}` : metric.source;
+
   document.querySelector('#map-indicator-card').innerHTML = `
     <h3>${escape(metric.label)}</h3>
     <p class="map-indicator-description">${escape(metric.description)}</p>
     <dl>
       <div><dt>Leitura</dt><dd>${escape(metric.subtitle)}</dd></div>
-      <div><dt>Fonte</dt><dd>${escape(metric.source)}</dd></div>
+      <div><dt>Fonte</dt><dd>${escape(fonte)}</dd></div>
     </dl>
+    ${seletor}
+    ${parcial ? '<p class="map-year-warning">Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.</p>' : ''}
     <a href="/metodologia#calculo">Entenda o cálculo <span aria-hidden="true">↗</span></a>`;
 }
 
@@ -254,7 +301,7 @@ function selectPanelView(view) {
 function renderRanking() {
   const metric = currentMetric();
   const ordered = statesByMetric();
-  const values = ordered.map((item) => valueAt(item, metric.field));
+  const values = ordered.map((item) => valorDoIndicador(item, metric)).filter((value) => value !== null);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const list = document.querySelector('#ranking-list');
@@ -264,14 +311,14 @@ function renderRanking() {
   document.querySelector('[data-ranking-title]').textContent = metric.label;
   document.querySelector('[data-ranking-subtitle]').textContent = metric.subtitle;
   list.innerHTML = ordered.map((item, index) => {
-    const value = valueAt(item, metric.field);
-    const positive = metric.direction === 'high' ? (value - min) / (max - min || 1) : (max - value) / (max - min || 1);
+    const value = valorDoIndicador(item, metric);
+    const positive = value === null ? 0 : (metric.direction === 'high' ? (value - min) / (max - min || 1) : (max - value) / (max - min || 1));
     return `<li>
       <button type="button" class="rank-item ${state.selected === item.uf ? 'is-selected' : ''}" data-state="${item.uf}" aria-pressed="${state.selected === item.uf}" style="--accent:${accentOf(item.uf)}">
         <span class="rank-number">${index + 1}</span>
         ${flagImage(item, '')}
         <span class="rank-name"><b>${escape(item.name)}</b><small>${item.uf} · ${escape(item.capital)}</small></span>
-        <span class="rank-measure"><b>${metric.formatter(value)}</b><i><em style="width:${(Math.min(9, Math.max(1, Math.ceil(positive * 9))) / 9) * 100}%"></em></i></span>
+        <span class="rank-measure"><b>${textoDoValor(metric, value)}</b><i><em style="width:${value === null ? 0 : (Math.min(9, Math.max(1, Math.ceil(positive * 9))) / 9) * 100}%"></em></i></span>
       </button>
     </li>`;
   }).join('') + '<li class="rank-selection-marker" role="presentation" aria-hidden="true"></li>';
@@ -293,8 +340,9 @@ function renderRanking() {
 
 function performance(uf) {
   const metric = currentMetric();
-  const values = state.data.states.map((item) => valueAt(item, metric.field));
-  const value = valueAt(state.data.states.find((item) => item.uf === uf), metric.field);
+  const values = state.data.states.map((item) => valorDoIndicador(item, metric)).filter((value) => value !== null);
+  const value = valorDoIndicador(state.data.states.find((item) => item.uf === uf), metric);
+  if (value === null || !values.length) return null;
   const min = Math.min(...values);
   const max = Math.max(...values);
   const position = (value - min) / (max - min || 1);
@@ -321,9 +369,12 @@ function renderMap() {
     const jump = 7;
     const jumpX = ((x - width / 2) / distance * jump).toFixed(2);
     const jumpY = ((y - height / 2) / distance * jump).toFixed(2);
-    const labelColor = performance(uf) > 0.48 ? '#f5f0e8' : '#0e2b22';
+    const desempenho = performance(uf);
+    const preenchimento = desempenho === null ? 'var(--linha-2)' : colorAt(desempenho);
+    const leitura = textoDoValor(currentMetric(), valorDoIndicador(item, currentMetric()));
+    const labelColor = desempenho !== null && desempenho > 0.48 ? '#f5f0e8' : '#0e2b22';
     return `<g class="state-group ${selected ? 'is-selected' : ''}" style="--jump-x:${jumpX}px;--jump-y:${jumpY}px">
-      <path tabindex="0" role="button" aria-pressed="${selected}" aria-label="${escape(item.name)}: ${currentMetric().formatter(valueAt(item, currentMetric().field))}. Selecionar estado." data-state="${uf}" class="state-shape ${selected ? 'is-selected' : ''}" style="fill:${colorAt(performance(uf))}" d="${mapPath(feature.geometry, project)}"></path>
+      <path tabindex="0" role="button" aria-pressed="${selected}" aria-label="${escape(item.name)}: ${leitura}. Selecionar estado." data-state="${uf}" class="state-shape ${selected ? 'is-selected' : ''}" style="fill:${preenchimento}" d="${mapPath(feature.geometry, project)}"></path>
       <text class="state-label" x="${x}" y="${y}" fill="${labelColor}">${uf}</text>
     </g>`;
   }).join('');
@@ -348,9 +399,9 @@ function showMapTooltip(uf, clientX, clientY) {
   const item = state.data.states.find((candidate) => candidate.uf === uf);
   if (!item) return;
   const metric = currentMetric();
-  const value = valueAt(item, metric.field);
+  const value = valorDoIndicador(item, metric);
   const tooltip = document.querySelector('#map-tooltip');
-  tooltip.innerHTML = `<strong>${escape(item.name)}</strong><span>${escape(metric.label)}</span><b>${metric.formatter(value)}</b>`;
+  tooltip.innerHTML = `<strong>${escape(item.name)}</strong><span>${escape(metric.label)}${state.ano ? ' · ' + state.ano : ''}</span><b>${textoDoValor(metric, value)}</b>`;
   tooltip.hidden = false;
   positionMapTooltip(clientX, clientY);
 }
@@ -392,7 +443,7 @@ function renderStatePanel() {
   const item = state.data.states.find((candidate) => candidate.uf === state.selected);
   if (!item) return;
   const metric = currentMetric();
-  const metricValue = valueAt(item, metric.field);
+  const metricValue = valorDoIndicador(item, metric);
   const metricRank = statesByMetric().findIndex((candidate) => candidate.uf === item.uf) + 1;
   const dimensions = [
     ['Território e clima', item.dimensions.territorio],
@@ -420,7 +471,7 @@ function renderStatePanel() {
 
       <section class="state-metric-block" aria-label="Indicador selecionado">
         <div><span>Indicador exibido</span><small>${metricRank}º entre os nove estados</small></div>
-        <strong>${metric.formatter(metricValue)}</strong>
+        <strong>${textoDoValor(metric, metricValue)}</strong>
         <p>${escape(metric.label)} · ${escape(metric.subtitle)}</p>
       </section>
 
@@ -483,7 +534,12 @@ function bindEvents() {
       selectState(stateButton.dataset.state);
     }
     const metricButton = event.target.closest('[data-metric]');
-    if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); ajustaAno(); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }, { signal: sinalDaPagina() });
+  document.addEventListener('change', (event) => {
+    if (!event.target.matches('[data-map-year]')) return;
+    state.ano = Number(event.target.value);
+    renderAll();
   }, { signal: sinalDaPagina() });
   document.addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selectState(event.target.dataset.state); }

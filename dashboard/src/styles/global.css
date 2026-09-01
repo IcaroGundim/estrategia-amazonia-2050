@@ -275,6 +275,11 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .filter-option:focus-visible { outline: none; }
 .filter-option.is-active { color: var(--mata); font-weight: 600; }
 .filter-option.is-active i { border-color: var(--mata); background: var(--mata); }
+.map-year { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--linha-2); }
+.map-year label { display: block; margin-bottom: 7px; color: var(--urucum); font-size: 8px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.map-year .native-select-wrap select { min-height: 36px; padding: 0 30px 0 11px; font-size: 12px; }
+.map-year-warning { margin: 9px 0 0; padding: 8px 10px; border-left: 2px solid var(--ocre); background: var(--faiscas, rgba(224, 168, 60, 0.12)); color: var(--tinta-3); font-size: 9.5px; line-height: 1.45; }
+
 .native-select-wrap { position: relative; }
 .native-select-wrap::after { content: ""; position: absolute; top: 50%; right: 13px; width: 7px; height: 7px; border-right: 2px solid var(--urucum); border-bottom: 2px solid var(--urucum); pointer-events: none; transform: translateY(-70%) rotate(45deg); }
 .native-select-wrap select { width: 100%; min-height: 46px; padding: 0 36px 0 13px; appearance: none; border: 1px solid var(--linha); border-radius: 8px; background: var(--papel); color: var(--tinta-2); font: 13px var(--text); }
