@@ -397,7 +397,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .methodology-article { min-width: 0; }
 .methodology-page .eyebrow { font-size: 11px; }
 .methodology-page .primary-link, .methodology-page .secondary-link { font-size: 12.5px; }
-.method-section { padding: 56px 0; scroll-margin-top: 92px; border-bottom: 1px solid var(--linha); }
+.method-section { padding: 44px 0; scroll-margin-top: 92px; border-bottom: 1px solid var(--linha); }
 .method-section:first-child { padding-top: 0; }
 .method-section:last-child { padding-bottom: 0; border-bottom: 0; }
 .methodology-hero-grid { display: block; }
@@ -410,12 +410,12 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .methodology-warning { margin-top: 30px; padding: 18px 20px; display: grid; grid-template-columns: 95px 1fr; gap: 18px; border-left: 4px solid var(--urucum); background: var(--papel); }
 .methodology-warning > span { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; }
 .methodology-warning p { max-width: 100ch; margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.6; }
-.methodology-definition { margin-top: 14px; padding: 20px; display: grid; grid-template-columns: repeat(3, 110px) 1fr; align-items: center; gap: 16px; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255, 255, 255, 0.42); }
-.methodology-definition div { padding-right: 12px; border-right: 1px solid var(--linha); }
-.methodology-definition strong, .methodology-definition span { display: block; }
-.methodology-definition strong { color: var(--mata); font: 800 25px/1 var(--display); }
-.methodology-definition span { margin-top: 4px; color: var(--tinta-4); font-size: 10px; }
-.methodology-definition p { margin: 0; color: var(--tinta-3); font-size: 12px; line-height: 1.55; }
+.method-facts { margin-top: 14px; padding: 20px; display: grid; grid-template-columns: repeat(3, 110px) 1fr; align-items: center; gap: 16px; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255, 255, 255, 0.42); }
+.method-facts div { padding-right: 12px; border-right: 1px solid var(--linha); }
+.method-facts strong, .method-facts span { display: block; }
+.method-facts strong { color: var(--mata); font: 800 25px/1 var(--display); }
+.method-facts span { margin-top: 4px; color: var(--tinta-4); font-size: 10px; }
+.method-facts p { margin: 0; color: var(--tinta-3); font-size: 12px; line-height: 1.55; }
 .method-section > h2 { max-width: 650px; font-size: clamp(32px, 3.2vw, 46px); }
 .method-section > h2 + p { max-width: 78ch; margin: 18px 0 0; color: var(--tinta-3); font-size: 15px; line-height: 1.6; }
 .method-steps { margin-top: 27px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -453,6 +453,23 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-dimension-list h3 { font-size: 19px; }
 .method-dimension-list p { max-width: 100ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12.5px; line-height: 1.55; }
 .method-loading { padding: 22px 0; color: var(--tinta-4); font-size: 13px; }
+.method-timeline { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+.method-timeline article { padding: 15px 17px; border-left: 2px solid var(--linha); background: var(--papel); }
+.method-timeline b { display: block; color: var(--urucum); font: 800 13px var(--display); letter-spacing: 0.02em; }
+.method-timeline span { display: block; margin-top: 6px; color: var(--tinta-3); font-size: 12px; line-height: 1.5; }
+
+.method-list.is-duas { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); column-gap: 34px; }
+.method-list.is-duas li { max-width: none; }
+
+.method-guidance-grid.is-compacta article { padding: 16px 18px; }
+.method-guidance-grid.is-compacta h3 { font-size: 15px; }
+.method-guidance-grid.is-compacta p { margin-top: 6px; font-size: 12px; }
+
+.method-flow { margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; list-style: none; counter-reset: none; }
+.method-flow li { padding: 14px 16px; border: 1px solid var(--linha); border-radius: 9px; display: flex; flex-direction: column; gap: 7px; }
+.method-flow b { color: var(--urucum); font: 800 13px var(--display); }
+.method-flow span { color: var(--tinta-3); font-size: 12.5px; line-height: 1.45; }
+
 .method-callout { margin-top: 24px; padding: 21px 22px; border-left: 4px solid var(--ocre); background: var(--papel); }
 .method-callout strong { color: var(--mata); font: 600 16px var(--display); }
 .method-callout p { max-width: 105ch; margin: 8px 0 0; color: var(--tinta-3); font-size: 13.5px; line-height: 1.6; }
@@ -467,9 +484,9 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-guidance-grid article:nth-child(3n)::before { background: var(--mata-500); }
 .method-guidance-grid h3 { font-size: 18px; }
 .method-guidance-grid p { margin: 8px 0 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.6; }
-#fontes-e-limites blockquote { margin: 12px 0 0; padding: 26px 28px; border: 0; border-radius: 9px; background: var(--mata); color: var(--areia); }
-#fontes-e-limites blockquote strong { color: var(--areia); font: 800 22px var(--display); }
-#fontes-e-limites blockquote p { max-width: 105ch; margin: 10px 0 0; color: rgba(245, 240, 232, 0.72); font-size: 13.5px; line-height: 1.6; }
+.method-section blockquote { margin: 12px 0 0; padding: 26px 28px; border: 0; border-radius: 9px; background: var(--mata); color: var(--areia); }
+.method-section blockquote strong { color: var(--areia); font: 800 22px var(--display); }
+.method-section blockquote p { max-width: 105ch; margin: 10px 0 0; color: rgba(245, 240, 232, 0.72); font-size: 13.5px; line-height: 1.6; }
 .method-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
 .primary-link, .secondary-link { min-height: 44px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; border-radius: 7px; font-size: 11px; font-weight: 600; }
 .primary-link { border: 1px solid var(--urucum); background: var(--urucum); color: var(--areia); }
@@ -592,7 +609,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
   .methodology-index nav a { min-height: 72px; padding: 11px; border: 1px solid var(--linha-2); border-radius: 7px; }
   .methodology-index nav a::before { top: 9px; bottom: 9px; left: -1px; }
   .methodology-index-note, .methodology-index-download { display: none; }
-  .methodology-definition { grid-template-columns: repeat(3, 1fr); }
+  .method-facts { grid-template-columns: repeat(3, 1fr); }
   .methodology-definition p { grid-column: 1 / -1; padding-top: 4px; }
 }
 
