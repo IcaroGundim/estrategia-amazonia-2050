@@ -306,8 +306,14 @@ function renderYearSelect() {
   const metric = currentMetric();
   const { anos, parciais } = anosDaMetrica(metric);
   const temSerie = Boolean(metric.serie) && anos.length > 1;
+  const caixa = document.querySelector('#year-select');
 
-  if (anoMontadoPara !== state.metric) {
+  // O ClientRouter troca o body mas não reavalia o módulo: ao voltar ao Panorama,
+  // `anoMontadoPara` ainda apontava para o indicador atual e o `setValue` pintava no
+  // elemento antigo, já descartado, deixando o seletor vazio na tela. Conferir se a
+  // caixa atual tem conteúdo cobre esse caso e qualquer outro em que ela seja
+  // esvaziada. Não aparecia em desenvolvimento porque ali cada rota recarrega a página.
+  if (anoMontadoPara !== state.metric || !caixa.firstElementChild) {
     const options = temSerie
       ? [...anos].reverse().map((ano) => ({
           value: String(ano),
@@ -318,7 +324,7 @@ function renderYearSelect() {
       : [{ value: '', label: 'Indisponível', group: 'indisponivel', groupLabel: 'Sem série temporal' }];
     // O componente devolve o valor como texto; o resto do painel trabalha com número.
     yearDropdown = createDropdown(
-      document.querySelector('#year-select'),
+      caixa,
       options,
       temSerie ? String(state.ano) : '',
       (valor) => { state.ano = Number(valor); renderAll(); },
