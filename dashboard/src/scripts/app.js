@@ -1,7 +1,7 @@
 import { aoEntrarNaPagina, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
-const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state' };
+const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null };
 
 const metrics = {
   prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
@@ -26,36 +26,86 @@ const STATE_ORDER = ['AC', 'AP', 'AM', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'];
 const accentByUf = { TO: '#e0a83c', AP: '#3e6fa8', AM: '#3e6e57', RO: '#8a8078', RR: '#157f72', MT: '#c0451f', AC: '#157f72', PA: '#4a2a6a', MA: '#a8613a' };
 function accentOf(uf) { return accentByUf[uf] || '#00766d'; }
 
-const stateDetails = [
-  ['prodesRate', 'PRODES 2025', 'km² / mil km²', 'low', 2],
-  ['heatRate', 'Focos de calor 2024', 'focos / mil km²', 'low', 2],
-  ['conservationManaged', 'UCs com plano e conselho', '%', 'high', 1],
-  ['poverty', 'Pobreza monetária', '%', 'low', 1],
-  ['school', 'Frequência escolar 15–17', '%', 'high', 1],
-  ['esfRate', 'Equipes de atenção primária', '/ 100 mil hab.', 'high', 1],
-  ['cvliRate', 'CVLI 2025', '/ 100 mil hab.', 'low', 1],
-  ['vulnerability', 'IIVCM municipal médio', 'índice', 'low', 1],
-  ['ibc', 'IBC-AMZ ponderado 2025', 'índice', 'high', 1],
-  ['perRenovavel', 'Renovabilidade da matriz elétrica', '%', 'high', 1],
-  ['isgr', 'Saneamento e gestão de riscos', '%', 'high', 1],
-  ['pevsBilhoes', 'Sociobioeconomia (PEVS 2024)', 'R$ bi', 'high', 2],
-  ['piaBilhoes', 'Transformação industrial (PIA 2024)', 'R$ bi', 'high', 2],
-  ['pdPctPib', 'P&D estadual (% do PIB)', '% do PIB', 'high', 2]
-];
+// ---------------------------------------------------------------------------
+// Valor da Amazônia Legal como um todo.
+//
+// Toda métrica vira uma média ponderada por um peso — e para as taxas isso não é
+// uma aproximação, é o total sobre o total. A taxa do PRODES é km²/área×1000, logo
+// Σ(taxa×área)/Σárea = 1000×Σkm²/Σárea. O mesmo vale para CVLI e atenção primária
+// (peso população) e para a gestão de UCs (peso número de unidades). Conferido
+// contra os totais que o build calcula por conta própria a partir dos CSVs: bate
+// com summary.cvliRate e summary.prodesKm2 até a sexta casa.
+//
+// `peso: null` é média simples; `metodo: 'soma'` soma os nove valores. O rótulo
+// segue o vocabulário de metas.mjs (ROTULO_AGREGACAO), para que os dois lugares do
+// site que produzem número regional descrevam o método da mesma forma.
+// ---------------------------------------------------------------------------
+const AGREGACAO = {
+  prodesRate: { peso: 'area', rotulo: 'área desmatada dos nove estados sobre a área da região' },
+  cvliRate: { peso: 'population', rotulo: 'total de CVLI sobre a população regional', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
+  esfRate: { peso: 'population', rotulo: 'total de equipes sobre a população regional' },
+  poverty: { peso: 'population', rotulo: 'média ponderada pela população' },
+  school: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Ponderação pela população total de cada estado, e não pela população de 15 a 17 anos, que não está na base consolidada.' },
+  isgr: { peso: 'population', rotulo: 'média ponderada pela população' },
+  ibc: { peso: 'population', rotulo: 'média ponderada pela população', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
+  conservationManaged: { peso: 'conservationUnits', rotulo: 'unidades com plano e conselho sobre o total de unidades' },
+  vulnerability: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura correta ponderaria pelo número de municípios de cada estado, que não está na base consolidada.' },
+  perRenovavel: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.' },
+  pdPctPib: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.', notaSerie: 'Em 2021 e 2023 só oito estados têm valor, então a média desses anos não é composta pelos mesmos estados dos demais.' },
+  pevsBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' },
+  piaBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' }
+  // territorio, pessoas e score ficam de fora de propósito: são normalizados min–max
+  // entre os nove estados, então a média deles é ~50 por construção e não diz nada
+  // sobre a região. A ausência aqui é o que faz o painel dizer isso na tela.
+};
 
-const PROFILE_DIMENSIONS = [
-  ['territorio', 'Território'], ['pessoas', 'Pessoas'], ['seguranca', 'Segurança'], ['resiliencia', 'Resiliência']
-];
+function agregacaoDe(metricKey) { return AGREGACAO[metricKey] || null; }
 
-function relativePosition(item, key, direction) {
-  const value = item[key];
-  if (!Number.isFinite(value)) return null;
-  const values = state.data.states.map((candidate) => candidate[key]).filter(Number.isFinite);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  if (max === min) return 0.5;
-  const position = (value - min) / (max - min);
-  return direction === 'high' ? position : 1 - position;
+// `leitor` devolve o valor de um estado; muda entre o campo plano e um ano da série.
+function agregaEstados(agregacao, leitor) {
+  const uteis = state.data.states
+    .map((item) => ({ valor: leitor(item), peso: agregacao.peso ? item[agregacao.peso] : 1 }))
+    .filter(({ valor, peso }) => Number.isFinite(valor) && Number.isFinite(peso));
+  if (!uteis.length) return null;
+  if (agregacao.metodo === 'soma') return uteis.reduce((total, { valor }) => total + valor, 0);
+  const pesoTotal = uteis.reduce((total, { peso }) => total + peso, 0);
+  if (!pesoTotal) return null;
+  return uteis.reduce((total, { valor, peso }) => total + valor * peso, 0) / pesoTotal;
+}
+
+// Valor regional do indicador ativo, no ano ativo quando há série.
+function valorRegional(metricKey = state.metric) {
+  const agregacao = agregacaoDe(metricKey);
+  if (!agregacao) return null;
+  const metric = metrics[metricKey];
+  return agregaEstados(agregacao, (item) => valorDoIndicador(item, metric));
+}
+
+function serieRegional(metricKey = state.metric) {
+  const metric = metrics[metricKey];
+  const agregacao = agregacaoDe(metricKey);
+  if (!agregacao || !metric.serie) return [];
+  return anosDaMetrica(metric).anos
+    .map((ano) => ({ ano, valor: agregaEstados(agregacao, (item) => item.series?.[metric.serie]?.[ano]) }))
+    .filter(({ valor }) => Number.isFinite(valor));
+}
+
+// Mantém os anos na mesma ordem do seletor e ignora lacunas do estado. Isso é
+// importante para P&D: o Acre, por exemplo, não tem observação em 2021 e 2023.
+function serieDoEstado(item, metric = currentMetric()) {
+  if (!metric.serie) return [];
+  return anosDaMetrica(metric).anos
+    .map((ano) => ({ ano, valor: item.series?.[metric.serie]?.[ano] }))
+    .filter(({ valor }) => Number.isFinite(valor));
+}
+
+// Menor e maior valor entre os nove, para situar o número regional.
+function amplitudeEstados(metric) {
+  const valores = state.data.states
+    .map((item) => ({ uf: item.uf, valor: valorDoIndicador(item, metric) }))
+    .filter(({ valor }) => Number.isFinite(valor))
+    .sort((a, b) => a.valor - b.valor);
+  return valores.length ? { menor: valores[0], maior: valores.at(-1) } : null;
 }
 
 function valueAt(object, path) { return path.split('.').reduce((value, part) => value?.[part], object); }
@@ -72,35 +122,23 @@ async function init() {
   state.data = dashboard;
   state.geo = geo;
   state.catalogo = catalogo;
-  state.selected = dashboard.states[0]?.uf;
+  // null = Amazônia Legal. A região é a perspectiva de entrada; o estado é o recorte.
+  state.selected = null;
   ajustaAno();
   populateSelect();
   document.querySelectorAll('[data-updated]').forEach((element) => { element.textContent = dashboard.updatedAt; });
-  document.querySelector('[data-population]').textContent = compactPopulation(dashboard.summary.population);
   const regional = dashboard.summary;
+  document.querySelector('[data-population]').textContent = compactPopulation(regional.population);
   document.querySelector('[data-territorio]').textContent = `${compactNumber(regional.territoryKm2)} km²`;
   document.querySelector('[data-municipios]').textContent = number(regional.municipalities);
   document.querySelector('[data-ucs]').textContent = number(regional.conservationUnits);
   renderAll();
   bindEvents();
-  syncSidebarHeight();
 }
 
-// O card lateral tem altura do próprio conteúdo, mas nunca ultrapassa a coluna
-// da esquerda (mapa + KPIs). O CSS não consegue medir um irmão do grid, então a
-// altura da coluna primária vira a variável --sidebar-max.
-function syncSidebarHeight() {
-  const primary = document.querySelector('.dashboard-primary');
-  const grid = document.querySelector('.dashboard-grid');
-  if (!primary || !grid || typeof ResizeObserver === 'undefined') return;
-  const apply = () => grid.style.setProperty('--sidebar-max', `${Math.round(primary.getBoundingClientRect().height)}px`);
-  new ResizeObserver(apply).observe(primary);
-  apply();
-}
-
-function createDropdown(container, options, initialValue, onChange) {
-  container.innerHTML = `<div class="dropdown">
-    <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+function createDropdown(container, options, initialValue, onChange, { disabled = false, disabledReason = '' } = {}) {
+  container.innerHTML = `<div class="dropdown${disabled ? ' is-disabled' : ''}">
+    <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false"${disabled ? ' disabled aria-disabled="true"' : ''}>
       <span class="dropdown-trigger-copy"><strong data-trigger-label></strong><small data-trigger-meta></small></span>
       <i class="dropdown-chevron" aria-hidden="true"></i>
     </button>
@@ -112,6 +150,7 @@ function createDropdown(container, options, initialValue, onChange) {
   const meta = root.querySelector('[data-trigger-meta]');
   const menu = root.querySelector('.dropdown-menu');
   let value = initialValue;
+  if (disabledReason) trigger.title = disabledReason;
 
   function paint() {
     const current = options.find((option) => option.value === value);
@@ -135,6 +174,7 @@ function createDropdown(container, options, initialValue, onChange) {
     target?.scrollIntoView({ block: 'nearest' });
   }
   function open(direction = 'selected') {
+    if (disabled) return;
     root.classList.add('is-open');
     trigger.setAttribute('aria-expanded', 'true');
     menu.hidden = false;
@@ -234,16 +274,30 @@ function statesByMetric() {
   });
 }
 
-const PANEL_VIEWS = ['state', 'ranking', 'profile'];
+const PANEL_VIEWS = ['state', 'ranking'];
 
 function renderAll() {
   renderYearSelect();
   renderIndicatorCard();
   renderMap();
-  renderStatePanel();
-  renderProfile();
+  renderScopeButton();
+  renderPainelPrincipal();
   renderPanelView();
   renderRanking();
+}
+
+// A perspectiva regional mora no próprio mapa: escolher um estado já é clicar nele,
+// então só falta a volta para a região. O botão fica aceso enquanto a leitura é
+// regional e serve de rótulo do que está no painel ao lado.
+function renderScopeButton() {
+  const botao = document.querySelector('#scope-regional');
+  if (!botao) return;
+  const regional = !state.selected;
+  // `is-active` é o que o chip das Metas usa para o estado aceso; o aria-pressed
+  // carrega a mesma informação para quem não vê o estilo.
+  botao.classList.toggle('is-active', regional);
+  botao.setAttribute('aria-pressed', String(regional));
+  botao.title = regional ? 'Amazônia Legal — o painel mostra a região como um todo' : 'Amazônia Legal — voltar à leitura da região';
 }
 
 let yearDropdown = null;
@@ -256,26 +310,28 @@ function renderYearSelect() {
   const metric = currentMetric();
   const { anos, parciais } = anosDaMetrica(metric);
   const temSerie = Boolean(metric.serie) && anos.length > 1;
-  const wrap = document.querySelector('#year-select-wrap');
-  wrap.hidden = !temSerie;
-  if (!temSerie) { yearDropdown = null; anoMontadoPara = null; return; }
 
   if (anoMontadoPara !== state.metric) {
-    const options = [...anos].reverse().map((ano) => ({
-      value: String(ano),
-      label: String(ano),
-      group: parciais.includes(ano) ? 'parcial' : 'fechado',
-      groupLabel: parciais.includes(ano) ? 'Ano em curso' : 'Série histórica'
-    }));
+    const options = temSerie
+      ? [...anos].reverse().map((ano) => ({
+          value: String(ano),
+          label: String(ano),
+          group: parciais.includes(ano) ? 'parcial' : 'fechado',
+          groupLabel: parciais.includes(ano) ? 'Ano em curso' : 'Série histórica'
+        }))
+      : [{ value: '', label: 'Indisponível', group: 'indisponivel', groupLabel: 'Sem série temporal' }];
     // O componente devolve o valor como texto; o resto do painel trabalha com número.
-    yearDropdown = createDropdown(document.querySelector('#year-select'), options, String(state.ano), (valor) => {
-      state.ano = Number(valor);
-      renderAll();
-    });
+    yearDropdown = createDropdown(
+      document.querySelector('#year-select'),
+      options,
+      temSerie ? String(state.ano) : '',
+      (valor) => { state.ano = Number(valor); renderAll(); },
+      { disabled: !temSerie, disabledReason: 'Este indicador não possui série temporal.' }
+    );
     anoMontadoPara = state.metric;
     return;
   }
-  yearDropdown.setValue(String(state.ano));
+  yearDropdown.setValue(temSerie ? String(state.ano) : '');
 }
 
 function renderIndicatorCard() {
@@ -296,7 +352,7 @@ function renderIndicatorCard() {
 }
 
 function renderPanelView() {
-  const sections = { state: 'state-panel', ranking: 'ranking', profile: 'state-profile' };
+  const sections = { state: 'state-panel', ranking: 'ranking' };
   PANEL_VIEWS.forEach((view) => {
     const section = document.querySelector(`#${sections[view]}`);
     if (section) section.hidden = state.panelView !== view;
@@ -314,7 +370,6 @@ function selectPanelView(view) {
   state.panelView = view;
   renderPanelView();
   if (view === 'ranking') renderRanking();
-  if (view === 'profile') renderProfile();
 }
 
 function renderRanking() {
@@ -344,7 +399,11 @@ function renderRanking() {
 
   const selectedRow = list.querySelector('.rank-item.is-selected')?.closest('li');
   const marker = list.querySelector('.rank-selection-marker');
-  if (!selectedRow || !marker) return;
+  if (!marker) return;
+  // Na perspectiva regional nenhum estado está selecionado: sem isto o marcador
+  // ficaria sem altura definida, encostado no topo da lista.
+  marker.hidden = !selectedRow;
+  if (!selectedRow) return;
   const nextTop = selectedRow.offsetTop;
   const nextHeight = selectedRow.offsetHeight;
   marker.style.transform = `translateY(${Number.isFinite(previousTop) ? previousTop : nextTop}px)`;
@@ -430,47 +489,231 @@ function hideMapTooltip() {
   if (tooltip) tooltip.hidden = true;
 }
 
-function radarChart(item) {
-  const axes = [['Território', item.dimensions.territorio], ['Pessoas', item.dimensions.pessoas], ['Segurança', item.dimensions.seguranca], ['Resiliência', item.dimensions.resiliencia]];
-  const avg = ['territorio', 'pessoas', 'seguranca', 'resiliencia'].map((key) => state.data.states.reduce((sum, candidate) => sum + candidate.dimensions[key], 0) / state.data.states.length);
-  const size = 220; const center = size / 2; const radius = 78;
-  const pointFor = (index, value) => {
-    const angle = (-90 + index * (360 / axes.length)) * Math.PI / 180;
-    const r = (Math.max(0, Math.min(100, value)) / 100) * radius;
-    return [center + r * Math.cos(angle), center + r * Math.sin(angle)];
-  };
-  const polygon = (values) => values.map((value, index) => pointFor(index, value).join(',')).join(' ');
-  const grid = [25, 50, 75, 100].map((tick) => `<polygon points="${axes.map((_, index) => pointFor(index, tick).join(',')).join(' ')}" class="radar-grid" />`).join('');
-  const spokes = axes.map((_, index) => { const [x, y] = pointFor(index, 100); return `<line x1="${center}" y1="${center}" x2="${x}" y2="${y}" class="radar-spoke" />`; }).join('');
-  const labels = axes.map(([label], index) => { const [x, y] = pointFor(index, 124); return `<text x="${x}" y="${y}" class="radar-label" text-anchor="middle">${label}</text>`; }).join('');
-  return `<svg viewBox="0 0 ${size} ${size}" class="radar-chart" role="img" aria-label="Perfil de ${escape(item.name)} comparado à média da Amazônia Legal">
-    ${grid}${spokes}
-    <polygon points="${polygon(avg)}" class="radar-avg" />
-    <polygon points="${polygon(axes.map(([, value]) => value))}" class="radar-state" style="--accent:${accentOf(item.uf)}" />
-    ${labels}
-  </svg>`;
-}
-
-function selectState(uf) {
-  if (!state.data.states.some((item) => item.uf === uf)) return;
+// `uf` vazia ou nula devolve a perspectiva à Amazônia Legal.
+function selecionaEscopo(uf) {
+  const alvo = uf || null;
+  if (alvo && !state.data.states.some((item) => item.uf === alvo)) return;
   hideMapTooltip();
-  state.selected = uf;
+  state.selected = alvo;
   renderAll();
 }
 
-function renderStatePanel() {
+// Minigráfico da série do escopo atual. SVG à mão, como o resto dos gráficos.
+// A escala é min–max da própria série: o que se lê é a forma da trajetória, não a
+// distância até o zero — por isso o eixo não é rotulado com valores.
+const SPARK = { largura: 240, altura: 46, margem: 4 };
+
+// Posição de cada ponto, em unidades do viewBox e em porcentagem. Como o SVG é
+// esticado nos dois eixos (preserveAspectRatio="none"), a porcentagem vale
+// igualmente para a sobreposição em HTML, que é quem desenha o ponto e a guia do
+// hover — um <circle> no SVG viraria elipse.
+function pontosDaSpark(serie) {
+  const { largura, altura, margem } = SPARK;
+  const valores = serie.map(({ valor }) => valor);
+  const min = Math.min(...valores);
+  const max = Math.max(...valores);
+  const anos = serie.map(({ ano }) => Number(ano));
+  const primeiroAno = Math.min(...anos);
+  const ultimoAno = Math.max(...anos);
+  return serie.map((ponto) => {
+    // A posição vem do ano, não do índice. Assim uma lacuna de dois anos
+    // ocupa o dobro do espaço de um intervalo anual, mesmo depois de filtrada.
+    const x = margem + ((Number(ponto.ano) - primeiroAno) / ((ultimoAno - primeiroAno) || 1)) * (largura - margem * 2);
+    const y = max === min ? altura / 2 : altura - margem - ((ponto.valor - min) / (max - min)) * (altura - margem * 2);
+    return { ...ponto, x, y, xPct: x / largura * 100, yPct: y / altura * 100 };
+  });
+}
+
+function sparkline(pontos, { parciais = [], anoAtivo = null, escopo = 'regional' } = {}) {
+  if (pontos.length < 2) return '';
+  const { largura, altura } = SPARK;
+  const linha = pontos.map(({ x, y }, index) => `${index ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join('');
+  const area = `${linha}L${pontos.at(-1).x.toFixed(1)},${altura}L${pontos[0].x.toFixed(1)},${altura}Z`;
+  // Traço vertical com non-scaling-stroke: marca o ano sem deformar no esticamento.
+  const ativo = pontos.find(({ ano }) => ano === anoAtivo);
+  const marcador = ativo
+    ? `<line class="spark-marker ${parciais.includes(ativo.ano) ? 'is-parcial' : ''}" x1="${ativo.x.toFixed(1)}" y1="${ativo.y.toFixed(1)}" x2="${ativo.x.toFixed(1)}" y2="${altura}" />`
+    : '';
+  return `<div class="spark-wrap" tabindex="0" role="group" aria-label="Trajetória ${escape(escopo)} de ${pontos[0].ano} a ${pontos.at(-1).ano}. Use as setas para mudar o ano exibido.">
+    <svg class="spark" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
+      <path class="spark-area" d="${area}" />
+      <path class="spark-line" d="${linha}" />
+      ${marcador}
+    </svg>
+    <i class="spark-guia" hidden aria-hidden="true"></i>
+    <i class="spark-ponto" hidden aria-hidden="true"></i>
+    <div class="spark-tip" hidden role="status"></div>
+  </div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Interação do minigráfico. O painel é remontado por innerHTML a cada render, então
+// os listeners vivem no #state-panel, que é estático, e leem os pontos de
+// `state.spark` — recalculá-los no hover repetiria a agregação a cada pixel.
+// ---------------------------------------------------------------------------
+
+function pontoMaisProximo(wrap, clientX) {
+  const pontos = state.spark;
+  if (!pontos?.length) return null;
+  const caixa = wrap.getBoundingClientRect();
+  const posicaoPct = (clientX - caixa.left) / (caixa.width || 1) * 100;
+  // Não pressupõe espaçamento uniforme: estados podem ter anos sem observação.
+  return pontos.reduce((maisProximo, ponto) => (
+    Math.abs(ponto.xPct - posicaoPct) < Math.abs(maisProximo.xPct - posicaoPct) ? ponto : maisProximo
+  ));
+}
+
+function realcaSpark(ponto) {
+  const wrap = document.querySelector('.spark-wrap');
+  if (!wrap) return;
+  const guia = wrap.querySelector('.spark-guia');
+  const marca = wrap.querySelector('.spark-ponto');
+  const tip = wrap.querySelector('.spark-tip');
+  for (const elemento of [guia, marca, tip]) elemento.hidden = !ponto;
+  if (!ponto) return;
+  const metric = currentMetric();
+  const parcial = anosDaMetrica(metric).parciais.includes(ponto.ano);
+  guia.style.left = `${ponto.xPct}%`;
+  marca.style.left = `${ponto.xPct}%`;
+  marca.style.top = `${ponto.yPct}%`;
+  marca.classList.toggle('is-parcial', parcial);
+  tip.innerHTML = `<b>${ponto.ano}${parcial ? ' · em curso' : ''}</b><span>${escape(textoDoValor(metric, ponto.valor))}</span>`;
+  // A dica acompanha o ponto na horizontal e encosta nas bordas sem transbordar.
+  tip.style.left = `${ponto.xPct}%`;
+  tip.classList.toggle('is-inicio', ponto.xPct < 22);
+  tip.classList.toggle('is-fim', ponto.xPct > 78);
+}
+
+function bindSpark() {
+  const painel = document.querySelector('#state-panel');
+  if (!painel) return;
+  const sinal = { signal: sinalDaPagina() };
+  painel.addEventListener('pointermove', (event) => {
+    const wrap = event.target.closest('.spark-wrap');
+    realcaSpark(wrap ? pontoMaisProximo(wrap, event.clientX) : null);
+  }, sinal);
+  painel.addEventListener('pointerleave', () => realcaSpark(null), sinal);
+  painel.addEventListener('click', (event) => {
+    const wrap = event.target.closest('.spark-wrap');
+    const ponto = wrap && pontoMaisProximo(wrap, event.clientX);
+    if (ponto) selecionaAno(ponto.ano);
+  }, sinal);
+  painel.addEventListener('keydown', (event) => {
+    if (!event.target.matches('.spark-wrap') || !state.spark?.length) return;
+    const passos = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity };
+    const passo = passos[event.key];
+    if (passo === undefined) return;
+    event.preventDefault();
+    const atual = state.spark.findIndex(({ ano }) => ano === state.ano);
+    const base = atual < 0 ? state.spark.length - 1 : atual;
+    const alvo = Math.max(0, Math.min(state.spark.length - 1, passo === -Infinity ? 0 : passo === Infinity ? state.spark.length - 1 : base + passo));
+    selecionaAno(state.spark[alvo].ano);
+  }, sinal);
+  painel.addEventListener('focusout', (event) => {
+    if (event.target.matches('.spark-wrap')) realcaSpark(null);
+  }, sinal);
+}
+
+// O render recria o gráfico, então o foco precisa voltar para ele — sem isso a
+// segunda seta do teclado não teria alvo.
+function selecionaAno(ano) {
+  if (ano === state.ano) return;
+  state.ano = ano;
+  const tinhaFoco = document.activeElement?.matches('.spark-wrap');
+  renderAll();
+  if (tinhaFoco) document.querySelector('.spark-wrap')?.focus();
+  realcaSpark(state.spark?.find((ponto) => ponto.ano === ano) || null);
+}
+
+function renderPainelPrincipal() {
+  if (state.selected) renderPainelEstado();
+  else renderPainelRegional();
+}
+
+function renderPainelRegional() {
+  const metric = currentMetric();
+  const agregacao = agregacaoDe(state.metric);
+  const resumo = state.data.summary;
+  const valor = valorRegional();
+  const serie = serieRegional();
+  const { parciais } = anosDaMetrica(metric);
+  const amplitude = amplitudeEstados(metric);
+
+  // Sem entrada em AGREGACAO o indicador é uma síntese relativa entre os nove
+  // estados: a média dela é ~50 por construção. Dizer isso vale mais que um número.
+  const bloco = agregacao
+    ? `<div><span>Indicador exibido</span><small>${escape(metric.serie && state.ano ? String(state.ano) : 'ano de referência')}</small></div>
+       <strong>${textoDoValor(metric, valor)}</strong>
+       <p>${escape(metric.label)} · por ${escape(agregacao.rotulo)}</p>`
+    : `<div><span>Indicador exibido</span><small>sem valor regional</small></div>
+       <strong>Não se aplica</strong>
+       <p>${escape(metric.label)} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.</p>`;
+
+  // Os pontos ficam no estado: o hover e o teclado os leem sem refazer a agregação.
+  state.spark = serie.length > 1 ? pontosDaSpark(serie) : null;
+  const grafico = state.spark
+    ? `<section class="state-spark-block" aria-label="Série histórica regional">
+         <div class="state-section-title"><span>Trajetória da região</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
+         ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: 'regional' })}
+       </section>`
+    : '';
+
+  // Sem este aviso o CVLI de 2026 (11,1) parece uma queda pela metade sobre 2025
+  // (21,1), quando é só um ano que ainda não fechou. O cartão ao lado do mapa já
+  // alerta; aqui o número é maior e precisa do mesmo cuidado.
+  const notas = [
+    parciais.includes(state.ano) ? 'Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.' : null,
+    agregacao?.nota,
+    serie.length > 1 ? agregacao?.notaSerie : null
+  ].filter(Boolean);
+
+  document.querySelector('#state-panel').innerHTML = `
+    <div class="state-panel-body">
+      <div class="state-panel-kicker">
+        <p class="eyebrow">Perspectiva regional</p>
+        <span>nove estados · ciclo 2025–2026</span>
+      </div>
+      <div class="state-identity is-regional">
+        <div><h2>Amazônia Legal</h2><p>${escape(resumo.statesCount)} estados · ${number(resumo.municipalities)} municípios</p></div>
+      </div>
+
+      <div class="state-summary-grid" aria-label="Resumo da região">
+        <div><span>População</span><b>${compactNumber(resumo.population)}</b><small>projeção IBGE 2025</small></div>
+        <div><span>Área territorial</span><b>${compactNumber(resumo.territoryKm2)} km²</b><small>base cartográfica</small></div>
+        <div><span>UCs cadastradas</span><b>${number(resumo.conservationUnits)}</b><small>federais e estaduais</small></div>
+      </div>
+
+      <section class="state-metric-block" aria-label="Indicador selecionado na região">${bloco}</section>
+      ${grafico}
+      ${amplitude && agregacao ? `<section class="state-amplitude" aria-label="Amplitude entre os estados">
+        <div class="state-section-title"><span>Amplitude entre os nove</span></div>
+        <p><b>${textoDoValor(metric, amplitude.menor.valor)}</b> ${escape(amplitude.menor.uf)} <i aria-hidden="true">→</i> <b>${textoDoValor(metric, amplitude.maior.valor)}</b> ${escape(amplitude.maior.uf)}</p>
+      </section>` : ''}
+
+      <div class="state-reading">
+        <p>${agregacao
+          ? `A <strong>Amazônia Legal</strong> registra <strong>${textoDoValor(metric, valor)}</strong> em ${escape(metric.label)}${metric.serie && state.ano ? `, em ${state.ano}` : ''}${amplitude ? `, entre ${escape(amplitude.menor.uf)} e ${escape(amplitude.maior.uf)}` : ''}.`
+          : 'Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.'}</p>
+        ${notas.map((nota) => `<p class="state-reading-nota">${escape(nota)}</p>`).join('')}
+      </div>
+    </div>`;
+}
+
+function renderPainelEstado() {
   const item = state.data.states.find((candidate) => candidate.uf === state.selected);
   if (!item) return;
   const metric = currentMetric();
   const metricValue = valorDoIndicador(item, metric);
   const metricRank = statesByMetric().findIndex((candidate) => candidate.uf === item.uf) + 1;
-  const dimensions = [
-    ['Território e clima', item.dimensions.territorio],
-    ['Pessoas', item.dimensions.pessoas],
-    ['Segurança', item.dimensions.seguranca],
-    ['Resiliência', item.dimensions.resiliencia]
-  ];
-  const strongestDimension = [...dimensions].sort((a, b) => b[1] - a[1])[0];
+  const serie = serieDoEstado(item, metric);
+  const { parciais } = anosDaMetrica(metric);
+  state.spark = serie.length > 1 ? pontosDaSpark(serie) : null;
+  const grafico = state.spark
+    ? `<section class="state-spark-block" aria-label="Série histórica de ${escape(item.name)}">
+         <div class="state-section-title"><span>Trajetória do estado</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
+         ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: `de ${item.name}` })}
+       </section>`
+    : '';
   document.querySelector('#state-panel').innerHTML = `
     <div class="state-panel-body">
       <div class="state-panel-kicker">
@@ -494,53 +737,12 @@ function renderStatePanel() {
         <p>${escape(metric.label)} · ${escape(metric.subtitle)}</p>
       </section>
 
-      <section class="state-dimensions" aria-label="Síntese por dimensão">
-        <div class="state-section-title"><span>Síntese por dimensão</span><small>escala relativa 0–100</small></div>
-        ${dimensions.map(([label, value]) => `<div class="state-dimension-row">
-          <span>${label}</span><i aria-hidden="true"><b style="width:${value}%"></b></i><strong>${value}</strong>
-        </div>`).join('')}
-      </section>
+      ${grafico}
 
       <div class="state-reading">
-        <p><strong>${escape(item.name)}</strong> está na ${metricRank}ª posição para o indicador exibido. Seu maior resultado relativo na síntese é <strong>${strongestDimension[0]}</strong>, com ${strongestDimension[1]} pontos.</p>
+        <p><strong>${escape(item.name)}</strong> está na ${metricRank}ª posição entre os nove estados para o indicador exibido.</p>
       </div>
-
-      <button type="button" class="state-panel-button" data-panel-view="profile">Ver perfil completo</button>
     </div>`;
-}
-
-function renderProfile() {
-  const item = state.data.states.find((candidate) => candidate.uf === state.selected);
-  const container = document.querySelector('#state-profile');
-  if (!item || !container) return;
-  const rows = stateDetails.map(([key, label, unit, direction, digits]) => {
-    const value = item[key];
-    const position = relativePosition(item, key, direction);
-    return `<div class="profile-row">
-      <div class="profile-row-head">
-        <div class="profile-row-label"><span>${label}</span><small>${direction === 'low' ? '↓ menor é melhor' : '↑ maior é melhor'}</small></div>
-        <div class="profile-row-value"><b>${number(value, digits)}</b><small>${unit}</small><i title="posição entre os nove estados">${item.ranks[key] ?? '—'}º</i></div>
-      </div>
-      <div class="profile-row-bar" aria-hidden="true"><b style="width:${Math.max(4, Math.round((position ?? 0) * 100))}%"></b></div>
-    </div>`;
-  }).join('');
-  container.innerHTML = `
-    <header class="profile-head">
-      ${flagImage(item, `Bandeira do ${item.name}`)}
-      <div class="profile-head-copy"><p class="eyebrow">${item.uf} · ${escape(item.capital)}</p><h3>${escape(item.name)}</h3></div>
-      <div class="profile-head-score"><b>${item.score}</b><span>${item.ranks.score}º de 9 · síntese</span></div>
-    </header>
-    <div class="profile-overview">
-      <div class="profile-radar" style="--accent:${accentOf(item.uf)}">${radarChart(item)}<span class="radar-legend"><i class="is-state"></i>${escape(item.name)}<i class="is-avg"></i>Média AL</span></div>
-      <div class="profile-dimensions" aria-label="Pontuação por dimensão">
-        ${PROFILE_DIMENSIONS.map(([key, label]) => `<div class="profile-dim"><span>${label}</span><i aria-hidden="true"><b style="width:${item.dimensions[key]}%"></b></i><strong>${item.dimensions[key]}</strong></div>`).join('')}
-      </div>
-    </div>
-    <div class="profile-list">
-      <p class="profile-list-title">Indicadores do estado<small>posição relativa entre os nove</small></p>
-      ${rows}
-    </div>
-    <p class="profile-note">Valores, unidades e períodos variam por fonte — o valor original continua sendo a referência principal, disponível no catálogo de indicadores.</p>`;
 }
 
 function bindEvents() {
@@ -550,13 +752,14 @@ function bindEvents() {
     const stateButton = event.target.closest('[data-state]');
     if (stateButton) {
       if (!stateButton.closest('#ranking-list')) state.panelView = 'state';
-      selectState(stateButton.dataset.state);
+      selecionaEscopo(stateButton.dataset.state);
     }
+    if (event.target.closest('#scope-regional')) selecionaEscopo(null);
     const metricButton = event.target.closest('[data-metric]');
     if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); ajustaAno(); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   }, { signal: sinalDaPagina() });
   document.addEventListener('keydown', (event) => {
-    if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selectState(event.target.dataset.state); }
+    if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selecionaEscopo(event.target.dataset.state); }
     if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && event.target.matches('[data-panel-view]')) {
       event.preventDefault();
       const offset = event.key === 'ArrowRight' ? 1 : -1;
@@ -578,6 +781,7 @@ function bindEvents() {
     showMapTooltip(event.target.dataset.state, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
   });
   map.addEventListener('focusout', hideMapTooltip);
+  bindSpark();
   bindMenu();
 }
 

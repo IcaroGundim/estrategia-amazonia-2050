@@ -18,7 +18,7 @@ import Base from '../layouts/Base.astro';
                     <span class="select-wrap-label">Indicador exibido</span>
                     <div id="metric-select"></div>
                   </div>
-                  <div class="select-wrap is-year" id="year-select-wrap" hidden>
+                  <div class="select-wrap is-year" id="year-select-wrap">
                     <span class="select-wrap-label">Ano exibido</span>
                     <div id="year-select"></div>
                   </div>
@@ -29,6 +29,7 @@ import Base from '../layouts/Base.astro';
                   <p>Carregando indicador…</p>
                 </aside>
                 <div class="map-canvas">
+                  <button id="scope-regional" class="goals-flag al map-scope is-active" type="button" aria-pressed="true" aria-label="Amazônia Legal, visão regional">AL</button>
                   <svg id="map" viewBox="0 0 720 500" role="img" aria-label="Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral."></svg>
                   <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
                 </div>
@@ -75,13 +76,12 @@ import Base from '../layouts/Base.astro';
 
           <aside class="dashboard-sidebar card" aria-label="Detalhes e comparação estadual">
             <div class="sidebar-tabs" role="tablist" aria-label="Conteúdo da coluna lateral">
-              <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="state-panel" data-panel-view="state">Estado selecionado</button>
+              <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="state-panel" data-panel-view="state">Visão geral</button>
               <button type="button" role="tab" aria-selected="false" aria-controls="ranking" data-panel-view="ranking">Comparação estadual</button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="state-profile" data-panel-view="profile">Perfil completo</button>
             </div>
 
-            <section id="state-panel" class="state-panel sidebar-panel" role="tabpanel" aria-live="polite" aria-label="Estado selecionado">
-              <div class="state-panel-loading">Carregando perfil estadual…</div>
+            <section id="state-panel" class="state-panel sidebar-panel" role="tabpanel" aria-live="polite" aria-label="Visão geral da região ou do estado selecionado">
+              <div class="state-panel-loading">Carregando painel…</div>
             </section>
 
             <section id="ranking" class="ranking-card sidebar-panel" role="tabpanel" aria-label="Comparação estadual" hidden>
@@ -95,8 +95,6 @@ import Base from '../layouts/Base.astro';
               </div>
               <ol id="ranking-list" class="ranking-list" aria-live="polite"></ol>
             </section>
-
-            <section id="state-profile" class="state-profile sidebar-panel" role="tabpanel" aria-label="Perfil completo do estado" aria-live="polite" hidden></section>
           </aside>
         </div>
       </div>

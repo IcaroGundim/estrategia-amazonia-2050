@@ -67,8 +67,10 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 
 .dropdown { position: relative; }
 .dropdown-trigger { width: 100%; min-height: 58px; padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid var(--mata-500); border-radius: 11px; background: var(--papel); color: var(--mata); text-align: left; transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease; }
-.dropdown-trigger:hover { border-color: var(--urucum); background: #fffdfa; }
+.dropdown-trigger:hover:not(:disabled) { border-color: var(--urucum); background: #fffdfa; }
 .dropdown-trigger:focus-visible, .dropdown.is-open .dropdown-trigger { border-color: var(--urucum); box-shadow: 0 0 0 4px rgba(192, 69, 31, 0.1); outline: none; }
+.dropdown-trigger:disabled { border-color: var(--linha); background: var(--linha-2); color: var(--tinta-4); cursor: not-allowed; }
+.dropdown-trigger:disabled .dropdown-chevron { border-color: var(--tinta-4); opacity: 0.55; }
 .dropdown-trigger-copy { min-width: 0; display: block; }
 .dropdown-trigger-copy strong, .dropdown-trigger-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dropdown-trigger-copy strong { font-size: 13px; font-weight: 600; }
@@ -109,6 +111,12 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .map-indicator-card a { margin-top: 16px; padding-bottom: 2px; display: inline-block; border-bottom: 1px solid currentColor; color: var(--mata); font-size: 10px; font-weight: 600; }
 .map-indicator-card a:hover, .map-indicator-card a:focus-visible { color: var(--urucum); outline: none; }
 .map-canvas { position: relative; min-width: 0; }
+/* Volta à leitura regional. Fica no canto superior esquerdo, onde a projeção não
+   desenha nenhum estado; escolher um estado já é clicar nele no mapa. */
+/* Volta à leitura regional. É o mesmo chip AL da página de Metas (.goals-flag.al):
+   aqui só o posicionamento, abaixo do seletor de ano, sobre o canto vazio do mapa. */
+.map-scope { position: absolute; z-index: 4; top: 0; right: 0; }
+.map-scope:focus-visible { border-color: var(--mata); outline: none; }
 #map { width: 100%; height: clamp(360px, 23vw, 470px); min-height: 350px; display: block; }
 .map-tooltip { position: absolute; z-index: 8; width: max-content; min-width: 170px; max-width: 230px; padding: 11px 13px; border: 1px solid rgba(245, 240, 232, 0.18); border-radius: 7px; pointer-events: none; background: var(--mata); color: var(--areia); box-shadow: 0 10px 24px rgba(14, 43, 34, 0.18); }
 .map-tooltip[hidden] { display: none; }
@@ -165,15 +173,21 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .rank-measure em { height: 100%; display: block; background: var(--mata-500); }
 .load-error { padding: 20px; color: var(--urucum); }
 
-.dashboard-sidebar { position: sticky; top: 96px; overflow: hidden; align-self: start; height: var(--sidebar-max, auto); max-height: calc(100vh - 116px); display: flex; flex-direction: column; box-shadow: 0 16px 38px rgba(43, 31, 23, 0.07); }
-.sidebar-tabs { flex: 0 0 auto; padding: 0 22px; display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--linha); }
+/* O card acompanha a altura real do conteúdo. Assim a trajetória inteira fica
+   visível e a rolagem continua sendo a da página, não uma segunda barra interna. */
+.dashboard-sidebar { position: sticky; top: 96px; overflow: hidden; align-self: start; display: flex; flex-direction: column; box-shadow: 0 16px 38px rgba(43, 31, 23, 0.07); }
+.sidebar-tabs { flex: 0 0 auto; padding: 0 22px; display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--linha); }
 .sidebar-tabs button { position: relative; min-height: 52px; padding: 4px 6px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--tinta-4); font-size: 12px; font-weight: 600; }
 .sidebar-tabs button:hover, .sidebar-tabs button:focus-visible { color: var(--mata); outline: none; }
 .sidebar-tabs button.is-active { border-bottom-color: var(--urucum); color: var(--mata); }
 .sidebar-panel[hidden] { display: none; }
-.sidebar-panel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; }
+.sidebar-panel { flex: 0 0 auto; min-height: 0; display: flex; flex-direction: column; overflow: visible; }
 .state-panel-loading { padding: 34px; color: var(--tinta-4); }
-.state-panel-body { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; padding: 22px 24px 24px; }
+/* O painel é mais alto que o conteúdo (a altura acompanha mapa + KPIs). Com
+   space-between a sobra era repartida entre todos os blocos e inflava cada vão em
+   ~40px; assim o ritmo projetado é preservado e a folga se junta num lugar só,
+   antes da leitura, que fica ancorada no rodapé. */
+.state-panel-body { flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding: 22px 24px 24px; }
 .state-panel-kicker { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .state-panel-kicker .eyebrow { margin: 0; }
 .state-panel-kicker span { color: var(--tinta-4); font-size: 11px; white-space: nowrap; }
@@ -194,18 +208,43 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .state-metric-block small, .state-section-title small { color: var(--tinta-4); font-size: 10px; }
 .state-metric-block strong { display: block; margin-top: 7px; color: var(--mata); font: 800 26px/1 var(--display); letter-spacing: -0.03em; }
 .state-metric-block p { margin: 4px 0 0; color: var(--tinta-4); font-size: 11px; }
-.state-dimensions { padding: 19px 0 15px; }
 .state-section-title { margin-bottom: 13px; }
-.state-dimension-row { min-height: 31px; display: grid; grid-template-columns: 118px 1fr 25px; align-items: center; gap: 8px; }
-.state-dimension-row > span { color: var(--tinta-3); font-size: 11px; }
-.state-dimension-row > i { height: 5px; overflow: hidden; border-radius: 4px; background: var(--linha-2); }
-.state-dimension-row > i b { height: 100%; display: block; border-radius: 4px; background: var(--mata-500); }
-.state-dimension-row > strong { color: var(--mata); font: 800 12px var(--display); text-align: right; }
-.state-reading { margin: 8px 0 0; padding: 16px 16px; border-radius: 8px; background: var(--mata); color: var(--areia); }
+.state-reading { margin: 14px 0 0; padding: 16px 16px; border-radius: 8px; background: var(--mata); color: var(--areia); }
 .state-reading p { margin: 0; color: rgba(245, 240, 232, 0.72); font-size: 12px; line-height: 1.5; }
 .state-reading strong { color: var(--areia); font-weight: 600; }
-.state-panel-button { margin-top: 16px; width: 100%; flex: 0 0 auto; min-height: 38px; border: 1px solid var(--urucum); border-radius: 7px; background: var(--urucum); color: var(--areia); font-size: 11px; font-weight: 600; }
-.state-panel-button:hover, .state-panel-button:focus-visible { background: #a83a19; outline: none; }
+/* Ressalva de método: o número regional nunca aparece sem dizer como foi obtido. */
+.state-reading-nota { margin-top: 9px; padding-top: 9px; border-top: 1px solid rgba(245, 240, 232, 0.16); }
+.state-reading .state-reading-nota { color: rgba(245, 240, 232, 0.56); font-size: 10.5px; }
+.state-identity.is-regional h2 { font-size: 30px; }
+.state-amplitude { padding: 18px 0 4px; }
+.state-amplitude p { margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; color: var(--tinta-4); font-size: 11px; }
+.state-amplitude b { color: var(--mata); font: 800 13px var(--display); font-variant-numeric: tabular-nums; }
+.state-amplitude i { color: var(--linha); font-style: normal; }
+.state-spark-block { padding: 18px 0 6px; border-bottom: 1px solid var(--linha); }
+/* Escala min-max da própria série: a forma da trajetória, não a distância ao zero.
+   A altura é fixa — deixá-la absorver a sobra do painel dava ao gráfico um peso
+   que ele não tem na leitura. */
+/* A folga acima abriga a dica do hover, que sobe a partir do topo do gráfico —
+   com menos que isso ela cobria o título da seção e a faixa de anos. */
+.spark-wrap { position: relative; margin-top: 52px; cursor: pointer; }
+.spark-wrap:focus-visible { outline: 2px solid var(--mata-500); outline-offset: 3px; border-radius: 4px; }
+.spark { width: 100%; height: 88px; display: block; overflow: visible; }
+.spark-line { fill: none; stroke: var(--mata-500); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.spark-area { fill: var(--mata-500); fill-opacity: 0.12; stroke: none; }
+.spark-marker { stroke: var(--urucum); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.spark-marker.is-parcial { stroke: var(--ocre); stroke-dasharray: 3 2; }
+/* Realce do hover em HTML sobre o SVG: o desenho é esticado nos dois eixos, então
+   um círculo dentro dele viraria elipse. */
+.spark-guia { position: absolute; top: 0; bottom: 0; width: 1px; margin-left: -0.5px; background: var(--linha); pointer-events: none; }
+.spark-ponto { width: 9px; height: 9px; position: absolute; margin: -4.5px 0 0 -4.5px; border: 2px solid var(--papel); border-radius: 50%; background: var(--mata-700); pointer-events: none; }
+.spark-ponto.is-parcial { background: var(--ocre); }
+.spark-tip { position: absolute; z-index: 6; bottom: calc(100% + 7px); padding: 5px 9px; transform: translateX(-50%); border: 1px solid var(--mata); border-radius: 6px; background: var(--papel); white-space: nowrap; pointer-events: none; box-shadow: 0 6px 16px rgba(14, 43, 34, 0.2); }
+.spark-tip.is-inicio { transform: none; }
+.spark-tip.is-fim { transform: translateX(-100%); }
+.spark-tip b { color: var(--mata); font: 700 12px var(--display); }
+/* Urucum escurecido para texto sobre fundo claro — o mesmo tom de .ind-status.is-pending. */
+.spark-tip span { margin-left: 7px; color: #8e3213; font-size: 12px; font-variant-numeric: tabular-nums; }
+.spark-tip[hidden], .spark-guia[hidden], .spark-ponto[hidden] { display: none; }
 .dashboard-sidebar .ranking-panel-head { align-items: start; }
 .dashboard-sidebar .ranking-panel-head .text-button { margin-top: 3px; white-space: nowrap; }
 .dashboard-sidebar .rank-item { grid-template-columns: 27px 32px minmax(86px, 1fr) minmax(105px, 0.85fr); gap: 8px; }
@@ -275,8 +314,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .filter-option:focus-visible { outline: none; }
 .filter-option.is-active { color: var(--mata); font-weight: 600; }
 .filter-option.is-active i { border-color: var(--mata); background: var(--mata); }
-.map-controls { display: flex; align-items: end; gap: 12px; flex: 0 0 auto; }
-.select-wrap.is-year { width: 152px; flex: 0 0 152px; }
+.map-controls { width: 484px; display: grid; grid-template-columns: minmax(0, 320px) 152px; align-items: end; gap: 12px; flex: 0 0 484px; }
+.map-controls .select-wrap { width: 100%; min-width: 0; flex: none; }
+.select-wrap.is-year { width: 152px; }
 /* O piso de 420px do menu existe para os rótulos longos do seletor de indicador.
    Um ano tem quatro caracteres: aqui o menu acompanha a largura do gatilho. */
 .select-wrap.is-year .dropdown-menu { width: 100%; }
@@ -336,49 +376,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 footer { padding: 24px clamp(24px, 3.2vw, 72px); display: flex; justify-content: space-between; gap: 24px; background: var(--mata); color: rgba(245, 240, 232, 0.72); font-size: 11px; }
 footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 
-.profile-head { padding: 16px 20px; display: flex; align-items: center; gap: 12px; background: var(--mata); color: var(--areia); }
-.profile-head img { width: auto; height: 36px; flex: 0 0 auto; border: 1px solid rgba(245, 240, 232, 0.25); border-radius: 6px; object-fit: contain; }
-.profile-head-copy { min-width: 0; flex: 1; }
-.profile-head-copy .eyebrow { margin: 0 0 3px; color: var(--ocre); font-size: 9px; }
-.profile-head-copy h3 { margin: 0; color: var(--areia); font: 800 20px/1.05 var(--display); }
-.profile-head-score { flex: 0 0 auto; text-align: right; }
-.profile-head-score b { display: block; color: var(--areia); font: 800 24px/1 var(--display); }
-.profile-head-score span { display: block; margin-top: 3px; color: rgba(245, 240, 232, 0.66); font-size: 9px; }
-.profile-overview { padding: 16px 20px 14px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px 20px; border-bottom: 1px solid var(--linha); background: var(--areia); }
-.profile-radar { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.profile-radar .radar-chart { width: 148px; height: 148px; }
-.profile-dimensions { flex: 1; min-width: 180px; display: grid; gap: 10px; }
-.profile-dim { display: grid; grid-template-columns: 76px 1fr 24px; align-items: center; gap: 8px; }
-.profile-dim span { color: var(--tinta-3); font-size: 10px; }
-.profile-dim i { height: 5px; overflow: hidden; border-radius: 4px; background: var(--linha-2); }
-.profile-dim i b { height: 100%; display: block; border-radius: 4px; background: var(--mata-500); }
-.profile-dim strong { color: var(--mata); font: 800 11px var(--display); text-align: right; }
-.profile-list { padding: 14px 20px 0; }
-.profile-list-title { margin: 0 0 2px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-.profile-list-title small { margin-left: 8px; color: var(--tinta-4); font-size: 9px; font-weight: 400; letter-spacing: 0; text-transform: none; }
-.profile-row { padding: 8px 0 10px; border-bottom: 1px solid var(--linha-2); }
-.profile-row:last-child { border-bottom: 0; }
-.profile-row-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.profile-row-label span { display: block; color: var(--tinta); font-size: 11px; font-weight: 600; }
-.profile-row-label small { display: block; margin-top: 2px; color: var(--tinta-4); font-size: 9px; }
-.profile-row-value { display: flex; flex: 0 0 auto; align-items: baseline; gap: 6px; }
-.profile-row-value b { color: var(--mata); font: 800 13px var(--display); font-variant-numeric: tabular-nums; }
-.profile-row-value small { color: var(--tinta-4); font-size: 9px; }
-.profile-row-value i { padding: 2px 6px; border-radius: 999px; background: rgba(0, 118, 109, 0.1); color: var(--mata-700); font-size: 9px; font-style: normal; font-weight: 600; white-space: nowrap; }
-.profile-row-bar { margin-top: 6px; height: 4px; overflow: hidden; border-radius: 3px; background: var(--linha-2); }
-.profile-row-bar b { height: 100%; display: block; border-radius: 3px; background: linear-gradient(90deg, var(--mata-500), var(--mata-700)); }
-.profile-note { margin: 12px 20px 18px; color: var(--tinta-4); font-size: 10px; line-height: 1.5; }
-.radar-chart { width: 180px; height: 180px; }
-.radar-grid { fill: none; stroke: var(--linha); stroke-width: 1; }
-.radar-spoke { stroke: var(--linha); stroke-width: 1; }
-.radar-label { fill: var(--tinta-4); font: 600 8px var(--text); text-transform: uppercase; }
-.radar-avg { fill: none; stroke: var(--tinta-4); stroke-width: 1.4; stroke-dasharray: 3 3; }
-.radar-state { fill: var(--mata-500); fill-opacity: 0.28; stroke: var(--mata-700); stroke-width: 2; }
-.radar-legend { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; color: var(--tinta-4); font-size: 9px; }
-.radar-legend i { width: 8px; height: 8px; display: inline-block; margin-left: 8px; border-radius: 2px; }
-.radar-legend i:first-child { margin-left: 0; }
-.radar-legend .is-state { background: var(--mata-500); }
-.radar-legend .is-avg { border: 1px dashed var(--tinta-4); border-radius: 50%; }
 .methodology-page { padding: 58px 0 96px; background: radial-gradient(circle at 88% 2%, rgba(224, 168, 60, 0.1), transparent 22rem), var(--areia); }
 .methodology-layout { display: grid; grid-template-columns: clamp(240px, 17vw, 330px) minmax(0, 1fr); gap: clamp(40px, 4.2vw, 84px); }
 .methodology-index { position: sticky; top: 104px; align-self: start; max-height: calc(100vh - 132px); overflow-y: auto; padding: 22px; border: 1px solid var(--linha); border-radius: 10px; background: rgba(255, 255, 255, 0.78); box-shadow: 0 18px 45px rgba(14, 43, 34, 0.06); }
@@ -621,13 +618,12 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .menu-open .topnav { position: absolute; top: 68px; right: 0; left: 0; padding: 14px 24px 18px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; background: var(--mata); box-shadow: 0 16px 30px rgba(14, 43, 34, 0.18); }
   .section-shell { width: 100%; padding-inline: 20px; }
   .select-wrap { width: 100%; flex-basis: auto; }
-  .map-controls { width: 100%; }
-  .select-wrap.is-year { width: 152px; flex: 0 0 152px; }
+  .panorama-heading { align-items: start; flex-direction: column; }
+  .map-controls { width: min(100%, 484px); flex: none; }
+  .select-wrap.is-year { width: 100%; }
   .dashboard-grid { grid-template-columns: 1fr; }
   .dashboard-sidebar { position: static; height: auto; max-height: none; }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
-  .profile-head, .profile-overview, .profile-list { padding-inline: 24px; }
-  .profile-note { margin-inline: 24px; }
   .overview { grid-template-columns: repeat(2, 1fr); }
   .indicators-workspace { grid-template-columns: 1fr; }
   .panorama-heading h1, .indicators-hero h1 { font-size: clamp(26px, 4.4vw, 32px); }
@@ -666,6 +662,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   h1 { font-size: 42px; }
   .lead { font-size: 14px; }
   .dropdown-menu { width: 100%; }
+  .map-controls { grid-template-columns: 1fr; }
   .map-card, .ranking-card { padding: 18px 16px 10px; }
   .card-heading { align-items: start; flex-direction: column; }
   .map-body { grid-template-columns: 1fr; gap: 4px; }
@@ -690,10 +687,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .catalogo-tabs, .ind-cards { grid-template-columns: 1fr; }
   .ind-card { padding: 18px; }
   footer { align-items: flex-start; flex-direction: column; padding-inline: 20px; }
-  .profile-head { padding-inline: 24px; }
-  .profile-overview { padding-inline: 24px; }
-  .profile-list { padding-inline: 24px; }
-  .profile-note { margin-inline: 24px; }
   .indicators-page { padding-bottom: 64px; }
   .indicators-hero { padding-top: 34px; }
   .panorama-heading h1, .indicators-hero h1 { font-size: 27px; white-space: normal; }
