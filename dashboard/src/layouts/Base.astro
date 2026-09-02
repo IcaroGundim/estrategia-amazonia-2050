@@ -19,11 +19,13 @@ const { title, description, ogTitle, ogDescription, mainClass, pagina, dados = [
 // antes ela era injetada por uma substituição de texto no build-static.mjs.
 const ogImage = new URL('/og.png', Astro.site).href;
 
+// A rota e a chave continuam sendo `metodologia`: muda o rótulo e a ordem do menu,
+// não o endereço da página nem as âncoras que o resto do site aponta para ela.
 const NAVEGACAO = [
   { href: '/', rotulo: 'Panorama', chave: 'index' },
+  { href: '/metodologia', rotulo: 'Visão Geral', chave: 'metodologia' },
   { href: '/metas', rotulo: 'Metas', chave: 'metas' },
-  { href: '/indicadores', rotulo: 'Indicadores', chave: 'indicadores' },
-  { href: '/metodologia', rotulo: 'Metodologia', chave: 'metodologia' }
+  { href: '/indicadores', rotulo: 'Indicadores', chave: 'indicadores' }
 ];
 
 const ACOES = {

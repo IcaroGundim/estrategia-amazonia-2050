@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, bindMenu, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 // A página é sempre da Amazônia Legal: o mapa mostra a distribuição da meta
@@ -45,7 +45,7 @@ function contagem(meta) {
 
 // ---------- leitura em destaque ----------
 
-// O card do mapa pode estar oculto ou ausente (a lista também roda no Panorama).
+// O card do mapa nasce oculto e só aparece quando há meta com mapa para mostrar.
 function cardDoMapaVisivel() {
   const card = document.querySelector('.goals-map-card');
   return Boolean(card && !card.hidden);
@@ -117,7 +117,7 @@ function renderFlags() {
     ? (state.data.estados.find((estado) => estado.uf === state.uf)?.name || state.uf)
     : 'Amazônia Legal (região)';
   wrap.innerHTML = `<span class="goals-flags-nome">${escape(nome)}</span>`
-    + `<button type="button" class="goals-flag al${state.uf ? '' : ' is-active'}" data-uf="" title="Amazônia Legal — visão regional" aria-label="Amazônia Legal, visão regional" aria-pressed="${state.uf ? 'false' : 'true'}">AL</button>`
+    + `<button type="button" class="goals-flag${state.uf ? '' : ' is-active'}" data-uf="" title="Amazônia Legal — visão regional" aria-label="Amazônia Legal, visão regional" aria-pressed="${state.uf ? 'false' : 'true'}">${flagImage(BANDEIRA_REGIAO, '')}</button>`
     + state.data.estados.map((estado) => `<button type="button" class="goals-flag${state.uf === estado.uf ? ' is-active' : ''}" data-uf="${estado.uf}" title="${escape(estado.name)}" aria-label="${escape(estado.name)}" aria-pressed="${state.uf === estado.uf ? 'true' : 'false'}">${flagImage(estado, '')}</button>`).join('');
 }
 
@@ -175,9 +175,14 @@ function renderList() {
       ${itens.map((meta) => {
         const item = state.uf ? meta.estados[state.uf] : meta.regional;
         const { cumprem, total } = contagem(meta);
-        const p = !item
-          ? 0
-          : (item.cumpre ? 100 : (Number.isFinite(item.escala) ? Math.round(item.escala * 100) : 0));
+        // Não ter valor regional único não quer dizer não ter progresso: a CAPAG é uma
+        // classificação por estado e o patamar da meta são os nove em A ou B, então a
+        // jornada da região é quantos já chegaram lá. Na visão de um estado o vazio
+        // continua vazio — ali a ausência é falta de dado, não uma contagem.
+        const contaEstados = !item && !state.uf && total > 0;
+        const p = item
+          ? (item.cumpre ? 100 : (Number.isFinite(item.escala) ? Math.round(item.escala * 100) : 0))
+          : (contaEstados ? Math.round(cumprem / total * 100) : 0);
         const semEscala = item && !item.cumpre && !Number.isFinite(item.escala) && !item.categoria;
 
         let valorHoje;
@@ -200,7 +205,9 @@ function renderList() {
             ? `<em class="goals-row-val dentro" style="left:${partida}%">${escape(valorHoje)}</em>`
             : `<em class="goals-row-val fora" style="left:${partida}%">${escape(valorHoje)}</em>`);
 
-        const classe = item?.cumpre ? 'is-met' : (item ? 'is-progress' : 'is-empty');
+        const classe = item?.cumpre || (contaEstados && cumprem === total)
+          ? 'is-met'
+          : (item || contaEstados ? 'is-progress' : 'is-empty');
         const prefixo = meta.direcao === 'menor' ? '≤ ' : '';
         const patamar = item
           ? `<b>${escape(prefixo + valor(meta, item.alvo))}</b>`
@@ -222,30 +229,6 @@ function renderList() {
     </section>`).join('');
 
   animaBarras();
-}
-
-function renderCoverage() {
-  const lead = document.querySelector('#goals-coverage-lead');
-  if (!lead) return;
-  const { resumo, foraDoPainel } = state.data;
-  const semValores = foraDoPainel.filter((item) => !item.temValores).length;
-  const semParametro = foraDoPainel.length - semValores;
-  lead.textContent =
-    `Dos ${resumo.totalIndicadores} indicadores da matriz de resultados, ${resumo.metasAvaliadas} têm meta com patamar comparável aos valores coletados. `
-    + `Ficam de fora ${semValores} sem dados para os nove estados e ${semParametro} que têm dados, mas cuja meta não define patamar confrontável. `
-    + `Entre as avaliadas, ${resumo.regional.semValorRegional} não admitem valor regional único e são lidas apenas estado a estado.`;
-
-  const grupos = [
-    ['Com dados, sem patamar comparável', foraDoPainel.filter((item) => item.temValores)],
-    ['Sem dados coletados', foraDoPainel.filter((item) => !item.temValores)]
-  ];
-  document.querySelector('#goals-excluded').innerHTML = grupos.map(([titulo, itens]) => `
-    <div class="goals-excluded-group">
-      <h3>${escape(titulo)} <span>${itens.length}</span></h3>
-      <ul>
-        ${itens.map((item) => `<li><b>${escape(item.codigo)} · ${escape(item.nome)}</b><small>${escape(item.motivo)}</small></li>`).join('')}
-      </ul>
-    </div>`).join('');
 }
 
 function renderAll() {
@@ -285,7 +268,6 @@ async function init() {
   state.geo = geo || null;
   state.meta = metas.metas[0]?.codigo || null;
   state.uf = null;
-  renderCoverage();
   renderFlags();
   renderAll();
   bindEvents();

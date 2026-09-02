@@ -1,7 +1,7 @@
-import { aoEntrarNaPagina, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
-const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null };
+const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null, sparkRef: null };
 
 const metrics = {
   prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
@@ -16,10 +16,7 @@ const metrics = {
   isgr: { label: 'Saneamento e gestão de riscos', subtitle: 'maior percentual = melhor posição', description: 'Proxy do ISGR com água e esgoto adequados (Censo 2022) e fatores climáticos e de governança (MUNIC 2024).', source: 'IBGE · Censo 2022 + MUNIC 2024', field: 'isgr', direction: 'high', formatter: (value) => percent(value, 1) },
   pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS', serie: 'pevsBilhoes', field: 'pevsBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
   piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa', serie: 'piaBilhoes', field: 'piaBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
-  pdPctPib: { label: 'P&D estadual (% do PIB)', subtitle: 'maior percentual = melhor posição', description: 'Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).', source: 'MCTI + IBGE/SIDRA', serie: 'pdPctPib', field: 'pdPctPib', direction: 'high', formatter: (value) => percent(value, 2) },
-  territorio: { label: 'Dimensão · Território e clima', subtitle: 'maior pontuação = melhor posição', description: 'Síntese relativa de desmatamento, focos de calor e gestão de unidades de conservação.', source: 'Cálculo experimental do painel', field: 'dimensions.territorio', direction: 'high', formatter: (value) => `${value} pts` },
-  pessoas: { label: 'Dimensão · Pessoas', subtitle: 'maior pontuação = melhor posição', description: 'Síntese relativa de pobreza, frequência escolar e cobertura da atenção primária.', source: 'Cálculo experimental do painel', field: 'dimensions.pessoas', direction: 'high', formatter: (value) => `${value} pts` },
-  score: { label: 'Síntese geral', subtitle: 'maior pontuação = melhor posição', description: 'Combinação experimental dos oito indicadores disponíveis em uma escala relativa de 0 a 100.', source: 'Cálculo experimental do painel', field: 'score', direction: 'high', formatter: (value) => `${value} pts` }
+  pdPctPib: { label: 'P&D estadual (% do PIB)', subtitle: 'maior percentual = melhor posição', description: 'Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).', source: 'MCTI + IBGE/SIDRA', serie: 'pdPctPib', field: 'pdPctPib', direction: 'high', formatter: (value) => percent(value, 2) }
 };
 
 const STATE_ORDER = ['AC', 'AP', 'AM', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'];
@@ -54,9 +51,9 @@ const AGREGACAO = {
   pdPctPib: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.', notaSerie: 'Em 2021 e 2023 só oito estados têm valor, então a média desses anos não é composta pelos mesmos estados dos demais.' },
   pevsBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' },
   piaBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' }
-  // territorio, pessoas e score ficam de fora de propósito: são normalizados min–max
-  // entre os nove estados, então a média deles é ~50 por construção e não diz nada
-  // sobre a região. A ausência aqui é o que faz o painel dizer isso na tela.
+  // Todo indicador do seletor tem entrada aqui. A guarda por ausência segue no
+  // painel regional: um indicador novo sem método de agregação definido precisa
+  // dizer isso na tela, não inventar um número para a região.
 };
 
 function agregacaoDe(metricKey) { return AGREGACAO[metricKey] || null; }
@@ -226,13 +223,12 @@ function createDropdown(container, options, initialValue, onChange, { disabled =
 let metricDropdown = null;
 
 function populateSelect() {
-  const experimental = new Set(['territorio', 'pessoas', 'score']);
   const options = Object.entries(metrics).map(([key, metric]) => ({
     value: key,
     label: metric.label,
     sublabel: metric.subtitle,
-    group: experimental.has(key) ? 'sinteses' : 'indicadores',
-    groupLabel: experimental.has(key) ? 'Sínteses experimentais' : 'Indicadores oficiais'
+    group: 'indicadores',
+    groupLabel: 'Indicadores oficiais'
   }));
   metricDropdown = createDropdown(document.querySelector('#metric-select'), options, state.metric, (value) => { state.metric = value; ajustaAno(); renderAll(); });
 }
@@ -384,24 +380,55 @@ function renderRanking() {
   const previousHeight = Number(previousMarker?.dataset.height);
   document.querySelector('[data-ranking-title]').textContent = metric.label;
   document.querySelector('[data-ranking-subtitle]').textContent = metric.subtitle;
-  list.innerHTML = ordered.map((item, index) => {
-    const value = valorDoIndicador(item, metric);
+  // A largura do medidor é sempre relativa aos nove estados. A região entra como
+  // régua e não pode mexer nessa escala, então `min` e `max` continuam vindo só
+  // deles — como no minigráfico, uma média ponderada cai dentro desse intervalo.
+  const barra = (value) => {
     const positive = value === null ? 0 : (metric.direction === 'high' ? (value - min) / (max - min || 1) : (max - value) / (max - min || 1));
+    return value === null ? 0 : (Math.min(9, Math.max(1, Math.ceil(positive * 9))) / 9) * 100;
+  };
+
+  // A Amazônia Legal entra na ordenação junto com os estados, na posição que o valor
+  // dela ocupa entre eles — é isso que mostra quantos estão acima e quantos abaixo.
+  // Fica de fora em 'soma' (PEVS e PIA), onde o total dos nove não é um par dos
+  // estados e encostaria o medidor no fim da escala sem significar desempenho.
+  const agregacao = agregacaoDe(state.metric);
+  const valorAL = agregacao && agregacao.metodo !== 'soma' ? valorRegional(state.metric) : null;
+  const entradas = ordered.map((item) => ({ item, value: valorDoIndicador(item, metric) }));
+  if (valorAL !== null) {
+    const acima = entradas.filter(({ value }) => (
+      value !== null && (metric.direction === 'high' ? value > valorAL : value < valorAL)
+    )).length;
+    entradas.splice(acima, 0, { regiao: true, value: valorAL });
+  }
+
+  // A numeração continua sendo a dos estados: a região ocupa o lugar dela na ordem
+  // mas não recebe posição, então quem está abaixo dela não pula um número.
+  let posicao = 0;
+  const linhas = entradas.map(({ item, value, regiao }) => {
+    // data-state vazio já é o escopo regional: `selecionaEscopo` normaliza para null.
+    const ativo = regiao ? !state.selected : state.selected === item.uf;
+    const medida = `<span class="rank-measure"><b>${textoDoValor(metric, value)}</b><i><em style="width:${barra(value)}%"></em></i></span>`;
     return `<li>
-      <button type="button" class="rank-item ${state.selected === item.uf ? 'is-selected' : ''}" data-state="${item.uf}" aria-pressed="${state.selected === item.uf}" style="--accent:${accentOf(item.uf)}">
-        <span class="rank-number">${index + 1}</span>
-        ${flagImage(item, '')}
-        <span class="rank-name"><b>${escape(item.name)}</b><small>${item.uf} · ${escape(item.capital)}</small></span>
-        <span class="rank-measure"><b>${textoDoValor(metric, value)}</b><i><em style="width:${value === null ? 0 : (Math.min(9, Math.max(1, Math.ceil(positive * 9))) / 9) * 100}%"></em></i></span>
+      <button type="button" class="rank-item ${regiao ? 'is-regiao ' : ''}${ativo ? 'is-selected' : ''}" data-state="${regiao ? '' : item.uf}" aria-pressed="${ativo}"${regiao ? '' : ` style="--accent:${accentOf(item.uf)}"`}>
+        <span class="rank-number"${regiao ? ' aria-hidden="true"' : ''}>${regiao ? '' : ++posicao}</span>
+        ${flagImage(regiao ? BANDEIRA_REGIAO : item, '')}
+        <span class="rank-name">${regiao
+          ? '<b>Amazônia Legal</b><small>Conjunto dos 9 Estados</small>'
+          : `<b>${escape(item.name)}</b><small>${item.uf} · ${escape(item.capital)}</small>`}</span>
+      ${medida}
       </button>
     </li>`;
-  }).join('') + '<li class="rank-selection-marker" role="presentation" aria-hidden="true"></li>';
+  });
+
+  list.innerHTML = linhas.join('') + '<li class="rank-selection-marker" role="presentation" aria-hidden="true"></li>';
 
   const selectedRow = list.querySelector('.rank-item.is-selected')?.closest('li');
   const marker = list.querySelector('.rank-selection-marker');
   if (!marker) return;
-  // Na perspectiva regional nenhum estado está selecionado: sem isto o marcador
-  // ficaria sem altura definida, encostado no topo da lista.
+  // Na perspectiva regional quem fica marcado é a linha da própria região. Quando
+  // nem ela está na lista — indicadores de 'soma' — não há linha selecionada, e sem
+  // isto o marcador ficaria sem altura definida, encostado no topo.
   marker.hidden = !selectedRow;
   if (!selectedRow) return;
   const nextTop = selectedRow.offsetTop;
@@ -507,14 +534,18 @@ const SPARK = { largura: 240, altura: 46, margem: 4 };
 // esticado nos dois eixos (preserveAspectRatio="none"), a porcentagem vale
 // igualmente para a sobreposição em HTML, que é quem desenha o ponto e a guia do
 // hover — um <circle> no SVG viraria elipse.
-function pontosDaSpark(serie) {
+// União das séries desenhadas juntas. Duas linhas só se comparam se dividirem
+// a mesma escala nos dois eixos.
+function dominioDaSpark(...series) {
+  const pontos = series.flat();
+  const valores = pontos.map(({ valor }) => valor);
+  const anos = pontos.map(({ ano }) => Number(ano));
+  return { min: Math.min(...valores), max: Math.max(...valores), primeiroAno: Math.min(...anos), ultimoAno: Math.max(...anos) };
+}
+
+function pontosDaSpark(serie, dominio = dominioDaSpark(serie)) {
   const { largura, altura, margem } = SPARK;
-  const valores = serie.map(({ valor }) => valor);
-  const min = Math.min(...valores);
-  const max = Math.max(...valores);
-  const anos = serie.map(({ ano }) => Number(ano));
-  const primeiroAno = Math.min(...anos);
-  const ultimoAno = Math.max(...anos);
+  const { min, max, primeiroAno, ultimoAno } = dominio;
   return serie.map((ponto) => {
     // A posição vem do ano, não do índice. Assim uma lacuna de dois anos
     // ocupa o dobro do espaço de um intervalo anual, mesmo depois de filtrada.
@@ -524,19 +555,25 @@ function pontosDaSpark(serie) {
   });
 }
 
-function sparkline(pontos, { parciais = [], anoAtivo = null, escopo = 'regional' } = {}) {
+function sparkline(pontos, { parciais = [], anoAtivo = null, escopo = 'regional', referencia = null, referenciaRotulo = '' } = {}) {
   if (pontos.length < 2) return '';
   const { largura, altura } = SPARK;
   const linha = pontos.map(({ x, y }, index) => `${index ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join('');
   const area = `${linha}L${pontos.at(-1).x.toFixed(1)},${altura}L${pontos[0].x.toFixed(1)},${altura}Z`;
+  // A referência tem guarda própria: a série regional pode ter menos de dois
+  // pontos mesmo quando a do estado tem trinta. Nesse caso some a linha, não o gráfico.
+  const ref = referencia && referencia.length > 1
+    ? `<path class="spark-ref" d="${referencia.map(({ x, y }, index) => `${index ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join('')}" />`
+    : '';
   // Traço vertical com non-scaling-stroke: marca o ano sem deformar no esticamento.
   const ativo = pontos.find(({ ano }) => ano === anoAtivo);
   const marcador = ativo
     ? `<line class="spark-marker ${parciais.includes(ativo.ano) ? 'is-parcial' : ''}" x1="${ativo.x.toFixed(1)}" y1="${ativo.y.toFixed(1)}" x2="${ativo.x.toFixed(1)}" y2="${altura}" />`
     : '';
-  return `<div class="spark-wrap" tabindex="0" role="group" aria-label="Trajetória ${escape(escopo)} de ${pontos[0].ano} a ${pontos.at(-1).ano}. Use as setas para mudar o ano exibido.">
+  return `<div class="spark-wrap" tabindex="0" role="group" aria-label="Trajetória ${escape(escopo)} de ${pontos[0].ano} a ${pontos.at(-1).ano}.${ref ? ` Uma segunda linha, tracejada, traz a Amazônia Legal por ${escape(referenciaRotulo)}, na mesma escala.` : ''} Use as setas para mudar o ano exibido.">
     <svg class="spark" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
       <path class="spark-area" d="${area}" />
+      ${ref}
       <path class="spark-line" d="${linha}" />
       ${marcador}
     </svg>
@@ -577,7 +614,9 @@ function realcaSpark(ponto) {
   marca.style.left = `${ponto.xPct}%`;
   marca.style.top = `${ponto.yPct}%`;
   marca.classList.toggle('is-parcial', parcial);
-  tip.innerHTML = `<b>${ponto.ano}${parcial ? ' · em curso' : ''}</b><span>${escape(textoDoValor(metric, ponto.valor))}</span>`;
+  const referencia = state.sparkRef?.find(({ ano }) => ano === ponto.ano);
+  tip.innerHTML = `<b>${ponto.ano}${parcial ? ' · em curso' : ''}</b><span>${escape(textoDoValor(metric, ponto.valor))}</span>`
+    + (referencia ? `<em>AL ${escape(textoDoValor(metric, referencia.valor))}</em>` : '');
   // A dica acompanha o ponto na horizontal e encosta nas bordas sem transbordar.
   tip.style.left = `${ponto.xPct}%`;
   tip.classList.toggle('is-inicio', ponto.xPct < 22);
@@ -651,6 +690,7 @@ function renderPainelRegional() {
 
   // Os pontos ficam no estado: o hover e o teclado os leem sem refazer a agregação.
   state.spark = serie.length > 1 ? pontosDaSpark(serie) : null;
+  state.sparkRef = null;
   const grafico = state.spark
     ? `<section class="state-spark-block" aria-label="Série histórica regional">
          <div class="state-section-title"><span>Trajetória da região</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
@@ -671,9 +711,9 @@ function renderPainelRegional() {
     <div class="state-panel-body">
       <div class="state-panel-kicker">
         <p class="eyebrow">Perspectiva regional</p>
-        <span>nove estados · ciclo 2025–2026</span>
       </div>
       <div class="state-identity is-regional">
+        ${flagImage(BANDEIRA_REGIAO, 'Bandeira da Amazônia Legal')}
         <div><h2>Amazônia Legal</h2><p>${escape(resumo.statesCount)} estados · ${number(resumo.municipalities)} municípios</p></div>
       </div>
 
@@ -707,11 +747,19 @@ function renderPainelEstado() {
   const metricRank = statesByMetric().findIndex((candidate) => candidate.uf === item.uf) + 1;
   const serie = serieDoEstado(item, metric);
   const { parciais } = anosDaMetrica(metric);
-  state.spark = serie.length > 1 ? pontosDaSpark(serie) : null;
+  const agregacao = agregacaoDe(state.metric);
+  // A região entra como linha de comparação, mas só quando o valor regional é uma
+  // média: em 'soma' (PEVS e PIA) o total dos nove é uma ordem de grandeza acima do
+  // estado e achataria a linha dele contra o eixo, comparando coisas diferentes.
+  const serieRef = agregacao && agregacao.metodo !== 'soma' ? serieRegional(state.metric) : [];
+  const dominio = dominioDaSpark(serie, serieRef.length > 1 ? serieRef : []);
+  state.spark = serie.length > 1 ? pontosDaSpark(serie, dominio) : null;
+  state.sparkRef = state.spark && serieRef.length > 1 ? pontosDaSpark(serieRef, dominio) : null;
   const grafico = state.spark
     ? `<section class="state-spark-block" aria-label="Série histórica de ${escape(item.name)}">
          <div class="state-section-title"><span>Trajetória do estado</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
-         ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: `de ${item.name}` })}
+         ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: `de ${item.name}`, referencia: state.sparkRef, referenciaRotulo: agregacao?.rotulo || '' })}
+         ${state.sparkRef ? `<p class="spark-legend"><span class="is-estado">${escape(item.name)}</span><span class="is-regiao">Amazônia Legal · ${escape(agregacao.rotulo)}</span></p>` : ''}
        </section>`
     : '';
   document.querySelector('#state-panel').innerHTML = `
@@ -741,6 +789,7 @@ function renderPainelEstado() {
 
       <div class="state-reading">
         <p><strong>${escape(item.name)}</strong> está na ${metricRank}ª posição entre os nove estados para o indicador exibido.</p>
+        ${state.sparkRef && agregacao.notaSerie ? `<p class="state-reading-nota">${escape(agregacao.notaSerie)}</p>` : ''}
       </div>
     </div>`;
 }

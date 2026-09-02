@@ -150,23 +150,7 @@ import Base from '../layouts/Base.astro';
         <h2>Como os dados são lidos aqui</h2>
         <p>O painel organiza indicadores de fontes públicas para comparar os nove estados. Ele antecipa uma leitura enquanto a metodologia de monitoramento da Estratégia não é definida.</p>
 
-        <div class="methodology-warning">
-          <span>Importante</span>
-          <p>A síntese 0–100 é <strong>relativa aos nove estados</strong> e não é o monitoramento oficial da Estratégia. Ela não mede cumprimento de metas pactuadas nem substitui avaliação de políticas públicas.</p>
-        </div>
-
-        <div class="method-formula" aria-label="Fórmula da normalização">
-          <span>Normalização min–máx</span>
-          <strong>nota = (valor − mínimo) ÷ (máximo − mínimo) × 100</strong>
-          <p>Cada indicador é convertido para a mesma escala. Nos casos em que menor é melhor, a escala é invertida. As notas são então agregadas por média ponderada nas quatro dimensões abaixo.</p>
-        </div>
-
-        <div id="method-dimensions" class="method-dimension-list" aria-live="polite">
-          <p class="method-loading">Carregando dimensões…</p>
-        </div>
-
-        <div class="method-guidance-grid is-compacta">
-          <article><h3>Quando falta um dado</h3><p>O componente sai daquele cálculo e os pesos válidos são redistribuídos. O painel não preenche lacunas com zero nem com média regional.</p></article>
+        <div class="method-guidance-grid">
           <article><h3>Períodos diferentes</h3><p>Cada base entra com seu período mais recente, então os anos de referência não são uniformes entre indicadores.</p></article>
         </div>
 
@@ -174,11 +158,6 @@ import Base from '../layouts/Base.astro';
           <span>Fontes consolidadas</span>
           <p data-method-sources>Carregando fontes…</p>
         </div>
-
-        <blockquote>
-          <strong>Leia a síntese como porta de entrada.</strong>
-          <p>Resultados próximos não significam desempenhos equivalentes, e uma posição alta não comprova efetividade de uma política. Antes de concluir, volte ao valor original, à unidade e à fonte na página de indicadores.</p>
-        </blockquote>
 
         <div class="method-actions">
           <a class="primary-link" href="/metas">Ver o cumprimento das metas</a>

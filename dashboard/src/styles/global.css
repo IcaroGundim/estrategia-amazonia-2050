@@ -111,11 +111,12 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .map-indicator-card a { margin-top: 16px; padding-bottom: 2px; display: inline-block; border-bottom: 1px solid currentColor; color: var(--mata); font-size: 10px; font-weight: 600; }
 .map-indicator-card a:hover, .map-indicator-card a:focus-visible { color: var(--urucum); outline: none; }
 .map-canvas { position: relative; min-width: 0; }
-/* Volta à leitura regional. Fica no canto superior esquerdo, onde a projeção não
-   desenha nenhum estado; escolher um estado já é clicar nele no mapa. */
-/* Volta à leitura regional. É o mesmo chip AL da página de Metas (.goals-flag.al):
-   aqui só o posicionamento, abaixo do seletor de ano, sobre o canto vazio do mapa. */
-.map-scope { position: absolute; z-index: 4; top: 0; right: 0; }
+/* Volta à leitura regional: a mesma bandeira do trilho de Metas. Fica acima da
+   ponta noroeste do mapa, onde a projeção não desenha nenhum estado; escolher um
+   estado já é clicar nele no mapa. O deslocamento é em porcentagem porque a
+   projeção é centrada e escalada dentro do canvas — em px a bandeira descolaria
+   do mapa conforme a largura da tela. */
+.goals-flag.map-scope { position: absolute; z-index: 4; top: 0; left: 14%; }
 .map-scope:focus-visible { border-color: var(--mata); outline: none; }
 #map { width: 100%; height: clamp(360px, 23vw, 470px); min-height: 350px; display: block; }
 .map-tooltip { position: absolute; z-index: 8; width: max-content; min-width: 170px; max-width: 230px; padding: 11px 13px; border: 1px solid rgba(245, 240, 232, 0.18); border-radius: 7px; pointer-events: none; background: var(--mata); color: var(--areia); box-shadow: 0 10px 24px rgba(14, 43, 34, 0.18); }
@@ -159,6 +160,10 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .ranking-list li { flex: 1 1 auto; display: flex; border-top: 1px solid var(--linha-2); }
 .rank-item { position: relative; width: 100%; min-height: 46px; padding: 11px 6px; display: grid; grid-template-columns: 28px 32px minmax(120px, 1fr) minmax(125px, 0.85fr); align-items: center; gap: 10px; border: 0; border-radius: 8px; background: transparent; color: var(--tinta); text-align: left; }
 .rank-item:hover, .rank-item:focus-visible, .rank-item.is-selected { background: #f5f1ea; outline: none; }
+/* A região é régua, não competidora: sem número de posição e com o nome em verde
+   para não se confundir com os nove na leitura rápida da coluna. */
+.rank-item.is-regiao .rank-name b { color: var(--mata); font-weight: 700; }
+.rank-item.is-regiao .rank-name small { color: var(--mata-500); }
 .rank-item.is-selected { box-shadow: none; }
 .rank-selection-marker { position: absolute; z-index: 2; top: 0; left: 0; width: 3px; margin: 0; padding: 0; pointer-events: none; background: var(--urucum); list-style: none; }
 .rank-selection-marker.is-animated { transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), height 180ms ease; }
@@ -231,6 +236,15 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .spark { width: 100%; height: 88px; display: block; overflow: visible; }
 .spark-line { fill: none; stroke: var(--mata-500); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .spark-area { fill: var(--mata-500); fill-opacity: 0.12; stroke: none; }
+/* Linha da região sobre o gráfico do estado: tracejada e mais clara para ler como
+   pano de fundo, nunca como uma segunda série de igual peso. */
+.spark-ref { fill: none; stroke: var(--tinta-4); stroke-width: 1.3; stroke-dasharray: 4 3; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+/* Uma entrada por linha sempre: com quebra automática "Pará" cabia ao lado da
+   região e "Mato Grosso" não, e a legenda mudava de forma conforme o estado. */
+.spark-legend { margin: 9px 0 0; display: grid; justify-items: start; gap: 4px; color: var(--tinta-4); font-size: 10px; }
+.spark-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.spark-legend span::before { width: 14px; height: 0; content: ""; border-top: 2px solid var(--mata-500); }
+.spark-legend .is-regiao::before { border-top: 2px dashed var(--tinta-4); }
 .spark-marker { stroke: var(--urucum); stroke-width: 2; vector-effect: non-scaling-stroke; }
 .spark-marker.is-parcial { stroke: var(--ocre); stroke-dasharray: 3 2; }
 /* Realce do hover em HTML sobre o SVG: o desenho é esticado nos dois eixos, então
@@ -244,6 +258,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .spark-tip b { color: var(--mata); font: 700 12px var(--display); }
 /* Urucum escurecido para texto sobre fundo claro — o mesmo tom de .ind-status.is-pending. */
 .spark-tip span { margin-left: 7px; color: #8e3213; font-size: 12px; font-variant-numeric: tabular-nums; }
+.spark-tip em { margin-left: 7px; color: var(--tinta-4); font-size: 11px; font-style: normal; font-variant-numeric: tabular-nums; }
 .spark-tip[hidden], .spark-guia[hidden], .spark-ponto[hidden] { display: none; }
 .dashboard-sidebar .ranking-panel-head { align-items: start; }
 .dashboard-sidebar .ranking-panel-head .text-button { margin-top: 3px; white-space: nowrap; }
@@ -407,13 +422,14 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .methodology-hero-grid { display: block; }
 .methodology-hero-copy { min-width: 0; padding-block: 14px 8px; }
 .methodology-intro h1 { max-width: 20ch; font-size: clamp(36px, 3.4vw, 54px); line-height: 1; }
-.methodology-lead { max-width: 60ch; margin: 25px 0 0; color: var(--tinta-3); font-size: 19px; line-height: 1.55; text-wrap: pretty; }
+/* Justificado precisa de hifenização, senão o espaçamento entre palavras abre
+   buracos no meio das linhas — em português as palavras são longas. O lang do
+   documento é pt-BR, então o navegador sabe onde separar. O limite passa a ser
+   100ch, o mesmo dos outros blocos de texto da página. */
+.methodology-lead { max-width: 100ch; margin: 25px 0 0; color: var(--tinta-3); font-size: 19px; line-height: 1.55; text-align: justify; text-wrap: pretty; hyphens: auto; }
 .method-section-ornament { width: min(430px, 62%); height: 25px; margin: 7px 0 13px; background: center / 100% 25px no-repeat url("data:image/svg+xml,%3Csvg viewBox='0 0 430 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 18 C72 18 72 6 143 6 C215 6 215 18 287 18 C358 18 358 6 430 6' fill='none' stroke='%23C0451F' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M0 22 C72 22 72 10 143 10 C215 10 215 22 287 22 C358 22 358 10 430 10' fill='none' stroke='%23DDD3C6' stroke-width='2'/%3E%3C/svg%3E"); }
 .method-section-ornament.is-ochre { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 430 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 18 C72 18 72 6 143 6 C215 6 215 18 287 18 C358 18 358 6 430 6' fill='none' stroke='%23E0A83C' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M0 22 C72 22 72 10 143 10 C215 10 215 22 287 22 C358 22 358 10 430 10' fill='none' stroke='%23DDD3C6' stroke-width='2'/%3E%3C/svg%3E"); }
 .method-section-ornament > * { display: none; }
-.methodology-warning { margin-top: 30px; padding: 18px 20px; display: grid; grid-template-columns: 95px 1fr; gap: 18px; border-left: 4px solid var(--urucum); background: var(--papel); }
-.methodology-warning > span { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; }
-.methodology-warning p { max-width: 100ch; margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.6; }
 .method-facts { margin-top: 14px; padding: 20px; display: grid; grid-template-columns: repeat(3, 110px) 1fr; align-items: center; gap: 16px; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255, 255, 255, 0.42); }
 .method-facts div { padding-right: 12px; border-right: 1px solid var(--linha); }
 .method-facts strong, .method-facts span { display: block; }
@@ -427,11 +443,14 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-steps b { color: var(--urucum); font: 800 14px var(--display); }
 .method-steps h3 { margin-top: auto; font-size: 22px; }
 .method-steps p { margin: 9px 0 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.6; }
-.method-steps.is-themes { margin-top: 22px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.method-steps.is-themes article { min-height: 0; padding: 18px 20px 19px; display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: start; column-gap: 12px; border-top: 3px solid var(--mata-500); }
-.method-steps.is-themes b { grid-row: 1 / span 2; color: var(--urucum); font: 800 23px/0.9 var(--display); letter-spacing: -0.02em; }
-.method-steps.is-themes h3 { margin: 0; font-size: 16px; line-height: 1.2; }
-.method-steps.is-themes p { margin: 7px 0 0; padding-top: 0; font-size: 12px; line-height: 1.55; }
+/* Os temas não são um cartão de dado: são texto de referência. Sem caixa, sem fundo
+   e sem sombra, separados só por um filete, eles param de competir com os cartões
+   do painel. O peso fica no número em urucum e no respiro entre as colunas. */
+.method-steps.is-themes { margin-top: 26px; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 34px; row-gap: 30px; }
+.method-steps.is-themes article { min-height: 0; padding: 13px 0 0; display: block; border: 0; border-top: 1px solid var(--linha); border-radius: 0; background: none; }
+.method-steps.is-themes b { display: block; color: var(--urucum); font: 800 15px var(--display); letter-spacing: 0.05em; }
+.method-steps.is-themes h3 { margin: 10px 0 0; font-size: 17px; line-height: 1.25; }
+.method-steps.is-themes p { margin: 8px 0 0; padding-top: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.6; }
 .method-vision { margin-top: 24px; padding: 26px 28px; border-radius: 9px; background: var(--mata); color: var(--areia); }
 .method-vision > span { color: var(--ocre); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .method-vision p { max-width: 105ch; margin: 12px 0 0; color: rgba(245, 240, 232, 0.85); font-size: 15px; line-height: 1.65; }
@@ -440,20 +459,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-list li { max-width: 105ch; padding: 15px 2px 15px 24px; position: relative; border-bottom: 1px solid var(--linha); color: var(--tinta-3); font-size: 14px; line-height: 1.6; }
 .method-list li::before { content: ""; position: absolute; top: 20px; left: 2px; width: 7px; height: 7px; border-radius: 2px; background: var(--urucum); }
 .method-list li:first-child { border-top: 1px solid var(--linha); }
-.method-formula { margin-top: 12px; padding: 24px; border-radius: 9px; background: var(--mata); color: var(--areia); }
-.method-formula span { color: var(--ocre); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-.method-formula strong { margin-top: 9px; display: block; font: 600 clamp(16px, 2vw, 22px)/1.35 var(--display); }
-.method-formula p { margin: 10px 0 0; color: rgba(245, 240, 232, 0.68); font-size: 11.5px; }
 .method-subsection { margin-top: 42px; display: grid; grid-template-columns: minmax(210px, 0.8fr) 1.2fr; align-items: end; gap: 32px; }
 .method-subsection.is-single { grid-template-columns: minmax(0, 1fr); }
 .method-subsection .eyebrow { margin-bottom: 8px; }
 .method-subsection h3 { font-size: 28px; line-height: 1.05; }
 .method-subsection > p { max-width: 78ch; margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.6; }
-.method-dimension-list { margin-top: 28px; border-top: 1px solid var(--linha); }
-.method-dimension-list article { min-height: 96px; padding: 18px 0; display: grid; grid-template-columns: 95px 1fr; align-items: center; gap: 20px; border-bottom: 1px solid var(--linha); }
-.method-dimension-list article > b { color: var(--urucum); font: 800 35px/1 var(--display); letter-spacing: -0.04em; }
-.method-dimension-list h3 { font-size: 19px; }
-.method-dimension-list p { max-width: 100ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12.5px; line-height: 1.55; }
 .method-loading { padding: 22px 0; color: var(--tinta-4); font-size: 13px; }
 .method-timeline { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; }
 .method-timeline article { padding: 15px 17px; border-left: 2px solid var(--linha); background: var(--papel); }
@@ -463,7 +473,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-list.is-duas { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); column-gap: 34px; }
 .method-list.is-duas li { max-width: none; }
 
-.method-guidance-grid.is-compacta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .method-guidance-grid.is-compacta article { padding: 16px 18px; }
 .method-guidance-grid.is-compacta h3 { font-size: 15px; }
 .method-guidance-grid.is-compacta p { margin-top: 6px; font-size: 12px; }
@@ -545,13 +554,15 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-list-head h2 { font-size: clamp(22px, 1.9vw, 28px); }
 .goals-list-head h2 em { color: var(--urucum); font-style: normal; }
 .goals-flags { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
-.goals-flags-nome { margin-right: 4px; color: var(--tinta-4); font-size: 10.5px; }
-.goals-flag { width: 30px; height: 21px; padding: 0; display: grid; place-content: center; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); overflow: hidden; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease; }
+.goals-flags-nome { margin-right: 9px; color: var(--tinta-3); font: 600 13px var(--text); }
+.goals-flag { width: 42px; height: 28px; padding: 0; display: grid; place-content: center; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); overflow: hidden; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease; }
 .goals-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .goals-flag:hover { border-color: var(--mata-500); }
-.goals-flag.is-active { border-color: var(--mata); box-shadow: 0 0 0 2px rgba(14, 43, 34, 0.22); }
-.goals-flag.al { width: auto; padding: 0 8px; height: 21px; color: var(--mata); font: 700 10px var(--display); letter-spacing: 0.02em; }
-.goals-flag.al.is-active { background: var(--mata); color: var(--areia); }
+/* Urucum é o código de "selecionado" no painel inteiro — o mesmo do contorno do
+   estado no mapa e da barra que marca a linha no ranking. O anel é opaco: com alfa
+   ele clareava sobre o papel e lia como um halo, não como um contorno. 1px de anel
+   sobre 1px de borda dá uma faixa fina de 2px, que marca sem engrossar a bandeira. */
+.goals-flag.is-active { border-color: var(--urucum); box-shadow: 0 0 0 1px var(--urucum); }
 .goals-list-head { padding-right: 14px; }
 .goals-list-head h2 { font-size: 20px; }
 .goals-list-head p { max-width: 46ch; margin: 8px 0 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.5; }
@@ -584,19 +595,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-row-ler small { color: var(--tinta-4); font-size: 10px; }
 .goals-row.is-empty .goals-row-ler b { color: var(--tinta-4); }
 
-.goals-coverage { margin-top: 52px; padding-top: 26px; border-top: 1px solid var(--linha); }
-.goals-coverage h2 { font-size: clamp(20px, 1.8vw, 26px); }
-.goals-coverage > p { max-width: 100ch; margin: 12px 0 0; color: var(--tinta-3); font-size: 13px; line-height: 1.6; }
-.goals-coverage-list { margin-top: 16px; }
-.goals-coverage-list summary { color: var(--mata); font-size: 12px; font-weight: 600; cursor: pointer; }
-.goals-coverage-list summary:focus-visible { outline: 3px solid rgba(14, 43, 34, 0.12); }
-.goals-excluded-group { margin-top: 20px; }
-.goals-excluded-group h3 { display: flex; align-items: center; gap: 9px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; }
-.goals-excluded-group h3 span { padding: 2px 8px; border-radius: 999px; background: var(--linha-2); color: var(--tinta-3); letter-spacing: 0; }
-.goals-excluded-group ul { margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 10px; list-style: none; }
-.goals-excluded-group li { padding: 13px 15px; border: 1px solid var(--linha); border-radius: 8px; }
-.goals-excluded-group li b { display: block; color: var(--tinta); font-size: 12px; font-weight: 500; }
-.goals-excluded-group li small { display: block; margin-top: 5px; color: var(--tinta-4); font-size: 10.5px; line-height: 1.5; }
 
 @media (max-width: 1180px) {
   .topnav { display: none; }
@@ -705,7 +703,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-section-ornament { width: 76%; }
   .methodology-intro h1 { font-size: 34px; }
   .methodology-lead { font-size: 15px; }
-  .methodology-warning { grid-template-columns: 1fr; gap: 7px; }
   .methodology-index nav { grid-template-columns: 1fr; }
   .methodology-index nav a { min-height: 0; }
   .method-facts { grid-template-columns: 1fr 1fr 1fr; gap: 9px; padding: 15px; }
@@ -715,7 +712,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-steps article { min-height: 170px; }
   .method-steps.is-themes article { min-height: 0; }
   .method-subsection { grid-template-columns: 1fr; align-items: start; gap: 12px; }
-  .method-dimension-list article { grid-template-columns: 75px 1fr; }
   .method-guidance-grid { grid-template-columns: 1fr; }
 }
 

@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Estratégia 2050 — Amazônia Legal" description="Painel de metas e indicadores dos nove estados da Amazônia Legal." ogDescription="Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal." pagina="index" dados={['dashboard', 'geo', 'catalogo', 'metas']}>
+<Base title="Estratégia 2050 — Amazônia Legal" description="Painel de metas e indicadores dos nove estados da Amazônia Legal." ogDescription="Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal." pagina="index" dados={['dashboard', 'geo', 'catalogo']}>
     <section class="panorama" id="inicio">
       <div class="section-shell">
         <div class="dashboard-grid">
@@ -29,7 +29,7 @@ import Base from '../layouts/Base.astro';
                   <p>Carregando indicador…</p>
                 </aside>
                 <div class="map-canvas">
-                  <button id="scope-regional" class="goals-flag al map-scope is-active" type="button" aria-pressed="true" aria-label="Amazônia Legal, visão regional">AL</button>
+                  <button id="scope-regional" class="goals-flag map-scope is-active" type="button" aria-pressed="true" aria-label="Amazônia Legal, visão regional" title="Amazônia Legal — visão regional"><img src="/flags/Bandeira_da_Amazonia_Legal.svg" style="aspect-ratio:3 / 2" alt=""></button>
                   <svg id="map" viewBox="0 0 720 500" role="img" aria-label="Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral."></svg>
                   <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
                 </div>
@@ -64,14 +64,6 @@ import Base from '../layouts/Base.astro';
               </article>
             </section>
 
-            <section class="goals-list-card card" aria-label="Metas da Estratégia Amazônia 2050">
-              <div class="goals-list-head">
-                <h2>Metas - <em>Amazônia Legal.</em></h2>
-                <div id="goals-flags" class="goals-flags" role="group" aria-label="Estado exibido na progressão das metas"></div>
-              </div>
-              <div id="goals-list" class="goals-list" role="list" aria-label="Metas com patamar mensurável"></div>
-            </section>
-
           </div>
 
           <aside class="dashboard-sidebar card" aria-label="Detalhes e comparação estadual">
@@ -103,6 +95,5 @@ import Base from '../layouts/Base.astro';
 
   <script>
     import '../scripts/app.js';
-    import '../scripts/metas.js';
   </script>
 </Base>

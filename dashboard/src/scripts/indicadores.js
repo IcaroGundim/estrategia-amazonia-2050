@@ -17,7 +17,7 @@ const STATUS = {
   coletado: { label: 'Coletado', cls: 'is-ok' },
   parcial: { label: 'Parcial', cls: 'is-partial' },
   pendente: { label: 'Pendente', cls: 'is-pending' },
-  manual: { label: 'Coleta manual', cls: 'is-manual' }
+  manual: { label: 'Não coletado', cls: 'is-manual' }
 };
 
 function normalise(value) {
@@ -67,7 +67,7 @@ function renderStatusFilters() {
     { value: 'coletado', label: 'Coletados' },
     { value: 'parcial', label: 'Parciais' },
     { value: 'pendente', label: 'Pendentes' },
-    { value: 'manual', label: 'Coleta manual' }
+    { value: 'manual', label: 'Não coletados' }
   ];
   document.querySelector('#indicator-status-filters').innerHTML = options.map((option) => `
     <button type="button" class="status-filter ${view.status === option.value ? 'is-active' : ''}" data-status="${option.value}" aria-pressed="${view.status === option.value}">${option.label}</button>`).join('');

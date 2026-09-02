@@ -22,6 +22,11 @@ export function number(value, casas = decimals(value)) {
   return value.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: casas });
 }
 
+// A região não tem bandeira oficial: esta é a silhueta dos nove estados, gerada
+// a partir da mesma malha do mapa (scripts/gerar_bandeira_regiao.mjs), para a
+// Amazônia Legal aparecer ao lado dos estados em vez de virar um rótulo de texto.
+export const BANDEIRA_REGIAO = { flag: 'Bandeira_da_Amazonia_Legal.svg', flagRatio: '3 / 2' };
+
 export function flagImage(item, alt) {
   const version = item.flagVersion ? `?v=${item.flagVersion}` : '';
   const ratio = item.flagRatio ? ` style="aspect-ratio:${item.flagRatio}"` : '';
