@@ -43,6 +43,20 @@ const acao = ACOES[pagina];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- A preferência de vista precisa valer ANTES da primeira pintura: trocar o
+         viewport depois dela provoca um reflow visível. Por isso `is:inline` —
+         um <script> comum vira módulo diferido e roda tarde demais. -->
+    <script is:inline>
+      (function () {
+        var desktop = false;
+        try { desktop = localStorage.getItem('vista') === 'desktop'; } catch (erro) { desktop = false; }
+        document.documentElement.dataset.vista = desktop ? 'desktop' : 'fluxo';
+        var meta = document.querySelector('meta[name="viewport"]');
+        // Sem `initial-scale` no modo forçado: com ela o navegador desenha 1280px
+        // em escala 1:1 e dá rolagem lateral em vez de encaixar a página na tela.
+        if (meta) meta.content = desktop ? 'width=1280' : 'width=device-width, initial-scale=1.0';
+      })();
+    </script>
     <meta name="theme-color" content="#0e2b22" />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
@@ -92,6 +106,12 @@ const acao = ACOES[pagina];
         <div class="topbar-actions">
           <a class="outline-button action-link" href={acao.href}>{acao.rotulo}</a>
         </div>
+        <!-- Os dois rótulos vivem no HTML e o CSS mostra um por vez: nenhum texto
+             é escrito por JS, então não há troca visível depois da pintura. -->
+        <button class="vista-toggle" type="button" data-vista-toggle>
+          <span class="vista-para-desktop">Ver como no computador</span>
+          <span class="vista-para-fluxo">Ver versão para celular</span>
+        </button>
         <button class="menu-button" type="button" aria-expanded="false" aria-label="Abrir menu">Menu</button>
       </div>
     </header>

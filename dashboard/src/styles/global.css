@@ -50,6 +50,18 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
 .outline-button:hover, .outline-button:focus-visible { background: rgba(245, 240, 232, 0.1); outline: none; }
 .action-link { display: inline-flex; align-items: center; justify-content: center; }
 .menu-button { display: none; margin-left: auto; padding: 8px 0; border: 0; background: none; color: var(--areia); font-weight: 600; }
+/* Alternância de vista: escondida no desktop, onde não faz sentido. Só um dos
+   dois rótulos aparece, conforme o modo em vigor no <html>. */
+.vista-toggle { display: none; min-height: 40px; margin-left: auto; padding: 0 13px; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 9px; background: transparent; color: var(--areia); font-size: 12px; font-weight: 600; }
+.vista-toggle:hover, .vista-toggle:focus-visible { background: rgba(245, 240, 232, 0.1); outline: none; }
+html[data-vista="fluxo"] .vista-para-fluxo, html[data-vista="desktop"] .vista-para-desktop { display: none; }
+/* Fora de qualquer media query: com o modo de computador ligado as consultas
+   passam a enxergar uma tela larga, e o botão sumiria justamente para quem
+   precisa dele para voltar. */
+html[data-vista="desktop"] .vista-toggle { display: inline-flex; align-items: center; }
+/* Com o menu à direita, o botão perde o `margin-left: auto` para os dois não
+   disputarem o espaço restante. */
+.vista-toggle + .menu-button { margin-left: 14px; }
 
 .section-shell { width: min(2200px, 100%); margin-inline: auto; padding-inline: clamp(24px, 3.2vw, 72px); }
 .panorama { padding: 36px 0 58px; background: var(--areia); }
@@ -128,7 +140,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .state-group { transform: translate(0, 0); transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
 .state-group:not(.is-selected):focus-within { transform: translate(var(--jump-x), var(--jump-y)); }
 .state-shape { vector-effect: non-scaling-stroke; cursor: pointer; stroke: var(--areia); stroke-width: 1.4; transition: filter 140ms ease, stroke 140ms ease, stroke-width 140ms ease; }
-.state-shape:hover { filter: saturate(1.06) brightness(1.04); }
+
 .state-shape:focus { filter: saturate(1.06) brightness(1.04); outline: none; stroke: var(--mata); stroke-width: 2; }
 .state-shape.is-selected, .state-shape.is-selected:focus { filter: saturate(1.06) brightness(1.04); stroke: var(--urucum); stroke-width: 3; }
 .state-label { font: 800 14px var(--display); text-anchor: middle; dominant-baseline: middle; pointer-events: none; letter-spacing: -0.02em; paint-order: stroke; stroke: rgba(245, 240, 232, 0.28); stroke-width: 2px; stroke-linejoin: round; }
@@ -159,14 +171,16 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .ranking-list { position: relative; flex: 1 1 auto; margin: 0; padding: 0; display: flex; flex-direction: column; list-style: none; }
 .ranking-list li { flex: 1 1 auto; display: flex; border-top: 1px solid var(--linha-2); }
 .rank-item { position: relative; width: 100%; min-height: 46px; padding: 11px 6px; display: grid; grid-template-columns: 28px 32px minmax(120px, 1fr) minmax(125px, 0.85fr); align-items: center; gap: 10px; border: 0; border-radius: 8px; background: transparent; color: var(--tinta); text-align: left; }
-.rank-item:hover, .rank-item:focus-visible, .rank-item.is-selected { background: #f5f1ea; outline: none; }
+.rank-item:focus-visible, .rank-item.is-selected { background: #f5f1ea; outline: none; }
 /* A região é régua, não competidora: sem número de posição e com o nome em verde
    para não se confundir com os nove na leitura rápida da coluna. */
 .rank-item.is-regiao .rank-name b { color: var(--mata); font-weight: 700; }
 .rank-item.is-regiao .rank-name small { color: var(--mata-500); }
 .rank-item.is-selected { box-shadow: none; }
-.rank-selection-marker { position: absolute; z-index: 2; top: 0; left: 0; width: 3px; margin: 0; padding: 0; pointer-events: none; background: var(--urucum); list-style: none; }
-.rank-selection-marker.is-animated { transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), height 180ms ease; }
+/* A barra da linha selecionada é filha dela, e não um elemento posicionado em
+   pixels por JS: acompanha rotação de tela, mudança de fonte e re-render sem
+   recalcular nada. Mesmo padrão de .goals-row.is-active::before. */
+.rank-item.is-selected::before { content: ""; position: absolute; z-index: 2; top: 0; bottom: 0; left: 0; width: 3px; border-radius: 2px; background: var(--urucum); pointer-events: none; }
 .rank-number { color: var(--urucum); font: 800 15px var(--display); font-variant-numeric: tabular-nums; text-align: center; }
 .rank-item img { justify-self: center; width: auto; max-width: 100%; height: 21px; border: 1px solid var(--linha); border-radius: 3px; }
 .rank-name b, .rank-name small { display: block; }
@@ -234,7 +248,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
    que ele não tem na leitura. */
 /* A folga acima abriga a dica do hover, que sobe a partir do topo do gráfico —
    com menos que isso ela cobria o título da seção e a faixa de anos. */
-.spark-wrap { position: relative; margin-top: 52px; cursor: pointer; }
+/* `pan-y` deixa o arrasto vertical rolar a página e reserva o horizontal para a
+   leitura da série — sem isso os dois gestos disputavam o mesmo movimento. */
+.spark-wrap { position: relative; margin-top: 52px; cursor: pointer; touch-action: pan-y; }
 .spark-wrap:focus-visible { outline: 2px solid var(--mata-500); outline-offset: 3px; border-radius: 4px; }
 .spark { width: 100%; height: 88px; display: block; overflow: visible; }
 .spark-line { fill: none; stroke: var(--mata-500); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
@@ -269,31 +285,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .dashboard-sidebar .rank-name b { font-size: 12px; }
 .dashboard-sidebar .rank-measure b { font-size: 10px; }
 
-.catalogo { padding: 74px 0 100px; scroll-margin-top: 76px; }
-.catalogo-heading { padding-bottom: 24px; display: flex; align-items: end; justify-content: space-between; gap: 38px; border-bottom: 2px solid var(--tinta); }
-.catalogo-heading h2 { font-size: clamp(34px, 4vw, 54px); }
-.section-intro { max-width: 500px; margin: 0; color: var(--tinta-3); font-size: 13px; text-wrap: pretty; }
-.catalogo-heading-side { max-width: 520px; display: flex; align-items: flex-start; flex-direction: column; gap: 13px; }
-.route-link { padding-bottom: 3px; border-bottom: 1px solid currentColor; color: var(--urucum); font-size: 12px; font-weight: 600; }
-.route-link:hover, .route-link:focus-visible { color: var(--mata); outline: none; }
-.catalogo-tabs { margin: 26px 0 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.catalogo-tab { padding: 17px 19px; border: 1px solid var(--linha); border-radius: 10px; background: var(--papel); text-align: left; }
-.catalogo-tab span, .catalogo-tab small { display: block; }
-.catalogo-tab span { font: 600 15px var(--display); color: var(--tinta); }
-.catalogo-tab small { margin-top: 5px; color: var(--tinta-4); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; }
-.catalogo-tab:hover, .catalogo-tab:focus-visible { border-color: var(--mata); outline: none; }
-.catalogo-tab.is-active { border-color: var(--mata); background: var(--mata); }
-.catalogo-tab.is-active span { color: var(--areia); }
-.catalogo-tab.is-active small { color: var(--ocre); }
-.linha-group { margin-bottom: 40px; }
-.linha-group-title { margin: 0 0 14px; display: flex; align-items: center; gap: 10px; color: var(--tinta-3); font-size: 10px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; }
-.linha-group-title::before { content: ""; width: 26px; height: 3px; border-radius: 2px; background: var(--urucum); }
-.ind-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.ind-card { min-height: 100%; padding: 20px; display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--linha); border-radius: 12px; background: var(--papel); transition: transform 160ms ease, box-shadow 160ms ease; }
-.ind-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.ind-card.is-empty { background: rgba(255, 255, 255, 0.45); border-style: dashed; }
-.ind-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.ind-code { color: var(--urucum); font: 800 12px var(--display); }
 .ind-status { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; white-space: nowrap; }
 .ind-status .ic { flex: none; width: 13px; height: 13px; fill: currentColor; }
 
@@ -305,9 +296,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .ind-status.is-partial { color: #76550e; }
 .ind-status.is-pending { color: #8e3213; }
 .ind-status.is-manual { color: var(--tinta-3); }
-.ind-card h3 { font-size: 17px; line-height: 1.18; letter-spacing: -0.02em; }
-.ind-meta { margin: 0; padding: 11px 12px; border-left: 3px solid var(--ocre); background: var(--areia); color: var(--tinta-2); font-size: 11px; line-height: 1.45; }
-.ind-meta span { display: block; margin-bottom: 3px; color: var(--tinta-4); font-size: 8px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .ind-rows { display: flex; flex-direction: column; gap: 6px; }
 .ind-row { display: grid; grid-template-columns: 25px 1fr auto; align-items: center; gap: 8px; font-size: 10px; font-variant-numeric: tabular-nums; }
 .ind-row-name { color: var(--tinta-4); }
@@ -345,27 +333,27 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .select-wrap.is-year .dropdown-menu { width: 100%; }
 .map-year-warning { margin: 12px 0 0; padding: 8px 10px; border-left: 2px solid var(--ocre); background: rgba(224, 168, 60, 0.12); color: var(--tinta-3); font-size: 9.5px; line-height: 1.45; }
 
-.dropdown { position: relative; }
-.dropdown-toggle { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 14px; border: 1px solid var(--linha); border-radius: 8px; background: var(--papel); color: var(--tinta-2); font: 600 13px var(--text); text-align: left; }
-.dropdown-toggle:hover { border-color: var(--mata-300); }
+.filters-card .dropdown { position: relative; }
+.filters-card .dropdown-toggle { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 14px; border: 1px solid var(--linha); border-radius: 8px; background: var(--papel); color: var(--tinta-2); font: 600 13px var(--text); text-align: left; }
+.filters-card .dropdown-toggle:hover { border-color: var(--mata-300); }
 
-.dropdown.is-open .dropdown-toggle { border-color: var(--mata); outline: 3px solid rgba(14, 43, 34, 0.08); }
+.filters-card .dropdown.is-open .dropdown-toggle { border-color: var(--mata); outline: 3px solid rgba(14, 43, 34, 0.08); }
 
-.dropdown-chevron { flex: none; width: 11px; height: 8px; color: var(--urucum); transition: transform 150ms ease; }
+.filters-card .dropdown-chevron { flex: none; width: 11px; height: 8px; color: var(--urucum); transition: transform 150ms ease; }
 
-.dropdown.is-open .dropdown-chevron { transform: rotate(180deg); }
+.filters-card .dropdown.is-open .dropdown-chevron { transform: rotate(180deg); }
 
-.dropdown-menu { position: absolute; z-index: 40; top: calc(100% + 7px); left: 0; right: 0; max-height: 264px; margin: 0; padding: 6px; list-style: none; overflow: auto; border: 1px solid var(--linha); border-radius: 10px; background: var(--papel); box-shadow: var(--shadow); animation: dropdown-in 130ms ease-out; }
+.filters-card .dropdown-menu { position: absolute; z-index: 40; top: calc(100% + 7px); left: 0; right: 0; max-height: 264px; margin: 0; padding: 6px; list-style: none; overflow: auto; border: 1px solid var(--linha); border-radius: 10px; background: var(--papel); box-shadow: var(--shadow); animation: dropdown-in 130ms ease-out; }
 
 @keyframes dropdown-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
 
-.dropdown-menu li { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border-radius: 6px; color: var(--tinta-2); font-size: 12.5px; cursor: pointer; }
+.filters-card .dropdown-menu li { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border-radius: 6px; color: var(--tinta-2); font-size: 12.5px; cursor: pointer; }
 
-.dropdown-menu li:hover, .dropdown-menu li:focus-visible { background: var(--areia); color: var(--tinta); outline: none; }
+.filters-card .dropdown-menu li:hover, .filters-card .dropdown-menu li:focus-visible { background: var(--areia); color: var(--tinta); outline: none; }
 
-.dropdown-menu li.is-selected { background: var(--mata); color: var(--areia); }
+.filters-card .dropdown-menu li.is-selected { background: var(--mata); color: var(--areia); }
 
-.dropdown-menu li.is-selected::after { content: "✓"; margin-left: auto; font-weight: 700; }
+.filters-card .dropdown-menu li.is-selected::after { content: "✓"; margin-left: auto; font-weight: 700; }
 
 .status-filter-list { display: flex; flex-wrap: wrap; gap: 7px; }
 .status-filter { padding: 7px 11px; border: 1px solid var(--linha); border-radius: 999px; background: #efede9; color: var(--tinta-2); font-size: 11px; }
@@ -390,7 +378,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-table-head, .indicator-table-row { min-width: 820px; display: grid; grid-template-columns: minmax(310px, 2fr) minmax(185px, 1fr) minmax(310px, 1.7fr) 115px; align-items: center; gap: 24px; }
 .indicator-table-head { min-height: 48px; padding: 0 24px; border-bottom: 1px solid var(--linha); background: var(--areia); color: var(--tinta-3); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 .indicator-table-row { min-height: 92px; padding: 15px 24px; border-bottom: 1px solid var(--linha-2); background: var(--papel); cursor: pointer; transition: background 150ms ease, box-shadow 150ms ease; }
-.indicator-table-row:hover, .indicator-table-row:focus-within { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
+.indicator-table-row:focus-within { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
 .indicator-name-cell strong, .indicator-name-cell span, .indicator-axis-cell strong, .indicator-axis-cell span, .indicator-value-cell strong, .indicator-value-cell small { display: block; }
 .indicator-open { width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; }
 .indicator-open:focus-visible { outline: none; }
@@ -398,7 +386,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-name-cell span { max-width: 430px; margin-top: 5px; overflow: hidden; color: var(--tinta-4); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .indicator-name-cell small { margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; color: var(--urucum); font-size: 9px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
 .indicator-name-cell small i { font-size: 12px; font-style: normal; transition: transform 150ms ease; }
-.indicator-table-row:hover .indicator-name-cell small i, .indicator-table-row:focus-within .indicator-name-cell small i { transform: translateX(3px); }
+.indicator-table-row:focus-within .indicator-name-cell small i { transform: translateX(3px); }
 .indicator-axis-cell strong { color: var(--mata); font-size: 12px; }
 .indicator-axis-cell span { margin-top: 3px; color: var(--tinta-3); font-size: 11px; line-height: 1.4; }
 .indicator-value-cell { text-align: right; font-variant-numeric: tabular-nums; }
@@ -680,7 +668,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-flags-nome { margin-right: 9px; color: var(--tinta-3); font: 600 13px var(--text); }
 .goals-flag { width: 42px; height: 28px; padding: 0; display: grid; place-content: center; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); overflow: hidden; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease; }
 .goals-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.goals-flag:hover { border-color: var(--mata-500); }
+
 /* Urucum é o código de "selecionado" no painel inteiro — o mesmo do contorno do
    estado no mapa e da barra que marca a linha no ranking. O anel é opaco: com alfa
    ele clareava sobre o papel e lia como um halo, não como um contorno. 1px de anel
@@ -721,8 +709,13 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 
 @media (max-width: 1180px) {
   .topnav { display: none; }
+  /* O botão entra junto com o sumiço da navegação: antes ele só aparecia em
+     920px e o tablet em paisagem ficava sem forma alguma de navegar. O `top`
+     é relativo à topbar (que é sticky, logo posicionada), então acompanha as
+     duas alturas dela — 84px aqui, 68px abaixo de 920. */
+  .menu-button { display: block; }
+  .menu-open .topnav { position: absolute; top: 100%; right: 0; left: 0; padding: 14px 24px 18px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; background: var(--mata); box-shadow: 0 16px 30px rgba(14, 43, 34, 0.18); }
   .dashboard-grid { grid-template-columns: minmax(0, 1fr) 370px; }
-  .ind-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .method-steps.is-themes, .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .indicators-workspace { grid-template-columns: 230px minmax(0, 1fr); }
   .methodology-layout { grid-template-columns: 230px minmax(0, 1fr); gap: 42px; }
@@ -733,19 +726,81 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .brand { gap: 14px; }
   .brand-logo { width: 145px; height: 50px; }
   .brand-product { font-size: 16px; }
+  html[data-vista="fluxo"] .vista-toggle { display: inline-flex; align-items: center; }
+  /* O botão de vista ocupa o lugar que era do atalho de ação: os dois na mesma
+     linha, com a marca e o menu, estouravam a barra em 621px. Os destinos do
+     atalho continuam no menu e na própria página. */
   .topbar-actions { display: none; }
-  .menu-button { display: block; }
-  .menu-open .topnav { position: absolute; top: 68px; right: 0; left: 0; padding: 14px 24px 18px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; background: var(--mata); box-shadow: 0 16px 30px rgba(14, 43, 34, 0.18); }
   .section-shell { width: 100%; padding-inline: 20px; }
   .select-wrap { width: 100%; flex-basis: auto; }
   .panorama-heading { align-items: start; flex-direction: column; }
   .map-controls { width: min(100%, 484px); flex: none; }
   .select-wrap.is-year { width: 100%; }
-  .dashboard-grid { grid-template-columns: 1fr; }
+  /* ---------------------------------------------------------------------
+     Fluxo corrido: uma coluna só, com o mapa preso abaixo da topbar enquanto
+     o painel e o ranking rolam por baixo dele.
+
+     O sticky não funcionaria no arranjo original: um item de grade numa
+     coluna só tem como bloco contêiner a própria linha, e um `.map-card`
+     sticky pararia no fim de `.dashboard-primary` — exatamente onde o painel
+     começa. Achatando os invólucros com `display: contents`, mapa, painel e
+     ranking viram irmãos de um mesmo flex column, que é o contêiner que o
+     sticky precisa para viajar por toda a página.
+     --------------------------------------------------------------------- */
+  /* `align-items: stretch` desfaz o `start` que a grade de duas colunas usa para
+     encostar os cards no topo: em coluna única ele passaria a encolher cada
+     bloco até o conteúdo, e a legenda do mapa ficava com 206px de 362. */
+  .dashboard-grid { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+  .dashboard-primary, .map-card, .map-body { display: contents; }
+  .card-heading.panorama-heading { order: 1; }
+  .map-canvas { order: 2; }
+  .map-legend { order: 3; }
+  .dashboard-sidebar { order: 4; }
+  .map-indicator-card { order: 5; }
+  .overview { order: 6; }
+  /* O card branco morreu junto com o `display: contents` do `.map-card` e volta
+     aqui só em volta do mapa. O fundo opaco não é decoração: sem ele o conteúdo
+     rolaria visível através dos vazios do SVG. */
+  .map-canvas { position: sticky; top: 68px; z-index: 5; padding: 10px 12px 12px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
+  /* Orçamento de tela: 68px de topbar mais o mapa deixam mais da metade da
+     altura para o que rola por baixo. */
+  #map { height: clamp(180px, 32vh, 300px); min-height: 0; }
   .dashboard-sidebar { position: static; height: auto; max-height: none; }
+  /* O painel para logo abaixo do mapa fixo, não debaixo dele. O cálculo repete
+     a altura do mapa de propósito: os dois valores precisam andar juntos. */
+  .dashboard-sidebar { scroll-margin-top: calc(68px + clamp(180px, 32vh, 300px) + 34px); }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
   .overview { grid-template-columns: repeat(2, 1fr); }
   .indicators-workspace { grid-template-columns: 1fr; }
+  /* ---------------------------------------------------------------------
+     A lista de indicadores vira cartão empilhado. O piso de 820px obrigava
+     a rolar cerca de 700px na horizontal para ler uma linha inteira, dentro
+     de um contêiner de ~350px. Só muda o `display`: os papéis são ARIA
+     explícitos em <div>/<article>, não uma <table> nativa, então a estrutura
+     de tabela continua íntegra para quem usa leitor de tela.
+     --------------------------------------------------------------------- */
+  .indicator-table { overflow-x: visible; }
+  /* Alvos de toque: 44px é o mínimo confortável, e estes três estavam abaixo
+     disso. O da bandeira da região é ampliado por um ::after invisível, para
+     não mudar o desenho dela sobre o mapa. */
+  .filter-option { min-height: 44px; }
+  .status-filter { min-height: 44px; padding-inline: 14px; }
+  .indicator-pagination button { min-height: 44px; }
+  .goals-flag.map-scope { overflow: visible; }
+  .goals-flag.map-scope::after { content: ""; position: absolute; inset: -9px; }
+  .goals-flag.map-scope img { border-radius: 3px; }
+  .indicator-table-row { min-width: 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; padding: 16px 18px; }
+  /* `display: none` apagaria os quatro columnheader que dão nome às células;
+     escondido só visualmente, o cabeçalho continua nomeando a tabela. */
+  /* `min-width: 0` junto: o piso de 820px da regra base vence sobre `width` e o
+     cabeçalho escondido continuaria esticando a página em quase o dobro dela. */
+  .indicator-table-head { position: absolute; width: 1px; min-width: 0; height: 1px; padding: 0; overflow: hidden; border: 0; clip-path: inset(50%); white-space: nowrap; }
+  .indicator-name-cell, .indicator-goal-cell { grid-column: 1 / -1; }
+  .indicator-name-cell span { max-width: none; white-space: normal; }
+  /* Sem o cabeçalho à vista, o texto da meta fica sem referência. */
+  .indicator-goal-cell::before { content: "Meta"; display: block; margin-bottom: 4px; color: var(--tinta-4); font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .indicator-goal-cell span { -webkit-line-clamp: 3; }
+  .indicator-status-cell { text-align: left; }
   .indicator-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .indicator-detail-summary > div:nth-child(3) { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-summary > div:nth-child(4) { border-top: 1px solid var(--linha-2); }
@@ -784,9 +839,14 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 
 @media (max-width: 620px) {
   .topbar-inner { padding-inline: 16px; }
-  .brand { gap: 10px; }
+  /* `min-width: max-content` e o nome em uma linha só empurravam a topbar para
+     além da viewport em 320px, e a rolagem horizontal contaminava a página
+     inteira. Aqui a marca cede: o logo já identifica o painel. */
+  .brand { gap: 10px; min-width: 0; }
   .brand-logo { width: 120px; height: 42px; }
-  .brand-product { font-size: 15px; }
+  /* O nome escrito não cabe ao lado do logo, do botão de vista e do menu: espremido
+     ele virava uma tira de dois pixels. O logo já traz a identidade. */
+  .brand-product { display: none; }
   .section-shell { width: 100%; padding-inline: 14px; }
   .panorama { padding-top: 34px; }
 
@@ -796,9 +856,13 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .map-controls { grid-template-columns: 1fr; }
   .map-card, .ranking-card { padding: 18px 16px 10px; }
   .card-heading { align-items: start; flex-direction: column; }
-  .map-body { grid-template-columns: 1fr; gap: 4px; }
-  .map-indicator-card { margin-top: 18px; }
-  #map { height: auto; min-height: 340px; }
+  /* `.map-card` e `.map-body` já viraram `display: contents` na consulta de
+     920px — padding e colunas aqui não teriam efeito. O que resta é o mapa, que
+     precisa manter a altura contida: com `min-height: 340px` ele voltaria a
+     ocupar quase toda a tela do celular. */
+  .map-indicator-card { margin-top: 4px; }
+  #map { height: clamp(170px, 30vh, 260px); min-height: 0; }
+  .dashboard-sidebar { scroll-margin-top: calc(68px + clamp(170px, 30vh, 260px) + 30px); }
   .map-legend { flex-wrap: wrap; }
   .legend-ramp { width: auto; flex: 1; }
   .overview { grid-template-columns: 1fr 1fr; }
@@ -813,10 +877,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .state-summary-grid { grid-template-columns: 1fr; }
   .state-summary-grid div { padding: 11px 0; }
   .state-summary-grid div + div { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-  .catalogo { padding-block: 58px 72px; }
-  .catalogo-heading { align-items: start; flex-direction: column; }
-  .catalogo-tabs, .ind-cards { grid-template-columns: 1fr; }
-  .ind-card { padding: 18px; }
   footer { align-items: flex-start; flex-direction: column; padding-inline: 20px; }
   .indicators-page { padding-bottom: 64px; }
   .panorama-heading h1 { font-size: 27px; white-space: normal; }
@@ -828,6 +888,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .filters-card { display: flex; }
   .filter-group + .filter-group { padding-top: 18px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .export-group { display: flex; }
+  .indicator-table-row { grid-template-columns: 1fr; padding: 14px 16px; }
   .indicators-toolbar { align-items: stretch; flex-direction: column; }
   .indicator-search { width: 100%; }
   .indicator-detail-header { flex-direction: column; align-items: flex-end; gap: 0; padding: 18px 18px 20px; }
@@ -857,13 +918,23 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* O `scroll-behavior: smooth` do topo do arquivo é global e valia até para
+     quem pediu menos movimento — inclusive nos saltos que o JS provoca. */
+  html { scroll-behavior: auto; }
   .indicator-detail-view { animation: none; }
   .goals-row-bar .feito, .goals-row-val { transition: none; }
-  .rank-selection-marker.is-animated { transition: none; }
   .state-group { transition: none; }
   .state-group:not(.is-selected):hover, .state-group:not(.is-selected):focus-within { transform: none !important; }
 }
 
+/* Tudo que depende de passar o mouse mora aqui: num aparelho de toque o :hover
+   fica grudado no último elemento tocado até o toque seguinte, o que dava dois
+   estados realçados ao mesmo tempo na lista e no mapa. */
 @media (hover: hover) {
   .state-group:not(.is-selected):hover { transform: translate(var(--jump-x), var(--jump-y)); }
+  .state-shape:hover { filter: saturate(1.06) brightness(1.04); }
+  .rank-item:hover { background: #f5f1ea; }
+  .indicator-table-row:hover { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
+  .indicator-table-row:hover .indicator-name-cell small i { transform: translateX(3px); }
+  .goals-flag:hover { border-color: var(--mata-500); }
 }

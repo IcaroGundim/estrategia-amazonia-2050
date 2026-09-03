@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, bindMenu, escape, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, bindVista, escape, sinalDaPagina } from './shared.js';
 
 function bindSectionNavigation() {
   const links = [...document.querySelectorAll('.methodology-index nav a')];
@@ -29,6 +29,7 @@ function bindSectionNavigation() {
 
 async function init() {
   bindMenu();
+  bindVista();
   bindSectionNavigation();
   const response = await fetch('/data/dashboard.json');
   if (!response.ok) throw new Error('Não foi possível carregar a nota metodológica.');

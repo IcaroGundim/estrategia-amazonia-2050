@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, bindMenu, escape, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, bindVista, escape, sinalDaPagina } from './shared.js';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
@@ -427,7 +427,8 @@ function bindEvents() {
     if (open) {
       estadoMenu.innerHTML = estadoOptions.map(([value, label]) => `
         <li role="option" tabindex="-1" data-uf="${value}" class="${view.uf === value ? 'is-selected' : ''}" aria-selected="${view.uf === value}">${label}</li>`).join('');
-      (estadoMenu.querySelector('.is-selected') || estadoMenu.querySelector('[data-uf]')).focus();
+      // Sem `preventScroll` o toque que abre o seletor arrastava a página.
+      (estadoMenu.querySelector('.is-selected') || estadoMenu.querySelector('[data-uf]')).focus({ preventScroll: true });
     }
   };
   const applyEstado = (value) => {
@@ -468,6 +469,7 @@ function bindEvents() {
   }, { signal: sinalDaPagina() });
 
   bindMenu();
+  bindVista();
 }
 
 async function init() {

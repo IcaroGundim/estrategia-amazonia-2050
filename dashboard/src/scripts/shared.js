@@ -50,6 +50,38 @@ export function bindMenu() {
   }));
 }
 
+// Alterna entre o fluxo corrido e o layout de computador. Quem faz o trabalho é
+// a meta viewport, não o CSS: com `width=1280` as media queries passam a avaliar
+// contra 1280px e o desktop aparece inteiro, com zoom e arrasto — que é o que
+// "ver como no computador" significa num navegador móvel. A alternativa seria
+// prefixar as quase cem regras responsivas com um seletor de modo.
+export function bindVista() {
+  const botao = document.querySelector('[data-vista-toggle]');
+  if (!botao || botao.dataset.vistaBound) return;
+  botao.dataset.vistaBound = '1';
+  botao.addEventListener('click', () => {
+    const desktop = document.documentElement.dataset.vista !== 'desktop';
+    try { localStorage.setItem('vista', desktop ? 'desktop' : 'fluxo'); } catch (erro) { /* modo privado: vale só para esta visita */ }
+    // Recarrega em vez de mudar o viewport ao vivo: a mutação em tempo de
+    // execução é tratada de formas diferentes por cada navegador móvel, e o
+    // script inline da <head> pinta a página já no modo certo.
+    location.reload();
+  });
+}
+
+// O ClientRouter troca a <head> e os atributos do <html>. Sem copiar a
+// preferência para o documento que está entrando, a segunda página abriria no
+// fluxo corrido mesmo com o modo de computador ligado. Sem sinal, de propósito:
+// precisa valer por toda a sessão, como o listener que gira o `ciclo`.
+document.addEventListener('astro:before-swap', (evento) => {
+  const novo = evento.newDocument;
+  if (!novo) return;
+  novo.documentElement.dataset.vista = document.documentElement.dataset.vista || 'fluxo';
+  const metaAtual = document.querySelector('meta[name="viewport"]');
+  const metaNova = novo.querySelector('meta[name="viewport"]');
+  if (metaAtual && metaNova) metaNova.content = metaAtual.content;
+});
+
 // ---------------------------------------------------------------------------
 // Ciclo de vida das páginas com o ClientRouter do Astro.
 //

@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 // A página é sempre da Amazônia Legal: o mapa mostra a distribuição da meta
@@ -257,6 +257,7 @@ function bindEvents() {
     });
   }
   bindMenu();
+  bindVista();
 }
 
 async function init() {

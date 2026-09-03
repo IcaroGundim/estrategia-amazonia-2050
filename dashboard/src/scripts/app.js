@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null, sparkRef: null };
@@ -166,8 +166,14 @@ function createDropdown(container, options, initialValue, onChange, { disabled =
   function focusOption(direction = 'selected') {
     const entries = [...menu.querySelectorAll('.dropdown-option')];
     const target = direction === 'first' ? entries[0] : direction === 'last' ? entries.at(-1) : menu.querySelector('.is-selected') || entries[0];
-    target?.focus();
-    target?.scrollIntoView({ block: 'nearest' });
+    if (!target) return;
+    // `preventScroll` porque abrir o menu num toque movia a página inteira. A
+    // rolagem interna do menu continua acontecendo, mas só quando a opção está
+    // mesmo fora da caixa visível — que é o caso da navegação por teclado.
+    target.focus({ preventScroll: true });
+    const acima = target.offsetTop < menu.scrollTop;
+    const abaixo = target.offsetTop + target.offsetHeight > menu.scrollTop + menu.clientHeight;
+    if (acima || abaixo) target.scrollIntoView({ block: 'nearest' });
   }
   function open(direction = 'selected') {
     if (disabled) return;
@@ -380,9 +386,6 @@ function renderRanking() {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const list = document.querySelector('#ranking-list');
-  const previousMarker = list.querySelector('.rank-selection-marker');
-  const previousTop = Number(previousMarker?.dataset.top);
-  const previousHeight = Number(previousMarker?.dataset.height);
   document.querySelector('[data-ranking-title]').textContent = metric.label;
   document.querySelector('[data-ranking-subtitle]').textContent = metric.subtitle;
   // A largura do medidor é sempre relativa aos nove estados. A região entra como
@@ -426,26 +429,7 @@ function renderRanking() {
     </li>`;
   });
 
-  list.innerHTML = linhas.join('') + '<li class="rank-selection-marker" role="presentation" aria-hidden="true"></li>';
-
-  const selectedRow = list.querySelector('.rank-item.is-selected')?.closest('li');
-  const marker = list.querySelector('.rank-selection-marker');
-  if (!marker) return;
-  // Na perspectiva regional quem fica marcado é a linha da própria região. Quando
-  // nem ela está na lista — indicadores de 'soma' — não há linha selecionada, e sem
-  // isto o marcador ficaria sem altura definida, encostado no topo.
-  marker.hidden = !selectedRow;
-  if (!selectedRow) return;
-  const nextTop = selectedRow.offsetTop;
-  const nextHeight = selectedRow.offsetHeight;
-  marker.style.transform = `translateY(${Number.isFinite(previousTop) ? previousTop : nextTop}px)`;
-  marker.style.height = `${Number.isFinite(previousHeight) ? previousHeight : nextHeight}px`;
-  marker.getBoundingClientRect();
-  marker.classList.add('is-animated');
-  marker.style.transform = `translateY(${nextTop}px)`;
-  marker.style.height = `${nextHeight}px`;
-  marker.dataset.top = String(nextTop);
-  marker.dataset.height = String(nextHeight);
+  list.innerHTML = linhas.join('');
 }
 
 function performance(uf) {
@@ -519,6 +503,15 @@ function showMapTooltip(uf, clientX, clientY) {
 function hideMapTooltip() {
   const tooltip = document.querySelector('#map-tooltip');
   if (tooltip) tooltip.hidden = true;
+}
+
+// No fluxo corrido o painel fica abaixo do mapa fixo: sem rolar, tocar num
+// estado não produz resposta visível nenhuma. No desktop o painel está ao lado e
+// mover a página seria gratuito, por isso a consulta de largura — feita na hora,
+// e não guardada, para acompanhar a rotação do aparelho.
+function revelaPainel() {
+  if (!window.matchMedia('(max-width: 920px)').matches) return;
+  document.querySelector('.dashboard-sidebar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // `uf` vazia ou nula devolve a perspectiva à Amazônia Legal.
@@ -636,7 +629,11 @@ function bindSpark() {
     const wrap = event.target.closest('.spark-wrap');
     realcaSpark(wrap ? pontoMaisProximo(wrap, event.clientX) : null);
   }, sinal);
-  painel.addEventListener('pointerleave', () => realcaSpark(null), sinal);
+  // No toque, "sair" acontece ao levantar o dedo: o realce sumia no instante
+  // em que o usuário terminava de escolher o ano. Só o mouse apaga ao sair.
+  painel.addEventListener('pointerleave', (event) => {
+    if (event.pointerType !== 'touch') realcaSpark(null);
+  }, sinal);
   painel.addEventListener('click', (event) => {
     const wrap = event.target.closest('.spark-wrap');
     const ponto = wrap && pontoMaisProximo(wrap, event.clientX);
@@ -805,12 +802,12 @@ function bindEvents() {
     if (panelViewButton) selectPanelView(panelViewButton.dataset.panelView);
     const stateButton = event.target.closest('[data-state]');
     if (stateButton) {
-      if (!stateButton.closest('#ranking-list')) state.panelView = 'state';
+      const noMapa = !stateButton.closest('#ranking-list');
+      if (noMapa) state.panelView = 'state';
       selecionaEscopo(stateButton.dataset.state);
+      if (noMapa) revelaPainel();
     }
-    if (event.target.closest('#scope-regional')) selecionaEscopo(null);
-    const metricButton = event.target.closest('[data-metric]');
-    if (metricButton) { state.metric = metricButton.dataset.metric; metricDropdown?.setValue(state.metric); ajustaAno(); renderAll(); document.querySelector('#ranking').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (event.target.closest('#scope-regional')) { selecionaEscopo(null); revelaPainel(); }
   }, { signal: sinalDaPagina() });
   document.addEventListener('keydown', (event) => {
     if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('.state-shape')) { event.preventDefault(); state.panelView = 'state'; selecionaEscopo(event.target.dataset.state); }
@@ -823,12 +820,16 @@ function bindEvents() {
     }
   }, { signal: sinalDaPagina() });
   const map = document.querySelector('#map');
+  // A dica do mapa segue a mesma regra do minigráfico: no toque, esconder ao
+  // "sair" apagaria a dica no mesmo gesto que a abriu.
   map.addEventListener('pointermove', (event) => {
     const shape = event.target.closest('.state-shape');
     if (shape) showMapTooltip(shape.dataset.state, event.clientX, event.clientY);
-    else hideMapTooltip();
+    else if (event.pointerType !== 'touch') hideMapTooltip();
   });
-  map.addEventListener('pointerleave', hideMapTooltip);
+  map.addEventListener('pointerleave', (event) => {
+    if (event.pointerType !== 'touch') hideMapTooltip();
+  });
   map.addEventListener('focusin', (event) => {
     if (!event.target.matches('.state-shape')) return;
     const bounds = event.target.getBoundingClientRect();
@@ -837,6 +838,7 @@ function bindEvents() {
   map.addEventListener('focusout', hideMapTooltip);
   bindSpark();
   bindMenu();
+  bindVista();
 }
 
 const ANCORA = '#map';
