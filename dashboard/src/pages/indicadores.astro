@@ -3,12 +3,6 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Indicadores — Estratégia 2050" description="Catálogo dos indicadores oficiais da Estratégia Amazônia 2050." ogDescription="Consulte, filtre e exporte os indicadores dos nove estados da Amazônia Legal." mainClass="indicators-page" pagina="indicadores" dados={['catalogo']}>
-    <section class="indicators-hero section-shell">
-      <div>
-        <h1>Indicadores - <em>metas comuns.</em></h1>
-      </div>
-    </section>
-
     <section class="indicators-workspace section-shell" aria-label="Consulta de indicadores">
       <aside class="filters-card card" aria-label="Filtros dos indicadores">
         <div class="filter-group">
@@ -17,20 +11,13 @@ import Base from '../layouts/Base.astro';
         </div>
 
         <div class="filter-group">
-          <label class="filter-title" for="indicator-state">Estado</label>
-          <div class="native-select-wrap">
-            <select id="indicator-state" aria-label="Filtrar por estado">
-              <option value="all">Todos os nove</option>
-              <option value="AC">Acre</option>
-              <option value="AP">Amapá</option>
-              <option value="AM">Amazonas</option>
-              <option value="MA">Maranhão</option>
-              <option value="MT">Mato Grosso</option>
-              <option value="PA">Pará</option>
-              <option value="RO">Rondônia</option>
-              <option value="RR">Roraima</option>
-              <option value="TO">Tocantins</option>
-            </select>
+          <span class="filter-title" id="indicator-state-label">Estado</span>
+          <div class="dropdown" id="indicator-state">
+            <button type="button" class="dropdown-toggle" data-dropdown-toggle aria-haspopup="listbox" aria-expanded="false" aria-labelledby="indicator-state-label">
+              <span data-dropdown-value>Todos os nove</span>
+              <svg class="dropdown-chevron" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <ul class="dropdown-menu" role="listbox" aria-label="Filtrar por estado" hidden></ul>
           </div>
         </div>
 
@@ -61,24 +48,38 @@ import Base from '../layouts/Base.astro';
           </label>
         </div>
 
-        <div class="indicator-table" role="table" aria-label="Indicadores da Estratégia Amazônia 2050">
-          <div class="indicator-table-head" role="row">
-            <span role="columnheader">Indicador</span>
-            <span role="columnheader">Eixo</span>
-            <span role="columnheader">Valor</span>
-            <span role="columnheader">Meta</span>
-            <span role="columnheader">Situação</span>
+        <div id="indicator-list-view">
+          <div class="indicator-table" role="table" aria-label="Indicadores da Estratégia Amazônia 2050">
+            <div class="indicator-table-head" role="row">
+              <span role="columnheader">Indicador</span>
+              <span role="columnheader">Eixo</span>
+              <span role="columnheader">Meta</span>
+              <span role="columnheader">Situação</span>
+            </div>
+            <div id="indicator-table-body" class="indicator-table-body" role="rowgroup" aria-live="polite"></div>
           </div>
-          <div id="indicator-table-body" class="indicator-table-body" role="rowgroup" aria-live="polite"></div>
+
+          <div class="indicator-pagination">
+            <span data-page-summary>—</span>
+            <div>
+              <button type="button" data-page="prev">Anterior</button>
+              <button type="button" data-page="next">Próxima</button>
+            </div>
+          </div>
         </div>
 
-        <div class="indicator-pagination">
-          <span data-page-summary>—</span>
-          <div>
-            <button type="button" data-page="prev">Anterior</button>
-            <button type="button" data-page="next">Próxima</button>
-          </div>
-        </div>
+        <section id="indicator-detail-view" class="indicator-detail-view" aria-labelledby="indicator-detail-title" hidden>
+          <header class="indicator-detail-header">
+            <button class="indicator-detail-back" type="button" data-detail-back>
+              <span aria-hidden="true">←</span> Voltar aos indicadores
+            </button>
+            <div class="indicator-detail-heading">
+              <p class="indicator-detail-kicker"><span data-detail-code></span><span aria-hidden="true">·</span><span data-detail-axis></span></p>
+              <h2 id="indicator-detail-title" data-detail-title></h2>
+            </div>
+          </header>
+          <div class="indicator-detail-body" data-detail-body></div>
+        </section>
       </div>
     </section>
 

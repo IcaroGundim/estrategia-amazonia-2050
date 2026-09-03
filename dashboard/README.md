@@ -52,7 +52,7 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 
 - Mapa e lista exploráveis por indicador (não uma síntese fixa), com as nove geometrias do shapefile fornecido.
 - Rota `/metas` com o quadro de cumprimento: para cada meta da Estratégia com patamar mensurável, se o estado já cumpre e quanto falta. O foco é o cumprimento, não a comparação entre estados. A parametrização das metas vive em `metas.mjs`, que declara também os indicadores deixados de fora e o motivo (a página os lista).
-- Rota `/indicadores` com busca, filtros por eixo, estado e disponibilidade, paginação, exportação CSV e download dos cinco workbooks XLSX (Eixos 1 a 5).
+- Rota `/indicadores` com busca, filtros por eixo, estado e disponibilidade, paginação, exportação CSV, download dos cinco workbooks XLSX (Eixos 1 a 5) e visualização das fichas técnicas dentro do próprio card da lista, com retorno ao estado anterior.
 - Rota `/metodologia` com a fórmula de normalização, pesos, política para dados ausentes, fontes e limites de interpretação.
 - Ficha estadual lateral orientada pela identidade visual, com dados territoriais, indicador ativo, dimensões e leitura contextual; o card lateral tem três subabas — Estado selecionado, Comparação estadual e **Perfil completo** (radar comparando o estado à média da Amazônia Legal e 14 indicadores com ranking, incluindo os do Eixo 3 (PEVS, PIA), Eixo 4 (IBC-AMZ, PER, ISGR) e Eixo 5 (P&D)).
 - Catálogo completo dos 59 indicadores da matriz de resultados da Estratégia Amazônia 2050 — Eixo 1 (Território, Ambiente e Clima), Eixo 2 (Pessoas e Bem-estar), Eixo 3 (Desenvolvimento econômico sustentável, incluindo as fichas F3.2 e F3.5), Eixo 4 (Infraestrutura e integração regional sustentável) e Eixo 5 (Governança e parcerias) — agrupados por linha de ação: meta 2050, status de coleta, valores por estado e série histórica quando existem, ou nota de fonte/prazo quando o dado ainda não foi coletado.
@@ -65,6 +65,8 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 O servidor consolida os arquivos que já estão na pasta superior: PRODES/INPE (2020-2025), INPE Queimadas (2015-2024), CNUC/MMA (2026), IBGE/SIS (ano-base 2024), projeção populacional IBGE (2025), Sinesp/MJ (2020-2025), CNES/DATASUS (jul. 2026), AdaptaBrasil (linha de base 2025), IBGE PEVS e PIA-Empresa (2015-2024), RAIS/MTE (2023-2024), ANATEL IBC-AMZ (2021-2025), ANEEL SIGA (base ago. 2026), Censo 2022 + MUNIC 2024 (saneamento), MCTI P&D (2000-2024) e STN CAPAG (2018-2025).
 
 O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a partir dos cinco workbooks `entregaveis/Indicadores_Resultado_Eixo1..5_Amazonia2050.xlsx` pelo script `scripts/exportar_catalogo.py` (requer `openpyxl`; reexecute-o sempre que os workbooks forem atualizados). A síntese comparativa normaliza apenas os oito indicadores com disponibilidade para todos os estados e não substitui o catálogo, análise temática ou metas pactuadas.
+
+Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são extraídos do arquivo `Fichas Técnicas Indicadores - Amazonia2050.docx` pelo script `dashboard/scripts/extract-fichas.ps1`. O documento contém 52 fichas; os sete indicadores que existem apenas no catálogo são identificados como “ficha técnica não localizada” no painel, sem preenchimento inferido.
 
 ## Persistência e deploy
 

@@ -99,7 +99,7 @@ function serieDoEstado(item, metric = currentMetric()) {
 // Menor e maior valor entre os nove, para situar o número regional.
 function amplitudeEstados(metric) {
   const valores = state.data.states
-    .map((item) => ({ uf: item.uf, valor: valorDoIndicador(item, metric) }))
+    .map((item) => ({ uf: item.uf, item, valor: valorDoIndicador(item, metric) }))
     .filter(({ valor }) => Number.isFinite(valor))
     .sort((a, b) => a.valor - b.valor);
   return valores.length ? { menor: valores[0], maior: valores.at(-1) } : null;
@@ -733,7 +733,7 @@ function renderPainelRegional() {
       ${grafico}
       ${amplitude && agregacao ? `<section class="state-amplitude" aria-label="Amplitude entre os estados">
         <div class="state-section-title"><span>Amplitude entre os nove</span></div>
-        <p><b>${textoDoValor(metric, amplitude.menor.valor)}</b> ${escape(amplitude.menor.uf)} <i aria-hidden="true">→</i> <b>${textoDoValor(metric, amplitude.maior.valor)}</b> ${escape(amplitude.maior.uf)}</p>
+        <p><b>${textoDoValor(metric, amplitude.menor.valor)}</b> ${flagImage(amplitude.menor.item, `Bandeira do ${amplitude.menor.item.name}`)} <i aria-hidden="true">→</i> <b>${textoDoValor(metric, amplitude.maior.valor)}</b> ${flagImage(amplitude.maior.item, `Bandeira do ${amplitude.maior.item.name}`)}</p>
       </section>` : ''}
 
       <div class="state-reading">

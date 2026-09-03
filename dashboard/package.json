@@ -15,7 +15,8 @@
     "snapshot": "node snapshot.mjs"
   },
   "dependencies": {
-    "astro": "^7.2.9"
+    "astro": "^7.2.9",
+    "katex": "^0.18.5"
   },
   "devDependencies": {
     "shapefile": "^0.6.6"

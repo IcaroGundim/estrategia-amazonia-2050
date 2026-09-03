@@ -1,0 +1,800 @@
+{
+    "fonte":  "Fichas Técnicas Indicadores - Amazonia2050.docx",
+    "total":  52,
+    "fichas":  {
+                   "I1.1.1":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.1. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.",
+                                  "meta":  "100% do território dos estados da Amazônia Legal com ZEE vigente, atualizado (revisão concluída nos últimos 10 anos) e incorporado aos instrumentos estaduais de planejamento territorial e licenciamento.",
+                                  "indicador":  "Percentual do território do Estado com ZEE aprovado por lei/decreto vigente e atualizado nos últimos 10 anos / uso formal em processos de licenciamento (sim / não) / nº de políticas públicas estaduais que citam o ZEE como referência.",
+                                  "prazo":  "2035",
+                                  "formula":  "",
+                                  "unidade":  "%",
+                                  "fontes":  "Legislação/portal de cada secretaria estadual de meio ambiente",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 100",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.1.2":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.1. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.",
+                                  "meta":  "40% de Unidades de Conservação estaduais da Amazônia Legal com plano de manejo elaborado/atualizado e conselho gestor em funcionamento.",
+                                  "indicador":  "% de UCs estaduais com plano de manejo e conselho gestor ativos",
+                                  "prazo":  "2035",
+                                  "formula":  "IUCs = (NConformesNTotal )*100\nNConformes = Número de UCs estaduais que atendem aos dois critérios de gestão: SIM para Plano de Manejo e SIM para Conselho Gestor\nNTotal = Número total de UCs estaduais registradas no cadastro oficial (CNUC/MMA)",
+                                  "unidade":  "%",
+                                  "fontes":  "Ministério do Meio Ambiente",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 100",
+                                  "referencias":  [
+                                                      "https://dados.mma.gov.br/dataset/unidadesdeconservacao"
+                                                  ]
+                              },
+                   "I1.1.3":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.1. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.",
+                                  "meta":  "Estabelecimento, pelos estados da Amazônia Legal, de instrumento de cooperação técnica com o órgão federal responsável pela PNGATI e, quando pertinente, pela PNGTAQ, para apoio à gestão territorial e ambiental de povos indígenas e comunidades tradicionais, mediante demanda das comunidades.",
+                                  "indicador":  "Nº de estados da Amazônia Legal com instrumento de cooperação técnica vigente",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Estados\nDiário Oficial do estado",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.2.1":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.2. Garantir a existência e a operação de Planos de Adaptação Climática em todos os Estados da Amazônia Legal.",
+                                  "meta":  "100% dos estados com Planos Estaduais de Adaptação (PEA) aprovados e em execução.",
+                                  "indicador":  "100% de estados com planos aprovados e com execução orçamentária iniciada (LOA estadual)",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "%",
+                                  "fontes":  "Diário Oficial/portal da secretaria estadual de meio ambiente",
+                                  "frequencia":  "",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.2.2":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.2. Garantir a existência e a operação de Planos de Adaptação Climática em todos os Estados da Amazônia Legal.",
+                                  "meta":  "PEAs alinhados ao Plano Clima Nacional e com previsão de revisão periódica.",
+                                  "indicador":  "Planos setoriais/temáticos da Estratégia Nacional de Adaptação (ENA) (de um total de 16) explicitamente referenciados no PEA / PEA possui cláusula formal de revisão periódica, com prazo e órgão responsável definidos (sim ou não).",
+                                  "prazo":  "2028",
+                                  "formula":  "nº de planos setoriais/temáticos da Estratégia Nacional de Adaptação (ENA) (de um total de 16) explicitamente referenciados no PEA / PEA possui cláusula formal de revisão periódica, com prazo e órgão responsável definidos (sim ou não).",
+                                  "unidade":  "",
+                                  "fontes":  "Texto do Plano Estadual de Adaptação de cada estado (Diário Oficial/portal da secretaria estadual de meio ambiente), cotejado com os documentos públicos do Plano Clima/ENA (MMA/Casa Civil).",
+                                  "frequencia":  "",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.1":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Redução de 12,2% na vulnerabilidade climática dos municípios prioritários da Amazônia Legal até 2050 (tendo como horizonte de convergência a média de 52,1 pts, referente ao grupo de menor vulnerabilidade do bioma no baseline de 2025).",
+                                  "indicador":  "Avaliação periódica do Índice de Intensidade da Vulnerabilidade Climática Municipal (IIVCM)",
+                                  "prazo":  "2050",
+                                  "formula":  "IIVCM,m = 100 * (0.60 * Vgeral + 0.40 * Vpiores25)\nVt = Média do IIVCM,m dos municípios prioritários\n(20% mais vulneráveis)\nIIVCM,m: Índice de Intensidade da Vulnerabilidade Climática Municipal\nVgeral: Média simples de todos os indicadores de vulnerabilidade do município no AdaptaBrasil\nVpiores25: Média dos 25% piores indicadores do município (cauda de risco crítico)\nLista de IIVCM por município, destacando os prioritários: intensidade_vulnerabilidade_climatica.xlsx",
+                                  "unidade":  "%",
+                                  "fontes":  "AdaptaBrasil",
+                                  "frequencia":  "A cada ciclo oficial de atualização das séries do AdaptaBrasil/MCTI",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+                                                      "https://github.com/AdaptaBrasil/AdaptaBrasilAPIAccess"
+                                                  ]
+                              },
+                   "I1.3.2":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Desmatamento ilegal zero em todos os estados.",
+                                  "indicador":  "% de desmatamento ilegal",
+                                  "prazo":  "2030",
+                                  "formula":  "(ha de desmatamento - ha de autorizações de supressão)",
+                                  "unidade":  "%",
+                                  "fontes":  "INPE (PRODES)\nIBAMA (Sinaflor)",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.3":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Ampliar o percentual de território estadual efetivamente monitorado por sensoriamento remoto com capacidade de gerar alerta acionável para fiscalização, e reduzir o tempo de resposta entre alerta e ação de fiscalização em campo.",
+                                  "indicador":  "% do território estadual monitorado por sensoriamento remoto com geração de alerta acionável para fiscalização, por estado / Tempo médio entre emissão do alerta e ação de fiscalização em campo, por estado",
+                                  "prazo":  "2035",
+                                  "formula":  "Soma dos focos de calor na Amazônia Legal\nLinha de base a ser estabelecida no primeiro ciclo de monitoramento; meta de redução percentual definida a partir dela.\nDefinir % de redução a partir do resultado da baseline.",
+                                  "unidade":  "%",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.4":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Redução dos focos de incêndio em 30%, em relação à baseline de 2015-2025",
+                                  "indicador":  "Nº de focos de calor",
+                                  "prazo":  "2035",
+                                  "formula":  "Soma dos focos de calor na Amazônia Legal",
+                                  "unidade":  "%",
+                                  "fontes":  "INPE Queimadas",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.5":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Estruturação de delegacias especializadas em crimes ambientais em todos os 9 estados.",
+                                  "indicador":  "Nº de delegacias especializadas e fluviais em operação; frota operacional por estado",
+                                  "prazo":  "2027",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "FBSP (Cartografias da Violência na Amazônia)",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.6":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "Implementação de sistema regional integrado de registro e monitoramento de ocorrências de crimes ambientais, com protocolos e tipificações padronizados entre os 9 estados.",
+                                  "indicador":  "Nº de estados reportando ao sistema com protocolo padronizado",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "CAL (base de dados estadual da parceria com o Igarapé)",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.7":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "100% dos estados da Amazônia Legal com Plano de Manejo Integrado do Fogo elaborado até 2027 para as áreas de maior risco de incêndio florestal sob sua competência, mantido vigente por meio de revisões concluídas a cada 4 anos, continuamente, até 2050.",
+                                  "indicador":  "Nº de estados com Plano registrado no Sisfogo",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Sisfogo",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.3.8":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+                                  "meta":  "100% dos estados da Amazônia Legal com Plano de Prevenção e Controle do Desmatamento e Queimadas (PPCDQ), ou instrumento equivalente, vigente, com revisão concluída nos últimos 4 anos, mantido continuamente até 2050.",
+                                  "indicador":  "Nº de estados com PPCDQ vigente (revisão concluída nos últimos 4 anos)",
+                                  "prazo":  "elaboração inicial - 2027 / revisão contínua até 2050",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Diário Oficial/portal da secretaria estadual de meio ambiente de cada estado",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.4.1":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.4. Recuperar áreas degradadas nos territórios da Amazônia Legal, com foco na restauração ecológica e produtiva.",
+                                  "meta":  "100% dos estados da Amazônia Legal com Programa de Regularização Ambiental (PRA) regulamentado e em execução, com termos de compromisso de restauração firmados e monitorados.",
+                                  "indicador":  "Estado tem PRA regulamentado? (Sim/Não) / Hectares sob Termo de Compromisso de restauração firmado no âmbito do PRA, por estado /",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Observatório do Código Florestal / CAR/SICAR e órgão ambiental estadual",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.4.2":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.4. Recuperar áreas degradadas nos territórios da Amazônia Legal, com foco na restauração ecológica e produtiva.",
+                                  "meta":  "Alcançar xx% da área restaurada utilizando Sistemas Agroflorestais (SAFs).",
+                                  "indicador":  "Percentual da área restaurada implantada com SAFs",
+                                  "prazo":  "2035",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Registros de TCA/PRADA do PRA de cada estado.",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.5.1":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+                                  "meta":  "100% das áreas públicas prioritárias de domínio estadual regularizadas, com prioridade para áreas de conflito fundiário, assentamentos e comunidades tradicionais.",
+                                  "indicador":  "Percentual da área pública prioritária de domínio estadual regularizada",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Órgãos fundiários estaduais",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.5.5":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+                                  "meta":  "Destinação de 50% das áreas de florestas públicas de domínio estadual não destinadas.",
+                                  "indicador":  "% de florestas públicas de domínio estadual destinadas",
+                                  "prazo":  "2030",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Órgãos fundiários estaduais",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I1.5.8":  {
+                                  "eixo":  "Gestão territorial, sustentabilidade ambiental e governança climática",
+                                  "linhaAcao":  "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+                                  "meta":  "Elaboração e análise de 100% dos registros de Cadastro Ambiental Rural de Povos e Comunidades Tradicionais (CAR/PCT) nos territórios prioritários de cada estado da Amazônia Legal.",
+                                  "indicador":  "Nº de registros de CAR/PCT elaborados e analisados por estado por ano",
+                                  "prazo":  "2027",
+                                  "formula":  "PCTs reconhecidos pelo INCRA e órgãos ambientais estaduais inscritos e analisados no SICAR",
+                                  "unidade":  "",
+                                  "fontes":  "SICAR/órgãos ambientais estaduais/INCRA",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I2.1.1":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.1. Erradicar a pobreza extrema e reduzir a pobreza na Amazônia Legal, promovendo inclusão social e geração de oportunidades. Implementar programas de inclusão social e geração de oportunidades que promovam a erradicação da pobreza extrema na Amazônia Legal.",
+                                  "meta":  "Redução da taxa de pobreza para patamar ≤ a 3% (tendo como referência a média ponderada de 6,9% registrada em 2024)",
+                                  "indicador":  "Menos de 3% da população em situação de pobreza",
+                                  "prazo":  "2050",
+                                  "formula":  "População do Ano/Número de pessoas em estado de pobreza",
+                                  "unidade":  "Pessoas",
+                                  "fontes":  "IBGE",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+                                                      "https://sidra.ibge.gov.br/tabela/5817"
+                                                  ]
+                              },
+                   "I2.1.2":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.1. Erradicar a pobreza extrema e reduzir a pobreza na Amazônia Legal, promovendo inclusão social e geração de oportunidades. Implementar programas de inclusão social e geração de oportunidades que promovam a erradicação da pobreza extrema na Amazônia Legal.",
+                                  "meta":  "Ampliação da população apoiada por programas integrados de inclusão produtiva e social em territórios vulneráveis",
+                                  "indicador":  "Todos os territórios (municípios) com cobertura de pelo menos 4 programas federais de inclusão produtiva e social. (Plano Brasil Sem Fome, Bolsa Verde, PNAE e PAA)",
+                                  "prazo":  "2050",
+                                  "formula":  "Registros administrativos, com imagem e documentos comprovando a aderência a políticas do plano",
+                                  "unidade":  "Programas",
+                                  "fontes":  "Portais da transparência dos estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "0 a 4",
+                                  "referencias":  [
+                                                      "https://www.consorcioamazonialegal.gov.br/transparencia"
+                                                  ]
+                              },
+                   "I2.2.1":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.2. Fortalecer a gestão e ampliar a oferta e a qualidade dos serviços públicos de saúde, com foco na redução dos índices de mortalidade e melhoria do acesso.",
+                                  "meta":  "Redução de pelo menos 50% das mortes evitáveis (com base no patamar de aproximadamente 840 mil óbitos apurado no baseline de 2025)",
+                                  "indicador":  "Taxa de mortalidade por causas evitáveis, segundo metodologia do SUS",
+                                  "prazo":  "2050",
+                                  "formula":  "Taxa = (Óbitos por causas evitáveis / População residente) × 100.000\nO SUS utiliza a Lista Brasileira de Causas de Mortes Evitáveis, que agrupa os óbitos em categorias onde o sistema de saúde tem a obrigação de intervir com sucesso",
+                                  "unidade":  "Por morte",
+                                  "fontes":  "Datasus",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "quanto menor melhor",
+                                  "referencias":  [
+                                                      "https://datasus.saude.gov.br/informacoes-de-saude-tabnet/"
+                                                  ]
+                              },
+                   "I2.2.2":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.2. Fortalecer a gestão e ampliar a oferta e a qualidade dos serviços públicos de saúde, com foco na redução dos índices de mortalidade e melhoria do acesso..",
+                                  "meta":  "Ampliar a cobertura da Atenção Primária à Saúde para xx% da população da Amazônia Legal.",
+                                  "indicador":  "Cobertura Potencial da APS",
+                                  "prazo":  "2035",
+                                  "formula":  "((nº eSF do Estado x 3.500) + (nº eAP 20h do Estado x 1.750) + (nº eAP 30h do Estado x 2.625) + (população eCR, eSFR e eAPP com cadastro vinculado informada no Sisab do total de Municípios do Estado)) x 100 Estimativa /Populacional IBGE do total de Municípios do Estado",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "SUS, IBGE",
+                                  "frequencia":  "Mensal",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://relatorioaps.saude.gov.br/cobertura/aps"
+                                                  ]
+                              },
+                   "I2.2.3":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.2. Fortalecer a gestão e ampliar a oferta e a qualidade dos serviços públicos de saúde, com foco na redução dos índices de mortalidade e melhoria do acesso..",
+                                  "meta":  "Ampliação da telessaúde ativa para pelo menos 50% dos municípios da Amazônia Legal em territórios remotos (tendo como horizonte de convergência a cobertura de 386 municípios, frente à linha de base de 4,5% (35) registrada em 2025)",
+                                  "indicador":  "Nº de UBS fluviais em operação; % de municípios com serviço de telessaúde ativo",
+                                  "prazo":  "2050",
+                                  "formula":  "Municípios com estabelecimento de telessaúde ativo/total de municípios da amazônia legal",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "SUS, IBGE",
+                                  "frequencia":  "Mensal",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://tabnet.datasus.gov.br/cgi/deftohtm.exe?cnes/cnv/estabbr.def"
+                                                  ]
+                              },
+                   "I2.3.1":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.3. Fortalecer a educação pública na Amazônia Legal, com foco na elevação dos indicadores de qualidade da educação básica, especialmente o IDEB.",
+                                  "meta":  "Alcançar as metas de proficiência (IDEB) estabelecidas pelo INEP para os Anos Iniciais, Anos Finais e Ensino Médio nas redes estaduais e municipais da Amazônia Legal (tendo como horizonte de convergência a adequação dos Anos Iniciais, Finais e Ensino Médio, frente aos baselines de 2025 de 30,3%, 7,7% e 58,1%, respectivamente)",
+                                  "indicador":  "Percentual de municípios/estados da Amazônia Legal que atingiram ou superaram a meta do IDEB em cada uma das três etapas de ensino (Anos Iniciais, Finais e Ensino Médio)",
+                                  "prazo":  "2050",
+                                  "formula":  "Número de municipios que atingiram o IDEB/total de municípios",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "ANATEL",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://informacoes.anatel.gov.br/paineis/meu-municipio/indice-brasileiro-de-conectividade"
+                                                  ]
+                              },
+                   "I2.3.2":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.3. Fortalecer a educação pública na Amazônia Legal, com foco na elevação dos indicadores de qualidade da educação básica, especialmente o IDEB.",
+                                  "meta":  "Universalizar o acesso à educação básica de qualidade, inclusive em territórios remotos (tendo como horizonte de convergência o patamar de 100% de escolarização, referente ao indicador de 75,5% no baseline de 2025).",
+                                  "indicador":  "Taxa de atendimento escolar da população de 4 a 17 anos (%) e creche (0 a 3 anos)",
+                                  "prazo":  "2050",
+                                  "formula":  "Número de matrículas nas escolas/projeção de crianças de 0 a 17 anos",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "INEP, IBGE",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/estatisticas-censo-escolar",
+                                                      "https://sidra.ibge.gov.br/tabela/6579",
+                                                      "https://sidra.ibge.gov.br/tabela/9514"
+                                                  ]
+                              },
+                   "I2.4.1":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.4. Melhorar a segurança pública na região, com foco na redução das mortes violentas intencionais e na proteção das populações mais vulneráveis.",
+                                  "meta":  "Reduzir as mortes por crimes violentos letais intencionais para 10 mortes por 100 mil habitantes (tendo como referência 22 mortes por 100 mil habitantes no baseline de 2025).",
+                                  "indicador":  "Taxa de Crimes Violentos Letais Intencionais (CVLI) por 100 mil habitantes.",
+                                  "prazo":  "2050",
+                                  "formula":  "Taxa = (Número de Vítimas / População) × 100.000",
+                                  "unidade":  "100 mil pessoas",
+                                  "fontes":  "MJ, IBGE",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "quanto menor melhor",
+                                  "referencias":  [
+                                                      "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023"
+                                                  ]
+                              },
+                   "I2.4.2":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.4. Melhorar a segurança pública na região, com foco na redução das mortes violentas intencionais e na proteção das populações mais vulneráveis.",
+                                  "meta":  "Implementação de estratégias integradas de segurança cidadã e ambiental em 100% do municípios da amazônia legal",
+                                  "indicador":  "100% dos municípios com aderência formal a programas de segurança cidadã; 100% dos municípios com Planos de Adaptação Climática produzidos e ativos",
+                                  "prazo":  "2050",
+                                  "formula":  "Número de municípios com documentos formais de integração ao PRONASCI 2 e número de municípios com planos de adaptação climática produzidos",
+                                  "unidade":  "planos",
+                                  "fontes":  "Estado",
+                                  "frequencia":  "anual",
+                                  "pontuacao":  "0 a 100",
+                                  "referencias":  [
+                                                      "https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/pronasci/pronasci-ii",
+                                                      "https://adaptabrasil.mcti.gov.br/"
+                                                  ]
+                              },
+                   "I2.5.1":  {
+                                  "eixo":  "Inclusão social, segurança e qualidade de vida",
+                                  "linhaAcao":  "2.5. Gerar empregos para gerar renda, a partir do desenvolvimento de um ambiente de negócios inclusivo, moderno e equitativo, que valorize os serviços e os ativos socioambientais e proporcione agregação de valor aos produtos amazônicos, com oferta de renda digna à população local.",
+                                  "meta":  "Criação e fomento de empregos verdes e renda com foco em jovens, mulheres e populações tradicionais.",
+                                  "indicador":  "Participação da Bioeconomia no PIB total da Amazônia Legal (%)",
+                                  "prazo":  "2050",
+                                  "formula":  "Renda das Atividades Ligadas a sociobioeconomia",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "MMA",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I3.1.1":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.1. Ampliar a representatividade da sociobioeconomia no PIB regional, por meio do fortalecimento de cadeias produtivas sustentáveis baseadas na biodiversidade amazônica.",
+                                  "meta":  "Aumentar em o valor da produção das atividades da sociobioeconomia",
+                                  "indicador":  "Valor da produção das atividades da sociobioeconomia (MMA)",
+                                  "prazo":  "2050",
+                                  "formula":  "Renda das Atividades Ligadas a sociobioeconomia",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "MMA",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "F3.2":  {
+                                "eixo":  "Desenvolvimento econômico sustentável",
+                                "linhaAcao":  "3.2. Ampliar a oferta de empregos verdes por meio da transição para uma economia de baixo carbono e da valorização da sociobiodiversidade.",
+                                "meta":  "Estruturação de pelo menos 02 cadeias produtivas sustentáveis em todos os estados da Amazônia Legal",
+                                "indicador":  "Aumento do valor da produção, do número de empregos e do número de empresas nas cadeias produtivas definidas pelos estados",
+                                "prazo":  "2050",
+                                "formula":  "Número de empregos formais nas cadeias escolhidas",
+                                "unidade":  "0 a 100",
+                                "fontes":  "MMA",
+                                "frequencia":  "Anual",
+                                "pontuacao":  "Positiva",
+                                "referencias":  [
+
+                                                ]
+                            },
+                   "I3.3.1":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.3. Promover a qualificação técnica e profissional em sociobioeconomia por meio de iniciativas de capacitação em larga escala.",
+                                  "meta":  "Estabelecimento de políticas estaduais de promoção do trabalho verde.",
+                                  "indicador":  "Política de promoção do trabalho verde implantada",
+                                  "prazo":  "2050",
+                                  "formula":  "Política de promoção do trabalho verde implantada e em funcionamento",
+                                  "unidade":  "1",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I3.3.2":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.3. Promover a qualificação técnica e profissional em sociobioeconomia por meio de iniciativas de capacitação em larga escala.",
+                                  "meta":  "Capacitação de pelos menos 10 mil pessoas em atividades ligadas à sociobioeconomia.",
+                                  "indicador":  "Colaboradores capacitados; Cidadãos capacitados",
+                                  "prazo":  "2050",
+                                  "formula":  "Número de Colaboradores capacitados; Cidadãos capacitados",
+                                  "unidade":  "0 a 10.000",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I3.3.3":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.3. Promover a qualificação técnica e profissional em sociobioeconomia por meio de iniciativas de capacitação em larga escala.",
+                                  "meta":  "Institucionalização de programas permanentes de formação técnica regional.",
+                                  "indicador":  "Número de pessoas capacitadas.",
+                                  "prazo":  "2050",
+                                  "formula":  "Número de pessoas capacitadas",
+                                  "unidade":  "pessoas",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I3.4.1":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.4. Ampliar o número de beneficiários e dos instrumentos de pagamento por serviços ambientais, com foco em povos indígenas, comunidades tradicionais e agricultores familiares, bem como aumentar a monetização dos serviços ecossistêmicos.",
+                                  "meta":  "Aumento do número de beneficiários de PSA na Amazônia Legal em pelos menos 50%",
+                                  "indicador":  "Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono",
+                                  "prazo":  "2050",
+                                  "formula":  "Recursos por beneficiário",
+                                  "unidade":  "reais",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I3.4.2":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.4. Ampliar o número de beneficiários e dos instrumentos de pagamento por serviços ambientais, com foco em povos indígenas, comunidades tradicionais e agricultores familiares, bem como aumentar a monetização dos serviços ecossistêmicos.",
+                                  "meta":  "Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono",
+                                  "indicador":  "Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono",
+                                  "prazo":  "2050",
+                                  "formula":  "Recursos previstos no orçamento e executados",
+                                  "unidade":  "Reais",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "F3.5":  {
+                                "eixo":  "Desenvolvimento econômico sustentável",
+                                "linhaAcao":  "3.5. Estabelecer uso inteligente e ordenado dos recursos minerais, abordando a agregação de valor aos minerais críticos, promovendo a inovação tecnológica e o respeito aos limites socioambientais dos diferentes territórios e resiliência das paisagens.",
+                                "meta":  "Implementação de políticas de agregação de valor mineral em 100% dos estados mineradores.",
+                                "indicador":  "Aumento de 10% ao ano do valor agregado de produtos de transformação industrial",
+                                "prazo":  "2050",
+                                "formula":  "Valor da renda líquida total de empresas de transformação industrial",
+                                "unidade":  "reais",
+                                "fontes":  "IBGE",
+                                "frequencia":  "Anual",
+                                "pontuacao":  "Positiva",
+                                "referencias":  [
+                                                    "https://sidra.ibge.gov.br/tabela/10457"
+                                                ]
+                            },
+                   "I3.5.2":  {
+                                  "eixo":  "Desenvolvimento econômico sustentável",
+                                  "linhaAcao":  "3.5. Estabelecer uso inteligente e ordenado dos recursos minerais, abordando a agregação de valor aos minerais críticos, promovendo a inovação tecnológica e o respeito aos limites socioambientais dos diferentes territórios e resiliência das paisagens.",
+                                  "meta":  "Aumento dos projetos minerais estratégicos com critérios socioambientais atendidos.",
+                                  "indicador":  "100% dos projetos minerais estratégicos com critérios socioambientais atendidos.",
+                                  "prazo":  "2050",
+                                  "formula":  "Projetos minerais com critérios documentados",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I4.1.1":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.1. Expandir e integrar a infraestrutura tecnológica na Amazônia Legal, promovendo conectividade digital universal e equitativa entre os municípios.",
+                                  "meta":  "Articular, em parceria com a União e o setor privado, a elevação do Índice Brasileiro de Conectividade (IBC) médio da Amazônia Legal de 53,52 pontos em 2025 para 80,00 pontos até 2050",
+                                  "indicador":  "Índice de Conectividade Digital da Amazônia Legal (IBC-AMZ) ponderado pela população",
+                                  "prazo":  "2050",
+                                  "formula":  "IBCPonderado =(IBCmun * Populaçãomun)Populaçãomun\nIBCmun = IBC municipal\nPopulaçãomun = População municipal",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "ANATEL",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://informacoes.anatel.gov.br/paineis/meu-municipio/indice-brasileiro-de-conectividade"
+                                                  ]
+                              },
+                   "I4.2.1":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.2. Ampliar, modernizar e integrar a rede de transporte intermodal e de logística regional e Pan-Amazônia. Aprimorar a integração logística regional, com foco na melhoria das rodovias, ferrovias, hidrovias, portos e conexões aéreas sustentáveis.",
+                                  "meta":  "Elevar a adequação e trafegabilidade da infraestrutura estadual existente na Amazônia Legal em 18.5 pontos percentuais (passando da baseline atual de 46.5% para 65%) até 2050.",
+                                  "indicador":  "Taxa de adequação e trafegabilidade da infraestrutura de transportes (%)",
+                                  "prazo":  "2050",
+                                  "formula":  "TaxaAdequação= (extensão efetiva ponderada (km)extensão física total (km))*100\nextensão física total (km): Soma do comprimento real (em quilômetros) de todas as rodovias (estaduais), ferrovias operacionais (são federais) e hidrovias navegáveis de domínio estadual no território.\nextensão efetiva ponderada (km): Soma do comprimento de cada trecho de infraestrutura multiplicado pelo seu respectivo fator/peso de qualidade:\n1 = trechos em ótimo estado\n0.8 = trechos em bom estado\n0.5 = trechos regulares/modais sem avaliação de qualidade disponível\n0.2 = trechos em estado ruim\n0.05 = trechos em péssimo estado",
+                                  "unidade":  "0 a 100%",
+                                  "fontes":  "Ministério dos Transportes; DNIT; CNT",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://servicos.dnit.gov.br/vgeo/",
+                                                      "https://www.gov.br/transportes/pt-br/assuntos/dados-de-transportes/bit/bit-mapas",
+                                                      "https://data.cnt.org.br/transporte/painel-da-pesquisa-cnt-de-rodovias/"
+                                                  ]
+                              },
+                   "I4.3.1":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.3. Impulsionar a transição energética na Amazônia Legal, com foco na ampliação da geração e distribuição de energia limpa e descentralizada.",
+                                  "meta":  "Aumento de 12,37% de acesso suficiente e estruturado à energia limpa (baseline de 60.13% em 2025).",
+                                  "indicador":  "Indicador de Transição Energética e Qualidade Distributiva Amazônica (%)",
+                                  "prazo":  "2035",
+                                  "formula":  "ITEQm= [(POPSIN,mPOPTotal,m* RSIN,Amz) +(POPSISOL,,mPOPTotal,m* RSISOL,m)] * Fdist,m * Fiso,m\nConsolidação Regional e Estadual:\nITEQReg= (ΣmPOPTotal,m* ITEQmΣmPOPTotal,m) * 100\nRSin,Amz: Renovabilidade da matriz do SIN gerada na Amazônia Legal, ponderada pelos pesos socioambientais (divisão entre a potência renovável e a potência total da Amazônia Legal)\nRSISOL,m: Proporção de usinas limpas no município isolado\nFdist,m: Fator de qualidade distributiva (penaliza o descumprimento das metas de DEC/FEC da ANEEL).\nFiso,m: Fator de vulnerabilidade e isolamento logístico\nFontes renováveis, disponíveis na base:\nSolar\nHidráulica\nEólica\nBiomassa\nBiogás\nFontes consideradas limpas:\nSolar\nEólica\nHidrelétrica*",
+                                  "unidade":  "0 a 100%",
+                                  "fontes":  "ANEEL;Empresa de Pesquisa Energética/Ministério de Minas e Energia",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://pasi.epe.gov.br/Downloads",
+                                                      "https://portalrelatorios.aneel.gov.br/recalc/desempenhoMunicipio",
+                                                      "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel/resource/11ec447d-698d-4ab8-977f-b424d5deee6a"
+                                                  ]
+                              },
+                   "I4.3.2":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.3. Impulsionar a transição energética na Amazônia Legal, com foco na ampliação da geração e distribuição de energia limpa e descentralizada.",
+                                  "meta":  "Atingir 80% de participação de fontes renováveis na oferta de energia da Amazônia Legal até 2050, representando um incremento de 14,76 pontos percentuais em relação ao baseline de 65,24% (2025).",
+                                  "indicador":  "Participação de Energias Renováveis e Sustentáveis na oferta de energia (%)",
+                                  "prazo":  "2035",
+                                  "formula":  "PER= (∑Potênciak * wk∑PotênciaTotal)*100\nPotênciak: Potência Fiscalizada/Instalada\nwk: Pondera a tecnologia da usina de acordo com o impacto ambiental e emissão de gases\nPotênciaTotal: É o somatório da potência fiscalizada total de todas as usinas ativas na região (renováveis e fósseis combinadas)\nFontes renováveis, disponíveis na base:\nSolar\nHidráulica\nEólica\nBiomassa\nBiogás\nFontes consideradas limpas:\nSolar\nEólica\nHidrelétrica*",
+                                  "unidade":  "0 a 100%",
+                                  "fontes":  "ANEEL;Empresa de Pesquisa Energética/Ministério de Minas e Energia",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://pasi.epe.gov.br/Downloads",
+                                                      "https://portalrelatorios.aneel.gov.br/recalc/desempenhoMunicipio",
+                                                      "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel/resource/11ec447d-698d-4ab8-977f-b424d5deee6a"
+                                                  ]
+                              },
+                   "I4.4.1":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.4. Implantar políticas de desenvolvimento urbano e de saneamento básico integrado com infraestruturas modernas, inteligentes e eficientes, que tornem as cidades mais resilientes às mudanças climáticas.",
+                                  "meta":  "Atingir 80% no Índice de Saneamento Básico e Gestão de Riscos da Amazônia Legal (ISGR) até 2050, representando um incremento de 38,48 pontos percentuais em relação ao baseline de 41,52% (2022/2024).",
+                                  "indicador":  "Índice de Saneamento Básico e Gestão de Riscos",
+                                  "prazo":  "2050",
+                                  "formula":  "DOMEfetivo,m= min(DOMÁguaAdeq,m, DOMEsgotoAdeq,)*FClima,m *FGov,m\nDOMEfetivo,R = mϵAMZDOMEfetivo,m\nDOMTotal,R = mϵAMZDOMTotal,m\nISGR = (DOMEfetivo,RDOMTotal,R) * 100\nDOMÁguaAdeq,m: Domicílios com Água Adequada (Rede geral; Rede geral outra forma; Poço profundo ou artesiano.\nDOMEsgotoAdeq,m: Domicílios com Esgoto Adequado (Rede geral, pluvial ou fossa ligada à rede; Fossa séptica ou fossa filtro não ligada à rede)\nFClima,m: Fator de preparação climática (1 se o município respondeu \"SIM\" em pelo menos uma das variáveis climáticas. Vale 0,9 se respondeu \"NÃO\" ou deixou em branco em todas). Afere se a gestão local possui ações de prevenção contra problemas climáticos no setor agropecuário (Magr18), priorização de áreas vulneráveis no plano habitacional (Mhab088) ou monitoramento de enchentes (Mtic266).\nFGov,m: Fator de governança e transparência (1 se o município respondeu \"SIM\" na variável Mgov086 (disponibilização de dados para acompanhamento de obras, programas, ações e projetos). Vale 0,95 se respondeu \"NÃO\" ou deixou em branco)\nFHidro: Fator de vulnerabilidade climática à escassez hídrica\nDOMEfetivo,R: Somatório de Domicílios Efetivos na Região\nDOMTotal,R: Somatório de Domicílios na Região",
+                                  "unidade":  "0 a 100",
+                                  "fontes":  "IBGE (Censo; Pesquisa de Informações Básicas Municipais)",
+                                  "frequencia":  "",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://sidra.ibge.gov.br/Tabela/6805",
+                                                      "https://sidra.ibge.gov.br/Tabela/6803",
+                                                      "https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html"
+                                                  ]
+                              },
+                   "I4.4.2":  {
+                                  "eixo":  "Infraestrutura e integração regional sustentável",
+                                  "linhaAcao":  "4.4. Implantar políticas de desenvolvimento urbano e de saneamento básico integrado com infraestruturas modernas, inteligentes e eficientes, que tornem as cidades mais resilientes às mudanças climáticas.",
+                                  "meta":  "80% dos municípios com a média de Capacidade Adaptativa acima de 0.5",
+                                  "indicador":  "% de municípios com média de capacidade adaptativa acima de 0.5",
+                                  "prazo":  "2035",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "Adapta Brasil MCTI\nPainel Cidades",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "Positiva",
+                                  "referencias":  [
+                                                      "https://www.gov.br/mdr/pt-br/assuntos/protecao-e-defesa-civil/cidades-resilientes",
+                                                      "https://www.globalcovenantofmayors.org/our-cities/",
+                                                      "https://data.cdp.net/browse?category=Full+cities+public+datasets\u0026sortBy=relevance\u0026page=1\u0026pageSize=20",
+                                                      "https://painelcidades.adaptabrasil.mcti.gov.br/"
+                                                  ]
+                              },
+                   "I5.1.1":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.1. Ampliar a captação de recursos financeiros por meio de parcerias nacionais e internacionais voltadas ao desenvolvimento sustentável da Amazônia Legal.",
+                                  "meta":  "Mobilização de 100 milhões de reais em dólares para financiamento climático.",
+                                  "indicador":  "Aumento do Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono, financiamento climático e ambiental e fundos multilaterais",
+                                  "prazo":  "2050",
+                                  "formula":  "Volume de recursos por estado, somados. O Padrão Internacional: O Relatório sobre Clima e Desenvolvimento para o Brasil (CCDR) do Banco Mundial estima que o país precisa investir cerca de 0,8% do seu PIB ao ano para viabilizar uma transição climática real e sustentável até 2050. Utilizamos isso como linha de base para estimar a realidade da Amazônia Legal",
+                                  "unidade":  "reais",
+                                  "fontes":  "Estados",
+                                  "frequencia":  "anual",
+                                  "pontuacao":  "-",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I5.2.1":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.2. Fortalecer a governança, a cooperação e a integração multinível interestadual e de fronteiras, com o setor privado e a sociedade civil, promovendo o compartilhamento de responsabilidades e soluções.",
+                                  "meta":  "Estruturação de pelo menos 02 mecanismos regionais de financiamento misto (blended finance)",
+                                  "indicador":  "Aumento do Volume de capital privado mobilizado para cada dólar/real de recurso público aportado nesses mecanismos (Taxa de Alavancagem).",
+                                  "prazo":  "2050",
+                                  "formula":  "Taxa de alavancagem dos dois mecanismos",
+                                  "unidade":  "reais",
+                                  "fontes":  "estados",
+                                  "frequencia":  "anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I5.2.2":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.2. Fortalecer a governança, a cooperação e a integração multinível interestadual e de fronteiras, com o setor privado e a sociedade civil, promovendo o compartilhamento de responsabilidades e soluções.",
+                                  "meta":  "Institucionalizar, um modelo permanente de governança regional coordenado pelo CAL, com participação dos nove estados, equipe técnica, planejamento integrado e sistema de monitoramento das ações conjuntas.",
+                                  "indicador":  "Número de mecanismos governança regional instituído e em operação;\nVolume de recursos financeiros (em R$) captados e executados de forma centralizada pelo Consórcio da Amazônia Legal.",
+                                  "prazo":  "2050",
+                                  "formula":  "Metodologia de Projeção (Consórcio da Amazônia Legal)\nPara calcular a meta de crescimento do Consórcio da Amazônia Legal até 2050, optou-se por um modelo de Regressão Linear Simples, baseado no histórico real de execução financeira da instituição entre os anos de 2019 e 2026.\nEsse modelo estatístico identificou que o Consórcio aumenta a sua capacidade de execução, em média, R$ 483.566,00 a cada ano.\nPara projetar os valores futuros partindo da realidade atual (2026), utilizamos a seguinte equação:\nOrçamento Projetado = 6.120.000 + [483.566 x (Ano Alvo - 2026)]\nOnde:\nOrçamento Projetado: É o valor financeiro que o Consórcio alcançará no ano que queremos descobrir.\n6.120.000: É o orçamento base atual (valor executado em 2026).\n483.566: É a taxa de crescimento linear (a média de \"dinheiro novo\" adicionada anualmente).\n(Ano Alvo - 2026): É a diferença em anos entre o momento atual e a data da meta (por exemplo, para calcular a meta de 2030, multiplica-se o crescimento por 4 anos).\nEssa metodologia garante uma projeção sustentável, transparente e totalmente condizente com a capacidade administrativa e o histórico real da instituição.",
+                                  "unidade":  "Reais",
+                                  "fontes":  "CAL",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+                                                      "https://www.consorcioamazonialegal.gov.br/orcamento-anual"
+                                                  ]
+                              },
+                   "I5.3.1":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.3. Desenvolver capacidades para implantação de um arranjo jurídico climático justo na Amazônia Legal e cooperação interestadual.",
+                                  "meta":  "Desenvolver e implementar, um arranjo jurídico-institucional climático regional, com diretrizes comuns e instrumentos de cooperação entre os nove estados.",
+                                  "indicador":  "Número ou percentual de estados que incorporaram as diretrizes em normas ou instrumentos próprios",
+                                  "prazo":  "2050",
+                                  "formula":  "",
+                                  "unidade":  "",
+                                  "fontes":  "estados",
+                                  "frequencia":  "anual",
+                                  "pontuacao":  "-",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I5.3.2":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.3. Desenvolver capacidades para implantação de um arranjo jurídico climático justo na Amazônia Legal e cooperação interestadual.",
+                                  "meta":  "Implantar, um sistema regional de governança e interoperabilidade de dados prioritários, com adesão dos nove estados da Amazônia Legal.",
+                                  "indicador":  "Percentual das bases de dados prioritárias integradas ou interoperáveis",
+                                  "prazo":  "2050",
+                                  "formula":  "",
+                                  "unidade":  "bancos de dados integrados",
+                                  "fontes":  "estados",
+                                  "frequencia":  "anual",
+                                  "pontuacao":  "-",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I5.4.1":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.4. Ampliar e fortalecer os mecanismos de pesquisa, desenvolvimento e inovação na Amazônia Legal, com incentivo ao aumento dos investimentos públicos e privados e maior integração e cooperação das instituições e dos centros de excelência com atuação na região.",
+                                  "meta":  "Ampliar, o investimento público e privado em Pesquisa e Desenvolvimento nos estados da Amazônia Legal, alcançando o equivalente a 1% do PIB estadual ao ano.",
+                                  "indicador":  "Dispêndio público e privado em P\u0026D como percentual do PIB de cada estado",
+                                  "prazo":  "2050",
+                                  "formula":  "-",
+                                  "unidade":  "-",
+                                  "fontes":  "estados e CAL",
+                                  "frequencia":  "-",
+                                  "pontuacao":  "-",
+                                  "referencias":  [
+
+                                                  ]
+                              },
+                   "I5.5.1":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.5. Fortalecer a governança e a gestão dos serviços públicos na Amazônia Legal, com foco no emprego racional e transparente dos recursos públicos.",
+                                  "meta":  "Fortalecimento da capacidade de gestão pública em todos os estados, com foco em transparência e eficiência.",
+                                  "indicador":  "Número e percentual de estados com classificação A ou B na CAPAG",
+                                  "prazo":  "2050",
+                                  "formula":  "1. A Fórmula do Indicador (O que forma a nota do CAPAG) Para que um estado receba a certificação de excelência (Notas A ou B), a STN avalia três variáveis financeiras rigorosas. A avaliação do estado é o resultado da combinação das notas parciais das seguintes fórmulas:\nEndividamento (Dívida Consolidada / Receita Corrente Líquida): Mede se o estado tem dívidas excessivas em relação ao que arrecada.\nPoupança Corrente (Despesas Correntes / Receitas Correntes Ajustadas): Mede se a máquina pública estadual gasta menos do que ganha no dia a dia, gerando poupança.\nÍndice de Liquidez (Obrigações Financeiras / Disponibilidade de Caixa): Mede se o estado tem dinheiro em caixa suficiente para honrar todos os seus compromissos e restos a pagar.",
+                                  "unidade":  "E até A",
+                                  "fontes":  "Tesouro Transparente",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "E até A",
+                                  "referencias":  [
+                                                      "https://www.tesourotransparente.gov.br/temas/estados-e-municipios/capacidade-de-pagamento-capag"
+                                                  ]
+                              },
+                   "I5.5.2":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.5. Fortalecer a governança e a gestão dos serviços públicos na Amazônia Legal, com foco no emprego racional e transparente dos recursos públicos.",
+                                  "meta":  "Atender 90% dos critérios da principal avaliação nacional de transparência pública vigente",
+                                  "indicador":  "Número e percentual de estados que atingem o patamar mínimo estabelecido",
+                                  "prazo":  "Anual",
+                                  "formula":  "https://www.gov.br/cgu/pt-br/assuntos/transparencia-publica/escala-brasil-transparente-360/metodologia",
+                                  "unidade":  "0 a 10",
+                                  "fontes":  "CGU",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "",
+                                  "referencias":  [
+                                                      "https://www.gov.br/cgu/pt-br/assuntos/transparencia-publica/escala-brasil-transparente-360"
+                                                  ]
+                              },
+                   "I5.5.3":  {
+                                  "eixo":  "Governança e parcerias",
+                                  "linhaAcao":  "5.5. Fortalecer a governança e a gestão dos serviços públicos na Amazônia Legal, com foco no emprego racional e transparente dos recursos públicos.",
+                                  "meta":  "Consolidar, modelos regionais de governança compartilhada para temas prioritários da Amazônia Legal, com participação dos nove estados, equipe responsável, orçamento e plano de implementação.",
+                                  "indicador":  "Número de modelos construídos e em operação com equipe delegada para a sua implementação",
+                                  "prazo":  "2050",
+                                  "formula":  "-",
+                                  "unidade":  "Modelos",
+                                  "fontes":  "Estados e CAL",
+                                  "frequencia":  "Anual",
+                                  "pontuacao":  "-",
+                                  "referencias":  [
+
+                                                  ]
+                              }
+               }
+}
