@@ -44,7 +44,8 @@ const ANO_DE_REFERENCIA = {
   ibc: 2025,
   pevsBilhoes: 2024,
   piaBilhoes: 2024,
-  pdPctPib: 2023
+  pdPctPib: 2023,
+  poverty: 2024
 };
 
 // Anos que estão na base mas ainda em curso. O CVLI de 2026 tem cerca de metade do
@@ -251,7 +252,7 @@ export async function buildDashboard() {
     readCsv('prodes/prodes_rates_uf.csv'),
     readCsv('focos/focos_calor_uf_ano.csv'),
     readCsv('sinesp/cvli_uf_ano.csv'),
-    readCsv('ibge_sis/sis_pobreza_uf.csv'),
+    readCsv('ibge_ods/pobreza_uf_ano.csv'),
     readCsv('ibge_sis/sis_freq_escolar_uf.csv'),
     readCsv('cnes/cnes_equipes_uf.csv', ';', 3, 'latin1'),
     readCsv('iivcm/iivcm.csv'),
@@ -277,7 +278,8 @@ export async function buildDashboard() {
   const prodes = Object.groupBy(prodesRows, (row) => row.uf);
   const focos = Object.groupBy(focusRows, (row) => row.uf);
   const cvli = Object.groupBy(cvliRows, (row) => row.uf);
-  const poverty = asByUf(povertyRows, (row) => row.uf, (row) => parseNumber(row.pct_pobreza_usd365));
+  // A linha 'BR' do CSV é referência de contexto na coleta e não entra no painel.
+  const povertyByUf = Object.groupBy(povertyRows.filter((row) => STATES[row.uf]), (row) => row.uf);
   const school = asByUf(schoolRows, (row) => row.uf, (row) => parseNumber(row['15_17']));
 
   const latestByUf = (rows, year, pick) => {
@@ -295,6 +297,7 @@ export async function buildDashboard() {
   const piaByUf = Object.groupBy(piaRows.filter((row) => row.cnae_nome === 'Total'), (row) => row.uf);
   const ibcByUf = Object.groupBy(ibcRows, (row) => row.uf);
   const pdByUf = Object.groupBy(pdRows, (row) => row.uf);
+  const poverty = latestByUf(povertyRows, 2024, (row) => parseNumber(row.pct_pobreza));
   const pevs = latestByUf(pevsRows, 2024, (row) => parseNumber(row.valor_mil_rs));
   const pia = latestByUf(piaRows.filter((row) => row.cnae_nome === 'Total'), 2024, (row) => parseNumber(row.valor_transf_ind_mil_rs));
   const ibc = latestByUf(ibcRows, 2025, (row) => parseNumber(row.ibc_ponderado_pop));
@@ -408,7 +411,8 @@ export async function buildDashboard() {
         ibc: serieDe(ibcByUf[uf], 'ibc_ponderado_pop', (valor) => valor),
         pevsBilhoes: serieDe(pevsByUf[uf], 'valor_mil_rs', (valor) => valor / 1e6),
         piaBilhoes: serieDe(piaByUf[uf], 'valor_transf_ind_mil_rs', (valor) => valor / 1e6),
-        pdPctPib: serieDe(pdByUf[uf], 'pct_pib', (valor) => valor)
+        pdPctPib: serieDe(pdByUf[uf], 'pct_pib', (valor) => valor),
+        poverty: serieDe(povertyByUf[uf], 'pct_pobreza', (valor) => valor)
       },
       ranks: {}
     };

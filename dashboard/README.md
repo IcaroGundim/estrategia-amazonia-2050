@@ -62,7 +62,11 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 
 ## Fontes e períodos
 
-O servidor consolida os arquivos que já estão na pasta superior: PRODES/INPE (2020-2025), INPE Queimadas (2015-2024), CNUC/MMA (2026), IBGE/SIS (ano-base 2024), projeção populacional IBGE (2025), Sinesp/MJ (2020-2025), CNES/DATASUS (jul. 2026), AdaptaBrasil (linha de base 2025), IBGE PEVS e PIA-Empresa (2015-2024), RAIS/MTE (2023-2024), ANATEL IBC-AMZ (2021-2025), ANEEL SIGA (base ago. 2026), Censo 2022 + MUNIC 2024 (saneamento), MCTI P&D (2000-2024) e STN CAPAG (2018-2025).
+O servidor consolida os arquivos que já estão na pasta superior: PRODES/INPE (2020-2025), INPE Queimadas (2015-2024), CNUC/MMA (2026), IBGE/SIS (frequência escolar, ano-base 2024), IBGE/PNADc via SIDRA (pobreza, série 2012-2024), projeção populacional IBGE (2025), Sinesp/MJ (2020-2025), CNES/DATASUS (jul. 2026), AdaptaBrasil (linha de base 2025), IBGE PEVS e PIA-Empresa (2015-2024), RAIS/MTE (2023-2024), ANATEL IBC-AMZ (2021-2025), ANEEL SIGA (base ago. 2026), Censo 2022 + MUNIC 2024 (saneamento), MCTI P&D (2000-2024) e STN CAPAG (2018-2025).
+
+A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) vem da tabela SIDRA 10660 — indicador ODS P1.1.1, linha de pobreza regional — pelo script `scripts/pobreza_ods_sidra.py`. Os valores coincidem com a coluna `pct_pobreza_usd365` do SIS que o painel publicava antes (US$ 3,65 por dia, PPC 2017) dentro de 1,1 p.p. no ano de referência, o que indica a mesma linha; os metadados da tabela não publicam a definição, então o painel não afirma o valor da linha. O catálogo e a página de metas continuam com os valores do SIS, que vêm dos workbooks — a divergência entre as duas páginas é dessa ordem.
+
+O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
 O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a partir dos cinco workbooks `entregaveis/Indicadores_Resultado_Eixo1..5_Amazonia2050.xlsx` pelo script `scripts/exportar_catalogo.py` (requer `openpyxl`; reexecute-o sempre que os workbooks forem atualizados). A síntese comparativa normaliza apenas os oito indicadores com disponibilidade para todos os estados e não substitui o catálogo, análise temática ou metas pactuadas.
 
@@ -75,7 +79,7 @@ Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são ex
 | Consumido por | Arquivo no projeto |
 |---|---|
 | `/api/catalogo` | `dados/catalogo/indicadores.json` (pré-gerado dos 5 workbooks) |
-| `/api/dashboard` | 15 CSVs em `dados/` (PRODES, focos, CNUC, IIVCM, Sinesp, IBGE, CNES, PEVS, PIA, ANATEL, ANEEL, saneamento, P&D) |
+| `/api/dashboard` | 15 CSVs em `dados/` (PRODES, focos, CNUC, IIVCM, Sinesp, IBGE, PNADc/ODS, CNES, PEVS, PIA, ANATEL, ANEEL, saneamento, P&D) |
 | `/api/metas` | `metas.mjs` sobre o catálogo + o payload do `/api/dashboard` |
 | `/api/geo` | `BR_UF_2025 (2)/BR_UF_2025.shp + .dbf` |
 | `/flags/*` | 9 SVGs na pasta de bandeiras |

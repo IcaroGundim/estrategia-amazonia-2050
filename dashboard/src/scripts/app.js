@@ -5,7 +5,7 @@ const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano
 
 const metrics = {
   prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
-  poverty: { label: 'Pobreza', subtitle: 'menor percentual = melhor posição', description: 'Percentual da população abaixo da linha monetária de pobreza usada na base consolidada.', source: 'IBGE/SIS · referência 2024', field: 'poverty', direction: 'low', formatter: (value) => percent(value, 1) },
+  poverty: { label: 'Pobreza', subtitle: 'menor percentual = melhor posição', description: 'Percentual da população abaixo da linha de pobreza regional do IBGE (indicador ODS P1.1.1), na série anual da PNAD Contínua.', source: 'IBGE/PNADc · ODS P1.1.1', serie: 'poverty', field: 'poverty', direction: 'low', formatter: (value) => percent(value, 1) },
   school: { label: 'Frequência escolar 15–17', subtitle: 'maior percentual = melhor posição', description: 'Parcela das pessoas de 15 a 17 anos que frequentam a escola em cada estado.', source: 'IBGE/SIS · referência 2024', field: 'school', direction: 'high', formatter: (value) => percent(value, 1) },
   cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ', serie: 'cvliRate', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / 100 mil` },
   esfRate: { label: 'Atenção primária', subtitle: 'mais equipes = melhor posição', description: 'Equipes de Saúde da Família e de Atenção Primária para cada 100 mil habitantes.', source: 'CNES/DATASUS · jul. 2026', field: 'esfRate', direction: 'high', formatter: (value) => `${number(value, 1)} / 100 mil` },
@@ -41,7 +41,7 @@ const AGREGACAO = {
   prodesRate: { peso: 'area', rotulo: 'área desmatada dos nove estados sobre a área da região' },
   cvliRate: { peso: 'population', rotulo: 'total de CVLI sobre a população regional', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
   esfRate: { peso: 'population', rotulo: 'total de equipes sobre a população regional' },
-  poverty: { peso: 'population', rotulo: 'média ponderada pela população' },
+  poverty: { peso: 'population', rotulo: 'média ponderada pela população', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
   school: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Ponderação pela população total de cada estado, e não pela população de 15 a 17 anos, que não está na base consolidada.' },
   isgr: { peso: 'population', rotulo: 'média ponderada pela população' },
   ibc: { peso: 'population', rotulo: 'média ponderada pela população', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
@@ -159,7 +159,6 @@ function createDropdown(container, options, initialValue, onChange, { disabled =
       group = option.group;
       return `${heading}<li class="dropdown-option ${option.value === value ? 'is-selected' : ''}" tabindex="-1" role="option" aria-selected="${option.value === value}" data-value="${option.value}">
         <span><strong>${escape(option.label)}</strong>${option.sublabel ? `<small>${escape(option.sublabel)}</small>` : ''}</span>
-        <i aria-hidden="true">${option.value === value ? '✓' : ''}</i>
       </li>`;
     }).join('');
   }
