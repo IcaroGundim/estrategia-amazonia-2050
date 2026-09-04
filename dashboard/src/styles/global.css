@@ -397,9 +397,12 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-status-cell .ind-status { font-size: 10.5px; }
 .indicator-empty { min-height: 240px; padding: 50px 24px; display: flex; align-items: center; justify-content: center; color: var(--tinta-4); text-align: center; }
 .indicator-pagination { min-height: 70px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; color: var(--tinta-3); font-size: 12px; }
-.indicator-pagination > div { display: flex; gap: 7px; }
-.indicator-pagination button { min-height: 38px; padding: 0 14px; border: 1px solid var(--linha); border-radius: 7px; background: var(--papel); color: var(--tinta-2); font-size: 11px; }
-.indicator-pagination button:last-child { border-color: var(--mata); background: var(--mata); color: var(--areia); }
+.indicator-pagination-controls, .indicator-page-numbers { display: flex; align-items: center; gap: 7px; }
+.indicator-pagination button { min-height: 38px; padding: 0 14px; border: 1px solid var(--linha); border-radius: 7px; background: var(--papel); color: var(--tinta-2); font-size: 11px; cursor: pointer; }
+.indicator-pagination [data-page="next"] { border-color: var(--mata); background: var(--mata); color: var(--areia); }
+.indicator-page-numbers button { width: 38px; min-width: 38px; padding: 0; font-weight: 600; }
+.indicator-page-numbers button.is-current { border-color: var(--urucum); background: var(--urucum); color: var(--papel); }
+.indicator-page-ellipsis { width: 20px; color: var(--tinta-4); text-align: center; }
 .indicator-pagination button:hover:not(:disabled), .indicator-pagination button:focus-visible:not(:disabled) { border-color: var(--urucum); outline: none; }
 .indicator-pagination button:disabled { cursor: not-allowed; opacity: 0.4; }
 
@@ -746,7 +749,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-detail-summary div, .goals-detail-facts div { min-width: 0; }
 .goals-detail-summary dt, .goals-detail-facts dt { margin-bottom: 3px; color: var(--tinta-4); font-size: 8.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
 .goals-detail-summary dd, .goals-detail-facts dd { margin: 0; color: var(--tinta); font-size: 11.5px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
-.goals-detail-summary dd { color: var(--mata); font: 700 13px/1.3 var(--display); }
+.goals-detail-summary dt { font-size: 10px; }
+.goals-detail-summary dd { color: var(--mata); font: 700 15px/1.3 var(--display); }
 .goals-detail-chart { margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--linha-2); }
 .goals-detail-chart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .goals-detail-chart-head h3 { color: var(--tinta-3); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; }
@@ -769,6 +773,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-chart-fill { position: absolute; inset: 0 auto 0 0; min-width: 2px; border-radius: 3px; background: var(--mata-300); }
 .goals-chart-row.is-met .goals-chart-fill { background: var(--mata); }
 .goals-chart-row.is-selected .goals-chart-fill { background: var(--urucum); }
+.goals-chart-row.is-regional { margin-bottom: 3px; padding-bottom: 8px; border-bottom: 1px solid var(--linha-2); }
+.goals-chart-row.is-regional .goals-chart-uf, .goals-chart-row.is-regional > b { color: var(--mata); font-weight: 800; }
+.goals-chart-row.is-regional .goals-chart-fill { background: var(--mata); }
 .goals-chart-target { position: absolute; top: -2px; bottom: -2px; width: 2px; border-radius: 1px; background: var(--tinta-2); transform: translateX(-1px); }
 .goals-chart-row > b { min-width: 48px; color: var(--tinta-2); font-size: 9.5px; font-variant-numeric: tabular-nums; text-align: right; }
 .goals-chart-row.is-selected > b { color: var(--urucum); }
@@ -964,6 +971,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .state-summary-grid div + div { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   footer { align-items: flex-start; flex-direction: column; padding-inline: 20px; }
   .indicators-page { padding-bottom: 64px; }
+  .indicator-pagination { align-items: flex-start; flex-direction: column; }
+  .indicator-pagination-controls { width: 100%; flex-wrap: wrap; }
   .panorama-heading h1 { font-size: 27px; white-space: normal; }
   .goals-page { padding-top: 30px; }
   .goals-map-card { padding: 18px 16px 14px; }

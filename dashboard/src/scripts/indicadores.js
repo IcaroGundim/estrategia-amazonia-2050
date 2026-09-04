@@ -336,6 +336,15 @@ function closeDetail({ restoreFocus = true, scroll = true } = {}) {
   detailTrigger = null;
 }
 
+function paginasVisiveis(atual, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, indice) => indice + 1);
+  const paginas = new Set([1, total, atual - 1, atual, atual + 1]);
+  if (atual <= 4) [2, 3, 4, 5].forEach((pagina) => paginas.add(pagina));
+  if (atual >= total - 3) [total - 4, total - 3, total - 2, total - 1].forEach((pagina) => paginas.add(pagina));
+  const ordenadas = [...paginas].filter((pagina) => pagina >= 1 && pagina <= total).sort((a, b) => a - b);
+  return ordenadas.flatMap((pagina, indice) => indice && pagina - ordenadas[indice - 1] > 1 ? ['…', pagina] : [pagina]);
+}
+
 function renderTable() {
   const filtered = filteredIndicators();
   const pages = Math.max(1, Math.ceil(filtered.length / view.pageSize));
@@ -355,6 +364,11 @@ function renderTable() {
 
   const end = Math.min(start + view.pageSize, filtered.length);
   document.querySelector('[data-page-summary]').textContent = filtered.length ? `${start + 1}–${end} de ${filtered.length}` : '0 indicadores';
+  document.querySelector('[data-page-numbers]').innerHTML = filtered.length
+    ? paginasVisiveis(view.page, pages).map((pagina) => pagina === '…'
+      ? '<span class="indicator-page-ellipsis" aria-hidden="true">…</span>'
+      : `<button type="button" data-page-number="${pagina}"${pagina === view.page ? ' class="is-current" aria-current="page"' : ''} aria-label="Página ${pagina}">${pagina}</button>`).join('')
+    : '';
   document.querySelector('[data-page="prev"]').disabled = view.page <= 1;
   document.querySelector('[data-page="next"]').disabled = view.page >= pages;
 }
@@ -413,6 +427,13 @@ function bindEvents() {
     }
     const status = event.target.closest('[data-status]');
     if (status) { closeDetail({ restoreFocus: false, scroll: false }); view.status = status.dataset.status; view.page = 1; renderAll(); }
+    const pageNumber = event.target.closest('[data-page-number]');
+    if (pageNumber) {
+      view.page = Number(pageNumber.dataset.pageNumber);
+      renderTable();
+      document.querySelector('.indicators-table-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     const page = event.target.closest('[data-page]');
     if (page && !page.disabled) { view.page += page.dataset.page === 'next' ? 1 : -1; renderTable(); document.querySelector('.indicators-table-card').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   }, { signal: sinalDaPagina() });

@@ -37,6 +37,7 @@ function valor(meta, value) {
   if (typeof value === 'string') return value;
   if (!Number.isFinite(value)) return '—';
   if (ehPercentual(meta)) return `${number(value)}%`;
+  if (String(meta.unidade || '').trim() === '% / ha') return `${number(value, decimals(value))} ha`;
   return number(value, decimals(value));
 }
 
@@ -94,7 +95,7 @@ function renderGrafico(meta) {
       return faixa ? { ...estado, nota, faixa } : null;
     }).filter(Boolean);
     if (!linhas.length) {
-      return `<div class="goals-detail-chart-head"><h3>Valores por estado</h3>${seletor}</div>
+      return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
         <p class="goals-chart-empty">Não há classificações estaduais disponíveis para ${escape(ano)}.</p>`;
     }
 
@@ -121,13 +122,19 @@ function renderGrafico(meta) {
       <p class="goals-chart-legend"><i aria-hidden="true"></i> meta mínima: B</p>`;
   }
 
-  const linhas = state.data.estados.map((estado) => {
+  const estados = state.data.estados.map((estado) => {
     const valorEstado = Number(recorte?.valores?.[estado.uf]);
     const alvoEstado = Number(meta.estados?.[estado.uf]?.alvo ?? meta.alvo);
     return Number.isFinite(valorEstado) ? { ...estado, valor: valorEstado, alvo: alvoEstado } : null;
   }).filter(Boolean);
+  const valorRegional = Number.isFinite(recorte?.regional) ? recorte.regional : null;
+  const alvoRegional = Number(meta.regional?.alvo ?? meta.alvo);
+  const linhaRegional = Number.isFinite(valorRegional)
+    ? [{ uf: 'AL', name: 'Amazônia Legal', valor: valorRegional, alvo: alvoRegional, regional: true }]
+    : [];
+  const linhas = [...linhaRegional, ...estados];
   if (!linhas.length) {
-    return `<div class="goals-detail-chart-head"><h3>Valores por estado</h3>${seletor}</div>
+    return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
       <p class="goals-chart-empty">Não há valores estaduais disponíveis para ${escape(ano)}.</p>`;
   }
 
@@ -141,7 +148,8 @@ function renderGrafico(meta) {
       ? (meta.direcao === 'menor' ? item.valor <= item.alvo : item.valor >= item.alvo)
       : false;
     const selecionado = state.uf === item.uf ? ' is-selected' : '';
-    return `<div class="goals-chart-row${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(valor(meta, item.valor))}">
+    const regional = item.regional ? ' is-regional' : '';
+    return `<div class="goals-chart-row${regional}${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(valor(meta, item.valor))}">
       <span class="goals-chart-uf">${escape(item.uf)}</span>
       <span class="goals-chart-track" aria-hidden="true">
         <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
@@ -151,8 +159,8 @@ function renderGrafico(meta) {
     </div>`;
   }).join('');
 
-  return `<div class="goals-detail-chart-head"><h3>Valores por estado</h3>${seletor}</div>
-    <div class="goals-chart-bars" role="list" aria-label="Valores dos estados em ${escape(ano)}">${barras}</div>
+  return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
+    <div class="goals-chart-bars" role="list" aria-label="Valor da Amazônia Legal e dos estados em ${escape(ano)}">${barras}</div>
     <p class="goals-chart-legend"><i aria-hidden="true"></i> marcador da meta</p>`;
 }
 

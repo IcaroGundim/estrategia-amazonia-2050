@@ -81,7 +81,7 @@ const PARAMETROS = [
     agregacao: 'media',
     notaAgregacao: 'Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.'
   },
-  { codigo: 'I4.4.1', alvo: 80, direcao: 'maior', tipo: 'declarada', agregacao: 'populacao' },
+  { codigo: 'I4.4.1', alvo: 80, direcao: 'maior', tipo: 'declarada', unidade: '%', agregacao: 'populacao' },
   {
     codigo: 'I5.4.1',
     alvo: 1,
@@ -138,7 +138,29 @@ function anoDaReferencia(referencia) {
   return encontrado ? encontrado[0] : null;
 }
 
-function montaHistorico(parametro, indicador, estados, ufs) {
+function agregaHistorico(parametro, indicador, valores, contexto) {
+  const entradas = Object.entries(valores).filter(([, valor]) => Number.isFinite(valor));
+  if (!entradas.length || parametro.agregacao === 'contagem') return null;
+  const soma = (fn) => entradas.reduce((total, entrada) => total + (fn(entrada) || 0), 0);
+
+  if (parametro.agregacao === 'soma') return soma(([, valor]) => valor);
+  if (parametro.agregacao === 'media') return soma(([, valor]) => valor) / entradas.length;
+  if (parametro.agregacao === 'populacao') {
+    const peso = soma(([uf]) => contexto.populacaoPorUf[uf]);
+    return peso ? soma(([uf, valor]) => valor * (contexto.populacaoPorUf[uf] || 0)) / peso : null;
+  }
+  if (parametro.agregacao === 'razaoUc') {
+    const total = soma(([uf]) => indicador.extra?.[uf]?.total);
+    return total ? soma(([uf]) => indicador.extra?.[uf]?.comAmbos) / total * 100 : null;
+  }
+  if (parametro.agregacao === 'razaoCvli') {
+    const peso = soma(([uf]) => contexto.populacaoPorUf[uf]);
+    return peso ? soma(([uf, valor]) => valor * (contexto.populacaoPorUf[uf] || 0)) / peso : null;
+  }
+  return null;
+}
+
+function montaHistorico(parametro, indicador, estados, ufs, contexto) {
   const porAno = new Map();
   // I5.4.1 é calculado como % do PIB a partir do dashboard; a série do catálogo
   // está em R$ milhões e não pode ser misturada ao valor exibido nesta página.
@@ -147,7 +169,11 @@ function montaHistorico(parametro, indicador, estados, ufs) {
   if (serieCompativel) {
     for (const uf of ufs) {
       for (const [ano, valorBruto] of Object.entries(serieCompativel[uf] || {})) {
-        const valor = parametro.direcao === 'categoria' ? normalizaCapag(valorBruto) : Number(valorBruto);
+        let valor = parametro.direcao === 'categoria' ? normalizaCapag(valorBruto) : Number(valorBruto);
+        if (parametro.agregacao === 'razaoCvli' && Number.isFinite(valor)) {
+          const populacao = contexto.populacaoPorUf[uf];
+          valor = populacao ? valor / populacao * 100000 : null;
+        }
         const valido = parametro.direcao === 'categoria'
           ? Boolean(valor && valor !== 'SUSPENSA')
           : Number.isFinite(valor);
@@ -170,7 +196,11 @@ function montaHistorico(parametro, indicador, estados, ufs) {
   }
 
   return [...porAno.entries()]
-    .map(([ano, valores]) => ({ ano, valores }))
+    .map(([ano, valores]) => ({
+      ano,
+      valores,
+      regional: agregaHistorico(parametro, indicador, valores, contexto)
+    }))
     .sort((a, b) => Number(a.ano) - Number(b.ano));
 }
 
@@ -328,7 +358,7 @@ export function buildMetas(catalogo, dashboard) {
       avaliados,
       regional: agregaRegional(parametro, indicador, estados, contexto),
       agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null,
-      historico: montaHistorico(parametro, indicador, estados, ufs)
+      historico: montaHistorico(parametro, indicador, estados, ufs, contexto)
     });
   }
 
