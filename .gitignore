@@ -9,15 +9,14 @@ Thumbs.db
 .DS_Store
 
 # ---------------------------------------------------------------------------
-# O repositório publica apenas o site (`dashboard/`), que já carrega os dados
-# congelados em `dashboard/public/data/`. As pastas de trabalho abaixo ficam
-# somente na máquina local: são as fontes que alimentam `npm run build:static`.
+# O repositório publica o site (`dashboard/`) e os scripts que atualizam seus
+# dados. As pastas de trabalho abaixo ficam somente na máquina local: são as
+# fontes e artefatos que alimentam `npm run build:static`.
 # Para versioná-las mais tarde, basta remover a linha correspondente.
 # ---------------------------------------------------------------------------
 /dados/
 /entregaveis/
 /fontes_originais/
-/scripts/
 /BR_UF_2025 (2)/
 /Bandeiras - Amazônia Legal-*/
 /Identidade visual Consórcio Amazônia Legal/
