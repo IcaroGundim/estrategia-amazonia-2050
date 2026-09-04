@@ -133,6 +133,47 @@ function normalizaCapag(nota) {
   return String(nota || '').trim().toUpperCase();
 }
 
+function anoDaReferencia(referencia) {
+  const encontrado = String(referencia || '').match(/(?:19|20)\d{2}/);
+  return encontrado ? encontrado[0] : null;
+}
+
+function montaHistorico(parametro, indicador, estados, ufs) {
+  const porAno = new Map();
+  // I5.4.1 é calculado como % do PIB a partir do dashboard; a série do catálogo
+  // está em R$ milhões e não pode ser misturada ao valor exibido nesta página.
+  const serieCompativel = parametro.fonteValor !== 'dashboard' ? indicador.serieAnual : null;
+
+  if (serieCompativel) {
+    for (const uf of ufs) {
+      for (const [ano, valorBruto] of Object.entries(serieCompativel[uf] || {})) {
+        const valor = parametro.direcao === 'categoria' ? normalizaCapag(valorBruto) : Number(valorBruto);
+        const valido = parametro.direcao === 'categoria'
+          ? Boolean(valor && valor !== 'SUSPENSA')
+          : Number.isFinite(valor);
+        if (!valido) continue;
+        if (!porAno.has(ano)) porAno.set(ano, {});
+        porAno.get(ano)[uf] = valor;
+      }
+    }
+  }
+
+  if (!porAno.size) {
+    const ano = anoDaReferencia(indicador.anoRef);
+    if (ano) {
+      const valores = {};
+      for (const uf of ufs) {
+        if (estados[uf]) valores[uf] = estados[uf].valor;
+      }
+      if (Object.keys(valores).length) porAno.set(ano, valores);
+    }
+  }
+
+  return [...porAno.entries()]
+    .map(([ano, valores]) => ({ ano, valores }))
+    .sort((a, b) => Number(a.ano) - Number(b.ano));
+}
+
 function progressoEntre(baseline, atual, alvo) {
   if (![baseline, atual, alvo].every(Number.isFinite)) return null;
   const percurso = baseline - alvo;
@@ -286,7 +327,8 @@ export function buildMetas(catalogo, dashboard) {
       cumpridas,
       avaliados,
       regional: agregaRegional(parametro, indicador, estados, contexto),
-      agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null
+      agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null,
+      historico: montaHistorico(parametro, indicador, estados, ufs)
     });
   }
 
