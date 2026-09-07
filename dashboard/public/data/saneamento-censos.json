@@ -1,0 +1,196 @@
+{
+  "indicador": "I4.4.1",
+  "nome": "Saneamento nos censos demográficos",
+  "unidade": "%",
+  "atualizadoEm": "2026-09-07",
+  "naoEhOIsgr": {
+    "aviso": "Estas séries NÃO são o ISGR e não substituem o indicador do painel. São a substância que ele mede, na única definição que atravessa os três censos.",
+    "porQueOIsgrNaoRetroage": [
+      "Água: o ISGR usa a classificação 1821 do Censo 2022, que cruza existência de ligação à rede com forma principal de abastecimento. Essa classificação nasceu em 2022; 2000 e 2010 só têm a forma principal, e não separam poço profundo de poço raso nem identificam quem tem ligação mas usa outra fonte.",
+      "Fatores FClima e FGov: vêm da MUNIC 2024 (Magr18, Mhab088, Mtic266, Mgov086), e edições anteriores da MUNIC têm outro questionário."
+    ]
+  },
+  "anos": [
+    "2000",
+    "2010",
+    "2022"
+  ],
+  "esgotoAdequado": {
+    "definicao": "Rede geral ou pluvial mais fossa séptica, sobre o total de domicílios. Mesma classificação (11558) nos três censos: em 2022 o IBGE partiu a fossa séptica em ligada e não ligada à rede (46290 + 72112), e somadas elas dão o mesmo conceito de 2000 e 2010 (92855 + 92856).",
+    "serie": {
+      "AC": {
+        "2000": 31.11,
+        "2010": 36.55,
+        "2022": 49.67
+      },
+      "AM": {
+        "2000": 46.99,
+        "2010": 44.06,
+        "2022": 50.99
+      },
+      "AP": {
+        "2000": 24.34,
+        "2010": 23.57,
+        "2022": 48.94
+      },
+      "MA": {
+        "2000": 24.57,
+        "2010": 26.65,
+        "2022": 42.81
+      },
+      "MT": {
+        "2000": 29.76,
+        "2010": 35.93,
+        "2022": 58.04
+      },
+      "PA": {
+        "2000": 37.73,
+        "2010": 31.09,
+        "2022": 47.12
+      },
+      "RO": {
+        "2000": 20.74,
+        "2010": 22.11,
+        "2022": 39.54
+      },
+      "RR": {
+        "2000": 62.93,
+        "2010": 44.59,
+        "2022": 72.75
+      },
+      "TO": {
+        "2000": 19.83,
+        "2010": 29.03,
+        "2022": 50.88
+      }
+    }
+  },
+  "aguaRedeGeral": {
+    "definicao": "Rede geral como forma principal de abastecimento (2000 e 2010: categoria 92853; 2022: categoria 72144). É o recorte mais próximo que atravessa os três censos: em 2010 quem tinha ligação mas usava principalmente um poço respondia 'poço', então o equivalente de 2022 é o 72144 sozinho, sem o 72145.",
+    "ressalva": "Comparação boa, não perfeita. Em 2022 o IBGE passou a fazer duas perguntas (existência de ligação e forma principal) onde antes havia uma, e isso pode deslocar a classificação na margem. O 72145, que é a parcela ambígua, vale entre 2,7% e 9,7% dos domicílios conforme o estado.",
+    "serie": {
+      "AC": {
+        "2000": 36.09,
+        "2010": 47.27,
+        "2022": 52.56
+      },
+      "AM": {
+        "2000": 60.03,
+        "2010": 64.56,
+        "2022": 66.08
+      },
+      "AP": {
+        "2000": 50.75,
+        "2010": 54.54,
+        "2022": 43.38
+      },
+      "MA": {
+        "2000": 52.95,
+        "2010": 65.88,
+        "2022": 66.15
+      },
+      "MT": {
+        "2000": 63.67,
+        "2010": 74.62,
+        "2022": 80.74
+      },
+      "PA": {
+        "2000": 42.64,
+        "2010": 47.94,
+        "2022": 48.9
+      },
+      "RO": {
+        "2000": 30.75,
+        "2010": 38.5,
+        "2022": 46.15
+      },
+      "RR": {
+        "2000": 79.24,
+        "2010": 81.23,
+        "2022": 81.32
+      },
+      "TO": {
+        "2000": 66.26,
+        "2010": 78.64,
+        "2022": 81.74
+      }
+    }
+  },
+  "distanciaParaAguaDoIsgr2022": {
+    "descricao": "Quanto a definição de água do ISGR (72144 + 72145 + 72154) fica acima da definição comparável, em 2022. É o tamanho do que não dá para reconstruir nos censos anteriores.",
+    "porUf": [
+      {
+        "uf": "RO",
+        "agua_rede_geral_pct": 46.15,
+        "agua_isgr_pct": 71.13,
+        "diferenca_pp": 24.98,
+        "tem_ligacao_usa_outra_pct": 7.81,
+        "poco_profundo_sem_ligacao_pct": 17.17
+      },
+      {
+        "uf": "AC",
+        "agua_rede_geral_pct": 52.56,
+        "agua_isgr_pct": 71.87,
+        "diferenca_pp": 19.31,
+        "tem_ligacao_usa_outra_pct": 7.24,
+        "poco_profundo_sem_ligacao_pct": 12.08
+      },
+      {
+        "uf": "AM",
+        "agua_rede_geral_pct": 66.08,
+        "agua_isgr_pct": 88.72,
+        "diferenca_pp": 22.64,
+        "tem_ligacao_usa_outra_pct": 8.09,
+        "poco_profundo_sem_ligacao_pct": 14.55
+      },
+      {
+        "uf": "RR",
+        "agua_rede_geral_pct": 81.32,
+        "agua_isgr_pct": 89.47,
+        "diferenca_pp": 8.15,
+        "tem_ligacao_usa_outra_pct": 2.74,
+        "poco_profundo_sem_ligacao_pct": 5.42
+      },
+      {
+        "uf": "PA",
+        "agua_rede_geral_pct": 48.9,
+        "agua_isgr_pct": 81.88,
+        "diferenca_pp": 32.98,
+        "tem_ligacao_usa_outra_pct": 6.95,
+        "poco_profundo_sem_ligacao_pct": 26.02
+      },
+      {
+        "uf": "AP",
+        "agua_rede_geral_pct": 43.38,
+        "agua_isgr_pct": 76.18,
+        "diferenca_pp": 32.8,
+        "tem_ligacao_usa_outra_pct": 6.48,
+        "poco_profundo_sem_ligacao_pct": 26.32
+      },
+      {
+        "uf": "TO",
+        "agua_rede_geral_pct": 81.74,
+        "agua_isgr_pct": 91.48,
+        "diferenca_pp": 9.74,
+        "tem_ligacao_usa_outra_pct": 2.73,
+        "poco_profundo_sem_ligacao_pct": 7.01
+      },
+      {
+        "uf": "MA",
+        "agua_rede_geral_pct": 66.15,
+        "agua_isgr_pct": 89.97,
+        "diferenca_pp": 23.82,
+        "tem_ligacao_usa_outra_pct": 9.73,
+        "poco_profundo_sem_ligacao_pct": 14.09
+      },
+      {
+        "uf": "MT",
+        "agua_rede_geral_pct": 80.74,
+        "agua_isgr_pct": 94.83,
+        "diferenca_pp": 14.09,
+        "tem_ligacao_usa_outra_pct": 4.84,
+        "poco_profundo_sem_ligacao_pct": 9.25
+      }
+    ]
+  }
+}

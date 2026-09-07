@@ -68,6 +68,14 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+Para o **saneamento (I4.4.1) o ISGR não retroage**, e o `scripts/eixo4_saneamento_censos.py` registra por quê. O índice é `min(água adequada, esgoto adequado) × FClima × FGov`, e dois dos três insumos nascem em 2022. A água do ISGR é `72144 + 72145 + 72154` da classificação 1821, que cruza *existência de ligação à rede* com *forma principal de abastecimento* — duas perguntas que o Censo 2022 passou a fazer separadamente. Em 2000 e 2010 havia só a forma principal, que não identifica quem tem ligação mas usa outra fonte nem separa poço profundo de poço raso. Os fatores FClima e FGov vêm da MUNIC 2024, e edições anteriores têm outro questionário.
+
+O que dá para levar aos três censos, e é o que o script grava, é a substância que o índice mede. **Esgoto adequado** (rede geral ou pluvial mais fossa séptica) usa a mesma classificação 11558 em 2000, 2010 e 2022 — o IBGE só partiu a fossa séptica em ligada e não ligada à rede em 2022, e somadas elas dão o mesmo conceito. **Água por rede geral como forma principal** é o recorte mais próximo que atravessa os três: em 2010 quem tinha ligação mas usava principalmente um poço respondia "poço", então o equivalente de 2022 é a categoria 72144 sozinha. A comparação é boa, não perfeita — a parcela ambígua (72145) vale de 2,7% a 9,7% conforme o estado, e isso está registrado na ressalva do JSON.
+
+O tamanho do que não dá para reconstruir ficou medido: a água do ISGR fica até **33 p.p. acima** da definição comparável (Pará e Amapá), e a decomposição mostra que o grosso é poço profundo sem ligação à rede — 26% dos domicílios no Amapá e no Pará. Os dados vão em `public/data/saneamento-censos.json`, por UF e pelos 808 municípios, **marcados como não sendo o ISGR**: são séries da substância, não do índice, e por isso não foram ligadas ao seletor de ano do painel.
+
+O que elas mostram é substantivo. O esgoto adequado sobe em todos os nove estados entre 2000 e 2022 — Tocantins de 19,8% para 50,9%, Mato Grosso de 29,8% para 58,0% —, mas com uma queda generalizada em 2010 em Amazonas, Roraima, Pará e Amapá. Já a água por rede geral estagnou no Pará (42,6% para 48,9% em 22 anos) e **caiu no Amapá**, de 54,5% em 2010 para 43,4% em 2022 — queda que persiste mesmo somando a parcela ambígua, então não é artefato de questionário.
+
 A base do **CVLI (I2.4.1) foi de 7 para 12 anos**, 2015-2026, pelo `scripts/agregar_cvli.py`. A definição não muda — segue a soma de homicídio doloso, roubo seguido de morte e lesão corporal seguida de morte, agregada pelo ano que consta no dado e não pelo nome do arquivo. O script deixou de depender de planilhas já baixadas à mão e passa a buscar os `bancovde-AAAA.xlsx` do MJ; o servidor bloqueia HEAD, então a existência de cada ano se descobre pelo próprio GET, e como ele corta a conexão no meio com frequência (`IncompleteRead`) há quatro tentativas por ano — sem isso o ano sumiria da série sem aviso. A contagem de 2025 confere com a do painel em todos os estados.
 
 Uma ressalva da própria fonte: os números refletem o estágio de consolidação de cada UF no Sinesp VDE **na data da extração**, então rebaixar o mesmo ano pode devolver valores diferentes, e o ano corrente está sempre incompleto.
@@ -161,6 +169,7 @@ python scripts/baixar_focos.py                               # INPE → focos de
 python scripts/eixo3_pevs.py                                 # SIDRA 289 → PEVS (1994-2024)
 python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 → PIA (2007-2024)
 python scripts/agregar_cvli.py                               # Sinesp/VDE → CVLI (2015-2026)
+python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/2022 → saneamento
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
