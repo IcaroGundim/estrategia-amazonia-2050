@@ -51,7 +51,7 @@ const AGREGACAO = {
   vulnerability: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura correta ponderaria pelo número de municípios de cada estado, que não está na base consolidada.' },
   perRenovavel: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.' },
   pdPctPib: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.', notaSerie: 'Em 2021 e 2023 só oito estados têm valor, então a média desses anos não é composta pelos mesmos estados dos demais.' },
-  pevsBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' },
+  pevsBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados', notaSerie: 'Os valores são a preços correntes de cada ano, como o IBGE publica. Numa série de três décadas isso pesa: o Pará sai de R$ 2,05 bi em 1995 para R$ 2,73 bi em 2024, mas em reais de 2024 o valor de 1995 equivale a R$ 11,7 bi — em termos reais a produção caiu, não cresceu. A série deflacionada pelo IPCA está em public/data/pevs-extracao-vegetal.json.' },
   piaBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados' }
   // Todo indicador do seletor tem entrada aqui. A guarda por ausência segue no
   // painel regional: um indicador novo sem método de agregação definido precisa

@@ -10,6 +10,7 @@ Saídas em dados/eixo3/:
   - pevs_madeireiro_uf_ano.csv    (agregação madeireiros x não-madeireiros)
 """
 import csv
+import datetime
 import gzip
 import io
 import json
@@ -27,7 +28,12 @@ os.makedirs(SAIDA, exist_ok=True)
 
 UFS = {"11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA",
        "16": "AP", "17": "TO", "21": "MA", "51": "MT"}
-ANOS = "2015-2024"
+ANOS = "2015-2024"          # detalhe por produto: alimenta o recorte do ano de referência
+# A série total vai a 1994 e não a 1986, onde a tabela começa, porque o valor da
+# produção muda de moeda antes disso — Cruzados até 1988, Cruzados Novos em 1989,
+# Cruzeiros até 1992, Cruzeiros Reais em 1993. Só de 1994 em diante é Mil Reais, e
+# só aí os anos são somáveis na mesma unidade.
+ANOS_TOTAL = "1994-2024"
 # Categorias folha = subprodutos (nome "7.1 - ...", "9.3 - ..."); os grupos
 # ("1 - Alimentícios" etc.) são somatório dos filhos e NÃO entram nas agregações.
 FOLHA = re.compile(r"^\d+\.\d+ ")
@@ -77,7 +83,7 @@ def linha_para_dict(r, prod_flag=False):
 
 
 print("PEVS total (categoria 0) por UF/ano...")
-total = sidra(f"/t/289/n3/{','.join(UFS)}/v/144,145/p/{ANOS}/c193/0")
+total = sidra(f"/t/289/n3/{','.join(UFS)}/v/144,145/p/{ANOS_TOTAL}/c193/0")
 print("PEVS detalhado por produto...")
 detalhe = sidra(f"/t/289/n3/{','.join(UFS)}/v/144,145/p/{ANOS}/c193/all")
 
@@ -149,9 +155,13 @@ gravar(tot_rows, "pevs_total_uf_ano.csv", ["uf", "ano", "quantidade_t", "valor_m
 gravar(det_rows, "pevs_por_produto_uf.csv", ["uf", "ano", "cod_produto", "produto", "quantidade_t", "valor_mil_rs"])
 gravar(mad_rows, "pevs_madeireiro_uf_ano.csv", ["uf", "ano", "grupo", "valor_mil_rs", "quantidade_t"])
 
-# verificação interna: soma das folhas = categoria Total (por UF/ano)
+# verificação interna: soma das folhas = categoria Total (por UF/ano).
+# Só nos anos em que o detalhe por produto foi baixado — o total vai mais longe.
+anos_detalhe = {d["ano"] for d in det_rows}
 dif = []
 for r in tot_rows:
+    if r["ano"] not in anos_detalhe:
+        continue
     soma_folhas = sum(
         (d["valor_mil_rs"] or 0.0) for d in det_rows
         if d["uf"] == r["uf"] and d["ano"] == r["ano"] and FOLHA.match(d["produto"])
@@ -160,7 +170,82 @@ for r in tot_rows:
         dif.append(f"{r['uf']}/{r['ano']}: folhas {soma_folhas:,.0f} vs total {r['valor_mil_rs']:,.0f}")
 if dif:
     raise SystemExit("ERRO: soma dos subprodutos != Total — " + "; ".join(dif[:5]))
-print("check interno: soma dos subprodutos = Total (todas as UF/ano) OK")
+print(f"check interno: soma dos subprodutos = Total OK ({min(anos_detalhe)}-{max(anos_detalhe)})")
+
+# ---------- consolidado versionado ----------
+# O painel exibe o valor a preços correntes, que é a metodologia da tabela e não muda
+# aqui. Só que numa série de 31 anos isso engana: o Pará sai de R$ 1,95 bi em 1994 para
+# R$ 2,74 bi em 2024 e parece ter crescido, quando o IPCA subiu 7x no mesmo período —
+# em valor real a produção caiu. Por isso vai junto uma série deflacionada pelo IPCA
+# para reais de 2024, marcada como derivada: ela não substitui o indicador, mostra o
+# que a série corrente esconde.
+print("\nIPCA (SIDRA 1737) para a série deflacionada...")
+anos_serie = sorted({r["ano"] for r in tot_rows})
+periodos = ",".join(f"{a}12" for a in anos_serie)
+ipca = {}
+for r in sidra(f"/t/1737/n1/1/v/2266/p/{periodos}")[1:]:
+    valor = num(r["V"])
+    if valor:
+        ipca[int(r["D3C"][:4])] = valor
+base = ipca.get(max(anos_serie))
+print(f"  índice de {min(anos_serie)} a {max(anos_serie)}; fator do primeiro ano: {base / ipca[min(anos_serie)]:.2f}x")
+
+nominal, real = {}, {}
+for r in tot_rows:
+    if r["valor_mil_rs"] is None:
+        continue
+    # Sem arredondar: é exatamente a conta que o server.mjs faz (valor_mil_rs / 1e6),
+    # e o painel guarda a precisão cheia. Arredondar aqui criaria divergência boba
+    # entre o JSON versionado e o que o build:static produz.
+    nominal.setdefault(r["uf"], {})[str(r["ano"])] = r["valor_mil_rs"] / 1e6
+    fator = ipca.get(r["ano"])
+    if fator and base:
+        real.setdefault(r["uf"], {})[str(r["ano"])] = round(r["valor_mil_rs"] / 1e6 * (base / fator), 6)
+
+payload = {
+    "indicador": "I3.1.1",
+    "nome": "Produção da extração vegetal (PEVS)",
+    "unidade": "R$ bilhões",
+    "atualizadoEm": datetime.date.today().isoformat(),
+    "fonte": {
+        "tabela": "IBGE/SIDRA 289 — valor da produção na extração vegetal (variável 145), categoria Total",
+        "recorte": f"{ANOS_TOTAL}, por UF",
+        "porQueComecaEm1994": "A tabela começa em 1986, mas o valor da produção muda de moeda "
+                              "antes de 1994 (Cruzados, Cruzados Novos, Cruzeiros, Cruzeiros "
+                              "Reais). Só de 1994 em diante a unidade é Mil Reais e os anos são "
+                              "comparáveis na mesma moeda.",
+    },
+    "anos": [str(a) for a in anos_serie],
+    "seriePrecosCorrentes": {
+        "descricao": "É o que o painel exibe, na metodologia da própria tabela: valor a preços "
+                     "correntes de cada ano.",
+        "serie": nominal,
+    },
+    "serieReais2024": {
+        "descricao": "Derivada, não substitui o indicador. A mesma série deflacionada pelo IPCA "
+                     f"(SIDRA 1737) para reais de {max(anos_serie)}, para que a comparação entre "
+                     "anos distantes não seja dominada pela inflação.",
+        "deflator": "IPCA, número-índice de dezembro de cada ano",
+        "serie": real,
+    },
+    "anosAusentes": [{"uf": uf, "ano": str(a)} for uf in sorted(nominal)
+                     for a in anos_serie if str(a) not in nominal[uf]],
+}
+destino = os.path.join(PASTA, "dashboard", "public", "data", "pevs-extracao-vegetal.json")
+with open(destino, "w", encoding="utf-8") as f:
+    json.dump(payload, f, ensure_ascii=False, indent=2)
+    f.write("\n")
+print("Consolidado versionado ->", os.path.relpath(destino, PASTA))
+
+print("\nValor da produção (R$ bi) — correntes x reais de 2024")
+mostra = [a for a in anos_serie if a % 5 == 0 or a == max(anos_serie)]
+print("UF   " + " ".join(f"{a:>16}" for a in mostra))
+for uf in ["AC", "AP", "AM", "MA", "MT", "PA", "RO", "RR", "TO"]:
+    celulas = []
+    for a in mostra:
+        n, rl = nominal.get(uf, {}).get(str(a)), real.get(uf, {}).get(str(a))
+        celulas.append(f"{n:6.2f}/{rl:8.2f}" if n is not None else "               -")
+    print(f"{uf:4} " + " ".join(f"{c:>16}" for c in celulas))
 
 # síntese de verificação
 print("\n--- VERIFICAÇÃO: valor da produção (mil R$), 2024 ---")

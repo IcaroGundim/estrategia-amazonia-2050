@@ -8,12 +8,13 @@
 // o mesmo cálculo do server.mjs lendo só arquivos versionados: as séries saem dos
 // JSONs de public/data e os demais indicadores saem do próprio dashboard.json.
 //
-// Cobre três indicadores, e recalcula a síntese comparativa uma vez só no fim —
+// Cobre cinco indicadores, e recalcula a síntese comparativa uma vez só no fim —
 // rodar um de cada vez daria score intermediário errado:
 //   school       ← frequencia-escolar-15a17.json   (PNADc, SIDRA 7138)
 //   apsCobertura ← atencao-primaria.json           (e-Gestor, cobertura APS)
 //   pdPctPib     ← pd-estadual.json                (MCTI + SIDRA t5938)
 //   heatRate     ← focos-calor.json                (INPE, satélite de referência)
+//   pevsBilhoes  ← pevs-extracao-vegetal.json      (IBGE/SIDRA 289, preços correntes)
 //
 // O pdPctPib não entra na síntese comparativa (a lista SCORING não o inclui) e o valor
 // plano segue a regra do server.mjs — o ano mais recente com valor em cada UF, que não é
@@ -34,8 +35,8 @@ const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dataRoot = join(appRoot, 'public', 'data');
 
 // Precisa espelhar o ANO_DE_REFERENCIA e o ANOS_PARCIAIS do server.mjs.
-const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023, heatRate: 2024 };
-const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [], heatRate: [] };
+const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023, heatRate: 2024, pevsBilhoes: 2024 };
+const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [], heatRate: [], pevsBilhoes: [] };
 
 // --- réplicas fiéis do server.mjs (linhas 161-182) ---
 function minMaxScore(values, direction = 'high') {
@@ -78,6 +79,7 @@ const escolar = await leia('frequencia-escolar-15a17.json');
 const aps = await leia('atencao-primaria.json');
 const pd = await leia('pd-estadual.json');
 const focos = await leia('focos-calor.json');
+const pevs = await leia('pevs-extracao-vegetal.json');
 const { states } = dashboard;
 
 const antes = Object.fromEntries(states.map((s) => [s.uf, {
@@ -117,6 +119,16 @@ for (const state of states) {
     const recalculado = state.series.heatRate[String(REFERENCIA.heatRate)];
     if (Number.isFinite(state.heatRate) && Math.abs(recalculado - state.heatRate) > 1e-9) {
       throw new Error(`${state.uf}: heatRate de ${REFERENCIA.heatRate} não confere (${recalculado} x ${state.heatRate})`);
+    }
+  }
+  // PEVS: o painel exibe preços correntes, que é a metodologia da tabela. O valor de
+  // 2024 já está no payload e serve de conferência.
+  const pevsUf = soComValor(pevs.seriePrecosCorrentes.serie[state.uf]);
+  if (Object.keys(pevsUf).length) {
+    state.series.pevsBilhoes = pevsUf;
+    const ref = pevsUf[String(REFERENCIA.pevsBilhoes)];
+    if (Number.isFinite(state.pevsBilhoes) && Math.abs(ref - state.pevsBilhoes) > 1e-9) {
+      throw new Error(`${state.uf}: pevsBilhoes de ${REFERENCIA.pevsBilhoes} não confere`);
     }
   }
   state.school = school[String(REFERENCIA.school)];
