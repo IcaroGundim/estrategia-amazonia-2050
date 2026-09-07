@@ -68,6 +68,16 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+O **IDEB (I2.3.1) saiu de pendente para série completa**, 2005-2025, pelo `scripts/eixo2_ideb_inep.py`. O catálogo registrava "INEP Data sem API aberta; download.inep.gov.br bloqueado", mas o host não está bloqueado: a página de resultados carrega os links por aba via AJAX, e o conteúdo real está em `.../ideb/resultados/2005-2025`, de onde saem os arquivos oficiais. São 11 edições bienais, nas três etapas (anos iniciais, finais e ensino médio), por UF e pelos 808 municípios da Amazônia Legal.
+
+O arquivo grava **duas séries de extensões diferentes, de propósito**. O IDEB observado existe nas 11 edições. Já o indicador como a ficha o define — "% de municípios/estados que atingiram ou superaram a meta" — só é calculável de 2007 a 2021: o INEP projetou metas até 2021 e parou, e as edições de 2023 e 2025 saíram sem meta. Juntar as duas numa linha só faria a segunda parecer interrompida por falta de dado, quando o que acabou foi a meta.
+
+Duas escolhas de rede, porque o INEP não usa a mesma nos dois níveis: na UF vale o "Total", que soma pública e privada e é onde a meta do ente é projetada; no arquivo municipal não existe "Total" — as redes são Estadual, Municipal, Federal e Pública —, então vale a **Pública**, que é a agregada e cobre 808 dos municípios com meta. O rótulo do INEP traz marcadores de nota (`Total (3)(4)`, `Pública (4)`), que o script normaliza.
+
+O que os dados mostram é duro. O IDEB observado sobe em todos os nove estados nas três etapas — Amazonas nos anos iniciais vai de 3,1 em 2005 para 6,0 em 2025. Mas o **cumprimento da meta despencou**: nos anos iniciais, a parcela de municípios que bateram a meta caiu de 86-100% em 2007 para 0% no Amapá e em Roraima, 3% no Tocantins e 10% em Rondônia em 2021. As metas subiam mais rápido que o avanço real.
+
+Os dados ficam em `public/data/ideb.json`, versionados. **Não foram ligados ao painel**: o IDEB não existe como métrica hoje, e acrescentá-la é decisão de escopo do painel, não de coleta — além disso o `catalogo.json` vem dos workbooks, então o status "pendente" do I2.3.1 só muda quando os workbooks forem atualizados.
+
 Para o **saneamento (I4.4.1) o ISGR não retroage**, e o `scripts/eixo4_saneamento_censos.py` registra por quê. O índice é `min(água adequada, esgoto adequado) × FClima × FGov`, e dois dos três insumos nascem em 2022. A água do ISGR é `72144 + 72145 + 72154` da classificação 1821, que cruza *existência de ligação à rede* com *forma principal de abastecimento* — duas perguntas que o Censo 2022 passou a fazer separadamente. Em 2000 e 2010 havia só a forma principal, que não identifica quem tem ligação mas usa outra fonte nem separa poço profundo de poço raso. Os fatores FClima e FGov vêm da MUNIC 2024, e edições anteriores têm outro questionário.
 
 O que dá para levar aos três censos, e é o que o script grava, é a substância que o índice mede. **Esgoto adequado** (rede geral ou pluvial mais fossa séptica) usa a mesma classificação 11558 em 2000, 2010 e 2022 — o IBGE só partiu a fossa séptica em ligada e não ligada à rede em 2022, e somadas elas dão o mesmo conceito. **Água por rede geral como forma principal** é o recorte mais próximo que atravessa os três: em 2010 quem tinha ligação mas usava principalmente um poço respondia "poço", então o equivalente de 2022 é a categoria 72144 sozinha. A comparação é boa, não perfeita — a parcela ambígua (72145) vale de 2,7% a 9,7% conforme o estado, e isso está registrado na ressalva do JSON.
@@ -170,6 +180,7 @@ python scripts/eixo3_pevs.py                                 # SIDRA 289 → PEV
 python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 → PIA (2007-2024)
 python scripts/agregar_cvli.py                               # Sinesp/VDE → CVLI (2015-2026)
 python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/2022 → saneamento
+python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (2005-2025)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
