@@ -8,7 +8,7 @@
 // o mesmo cálculo do server.mjs lendo só arquivos versionados: as séries saem dos
 // JSONs de public/data e os demais indicadores saem do próprio dashboard.json.
 //
-// Cobre seis indicadores, e recalcula a síntese comparativa uma vez só no fim —
+// Cobre sete indicadores, e recalcula a síntese comparativa uma vez só no fim —
 // rodar um de cada vez daria score intermediário errado:
 //   school       ← frequencia-escolar-15a17.json   (PNADc, SIDRA 7138)
 //   apsCobertura ← atencao-primaria.json           (e-Gestor, cobertura APS)
@@ -16,6 +16,7 @@
 //   heatRate     ← focos-calor.json                (INPE, satélite de referência)
 //   pevsBilhoes  ← pevs-extracao-vegetal.json      (IBGE/SIDRA 289, preços correntes)
 //   piaBilhoes   ← pia-transformacao-industrial.json (IBGE/SIDRA 1849+10457)
+//   ideb*        ← ideb.json                       (INEP, 3 etapas)
 //
 // O pdPctPib não entra na síntese comparativa (a lista SCORING não o inclui) e o valor
 // plano segue a regra do server.mjs — o ano mais recente com valor em cada UF, que não é
@@ -36,8 +37,10 @@ const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dataRoot = join(appRoot, 'public', 'data');
 
 // Precisa espelhar o ANO_DE_REFERENCIA e o ANOS_PARCIAIS do server.mjs.
-const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023, heatRate: 2024, pevsBilhoes: 2024, piaBilhoes: 2024 };
-const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [], heatRate: [], pevsBilhoes: [], piaBilhoes: [] };
+const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023, heatRate: 2024, pevsBilhoes: 2024, piaBilhoes: 2024,
+  idebAnosIniciais: 2025, idebAnosFinais: 2025, idebEnsinoMedio: 2025 };
+const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [], heatRate: [], pevsBilhoes: [], piaBilhoes: [],
+  idebAnosIniciais: [], idebAnosFinais: [], idebEnsinoMedio: [] };
 
 // --- réplicas fiéis do server.mjs (linhas 161-182) ---
 function minMaxScore(values, direction = 'high') {
@@ -82,6 +85,9 @@ const pd = await leia('pd-estadual.json');
 const focos = await leia('focos-calor.json');
 const pevs = await leia('pevs-extracao-vegetal.json');
 const pia = await leia('pia-transformacao-industrial.json');
+const ideb = await leia('ideb.json');
+// chave da métrica -> etapa como o ideb.json a nomeia
+const ETAPAS_IDEB = { idebAnosIniciais: 'anos iniciais', idebAnosFinais: 'anos finais', idebEnsinoMedio: 'ensino médio' };
 const { states } = dashboard;
 
 const antes = Object.fromEntries(states.map((s) => [s.uf, {
@@ -134,6 +140,15 @@ for (const state of states) {
       throw new Error(`${state.uf}: ${chave} de ${REFERENCIA[chave]} não confere`);
     }
   }
+  // IDEB: o painel exibe a nota observada, que existe nas onze edições. O valor plano
+  // é o do ano de referência; o cumprimento de meta não vai ao painel porque o INEP
+  // parou de projetar metas em 2021.
+  for (const [chave, etapa] of Object.entries(ETAPAS_IDEB)) {
+    const serieUf = soComValor(ideb.idebObservado[etapa]?.[state.uf]);
+    if (!Object.keys(serieUf).length) continue;
+    state.series[chave] = serieUf;
+    state[chave] = serieUf[String(REFERENCIA[chave])] ?? null;
+  }
   state.school = school[String(REFERENCIA.school)];
   state.apsCobertura = cobertura[String(REFERENCIA.apsCobertura)];
   state.esfTeams = equipes[String(REFERENCIA.apsCobertura)] ?? null;
@@ -161,6 +176,7 @@ rankStates(states, 'score');
 rankStates(states, 'school');
 rankStates(states, 'apsCobertura');
 rankStates(states, 'pdPctPib');
+for (const chave of Object.keys(ETAPAS_IDEB)) rankStates(states, chave);
 rankStates(states, 'heatRate', 'low');
 dashboard.summary.averageScore = Math.round(states.reduce((sum, state) => sum + state.score, 0) / states.length);
 states.sort((a, b) => a.ranks.score - b.ranks.score);

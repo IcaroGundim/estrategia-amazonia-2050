@@ -36,10 +36,20 @@ const STATES = {
   TO: { name: 'Tocantins', capital: 'Palmas', flag: 'Bandeira_do_Tocantins.svg' }
 };
 
+// Etapas do IDEB, na grafia que o CSV usa. Cada uma vira uma métrica do painel.
+const ETAPAS_IDEB = {
+  idebAnosIniciais: 'anos iniciais',
+  idebAnosFinais: 'anos finais',
+  idebEnsinoMedio: 'ensino médio'
+};
+
 // Ano que cada indicador com série usa como padrão: o mesmo que o painel já exibia
 // antes de existir seletor de ano.
 const ANO_DE_REFERENCIA = {
   prodesRate: 2025,
+  idebAnosIniciais: 2025,
+  idebAnosFinais: 2025,
+  idebEnsinoMedio: 2025,
   heatRate: 2024,
   cvliRate: 2025,
   ibc: 2025,
@@ -250,7 +260,7 @@ export async function loadGeo() {
 }
 
 export async function buildDashboard() {
-  const [populationRows, prodesRows, focusRows, cvliRows, povertyRows, schoolRows, apsRows, vulnerabilityRows, conservationRows, pevsRows, piaRows, ibcRows, perRows, isgrRows, pdRows, geo] = await Promise.all([
+  const [populationRows, prodesRows, focusRows, cvliRows, povertyRows, schoolRows, apsRows, idebRows, vulnerabilityRows, conservationRows, pevsRows, piaRows, ibcRows, perRows, isgrRows, pdRows, geo] = await Promise.all([
     readCsv('ibge_pop/populacao_uf_ano.csv'),
     readCsv('prodes/prodes_rates_uf.csv'),
     readCsv('focos/focos_calor_uf_ano.csv'),
@@ -258,6 +268,7 @@ export async function buildDashboard() {
     readCsv('ibge_ods/pobreza_uf_ano.csv'),
     readCsv('ibge_educacao/freq_escolar_15a17_uf_ano.csv'),
     readCsv('ms_aps/aps_uf_ano.csv'),
+    readCsv('inep/ideb_uf_ano.csv'),
     readCsv('iivcm/iivcm.csv'),
     readCsv('cnuc/cnuc.csv', ';', 0, 'latin1'),
     readCsv('eixo3/pevs_total_uf_ano.csv'),
@@ -308,6 +319,10 @@ export async function buildDashboard() {
   // troca da fonte não mexe em valor, ranking nem síntese — só acrescenta o histórico.
   const school = latestByUf(schoolRows, 2024, (row) => parseNumber(row.taxa));
   const apsCobertura = latestByUf(apsRows, ANO_DE_REFERENCIA.apsCobertura, (row) => parseNumber(row.cobertura_pct));
+  const idebValor = Object.fromEntries(Object.entries(ETAPAS_IDEB).map(([chave, etapa]) => [
+    chave,
+    latestByUf(idebRows.filter((row) => row.etapa === etapa), ANO_DE_REFERENCIA[chave], (row) => parseNumber(row.ideb))
+  ]));
   const apsEquipes = latestByUf(apsRows, ANO_DE_REFERENCIA.apsCobertura, (row) => parseNumber(row.equipes));
   const pevs = latestByUf(pevsRows, 2024, (row) => parseNumber(row.valor_mil_rs));
   const pia = latestByUf(piaRows.filter((row) => row.cnae_nome === 'Total'), 2024, (row) => parseNumber(row.valor_transf_ind_mil_rs));
@@ -329,6 +344,13 @@ export async function buildDashboard() {
   // A série tem quebra de metodologia em 2021 — a coluna `metodologia` do CSV marca
   // qual regra vale em cada ano, e a nota do indicador no painel registra isso.
   const apsByUf = Object.groupBy(apsRows.filter((row) => STATES[row.uf]), (row) => row.uf);
+  // IDEB: uma métrica por etapa, com o valor observado. O CSV traz também a meta e se
+  // ela foi atingida, mas o INEP parou de projetar metas em 2021 — o painel exibe o
+  // observado, que existe nas onze edições, e o cumprimento de meta fica no ideb.json.
+  const idebPorEtapa = Object.fromEntries(Object.entries(ETAPAS_IDEB).map(([chave, etapa]) => [
+    chave,
+    Object.groupBy(idebRows.filter((row) => STATES[row.uf] && row.etapa === etapa && parseNumber(row.ideb) !== null), (row) => row.uf)
+  ]));
 
   const vulnerabilityByUf = {};
   for (const row of vulnerabilityRows) {
@@ -398,6 +420,9 @@ export async function buildDashboard() {
       school: school[uf],
       esfTeams: apsEquipes[uf] ?? null,
       apsCobertura: apsCobertura[uf] ?? null,
+      idebAnosIniciais: idebValor.idebAnosIniciais[uf] ?? null,
+      idebAnosFinais: idebValor.idebAnosFinais[uf] ?? null,
+      idebEnsinoMedio: idebValor.idebEnsinoMedio[uf] ?? null,
       vulnerability: vulnerabilityByUf[uf] ? vulnerabilityByUf[uf].reduce((sum, value) => sum + value, 0) / vulnerabilityByUf[uf].length : null,
       conservationUnits: conservation.total,
       conservationManaged: conservation.total ? conservation.managed / conservation.total * 100 : null,
@@ -424,7 +449,10 @@ export async function buildDashboard() {
         pdPctPib: serieDe(pdByUf[uf], 'pct_pib', (valor) => valor),
         poverty: serieDe(povertyByUf[uf], 'pct_pobreza', (valor) => valor),
         school: serieDe(schoolByUf[uf], 'taxa', (valor) => valor),
-        apsCobertura: serieDe(apsByUf[uf], 'cobertura_pct', (valor) => valor)
+        apsCobertura: serieDe(apsByUf[uf], 'cobertura_pct', (valor) => valor),
+        idebAnosIniciais: serieDe(idebPorEtapa.idebAnosIniciais[uf], 'ideb', (valor) => valor),
+        idebAnosFinais: serieDe(idebPorEtapa.idebAnosFinais[uf], 'ideb', (valor) => valor),
+        idebEnsinoMedio: serieDe(idebPorEtapa.idebEnsinoMedio[uf], 'ideb', (valor) => valor)
       },
       ranks: {}
     };
@@ -465,6 +493,7 @@ export async function buildDashboard() {
   rankStates(states, 'pevsBilhoes');
   rankStates(states, 'piaBilhoes');
   rankStates(states, 'pdPctPib');
+  for (const chave of Object.keys(ETAPAS_IDEB)) rankStates(states, chave);
 
   const totalPopulation = states.reduce((sum, state) => sum + (state.population || 0), 0);
   const sumByYear = (rows, year, field) => rows
