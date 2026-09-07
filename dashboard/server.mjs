@@ -40,6 +40,7 @@ const STATES = {
 // antes de existir seletor de ano.
 const ANO_DE_REFERENCIA = {
   prodesRate: 2025,
+  heatRate: 2024,
   cvliRate: 2025,
   ibc: 2025,
   pevsBilhoes: 2024,
@@ -412,6 +413,10 @@ export async function buildDashboard() {
       // depende da população do ano exibido, não da de 2025.
       series: {
         prodesRate: serieDe(prodes[uf], 'taxa_km2', (valor) => rate(valor, area, 1000)),
+        // Mesma conta do campo plano `heatRate`: focos do satélite de referência por
+        // 1.000 km² de área do estado. A contagem já vem só do satélite de referência,
+        // a única comparável entre anos.
+        heatRate: serieDe(focos[uf], 'focos_sat_ref', (valor) => rate(valor, area, 1000)),
         cvliRate: serieDe(cvli[uf], 'cvli', (valor, ano) => rate(valor, populationByYear[uf]?.[ano])),
         ibc: serieDe(ibcByUf[uf], 'ibc_ponderado_pop', (valor) => valor),
         pevsBilhoes: serieDe(pevsByUf[uf], 'valor_mil_rs', (valor) => valor / 1e6),

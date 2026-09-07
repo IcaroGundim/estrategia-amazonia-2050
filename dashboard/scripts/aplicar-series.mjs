@@ -13,6 +13,7 @@
 //   school       ← frequencia-escolar-15a17.json   (PNADc, SIDRA 7138)
 //   apsCobertura ← atencao-primaria.json           (e-Gestor, cobertura APS)
 //   pdPctPib     ← pd-estadual.json                (MCTI + SIDRA t5938)
+//   heatRate     ← focos-calor.json                (INPE, satélite de referência)
 //
 // O pdPctPib não entra na síntese comparativa (a lista SCORING não o inclui) e o valor
 // plano segue a regra do server.mjs — o ano mais recente com valor em cada UF, que não é
@@ -33,8 +34,8 @@ const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dataRoot = join(appRoot, 'public', 'data');
 
 // Precisa espelhar o ANO_DE_REFERENCIA e o ANOS_PARCIAIS do server.mjs.
-const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023 };
-const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [] };
+const REFERENCIA = { school: 2024, apsCobertura: 2026, pdPctPib: 2023, heatRate: 2024 };
+const PARCIAIS = { school: [], apsCobertura: [2026], pdPctPib: [], heatRate: [] };
 
 // --- réplicas fiéis do server.mjs (linhas 161-182) ---
 function minMaxScore(values, direction = 'high') {
@@ -76,6 +77,7 @@ const dashboard = await leia('dashboard.json');
 const escolar = await leia('frequencia-escolar-15a17.json');
 const aps = await leia('atencao-primaria.json');
 const pd = await leia('pd-estadual.json');
+const focos = await leia('focos-calor.json');
 const { states } = dashboard;
 
 const antes = Object.fromEntries(states.map((s) => [s.uf, {
@@ -104,6 +106,19 @@ for (const state of states) {
     state.pdPctPib = pdSerie[String(ultimo)];
     state.pdPctPibAno = ultimo;
   }
+  // Focos de calor: mesma conta do server.mjs — focos do satélite de referência por
+  // 1.000 km² de área do estado. O valor plano de 2024 já existe no payload, então
+  // serve de conferência: se a série reproduzir outro número, algo saiu do lugar.
+  const focosUf = soComValor(focos.serie[state.uf]);
+  if (Object.keys(focosUf).length && Number.isFinite(state.area)) {
+    state.series.heatRate = Object.fromEntries(
+      Object.entries(focosUf).map(([ano, n]) => [ano, n / state.area * 1000])
+    );
+    const recalculado = state.series.heatRate[String(REFERENCIA.heatRate)];
+    if (Number.isFinite(state.heatRate) && Math.abs(recalculado - state.heatRate) > 1e-9) {
+      throw new Error(`${state.uf}: heatRate de ${REFERENCIA.heatRate} não confere (${recalculado} x ${state.heatRate})`);
+    }
+  }
   state.school = school[String(REFERENCIA.school)];
   state.apsCobertura = cobertura[String(REFERENCIA.apsCobertura)];
   state.esfTeams = equipes[String(REFERENCIA.apsCobertura)] ?? null;
@@ -131,6 +146,7 @@ rankStates(states, 'score');
 rankStates(states, 'school');
 rankStates(states, 'apsCobertura');
 rankStates(states, 'pdPctPib');
+rankStates(states, 'heatRate', 'low');
 dashboard.summary.averageScore = Math.round(states.reduce((sum, state) => sum + state.score, 0) / states.length);
 states.sort((a, b) => a.ranks.score - b.ranks.score);
 
