@@ -355,11 +355,11 @@
                                   "prazo":  "2050",
                                   "formula":  "Número de municipios que atingiram o IDEB/total de municípios",
                                   "unidade":  "0 a 100",
-                                  "fontes":  "ANATEL",
+                                  "fontes":  "INEP (IDEB)",
                                   "frequencia":  "Anual",
                                   "pontuacao":  "Positiva",
                                   "referencias":  [
-                                                      "https://informacoes.anatel.gov.br/paineis/meu-municipio/indice-brasileiro-de-conectividade"
+                                                      "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados"
                                                   ]
                               },
                    "I2.3.2":  {

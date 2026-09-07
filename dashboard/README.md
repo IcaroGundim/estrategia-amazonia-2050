@@ -60,6 +60,68 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 - Síntese comparativa (0–100) mantida como opção secundária no seletor do mapa, explicitamente marcada como experimental e limitada aos oito indicadores originais dos Eixos 1 e 2 com disponibilidade para todos os estados.
 - Imagem de compartilhamento em `public/og.png`.
 
+## Celular e tablet
+
+O painel tem quatro faixas de largura, e a do meio era a que faltava. Até aqui havia o
+computador e o **fluxo corrido** de uma coluna (≤920px), com o mapa preso abaixo da topbar
+enquanto o painel e o ranking rolam por baixo dele. O que ficava sem tratamento era o
+**tablet em paisagem** (921–1180px), que recebia o desenho de computador espremido: o
+título e os 484px de seletores não cabiam lado a lado e o texto de abertura escorria por
+baixo do rótulo do seletor; a linha da lista de indicadores mantinha o piso de 820px, então
+a coluna "Situação" ficava inteira fora da tela sem nenhum sinal de que existia; e
+"5,1 mi km²" aparecia como "5,1 mi k…" na lateral. Agora a consulta de 1180px empilha o
+cabeçalho, empilha o mapa e a ficha do indicador, transforma cada linha da lista em cartão
+com as quatro células visíveis e deixa os valores da lateral quebrarem em duas linhas em
+vez de sumirem por reticências.
+
+O **tablet em retrato** (621–920px) herda o fluxo de uma coluna, que é o arranjo certo,
+mas não o orçamento de tela do celular: numa caixa de ~715px, um mapa de 300px de altura
+desenhava a projeção com 430px e deixava quase 300px de branco de cada lado. A altura do
+mapa passou a ser uma variável (`--mapa-altura`), consumida também pelo topo do bloco
+fixo, pelo topo da legenda e pela margem de rolagem do painel — antes o mesmo `clamp()`
+estava escrito em dois lugares, com a observação de que precisavam andar juntos. A legenda
+da escala de cores deixou de flutuar solta na areia e passou a ficar presa logo abaixo do
+mapa, com a mesma moldura: as duas peças formam um cartão só e não se separam na rolagem.
+
+A **Visão Geral** tem duas mecânicas para o mesmo HTML, e o `metodologia.js` troca entre
+elas na virada da consulta de mídia. Do tablet para cima é o carrossel de cinco lâminas.
+No celular (≤620px) as cinco seções viram um **documento contínuo**: a lâmina tem altura
+fixa e o texto rolava dentro dela, mas essa barra de rolagem interna não é desenhada em
+aparelho de toque, então a leitura terminava cortada no meio de uma frase sem nenhum sinal
+de que havia mais. No documento a fotografia abre cada seção como faixa, o texto vem
+inteiro e a barra de seções vira índice fixo no topo. No tablet a lâmina deixou de ter
+altura fixa e passou a crescer com o texto — em 768px a primeira precisa de cerca de 870px
+e a caixa tinha 804, o que cortava o fim da linha do tempo.
+
+Na lista de indicadores, os filtros e os cinco downloads somam cerca de 600px e no celular
+empurravam a lista para bem abaixo da dobra. Viraram um painel recolhível, fechado por
+padrão, com o resumo do que está filtrado no próprio botão — a lista agora começa a 184px
+do topo. Em `/metas`, tocar numa meta abria o detalhe como último bloco da página, abaixo
+das doze linhas: agora a tela vai até ele, pela mesma regra que o painel do Panorama já
+usava em `app.js`.
+
+Os alvos de toque seguem a consulta `(pointer: coarse)`, e não a largura: um tablet em
+paisagem tem 1024px e continua sendo operado com o dedo, enquanto uma janela estreita no
+computador segue com o mouse. Onde crescer a caixa mudaria o desenho — texto sublinhado,
+bandeira de estado —, quem cresce é a área sensível, num `::after` invisível. Nas bandeiras
+a folga é só vertical: elas ficam lado a lado com 5px de vão, e ampliar na horizontal faria
+a área de uma invadir a da vizinha.
+
+**Conferência** — `node scripts/conferir-mobile.mjs` percorre seis larguras (320, 390, 768,
+834, 1024 e 1180px) e nove cenas, incluindo as que só existem depois de um toque (estado
+selecionado no mapa, aba de comparação, detalhe da meta, ficha do indicador, filtros
+abertos). Ele acusa rolagem horizontal, elemento que transborda sem um pai que o recorte,
+conteúdo cortado em caixa sem rolagem própria, alvo de toque baixo e erro de JavaScript, e
+grava as capturas em `.shots/conferencia/`. O playwright não é dependência do projeto: vem
+do cache do `npx`, e o caminho entra por `PLAYWRIGHT_PATH`.
+
+Dois pontos de contraste ficam registrados sem correção, porque são escolhas de paleta e
+não defeitos de arranjo: o cinza de texto secundário (`--tinta-4`) dá 3,86:1 sobre o papel,
+abaixo dos 4,5:1 da WCAG AA para texto pequeno, e é usado no site inteiro; e o ocre sobre
+o verde-mata-500 do primeiro segmento do fluxo de governança dá 2,75:1. O que era defeito
+foi corrigido: a nota "Fórmula não informada na ficha técnica" usava o cinza de fundo claro
+dentro do cartão de método, que é verde escuro, e dava 1,2:1 — existia no HTML e não se lia.
+
 ## Fontes e períodos
 
 O servidor consolida os arquivos que já estão na pasta superior: PRODES/INPE (2020-2025), INPE Queimadas (2015-2024), CNUC/MMA (2026), IBGE/PNADc via SIDRA (pobreza, série 2012-2024; frequência escolar 15-17, série 2016-2025 sem 2020 e 2021), projeção populacional IBGE (2025), Sinesp/MJ (2020-2025), MS/e-Gestor (cobertura da APS, série 2007-2026), AdaptaBrasil (linha de base 2025), IBGE PEVS e PIA-Empresa (2015-2024), RAIS/MTE (2023-2024), ANATEL IBC-AMZ (2021-2025), ANEEL SIGA (base ago. 2026), Censo 2022 + MUNIC 2024 (saneamento), MCTI P&D (2000-2024) e STN CAPAG (2018-2025).
@@ -141,6 +203,16 @@ Como o `build:static` não roda em quem só fez `git pull` — `dados/`, `entreg
 O painel lê a série do CSV por UF (`dados/ibge_educacao/freq_escolar_15a17_uf_ano.csv`) e o ano de referência segue 2024, não 2025: é o ano que a tela já mostrava a partir do SIS, e os nove estados batem na casa decimal, então a troca da fonte não mexe em score, ranking nem ordem dos estados — só acrescenta o histórico ao seletor. A SIDRA publica com uma casa decimal e o xls do SIS carregava a precisão cheia, então os valores por UF variam até 0,03 p.p. e a dimensão "pessoas" da síntese sobe 1 ponto no Amapá (47 para 48) e no Maranhão (26 para 27); nada mais se move. O catálogo e a página de metas continuam com o valor do SIS, que vem dos workbooks (`montar_workbook_eixo2.py` ainda lê `dados/ibge_sis/sis_freq_escolar_uf.csv`); aqui, ao contrário da pobreza, as duas páginas não divergem. O JSON consolidado está fora da lista `DATA_GERADOS` do `build-static.mjs`, então `npm run build:static` não o apaga.
 
 O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a partir dos cinco workbooks `entregaveis/Indicadores_Resultado_Eixo1..5_Amazonia2050.xlsx` pelo script `scripts/exportar_catalogo.py` (requer `openpyxl`; reexecute-o sempre que os workbooks forem atualizados). A síntese comparativa normaliza apenas os oito indicadores com disponibilidade para todos os estados e não substitui o catálogo, análise temática ou metas pactuadas.
+
+As fichas e o catálogo descrevem os mesmos indicadores a partir de origens independentes — o `.docx` e os workbooks —, então divergir entre eles é sinal de erro de digitação. O `scripts/auditar_fichas.py` cruza os dois e separa o que é troca de assunto do que é só redação diferente. Uma revisão das referências encontrou o seguinte.
+
+**Corrigido:** o **I2.3.1 (IDEB)** trazia `Fontes: ANATEL` e apontava para o painel de conectividade da ANATEL — exatamente a fonte e o link do I4.1.1. O texto do indicador estava certo, só a fonte e a referência é que eram de outro indicador. Passou a apontar para a página de resultados do IDEB no INEP. Vale notar que a ficha era *internamente coerente* (fonte ANATEL, link da ANATEL): só o cruzamento com o catálogo, que diz "INEP (IDEB)", revelou a troca.
+
+**Pendente de correção no `.docx`,** porque o `fichas.json` é derivado dele e não dá para inventar o texto certo: **I3.4.1** e **I3.4.2** (ambos de PSA) trazem o texto do indicador de financiamento climático — "Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono", que é o I5.1.1. E o **I2.5.1** descreve "Participação da Bioeconomia no PIB" enquanto o catálogo fala em "Volume de renda no painel da sociobioeconomia"; pode ser divergência legítima de redação entre a ficha e o workbook, mas convém conferir.
+
+**Conferido e correto:** as 35 referências respondem (três dão 403, 500 ou erro de TLS por hostilidade a robô, não por link errado), as seis tabelas SIDRA citadas batem com o assunto do indicador que as cita, e nenhum link aponta para órgão fora das fontes declaradas.
+
+Como a correção do I2.3.1 foi aplicada no `fichas.json`, que é gerado, **ela se perde se o `.docx` for reextraído sem ser corrigido na origem**. Rodar `python scripts/auditar_fichas.py` depois de cada extração mostra se voltou; com `--falhar-se-houver` o script sai com código 1, para uso em verificação automática.
 
 Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são extraídos do arquivo `Fichas Técnicas Indicadores - Amazonia2050.docx` pelo script `dashboard/scripts/extract-fichas.ps1`. O documento contém 52 fichas; os sete indicadores que existem apenas no catálogo são identificados como “ficha técnica não localizada” no painel, sem preenchimento inferido.
 
