@@ -200,9 +200,14 @@ payload = {
     "nome": "Saneamento nos censos demográficos",
     "unidade": "%",
     "atualizadoEm": datetime.date.today().isoformat(),
+    "usoNoPainel": "não",
     "naoEhOIsgr": {
         "aviso": "Estas séries NÃO são o ISGR e não substituem o indicador do painel. São a "
                  "substância que ele mede, na única definição que atravessa os três censos.",
+        "decisao": "Decidido em 07/09/2026 que estes dados ficam guardados e NÃO sobem para o "
+                   "painel: a metodologia do I4.4.1 diz que o indicador é o ISGR, e exibir outra "
+                   "medida sob o mesmo rótulo trocaria o indicador mantendo o nome. Quem for "
+                   "estender o painel: não ligue este arquivo ao seletor de ano do isgr.",
         "porQueOIsgrNaoRetroage": [
             "Água: o ISGR usa a classificação 1821 do Censo 2022, que cruza existência de "
             "ligação à rede com forma principal de abastecimento. Essa classificação nasceu "
