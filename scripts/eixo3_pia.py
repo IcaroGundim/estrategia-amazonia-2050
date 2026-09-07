@@ -12,6 +12,7 @@ Saídas em dados/eixo3/:
   - pia_divisoes_uf_ano.csv      (detalhe por divisão CNAE, 2023-2024)
 """
 import csv
+import datetime
 import gzip
 import io
 import json
@@ -89,7 +90,7 @@ def coletar(tabela, anos, cnae, vars_):
     return out
 
 
-serie = coletar(1849, "2015-2023", TOTAL_CNAE, ["706", "631", "810", "811", "835", "673"])
+serie = coletar(1849, "2007-2023", TOTAL_CNAE, ["706", "631", "810", "811", "835", "673"])
 serie += coletar(10457, "2024", TOTAL_CNAE, ["13816", "2086", "631", "810", "811", "835", "673"])
 div23 = coletar(1849, "2023", "all", ["706", "631", "810", "811", "835"])
 div24 = coletar(10457, "2024", "all", ["13816", "2086", "631", "810", "811", "835"])
@@ -126,6 +127,61 @@ for nome, dados, cols in [
         for r in dados:
             w.writerow({c: r.get(c) for c in cols})
     print("salvo:", path, len(dados), "linhas")
+
+# ---------- consolidado versionado ----------
+# Mesma ressalva do PEVS: o painel exibe preços correntes, que é a metodologia da
+# tabela e não muda aqui. Em dezoito anos a inflação pesa, então vai junto uma série
+# deflacionada pelo IPCA, marcada como derivada.
+print("\nIPCA (SIDRA 1737) para a série deflacionada...")
+anos_serie = sorted({r["ano"] for r in total_rows})
+ipca = {}
+for r in sidra(f"/t/1737/n1/1/v/2266/p/{','.join(f'{a}12' for a in anos_serie)}")[1:]:
+    valor = num(r["V"])
+    if valor:
+        ipca[int(r["D3C"][:4])] = valor
+base = ipca.get(max(anos_serie))
+
+nominal, real = {}, {}
+for r in total_rows:
+    v = r.get("valor_transf_ind_mil_rs")
+    if v is None:
+        continue
+    # Sem arredondar: é a conta exata do server.mjs (valor / 1e6).
+    nominal.setdefault(r["uf"], {})[str(r["ano"])] = v / 1e6
+    fator = ipca.get(r["ano"])
+    if fator and base:
+        real.setdefault(r["uf"], {})[str(r["ano"])] = round(v / 1e6 * (base / fator), 6)
+
+payload = {
+    "indicador": "F3.5",
+    "nome": "Valor da transformação industrial (PIA-Empresa)",
+    "unidade": "R$ bilhões",
+    "atualizadoEm": datetime.date.today().isoformat(),
+    "fonte": {
+        "tabelas": "IBGE/SIDRA 1849 (2007-2023, série antiga, empresas com 5+ pessoas, CNAE 2.0) "
+                   "e 10457 (2024, série nova); variável 811, total da indústria",
+        "porQueComecaEm2007": "É onde a tabela 1849 começa. A PIA tem série anterior, mas em "
+                              "CNAE 1.0 e com outro recorte de empresas — emendar mudaria o que "
+                              "o indicador mede.",
+        "emenda": "A passagem de 2023 para 2024 troca de tabela porque o IBGE trocou de série. "
+                  "É a mesma emenda que o painel já fazia antes desta extensão.",
+    },
+    "anos": [str(a) for a in anos_serie],
+    "seriePrecosCorrentes": {
+        "descricao": "É o que o painel exibe, na metodologia da própria tabela.",
+        "serie": nominal,
+    },
+    "serieReais2024": {
+        "descricao": "Derivada, não substitui o indicador. Deflacionada pelo IPCA (SIDRA 1737) "
+                     f"para reais de {max(anos_serie)}.",
+        "serie": real,
+    },
+}
+destino = os.path.join(PASTA, "dashboard", "public", "data", "pia-transformacao-industrial.json")
+with open(destino, "w", encoding="utf-8") as f:
+    json.dump(payload, f, ensure_ascii=False, indent=2)
+    f.write("\n")
+print("Consolidado versionado ->", os.path.relpath(destino, PASTA))
 
 # verificação: valor da transformação industrial (mil R$) por UF
 print("\n--- VERIFICAÇÃO: valor da transformação industrial (mil R$) ---")

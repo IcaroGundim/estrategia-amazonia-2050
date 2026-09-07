@@ -68,6 +68,8 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+A série da **transformação industrial (F3.5) foi de 10 para 18 anos**, 2007-2024, pelo `scripts/eixo3_pia.py`. Começa em 2007 porque é onde a tabela SIDRA 1849 começa; a PIA tem série anterior, mas em CNAE 1.0 e com outro recorte de empresas, e emendá-la mudaria o que o indicador mede. A emenda de 2023 para 2024, que troca para a tabela 10457 porque o IBGE trocou de série, já existia antes desta extensão. Os dez anos que já estavam no painel batem com precisão cheia. Vale a mesma ressalva de preços correntes do PEVS, e o JSON traz a versão deflacionada ao lado — aqui, porém, o crescimento é real: o Pará sai de R$ 25,7 bi para R$ 70,1 bi em reais de 2024.
+
 A série da **sociobioeconomia (I3.1.1) foi de 10 para 31 anos**, 1994-2024, pelo `scripts/eixo3_pevs.py`. Mesma tabela SIDRA 289, mesma variável 145, mesma categoria Total — só a janela mudou, e os dez anos que já estavam no painel batem com precisão cheia. A série começa em 1994 e não em 1986, onde a tabela começa, porque o valor da produção muda de moeda antes disso: Cruzados até 1988, Cruzados Novos em 1989, Cruzeiros até 1992, Cruzeiros Reais em 1993. Só de 1994 em diante a unidade é Mil Reais e os anos são comparáveis. O detalhe por produto continua em 2015-2024, porque serve só ao recorte do ano de referência; a verificação interna de que a soma dos subprodutos bate com o Total passou a rodar apenas nos anos em que esse detalhe existe. Falta apenas Roraima em 1995.
 
 Há uma armadilha nessa série que vale conhecer. O painel exibe **preços correntes**, que é a metodologia da tabela e não muda aqui, mas em três décadas isso engana: o Pará sai de R$ 2,05 bi em 1995 para R$ 2,73 bi em 2024 e parece ter crescido, quando o IPCA subiu sete vezes no período. Em reais de 2024, o valor de 1995 equivale a R$ 11,7 bi — em termos reais a extração vegetal paraense caiu cerca de 77%, e a série corrente mostra o contrário. Por isso o JSON traz, ao lado da série do painel, uma versão deflacionada pelo IPCA (SIDRA 1737) para reais de 2024, marcada como derivada: ela não substitui o indicador, mostra o que a série corrente esconde. A nota da série no painel registra isso.
@@ -151,6 +153,7 @@ O domínio das metatags Open Graph vem de `site` em `astro.config.mjs`. Para pub
 .venv/Scripts/python.exe scripts/eixo5_pd.py                  # MCTI + SIDRA → P&D % do PIB (2002-2023)
 python scripts/baixar_focos.py                               # INPE → focos de calor (2003-2024)
 python scripts/eixo3_pevs.py                                 # SIDRA 289 → PEVS (1994-2024)
+python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 → PIA (2007-2024)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
