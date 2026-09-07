@@ -1,0 +1,5238 @@
+{
+  "indicador": "I2.3.2",
+  "nome": "Taxa de frequência escolar, 15 a 17 anos",
+  "unidade": "%",
+  "atualizadoEm": "2026-09-07",
+  "fonte": {
+    "pesquisa": "IBGE — PNAD Contínua anual, módulo Educação",
+    "tabelas": {
+      "taxaPorUf": "SIDRA 7138 (v10276, c58=15 a 17 anos)",
+      "agregadoAl": "SIDRA 7136 e 7109 (estudantes / população de 15 a 17 anos)",
+      "municipios": "SIDRA 10139 (Censo Demográfico 2022)",
+      "pnadAntiga": "SIDRA 1184 (PNAD antiga, série encerrada)"
+    },
+    "conceito": "percentual das pessoas de 15 a 17 anos que frequentavam escola; mesma definição da taxa bruta de frequência escolar da Tabela 4.1 do SIS"
+  },
+  "anos": [
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "anosSemColeta": [
+    "2020",
+    "2021"
+  ],
+  "notaLacuna": "O módulo de Educação da PNAD Contínua não foi a campo em 2020 e 2021 por causa da pandemia; a variação de 2019 para 2022 atravessa dois anos sem medição e não deve ser lida como variação anual.",
+  "serieAnual": {
+    "RO": {
+      "2016": 85.7,
+      "2017": 86.1,
+      "2018": 86.8,
+      "2019": 88.2,
+      "2020": null,
+      "2021": null,
+      "2022": 95.6,
+      "2023": 93.4,
+      "2024": 93.6,
+      "2025": 90.4
+    },
+    "AC": {
+      "2016": 86.0,
+      "2017": 83.9,
+      "2018": 82.2,
+      "2019": 84.5,
+      "2020": null,
+      "2021": null,
+      "2022": 89.0,
+      "2023": 90.2,
+      "2024": 91.2,
+      "2025": 89.2
+    },
+    "AM": {
+      "2016": 86.5,
+      "2017": 88.5,
+      "2018": 88.7,
+      "2019": 89.6,
+      "2020": null,
+      "2021": null,
+      "2022": 91.5,
+      "2023": 89.4,
+      "2024": 92.4,
+      "2025": 92.1
+    },
+    "RR": {
+      "2016": 89.2,
+      "2017": 90.8,
+      "2018": 87.6,
+      "2019": 88.7,
+      "2020": null,
+      "2021": null,
+      "2022": 90.3,
+      "2023": 89.6,
+      "2024": 91.8,
+      "2025": 94.0
+    },
+    "PA": {
+      "2016": 88.3,
+      "2017": 85.0,
+      "2018": 87.8,
+      "2019": 88.1,
+      "2020": null,
+      "2021": null,
+      "2022": 91.3,
+      "2023": 88.6,
+      "2024": 91.7,
+      "2025": 91.6
+    },
+    "AP": {
+      "2016": 89.6,
+      "2017": 87.0,
+      "2018": 86.8,
+      "2019": 87.2,
+      "2020": null,
+      "2021": null,
+      "2022": 91.5,
+      "2023": 85.6,
+      "2024": 91.9,
+      "2025": 90.7
+    },
+    "TO": {
+      "2016": 84.3,
+      "2017": 87.8,
+      "2018": 91.9,
+      "2019": 90.5,
+      "2020": null,
+      "2021": null,
+      "2022": 95.0,
+      "2023": 89.3,
+      "2024": 92.7,
+      "2025": 93.2
+    },
+    "MA": {
+      "2016": 86.7,
+      "2017": 84.2,
+      "2018": 85.5,
+      "2019": 86.2,
+      "2020": null,
+      "2021": null,
+      "2022": 89.7,
+      "2023": 91.4,
+      "2024": 91.4,
+      "2025": 92.6
+    },
+    "MT": {
+      "2016": 86.6,
+      "2017": 86.3,
+      "2018": 90.6,
+      "2019": 88.5,
+      "2020": null,
+      "2021": null,
+      "2022": 90.5,
+      "2023": 87.2,
+      "2024": 93.3,
+      "2025": 92.4
+    },
+    "Norte": {
+      "2016": 87.2,
+      "2017": 86.3,
+      "2018": 87.9,
+      "2019": 88.5,
+      "2020": null,
+      "2021": null,
+      "2022": 91.9,
+      "2023": 89.2,
+      "2024": 92.1,
+      "2025": 91.7
+    },
+    "BR": {
+      "2016": 87.0,
+      "2017": 86.9,
+      "2018": 87.9,
+      "2019": 89.0,
+      "2020": null,
+      "2021": null,
+      "2022": 92.2,
+      "2023": 91.9,
+      "2024": 93.5,
+      "2025": 93.2
+    },
+    "AL": {
+      "2016": 87.2,
+      "2017": 85.8,
+      "2018": 87.4,
+      "2019": 87.8,
+      "2020": null,
+      "2021": null,
+      "2022": 91.1,
+      "2023": 89.6,
+      "2024": 92.0,
+      "2025": 92.1
+    }
+  },
+  "coeficienteVariacao": {
+    "RO": {
+      "2016": 2.0,
+      "2017": 2.1,
+      "2018": 2.6,
+      "2019": 2.1,
+      "2022": 1.1,
+      "2023": 1.5,
+      "2024": 1.8,
+      "2025": 2.2
+    },
+    "AC": {
+      "2016": 1.7,
+      "2017": 1.7,
+      "2018": 1.9,
+      "2019": 2.2,
+      "2022": 1.8,
+      "2023": 1.4,
+      "2024": 1.5,
+      "2025": 2.0
+    },
+    "AM": {
+      "2016": 1.5,
+      "2017": 1.3,
+      "2018": 1.5,
+      "2019": 1.4,
+      "2022": 1.1,
+      "2023": 2.0,
+      "2024": 1.1,
+      "2025": 1.4
+    },
+    "RR": {
+      "2016": 1.9,
+      "2017": 1.6,
+      "2018": 3.2,
+      "2019": 2.2,
+      "2022": 2.5,
+      "2023": 2.5,
+      "2024": 1.7,
+      "2025": 1.6
+    },
+    "PA": {
+      "2016": 1.2,
+      "2017": 1.5,
+      "2018": 1.3,
+      "2019": 1.3,
+      "2022": 1.1,
+      "2023": 1.2,
+      "2024": 1.1,
+      "2025": 1.2
+    },
+    "AP": {
+      "2016": 2.0,
+      "2017": 2.3,
+      "2018": 2.5,
+      "2019": 3.5,
+      "2022": 2.2,
+      "2023": 5.9,
+      "2024": 2.9,
+      "2025": 2.4
+    },
+    "TO": {
+      "2016": 2.3,
+      "2017": 1.9,
+      "2018": 1.5,
+      "2019": 1.5,
+      "2022": 1.3,
+      "2023": 2.1,
+      "2024": 1.7,
+      "2025": 1.5
+    },
+    "MA": {
+      "2016": 1.2,
+      "2017": 1.2,
+      "2018": 0.9,
+      "2019": 0.9,
+      "2022": 1.0,
+      "2023": 0.9,
+      "2024": 0.8,
+      "2025": 0.8
+    },
+    "MT": {
+      "2016": 1.6,
+      "2017": 1.9,
+      "2018": 1.3,
+      "2019": 1.6,
+      "2022": 1.6,
+      "2023": 2.3,
+      "2024": 1.8,
+      "2025": 2.4
+    },
+    "Norte": {
+      "2016": 0.7,
+      "2017": 0.9,
+      "2018": 0.8,
+      "2019": 0.8,
+      "2022": 0.6,
+      "2023": 0.8,
+      "2024": 0.6,
+      "2025": 0.7
+    },
+    "BR": {
+      "2016": 0.3,
+      "2017": 0.3,
+      "2018": 0.4,
+      "2019": 0.4,
+      "2022": 0.3,
+      "2023": 0.3,
+      "2024": 0.2,
+      "2025": 0.3
+    }
+  },
+  "amazoniaLegal": [
+    {
+      "ano": "2016",
+      "taxa": 87.2,
+      "estudantesMil": 1407.0,
+      "populacaoMil": 1614.0
+    },
+    {
+      "ano": "2017",
+      "taxa": 85.8,
+      "estudantesMil": 1382.0,
+      "populacaoMil": 1611.0
+    },
+    {
+      "ano": "2018",
+      "taxa": 87.4,
+      "estudantesMil": 1360.0,
+      "populacaoMil": 1556.0
+    },
+    {
+      "ano": "2019",
+      "taxa": 87.8,
+      "estudantesMil": 1379.0,
+      "populacaoMil": 1570.0
+    },
+    {
+      "ano": "2022",
+      "taxa": 91.1,
+      "estudantesMil": 1423.0,
+      "populacaoMil": 1562.0
+    },
+    {
+      "ano": "2023",
+      "taxa": 89.6,
+      "estudantesMil": 1442.0,
+      "populacaoMil": 1610.0
+    },
+    {
+      "ano": "2024",
+      "taxa": 92.0,
+      "estudantesMil": 1410.0,
+      "populacaoMil": 1533.0
+    },
+    {
+      "ano": "2025",
+      "taxa": 92.1,
+      "estudantesMil": 1402.0,
+      "populacaoMil": 1523.0
+    }
+  ],
+  "municipiosCenso2022": [
+    {
+      "uf": "AC",
+      "codigo": "1200013",
+      "nome": "Acrelândia",
+      "taxa": 79.52
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200054",
+      "nome": "Assis Brasil",
+      "taxa": 78.18
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200104",
+      "nome": "Brasiléia",
+      "taxa": 74.78
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200138",
+      "nome": "Bujari",
+      "taxa": 77.12
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200179",
+      "nome": "Capixaba",
+      "taxa": 72.95
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200203",
+      "nome": "Cruzeiro do Sul",
+      "taxa": 80.95
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200252",
+      "nome": "Epitaciolândia",
+      "taxa": 83.61
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200302",
+      "nome": "Feijó",
+      "taxa": 77.41
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200328",
+      "nome": "Jordão",
+      "taxa": 83.82
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200344",
+      "nome": "Manoel Urbano",
+      "taxa": 58.77
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200351",
+      "nome": "Marechal Thaumaturgo",
+      "taxa": 80.95
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200336",
+      "nome": "Mâncio Lima",
+      "taxa": 83.02
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200385",
+      "nome": "Plácido de Castro",
+      "taxa": 83.92
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200807",
+      "nome": "Porto Acre",
+      "taxa": 83.68
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200393",
+      "nome": "Porto Walter",
+      "taxa": 89.11
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200401",
+      "nome": "Rio Branco",
+      "taxa": 84.23
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200427",
+      "nome": "Rodrigues Alves",
+      "taxa": 85.97
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200435",
+      "nome": "Santa Rosa do Purus",
+      "taxa": 78.1
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200500",
+      "nome": "Sena Madureira",
+      "taxa": 78.8
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200450",
+      "nome": "Senador Guiomard",
+      "taxa": 89.12
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200609",
+      "nome": "Tarauacá",
+      "taxa": 78.14
+    },
+    {
+      "uf": "AC",
+      "codigo": "1200708",
+      "nome": "Xapuri",
+      "taxa": 71.0
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300029",
+      "nome": "Alvarães",
+      "taxa": 83.78
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300060",
+      "nome": "Amaturá",
+      "taxa": 89.02
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300086",
+      "nome": "Anamã",
+      "taxa": 91.89
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300102",
+      "nome": "Anori",
+      "taxa": 85.76
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300144",
+      "nome": "Apuí",
+      "taxa": 76.32
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300201",
+      "nome": "Atalaia do Norte",
+      "taxa": 78.49
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300300",
+      "nome": "Autazes",
+      "taxa": 79.19
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300409",
+      "nome": "Barcelos",
+      "taxa": 69.39
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300508",
+      "nome": "Barreirinha",
+      "taxa": 89.64
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300607",
+      "nome": "Benjamin Constant",
+      "taxa": 86.69
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300631",
+      "nome": "Beruri",
+      "taxa": 83.5
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300680",
+      "nome": "Boa Vista do Ramos",
+      "taxa": 84.74
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300706",
+      "nome": "Boca do Acre",
+      "taxa": 70.99
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300805",
+      "nome": "Borba",
+      "taxa": 81.15
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300839",
+      "nome": "Caapiranga",
+      "taxa": 84.01
+    },
+    {
+      "uf": "AM",
+      "codigo": "1300904",
+      "nome": "Canutama",
+      "taxa": 75.46
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301001",
+      "nome": "Carauari",
+      "taxa": 82.91
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301100",
+      "nome": "Careiro",
+      "taxa": 84.09
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301159",
+      "nome": "Careiro da Várzea",
+      "taxa": 85.93
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301209",
+      "nome": "Coari",
+      "taxa": 82.88
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301308",
+      "nome": "Codajás",
+      "taxa": 76.68
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301407",
+      "nome": "Eirunepé",
+      "taxa": 78.09
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301506",
+      "nome": "Envira",
+      "taxa": 75.09
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301605",
+      "nome": "Fonte Boa",
+      "taxa": 83.58
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301654",
+      "nome": "Guajará",
+      "taxa": 76.35
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301704",
+      "nome": "Humaitá",
+      "taxa": 79.0
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301803",
+      "nome": "Ipixuna",
+      "taxa": 71.44
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301852",
+      "nome": "Iranduba",
+      "taxa": 89.42
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301902",
+      "nome": "Itacoatiara",
+      "taxa": 86.28
+    },
+    {
+      "uf": "AM",
+      "codigo": "1301951",
+      "nome": "Itamarati",
+      "taxa": 81.68
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302009",
+      "nome": "Itapiranga",
+      "taxa": 86.58
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302108",
+      "nome": "Japurá",
+      "taxa": 82.48
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302207",
+      "nome": "Juruá",
+      "taxa": 90.54
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302306",
+      "nome": "Jutaí",
+      "taxa": 79.17
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302405",
+      "nome": "Lábrea",
+      "taxa": 78.69
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302504",
+      "nome": "Manacapuru",
+      "taxa": 85.57
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302553",
+      "nome": "Manaquiri",
+      "taxa": 84.64
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302603",
+      "nome": "Manaus",
+      "taxa": 85.19
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302702",
+      "nome": "Manicoré",
+      "taxa": 79.43
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302801",
+      "nome": "Maraã",
+      "taxa": 80.42
+    },
+    {
+      "uf": "AM",
+      "codigo": "1302900",
+      "nome": "Maués",
+      "taxa": 85.62
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303007",
+      "nome": "Nhamundá",
+      "taxa": 77.98
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303106",
+      "nome": "Nova Olinda do Norte",
+      "taxa": 82.49
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303205",
+      "nome": "Novo Airão",
+      "taxa": 77.19
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303304",
+      "nome": "Novo Aripuanã",
+      "taxa": 78.09
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303403",
+      "nome": "Parintins",
+      "taxa": 90.88
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303502",
+      "nome": "Pauini",
+      "taxa": 66.24
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303536",
+      "nome": "Presidente Figueiredo",
+      "taxa": 87.56
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303569",
+      "nome": "Rio Preto da Eva",
+      "taxa": 88.54
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303601",
+      "nome": "Santa Isabel do Rio Negro",
+      "taxa": 78.15
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303700",
+      "nome": "Santo Antônio do Içá",
+      "taxa": 83.98
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304005",
+      "nome": "Silves",
+      "taxa": 81.74
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303809",
+      "nome": "São Gabriel da Cachoeira",
+      "taxa": 84.41
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303908",
+      "nome": "São Paulo de Olivença",
+      "taxa": 74.82
+    },
+    {
+      "uf": "AM",
+      "codigo": "1303957",
+      "nome": "São Sebastião do Uatumã",
+      "taxa": 82.84
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304062",
+      "nome": "Tabatinga",
+      "taxa": 87.97
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304104",
+      "nome": "Tapauá",
+      "taxa": 71.93
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304203",
+      "nome": "Tefé",
+      "taxa": 82.95
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304237",
+      "nome": "Tonantins",
+      "taxa": 74.34
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304260",
+      "nome": "Uarini",
+      "taxa": 74.36
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304302",
+      "nome": "Urucará",
+      "taxa": 91.17
+    },
+    {
+      "uf": "AM",
+      "codigo": "1304401",
+      "nome": "Urucurituba",
+      "taxa": 77.26
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600105",
+      "nome": "Amapá",
+      "taxa": 82.99
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600204",
+      "nome": "Calçoene",
+      "taxa": 81.84
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600212",
+      "nome": "Cutias",
+      "taxa": 84.36
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600238",
+      "nome": "Ferreira Gomes",
+      "taxa": 93.28
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600253",
+      "nome": "Itaubal",
+      "taxa": 76.74
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600279",
+      "nome": "Laranjal do Jari",
+      "taxa": 90.0
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600303",
+      "nome": "Macapá",
+      "taxa": 81.32
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600402",
+      "nome": "Mazagão",
+      "taxa": 81.06
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600501",
+      "nome": "Oiapoque",
+      "taxa": 83.28
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600154",
+      "nome": "Pedra Branca do Amapari",
+      "taxa": 89.18
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600535",
+      "nome": "Porto Grande",
+      "taxa": 84.28
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600550",
+      "nome": "Pracuúba",
+      "taxa": 74.05
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600600",
+      "nome": "Santana",
+      "taxa": 86.36
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600055",
+      "nome": "Serra do Navio",
+      "taxa": 86.03
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600709",
+      "nome": "Tartarugalzinho",
+      "taxa": 81.17
+    },
+    {
+      "uf": "AP",
+      "codigo": "1600808",
+      "nome": "Vitória do Jari",
+      "taxa": 91.48
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100105",
+      "nome": "Afonso Cunha",
+      "taxa": 90.23
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100204",
+      "nome": "Alcântara",
+      "taxa": 92.32
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100303",
+      "nome": "Aldeias Altas",
+      "taxa": 83.23
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100402",
+      "nome": "Altamira do Maranhão",
+      "taxa": 83.55
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100436",
+      "nome": "Alto Alegre do Maranhão",
+      "taxa": 78.03
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100477",
+      "nome": "Alto Alegre do Pindaré",
+      "taxa": 86.96
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100501",
+      "nome": "Alto Parnaíba",
+      "taxa": 80.73
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100550",
+      "nome": "Amapá do Maranhão",
+      "taxa": 83.29
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100600",
+      "nome": "Amarante do Maranhão",
+      "taxa": 76.16
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100709",
+      "nome": "Anajatuba",
+      "taxa": 87.5
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100808",
+      "nome": "Anapurus",
+      "taxa": 80.76
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100832",
+      "nome": "Apicum-Açu",
+      "taxa": 87.59
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100873",
+      "nome": "Araguanã",
+      "taxa": 84.36
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100907",
+      "nome": "Araioses",
+      "taxa": 84.8
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100956",
+      "nome": "Arame",
+      "taxa": 70.67
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101004",
+      "nome": "Arari",
+      "taxa": 80.03
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101103",
+      "nome": "Axixá",
+      "taxa": 86.72
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100055",
+      "nome": "Açailândia",
+      "taxa": 88.79
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101202",
+      "nome": "Bacabal",
+      "taxa": 86.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101251",
+      "nome": "Bacabeira",
+      "taxa": 92.41
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101301",
+      "nome": "Bacuri",
+      "taxa": 92.43
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101350",
+      "nome": "Bacurituba",
+      "taxa": 88.56
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101400",
+      "nome": "Balsas",
+      "taxa": 81.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101608",
+      "nome": "Barra do Corda",
+      "taxa": 84.34
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101707",
+      "nome": "Barreirinhas",
+      "taxa": 84.8
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101509",
+      "nome": "Barão de Grajaú",
+      "taxa": 90.08
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101772",
+      "nome": "Bela Vista do Maranhão",
+      "taxa": 80.06
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101731",
+      "nome": "Belágua",
+      "taxa": 88.11
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101806",
+      "nome": "Benedito Leite",
+      "taxa": 95.55
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101905",
+      "nome": "Bequimão",
+      "taxa": 90.41
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101939",
+      "nome": "Bernardo do Mearim",
+      "taxa": 82.49
+    },
+    {
+      "uf": "MA",
+      "codigo": "2101970",
+      "nome": "Boa Vista do Gurupi",
+      "taxa": 83.45
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102002",
+      "nome": "Bom Jardim",
+      "taxa": 79.91
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102036",
+      "nome": "Bom Jesus das Selvas",
+      "taxa": 83.12
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102077",
+      "nome": "Bom Lugar",
+      "taxa": 76.4
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102101",
+      "nome": "Brejo",
+      "taxa": 89.53
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102150",
+      "nome": "Brejo de Areia",
+      "taxa": 71.61
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102200",
+      "nome": "Buriti",
+      "taxa": 84.17
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102309",
+      "nome": "Buriti Bravo",
+      "taxa": 82.54
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102325",
+      "nome": "Buriticupu",
+      "taxa": 84.58
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102358",
+      "nome": "Buritirana",
+      "taxa": 83.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102374",
+      "nome": "Cachoeira Grande",
+      "taxa": 86.29
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102408",
+      "nome": "Cajapió",
+      "taxa": 85.44
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102507",
+      "nome": "Cajari",
+      "taxa": 78.99
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102556",
+      "nome": "Campestre do Maranhão",
+      "taxa": 92.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102705",
+      "nome": "Cantanhede",
+      "taxa": 85.03
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102754",
+      "nome": "Capinzal do Norte",
+      "taxa": 88.4
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102804",
+      "nome": "Carolina",
+      "taxa": 77.34
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102903",
+      "nome": "Carutapera",
+      "taxa": 85.22
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103000",
+      "nome": "Caxias",
+      "taxa": 87.04
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103109",
+      "nome": "Cedral",
+      "taxa": 92.6
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103125",
+      "nome": "Central do Maranhão",
+      "taxa": 94.23
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103174",
+      "nome": "Centro Novo do Maranhão",
+      "taxa": 78.73
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103158",
+      "nome": "Centro do Guilherme",
+      "taxa": 78.23
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103208",
+      "nome": "Chapadinha",
+      "taxa": 79.56
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103257",
+      "nome": "Cidelândia",
+      "taxa": 90.07
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103307",
+      "nome": "Codó",
+      "taxa": 87.17
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103406",
+      "nome": "Coelho Neto",
+      "taxa": 86.96
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103505",
+      "nome": "Colinas",
+      "taxa": 87.97
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103554",
+      "nome": "Conceição do Lago-Açu",
+      "taxa": 85.69
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103604",
+      "nome": "Coroatá",
+      "taxa": 83.75
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103703",
+      "nome": "Cururupu",
+      "taxa": 85.71
+    },
+    {
+      "uf": "MA",
+      "codigo": "2102606",
+      "nome": "Cândido Mendes",
+      "taxa": 72.23
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103752",
+      "nome": "Davinópolis",
+      "taxa": 87.48
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103802",
+      "nome": "Dom Pedro",
+      "taxa": 84.77
+    },
+    {
+      "uf": "MA",
+      "codigo": "2103901",
+      "nome": "Duque Bacelar",
+      "taxa": 86.17
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104008",
+      "nome": "Esperantinópolis",
+      "taxa": 72.48
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104057",
+      "nome": "Estreito",
+      "taxa": 92.54
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104073",
+      "nome": "Feira Nova do Maranhão",
+      "taxa": 86.62
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104081",
+      "nome": "Fernando Falcão",
+      "taxa": 74.85
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104099",
+      "nome": "Formosa da Serra Negra",
+      "taxa": 86.34
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104107",
+      "nome": "Fortaleza dos Nogueiras",
+      "taxa": 85.45
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104206",
+      "nome": "Fortuna",
+      "taxa": 89.17
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104305",
+      "nome": "Godofredo Viana",
+      "taxa": 85.32
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104404",
+      "nome": "Gonçalves Dias",
+      "taxa": 80.35
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104503",
+      "nome": "Governador Archer",
+      "taxa": 79.02
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104552",
+      "nome": "Governador Edison Lobão",
+      "taxa": 85.03
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104602",
+      "nome": "Governador Eugênio Barros",
+      "taxa": 86.73
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104628",
+      "nome": "Governador Luiz Rocha",
+      "taxa": 83.3
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104651",
+      "nome": "Governador Newton Bello",
+      "taxa": 86.89
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104677",
+      "nome": "Governador Nunes Freire",
+      "taxa": 88.62
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104800",
+      "nome": "Grajaú",
+      "taxa": 82.05
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104701",
+      "nome": "Graça Aranha",
+      "taxa": 80.61
+    },
+    {
+      "uf": "MA",
+      "codigo": "2104909",
+      "nome": "Guimarães",
+      "taxa": 90.49
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105005",
+      "nome": "Humberto de Campos",
+      "taxa": 81.75
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105104",
+      "nome": "Icatu",
+      "taxa": 87.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105203",
+      "nome": "Igarapé Grande",
+      "taxa": 83.95
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105153",
+      "nome": "Igarapé do Meio",
+      "taxa": 82.46
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105302",
+      "nome": "Imperatriz",
+      "taxa": 84.22
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105351",
+      "nome": "Itaipava do Grajaú",
+      "taxa": 79.09
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105401",
+      "nome": "Itapecuru Mirim",
+      "taxa": 86.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105427",
+      "nome": "Itinga do Maranhão",
+      "taxa": 83.72
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105450",
+      "nome": "Jatobá",
+      "taxa": 82.63
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105476",
+      "nome": "Jenipapo dos Vieiras",
+      "taxa": 77.64
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105609",
+      "nome": "Joselândia",
+      "taxa": 78.91
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105500",
+      "nome": "João Lisboa",
+      "taxa": 89.94
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105658",
+      "nome": "Junco do Maranhão",
+      "taxa": 85.81
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105906",
+      "nome": "Lago Verde",
+      "taxa": 78.7
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105708",
+      "nome": "Lago da Pedra",
+      "taxa": 83.72
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105807",
+      "nome": "Lago do Junco",
+      "taxa": 81.28
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105948",
+      "nome": "Lago dos Rodrigues",
+      "taxa": 92.57
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105963",
+      "nome": "Lagoa Grande do Maranhão",
+      "taxa": 76.8
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105922",
+      "nome": "Lagoa do Mato",
+      "taxa": 84.25
+    },
+    {
+      "uf": "MA",
+      "codigo": "2105989",
+      "nome": "Lajeado Novo",
+      "taxa": 87.7
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106003",
+      "nome": "Lima Campos",
+      "taxa": 85.1
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106102",
+      "nome": "Loreto",
+      "taxa": 88.68
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106201",
+      "nome": "Luís Domingues",
+      "taxa": 84.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106300",
+      "nome": "Magalhães de Almeida",
+      "taxa": 76.79
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106326",
+      "nome": "Maracaçumé",
+      "taxa": 90.81
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106359",
+      "nome": "Marajá do Sena",
+      "taxa": 58.02
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106375",
+      "nome": "Maranhãozinho",
+      "taxa": 80.91
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106409",
+      "nome": "Mata Roma",
+      "taxa": 83.24
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106508",
+      "nome": "Matinha",
+      "taxa": 88.64
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106607",
+      "nome": "Matões",
+      "taxa": 86.25
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106631",
+      "nome": "Matões do Norte",
+      "taxa": 81.2
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106672",
+      "nome": "Milagres do Maranhão",
+      "taxa": 86.09
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106706",
+      "nome": "Mirador",
+      "taxa": 73.24
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106755",
+      "nome": "Miranda do Norte",
+      "taxa": 85.67
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106805",
+      "nome": "Mirinzal",
+      "taxa": 85.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107001",
+      "nome": "Montes Altos",
+      "taxa": 82.98
+    },
+    {
+      "uf": "MA",
+      "codigo": "2106904",
+      "nome": "Monção",
+      "taxa": 82.46
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107100",
+      "nome": "Morros",
+      "taxa": 83.34
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107209",
+      "nome": "Nina Rodrigues",
+      "taxa": 91.72
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107258",
+      "nome": "Nova Colinas",
+      "taxa": 91.87
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107308",
+      "nome": "Nova Iorque",
+      "taxa": 86.97
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107357",
+      "nome": "Nova Olinda do Maranhão",
+      "taxa": 88.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107407",
+      "nome": "Olho d'Água das Cunhãs",
+      "taxa": 85.73
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107456",
+      "nome": "Olinda Nova do Maranhão",
+      "taxa": 86.83
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107605",
+      "nome": "Palmeirândia",
+      "taxa": 90.69
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107704",
+      "nome": "Paraibano",
+      "taxa": 86.5
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107803",
+      "nome": "Parnarama",
+      "taxa": 74.84
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107902",
+      "nome": "Passagem Franca",
+      "taxa": 85.14
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108009",
+      "nome": "Pastos Bons",
+      "taxa": 90.14
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108058",
+      "nome": "Paulino Neves",
+      "taxa": 85.57
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108108",
+      "nome": "Paulo Ramos",
+      "taxa": 79.03
+    },
+    {
+      "uf": "MA",
+      "codigo": "2107506",
+      "nome": "Paço do Lumiar",
+      "taxa": 85.32
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108207",
+      "nome": "Pedreiras",
+      "taxa": 85.93
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108256",
+      "nome": "Pedro do Rosário",
+      "taxa": 86.86
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108306",
+      "nome": "Penalva",
+      "taxa": 84.87
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108405",
+      "nome": "Peri Mirim",
+      "taxa": 86.59
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108454",
+      "nome": "Peritoró",
+      "taxa": 85.97
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108504",
+      "nome": "Pindaré-Mirim",
+      "taxa": 83.78
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108603",
+      "nome": "Pinheiro",
+      "taxa": 85.39
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108702",
+      "nome": "Pio XII",
+      "taxa": 80.49
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108801",
+      "nome": "Pirapemas",
+      "taxa": 87.16
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109007",
+      "nome": "Porto Franco",
+      "taxa": 84.12
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109056",
+      "nome": "Porto Rico do Maranhão",
+      "taxa": 92.77
+    },
+    {
+      "uf": "MA",
+      "codigo": "2108900",
+      "nome": "Poção de Pedras",
+      "taxa": 83.94
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109106",
+      "nome": "Presidente Dutra",
+      "taxa": 84.83
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109205",
+      "nome": "Presidente Juscelino",
+      "taxa": 89.56
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109239",
+      "nome": "Presidente Médici",
+      "taxa": 79.39
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109270",
+      "nome": "Presidente Sarney",
+      "taxa": 79.96
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109304",
+      "nome": "Presidente Vargas",
+      "taxa": 90.78
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109403",
+      "nome": "Primeira Cruz",
+      "taxa": 80.36
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109452",
+      "nome": "Raposa",
+      "taxa": 90.52
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109502",
+      "nome": "Riachão",
+      "taxa": 84.89
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109551",
+      "nome": "Ribamar Fiquene",
+      "taxa": 89.24
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109601",
+      "nome": "Rosário",
+      "taxa": 87.38
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109700",
+      "nome": "Sambaíba",
+      "taxa": 89.0
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109759",
+      "nome": "Santa Filomena do Maranhão",
+      "taxa": 82.92
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109809",
+      "nome": "Santa Helena",
+      "taxa": 87.12
+    },
+    {
+      "uf": "MA",
+      "codigo": "2109908",
+      "nome": "Santa Inês",
+      "taxa": 87.0
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110005",
+      "nome": "Santa Luzia",
+      "taxa": 81.32
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110039",
+      "nome": "Santa Luzia do Paruá",
+      "taxa": 89.22
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110104",
+      "nome": "Santa Quitéria do Maranhão",
+      "taxa": 81.02
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110203",
+      "nome": "Santa Rita",
+      "taxa": 87.41
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110237",
+      "nome": "Santana do Maranhão",
+      "taxa": 84.62
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110278",
+      "nome": "Santo Amaro do Maranhão",
+      "taxa": 79.05
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110302",
+      "nome": "Santo Antônio dos Lopes",
+      "taxa": 85.15
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111722",
+      "nome": "Satubinha",
+      "taxa": 82.26
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111748",
+      "nome": "Senador Alexandre Costa",
+      "taxa": 80.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111763",
+      "nome": "Senador La Rocque",
+      "taxa": 80.89
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111789",
+      "nome": "Serrano do Maranhão",
+      "taxa": 89.2
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111904",
+      "nome": "Sucupira do Norte",
+      "taxa": 83.02
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111953",
+      "nome": "Sucupira do Riachão",
+      "taxa": 81.42
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110401",
+      "nome": "São Benedito do Rio Preto",
+      "taxa": 81.65
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110500",
+      "nome": "São Bento",
+      "taxa": 84.54
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110609",
+      "nome": "São Bernardo",
+      "taxa": 85.81
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110658",
+      "nome": "São Domingos do Azeitão",
+      "taxa": 87.68
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110708",
+      "nome": "São Domingos do Maranhão",
+      "taxa": 87.16
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110856",
+      "nome": "São Francisco do Brejão",
+      "taxa": 89.18
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110906",
+      "nome": "São Francisco do Maranhão",
+      "taxa": 86.92
+    },
+    {
+      "uf": "MA",
+      "codigo": "2110807",
+      "nome": "São Félix de Balsas",
+      "taxa": 83.69
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111201",
+      "nome": "São José de Ribamar",
+      "taxa": 83.48
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111250",
+      "nome": "São José dos Basílios",
+      "taxa": 80.99
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111003",
+      "nome": "São João Batista",
+      "taxa": 84.98
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111029",
+      "nome": "São João do Carú",
+      "taxa": 86.24
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111052",
+      "nome": "São João do Paraíso",
+      "taxa": 84.47
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111078",
+      "nome": "São João do Soter",
+      "taxa": 89.19
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111102",
+      "nome": "São João dos Patos",
+      "taxa": 86.97
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111300",
+      "nome": "São Luís",
+      "taxa": 86.0
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111409",
+      "nome": "São Luís Gonzaga do Maranhão",
+      "taxa": 77.4
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111508",
+      "nome": "São Mateus do Maranhão",
+      "taxa": 87.21
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111532",
+      "nome": "São Pedro da Água Branca",
+      "taxa": 89.24
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111573",
+      "nome": "São Pedro dos Crentes",
+      "taxa": 71.88
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111607",
+      "nome": "São Raimundo das Mangabeiras",
+      "taxa": 79.49
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111631",
+      "nome": "São Raimundo do Doca Bezerra",
+      "taxa": 78.28
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111672",
+      "nome": "São Roberto",
+      "taxa": 84.95
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111706",
+      "nome": "São Vicente Ferrer",
+      "taxa": 82.77
+    },
+    {
+      "uf": "MA",
+      "codigo": "2111805",
+      "nome": "Sítio Novo",
+      "taxa": 83.59
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112001",
+      "nome": "Tasso Fragoso",
+      "taxa": 91.34
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112100",
+      "nome": "Timbiras",
+      "taxa": 82.81
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112209",
+      "nome": "Timon",
+      "taxa": 87.43
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112233",
+      "nome": "Trizidela do Vale",
+      "taxa": 87.54
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112274",
+      "nome": "Tufilândia",
+      "taxa": 85.39
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112308",
+      "nome": "Tuntum",
+      "taxa": 80.99
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112407",
+      "nome": "Turiaçu",
+      "taxa": 84.71
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112456",
+      "nome": "Turilândia",
+      "taxa": 78.52
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112506",
+      "nome": "Tutóia",
+      "taxa": 87.33
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112605",
+      "nome": "Urbano Santos",
+      "taxa": 89.7
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112704",
+      "nome": "Vargem Grande",
+      "taxa": 83.67
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112803",
+      "nome": "Viana",
+      "taxa": 87.97
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112852",
+      "nome": "Vila Nova dos Martírios",
+      "taxa": 85.51
+    },
+    {
+      "uf": "MA",
+      "codigo": "2113009",
+      "nome": "Vitorino Freire",
+      "taxa": 87.31
+    },
+    {
+      "uf": "MA",
+      "codigo": "2112902",
+      "nome": "Vitória do Mearim",
+      "taxa": 80.7
+    },
+    {
+      "uf": "MA",
+      "codigo": "2114007",
+      "nome": "Zé Doca",
+      "taxa": 82.96
+    },
+    {
+      "uf": "MA",
+      "codigo": "2100154",
+      "nome": "Água Doce do Maranhão",
+      "taxa": 88.67
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100102",
+      "nome": "Acorizal",
+      "taxa": 80.45
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100250",
+      "nome": "Alta Floresta",
+      "taxa": 74.79
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100300",
+      "nome": "Alto Araguaia",
+      "taxa": 88.57
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100359",
+      "nome": "Alto Boa Vista",
+      "taxa": 86.44
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100409",
+      "nome": "Alto Garças",
+      "taxa": 76.41
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100508",
+      "nome": "Alto Paraguai",
+      "taxa": 90.12
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100607",
+      "nome": "Alto Taquari",
+      "taxa": 86.66
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100805",
+      "nome": "Apiacás",
+      "taxa": 77.75
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101001",
+      "nome": "Araguaiana",
+      "taxa": 81.86
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101209",
+      "nome": "Araguainha",
+      "taxa": 87.96
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101258",
+      "nome": "Araputanga",
+      "taxa": 88.9
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101308",
+      "nome": "Arenápolis",
+      "taxa": 84.71
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101407",
+      "nome": "Aripuanã",
+      "taxa": 71.63
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101704",
+      "nome": "Barra do Bugres",
+      "taxa": 84.63
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101803",
+      "nome": "Barra do Garças",
+      "taxa": 84.29
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101605",
+      "nome": "Barão de Melgaço",
+      "taxa": 94.31
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101852",
+      "nome": "Bom Jesus do Araguaia",
+      "taxa": 76.22
+    },
+    {
+      "uf": "MT",
+      "codigo": "5101902",
+      "nome": "Brasnorte",
+      "taxa": 77.38
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102603",
+      "nome": "Campinápolis",
+      "taxa": 86.37
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102637",
+      "nome": "Campo Novo do Parecis",
+      "taxa": 84.56
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102678",
+      "nome": "Campo Verde",
+      "taxa": 79.66
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102686",
+      "nome": "Campos de Júlio",
+      "taxa": 83.85
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102694",
+      "nome": "Canabrava do Norte",
+      "taxa": 81.61
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102702",
+      "nome": "Canarana",
+      "taxa": 75.36
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102793",
+      "nome": "Carlinda",
+      "taxa": 89.95
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102850",
+      "nome": "Castanheira",
+      "taxa": 76.89
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103007",
+      "nome": "Chapada dos Guimarães",
+      "taxa": 84.5
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103056",
+      "nome": "Cláudia",
+      "taxa": 81.73
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103106",
+      "nome": "Cocalinho",
+      "taxa": 88.69
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103254",
+      "nome": "Colniza",
+      "taxa": 67.29
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103205",
+      "nome": "Colíder",
+      "taxa": 80.47
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103304",
+      "nome": "Comodoro",
+      "taxa": 80.53
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103353",
+      "nome": "Confresa",
+      "taxa": 70.21
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103361",
+      "nome": "Conquista D'Oeste",
+      "taxa": 91.59
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103379",
+      "nome": "Cotriguaçu",
+      "taxa": 84.48
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103403",
+      "nome": "Cuiabá",
+      "taxa": 80.18
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103437",
+      "nome": "Curvelândia",
+      "taxa": 85.93
+    },
+    {
+      "uf": "MT",
+      "codigo": "5102504",
+      "nome": "Cáceres",
+      "taxa": 84.23
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103452",
+      "nome": "Denise",
+      "taxa": 90.87
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103502",
+      "nome": "Diamantino",
+      "taxa": 85.2
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103601",
+      "nome": "Dom Aquino",
+      "taxa": 82.35
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103700",
+      "nome": "Feliz Natal",
+      "taxa": 79.83
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103809",
+      "nome": "Figueirópolis D'Oeste",
+      "taxa": 80.32
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103858",
+      "nome": "Gaúcha do Norte",
+      "taxa": 79.65
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103908",
+      "nome": "General Carneiro",
+      "taxa": 79.54
+    },
+    {
+      "uf": "MT",
+      "codigo": "5103957",
+      "nome": "Glória D'Oeste",
+      "taxa": 82.16
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104104",
+      "nome": "Guarantã do Norte",
+      "taxa": 73.33
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104203",
+      "nome": "Guiratinga",
+      "taxa": 78.86
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104500",
+      "nome": "Indiavaí",
+      "taxa": 83.66
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104526",
+      "nome": "Ipiranga do Norte",
+      "taxa": 83.66
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104542",
+      "nome": "Itanhangá",
+      "taxa": 76.07
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104559",
+      "nome": "Itaúba",
+      "taxa": 81.74
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104609",
+      "nome": "Itiquira",
+      "taxa": 72.32
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104807",
+      "nome": "Jaciara",
+      "taxa": 90.13
+    },
+    {
+      "uf": "MT",
+      "codigo": "5104906",
+      "nome": "Jangada",
+      "taxa": 92.95
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105002",
+      "nome": "Jauru",
+      "taxa": 88.53
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105101",
+      "nome": "Juara",
+      "taxa": 83.34
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105176",
+      "nome": "Juruena",
+      "taxa": 79.17
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105200",
+      "nome": "Juscimeira",
+      "taxa": 88.54
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105150",
+      "nome": "Juína",
+      "taxa": 79.06
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105234",
+      "nome": "Lambari D'Oeste",
+      "taxa": 84.07
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105259",
+      "nome": "Lucas do Rio Verde",
+      "taxa": 84.22
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105309",
+      "nome": "Luciara",
+      "taxa": 62.73
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105580",
+      "nome": "Marcelândia",
+      "taxa": 73.94
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105606",
+      "nome": "Matupá",
+      "taxa": 72.97
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105622",
+      "nome": "Mirassol d'Oeste",
+      "taxa": 84.33
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105903",
+      "nome": "Nobres",
+      "taxa": 87.65
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106000",
+      "nome": "Nortelândia",
+      "taxa": 88.8
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106109",
+      "nome": "Nossa Senhora do Livramento",
+      "taxa": 93.95
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106158",
+      "nome": "Nova Bandeirantes",
+      "taxa": 69.04
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106208",
+      "nome": "Nova Brasilândia",
+      "taxa": 82.43
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106216",
+      "nome": "Nova Canaã do Norte",
+      "taxa": 83.25
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108808",
+      "nome": "Nova Guarita",
+      "taxa": 69.29
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106182",
+      "nome": "Nova Lacerda",
+      "taxa": 78.96
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108857",
+      "nome": "Nova Marilândia",
+      "taxa": 89.48
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108907",
+      "nome": "Nova Maringá",
+      "taxa": 78.0
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108956",
+      "nome": "Nova Monte Verde",
+      "taxa": 76.68
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106224",
+      "nome": "Nova Mutum",
+      "taxa": 80.86
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106174",
+      "nome": "Nova Nazaré",
+      "taxa": 71.01
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106232",
+      "nome": "Nova Olímpia",
+      "taxa": 87.94
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106190",
+      "nome": "Nova Santa Helena",
+      "taxa": 83.88
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106240",
+      "nome": "Nova Ubiratã",
+      "taxa": 72.5
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106257",
+      "nome": "Nova Xavantina",
+      "taxa": 80.93
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106273",
+      "nome": "Novo Horizonte do Norte",
+      "taxa": 69.4
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106265",
+      "nome": "Novo Mundo",
+      "taxa": 69.53
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106315",
+      "nome": "Novo Santo Antônio",
+      "taxa": 86.88
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106281",
+      "nome": "Novo São Joaquim",
+      "taxa": 83.38
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106307",
+      "nome": "Paranatinga",
+      "taxa": 64.0
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106299",
+      "nome": "Paranaíta",
+      "taxa": 82.38
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106372",
+      "nome": "Pedra Preta",
+      "taxa": 85.77
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106422",
+      "nome": "Peixoto de Azevedo",
+      "taxa": 72.44
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106455",
+      "nome": "Planalto da Serra",
+      "taxa": 70.29
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106505",
+      "nome": "Poconé",
+      "taxa": 74.68
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106653",
+      "nome": "Pontal do Araguaia",
+      "taxa": 87.62
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106703",
+      "nome": "Ponte Branca",
+      "taxa": 92.1
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106752",
+      "nome": "Pontes e Lacerda",
+      "taxa": 72.21
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106778",
+      "nome": "Porto Alegre do Norte",
+      "taxa": 78.34
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106828",
+      "nome": "Porto Esperidião",
+      "taxa": 80.06
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106851",
+      "nome": "Porto Estrela",
+      "taxa": 87.61
+    },
+    {
+      "uf": "MT",
+      "codigo": "5106802",
+      "nome": "Porto dos Gaúchos",
+      "taxa": 68.49
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107008",
+      "nome": "Poxoréu",
+      "taxa": 80.05
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107040",
+      "nome": "Primavera do Leste",
+      "taxa": 72.09
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107065",
+      "nome": "Querência",
+      "taxa": 79.07
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107156",
+      "nome": "Reserva do Cabaçal",
+      "taxa": 87.18
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107180",
+      "nome": "Ribeirão Cascalheira",
+      "taxa": 68.41
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107198",
+      "nome": "Ribeirãozinho",
+      "taxa": 85.87
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107206",
+      "nome": "Rio Branco",
+      "taxa": 81.98
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107578",
+      "nome": "Rondolândia",
+      "taxa": 88.72
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107602",
+      "nome": "Rondonópolis",
+      "taxa": 83.61
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107701",
+      "nome": "Rosário Oeste",
+      "taxa": 86.15
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107750",
+      "nome": "Salto do Céu",
+      "taxa": 79.35
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107248",
+      "nome": "Santa Carmem",
+      "taxa": 70.91
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107743",
+      "nome": "Santa Cruz do Xingu",
+      "taxa": 87.63
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107768",
+      "nome": "Santa Rita do Trivelato",
+      "taxa": 87.65
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107776",
+      "nome": "Santa Terezinha",
+      "taxa": 82.57
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107263",
+      "nome": "Santo Afonso",
+      "taxa": 92.75
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107800",
+      "nome": "Santo Antônio de Leverger",
+      "taxa": 86.63
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107792",
+      "nome": "Santo Antônio do Leste",
+      "taxa": 85.68
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107875",
+      "nome": "Sapezal",
+      "taxa": 88.2
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107883",
+      "nome": "Serra Nova Dourada",
+      "taxa": 87.74
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107909",
+      "nome": "Sinop",
+      "taxa": 75.11
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107925",
+      "nome": "Sorriso",
+      "taxa": 73.84
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107859",
+      "nome": "São Félix do Araguaia",
+      "taxa": 81.87
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107297",
+      "nome": "São José do Povo",
+      "taxa": 92.24
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107305",
+      "nome": "São José do Rio Claro",
+      "taxa": 84.02
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107354",
+      "nome": "São José do Xingu",
+      "taxa": 74.37
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107107",
+      "nome": "São José dos Quatro Marcos",
+      "taxa": 87.98
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107404",
+      "nome": "São Pedro da Cipa",
+      "taxa": 84.92
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107941",
+      "nome": "Tabaporã",
+      "taxa": 78.25
+    },
+    {
+      "uf": "MT",
+      "codigo": "5107958",
+      "nome": "Tangará da Serra",
+      "taxa": 83.65
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108006",
+      "nome": "Tapurah",
+      "taxa": 83.13
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108055",
+      "nome": "Terra Nova do Norte",
+      "taxa": 86.69
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108105",
+      "nome": "Tesouro",
+      "taxa": 88.17
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108204",
+      "nome": "Torixoréu",
+      "taxa": 73.83
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108303",
+      "nome": "União do Sul",
+      "taxa": 72.87
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108352",
+      "nome": "Vale de São Domingos",
+      "taxa": 92.48
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108501",
+      "nome": "Vera",
+      "taxa": 89.59
+    },
+    {
+      "uf": "MT",
+      "codigo": "5105507",
+      "nome": "Vila Bela da Santíssima Trindade",
+      "taxa": 83.73
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108600",
+      "nome": "Vila Rica",
+      "taxa": 76.65
+    },
+    {
+      "uf": "MT",
+      "codigo": "5108402",
+      "nome": "Várzea Grande",
+      "taxa": 79.98
+    },
+    {
+      "uf": "MT",
+      "codigo": "5100201",
+      "nome": "Água Boa",
+      "taxa": 81.29
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500107",
+      "nome": "Abaetetuba",
+      "taxa": 90.31
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500131",
+      "nome": "Abel Figueiredo",
+      "taxa": 86.0
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500206",
+      "nome": "Acará",
+      "taxa": 78.44
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500305",
+      "nome": "Afuá",
+      "taxa": 66.63
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500404",
+      "nome": "Alenquer",
+      "taxa": 76.58
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500503",
+      "nome": "Almeirim",
+      "taxa": 85.28
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500602",
+      "nome": "Altamira",
+      "taxa": 81.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500701",
+      "nome": "Anajás",
+      "taxa": 78.92
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500800",
+      "nome": "Ananindeua",
+      "taxa": 86.48
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500859",
+      "nome": "Anapu",
+      "taxa": 71.38
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500909",
+      "nome": "Augusto Corrêa",
+      "taxa": 86.22
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500958",
+      "nome": "Aurora do Pará",
+      "taxa": 85.54
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501006",
+      "nome": "Aveiro",
+      "taxa": 83.28
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501105",
+      "nome": "Bagre",
+      "taxa": 76.1
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501204",
+      "nome": "Baião",
+      "taxa": 82.46
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501253",
+      "nome": "Bannach",
+      "taxa": 78.75
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501303",
+      "nome": "Barcarena",
+      "taxa": 89.82
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501451",
+      "nome": "Belterra",
+      "taxa": 85.51
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501402",
+      "nome": "Belém",
+      "taxa": 88.24
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501501",
+      "nome": "Benevides",
+      "taxa": 84.06
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501576",
+      "nome": "Bom Jesus do Tocantins",
+      "taxa": 80.97
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501600",
+      "nome": "Bonito",
+      "taxa": 80.54
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501709",
+      "nome": "Bragança",
+      "taxa": 82.57
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501725",
+      "nome": "Brasil Novo",
+      "taxa": 76.4
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501758",
+      "nome": "Brejo Grande do Araguaia",
+      "taxa": 91.59
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501782",
+      "nome": "Breu Branco",
+      "taxa": 84.94
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501808",
+      "nome": "Breves",
+      "taxa": 72.42
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501907",
+      "nome": "Bujaru",
+      "taxa": 88.78
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502004",
+      "nome": "Cachoeira do Arari",
+      "taxa": 85.07
+    },
+    {
+      "uf": "PA",
+      "codigo": "1501956",
+      "nome": "Cachoeira do Piriá",
+      "taxa": 76.82
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502103",
+      "nome": "Cametá",
+      "taxa": 86.82
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502152",
+      "nome": "Canaã dos Carajás",
+      "taxa": 85.19
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502202",
+      "nome": "Capanema",
+      "taxa": 91.71
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502301",
+      "nome": "Capitão Poço",
+      "taxa": 84.37
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502400",
+      "nome": "Castanhal",
+      "taxa": 85.83
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502509",
+      "nome": "Chaves",
+      "taxa": 70.96
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502608",
+      "nome": "Colares",
+      "taxa": 91.15
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502707",
+      "nome": "Conceição do Araguaia",
+      "taxa": 89.7
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502756",
+      "nome": "Concórdia do Pará",
+      "taxa": 88.14
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502764",
+      "nome": "Cumaru do Norte",
+      "taxa": 61.26
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502772",
+      "nome": "Curionópolis",
+      "taxa": 85.98
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502806",
+      "nome": "Curralinho",
+      "taxa": 88.52
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502855",
+      "nome": "Curuá",
+      "taxa": 87.89
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502905",
+      "nome": "Curuçá",
+      "taxa": 81.9
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502939",
+      "nome": "Dom Eliseu",
+      "taxa": 86.3
+    },
+    {
+      "uf": "PA",
+      "codigo": "1502954",
+      "nome": "Eldorado do Carajás",
+      "taxa": 79.03
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503002",
+      "nome": "Faro",
+      "taxa": 83.35
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503044",
+      "nome": "Floresta do Araguaia",
+      "taxa": 81.18
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503077",
+      "nome": "Garrafão do Norte",
+      "taxa": 93.24
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503093",
+      "nome": "Goianésia do Pará",
+      "taxa": 83.32
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503101",
+      "nome": "Gurupá",
+      "taxa": 69.64
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503200",
+      "nome": "Igarapé-Açu",
+      "taxa": 87.44
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503309",
+      "nome": "Igarapé-Miri",
+      "taxa": 86.33
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503408",
+      "nome": "Inhangapi",
+      "taxa": 87.0
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503457",
+      "nome": "Ipixuna do Pará",
+      "taxa": 85.4
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503507",
+      "nome": "Irituia",
+      "taxa": 90.65
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503606",
+      "nome": "Itaituba",
+      "taxa": 76.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503705",
+      "nome": "Itupiranga",
+      "taxa": 77.23
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503754",
+      "nome": "Jacareacanga",
+      "taxa": 82.89
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503804",
+      "nome": "Jacundá",
+      "taxa": 84.08
+    },
+    {
+      "uf": "PA",
+      "codigo": "1503903",
+      "nome": "Juruti",
+      "taxa": 93.3
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504000",
+      "nome": "Limoeiro do Ajuru",
+      "taxa": 88.73
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504109",
+      "nome": "Magalhães Barata",
+      "taxa": 93.5
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504208",
+      "nome": "Marabá",
+      "taxa": 83.62
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504307",
+      "nome": "Maracanã",
+      "taxa": 91.14
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504406",
+      "nome": "Marapanim",
+      "taxa": 88.86
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504422",
+      "nome": "Marituba",
+      "taxa": 89.28
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504455",
+      "nome": "Medicilândia",
+      "taxa": 68.64
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504505",
+      "nome": "Melgaço",
+      "taxa": 77.02
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504604",
+      "nome": "Mocajuba",
+      "taxa": 91.95
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504703",
+      "nome": "Moju",
+      "taxa": 81.01
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504752",
+      "nome": "Mojuí dos Campos",
+      "taxa": 87.79
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504802",
+      "nome": "Monte Alegre",
+      "taxa": 82.92
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504901",
+      "nome": "Muaná",
+      "taxa": 85.76
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504059",
+      "nome": "Mãe do Rio",
+      "taxa": 84.71
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504950",
+      "nome": "Nova Esperança do Piriá",
+      "taxa": 76.5
+    },
+    {
+      "uf": "PA",
+      "codigo": "1504976",
+      "nome": "Nova Ipixuna",
+      "taxa": 81.62
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505007",
+      "nome": "Nova Timboteua",
+      "taxa": 90.3
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505031",
+      "nome": "Novo Progresso",
+      "taxa": 72.49
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505064",
+      "nome": "Novo Repartimento",
+      "taxa": 72.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505205",
+      "nome": "Oeiras do Pará",
+      "taxa": 87.48
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505304",
+      "nome": "Oriximiná",
+      "taxa": 84.43
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505437",
+      "nome": "Ourilândia do Norte",
+      "taxa": 78.32
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505403",
+      "nome": "Ourém",
+      "taxa": 88.36
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505486",
+      "nome": "Pacajá",
+      "taxa": 76.42
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505494",
+      "nome": "Palestina do Pará",
+      "taxa": 91.04
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505502",
+      "nome": "Paragominas",
+      "taxa": 85.6
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505536",
+      "nome": "Parauapebas",
+      "taxa": 85.2
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505551",
+      "nome": "Pau D'Arco",
+      "taxa": 81.61
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505601",
+      "nome": "Peixe-Boi",
+      "taxa": 92.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505635",
+      "nome": "Piçarra",
+      "taxa": 79.93
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505650",
+      "nome": "Placas",
+      "taxa": 76.04
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505700",
+      "nome": "Ponta de Pedras",
+      "taxa": 84.96
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505809",
+      "nome": "Portel",
+      "taxa": 69.66
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505908",
+      "nome": "Porto de Moz",
+      "taxa": 74.14
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506005",
+      "nome": "Prainha",
+      "taxa": 73.49
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506104",
+      "nome": "Primavera",
+      "taxa": 94.76
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506112",
+      "nome": "Quatipuru",
+      "taxa": 90.1
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506138",
+      "nome": "Redenção",
+      "taxa": 81.03
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506161",
+      "nome": "Rio Maria",
+      "taxa": 76.68
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506187",
+      "nome": "Rondon do Pará",
+      "taxa": 63.97
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506195",
+      "nome": "Rurópolis",
+      "taxa": 83.7
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506203",
+      "nome": "Salinópolis",
+      "taxa": 87.14
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506302",
+      "nome": "Salvaterra",
+      "taxa": 81.65
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506351",
+      "nome": "Santa Bárbara do Pará",
+      "taxa": 95.11
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506401",
+      "nome": "Santa Cruz do Arari",
+      "taxa": 82.51
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506500",
+      "nome": "Santa Izabel do Pará",
+      "taxa": 88.47
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506559",
+      "nome": "Santa Luzia do Pará",
+      "taxa": 87.02
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506583",
+      "nome": "Santa Maria das Barreiras",
+      "taxa": 73.83
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506609",
+      "nome": "Santa Maria do Pará",
+      "taxa": 84.63
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506708",
+      "nome": "Santana do Araguaia",
+      "taxa": 78.26
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506807",
+      "nome": "Santarém",
+      "taxa": 85.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1506906",
+      "nome": "Santarém Novo",
+      "taxa": 93.57
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507003",
+      "nome": "Santo Antônio do Tauá",
+      "taxa": 93.34
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507755",
+      "nome": "Sapucaia",
+      "taxa": 86.35
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507805",
+      "nome": "Senador José Porfírio",
+      "taxa": 65.88
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507904",
+      "nome": "Soure",
+      "taxa": 83.11
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507102",
+      "nome": "São Caetano de Odivelas",
+      "taxa": 88.79
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507151",
+      "nome": "São Domingos do Araguaia",
+      "taxa": 84.91
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507201",
+      "nome": "São Domingos do Capim",
+      "taxa": 86.86
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507409",
+      "nome": "São Francisco do Pará",
+      "taxa": 89.42
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507300",
+      "nome": "São Félix do Xingu",
+      "taxa": 72.13
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507458",
+      "nome": "São Geraldo do Araguaia",
+      "taxa": 81.55
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507466",
+      "nome": "São João da Ponta",
+      "taxa": 86.28
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507474",
+      "nome": "São João de Pirabas",
+      "taxa": 86.42
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507508",
+      "nome": "São João do Araguaia",
+      "taxa": 84.62
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507607",
+      "nome": "São Miguel do Guamá",
+      "taxa": 87.9
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507706",
+      "nome": "São Sebastião da Boa Vista",
+      "taxa": 74.9
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507953",
+      "nome": "Tailândia",
+      "taxa": 80.44
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507961",
+      "nome": "Terra Alta",
+      "taxa": 83.23
+    },
+    {
+      "uf": "PA",
+      "codigo": "1507979",
+      "nome": "Terra Santa",
+      "taxa": 89.43
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508001",
+      "nome": "Tomé-Açu",
+      "taxa": 80.5
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508035",
+      "nome": "Tracuateua",
+      "taxa": 81.74
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508050",
+      "nome": "Trairão",
+      "taxa": 73.21
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508084",
+      "nome": "Tucumã",
+      "taxa": 80.73
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508100",
+      "nome": "Tucuruí",
+      "taxa": 86.35
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508126",
+      "nome": "Ulianópolis",
+      "taxa": 83.88
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508159",
+      "nome": "Uruará",
+      "taxa": 68.69
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508209",
+      "nome": "Vigia",
+      "taxa": 85.97
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508308",
+      "nome": "Viseu",
+      "taxa": 82.71
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508357",
+      "nome": "Vitória do Xingu",
+      "taxa": 89.43
+    },
+    {
+      "uf": "PA",
+      "codigo": "1508407",
+      "nome": "Xinguara",
+      "taxa": 78.93
+    },
+    {
+      "uf": "PA",
+      "codigo": "1500347",
+      "nome": "Água Azul do Norte",
+      "taxa": 82.49
+    },
+    {
+      "uf": "PA",
+      "codigo": "1505106",
+      "nome": "Óbidos",
+      "taxa": 83.89
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100015",
+      "nome": "Alta Floresta D'Oeste",
+      "taxa": 84.23
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100379",
+      "nome": "Alto Alegre dos Parecis",
+      "taxa": 74.07
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100403",
+      "nome": "Alto Paraíso",
+      "taxa": 87.2
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100346",
+      "nome": "Alvorada D'Oeste",
+      "taxa": 87.99
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100023",
+      "nome": "Ariquemes",
+      "taxa": 79.66
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100452",
+      "nome": "Buritis",
+      "taxa": 84.01
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100031",
+      "nome": "Cabixi",
+      "taxa": 91.12
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100601",
+      "nome": "Cacaulândia",
+      "taxa": 91.93
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100049",
+      "nome": "Cacoal",
+      "taxa": 90.67
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100700",
+      "nome": "Campo Novo de Rondônia",
+      "taxa": 84.18
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100809",
+      "nome": "Candeias do Jamari",
+      "taxa": 81.83
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100908",
+      "nome": "Castanheiras",
+      "taxa": 90.89
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100056",
+      "nome": "Cerejeiras",
+      "taxa": 90.99
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100924",
+      "nome": "Chupinguaia",
+      "taxa": 88.88
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100064",
+      "nome": "Colorado do Oeste",
+      "taxa": 90.9
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100072",
+      "nome": "Corumbiara",
+      "taxa": 79.08
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100080",
+      "nome": "Costa Marques",
+      "taxa": 86.21
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100940",
+      "nome": "Cujubim",
+      "taxa": 77.39
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100098",
+      "nome": "Espigão D'Oeste",
+      "taxa": 78.63
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101005",
+      "nome": "Governador Jorge Teixeira",
+      "taxa": 87.51
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100106",
+      "nome": "Guajará-Mirim",
+      "taxa": 86.26
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101104",
+      "nome": "Itapuã do Oeste",
+      "taxa": 72.21
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100114",
+      "nome": "Jaru",
+      "taxa": 81.66
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100122",
+      "nome": "Ji-Paraná",
+      "taxa": 86.49
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100130",
+      "nome": "Machadinho D'Oeste",
+      "taxa": 81.66
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101203",
+      "nome": "Ministro Andreazza",
+      "taxa": 90.66
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101302",
+      "nome": "Mirante da Serra",
+      "taxa": 91.78
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101401",
+      "nome": "Monte Negro",
+      "taxa": 86.12
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100148",
+      "nome": "Nova Brasilândia D'Oeste",
+      "taxa": 93.99
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100338",
+      "nome": "Nova Mamoré",
+      "taxa": 85.32
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101435",
+      "nome": "Nova União",
+      "taxa": 79.26
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100502",
+      "nome": "Novo Horizonte do Oeste",
+      "taxa": 87.22
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100155",
+      "nome": "Ouro Preto do Oeste",
+      "taxa": 86.07
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101450",
+      "nome": "Parecis",
+      "taxa": 83.29
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100189",
+      "nome": "Pimenta Bueno",
+      "taxa": 76.93
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101468",
+      "nome": "Pimenteiras do Oeste",
+      "taxa": 88.35
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100205",
+      "nome": "Porto Velho",
+      "taxa": 82.89
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100254",
+      "nome": "Presidente Médici",
+      "taxa": 86.2
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101476",
+      "nome": "Primavera de Rondônia",
+      "taxa": 79.34
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100262",
+      "nome": "Rio Crespo",
+      "taxa": 90.93
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100288",
+      "nome": "Rolim de Moura",
+      "taxa": 88.7
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100296",
+      "nome": "Santa Luzia D'Oeste",
+      "taxa": 83.66
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101500",
+      "nome": "Seringueiras",
+      "taxa": 81.48
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101484",
+      "nome": "São Felipe D'Oeste",
+      "taxa": 95.1
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101492",
+      "nome": "São Francisco do Guaporé",
+      "taxa": 91.62
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100320",
+      "nome": "São Miguel do Guaporé",
+      "taxa": 88.89
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101559",
+      "nome": "Teixeirópolis",
+      "taxa": 95.11
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101609",
+      "nome": "Theobroma",
+      "taxa": 90.46
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101708",
+      "nome": "Urupá",
+      "taxa": 81.31
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101757",
+      "nome": "Vale do Anari",
+      "taxa": 90.85
+    },
+    {
+      "uf": "RO",
+      "codigo": "1101807",
+      "nome": "Vale do Paraíso",
+      "taxa": 90.74
+    },
+    {
+      "uf": "RO",
+      "codigo": "1100304",
+      "nome": "Vilhena",
+      "taxa": 90.16
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400050",
+      "nome": "Alto Alegre",
+      "taxa": 51.23
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400027",
+      "nome": "Amajari",
+      "taxa": 53.53
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400100",
+      "nome": "Boa Vista",
+      "taxa": 81.93
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400159",
+      "nome": "Bonfim",
+      "taxa": 81.79
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400175",
+      "nome": "Cantá",
+      "taxa": 77.45
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400209",
+      "nome": "Caracaraí",
+      "taxa": 67.49
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400233",
+      "nome": "Caroebe",
+      "taxa": 72.78
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400282",
+      "nome": "Iracema",
+      "taxa": 70.11
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400308",
+      "nome": "Mucajaí",
+      "taxa": 75.56
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400407",
+      "nome": "Normandia",
+      "taxa": 85.65
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400456",
+      "nome": "Pacaraima",
+      "taxa": 76.94
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400472",
+      "nome": "Rorainópolis",
+      "taxa": 80.53
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400506",
+      "nome": "São João da Baliza",
+      "taxa": 82.45
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400605",
+      "nome": "São Luiz do Anauá",
+      "taxa": 80.2
+    },
+    {
+      "uf": "RR",
+      "codigo": "1400704",
+      "nome": "Uiramutã",
+      "taxa": 88.12
+    },
+    {
+      "uf": "TO",
+      "codigo": "1700251",
+      "nome": "Abreulândia",
+      "taxa": 74.72
+    },
+    {
+      "uf": "TO",
+      "codigo": "1700301",
+      "nome": "Aguiarnópolis",
+      "taxa": 86.81
+    },
+    {
+      "uf": "TO",
+      "codigo": "1700350",
+      "nome": "Aliança do Tocantins",
+      "taxa": 85.1
+    },
+    {
+      "uf": "TO",
+      "codigo": "1700400",
+      "nome": "Almas",
+      "taxa": 74.3
+    },
+    {
+      "uf": "TO",
+      "codigo": "1700707",
+      "nome": "Alvorada",
+      "taxa": 90.48
+    },
+    {
+      "uf": "TO",
+      "codigo": "1701002",
+      "nome": "Ananás",
+      "taxa": 79.54
+    },
+    {
+      "uf": "TO",
+      "codigo": "1701051",
+      "nome": "Angico",
+      "taxa": 78.42
+    },
+    {
+      "uf": "TO",
+      "codigo": "1701101",
+      "nome": "Aparecida do Rio Negro",
+      "taxa": 88.02
+    },
+    {
+      "uf": "TO",
+      "codigo": "1701309",
+      "nome": "Aragominas",
+      "taxa": 87.91
+    },
+    {
+      "uf": "TO",
+      "codigo": "1701903",
+      "nome": "Araguacema",
+      "taxa": 84.87
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702158",
+      "nome": "Araguanã",
+      "taxa": 92.02
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702208",
+      "nome": "Araguatins",
+      "taxa": 89.68
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702000",
+      "nome": "Araguaçu",
+      "taxa": 86.91
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702109",
+      "nome": "Araguaína",
+      "taxa": 86.29
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702307",
+      "nome": "Arapoema",
+      "taxa": 84.76
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702406",
+      "nome": "Arraias",
+      "taxa": 87.48
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702554",
+      "nome": "Augustinópolis",
+      "taxa": 88.08
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702703",
+      "nome": "Aurora do Tocantins",
+      "taxa": 91.13
+    },
+    {
+      "uf": "TO",
+      "codigo": "1702901",
+      "nome": "Axixá do Tocantins",
+      "taxa": 87.55
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703008",
+      "nome": "Babaçulândia",
+      "taxa": 83.32
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703057",
+      "nome": "Bandeirantes do Tocantins",
+      "taxa": 80.15
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703073",
+      "nome": "Barra do Ouro",
+      "taxa": 79.88
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703107",
+      "nome": "Barrolândia",
+      "taxa": 90.27
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703206",
+      "nome": "Bernardo Sayão",
+      "taxa": 87.76
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703305",
+      "nome": "Bom Jesus do Tocantins",
+      "taxa": 92.94
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703602",
+      "nome": "Brasilândia do Tocantins",
+      "taxa": 94.1
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703701",
+      "nome": "Brejinho de Nazaré",
+      "taxa": 81.3
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703800",
+      "nome": "Buriti do Tocantins",
+      "taxa": 84.93
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703826",
+      "nome": "Cachoeirinha",
+      "taxa": 90.72
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703842",
+      "nome": "Campos Lindos",
+      "taxa": 91.29
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703867",
+      "nome": "Cariri do Tocantins",
+      "taxa": 89.94
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703883",
+      "nome": "Carmolândia",
+      "taxa": 89.4
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703891",
+      "nome": "Carrasco Bonito",
+      "taxa": 95.55
+    },
+    {
+      "uf": "TO",
+      "codigo": "1703909",
+      "nome": "Caseara",
+      "taxa": 95.61
+    },
+    {
+      "uf": "TO",
+      "codigo": "1704105",
+      "nome": "Centenário",
+      "taxa": 89.55
+    },
+    {
+      "uf": "TO",
+      "codigo": "1705102",
+      "nome": "Chapada da Natividade",
+      "taxa": 91.99
+    },
+    {
+      "uf": "TO",
+      "codigo": "1704600",
+      "nome": "Chapada de Areia",
+      "taxa": 86.7
+    },
+    {
+      "uf": "TO",
+      "codigo": "1705508",
+      "nome": "Colinas do Tocantins",
+      "taxa": 81.54
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716703",
+      "nome": "Colméia",
+      "taxa": 91.69
+    },
+    {
+      "uf": "TO",
+      "codigo": "1705557",
+      "nome": "Combinado",
+      "taxa": 81.67
+    },
+    {
+      "uf": "TO",
+      "codigo": "1705607",
+      "nome": "Conceição do Tocantins",
+      "taxa": 77.98
+    },
+    {
+      "uf": "TO",
+      "codigo": "1706001",
+      "nome": "Couto Magalhães",
+      "taxa": 86.26
+    },
+    {
+      "uf": "TO",
+      "codigo": "1706100",
+      "nome": "Cristalândia",
+      "taxa": 80.38
+    },
+    {
+      "uf": "TO",
+      "codigo": "1706258",
+      "nome": "Crixás do Tocantins",
+      "taxa": 94.51
+    },
+    {
+      "uf": "TO",
+      "codigo": "1706506",
+      "nome": "Darcinópolis",
+      "taxa": 82.98
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707009",
+      "nome": "Dianópolis",
+      "taxa": 89.53
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707108",
+      "nome": "Divinópolis do Tocantins",
+      "taxa": 77.17
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707207",
+      "nome": "Dois Irmãos do Tocantins",
+      "taxa": 76.16
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707306",
+      "nome": "Dueré",
+      "taxa": 89.24
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707405",
+      "nome": "Esperantina",
+      "taxa": 88.17
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707652",
+      "nome": "Figueirópolis",
+      "taxa": 89.71
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707702",
+      "nome": "Filadélfia",
+      "taxa": 88.62
+    },
+    {
+      "uf": "TO",
+      "codigo": "1708205",
+      "nome": "Formoso do Araguaia",
+      "taxa": 83.26
+    },
+    {
+      "uf": "TO",
+      "codigo": "1707553",
+      "nome": "Fátima",
+      "taxa": 89.7
+    },
+    {
+      "uf": "TO",
+      "codigo": "1708304",
+      "nome": "Goianorte",
+      "taxa": 93.52
+    },
+    {
+      "uf": "TO",
+      "codigo": "1709005",
+      "nome": "Goiatins",
+      "taxa": 88.61
+    },
+    {
+      "uf": "TO",
+      "codigo": "1709302",
+      "nome": "Guaraí",
+      "taxa": 88.66
+    },
+    {
+      "uf": "TO",
+      "codigo": "1709500",
+      "nome": "Gurupi",
+      "taxa": 84.19
+    },
+    {
+      "uf": "TO",
+      "codigo": "1709807",
+      "nome": "Ipueiras",
+      "taxa": 95.41
+    },
+    {
+      "uf": "TO",
+      "codigo": "1710508",
+      "nome": "Itacajá",
+      "taxa": 87.75
+    },
+    {
+      "uf": "TO",
+      "codigo": "1710706",
+      "nome": "Itaguatins",
+      "taxa": 87.41
+    },
+    {
+      "uf": "TO",
+      "codigo": "1710904",
+      "nome": "Itapiratins",
+      "taxa": 80.12
+    },
+    {
+      "uf": "TO",
+      "codigo": "1711100",
+      "nome": "Itaporã do Tocantins",
+      "taxa": 89.2
+    },
+    {
+      "uf": "TO",
+      "codigo": "1711506",
+      "nome": "Jaú do Tocantins",
+      "taxa": 81.49
+    },
+    {
+      "uf": "TO",
+      "codigo": "1711803",
+      "nome": "Juarina",
+      "taxa": 94.17
+    },
+    {
+      "uf": "TO",
+      "codigo": "1711902",
+      "nome": "Lagoa da Confusão",
+      "taxa": 82.82
+    },
+    {
+      "uf": "TO",
+      "codigo": "1711951",
+      "nome": "Lagoa do Tocantins",
+      "taxa": 95.71
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712009",
+      "nome": "Lajeado",
+      "taxa": 91.94
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712157",
+      "nome": "Lavandeira",
+      "taxa": 90.74
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712405",
+      "nome": "Lizarda",
+      "taxa": 92.92
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712454",
+      "nome": "Luzinópolis",
+      "taxa": 87.23
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712504",
+      "nome": "Marianópolis do Tocantins",
+      "taxa": 88.37
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712702",
+      "nome": "Mateiros",
+      "taxa": 94.15
+    },
+    {
+      "uf": "TO",
+      "codigo": "1712801",
+      "nome": "Maurilândia do Tocantins",
+      "taxa": 92.26
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713205",
+      "nome": "Miracema do Tocantins",
+      "taxa": 87.88
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713304",
+      "nome": "Miranorte",
+      "taxa": 86.32
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713700",
+      "nome": "Monte Santo do Tocantins",
+      "taxa": 78.46
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713601",
+      "nome": "Monte do Carmo",
+      "taxa": 90.68
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713957",
+      "nome": "Muricilândia",
+      "taxa": 92.0
+    },
+    {
+      "uf": "TO",
+      "codigo": "1714203",
+      "nome": "Natividade",
+      "taxa": 80.36
+    },
+    {
+      "uf": "TO",
+      "codigo": "1714302",
+      "nome": "Nazaré",
+      "taxa": 84.8
+    },
+    {
+      "uf": "TO",
+      "codigo": "1714880",
+      "nome": "Nova Olinda",
+      "taxa": 90.82
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715002",
+      "nome": "Nova Rosalândia",
+      "taxa": 88.78
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715101",
+      "nome": "Novo Acordo",
+      "taxa": 84.51
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715150",
+      "nome": "Novo Alegre",
+      "taxa": 92.82
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715259",
+      "nome": "Novo Jardim",
+      "taxa": 87.77
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715507",
+      "nome": "Oliveira de Fátima",
+      "taxa": 94.55
+    },
+    {
+      "uf": "TO",
+      "codigo": "1721000",
+      "nome": "Palmas",
+      "taxa": 83.97
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715705",
+      "nome": "Palmeirante",
+      "taxa": 87.05
+    },
+    {
+      "uf": "TO",
+      "codigo": "1713809",
+      "nome": "Palmeiras do Tocantins",
+      "taxa": 89.63
+    },
+    {
+      "uf": "TO",
+      "codigo": "1715754",
+      "nome": "Palmeirópolis",
+      "taxa": 80.43
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716208",
+      "nome": "Paranã",
+      "taxa": 93.32
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716109",
+      "nome": "Paraíso do Tocantins",
+      "taxa": 85.26
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716307",
+      "nome": "Pau D'Arco",
+      "taxa": 83.12
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716505",
+      "nome": "Pedro Afonso",
+      "taxa": 83.56
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716604",
+      "nome": "Peixe",
+      "taxa": 81.97
+    },
+    {
+      "uf": "TO",
+      "codigo": "1716653",
+      "nome": "Pequizeiro",
+      "taxa": 90.79
+    },
+    {
+      "uf": "TO",
+      "codigo": "1717008",
+      "nome": "Pindorama do Tocantins",
+      "taxa": 85.74
+    },
+    {
+      "uf": "TO",
+      "codigo": "1717206",
+      "nome": "Piraquê",
+      "taxa": 85.86
+    },
+    {
+      "uf": "TO",
+      "codigo": "1717503",
+      "nome": "Pium",
+      "taxa": 88.6
+    },
+    {
+      "uf": "TO",
+      "codigo": "1717800",
+      "nome": "Ponte Alta do Bom Jesus",
+      "taxa": 82.83
+    },
+    {
+      "uf": "TO",
+      "codigo": "1717909",
+      "nome": "Ponte Alta do Tocantins",
+      "taxa": 92.14
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718006",
+      "nome": "Porto Alegre do Tocantins",
+      "taxa": 85.06
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718204",
+      "nome": "Porto Nacional",
+      "taxa": 89.78
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718303",
+      "nome": "Praia Norte",
+      "taxa": 86.51
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718402",
+      "nome": "Presidente Kennedy",
+      "taxa": 71.94
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718451",
+      "nome": "Pugmil",
+      "taxa": 82.43
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718501",
+      "nome": "Recursolândia",
+      "taxa": 49.09
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718550",
+      "nome": "Riachinho",
+      "taxa": 92.18
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718758",
+      "nome": "Rio Sono",
+      "taxa": 90.08
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718659",
+      "nome": "Rio da Conceição",
+      "taxa": 88.22
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718709",
+      "nome": "Rio dos Bois",
+      "taxa": 86.36
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718808",
+      "nome": "Sampaio",
+      "taxa": 87.34
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718840",
+      "nome": "Sandolândia",
+      "taxa": 80.76
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718865",
+      "nome": "Santa Fé do Araguaia",
+      "taxa": 89.84
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718881",
+      "nome": "Santa Maria do Tocantins",
+      "taxa": 90.87
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718899",
+      "nome": "Santa Rita do Tocantins",
+      "taxa": 91.4
+    },
+    {
+      "uf": "TO",
+      "codigo": "1718907",
+      "nome": "Santa Rosa do Tocantins",
+      "taxa": 91.44
+    },
+    {
+      "uf": "TO",
+      "codigo": "1719004",
+      "nome": "Santa Tereza do Tocantins",
+      "taxa": 89.75
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720002",
+      "nome": "Santa Terezinha do Tocantins",
+      "taxa": 88.77
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720655",
+      "nome": "Silvanópolis",
+      "taxa": 77.78
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720853",
+      "nome": "Sucupira",
+      "taxa": 92.41
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720101",
+      "nome": "São Bento do Tocantins",
+      "taxa": 85.25
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720150",
+      "nome": "São Félix do Tocantins",
+      "taxa": 92.61
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720200",
+      "nome": "São Miguel do Tocantins",
+      "taxa": 91.27
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720259",
+      "nome": "São Salvador do Tocantins",
+      "taxa": 86.05
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720309",
+      "nome": "São Sebastião do Tocantins",
+      "taxa": 83.26
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720499",
+      "nome": "São Valério",
+      "taxa": 92.02
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720804",
+      "nome": "Sítio Novo do Tocantins",
+      "taxa": 83.71
+    },
+    {
+      "uf": "TO",
+      "codigo": "1708254",
+      "nome": "Tabocão",
+      "taxa": 94.23
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720903",
+      "nome": "Taguatinga",
+      "taxa": 80.8
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720937",
+      "nome": "Taipas do Tocantins",
+      "taxa": 83.56
+    },
+    {
+      "uf": "TO",
+      "codigo": "1720978",
+      "nome": "Talismã",
+      "taxa": 80.72
+    },
+    {
+      "uf": "TO",
+      "codigo": "1721208",
+      "nome": "Tocantinópolis",
+      "taxa": 93.64
+    },
+    {
+      "uf": "TO",
+      "codigo": "1721109",
+      "nome": "Tocantínia",
+      "taxa": 86.39
+    },
+    {
+      "uf": "TO",
+      "codigo": "1721257",
+      "nome": "Tupirama",
+      "taxa": 94.29
+    },
+    {
+      "uf": "TO",
+      "codigo": "1721307",
+      "nome": "Tupiratins",
+      "taxa": 91.51
+    },
+    {
+      "uf": "TO",
+      "codigo": "1722081",
+      "nome": "Wanderlândia",
+      "taxa": 92.39
+    },
+    {
+      "uf": "TO",
+      "codigo": "1722107",
+      "nome": "Xambioá",
+      "taxa": 80.63
+    }
+  ],
+  "pnadAntiga": {
+    "AC": {
+      "2007": 74.7,
+      "2008": 79.7,
+      "2009": 77.5
+    },
+    "AM": {
+      "2007": 85.7,
+      "2008": 84.2,
+      "2009": 84.1
+    },
+    "AP": {
+      "2007": 87.3,
+      "2008": 89.2,
+      "2009": 88.3
+    },
+    "MA": {
+      "2007": 81.9,
+      "2008": 83.2,
+      "2009": 87.4
+    },
+    "MT": {
+      "2007": 79.6,
+      "2008": 80.5,
+      "2009": 79.6
+    },
+    "PA": {
+      "2007": 77.9,
+      "2008": 80.9,
+      "2009": 83.2
+    },
+    "RO": {
+      "2007": 73.9,
+      "2008": 76.0,
+      "2009": 82.1
+    },
+    "RR": {
+      "2007": 87.8,
+      "2008": 84.5,
+      "2009": 85.2
+    },
+    "TO": {
+      "2007": 81.6,
+      "2008": 84.0,
+      "2009": 88.4
+    }
+  }
+}

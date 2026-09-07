@@ -45,13 +45,15 @@ const ANO_DE_REFERENCIA = {
   pevsBilhoes: 2024,
   piaBilhoes: 2024,
   pdPctPib: 2023,
-  poverty: 2024
+  poverty: 2024,
+  school: 2024,
+  apsCobertura: 2026
 };
 
 // Anos que estão na base mas ainda em curso. O CVLI de 2026 tem cerca de metade do
 // volume de 2025 (Pará com 956 contra 1.757), então comparar sem ressalva sugeriria
 // uma queda que não aconteceu.
-const ANOS_PARCIAIS = { cvliRate: [2026] };
+const ANOS_PARCIAIS = { cvliRate: [2026], apsCobertura: [2026] };
 
 const stateByName = Object.fromEntries(
   Object.entries(STATES).flatMap(([uf, state]) => [
@@ -247,14 +249,14 @@ export async function loadGeo() {
 }
 
 export async function buildDashboard() {
-  const [populationRows, prodesRows, focusRows, cvliRows, povertyRows, schoolRows, teamRows, vulnerabilityRows, conservationRows, pevsRows, piaRows, ibcRows, perRows, isgrRows, pdRows, geo] = await Promise.all([
+  const [populationRows, prodesRows, focusRows, cvliRows, povertyRows, schoolRows, apsRows, vulnerabilityRows, conservationRows, pevsRows, piaRows, ibcRows, perRows, isgrRows, pdRows, geo] = await Promise.all([
     readCsv('ibge_pop/populacao_uf_ano.csv'),
     readCsv('prodes/prodes_rates_uf.csv'),
     readCsv('focos/focos_calor_uf_ano.csv'),
     readCsv('sinesp/cvli_uf_ano.csv'),
     readCsv('ibge_ods/pobreza_uf_ano.csv'),
-    readCsv('ibge_sis/sis_freq_escolar_uf.csv'),
-    readCsv('cnes/cnes_equipes_uf.csv', ';', 3, 'latin1'),
+    readCsv('ibge_educacao/freq_escolar_15a17_uf_ano.csv'),
+    readCsv('ms_aps/aps_uf_ano.csv'),
     readCsv('iivcm/iivcm.csv'),
     readCsv('cnuc/cnuc.csv', ';', 0, 'latin1'),
     readCsv('eixo3/pevs_total_uf_ano.csv'),
@@ -280,7 +282,9 @@ export async function buildDashboard() {
   const cvli = Object.groupBy(cvliRows, (row) => row.uf);
   // A linha 'BR' do CSV é referência de contexto na coleta e não entra no painel.
   const povertyByUf = Object.groupBy(povertyRows.filter((row) => STATES[row.uf]), (row) => row.uf);
-  const school = asByUf(schoolRows, (row) => row.uf, (row) => parseNumber(row['15_17']));
+  // O CSV da frequência escolar traz 'Norte' e 'BR' pelo mesmo motivo; o filtro por
+  // STATES descarta os dois aqui e o latestByUf faz o mesmo mais abaixo.
+  const schoolByUf = Object.groupBy(schoolRows.filter((row) => STATES[row.uf]), (row) => row.uf);
 
   const latestByUf = (rows, year, pick) => {
     const map = {};
@@ -298,6 +302,12 @@ export async function buildDashboard() {
   const ibcByUf = Object.groupBy(ibcRows, (row) => row.uf);
   const pdByUf = Object.groupBy(pdRows, (row) => row.uf);
   const poverty = latestByUf(povertyRows, 2024, (row) => parseNumber(row.pct_pobreza));
+  // 2024 e não 2025 (o ano mais recente da série) para manter na tela o valor que o
+  // painel já publicava a partir do SIS: as nove UFs batem na casa decimal, então a
+  // troca da fonte não mexe em valor, ranking nem síntese — só acrescenta o histórico.
+  const school = latestByUf(schoolRows, 2024, (row) => parseNumber(row.taxa));
+  const apsCobertura = latestByUf(apsRows, ANO_DE_REFERENCIA.apsCobertura, (row) => parseNumber(row.cobertura_pct));
+  const apsEquipes = latestByUf(apsRows, ANO_DE_REFERENCIA.apsCobertura, (row) => parseNumber(row.equipes));
   const pevs = latestByUf(pevsRows, 2024, (row) => parseNumber(row.valor_mil_rs));
   const pia = latestByUf(piaRows.filter((row) => row.cnae_nome === 'Total'), 2024, (row) => parseNumber(row.valor_transf_ind_mil_rs));
   const ibc = latestByUf(ibcRows, 2025, (row) => parseNumber(row.ibc_ponderado_pop));
@@ -314,15 +324,10 @@ export async function buildDashboard() {
   const pdPctPib = Object.fromEntries(Object.entries(pdLatest).map(([uf, entry]) => [uf, entry.value]));
   const pdPctPibAno = Object.fromEntries(Object.entries(pdLatest).map(([uf, entry]) => [uf, entry.ano]));
 
-  const teams = {};
-  for (const row of teamRows) {
-    const uf = stateFromLabel(row['Unidade da Federação']);
-    if (!uf) continue;
-    const esf = parseNumber(row['01 ESF - EQUIPE DE SAUDE DA FAMILIA']) || 0;
-    const esfLegacy = parseNumber(row['70 ESF - EQUIPE DE SAUDE DA FAMILIA']) || 0;
-    const eap = parseNumber(row['76 EAP - EQUIPE DE ATENCAO PRIMARIA']) || 0;
-    teams[uf] = esf + esfLegacy + eap;
-  }
+  // Cobertura populacional de APS (e-Gestor), que é a definição do I2.2.2 no catálogo.
+  // A série tem quebra de metodologia em 2021 — a coluna `metodologia` do CSV marca
+  // qual regra vale em cada ano, e a nota do indicador no painel registra isso.
+  const apsByUf = Object.groupBy(apsRows.filter((row) => STATES[row.uf]), (row) => row.uf);
 
   const vulnerabilityByUf = {};
   for (const row of vulnerabilityRows) {
@@ -390,8 +395,8 @@ export async function buildDashboard() {
       cvliRate: rate(violence, populationValue),
       poverty: poverty[uf],
       school: school[uf],
-      esfTeams: teams[uf] ?? null,
-      esfRate: rate(teams[uf], populationValue),
+      esfTeams: apsEquipes[uf] ?? null,
+      apsCobertura: apsCobertura[uf] ?? null,
       vulnerability: vulnerabilityByUf[uf] ? vulnerabilityByUf[uf].reduce((sum, value) => sum + value, 0) / vulnerabilityByUf[uf].length : null,
       conservationUnits: conservation.total,
       conservationManaged: conservation.total ? conservation.managed / conservation.total * 100 : null,
@@ -412,7 +417,9 @@ export async function buildDashboard() {
         pevsBilhoes: serieDe(pevsByUf[uf], 'valor_mil_rs', (valor) => valor / 1e6),
         piaBilhoes: serieDe(piaByUf[uf], 'valor_transf_ind_mil_rs', (valor) => valor / 1e6),
         pdPctPib: serieDe(pdByUf[uf], 'pct_pib', (valor) => valor),
-        poverty: serieDe(povertyByUf[uf], 'pct_pobreza', (valor) => valor)
+        poverty: serieDe(povertyByUf[uf], 'pct_pobreza', (valor) => valor),
+        school: serieDe(schoolByUf[uf], 'taxa', (valor) => valor),
+        apsCobertura: serieDe(apsByUf[uf], 'cobertura_pct', (valor) => valor)
       },
       ranks: {}
     };
@@ -424,7 +431,7 @@ export async function buildDashboard() {
     ['conservationManaged', 'high', 0.10],
     ['poverty', 'low', 0.17],
     ['school', 'high', 0.12],
-    ['esfRate', 'high', 0.11],
+    ['apsCobertura', 'high', 0.11],
     ['cvliRate', 'low', 0.12],
     ['vulnerability', 'low', 0.08]
   ];
@@ -433,7 +440,7 @@ export async function buildDashboard() {
     state.score = Math.round(weightedAverage(scoring.map(([key, _direction, weight]) => ({ value: scores[key][index], weight }))));
     state.dimensions = {
       territorio: Math.round(weightedAverage([{ value: scores.prodesRate[index], weight: .55 }, { value: scores.heatRate[index], weight: .2 }, { value: scores.conservationManaged[index], weight: .25 }])),
-      pessoas: Math.round(weightedAverage([{ value: scores.poverty[index], weight: .42 }, { value: scores.school[index], weight: .3 }, { value: scores.esfRate[index], weight: .28 }])),
+      pessoas: Math.round(weightedAverage([{ value: scores.poverty[index], weight: .42 }, { value: scores.school[index], weight: .3 }, { value: scores.apsCobertura[index], weight: .28 }])),
       seguranca: Math.round(scores.cvliRate[index]),
       resiliencia: Math.round(scores.vulnerability[index])
     };
@@ -444,7 +451,7 @@ export async function buildDashboard() {
   rankStates(states, 'conservationManaged');
   rankStates(states, 'poverty', 'low');
   rankStates(states, 'school');
-  rankStates(states, 'esfRate');
+  rankStates(states, 'apsCobertura');
   rankStates(states, 'cvliRate', 'low');
   rankStates(states, 'vulnerability', 'low');
   rankStates(states, 'ibc');
@@ -495,7 +502,7 @@ export async function buildDashboard() {
       text: 'A síntese padroniza oito indicadores disponíveis em uma escala relativa de 0 a 100 entre os nove estados. Ela serve para leitura exploratória e não substitui metas oficiais, auditorias ou avaliação de políticas.',
       dimensions: [
         { name: 'Território e clima', weight: '40%', indicators: 'taxa PRODES 2025, focos de calor 2024 e gestão de UCs' },
-        { name: 'Pessoas', weight: '40%', indicators: 'pobreza, frequência escolar 15–17 e equipes de atenção primária' },
+        { name: 'Pessoas', weight: '40%', indicators: 'pobreza, frequência escolar 15–17 e cobertura da atenção primária' },
         { name: 'Segurança', weight: '12%', indicators: 'CVLI por 100 mil habitantes' },
         { name: 'Resiliência', weight: '8%', indicators: 'IIVCM municipal médio' }
       ],
