@@ -68,6 +68,20 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+### Indicadores pendentes: o que foi sondado e o que não existe
+
+Dos 41 indicadores do catálogo sem valores coletados, **cerca de trinta têm "Estados" como fonte** — são status administrativos de política estadual (tem ZEE vigente, tem plano de adaptação aprovado, tem câmara técnica instalada, tem PRA regulamentado). Nenhuma base secundária fornece isso: dependem de coleta junto às secretarias, e nenhuma varredura de dados abertos resolve.
+
+Dos que têm base secundária, ficou o registro do que foi sondado nesta rodada (07/09/2026), para não se repetir o caminho:
+
+| Indicador | Fonte | Resultado da sondagem |
+|---|---|---|
+| I2.3.1 IDEB | INEP | **Resolvido.** A nota de bloqueio estava desatualizada; ver acima. |
+| I5.5.2 Transparência (EBT 360) | CGU | Segue bloqueado, e não por falha do dia: `mbt.cgu.gov.br` redireciona para uma página de manutenção que diz "O Sistema Mapa Brasil Transparente está temporariamente fora do ar para atualizações. Previsão de retorno: novembro/2026". O `dadosabertos.cgu.gov.br` não resolve mais em DNS. |
+| I2.4.2 e I4.4.2 (AdaptaBrasil) | MCTI | A API `sistema.adaptabrasil.mcti.gov.br` devolve 403 mesmo com Referer e Origin do próprio portal. Independente disso, o AdaptaBrasil publica índices por recorte de cenário (presente, 2030, 2050), não por ano histórico — não é série temporal. |
+| I4.2.1 Transportes | CNT/DNIT | A nota do catálogo continua válida: o painel da CNT é Power BI sem API e o vgeo do DNIT só publica geometria, sem estado de conservação. |
+| I1.5.7 e I1.5.8 (CAR) | SICAR | O `car.gov.br` exige TLS legado para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`); com isso a conexão abre, mas o que o SICAR publica é shapefile por estado e boletim em PDF, não série por UF com o recorte que as fichas pedem. |
+
 O **IDEB (I2.3.1) saiu de pendente para série completa**, 2005-2025, pelo `scripts/eixo2_ideb_inep.py`. O catálogo registrava "INEP Data sem API aberta; download.inep.gov.br bloqueado", mas o host não está bloqueado: a página de resultados carrega os links por aba via AJAX, e o conteúdo real está em `.../ideb/resultados/2005-2025`, de onde saem os arquivos oficiais. São 11 edições bienais, nas três etapas (anos iniciais, finais e ensino médio), por UF e pelos 808 municípios da Amazônia Legal.
 
 O arquivo grava **duas séries de extensões diferentes, de propósito**. O IDEB observado existe nas 11 edições. Já o indicador como a ficha o define — "% de municípios/estados que atingiram ou superaram a meta" — só é calculável de 2007 a 2021: o INEP projetou metas até 2021 e parou, e as edições de 2023 e 2025 saíram sem meta. Juntar as duas numa linha só faria a segunda parecer interrompida por falta de dado, quando o que acabou foi a meta.
