@@ -68,6 +68,12 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+A base do **CVLI (I2.4.1) foi de 7 para 12 anos**, 2015-2026, pelo `scripts/agregar_cvli.py`. A definição não muda — segue a soma de homicídio doloso, roubo seguido de morte e lesão corporal seguida de morte, agregada pelo ano que consta no dado e não pelo nome do arquivo. O script deixou de depender de planilhas já baixadas à mão e passa a buscar os `bancovde-AAAA.xlsx` do MJ; o servidor bloqueia HEAD, então a existência de cada ano se descobre pelo próprio GET, e como ele corta a conexão no meio com frequência (`IncompleteRead`) há quatro tentativas por ano — sem isso o ano sumiria da série sem aviso. A contagem de 2025 confere com a do painel em todos os estados.
+
+Uma ressalva da própria fonte: os números refletem o estágio de consolidação de cada UF no Sinesp VDE **na data da extração**, então rebaixar o mesmo ano pode devolver valores diferentes, e o ano corrente está sempre incompleto.
+
+O painel exibe a taxa por 100 mil, não a contagem, e a taxa depende da população do ano. O `server.mjs` já monta essa série a partir do CSV, então os anos novos aparecem sozinhos no próximo `build:static` — desde que `dados/ibge_pop/populacao_uf_ano.csv` cubra 2015-2019. Por isso a série de taxa **não** foi injetada no `dashboard.json` versionado: a população que o painel usa é a revisão de 2024 da projeção do IBGE, que não está publicada na SIDRA (a tabela 7358 traz a revisão de 2018, que diverge em até 218 mil pessoas no Amazonas em 2026). Misturar revisões dentro de uma mesma série quebraria justamente a consistência metodológica que o resto deste trabalho preserva.
+
 A série da **transformação industrial (F3.5) foi de 10 para 18 anos**, 2007-2024, pelo `scripts/eixo3_pia.py`. Começa em 2007 porque é onde a tabela SIDRA 1849 começa; a PIA tem série anterior, mas em CNAE 1.0 e com outro recorte de empresas, e emendá-la mudaria o que o indicador mede. A emenda de 2023 para 2024, que troca para a tabela 10457 porque o IBGE trocou de série, já existia antes desta extensão. Os dez anos que já estavam no painel batem com precisão cheia. Vale a mesma ressalva de preços correntes do PEVS, e o JSON traz a versão deflacionada ao lado — aqui, porém, o crescimento é real: o Pará sai de R$ 25,7 bi para R$ 70,1 bi em reais de 2024.
 
 A série da **sociobioeconomia (I3.1.1) foi de 10 para 31 anos**, 1994-2024, pelo `scripts/eixo3_pevs.py`. Mesma tabela SIDRA 289, mesma variável 145, mesma categoria Total — só a janela mudou, e os dez anos que já estavam no painel batem com precisão cheia. A série começa em 1994 e não em 1986, onde a tabela começa, porque o valor da produção muda de moeda antes disso: Cruzados até 1988, Cruzados Novos em 1989, Cruzeiros até 1992, Cruzeiros Reais em 1993. Só de 1994 em diante a unidade é Mil Reais e os anos são comparáveis. O detalhe por produto continua em 2015-2024, porque serve só ao recorte do ano de referência; a verificação interna de que a soma dos subprodutos bate com o Total passou a rodar apenas nos anos em que esse detalhe existe. Falta apenas Roraima em 1995.
@@ -154,6 +160,7 @@ O domínio das metatags Open Graph vem de `site` em `astro.config.mjs`. Para pub
 python scripts/baixar_focos.py                               # INPE → focos de calor (2003-2024)
 python scripts/eixo3_pevs.py                                 # SIDRA 289 → PEVS (1994-2024)
 python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 → PIA (2007-2024)
+python scripts/agregar_cvli.py                               # Sinesp/VDE → CVLI (2015-2026)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
