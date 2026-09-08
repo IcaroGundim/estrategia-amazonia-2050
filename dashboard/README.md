@@ -144,6 +144,16 @@ Dos que têm base secundária, ficou o registro do que foi sondado nesta rodada 
 | I4.2.1 Transportes | CNT/DNIT | A nota do catálogo continua válida: o painel da CNT é Power BI sem API e o vgeo do DNIT só publica geometria, sem estado de conservação. |
 | I1.5.7 e I1.5.8 (CAR) | SICAR | O `car.gov.br` exige TLS legado para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`); com isso a conexão abre, mas o que o SICAR publica é shapefile por estado e boletim em PDF, não série por UF com o recorte que as fichas pedem. |
 
+O **I2.2.1 (mortalidade evitável) ganhou 31 anos**, 1996-2026, pelo `scripts/eixo2_mortalidade_evitavel.py`. O catálogo trazia só 2024; o TabNet publica a mesma tabulação desde 1996. A fonte e a definição não mudam: `sim/cnv/evita10uf.def`, cujo título é "Óbitos por causas evitáveis em menores de 5 anos" — a Lista Brasileira de Causas de Mortes Evitáveis no recorte de 0 a 4 anos, que é o que a coleta de 2024 já usava. O incremento é "óbitos por residência", que atribui o óbito ao estado onde a pessoa morava.
+
+Duas notas técnicas sobre o acesso, que custaram tempo: o `tabnet.datasus.gov.br` **exige TLS legado** para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`), e o HTML que ele devolve **não fecha `<TR>` nem `<TD>`**, então a leitura da tabela é por corte no `<TD` e não por casamento de tags. O script descobre os anos lendo o próprio formulário, em vez de fixar a faixa.
+
+**Grava só a contagem, de propósito.** A ficha define a taxa como óbitos sobre população, e o painel divide pela população de 0 a 4 anos da revisão de 2024 da projeção do IBGE — que não está publicada na SIDRA: a tabela 7358 traz a revisão de 2018 e dá 82.857 crianças no Acre em 2024, contra as 88.080 que o painel usa. Calcular a taxa com outra revisão poria uma quebra de denominador no meio da série, o mesmo motivo pelo qual a taxa de CVLI não foi injetada. A contagem é o dado bruto e não depende de denominador.
+
+Duas ressalvas ficam registradas no JSON. O TabNet declara dados **finais até 2024**, preliminares em 2025 e primeira prévia em 2026 — o script lê essa nota do rodapé e deriva `anosPreliminares` dela, então a marcação se atualiza sozinha. E **a revisão mexe nos números**: o catálogo registrou 317 óbitos no Acre em 2024 e a extração de hoje dá 298, então rebaixar o mesmo ano pode mudar o resultado.
+
+Uma observação de rótulo, não de dado: o catálogo declara `unidade: "taxa / 100 mil"` para o I2.2.1, mas a conta que ele publica é óbitos sobre população de 0 a 4 em milhares — ou seja, por mil crianças, não por 100 mil. Vale alinhar quando os workbooks forem atualizados.
+
 O **IDEB (I2.3.1) saiu de pendente para série completa**, 2005-2025, pelo `scripts/eixo2_ideb_inep.py`. O catálogo registrava "INEP Data sem API aberta; download.inep.gov.br bloqueado", mas o host não está bloqueado: a página de resultados carrega os links por aba via AJAX, e o conteúdo real está em `.../ideb/resultados/2005-2025`, de onde saem os arquivos oficiais. São 11 edições bienais, nas três etapas (anos iniciais, finais e ensino médio), por UF e pelos 808 municípios da Amazônia Legal.
 
 O arquivo grava **duas séries de extensões diferentes, de propósito**. O IDEB observado existe nas 11 edições. Já o indicador como a ficha o define — "% de municípios/estados que atingiram ou superaram a meta" — só é calculável de 2007 a 2021: o INEP projetou metas até 2021 e parou, e as edições de 2023 e 2025 saíram sem meta. Juntar as duas numa linha só faria a segunda parecer interrompida por falta de dado, quando o que acabou foi a meta.
@@ -267,6 +277,7 @@ python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 
 python scripts/agregar_cvli.py                               # Sinesp/VDE → CVLI (2015-2026)
 python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/2022 → saneamento
 python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (2005-2025)
+python scripts/eixo2_mortalidade_evitavel.py                 # SIM/TabNet → óbitos evitáveis (1996-2026)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
