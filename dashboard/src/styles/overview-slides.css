@@ -1,0 +1,87 @@
+/* Estilos restritos à Visão Geral; o conteúdo permanece disponível sem JS. */
+.methodology-page { padding: 26px 0 24px; }
+.methodology-page .methodology-layout { display: block; }
+.methodology-page .methodology-index { position: static; max-height: none; overflow: visible; padding: 16px 24px 0; border: 0; border-top: 1px solid var(--linha-2); border-radius: 0; background: var(--papel); box-shadow: none; }
+.methodology-page .methodology-index::before { display: none; }
+.methodology-page .methodology-index > .eyebrow { color: var(--urucum); margin-bottom: 13px; }
+.methodology-page .methodology-index nav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 0; }
+.methodology-page .methodology-index nav a { padding: 12px 14px; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255,255,255,.5); align-items: center; transition: background 160ms ease, border-color 160ms ease; }
+.methodology-page .methodology-index nav a::before { display: none; }
+.methodology-page .methodology-index nav a.is-active { background: var(--mata); border-color: var(--mata); color: var(--areia); }
+.methodology-page .methodology-index nav a.is-active b { color: var(--ocre); }
+.methodology-page .methodology-index nav a.is-active small { color: var(--mata-100); }
+.overview-deck { overflow: hidden; border: 1px solid var(--linha); border-radius: 15px; background: var(--papel); box-shadow: 0 12px 35px rgba(14,43,34,.045); }
+.methodology-page .methodology-article { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.methodology-article::-webkit-scrollbar { display: none; }
+.methodology-page .method-section { position: relative; display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, 1fr); flex: 0 0 100%; min-width: 0; height: clamp(530px, calc(100dvh - 300px), 820px); padding: 0; border: 0; scroll-snap-align: start; scroll-snap-stop: always; scroll-margin: 110px 0 0; }
+.slide-copy { min-width: 0; overflow-y: auto; padding: clamp(24px, 2.6vw, 46px); scrollbar-width: thin; scrollbar-color: var(--mata-100) transparent; }
+.slide-copy h1 { font-size: clamp(30px, 3.1vw, 54px); max-width: 19ch; }
+.slide-copy h2 { font-size: clamp(28px, 2.5vw, 42px); }
+.slide-copy > h2 + p { color: var(--tinta-3); margin: 16px 0 0; }
+.slide-copy .methodology-lead { margin-top: 20px; text-align: left; }
+.slide-copy .method-facts { grid-template-columns: repeat(3, 1fr); padding: 16px; }
+.slide-copy .method-facts p { grid-column: 1 / -1; }
+.slide-copy .method-facts div:last-of-type { border: 0; }
+.slide-copy .method-timeline { grid-template-columns: repeat(2, 1fr); }
+.slide-copy .method-timeline article { padding: 10px 12px; }
+.slide-copy .method-vision { margin-top: 20px; padding: 20px 22px; }
+.slide-copy .method-subsection { margin-top: 24px; }
+.slide-copy .method-list.is-duas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; margin-top: 14px; }
+.slide-copy .method-list li { padding-block: 10px; }
+.slide-copy .method-list li::before { top: 16px; }
+.slide-copy .method-steps.is-themes { gap: 22px; }
+.slide-copy .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.slide-copy .method-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.slide-photo { position: relative; isolation: isolate; min-width: 0; margin: 0; overflow: hidden; background: var(--mata); color: var(--areia); }
+.slide-photo-well { display: contents; }
+.slide-photo-main { position: absolute; width: 100%; height: 100%; object-fit: cover; inset: 0; }
+.slide-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,43,34,.02) 25%, rgba(14,43,34,.94)); z-index: 1; pointer-events: none; }
+.slide-photo-inset { position: absolute; z-index: 2; right: 26px; top: 28px; width: 47%; height: 29%; object-fit: cover; border: 5px solid var(--areia); box-shadow: 0 12px 30px #0003; transform: rotate(5deg); }
+.slide-photo-caption { position: absolute; z-index: 2; bottom: 115px; left: 30px; right: 30px; }
+.slide-photo-caption > span { color: var(--ocre); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; }
+.slide-photo-caption p { margin: 16px 0 0; font: 800 clamp(28px, 2.6vw, 44px)/1.05 var(--display); letter-spacing: -.03em; }
+.slide-photo figcaption { position: absolute; z-index: 2; bottom: 22px; left: 30px; right: 24px; display: grid; gap: 4px; font-size: 9px; color: var(--areia); }
+.slide-photo figcaption a { text-decoration: underline; text-underline-offset: 3px; }
+.overview-controls { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; gap: 16px; }
+.overview-status { display: flex; align-items: center; gap: 18px; font-size: 12px; color: var(--tinta-3); }
+.overview-status b { font: 800 16px var(--display); color: var(--urucum); }
+.overview-buttons { display: flex; gap: 9px; }
+.overview-buttons button { min-height: 42px; min-width: 44px; padding: 8px 18px; border: 1px solid var(--linha); border-radius: 7px; background: var(--papel); color: var(--mata); font-size: 12px; }
+.overview-buttons button:last-child { background: var(--mata); color: var(--areia); border-color: var(--mata); }
+.overview-buttons button:disabled { opacity: .35; cursor: default; }
+.methodology-page a:focus-visible, .methodology-page button:focus-visible, .methodology-article:focus-visible { outline: 3px solid var(--ocre); outline-offset: -3px; }
+@media (max-width: 1100px) {
+  .methodology-page .methodology-index nav a { grid-template-columns: 20px 1fr; gap: 5px; padding: 10px; }
+  .methodology-page .methodology-index nav a small { display: none; }
+  .methodology-page .method-section { grid-template-columns: minmax(0, 1.8fr) minmax(230px, 1fr); }
+  .slide-copy .method-steps.is-themes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .methodology-page { padding-top: 20px; }
+  .methodology-page .methodology-index { padding: 12px 12px 0; }
+  .methodology-page .methodology-index > .eyebrow { font-size: 9px; margin-bottom: 10px; }
+  .methodology-page .methodology-index nav { gap: 5px; }
+  .methodology-page .methodology-index nav a { display: flex; flex-direction: column; align-items: start; gap: 5px; padding: 8px 6px; }
+  .methodology-page .methodology-index nav a strong { font-size: 9px; }
+  .methodology-page .method-section { height: max(530px, calc(100dvh - 300px)); grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 135px; }
+  .slide-copy { padding: 22px; }
+  .slide-copy .method-list.is-duas, .slide-copy .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
+  .slide-photo-caption { top: 17px; bottom: auto; left: 20px; right: 150px; }
+  .slide-photo-caption > span { font-size: 8px; }
+  .slide-photo-caption p { margin-top: 8px; }
+  .slide-photo figcaption { left: auto; right: 14px; bottom: 14px; width: 120px; font-size: 8px; }
+  .slide-photo-inset { display: none; }
+  .slide-inset-credit { display: none; }
+  .slide-photo::after { background: #0e2b2280; }
+  .overview-controls { padding: 12px; }
+  .overview-status { gap: 8px; font-size: 10px; }
+  .overview-buttons button { padding: 8px 12px; }
+  .overview-buttons button span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .methodology-page .methodology-index nav a { transition: none; } }
+@media print {
+  .methodology-page .methodology-article { display: block; overflow: visible; }
+  .methodology-page .method-section { display: block; height: auto; break-after: page; }
+  .slide-copy { overflow: visible; }
+  .slide-photo, .overview-controls, .methodology-page .methodology-index { display: none; }
+}

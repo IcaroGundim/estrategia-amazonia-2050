@@ -5,6 +5,14 @@ import Base from '../layouts/Base.astro';
 <Base title="Indicadores — Estratégia 2050" description="Catálogo dos indicadores oficiais da Estratégia Amazônia 2050." ogDescription="Consulte, filtre e exporte os indicadores dos nove estados da Amazônia Legal." mainClass="indicators-page" pagina="indicadores" dados={['catalogo']}>
     <section class="indicators-workspace section-shell" aria-label="Consulta de indicadores">
       <aside class="filters-card card" aria-label="Filtros dos indicadores">
+        {/* Só aparece no celular, onde os filtros abertos empurravam a lista
+            para 600px abaixo da dobra. O resumo mantém à vista o que está
+            filtrado enquanto o painel está fechado. */}
+        <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-body">
+          <span>Filtros e downloads</span>
+          <small data-filters-summary>Todos os indicadores</small>
+        </button>
+      <div class="filters-body" id="filters-body">
         <div class="filter-group">
           <p class="filter-title">Eixo</p>
           <div id="indicator-eixo-filters" class="filter-options"></div>
@@ -34,6 +42,7 @@ import Base from '../layouts/Base.astro';
           <a href="/downloads/Indicadores_Resultado_Eixo4_Amazonia2050.xlsx">Workbook Eixo 4 · XLSX</a>
           <a href="/downloads/Indicadores_Resultado_Eixo5_Amazonia2050.xlsx">Workbook Eixo 5 · XLSX</a>
         </div>
+      </div>
       </aside>
 
       <div class="indicators-table-card card">

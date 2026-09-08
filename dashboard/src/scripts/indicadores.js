@@ -373,9 +373,23 @@ function renderTable() {
   document.querySelector('[data-page="next"]').disabled = view.page >= pages;
 }
 
+// No celular o painel de filtros fica fechado, então o que está selecionado
+// precisa aparecer no botão que o abre — do contrário a lista mostraria um
+// recorte sem dizer qual.
+function renderFiltersSummary() {
+  const resumo = document.querySelector('[data-filters-summary]');
+  if (!resumo) return;
+  const partes = [];
+  if (view.eixos.size) partes.push(`${view.eixos.size} eixo${view.eixos.size > 1 ? 's' : ''}`);
+  if (view.uf !== 'all') partes.push(STATE_NAMES[view.uf] || view.uf);
+  if (view.status !== 'all') partes.push(STATUS[view.status]?.label ?? view.status);
+  resumo.textContent = partes.length ? partes.join(' · ') : 'Todos os indicadores';
+}
+
 function renderAll() {
   renderEixoFilters();
   renderStatusFilters();
+  renderFiltersSummary();
   renderTable();
 }
 
@@ -461,6 +475,7 @@ function bindEvents() {
       li.classList.toggle('is-selected', selected);
       li.setAttribute('aria-selected', String(selected));
     });
+    renderFiltersSummary();
     const indicador = view.indicadores.find((item) => item.codigo === view.detailCode);
     if (indicador) renderDetail(indicador); else renderTable();
   };
@@ -485,6 +500,13 @@ function bindEvents() {
   }, { signal: sinalDaPagina() });
   document.querySelector('#indicator-search').addEventListener('input', (event) => { view.query = event.target.value; view.page = 1; renderTable(); });
   document.querySelector('#export-csv').addEventListener('click', exportCsv);
+  // O botão só é exibido no celular, mas o vínculo é feito sempre: girar o
+  // aparelho não recarrega a página, e o CSS é quem decide quando ele aparece.
+  const filtros = document.querySelector('.filters-toggle');
+  filtros.addEventListener('click', () => {
+    const aberto = filtros.closest('.filters-card').classList.toggle('is-open');
+    filtros.setAttribute('aria-expanded', String(aberto));
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && view.detailCode) closeDetail();
   }, { signal: sinalDaPagina() });

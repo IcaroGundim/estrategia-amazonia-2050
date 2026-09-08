@@ -1,0 +1,310 @@
+/* Composições próprias para cada lâmina e navegação compacta. */
+
+/* Escala tipográfica única do deck, ancorada na primeira lâmina: o corpo de texto
+   dela (16px/1.6) e o título de cartão (21px) valem para as cinco. Os tokens são
+   `clamp()` sobre `vh` porque as lâminas têm altura fixa — em telas baixas a escala
+   inteira encolhe junto, mantendo a proporção em vez de deixar um slide destoar.
+   Nenhuma composição abaixo redefine tamanho de fonte: todas consomem os tokens. */
+.methodology-page {
+  --slide-body: clamp(13px, 1.78vh, 16px);
+  --slide-body-lh: 1.6;
+  --slide-label: clamp(11px, 1.45vh, 13px);
+  --slide-h3: clamp(17px, 2.33vh, 21px);
+  --slide-photo-title: clamp(24px, 2.35vw, 34px);
+}
+.slide-copy .methodology-lead,
+.slide-copy .method-facts p,
+.slide-copy .method-timeline span,
+.slide-copy > h2 + p,
+#visao-2050 .method-vision p,
+#visao-2050 .method-list li,
+#temas-estrategicos .method-steps.is-themes p,
+#governanca .method-guidance-grid p,
+#governanca .method-flow span,
+#calculo .method-source-block p,
+#calculo .method-guidance-grid p { font-size: var(--slide-body); line-height: var(--slide-body-lh); }
+#visao-2050 .method-subsection h3,
+#temas-estrategicos .method-steps.is-themes h3,
+#governanca .method-guidance-grid h3,
+#calculo .method-guidance-grid h3 { font-size: var(--slide-h3); line-height: 1.25; }
+.slide-copy .method-facts span,
+#visao-2050 .method-vision > span,
+#governanca .method-flow b { font-size: var(--slide-label); }
+.slide-photo-caption p { font-size: var(--slide-photo-title); }
+.slide-photo figcaption { font-size: 10px; }
+
+.methodology-page .method-section { height: clamp(480px, calc(100dvh - 220px), 900px); }
+.slide-copy { padding: clamp(28px, 3.2vw, 58px); }
+.slide-copy h1, .slide-copy h2, .slide-copy h3 { text-wrap: balance; line-height: 1.1; }
+.slide-copy h1 { max-width: 20ch; font-size: clamp(34px, 3.4vw, 58px); }
+.slide-copy h1 span { display: block; font-size: .64em; margin-bottom: 10px; }
+.slide-copy h1 em { display: block; white-space: nowrap; }
+.slide-copy h2 { max-width: 26ch; font-size: clamp(30px, 2.65vw, 46px); }
+.slide-copy p { text-wrap: pretty; }
+.slide-copy .eyebrow { margin-bottom: 14px; line-height: 1.5; }
+.slide-copy .methodology-lead { max-width: 68ch; margin-top: 24px; }
+.slide-copy .method-facts { padding: 18px 0; margin-top: 22px; border-width: 1px 0; border-radius: 0; gap: 18px; }
+.slide-copy .method-facts strong { font-size: 30px; }
+.slide-copy .method-facts p { line-height: 1.7; }
+.slide-copy .method-timeline { gap: 12px 20px; margin-top: 22px; }
+.slide-copy .method-timeline article { padding: 4px 0 4px 12px; }
+.slide-copy .method-timeline b { font-size: 15px; }
+.slide-photo-caption { bottom: 96px; left: 36px; right: 36px; }
+.slide-photo-caption p { max-width: 19ch; line-height: 1.1; text-wrap: balance; }
+.slide-photo figcaption { left: 36px; right: 28px; }
+.methodology-page .methodology-article { align-items: flex-start; overflow-y: hidden; }
+
+/* Visão 2050: mesma moldura das demais lâminas — texto à esquerda, fotografia à
+   direita. O bloco da visão é o único destaque; o resto acompanha o slide 1 para
+   que a troca de lâmina não mude a linguagem visual. Os espaçamentos seguem a
+   altura da janela porque esta é a lâmina mais densa do conjunto. */
+#visao-2050 .method-vision { margin-top: clamp(12px, 1.8vh, 16px); padding: clamp(13px, 1.8vh, 16px) clamp(16px, 2.2vh, 22px); }
+#visao-2050 .method-vision p { max-width: 74ch; margin-top: clamp(7px, 1vh, 9px); }
+#visao-2050 .method-vision p + p { margin-top: clamp(8px, 1.15vh, 10px); }
+#visao-2050 .method-subsection { margin-top: clamp(13px, 2vh, 18px); }
+#visao-2050 .method-subsection .eyebrow { margin-bottom: 6px; }
+#visao-2050 .method-list.is-duas { margin-top: clamp(6px, 1vh, 9px); }
+#visao-2050 .method-list li { padding: clamp(7px, 1vh, 9px) 2px clamp(7px, 1vh, 9px) 22px; }
+#visao-2050 .method-list li::before { top: clamp(13px, 1.75vh, 16px); }
+
+/* Temas: faixa panorâmica acima da grade de seis prioridades. */
+/* A faixa fica com o que sobrar depois do texto, em vez de uma altura fixa: os seis
+   temas ocupam sempre os mesmos ~390px, então em telas altas a diferença virava
+   espaço morto embaixo da grade. O piso protege as telas baixas e o teto evita que
+   a fotografia domine a lâmina quando a janela é muito alta. */
+.methodology-page #temas-estrategicos { grid-template-columns: minmax(0, 1fr); grid-template-rows: clamp(190px, calc(100% - 325px - 12.5vh), 380px) minmax(0, 1fr); }
+#temas-estrategicos .slide-photo { grid-row: 1; }
+#temas-estrategicos .slide-copy { grid-row: 2; padding-block: 28px; display: grid; align-content: safe center; }
+#temas-estrategicos .slide-photo-main { object-position: 50% 56%; }
+#temas-estrategicos .slide-photo::after { background: linear-gradient(90deg, #0e2b2270, transparent 60%), linear-gradient(0deg,#0e2b2280,transparent); }
+#temas-estrategicos .slide-photo-caption { bottom: 24px; max-width: 65%; }
+#temas-estrategicos .slide-photo-caption p { max-width: 36ch; margin-top: 10px; }
+#temas-estrategicos .slide-photo figcaption { left: auto; max-width: 30%; }
+#temas-estrategicos .slide-copy h2 { max-width: none; }
+#temas-estrategicos .slide-copy > h2 + p { margin-top: 10px; max-width: 90ch; }
+#temas-estrategicos .method-steps.is-themes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; gap: 22px 36px; }
+#temas-estrategicos .method-steps.is-themes article { display: grid; grid-template-columns: 30px minmax(0,1fr); column-gap: 10px; align-content: start; }
+#temas-estrategicos .method-steps.is-themes h3 { margin: 0; max-width: 25ch; }
+#temas-estrategicos .method-steps.is-themes p { grid-column: 2; }
+
+/* Governança: foto à esquerda e etapas à direita. Sem o antigo bloco "Próximos
+   passos", os três grupos restantes se distribuem na altura da lâmina em vez de
+   deixarem uma faixa vazia embaixo — `space-between` só reparte o que sobrar. */
+.methodology-page #governanca { grid-template-columns: minmax(0, .65fr) minmax(0, 1.6fr); }
+#governanca .slide-photo { grid-column: 1; grid-row: 1; }
+#governanca .slide-copy { grid-column: 2; grid-row: 1; padding: 32px 38px; display: grid; align-content: space-between; }
+/* O painel é retrato e a foto é larga: o recorte mostra só cerca de um terço dela.
+   O enquadramento fica sobre a torre principal do Mercado de Ferro, e não no centro
+   geométrico, que cairia no telhado. */
+#governanca .slide-photo-main { object-position: 74% 50%; }
+#governanca .slide-photo-caption { left: 26px; right: 26px; }
+#governanca .slide-photo figcaption { left: 26px; right: 20px; }
+#governanca .method-guidance-grid.is-compacta { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: clamp(18px, 3.3vh, 30px); gap: clamp(14px, 2.6vh, 24px) 26px; }
+#governanca .method-guidance-grid.is-compacta article { border: 0; border-top: 1px solid var(--linha); border-radius: 0; padding: clamp(10px, 1.7vh, 15px) 0 0; background: none; overflow: visible; }
+#governanca .method-guidance-grid article::before { display: none; }
+/* As quatro etapas como segmentos em seta: o recorte encaixa um no outro e o verde
+   escurece a cada passo, então a sequência se lê sem depender só da numeração. O
+   `gap` fica pequeno porque a ponta de um chevron avança sobre o entalhe do
+   seguinte — separá-los mais desfaria o encaixe. */
+#governanca .method-flow { grid-template-columns: repeat(4, minmax(0,1fr)); margin-top: clamp(14px, 2.6vh, 24px); gap: 4px; }
+#governanca .method-flow li {
+  padding: clamp(12px, 2vh, 18px) clamp(18px, 2vw, 26px) clamp(12px, 2vh, 18px) clamp(26px, 2.6vw, 34px);
+  border: 0; border-radius: 0; color: #eaf1ea;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%);
+}
+#governanca .method-flow li:first-child { padding-left: clamp(16px, 1.6vw, 22px); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); }
+#governanca .method-flow li:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 16px 50%); }
+#governanca .method-flow li:nth-child(1) { background: var(--mata-500); }
+#governanca .method-flow li:nth-child(2) { background: var(--mata-700); }
+#governanca .method-flow li:nth-child(3) { background: #143529; }
+#governanca .method-flow li:nth-child(4) { background: var(--mata); }
+#governanca .method-flow b { color: var(--ocre); letter-spacing: .1em; }
+#governanca .method-flow span { color: inherit; }
+
+/* Leitura dos dados: a fotografia vertical do Teatro Amazonas exibida inteira. */
+.methodology-page #calculo { grid-template-columns: minmax(0,.75fr) minmax(0,1.4fr); grid-template-rows: minmax(0,1fr); }
+/* Moldura real em vez de um painel colorido: perfil escuro por fora, passe-partout
+   claro por dentro e um fio fino rente à fotografia. Os créditos ficam no próprio
+   passe-partout, como a etiqueta de uma gravura emoldurada. */
+#calculo > .slide-photo {
+  grid-column: 1; grid-row: 1; margin: 26px 0 26px 26px;
+  display: flex; flex-direction: column; padding: clamp(20px, 2.8vh, 30px);
+  background: var(--papel);
+  /* O perfil não é uma borda chapada: o gradiente escurece do topo para a base,
+     como a luz bate numa moldura de madeira, e o `border-image` pinta os quatro
+     lados com esse mesmo desnível. */
+  border: 11px solid var(--mata);
+  border-image: linear-gradient(160deg, #2a5344 0%, var(--mata) 38%, #071710 72%, #1c4437 100%) 1;
+  box-shadow:
+    inset 0 0 0 2px var(--ocre),                 /* filete dourado rente ao perfil */
+    inset 0 0 0 3px rgba(14, 43, 34, .35),       /* sombra do filete sobre o passe-partout */
+    inset 0 6px 14px -8px rgba(14, 43, 34, .5),  /* o perfil projeta sombra para dentro */
+    0 22px 44px -14px rgba(14, 43, 34, .45),     /* a moldura projeta sombra na parede */
+    0 4px 12px -4px rgba(14, 43, 34, .25);
+}
+/* Com o invólucro, a caixa da imagem passa a ter exatamente o tamanho da foto
+   exibida — antes o `object-fit: contain` deixava sobras na caixa do <img>, e
+   qualquer traço nela descolava do conteúdo em parte das telas. A foto continua
+   posicionada em absoluto: como item de grade, o `max-height: 100%` não resolvia
+   contra um poço de altura flexível e a imagem transbordava sobre a etiqueta. */
+#calculo .slide-photo-well { display: block; position: relative; flex: 1; min-height: 0; }
+#calculo .slide-photo-main { inset: 0; margin: auto; width: auto; height: auto; max-width: 100%; max-height: 100%; border: 1px solid rgba(14, 43, 34, .3); filter: drop-shadow(0 3px 7px rgba(14, 43, 34, .28)); }
+#calculo .slide-photo::after { display: none; }
+#calculo .slide-photo-caption { position: static; max-width: none; margin: 16px 0 10px; }
+#calculo .slide-photo-caption > span { color: var(--mata-500); }
+#calculo .slide-photo-caption p { display: none; }
+#calculo .slide-photo figcaption { position: static; max-width: none; width: auto; color: var(--tinta-3); }
+#calculo .slide-copy { grid-column: 2; grid-row: 1; display: block; width: 100%; max-width: none; padding: clamp(26px,3vw,48px); }
+#calculo .slide-copy h2 { max-width: 22ch; }
+#calculo .slide-copy > h2 + p { max-width: 78ch; }
+#calculo .method-guidance-grid, #calculo .method-source-block { margin-top: 24px; }
+#calculo .method-source-block { padding: 18px 22px; background: var(--areia); border: 0; }
+#calculo .method-guidance-grid { grid-template-columns: 1fr; }
+#calculo .method-actions { justify-content: start; margin-top: 24px; }
+
+/* Guia: links curtos, contador e setas em uma linha. */
+.overview-controls { gap: 24px; border-top: 1px solid var(--linha-2); }
+.overview-status { flex: none; }
+.overview-status b { font: 600 13px var(--display); color: var(--tinta-3); white-space: nowrap; }
+.overview-status [data-slide-title] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.methodology-page .methodology-index { flex: 1; min-width: 0; padding: 0; border: 0; background: none; }
+.methodology-page .methodology-index nav { display: flex; justify-content: center; gap: clamp(12px, 2.1vw, 34px); }
+.methodology-page .methodology-index nav a { display: block; padding: 12px 0; border: 0; border-bottom: 2px solid transparent; border-radius: 0; color: var(--tinta-3); background: none; white-space: nowrap; transition: none; }
+.methodology-page .methodology-index nav a strong { font-size: 14px; font-weight: 500; }
+.methodology-page .methodology-index nav a.is-active { border-bottom-color: var(--urucum); color: var(--mata); background: none; }
+.methodology-page .methodology-index nav a.is-active strong { font-weight: 600; }
+.methodology-page .method-actions a { font-size: 15px; }
+.overview-buttons { gap: 8px; }
+.overview-buttons button { min-height: 40px; min-width: 40px; width: 40px; padding: 0; border-radius: 50%; font-size: 18px; }
+.overview-buttons button span { display: none; }
+
+@media (max-width: 1100px) {
+  .slide-copy { padding: 28px; }
+  #governanca .slide-copy { padding: 28px; }
+  #governanca .method-guidance-grid.is-compacta { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  /* Em duas colunas o encaixe se perde na quebra de linha: os chevrons viram
+     cartões retos, mantendo a escala de verdes que ordena as etapas. */
+  #governanca .method-flow { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  #governanca .method-flow li,
+  #governanca .method-flow li:first-child,
+  #governanca .method-flow li:last-child { clip-path: none; border-radius: 7px; padding: 14px 18px; }
+  .overview-controls { gap: 14px; }
+  .methodology-page .methodology-index nav { gap: 14px; }
+}
+@media (max-width: 900px) {
+  .methodology-page .methodology-index nav a strong { font-size: 12px; }
+}
+@media (max-width: 700px) {
+  .methodology-page .method-section { height: max(560px, calc(100dvh - 235px)); grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,1fr) 140px; }
+  .slide-copy { padding: 24px; }
+  .slide-copy h1 { font-size: 34px; }
+  .slide-copy h2 { font-size: 29px; }
+  #visao-2050 .method-vision { padding: 16px 18px; }
+  .methodology-page #temas-estrategicos { grid-template-rows: 125px minmax(0,1fr); }
+  #temas-estrategicos .slide-copy { padding: 24px; }
+  #temas-estrategicos .method-steps.is-themes { grid-template-columns: 1fr; }
+  #temas-estrategicos .slide-photo figcaption { left: 22px; max-width: none; }
+  .methodology-page #governanca { grid-template-columns: 1fr; grid-template-rows: 125px minmax(0,1fr); }
+  #governanca .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
+  #governanca .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
+  #governanca .method-flow { grid-template-columns: 1fr; }
+  .slide-photo-caption { bottom: auto; top: 18px; left: 22px; right: 22px; }
+  .slide-photo-caption p { display: none; }
+  .slide-photo figcaption { left: 22px; bottom: 16px; right: 22px; width: auto; font-size: 9px; }
+  .methodology-page #calculo { grid-template-columns: minmax(0,1fr); grid-template-rows: 180px minmax(0,1fr); }
+  #calculo > .slide-photo { grid-column: 1; grid-row: 1; margin: 14px 14px 0; padding: 13px; border-width: 6px; display: grid; grid-template-columns: 100px minmax(0,1fr); grid-template-rows: 1fr 1fr; gap: 6px 16px; }
+  #calculo .slide-photo-well { grid-column: 1; grid-row: 1 / -1; min-height: 0; }
+  #calculo .slide-photo-caption { grid-column: 2; grid-row: 1; align-self: end; margin: 0; }
+  #calculo .slide-photo figcaption { grid-column: 2; grid-row: 2; align-self: start; }
+  #calculo .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
+  .overview-controls { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 10px 14px; }
+  .methodology-page .methodology-index { grid-column: 1 / -1; grid-row: 1; padding: 0; }
+  .methodology-page .methodology-index nav { flex-wrap: wrap; justify-content: center; gap: 0 16px; }
+  .methodology-page .methodology-index nav a { padding: 10px 0; white-space: normal; }
+  .methodology-page .methodology-index nav a strong { font-size: 13px; }
+  .overview-status { grid-column: 1; grid-row: 2; }
+  .overview-buttons { grid-column: 2; grid-row: 2; }
+  .overview-buttons button { width: 34px; min-width: 34px; min-height: 34px; padding: 0; }
+}
+@media print {
+  .methodology-page .method-section { display: block !important; height: auto; }
+  .slide-copy { width: 100%; height: auto; overflow: visible; }
+}
+
+/* ---------------------------------------------------------------------------
+   Tablet (621–1180px). A lâmina deixa de ter altura fixa e passa a acompanhar o
+   texto. Em 768px de largura a primeira lâmina precisa de cerca de 870px de
+   altura e a caixa tinha 804: a linha do tempo terminava cortada. O texto rolava
+   dentro da lâmina, mas essa barra de rolagem interna não é desenhada em
+   aparelho de toque, então nada indicava que havia mais para ler.
+   --------------------------------------------------------------------------- */
+@media (min-width: 621px) and (max-width: 1180px) {
+  .methodology-page .method-section { height: auto; min-height: min(calc(100dvh - 250px), 720px); }
+  .slide-copy { overflow-y: visible; }
+  /* A altura do carrossel é a da lâmina mais alta. Sem esticar as demais, a
+     fotografia das lâminas curtas pararia no meio da caixa. */
+  .methodology-page .methodology-article { align-items: stretch; }
+}
+@media (min-width: 701px) and (max-width: 1180px) {
+  /* `calc(100% - …)` num track de grade não resolve contra altura indefinida.
+     A faixa da fotografia passa a medir contra a janela, que é o que a altura da
+     lâmina media antes de deixar de ser fixa. */
+  .methodology-page #temas-estrategicos { grid-template-rows: clamp(190px, 26dvh, 340px) minmax(0, 1fr); }
+}
+
+/* ---------------------------------------------------------------------------
+   Celular (≤620px): as cinco lâminas viram um documento contínuo. O JS troca de
+   mecânica na mesma largura e marca o modo em `data-modo` — ver metodologia.js.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .methodology-page { padding-top: 0; }
+  [data-modo="documento"] { display: flex; flex-direction: column; overflow: visible; border: 0; border-radius: 0; background: none; box-shadow: none; }
+  /* O índice sobe para o topo e acompanha a rolagem: no fim de um texto de cinco
+     seções ele estaria onde ninguém mais precisa dele. O contador e as setas
+     saem — aqui a rolagem da própria página é a navegação. */
+  [data-modo="documento"] .overview-controls { order: -1; position: sticky; top: 68px; z-index: 6; display: block; margin-inline: -14px; padding: 0; border-top: 0; border-bottom: 1px solid var(--linha); background: var(--areia); }
+  [data-modo="documento"] .overview-status, [data-modo="documento"] .overview-buttons { display: none; }
+  [data-modo="documento"] .methodology-index { padding: 0 14px; overflow-x: auto; scrollbar-width: none; }
+  [data-modo="documento"] .methodology-index::-webkit-scrollbar { display: none; }
+  [data-modo="documento"] .methodology-index nav { flex-wrap: nowrap; justify-content: start; gap: 18px; }
+  [data-modo="documento"] .methodology-index nav a { padding: 13px 0; white-space: nowrap; }
+
+  [data-modo="documento"] .methodology-article { display: block; overflow: visible; }
+  /* Cada seção vira um cartão do começo ao fim: a fotografia abre, o texto segue
+     inteiro e a página rola. `scroll-margin-top` desconta a topbar e o índice
+     fixo, senão o salto de âncora esconderia o título da seção atrás deles. */
+  [data-modo="documento"] .method-section { display: flex; flex-direction: column; height: auto; min-height: 0; margin-bottom: 14px; overflow: hidden; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); scroll-margin-top: 118px; }
+  /* A faixa empilha legenda e créditos em fluxo, encostados na base, em vez de
+     ancorar os dois em `bottom` diferentes: a frase de abertura tem uma ou duas
+     linhas conforme a lâmina e o aparelho, e em duas ela caía por cima dos
+     créditos. Empilhados, um empurra o outro. */
+  [data-modo="documento"] .slide-photo { order: -1; height: 172px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 18px 12px; }
+  [data-modo="documento"] .slide-copy { padding: 22px 20px 26px; overflow: visible; }
+  /* Com a fotografia em faixa e sem texto por cima, a frase de abertura de cada
+     lâmina volta a caber — no carrossel ela dividia a faixa com os créditos. */
+  [data-modo="documento"] .slide-photo-caption { position: static; }
+  [data-modo="documento"] .slide-photo-caption p { display: block; margin-top: 5px; font-size: 20px; }
+  [data-modo="documento"] .slide-photo::after { background: linear-gradient(180deg, rgba(14,43,34,.15) 20%, rgba(14,43,34,.9)); }
+  [data-modo="documento"] .slide-photo figcaption { position: static; width: auto; margin-top: 9px; }
+  /* A quinta lâmina exibe a fotografia emoldurada, deitada ao lado dos créditos.
+     A moldura é o assunto dela e sobrevive à mudança de modo. */
+  [data-modo="documento"] #calculo > .slide-photo { height: 196px; margin: 14px 14px 0; }
+  [data-modo="documento"] #calculo .slide-photo-caption { position: static; bottom: auto; }
+  [data-modo="documento"] #calculo .slide-photo-caption p { display: none; }
+}
+
+/* A lâmina dos temas tem a fotografia em faixa larga e baixa, com a frase de
+   abertura à esquerda e os créditos à direita. Da largura de tablet para baixo a
+   frase precisa de mais espaço do que sobra antes dos créditos e passava por
+   cima deles. */
+@media (min-width: 701px) and (max-width: 1180px) {
+  #temas-estrategicos .slide-photo-caption { max-width: 55%; }
+  #temas-estrategicos .slide-photo-caption p { max-width: 24ch; }
+}
+@media (max-width: 700px) {
+  /* Aqui a frase já está oculta, mas a caixa dela continuava esticada do topo
+     até 24px da base — o `bottom` do seletor de id vencia o `bottom: auto` da
+     classe — e cobria os créditos. Invisível, e ainda assim capturando o toque:
+     o link da licença ficava inalcançável. */
+  #temas-estrategicos .slide-photo-caption { bottom: auto; max-width: none; }
+}

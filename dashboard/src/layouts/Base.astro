@@ -1,6 +1,9 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+// Depois da folha geral, e só ela: a camada de celular e tablet sobrescreve o
+// que o desenho de computador define. Ver o cabeçalho do arquivo.
+import '../styles/mobile.css';
 
 interface Props {
   title: string;
@@ -21,11 +24,13 @@ const ogImage = new URL('/og.png', Astro.site).href;
 
 // A rota e a chave continuam sendo `metodologia`: muda o rótulo e a ordem do menu,
 // não o endereço da página nem as âncoras que o resto do site aponta para ela.
+// `icone` só é desenhado na barra inferior do celular. Traços simples de 24px,
+// sem preenchimento, para ler no tamanho em que aparecem.
 const NAVEGACAO = [
-  { href: '/', rotulo: 'Panorama', chave: 'index' },
-  { href: '/metodologia', rotulo: 'Visão Geral', chave: 'metodologia' },
-  { href: '/metas', rotulo: 'Metas', chave: 'metas' },
-  { href: '/indicadores', rotulo: 'Indicadores', chave: 'indicadores' }
+  { href: '/', rotulo: 'Panorama', chave: 'index', icone: 'M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20zM9 4v13.5M15 6.5V20' },
+  { href: '/metodologia', rotulo: 'Visão Geral', chave: 'metodologia', icone: 'M12 6.5A3.5 3.5 0 0 0 8.5 4H3v14h5.5A3.5 3.5 0 0 1 12 21a3.5 3.5 0 0 1 3.5-3H21V4h-5.5A3.5 3.5 0 0 0 12 6.5zM12 6.5V21' },
+  { href: '/metas', rotulo: 'Metas', chave: 'metas', icone: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z' },
+  { href: '/indicadores', rotulo: 'Indicadores', chave: 'indicadores', icone: 'M4 20h17M5 20V11M10.3 20V4M15.7 20V14M21 20V8' }
 ];
 
 const ACOES = {
@@ -119,6 +124,23 @@ const acao = ACOES[pagina];
     <main id="conteudo" class={mainClass}>
       <slot />
     </main>
+
+    {/* Barra inferior do celular e do tablet. Substitui o botão de menu, que
+        escondia as quatro rotas atrás de um toque; aqui elas ficam sempre à
+        vista e ao alcance do polegar. O CSS decide quando ela aparece — no
+        computador não existe. */}
+    <nav class="tabbar" aria-label="Seções do painel">
+      {NAVEGACAO.map(({ href, rotulo, chave, icone }) => (
+        <a
+          href={href}
+          class={chave === pagina ? 'is-active' : undefined}
+          aria-current={chave === pagina ? 'page' : undefined}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icone} /></svg>
+          <span>{rotulo}</span>
+        </a>
+      ))}
+    </nav>
 
     <div class="river-ornament" aria-hidden="true"><i></i><i></i></div>
     <footer>

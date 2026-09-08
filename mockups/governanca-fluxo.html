@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Governança · opções para o fluxo 01–04 — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-700:#1c4437;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 'Libre Franklin',system-ui,sans-serif}
+h1,h2,h3,h4,p,ol,ul{margin:0}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+
+header{background:var(--mata);color:var(--areia)}
+.top{max-width:1180px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1180px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:26px;margin-bottom:34px}
+.intro h1{font-size:34px;margin:10px 0 14px}
+.intro p{max-width:78ch;color:var(--tinta-3);font-size:15px}
+.intro p+p{margin-top:10px}
+
+.option{margin-bottom:38px;border:1px solid var(--linha);border-radius:14px;background:var(--papel);overflow:hidden}
+.option-head{display:flex;align-items:baseline;gap:16px;padding:20px 26px;border-bottom:1px solid var(--linha-2);flex-wrap:wrap}
+.option-head b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.option-head h2{font-size:21px}
+.option-head p{flex:1 1 340px;color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10px;white-space:nowrap}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+/* O palco reproduz a coluna de texto da lâmina: 848px de largura útil a 1440×900,
+   medidos na página real. Assim as alturas abaixo são transferíveis direto. */
+.stage{padding:30px 26px;background:var(--papel)}
+.stage>*{max-width:848px}
+.stage-context{margin-bottom:18px}
+.stage-context h3{font-size:20px;color:var(--mata)}
+.stage-context p{margin-top:6px;color:var(--tinta-3);font-size:15px}
+.altura{padding:9px 26px;border-top:1px solid var(--linha-2);background:#faf8f4;color:var(--tinta-4);font-size:11px}
+
+/* ---- Opção 1: trilha conectada -------------------------------------- */
+.trilha{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.trilha li{position:relative;list-style:none;padding:0 16px 0 0}
+.trilha .marco{position:relative;display:flex;align-items:center;height:34px;margin-bottom:12px}
+.trilha .marco::before{content:'';position:absolute;left:0;right:0;height:2px;background:var(--linha)}
+.trilha li:last-child .marco::before{right:calc(100% - 34px)}
+.trilha .bolha{position:relative;z-index:1;display:grid;place-content:center;width:34px;height:34px;border-radius:50%;background:var(--mata);color:var(--areia);font:600 12px var(--display)}
+.trilha li:last-child .bolha{background:var(--urucum)}
+.trilha span{display:block;padding-right:14px;color:var(--tinta-3);font-size:15px;line-height:1.5}
+
+/* ---- Opção 2: numeral tipográfico ----------------------------------- */
+.numeral{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 26px;list-style:none;padding:0}
+.numeral li{padding-top:14px;border-top:2px solid var(--mata)}
+.numeral li+li{border-top-color:var(--linha)}
+.numeral b{display:block;font:800 30px/1 var(--display);color:var(--urucum);letter-spacing:-.05em}
+.numeral span{display:block;margin-top:10px;color:var(--tinta-3);font-size:15px;line-height:1.5}
+
+/* ---- Opção 3: chevrons encadeados ----------------------------------- */
+.chevron{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;list-style:none;padding:0}
+.chevron li{position:relative;padding:16px 26px 16px 34px;color:#eaf1ea;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%,16px 50%)}
+.chevron li:first-child{padding-left:22px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%)}
+.chevron li:last-child{clip-path:polygon(0 0,100% 0,100% 100%,0 100%,16px 50%)}
+.chevron li:nth-child(1){background:var(--mata-500)}
+.chevron li:nth-child(2){background:var(--mata-700)}
+.chevron li:nth-child(3){background:#143529}
+.chevron li:nth-child(4){background:var(--mata)}
+.chevron b{display:block;font:600 11px var(--display);color:var(--ocre);letter-spacing:.1em}
+.chevron span{display:block;margin-top:6px;font-size:14px;line-height:1.45}
+
+/* ---- Opção 4: ciclo com retorno ------------------------------------- */
+.ciclo{position:relative;padding-bottom:30px}
+.ciclo ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;list-style:none;padding:0}
+.ciclo li{position:relative;padding-left:16px;border-left:2px solid var(--mata-300)}
+.ciclo li:last-child{border-left-color:var(--urucum)}
+.ciclo b{display:block;font:600 11px var(--display);color:var(--mata-500);letter-spacing:.1em}
+.ciclo li:last-child b{color:var(--urucum)}
+.ciclo span{display:block;margin-top:7px;color:var(--tinta-3);font-size:15px;line-height:1.5}
+.retorno{position:absolute;left:0;right:0;bottom:0;height:22px}
+.retorno svg{display:block;width:100%;height:100%;overflow:visible}
+.retorno span{position:absolute;left:50%;bottom:11px;transform:translate(-50%,50%);padding:0 10px;background:var(--papel);color:var(--tinta-4);font-size:11px;white-space:nowrap}
+
+/* ---- Opção 5: faixa contínua ---------------------------------------- */
+.faixa{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;padding:0;border:1px solid var(--linha);border-radius:10px;overflow:hidden}
+.faixa li{position:relative;padding:15px 18px;background:linear-gradient(180deg,#fbf9f5,var(--areia))}
+.faixa li+li{border-left:1px solid var(--linha)}
+.faixa li::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--mata-300)}
+.faixa li:nth-child(2)::before{background:var(--mata-500)}
+.faixa li:nth-child(3)::before{background:var(--mata-700)}
+.faixa li:nth-child(4)::before{background:var(--urucum)}
+.faixa b{display:block;font:600 11px var(--display);color:var(--tinta-4);letter-spacing:.1em}
+.faixa span{display:block;margin-top:7px;color:var(--tinta);font-size:15px;line-height:1.45}
+
+.fechamento{margin-top:8px;padding:22px 26px;border:1px solid var(--linha);border-left:4px solid var(--ocre);border-radius:10px;background:var(--papel)}
+.fechamento h2{font-size:19px}
+.fechamento p{margin-top:9px;color:var(--tinta-3);font-size:14px;max-width:80ch}
+.fechamento p+p{margin-top:8px}
+footer{max-width:1180px;margin:auto;padding:0 34px 40px;color:var(--tinta-4);font-size:11px;display:flex;justify-content:space-between;gap:14px}
+
+@media(max-width:900px){
+  .top,main,footer{padding-left:18px;padding-right:18px}
+  .trilha,.numeral,.chevron,.ciclo ol,.faixa{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chevron li,.chevron li:first-child,.chevron li:last-child{clip-path:none;padding:14px 18px;border-radius:6px}
+  .faixa li:nth-child(3){border-left:0}
+  .retorno{display:none}
+}
+@media(max-width:560px){
+  .trilha,.numeral,.chevron,.ciclo ol,.faixa{grid-template-columns:1fr}
+  .faixa li+li{border-left:0;border-top:1px solid var(--linha)}
+  .intro h1{font-size:27px}
+}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="brand">Estratégia 2050</span><span style="font-size:12px;opacity:.75">Visão Geral · lâmina 04 · Governança</span><span class="badge">Mockup de avaliação</span></div></header>
+
+<main>
+  <div class="intro">
+    <p class="eyebrow">Fluxo “Da prioridade regional ao orçamento estadual”</p>
+    <h1>Cinco tratamentos para as etapas <em style="font-style:normal;color:var(--urucum)">01–04</em>.</h1>
+    <p>Hoje as quatro etapas são cartões iguais em fundo areia, sem hierarquia nem direção: o leitor precisa deduzir pela numeração que existe uma sequência. As opções abaixo usam o texto real da lâmina e a paleta do painel, para poderem ser comparadas lado a lado.</p>
+    <p>As alturas abaixo foram medidas na largura real da coluna (848px, a 1440&times;900). Para referência: o fluxo atual ocupa <strong>99px</strong> e a lâmina tem <strong>85px</strong> de folga sobrando, hoje distribuída entre os blocos. Todas as cinco opções cabem &mdash; a altura não é o critério de escolha aqui.</p>
+  </div>
+
+  <!-- Opção 1 -->
+  <section class="option">
+    <div class="option-head">
+      <b>01</b>
+      <h2>Trilha conectada</h2>
+      <p>Marcadores redondos sobre uma linha contínua. É o padrão de “stepper” que a maioria das pessoas já lê sem legenda.</p>
+      <div class="tags"><span class="tag">114px</span><span class="tag ok">direção explícita</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-context">
+        <h3>Da prioridade regional ao orçamento estadual</h3>
+        <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
+      </div>
+      <ol class="trilha">
+        <li><div class="marco"><span class="bolha">01</span></div><span>Definição de prioridades regionais</span></li>
+        <li><div class="marco"><span class="bolha">02</span></div><span>Compatibilização com os PPAs estaduais</span></li>
+        <li><div class="marco"><span class="bolha">03</span></div><span>Desdobramento em LDO, LOA e planos setoriais</span></li>
+        <li><div class="marco"><span class="bolha">04</span></div><span>Monitoramento e avaliação regional</span></li>
+      </ol>
+    </div>
+    <p class="altura">Medido a 848px: <strong>114px</strong> (+15px sobre o fluxo atual) · A última etapa em urucum fecha o ciclo sem precisar de seta de retorno.</p>
+  </section>
+
+  <!-- Opção 2 -->
+  <section class="option">
+    <div class="option-head">
+      <b>02</b>
+      <h2>Numeral tipográfico</h2>
+      <p>Sem caixa: régua fina no topo e o número em corpo grande como âncora. É a mesma gramática da grade de orientação que está logo acima na lâmina.</p>
+      <div class="tags"><span class="tag">101px</span><span class="tag ok">coerente com o slide</span><span class="tag alerta">direção implícita</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-context">
+        <h3>Da prioridade regional ao orçamento estadual</h3>
+        <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
+      </div>
+      <ol class="numeral">
+        <li><b>01</b><span>Definição de prioridades regionais</span></li>
+        <li><b>02</b><span>Compatibilização com os PPAs estaduais</span></li>
+        <li><b>03</b><span>Desdobramento em LDO, LOA e planos setoriais</span></li>
+        <li><b>04</b><span>Monitoramento e avaliação regional</span></li>
+      </ol>
+    </div>
+    <p class="altura">Medido a 848px: <strong>101px</strong> (+2px sobre o fluxo atual) · A régua da primeira etapa é mais escura, marcando o início da sequência.</p>
+  </section>
+
+  <!-- Opção 3 -->
+  <section class="option">
+    <div class="option-head">
+      <b>03</b>
+      <h2>Chevrons encadeados</h2>
+      <p>Segmentos em seta, escurecendo a cada etapa. Comunica progressão com mais força — e é o único tratamento que dá peso visual de bloco ao fluxo.</p>
+      <div class="tags"><span class="tag">112px</span><span class="tag ok">direção explícita</span><span class="tag alerta">mais “corporativo”</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-context">
+        <h3>Da prioridade regional ao orçamento estadual</h3>
+        <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
+      </div>
+      <ol class="chevron">
+        <li><b>01</b><span>Definição de prioridades regionais</span></li>
+        <li><b>02</b><span>Compatibilização com os PPAs estaduais</span></li>
+        <li><b>03</b><span>Desdobramento em LDO, LOA e planos setoriais</span></li>
+        <li><b>04</b><span>Monitoramento e avaliação regional</span></li>
+      </ol>
+    </div>
+    <p class="altura">Medido a 848px: <strong>112px</strong> (+13px sobre o fluxo atual) · Em telas estreitas os chevrons viram cartões retos, para o texto não ser comido pelo recorte.</p>
+  </section>
+
+  <!-- Opção 4 -->
+  <section class="option">
+    <div class="option-head">
+      <b>04</b>
+      <h2>Ciclo com retorno</h2>
+      <p>Único tratamento fiel ao que a frase acima afirma: que o processo <em>retorna</em>. A seta de retorno liga o monitoramento de volta à definição de prioridades.</p>
+      <div class="tags"><span class="tag ok">95px · a mais baixa</span><span class="tag ok">fiel ao texto</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-context">
+        <h3>Da prioridade regional ao orçamento estadual</h3>
+        <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
+      </div>
+      <div class="ciclo">
+        <ol>
+          <li><b>01</b><span>Definição de prioridades regionais</span></li>
+          <li><b>02</b><span>Compatibilização com os PPAs estaduais</span></li>
+          <li><b>03</b><span>Desdobramento em LDO, LOA e planos setoriais</span></li>
+          <li><b>04</b><span>Monitoramento e avaliação regional</span></li>
+        </ol>
+        <div class="retorno" aria-hidden="true">
+          <svg viewBox="0 0 1000 22" preserveAspectRatio="none">
+            <path d="M6 3 L6 13 Q6 19 14 19 L420 19 M580 19 L986 19 Q994 19 994 13 L994 3" fill="none" stroke="#c8b9a6" stroke-width="1.5"/>
+            <path d="M6 0 l-5 8 l10 0 z" fill="#c0451f"/>
+          </svg>
+          <span>retorna como monitoramento</span>
+        </div>
+      </div>
+    </div>
+    <p class="altura">Medido a 848px: <strong>95px</strong> (&minus;4px em relação ao fluxo atual) · Sem caixas, sobra altura para a seta de retorno sem custar nada ao resto da lâmina.</p>
+  </section>
+
+  <!-- Opção 5 -->
+  <section class="option">
+    <div class="option-head">
+      <b>05</b>
+      <h2>Faixa contínua</h2>
+      <p>Uma peça única dividida em quatro, com um filete de cor no topo que escurece a cada etapa. Mantém a ideia de cartão, mas os liga em vez de deixá-los soltos.</p>
+      <div class="tags"><span class="tag">117px · a mais alta</span><span class="tag ok">menor mudança</span></div>
+    </div>
+    <div class="stage">
+      <div class="stage-context">
+        <h3>Da prioridade regional ao orçamento estadual</h3>
+        <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
+      </div>
+      <ol class="faixa">
+        <li><b>01</b><span>Definição de prioridades regionais</span></li>
+        <li><b>02</b><span>Compatibilização com os PPAs estaduais</span></li>
+        <li><b>03</b><span>Desdobramento em LDO, LOA e planos setoriais</span></li>
+        <li><b>04</b><span>Monitoramento e avaliação regional</span></li>
+      </ol>
+    </div>
+    <p class="altura">Medido a 848px: <strong>117px</strong> (+18px sobre o fluxo atual) · É a opção mais próxima do que já existe: muda o agrupamento, não a linguagem.</p>
+  </section>
+
+  <div class="fechamento">
+    <h2>Recomendação</h2>
+    <p><strong>Opção 02 (numeral tipográfico)</strong> se o critério for coerência: ela repete a régua fina e o corpo de texto da grade de orientação que está logo acima na mesma lâmina, então o slide inteiro passa a ter uma gramática só. É também a mais leve das cinco.</p>
+    <p><strong>Opção 04 (ciclo com retorno)</strong> se o critério for precisão: é a única que mostra o retorno que a frase de apoio afirma existir. Ao contrário do que eu esperava antes de medir, é também a mais baixa das cinco &mdash; sem caixas, a seta de retorno sai de graça.</p>
+    <p>As opções 01 e 03 comunicam direção com mais força, mas trazem uma linguagem de diagrama de processo que hoje não aparece em nenhuma outra parte do painel.</p>
+  </div>
+</main>
+
+<footer><span>Estratégia Amazônia 2050 · Consórcio da Amazônia Legal</span><span>Estudo de interface · Visão Geral / Governança</span></footer>
+</body>
+</html>

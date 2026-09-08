@@ -317,6 +317,12 @@ function renderDetail() {
   posicionaDetalhe();
   if (state.animarDetalhe) {
     state.animarDetalhe = false;
+    // No fluxo de uma coluna o detalhe é o último bloco da página, abaixo das
+    // doze metas: sem levar a tela até ele, tocar numa meta não parecia ter
+    // feito nada. A condição é a mesma do painel do Panorama em app.js.
+    if (window.matchMedia('(max-width: 920px)').matches) {
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     if (entradaCompleta) {
       void painel.offsetWidth;
       painel.classList.add('is-opening');

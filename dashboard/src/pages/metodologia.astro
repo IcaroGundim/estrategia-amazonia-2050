@@ -1,40 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import '../styles/overview-slides.css';
+import '../styles/overview-compositions.css';
+import SlidePhoto from '../components/SlidePhoto.astro';
 ---
 
-<Base title="Metodologia — Estratégia 2050" description="Visão geral da Estratégia Regional Amazônia 2050: o que é, o que pactua e como este painel lê os dados." ogDescription="O que é a Estratégia Amazônia 2050, seus temas, sua governança e como este painel lê os dados." mainClass="methodology-page" pagina="metodologia" dados={['dashboard']}>
+<Base title="Visão Geral — Estratégia 2050" description="Visão geral da Estratégia Regional Amazônia 2050: o que é, o que pactua e como este painel lê os dados." ogDescription="O que é a Estratégia Amazônia 2050, seus temas, sua governança e como este painel lê os dados." mainClass="methodology-page" pagina="metodologia" dados={['dashboard']}>
   <div class="methodology-layout section-shell">
-    <aside class="methodology-index" aria-label="Guia da metodologia">
-      <p class="eyebrow">Guia de leitura</p>
-      <nav>
-        <a class="is-active" href="#a-estrategia">
-          <b>01</b><span><strong>A Estratégia</strong><small>O que é e de onde vem</small></span>
-        </a>
-        <a href="#visao-2050">
-          <b>02</b><span><strong>Visão 2050</strong><small>O horizonte e o uso pelos estados</small></span>
-        </a>
-        <a href="#temas-estrategicos">
-          <b>03</b><span><strong>Temas estratégicos</strong><small>Os seis eixos regionais</small></span>
-        </a>
-        <a href="#governanca">
-          <b>04</b><span><strong>Governança</strong><small>Quem executa e o que vem a seguir</small></span>
-        </a>
-        <a href="#calculo">
-          <b>05</b><span><strong>Este painel</strong><small>Como os dados são lidos</small></span>
-        </a>
-      </nav>
-      <div class="methodology-index-note">
-        <span>Última consolidação</span>
-        <strong data-updated>—</strong>
-        <small>Os períodos variam conforme a fonte.</small>
-      </div>
-      <a class="methodology-index-download" href="/downloads/RELATORIO_DE_COLETA.md">Baixar relatório de coleta <span aria-hidden="true">↓</span></a>
-    </aside>
 
-    <article class="methodology-article">
+
+    <div class="overview-deck" role="region" aria-roledescription="carrossel" aria-label="Visão Geral da Estratégia Amazônia 2050">
+    <article class="methodology-article" tabindex="0" aria-label="Slides; use as setas para navegar">
       <section id="a-estrategia" class="methodology-intro method-section">
+        <div class="slide-copy">
         <p class="eyebrow">Consórcio da Amazônia Legal · Brasília, 2026</p>
-        <h1>A Estratégia Regional Amazônia 2050</h1>
+        <h1><span>A Estratégia Regional</span><em>Amazônia 2050</em></h1>
         <p class="methodology-lead">Um instrumento de planejamento regional de longo prazo, que estabelece uma visão compartilhada de desenvolvimento sustentável para os nove estados da Amazônia Legal até 2050. É distinta do Planejamento Estratégico do Consórcio, que organiza a atuação institucional da autarquia.</p>
 
         <div class="method-facts">
@@ -50,16 +30,22 @@ import Base from '../layouts/Base.astro';
           <article><b>2024–2035</b><span>Planejamento Estratégico, que orienta a atuação institucional.</span></article>
           <article><b>2025</b><span>Estratégia Amazônia 2050, o horizonte regional de longo prazo.</span></article>
         </div>
+
+        </div>
+        <SlidePhoto variant={1} />
       </section>
 
       <section id="visao-2050" class="method-section">
+        <div class="slide-copy">
         <p class="eyebrow">O horizonte</p>
         <h2>A visão regional para 2050</h2>
+
         <div class="method-vision">
           <span>Visão 2050</span>
           <p>Em 2050, a Amazônia Legal terá alcançado o desenvolvimento regional sustentável e a resiliência climática, conciliando conservação ambiental, crescimento econômico e justiça social. A região será reconhecida pelo equilíbrio entre produção e conservação, pela valorização de seus ativos ambientais e pela melhoria dos indicadores socioeconômicos.</p>
           <p>Os saberes e modos de vida dos povos e comunidades tradicionais serão preservados, assegurando qualidade de vida, inclusão e contribuição efetiva para a estabilidade climática global.</p>
         </div>
+
         <div class="method-subsection is-single">
           <div>
             <p class="eyebrow">Na prática</p>
@@ -73,9 +59,13 @@ import Base from '../layouts/Base.astro';
           <li>Fortalece a articulação com a União, organismos multilaterais e financiadores.</li>
           <li>Qualifica a priorização de investimentos estruturantes.</li>
         </ul>
+
+        </div>
+        <SlidePhoto variant={2} />
       </section>
 
       <section id="temas-estrategicos" class="method-section">
+        <div class="slide-copy">
         <p class="eyebrow">Estrutura da Estratégia</p>
         <h2>Seis temas estratégicos</h2>
         <p>Os temas organizam as prioridades regionais e servem de referência para a leitura dos indicadores deste painel.</p>
@@ -111,9 +101,13 @@ import Base from '../layouts/Base.astro';
             <p>Infraestrutura física, logística e digital integrada e resiliente, respeitando os limites socioambientais.</p>
           </article>
         </div>
+
+        </div>
+        <SlidePhoto variant={3} />
       </section>
 
       <section id="governanca" class="method-section">
+        <div class="slide-copy">
         <p class="eyebrow">Implementação</p>
         <h2>Governança e próximos passos</h2>
         <div class="method-guidance-grid is-compacta">
@@ -125,13 +119,6 @@ import Base from '../layouts/Base.astro';
           <article><h3>Monitoramento e avaliação</h3><p>Acompanhar a Estratégia e manter indicadores e metas atualizados.</p></article>
         </div>
 
-        <div class="method-subsection">
-          <div>
-            <p class="eyebrow">Fluxo</p>
-            <h3>Da prioridade regional ao orçamento estadual</h3>
-          </div>
-          <p>O ciclo liga a pactuação regional às peças orçamentárias de cada estado e retorna como monitoramento.</p>
-        </div>
         <ol class="method-flow">
           <li><b>01</b><span>Definição de prioridades regionais</span></li>
           <li><b>02</b><span>Compatibilização com os PPAs estaduais</span></li>
@@ -139,13 +126,12 @@ import Base from '../layouts/Base.astro';
           <li><b>04</b><span>Monitoramento e avaliação regional</span></li>
         </ol>
 
-        <div class="method-callout">
-          <strong>Próximos passos</strong>
-          <p>Definição de metas, indicadores, governança e metodologia de monitoramento; levantamento da maturidade dos projetos prioritários; mapeamento de fontes de financiamento; e estruturação de um portfólio regional de projetos orientado à captação de recursos.</p>
         </div>
+        <SlidePhoto variant={4} />
       </section>
 
       <section id="calculo" class="method-section">
+        <div class="slide-copy">
         <p class="eyebrow">Este painel</p>
         <h2>Como os dados são lidos aqui</h2>
         <p>O painel organiza indicadores de fontes públicas para comparar os nove estados. Ele antecipa uma leitura enquanto a metodologia de monitoramento da Estratégia não é definida.</p>
@@ -163,8 +149,35 @@ import Base from '../layouts/Base.astro';
           <a class="primary-link" href="/metas">Ver o cumprimento das metas</a>
           <a class="secondary-link" href="/indicadores">Explorar indicadores</a>
         </div>
+
+        </div>
+        <SlidePhoto variant={5} />
       </section>
     </article>
+    <div class="overview-controls">
+      <span class="overview-status" aria-live="polite" aria-atomic="true"><b data-slide-count>01 / 05</b><span data-slide-title>A Estratégia</span></span>
+    <aside class="methodology-index" aria-label="Navegação dos slides">
+      <nav>
+        <a class="is-active" href="#a-estrategia">
+          <span><strong>A Estratégia</strong></span>
+        </a>
+        <a href="#visao-2050">
+          <span><strong>Visão 2050</strong></span>
+        </a>
+        <a href="#temas-estrategicos">
+          <span><strong>Temas estratégicos</strong></span>
+        </a>
+        <a href="#governanca">
+          <span><strong>Governança</strong></span>
+        </a>
+        <a href="#calculo">
+          <span><strong>Este painel</strong></span>
+        </a>
+      </nav>
+    </aside>
+      <div class="overview-buttons"><button type="button" data-slide-prev aria-label="Slide anterior">← <span>Anterior</span></button><button type="button" data-slide-next aria-label="Próximo slide"><span>Próximo</span> →</button></div>
+    </div>
+    </div>
   </div>
 
   <script>

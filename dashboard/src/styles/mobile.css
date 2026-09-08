@@ -1,0 +1,412 @@
+/* ===========================================================================
+   Camada de celular e tablet.
+
+   A `global.css` descreve o painel como ele foi desenhado para o computador, e
+   as consultas de mídia dela reorganizam esse desenho para caber em telas
+   menores — colunas que empilham, grades que viram lista. Isso resolve o
+   arranjo, mas não o idioma: um aparelho de mão tem convenções próprias que não
+   saem de encolher a página. Esta folha trata do idioma.
+
+   Ela é importada pelo layout logo depois da geral, então vence nos empates de
+   especificidade sem precisar de `!important`. Não há nenhuma regra fora de
+   consulta de mídia: no computador este arquivo é inerte.
+
+   Duas faixas:
+     ≤920px   aparelho de mão (celular e tablet em retrato) — navegação e escala
+              tipográfica, que valem para os dois.
+     ≤620px   celular — composições próprias: trilho de indicadores, listas em
+              cartão, cabeçalho curto.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. Barra inferior de navegação
+
+   No lugar do botão "Menu", que escondia as quatro rotas atrás de um toque e
+   de uma gaveta. Na barra inferior elas ficam permanentemente à vista, indicam
+   onde se está sem depender do título da página e caem na área que o polegar
+   alcança sem trocar a pegada do aparelho.
+   --------------------------------------------------------------------------- */
+.tabbar { display: none; }
+
+@media (max-width: 920px) {
+  .tabbar {
+    position: fixed;
+    z-index: 30;
+    inset: auto 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* A faixa de gestos do aparelho fica por baixo da barra; sem a reserva, o
+       último rótulo nasce em cima dela. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--mata);
+    box-shadow: 0 -8px 26px rgba(14, 43, 34, 0.24);
+  }
+  .tabbar a {
+    min-height: 56px;
+    padding: 9px 3px 10px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    color: rgba(245, 240, 232, 0.6);
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .tabbar svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .tabbar .is-active { color: var(--ocre); box-shadow: inset 0 2px var(--ocre); }
+  .tabbar a:focus-visible { outline: 2px solid var(--ocre); outline-offset: -4px; }
+  /* A barra é a navegação agora; o botão e a gaveta saem de cena. */
+  .menu-button { display: none; }
+  .menu-open .topnav { display: none; }
+  /* O rodapé é o último bloco da página e ficaria atrás da barra. */
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+  /* Sobra a marca e o botão de vista, que passam a dividir a barra de cima com
+     folga — e o nome escrito do produto volta a caber ao lado do logo. */
+  .topbar-actions { display: none; }
+}
+
+/* Aparelho deitado: 390px de altura menos a topbar e a barra inferior deixam
+   pouco para o conteúdo. A barra passa a rolar com a página em vez de ocupar
+   uma faixa fixa. */
+@media (max-width: 920px) and (max-height: 460px) {
+  .tabbar { position: static; }
+  body { padding-bottom: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   2. Escala tipográfica
+
+   O painel tem cerca de sessenta regras com texto entre 8 e 10,5px. Nessa faixa
+   a densidade é uma qualidade num monitor a 60cm de distância, e um defeito num
+   aparelho segurado na mão: o rótulo some, o valor perde a referência e a tela
+   inteira lê como uma redução fotográfica de outra coisa.
+
+   Aqui os rótulos sobem para 10,5–12px e os valores acompanham. Nenhuma regra
+   muda cor, peso ou espaçamento entre letras — só corpo, para preservar a
+   hierarquia que o desenho já estabelece.
+   --------------------------------------------------------------------------- */
+@media (max-width: 920px) {
+  body { font-size: 15.5px; }
+  .eyebrow, .metric-label, .select-wrap-label, .filter-title { font-size: 11.5px; letter-spacing: 0.1em; }
+
+  .dropdown-trigger { min-height: 56px; }
+  .dropdown-trigger-copy strong { font-size: 15px; }
+  .dropdown-trigger-copy small { font-size: 10px; letter-spacing: 0.08em; }
+  .dropdown-option { min-height: 56px; }
+  .dropdown-option strong { font-size: 14.5px; }
+  .dropdown-option small { font-size: 11.5px; }
+  .dropdown-group { font-size: 10px; }
+
+  .map-legend { font-size: 11.5px; }
+  .map-indicator-card h3 { font-size: 22px; }
+  .map-indicator-description { font-size: 13px; }
+  .map-indicator-card dt { font-size: 10px; }
+  .map-indicator-card dd { font-size: 12.5px; }
+  .map-indicator-card a { font-size: 12.5px; }
+  .map-tooltip strong { font-size: 15px; }
+  .map-tooltip span { font-size: 10.5px; }
+  .map-tooltip b { font-size: 16px; }
+  .state-label { font-size: 13px; }
+
+  .sidebar-tabs button { font-size: 13.5px; }
+  .state-panel-kicker span { font-size: 12px; }
+  .state-identity p { font-size: 12.5px; }
+  .state-summary-grid span { font-size: 10.5px; }
+  .state-summary-grid b { font-size: 19px; }
+  .state-summary-grid small { font-size: 11px; }
+  .state-metric-block span, .state-section-title span { font-size: 11px; }
+  .state-metric-block small, .state-section-title small { font-size: 11.5px; }
+  .state-metric-block p { font-size: 12.5px; }
+  .state-reading p { font-size: 13.5px; }
+  .state-reading .state-reading-nota { font-size: 12px; }
+  .state-amplitude p { font-size: 12.5px; }
+  .state-amplitude b { font-size: 14.5px; }
+  .spark-legend { font-size: 11.5px; }
+  .spark-tip b, .spark-tip span, .spark-tip em { font-size: 13px; }
+
+  .overview article > p:last-child { font-size: 11.5px; }
+  .ranking-panel-head small { font-size: 12px; }
+  .text-button { font-size: 12.5px; }
+  .rank-number { font-size: 16px; }
+  .rank-name b { font-size: 14px; }
+  .rank-name small { font-size: 11px; }
+  .rank-measure b { font-size: 12px; }
+
+  .goals-eixo-head h3 { font-size: 15px; }
+  .goals-eixo-head > span { font-size: 11.5px; }
+  .goals-row-name { font-size: 14.5px; }
+  .goals-row-name small { font-size: 11.5px; }
+  .goals-row-ler b { font-size: 16px; }
+  .goals-row-ler small { font-size: 11px; }
+  .goals-row-val { font-size: 11px; }
+  .goals-legend, .goals-map-hint { font-size: 11.5px; }
+  .goals-detail-head h2 { font-size: 19px; }
+  .goals-detail-summary dt, .goals-detail-facts dt { font-size: 10.5px; }
+  .goals-detail-summary dd { font-size: 17px; }
+  .goals-detail-facts dd { font-size: 13px; }
+  .goals-detail-section h3, .goals-detail-chart-head h3 { font-size: 11px; }
+  .goals-detail-meta { font-size: 14px; }
+  .goals-detail-method { font-size: 12.5px; }
+  .goals-chart-uf, .goals-chart-row > b { font-size: 11px; }
+  .goals-chart-scale, .goals-chart-legend { font-size: 10px; }
+  .goals-chart-empty { font-size: 12px; }
+
+  .indicators-toolbar h2 { font-size: 25px; }
+  .indicators-toolbar p { font-size: 12.5px; }
+  .indicator-search input { font-size: 15px; }
+  .indicator-name-cell strong { font-size: 16.5px; }
+  .indicator-name-cell span { font-size: 12px; }
+  .indicator-name-cell small { font-size: 10.5px; }
+  .indicator-axis-cell strong { font-size: 13px; }
+  .indicator-axis-cell span { font-size: 12px; }
+  .indicator-goal-cell span { font-size: 12.5px; }
+  .indicator-goal-cell::before { font-size: 10.5px; }
+  .indicator-value-cell small { font-size: 11.5px; }
+  .ind-status, .indicator-status-cell .ind-status { font-size: 11.5px; }
+  .indicator-detail-kicker { font-size: 11.5px; }
+  .indicator-detail-field dt { font-size: 10.5px; }
+  .indicator-detail-summary > div > span { font-size: 10.5px; }
+  .filter-option { font-size: 14.5px; }
+  .filter-option small { font-size: 12px; }
+  .status-filter { font-size: 12.5px; }
+  .export-primary, .export-group a { font-size: 12.5px; }
+  .indicator-pagination { font-size: 13px; }
+  .indicator-pagination button { font-size: 12.5px; }
+
+  footer { font-size: 12px; }
+  footer span:first-child { font-size: 15px; }
+}
+
+/* ---------------------------------------------------------------------------
+   3. Celular: cabeçalho curto
+
+   O título da rota repetia o que a barra inferior já informa, e ele mais o texto
+   de abertura gastavam a primeira tela inteira antes do primeiro dado.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .panorama { padding-top: 18px; }
+  .panorama-heading { gap: 12px 20px; margin-bottom: 12px; }
+  .panorama-heading h1 { font-size: 24px; line-height: 1.05; }
+  .panorama-heading .lead { margin-top: 6px; font-size: 13px; line-height: 1.45; }
+  .select-wrap-label { margin-bottom: 6px; }
+  .map-controls { gap: 10px; }
+
+  .goals-page { padding-top: 18px; }
+  .goals-list-head h1 { font-size: 24px; }
+  .indicators-workspace { padding-top: 18px; }
+}
+
+/* ---------------------------------------------------------------------------
+   4. Celular: os quatro números da região viram um trilho
+
+   Em duas colunas eles ocupavam 260px de altura e ainda quebravam "29,7 mi
+   pessoas" em duas linhas. Deitados num trilho que desliza, cada cartão fica com
+   largura suficiente para o número numa linha só, e os quatro custam a altura de
+   um. O `scroll-snap` faz o trilho parar sempre com um cartão alinhado à margem.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .overview {
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    /* Pouco menos de 70%: o segundo cartão aparece pela metade na borda, que é o
+       que informa que o trilho continua. */
+    grid-auto-columns: 68%;
+    gap: 10px;
+    /* Sangra até a borda da tela: o trilho precisa parecer que continua para
+       fora dela, senão não se lê como deslizável. O recheio devolve o alinhamento
+       do primeiro cartão à margem do texto. */
+    margin-inline: -14px;
+    padding-inline: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 14px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .overview::-webkit-scrollbar { display: none; }
+  .overview article { min-height: 0; scroll-snap-align: start; }
+  /* 26px e não 29: "29,7 mi pessoas" é o rótulo mais longo dos quatro e em 29px
+     quebrava em duas linhas dentro do cartão. */
+  .metric-value { font-size: 26px; }
+}
+
+/* ---------------------------------------------------------------------------
+   5. Celular: listas em cartão
+
+   Metas e indicadores eram linhas dentro de um cartão branco só. Numa tela
+   estreita a divisa entre um item e o próximo é um filete de 1px, e a lista
+   inteira lê como um bloco contínuo de texto. Cada item vira um cartão com
+   respiro entre eles — a mesma informação, com a unidade de leitura à vista.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .goals-list-card, .indicators-table-card { padding: 0; border: 0; background: none; overflow: visible; }
+  .goals-list-head { padding: 0 2px 4px; }
+  .goals-list { margin-top: 14px; }
+  .goals-eixo-head { padding: 0 2px 8px; }
+
+  .goals-row {
+    padding: 14px 14px 15px;
+    border-radius: 13px;
+    background: var(--papel);
+    box-shadow: 0 1px 3px rgba(43, 31, 23, 0.07);
+  }
+  .goals-row + .goals-row { margin-top: 8px; border-top: 0; }
+  .goals-row.is-active { padding-left: 14px; box-shadow: 0 2px 10px rgba(43, 31, 23, 0.12); }
+  .goals-row.is-active::before { top: 14px; bottom: 14px; left: 0; border-radius: 0 2px 2px 0; }
+
+  .indicators-toolbar { padding: 0 2px 16px; border-bottom: 0; }
+  .indicator-table-row {
+    margin-bottom: 8px;
+    padding: 15px 15px 16px;
+    border: 0;
+    border-radius: 13px;
+    box-shadow: 0 1px 3px rgba(43, 31, 23, 0.07);
+  }
+  .indicator-table-row:focus-within { box-shadow: 0 2px 10px rgba(43, 31, 23, 0.12), inset 3px 0 var(--urucum); }
+  .indicator-pagination { margin-top: 4px; padding: 14px 2px 0; }
+  .indicator-empty { border-radius: 13px; background: var(--papel); }
+
+  /* O cartão do detalhe do indicador volta a ser uma folha branca inteira: ele
+     substitui a lista, não é um item dela. */
+  .indicators-table-card.is-detail { border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
+}
+
+/* ---------------------------------------------------------------------------
+   6. Celular: orçamento de tela do Panorama
+
+   Topbar fixa (68px), mapa fixo e barra inferior (56px) são moldura permanente.
+   Com o mapa em 260px sobravam 460 de 844 para o que se veio ler. O mapa cede a
+   diferença: a projeção continua legível e o painel ganha uma dobra inteira.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .dashboard-grid { --mapa-altura: clamp(150px, 26vh, 215px); }
+  .map-canvas { padding: 8px 10px 6px; }
+  .map-legend { padding: 8px 12px 10px; }
+
+  /* O rótulo e a posição do estado dividiam uma linha só, com a posição em
+     `nowrap`. Nos 254px úteis de um aparelho de 320px os dois não cabem, e a
+     linha empurrava a lateral inteira para fora da tela. */
+  .state-panel-kicker { flex-wrap: wrap; gap: 3px 14px; }
+  .state-panel-kicker span { white-space: normal; }
+}
+
+/* ---------------------------------------------------------------------------
+   7. Celular: os menus viram folhas inferiores
+
+   Ancorado ao gatilho, o menu abria no terço superior da tela — longe do polegar
+   e com as opções espremidas contra a borda. Como folha, ele sobe da base, ocupa
+   a largura inteira e as opções caem na faixa que a mão alcança. Nenhuma linha
+   de JavaScript muda: o componente não posiciona nada, só alterna `is-open`.
+
+   O fundo escuro é um pseudoelemento do *pai* do menu, e não dele: o fecho ao
+   tocar fora é `if (!root.contains(event.target)) close()`, e um fundo que
+   pertencesse ao próprio `.dropdown` seria "dentro" — a folha não fecharia mais
+   ao ser tocada fora. `:has()` permite pendurá-lo em quem está por fora.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .select-wrap:has(.dropdown.is-open)::before,
+  .filter-group:has(.dropdown.is-open)::before {
+    content: "";
+    position: fixed;
+    z-index: 39;
+    inset: 0;
+    background: rgba(14, 43, 34, 0.45);
+  }
+
+  .dropdown-menu,
+  .select-wrap.is-year .dropdown-menu,
+  .filters-card .dropdown-menu {
+    position: fixed;
+    /* Acima da barra inferior de navegação, que é z-index 30 — senão a folha
+       nasceria por baixo dela. */
+    z-index: 40;
+    inset: auto 0 0 0;
+    width: auto;
+    max-width: none;
+    max-height: min(64vh, 460px);
+    margin: 0;
+    padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px));
+    border: 0;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -16px 44px rgba(14, 43, 34, 0.32);
+    animation: folha-sobe 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Puxador: diz que o bloco é uma folha e não uma lista qualquer colada na
+     base. Decorativo — o `ul` continua sendo a listbox inteira. */
+  .dropdown-menu::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin: 2px auto 12px;
+    border-radius: 2px;
+    background: var(--linha);
+  }
+  .dropdown-group { top: -10px; }
+  .dropdown-option { min-height: 60px; }
+  .filters-card .dropdown-menu li { min-height: 52px; padding: 12px 14px; font-size: 14.5px; }
+}
+
+@keyframes folha-sobe {
+  from { transform: translateY(14px); opacity: 0.6; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-menu { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   8. Celular: acabamentos das listas
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  /* O "›" da fonte de títulos desenha um sinal miúdo, quase uma vírgula, no
+     tamanho em que aparece. Desenhado com duas bordas ele vira uma seta legível
+     e continua herdando a cor — inclusive o urucum da linha ativa. */
+  .goals-row-open { font-size: 0; }
+  .goals-row-open::after {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin-inline: auto;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+  }
+
+  /* Um cartão de indicador ocupava quase 600px: sobrava uma linha e meia de
+     catálogo por tela, num acervo de 59. A meta encolhe de três linhas para
+     duas e a fonte para uma, o que devolve cerca de um terço da altura sem tirar
+     nenhum dos campos da lista. */
+  .indicator-table-row { gap: 7px 16px; }
+  .indicator-name-cell span { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+  .indicator-name-cell small { margin-top: 6px; }
+  .indicator-goal-cell span { -webkit-line-clamp: 2; }
+  .indicator-goal-cell::before { margin-bottom: 2px; }
+}
+
+/* ---------------------------------------------------------------------------
+   9. Tablet em retrato: coluna do ano
+
+   Os dois seletores dividem uma linha, e a coluna do ano tinha 152px — medida
+   para a legenda de 8px do computador. Com a escala desta folha, "SÉRIE
+   HISTÓRICA" passou a ser cortada por reticências.
+   --------------------------------------------------------------------------- */
+@media (min-width: 621px) and (max-width: 920px) {
+  .map-controls { width: min(100%, 540px); grid-template-columns: minmax(0, 1fr) 186px; }
+  .select-wrap.is-year { width: 100%; }
+}
+
+/* O resumo do que está filtrado dividia a linha com o rótulo e a seta, e em
+   320px "Todos os indicadores" era cortado por reticências. Empilhado, ele fica
+   inteiro e continua sendo a primeira coisa que se lê sobre o recorte em vigor. */
+@media (max-width: 620px) {
+  .filters-toggle { flex-wrap: wrap; row-gap: 1px; padding: 11px 0; }
+  .filters-toggle > span { order: 1; }
+  .filters-toggle::after { order: 2; margin: 2px 0 0 auto; }
+  .filters-toggle small { order: 3; flex-basis: 100%; white-space: normal; }
+}

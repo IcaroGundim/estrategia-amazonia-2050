@@ -29,3 +29,6 @@ Thumbs.db
 
 # Canvas da identidade visual, gerado a partir da pasta de identidade
 /identidade-estrategia-2050.html
+
+# Capturas de tela da conferência responsiva (scripts/conferir-mobile.mjs)
+/.shots/

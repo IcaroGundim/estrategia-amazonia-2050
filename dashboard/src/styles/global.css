@@ -65,9 +65,16 @@ html[data-vista="desktop"] .vista-toggle { display: inline-flex; align-items: ce
 
 .section-shell { width: min(2200px, 100%); margin-inline: auto; padding-inline: clamp(24px, 3.2vw, 72px); }
 .panorama { padding: 36px 0 58px; background: var(--areia); }
-.panorama-heading { align-items: end; gap: 32px; margin-bottom: 18px; }
-.panorama-heading > div:first-child { min-width: 0; flex: 1; }
-.panorama-heading h1 { max-width: none; font-size: clamp(26px, 2.05vw, 40px); white-space: nowrap; }
+/* O título e os 484px de seletores dividem uma linha só enquanto couberem. Como
+   o cartão do mapa perde largura para a coluna lateral, isso deixa de valer bem
+   antes da largura de tablet: em 1280px sobravam cerca de 700px para 850px de
+   conteúdo, o bloco do título era espremido a uma palavra por linha e o texto
+   de abertura escorria por baixo do rótulo do seletor. Com `wrap` e uma base de
+   360px, os seletores descem para a linha seguinte exatamente quando param de
+   caber, em qualquer largura — sem depender de um ponto de corte. */
+.panorama-heading { align-items: end; flex-wrap: wrap; gap: 18px 32px; margin-bottom: 18px; }
+.panorama-heading > div:first-child { min-width: 0; flex: 1 1 360px; }
+.panorama-heading h1 { max-width: none; font-size: clamp(26px, 2.05vw, 40px); }
 .panorama-heading .lead { max-width: 560px; margin-top: 9px; font-size: 14px; }
 .eyebrow, .metric-label, .select-wrap-label { margin: 0 0 10px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 h1 { max-width: 720px; font-size: clamp(42px, 5vw, 68px); line-height: 0.96; text-wrap: balance; }
@@ -314,7 +321,15 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicators-workspace { padding-top: 34px; display: grid; grid-template-columns: clamp(270px, 16vw, 320px) minmax(0, 1fr); align-items: start; gap: clamp(20px, 1.7vw, 32px); }
 
 
-.filters-card { position: sticky; top: 100px; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.filters-card { position: sticky; top: 100px; padding: 24px; }
+/* O arranjo dos grupos vive no invólucro, e não no cartão, porque no celular o
+   cartão passa a ter também o botão que abre e fecha o painel. */
+.filters-body { display: flex; flex-direction: column; gap: 24px; }
+.filters-toggle { display: none; width: 100%; min-height: 52px; padding: 0; align-items: center; justify-content: space-between; gap: 12px; border: 0; background: none; color: var(--mata); text-align: left; }
+.filters-toggle > span { font: 600 14px var(--display); }
+.filters-toggle small { min-width: 0; overflow: hidden; color: var(--tinta-4); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.filters-toggle::after { content: ""; flex: none; width: 9px; height: 9px; margin-top: -4px; border-right: 2px solid var(--urucum); border-bottom: 2px solid var(--urucum); transform: rotate(45deg); transition: transform 160ms ease; }
+.filters-toggle[aria-expanded="true"]::after { margin-top: 4px; transform: rotate(-135deg); }
 .filter-group + .filter-group { padding-top: 20px; border-top: 1px solid var(--linha-2); }
 .filter-title { display: block; margin: 0 0 13px; color: var(--urucum); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .filter-options { display: flex; flex-direction: column; gap: 9px; }
@@ -493,6 +508,11 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-formula-notes p strong { color: var(--papel); font-weight: 700; }
 .indicator-formula-card.is-prose { overflow-wrap: anywhere; }
 .indicator-detail-empty { margin: 0; color: var(--tinta-4); font-size: clamp(12.5px, 0.76vw, 14.5px); font-style: italic; }
+/* O cinza de texto secundário foi escolhido para fundo claro. Dentro do cartão
+   de método, que é verde-mata, ele dava 1,2:1 — a frase "Fórmula não informada
+   na ficha técnica" existia no HTML e não se lia na tela. Mesmo tom claro que a
+   prosa do cartão já usa. */
+.indicator-detail-block.is-method .indicator-detail-empty { color: var(--mata-100); }
 .indicator-detail-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .indicator-detail-links a { padding: 7px 10px 6px; display: inline-flex; align-items: center; gap: 7px; border-bottom: 1px solid currentColor; color: var(--mata); font-size: clamp(10.5px, 0.66vw, 12.5px); font-weight: 600; white-space: normal; }
 .indicator-detail-links a:hover, .indicator-detail-links a:focus-visible { border-color: var(--urucum); color: var(--urucum); outline: none; }
@@ -596,9 +616,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-flow b { color: var(--urucum); font: 800 13px var(--display); }
 .method-flow span { color: var(--tinta-3); font-size: 12.5px; line-height: 1.45; }
 
-.method-callout { margin-top: 24px; padding: 21px 22px; border-left: 4px solid var(--ocre); background: var(--papel); }
-.method-callout strong { color: var(--mata); font: 600 16px var(--display); }
-.method-callout p { max-width: 105ch; margin: 8px 0 0; color: var(--tinta-3); font-size: 13.5px; line-height: 1.6; }
 .method-source-block { margin-top: 27px; padding: 21px 23px; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); }
 .method-source-block > span { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .method-source-block p { max-width: 105ch; margin: 9px 0 0; color: var(--tinta-3); font-size: 13.5px; line-height: 1.6; }
@@ -687,10 +704,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-eixo-head .num { display: grid; place-content: center; flex: none; width: 22px; height: 22px; border-radius: 6px; background: var(--mata); color: var(--areia); font: 800 12px var(--display); }
 .goals-eixo-head h3 { font-size: 13.5px; letter-spacing: 0.01em; }
 .goals-eixo-head > span { color: var(--tinta-4); font-size: 10.5px; }
-.goals-row { position: relative; width: 100%; padding: 12px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 220px) auto 14px; align-items: center; gap: 14px; border: 0; background: transparent; text-align: left; transition: padding-left 220ms ease; }
+.goals-row { position: relative; width: 100%; padding: 12px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 220px) auto 14px; align-items: center; gap: 14px; border: 0; background: transparent; text-align: left; transition: padding-left 220ms ease, box-shadow 180ms ease; }
 .goals-row + .goals-row { border-top: 1px solid var(--linha-2); }
 button.goals-row { cursor: pointer; }
 button.goals-row:hover, button.goals-row:focus-visible { outline: none; }
+button.goals-row:focus-visible { z-index: 1; box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
 button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-row-name { color: var(--mata); }
 .goals-row.is-active { padding-left: 12px; }
 .goals-row.is-active::before { content: ""; position: absolute; top: 10px; bottom: 10px; left: 0; width: 3px; border-radius: 2px; background: var(--urucum); }
@@ -796,6 +814,12 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-detail-method strong { color: var(--tinta-2); }
 
 
+/* ---------------------------------------------------------------------------
+   Tablet em paisagem e telas médias (921–1180px). A grade de duas colunas
+   continua, mas a coluna do mapa fica com cerca de 590px: tudo que foi desenhado
+   supondo a largura do computador precisa recompor aqui, e não só quando a tela
+   chega ao tamanho de celular.
+   --------------------------------------------------------------------------- */
 @media (max-width: 1180px) {
   .topnav { display: none; }
   /* O botão entra junto com o sumiço da navegação: antes ele só aparecia em
@@ -808,6 +832,105 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-steps.is-themes, .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .indicators-workspace { grid-template-columns: 230px minmax(0, 1fr); }
   .methodology-layout { grid-template-columns: 230px minmax(0, 1fr); gap: 42px; }
+
+  /* O cabeçalho já quebra sozinho pelo `flex-wrap` da regra base, e forçar a
+     coluna aqui trocava o eixo do `flex-basis: 360px` do bloco do título: numa
+     coluna ele passa a valer como altura mínima, e o cabeçalho abria 360px de
+     vazio entre o texto de abertura e os seletores. Aos seletores basta não
+     esticar além da largura projetada. */
+  .map-controls { width: min(100%, 484px); flex: none; }
+
+  /* Em duas colunas sobravam 210px para a ficha do indicador e ~360px para o
+     mapa. Empilhados, o mapa ocupa a coluna toda e a ficha deixa de quebrar
+     cada frase em três linhas. */
+  .map-body { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .map-canvas { order: 1; }
+  .map-indicator-card { order: 2; }
+
+  /* Truncar "5,1 mi km²" em "5,1 mi k…" esconde o dado. Na lateral estreita o
+     valor passa a quebrar em duas linhas em vez de sumir. */
+  .state-summary-grid b { overflow: visible; white-space: normal; text-overflow: clip; }
+
+  /* ---------------------------------------------------------------------
+     A lista de indicadores vira cartão empilhado. O piso de 820px da linha
+     obrigava a rolar na horizontal dentro do cartão para chegar à meta e à
+     situação — no tablet em paisagem a coluna "Situação" ficava inteira fora
+     da tela, sem nenhum sinal de que existia. Só muda o `display`: os papéis
+     são ARIA explícitos em <div>/<article>, não uma <table> nativa, então a
+     estrutura de tabela continua íntegra para quem usa leitor de tela.
+     --------------------------------------------------------------------- */
+  .indicator-table { overflow-x: visible; }
+  /* Posição explícita em vez de fluxo automático: com a meta ocupando as duas
+     colunas, a situação era empurrada para uma quarta linha e metade da largura
+     do cartão ficava vazia. Assim o eixo e a situação dividem a mesma faixa. */
+  .indicator-table-row { min-width: 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; padding: 16px 18px; }
+  .indicator-name-cell { grid-area: 1 / 1 / 2 / -1; }
+  .indicator-axis-cell { grid-area: 2 / 1 / 3 / 2; }
+  .indicator-status-cell { grid-area: 2 / 2 / 3 / -1; }
+  .indicator-goal-cell { grid-area: 3 / 1 / 4 / -1; }
+  /* `display: none` apagaria os quatro columnheader que dão nome às células;
+     escondido só visualmente, o cabeçalho continua nomeando a tabela.
+     `min-width: 0` junto: o piso de 820px da regra base vence sobre `width` e o
+     cabeçalho escondido continuaria esticando a página em quase o dobro dela. */
+  .indicator-table-head { position: absolute; width: 1px; min-width: 0; height: 1px; padding: 0; overflow: hidden; border: 0; clip-path: inset(50%); white-space: nowrap; }
+  .indicator-name-cell span { max-width: none; white-space: normal; }
+  /* A meta encostada na borda direita do cartão passava de 100 caracteres por
+     linha no tablet em paisagem. */
+  .indicator-goal-cell span { max-width: 92ch; }
+  /* Sem o cabeçalho à vista, o texto da meta fica sem referência. */
+  .indicator-goal-cell::before { content: "Meta"; display: block; margin-bottom: 4px; color: var(--tinta-4); font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .indicator-goal-cell span { -webkit-line-clamp: 3; }
+  .indicator-status-cell { text-align: left; }
+
+  .indicator-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .indicator-detail-summary > div:nth-child(3) { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
+  .indicator-detail-summary > div:nth-child(4) { border-top: 1px solid var(--linha-2); }
+  .indicator-detail-summary > div:nth-child(5) { grid-column: 1 / -1; padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
+  .indicator-detail-top { grid-template-columns: 1fr; }
+  .indicator-detail-top .indicator-detail-block + .indicator-detail-block { margin-top: 24px; padding-top: 24px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
+  .indicator-detail-lower { grid-template-columns: 1fr; }
+  .indicator-detail-aside { margin-top: 28px; padding-top: 28px; padding-left: 0; border-top: 1px solid var(--linha); border-left: 0; }
+}
+
+/* Alvos de toque. A consulta é pelo tipo de ponteiro, e não pela largura: um
+   tablet em paisagem tem 1024px de tela e continua sendo operado com o dedo,
+   enquanto uma janela estreita no computador segue com o mouse. 44px é o mínimo
+   confortável, e estes quatro estavam abaixo disso. O da bandeira da região é
+   ampliado por um ::after invisível, para não mudar o desenho dela sobre o mapa. */
+@media (pointer: coarse) {
+  .filter-option { min-height: 44px; }
+  .status-filter { min-height: 44px; padding-inline: 14px; }
+  .indicator-pagination button { min-height: 44px; }
+  .goals-flag.map-scope { overflow: visible; }
+  .goals-flag.map-scope::after { content: ""; position: absolute; inset: -9px; }
+  .goals-flag.map-scope img { border-radius: 3px; }
+  .goals-detail-close { width: 44px; height: 44px; }
+  .sidebar-tabs button { min-height: 56px; }
+  .goals-year-dropdown .dropdown-toggle { min-height: 44px; }
+
+  /* Estes três são texto sublinhado ou uma bandeira pequena: crescer a caixa
+     mudaria o desenho, então quem cresce é a área sensível, num ::after
+     invisível. Mesma solução já usada na bandeira da região sobre o mapa. */
+  .map-indicator-card a, .text-button { position: relative; }
+  .map-indicator-card a::after, .text-button::after { content: ""; position: absolute; inset: -13px -6px; }
+
+  /* As bandeiras dos estados ficam lado a lado com 5px de vão: ampliar também na
+     horizontal faria a área de uma invadir a da vizinha e o toque cairia no
+     estado errado. Por isso a folga é só vertical, sobre uma bandeira um pouco
+     mais alta. */
+  .goals-flag { position: relative; height: 34px; overflow: visible; }
+  .goals-flag img { border-radius: 3px; }
+  .goals-flag::after { content: ""; position: absolute; inset: -6px 0; }
+
+  /* Navegação: são os dois alvos mais usados do aparelho e ficavam em 38px
+     dentro de uma barra de 68px, que tem folga de sobra. */
+  .brand { min-height: 44px; }
+  /* Recheio em vez de `min-height`: o botão é `display: block` e a altura mínima
+     deixaria o rótulo colado no topo da caixa. E mexer no `display` aqui o faria
+     reaparecer nas telas largas com toque, onde a navegação já está à vista. */
+  .menu-button { padding-block: 11px; }
+  .indicator-detail-back { position: relative; }
+  .indicator-detail-back::after { content: ""; position: absolute; inset: -7px -8px; }
 }
 
 @media (max-width: 920px) {
@@ -822,8 +945,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .topbar-actions { display: none; }
   .section-shell { width: 100%; padding-inline: 20px; }
   .select-wrap { width: 100%; flex-basis: auto; }
-  .panorama-heading { align-items: start; flex-direction: column; }
-  .map-controls { width: min(100%, 484px); flex: none; }
   .select-wrap.is-year { width: 100%; }
   /* ---------------------------------------------------------------------
      Fluxo corrido: uma coluna só, com o mapa preso abaixo da topbar enquanto
@@ -839,6 +960,11 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* `align-items: stretch` desfaz o `start` que a grade de duas colunas usa para
      encostar os cards no topo: em coluna única ele passaria a encolher cada
      bloco até o conteúdo, e a legenda do mapa ficava com 206px de 362. */
+  /* A altura do mapa e a da topbar entram como variáveis porque quatro regras
+     dependem delas — o próprio mapa, o topo do bloco fixo, o topo da legenda e
+     a margem de rolagem do painel. Antes o mesmo `clamp()` estava escrito em
+     dois lugares com a observação de que precisavam andar juntos; agora andam. */
+  .dashboard-grid { --topo-fixo: 68px; --mapa-altura: clamp(180px, 32vh, 300px); }
   .dashboard-grid { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
   .dashboard-primary, .map-card, .map-body { display: contents; }
   .card-heading.panorama-heading { order: 1; }
@@ -850,57 +976,21 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* O card branco morreu junto com o `display: contents` do `.map-card` e volta
      aqui só em volta do mapa. O fundo opaco não é decoração: sem ele o conteúdo
      rolaria visível através dos vazios do SVG. */
-  .map-canvas { position: sticky; top: 68px; z-index: 5; padding: 10px 12px 12px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
+  .map-canvas { position: sticky; top: var(--topo-fixo); z-index: 5; margin-bottom: -14px; padding: 10px 12px 8px; border: 1px solid var(--linha); border-bottom: 0; border-radius: 14px 14px 0 0; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
+  /* A legenda dá nome à escala de cores do mapa: solta na areia, ela lia como um
+     rodapé perdido e sumia assim que a página rolava, deixando o mapa fixo sem
+     nenhuma explicação da rampa. Presa logo abaixo do mapa e com a mesma moldura,
+     as duas peças formam um cartão só e permanecem juntas na rolagem. */
+  .map-legend { position: sticky; top: calc(var(--topo-fixo) + var(--mapa-altura) + 18px); z-index: 5; min-height: 0; margin-bottom: 4px; padding: 9px 14px 11px; border: 1px solid var(--linha); border-top: 1px solid var(--linha-2); border-radius: 0 0 14px 14px; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
   /* Orçamento de tela: 68px de topbar mais o mapa deixam mais da metade da
      altura para o que rola por baixo. */
-  #map { height: clamp(180px, 32vh, 300px); min-height: 0; }
+  #map { height: var(--mapa-altura); min-height: 0; }
   .dashboard-sidebar { position: static; height: auto; max-height: none; }
-  /* O painel para logo abaixo do mapa fixo, não debaixo dele. O cálculo repete
-     a altura do mapa de propósito: os dois valores precisam andar juntos. */
-  .dashboard-sidebar { scroll-margin-top: calc(68px + clamp(180px, 32vh, 300px) + 34px); }
+  /* O painel para logo abaixo do mapa fixo, não debaixo dele. */
+  .dashboard-sidebar { scroll-margin-top: calc(var(--topo-fixo) + var(--mapa-altura) + 74px); }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
   .overview { grid-template-columns: repeat(2, 1fr); }
   .indicators-workspace { grid-template-columns: 1fr; }
-  /* ---------------------------------------------------------------------
-     A lista de indicadores vira cartão empilhado. O piso de 820px obrigava
-     a rolar cerca de 700px na horizontal para ler uma linha inteira, dentro
-     de um contêiner de ~350px. Só muda o `display`: os papéis são ARIA
-     explícitos em <div>/<article>, não uma <table> nativa, então a estrutura
-     de tabela continua íntegra para quem usa leitor de tela.
-     --------------------------------------------------------------------- */
-  .indicator-table { overflow-x: visible; }
-  /* Alvos de toque: 44px é o mínimo confortável, e estes três estavam abaixo
-     disso. O da bandeira da região é ampliado por um ::after invisível, para
-     não mudar o desenho dela sobre o mapa. */
-  .filter-option { min-height: 44px; }
-  .status-filter { min-height: 44px; padding-inline: 14px; }
-  .indicator-pagination button { min-height: 44px; }
-  .goals-flag.map-scope { overflow: visible; }
-  .goals-flag.map-scope::after { content: ""; position: absolute; inset: -9px; }
-  .goals-flag.map-scope img { border-radius: 3px; }
-  .indicator-table-row { min-width: 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; padding: 16px 18px; }
-  /* `display: none` apagaria os quatro columnheader que dão nome às células;
-     escondido só visualmente, o cabeçalho continua nomeando a tabela. */
-  /* `min-width: 0` junto: o piso de 820px da regra base vence sobre `width` e o
-     cabeçalho escondido continuaria esticando a página em quase o dobro dela. */
-  .indicator-table-head { position: absolute; width: 1px; min-width: 0; height: 1px; padding: 0; overflow: hidden; border: 0; clip-path: inset(50%); white-space: nowrap; }
-  .indicator-name-cell, .indicator-goal-cell { grid-column: 1 / -1; }
-  .indicator-name-cell span { max-width: none; white-space: normal; }
-  /* Sem o cabeçalho à vista, o texto da meta fica sem referência. */
-  .indicator-goal-cell::before { content: "Meta"; display: block; margin-bottom: 4px; color: var(--tinta-4); font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-  .indicator-goal-cell span { -webkit-line-clamp: 3; }
-  .indicator-status-cell { text-align: left; }
-  .indicator-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .indicator-detail-summary > div:nth-child(3) { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-  .indicator-detail-summary > div:nth-child(4) { border-top: 1px solid var(--linha-2); }
-
-  .indicator-detail-summary > div:nth-child(5) { grid-column: 1 / -1; padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-  .indicator-detail-top { grid-template-columns: 1fr; }
-
-  .indicator-detail-top .indicator-detail-block + .indicator-detail-block { margin-top: 24px; padding-top: 24px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-
-  .indicator-detail-lower { grid-template-columns: 1fr; }
-  .indicator-detail-aside { margin-top: 28px; padding-top: 28px; padding-left: 0; border-top: 1px solid var(--linha); border-left: 0; }
   .panorama-heading h1 { font-size: clamp(26px, 4.4vw, 32px); }
   .goals-map-head { grid-template-columns: 1fr; gap: 10px; }
   #goals-meta-name { min-height: 2.3em; }
@@ -913,8 +1003,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .goals-row-ler { grid-column: 2; grid-row: 1; }
   .goals-row-bar { grid-column: 1 / -1; grid-row: 2; }
   .goals-row-open { grid-column: 3; grid-row: 1; }
-  .goals-detail { position: static; max-height: none; margin: 0 0 14px; padding: 18px 16px 20px; overflow: visible; }
-  .filters-card { position: static; display: grid; grid-template-columns: repeat(2, 1fr); }
+  .goals-detail { position: static; max-height: none; margin: 0 0 14px; padding: 18px 16px 20px; overflow: visible; scroll-margin-top: 84px; }
+  .filters-card { position: static; }
+  .filters-body { display: grid; grid-template-columns: repeat(2, 1fr); }
   .filter-group + .filter-group { padding-top: 0; padding-left: 18px; border-top: 0; border-left: 1px solid var(--linha-2); }
   .export-group { grid-column: 1 / -1; padding-top: 18px !important; padding-left: 0 !important; border-top: 1px solid var(--linha-2) !important; border-left: 0 !important; display: grid; grid-template-columns: repeat(3, 1fr); }
   .methodology-page { padding-top: 42px; }
@@ -927,6 +1018,30 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .methodology-index-note, .methodology-index-download { display: none; }
   .method-facts { grid-template-columns: repeat(3, 1fr); }
   .methodology-definition p { grid-column: 1 / -1; padding-top: 4px; }
+}
+
+/* ---------------------------------------------------------------------------
+   Tablet em retrato (621–920px). Herda o fluxo corrido de uma coluna, que é o
+   arranjo certo aqui, mas não o orçamento de tela do celular: numa caixa de
+   ~715px de largura, um mapa de 300px de altura desenhava a projeção com 430px
+   e deixava quase 300px de branco de cada lado. As demais grades também têm
+   largura para mais de duas colunas.
+   --------------------------------------------------------------------------- */
+@media (min-width: 621px) and (max-width: 920px) {
+  .dashboard-grid { --mapa-altura: clamp(300px, 40vh, 430px); }
+  .overview { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .overview article { min-height: 132px; }
+  .metric-value { font-size: 26px; }
+  .metric-value.compact { font-size: 20px; }
+  /* Três colunas cabem: em duas, cada grupo de filtros ficava com metade da
+     largura e a lista de eixos quebrava cada rótulo em três linhas. */
+  .filters-body { grid-template-columns: repeat(3, 1fr); }
+  .export-group { grid-template-columns: repeat(5, 1fr); }
+  .goals-row { grid-template-columns: minmax(0, 1fr) minmax(150px, 260px) auto 14px; row-gap: 0; }
+  .goals-row-name { grid-column: 1; }
+  .goals-row-bar { grid-column: 2; grid-row: 1; }
+  .goals-row-ler { grid-column: 3; }
+  .goals-row-open { grid-column: 4; }
 }
 
 @media (max-width: 620px) {
@@ -947,21 +1062,31 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .dropdown-menu { width: 100%; }
   .map-controls { grid-template-columns: 1fr; }
   .map-card, .ranking-card { padding: 18px 16px 10px; }
-  .card-heading { align-items: start; flex-direction: column; }
+  /* Sem `flex-direction: column`: o único cabeçalho desta classe é o do Panorama,
+     que já quebra sozinho pelo `flex-wrap`, e numa coluna o `flex-basis: 360px`
+     do bloco do título passa a valer como altura mínima — o cabeçalho abria uma
+     tela inteira de vazio antes dos seletores. */
+  .card-heading { align-items: start; }
   /* `.map-card` e `.map-body` já viraram `display: contents` na consulta de
      920px — padding e colunas aqui não teriam efeito. O que resta é o mapa, que
      precisa manter a altura contida: com `min-height: 340px` ele voltaria a
      ocupar quase toda a tela do celular. */
   .map-indicator-card { margin-top: 4px; }
-  #map { height: clamp(170px, 30vh, 260px); min-height: 0; }
-  .dashboard-sidebar { scroll-margin-top: calc(68px + clamp(170px, 30vh, 260px) + 30px); }
+  /* Só a variável muda: as quatro regras que dependem da altura do mapa
+     acompanham sozinhas. */
+  .dashboard-grid { --mapa-altura: clamp(170px, 30vh, 260px); }
   .map-legend { flex-wrap: wrap; }
   .legend-ramp { width: auto; flex: 1; }
   .overview { grid-template-columns: 1fr 1fr; }
   .overview article { min-height: 116px; }
   .metric-value { font-size: 27px; }
   .ranking-panel-head { align-items: start; flex-direction: column; }
-  .rank-item { grid-template-columns: 25px 28px minmax(80px, 1fr) minmax(98px, 0.8fr); gap: 6px; }
+  /* Com `.dashboard-sidebar` no seletor: a regra base para o ranking dentro da
+     lateral tem especificidade maior e vencia a versão estreita daqui, então a
+     linha continuava pedindo 274px de colunas. Somadas às bordas e ao recheio do
+     cartão, davam 320px — a largura inteira de um aparelho pequeno, sem contar a
+     margem da página, e a coluna toda escorria para fora da tela. */
+  .dashboard-sidebar .rank-item, .rank-item { grid-template-columns: 24px 26px minmax(64px, 1fr) minmax(88px, 0.8fr); gap: 5px; }
   .rank-item img { height: 18px; }
   .rank-name b { font-size: 11px; }
   .rank-measure b { font-size: 9px; }
@@ -971,8 +1096,16 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .state-summary-grid div + div { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   footer { align-items: flex-start; flex-direction: column; padding-inline: 20px; }
   .indicators-page { padding-bottom: 64px; }
-  .indicator-pagination { align-items: flex-start; flex-direction: column; }
-  .indicator-pagination-controls { width: 100%; flex-wrap: wrap; }
+  /* Anterior e Próxima ancorados nas pontas, com as oito páginas rolando entre
+     eles. Em linha única os botões de 44px não cabiam em 390px e "Próxima"
+     descia sozinha para uma terceira linha, longe do par a que pertence. */
+  .indicator-pagination { align-items: stretch; flex-direction: column; gap: 12px; }
+  .indicator-pagination-controls { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
+  /* `safe` recua para o começo quando a faixa transborda: com `center` puro as
+     primeiras páginas ficavam fora da área rolável e a página atual, que é a 1,
+     não podia ser alcançada. */
+  .indicator-page-numbers { min-width: 0; overflow-x: auto; justify-content: safe center; scrollbar-width: none; }
+  .indicator-page-numbers::-webkit-scrollbar { display: none; }
   .panorama-heading h1 { font-size: 27px; white-space: normal; }
   .goals-page { padding-top: 30px; }
   .goals-map-card { padding: 18px 16px 14px; }
@@ -981,10 +1114,19 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .goals-list-card { padding: 18px 10px 12px 16px; }
   .goals-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .goals-detail-summary div:last-child { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid var(--linha-2); }
-  .filters-card { display: flex; }
+  /* Painel recolhível: aberto, os filtros e os cinco downloads somam cerca de
+     600px e a lista de indicadores só começava abaixo disso. Fechado por padrão,
+     com o resumo do que está filtrado no próprio botão. */
+  .filters-card { padding: 4px 18px; }
+  .filters-toggle { display: flex; }
+  .filters-card:not(.is-open) .filters-body { display: none; }
+  .filters-body { display: flex; padding-bottom: 20px; }
   .filter-group + .filter-group { padding-top: 18px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .export-group { display: flex; }
-  .indicator-table-row { grid-template-columns: 1fr; padding: 14px 16px; }
+  /* Uma coluna só: as posições explícitas da consulta de 1180px criariam uma
+     segunda coluna implícita para a situação e o cartão voltaria a ter duas. */
+  .indicator-table-row { grid-template-columns: minmax(0, 1fr); padding: 14px 16px; }
+  .indicator-name-cell, .indicator-axis-cell, .indicator-status-cell, .indicator-goal-cell { grid-area: auto; }
   .indicators-toolbar { align-items: stretch; flex-direction: column; }
   .indicator-search { width: 100%; }
   .indicator-detail-header { flex-direction: column; align-items: flex-end; gap: 0; padding: 18px 18px 20px; }
@@ -1013,6 +1155,22 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-guidance-grid { grid-template-columns: 1fr; }
 }
 
+/* Celulares estreitos (iPhone SE e semelhantes). A barra tem quatro peças e o
+   botão de vista precisa de duas linhas para o rótulo; sem apertá-lo, o logo era
+   comprimido a metade da largura declarada para abrir espaço. */
+@media (max-width: 400px) {
+  /* O vão de 34px entre as peças da barra é o que forçava a marca a encolher:
+     somado às quatro peças ele não cabe em 320px. Com o vão curto a marca para
+     de ser comprimida e o botão de vista fica com a folga, que ele resolve
+     quebrando o rótulo em duas linhas. */
+  .topbar-inner { gap: 10px; }
+  .brand { flex: none; }
+  .brand-logo { width: 104px; height: 38px; flex: none; }
+  .vista-toggle { padding: 0 9px; font-size: 11px; line-height: 1.25; }
+  .vista-toggle + .menu-button { margin-left: 10px; }
+  .menu-button { font-size: 14px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* O `scroll-behavior: smooth` do topo do arquivo é global e valia até para
      quem pediu menos movimento — inclusive nos saltos que o JS provoca. */
@@ -1037,4 +1195,5 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .indicator-table-row:hover { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
   .indicator-table-row:hover .indicator-name-cell small i { transform: translateX(3px); }
   .goals-flag:hover { border-color: var(--mata-500); }
+  button.goals-row:hover { z-index: 1; box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
 }

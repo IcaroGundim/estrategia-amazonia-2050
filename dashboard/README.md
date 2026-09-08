@@ -17,7 +17,8 @@ src/
   pages/*.astro          uma página por rota; só o conteúdo do <main>
   scripts/*.js           JS de cliente, um módulo por página
   scripts/shared.js      escape, number, flagImage, readResponse, bindMenu
-  styles/global.css      folha única, importada pelo layout
+  styles/global.css      desenho de computador, importado pelo layout
+  styles/mobile.css      camada de celular e tablet, importada depois dela
 public/                  copiado literalmente para dist/ (data, flags, downloads, og)
 build-static.mjs         gera public/data/* a partir das fontes locais
 server.mjs               pipeline de dados (CSVs, shapefile, catálogo)
@@ -62,65 +63,134 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 
 ## Celular e tablet
 
-O painel tem quatro faixas de largura, e a do meio era a que faltava. Até aqui havia o
-computador e o **fluxo corrido** de uma coluna (≤920px), com o mapa preso abaixo da topbar
-enquanto o painel e o ranking rolam por baixo dele. O que ficava sem tratamento era o
-**tablet em paisagem** (921–1180px), que recebia o desenho de computador espremido: o
-título e os 484px de seletores não cabiam lado a lado e o texto de abertura escorria por
-baixo do rótulo do seletor; a linha da lista de indicadores mantinha o piso de 820px, então
-a coluna "Situação" ficava inteira fora da tela sem nenhum sinal de que existia; e
-"5,1 mi km²" aparecia como "5,1 mi k…" na lateral. Agora a consulta de 1180px empilha o
-cabeçalho, empilha o mapa e a ficha do indicador, transforma cada linha da lista em cartão
-com as quatro células visíveis e deixa os valores da lateral quebrarem em duas linhas em
-vez de sumirem por reticências.
+O painel tem duas camadas para telas pequenas, em dois arquivos, e a diferença
+entre elas é a razão de existirem separadas.
 
-O **tablet em retrato** (621–920px) herda o fluxo de uma coluna, que é o arranjo certo,
-mas não o orçamento de tela do celular: numa caixa de ~715px, um mapa de 300px de altura
-desenhava a projeção com 430px e deixava quase 300px de branco de cada lado. A altura do
-mapa passou a ser uma variável (`--mapa-altura`), consumida também pelo topo do bloco
-fixo, pelo topo da legenda e pela margem de rolagem do painel — antes o mesmo `clamp()`
-estava escrito em dois lugares, com a observação de que precisavam andar juntos. A legenda
-da escala de cores deixou de flutuar solta na areia e passou a ficar presa logo abaixo do
-mapa, com a mesma moldura: as duas peças formam um cartão só e não se separam na rolagem.
+A `global.css` **reorganiza o desenho de computador**: colunas que empilham,
+grades que viram lista, tabelas que viram cartão. Isso resolve o arranjo.
 
-A **Visão Geral** tem duas mecânicas para o mesmo HTML, e o `metodologia.js` troca entre
-elas na virada da consulta de mídia. Do tablet para cima é o carrossel de cinco lâminas.
-No celular (≤620px) as cinco seções viram um **documento contínuo**: a lâmina tem altura
-fixa e o texto rolava dentro dela, mas essa barra de rolagem interna não é desenhada em
-aparelho de toque, então a leitura terminava cortada no meio de uma frase sem nenhum sinal
-de que havia mais. No documento a fotografia abre cada seção como faixa, o texto vem
-inteiro e a barra de seções vira índice fixo no topo. No tablet a lâmina deixou de ter
-altura fixa e passou a crescer com o texto — em 768px a primeira precisa de cerca de 870px
-e a caixa tinha 804, o que cortava o fim da linha do tempo.
+A `mobile.css` trata do **idioma do aparelho de mão**, que não sai de encolher a
+página. Ela é importada pelo layout logo depois da geral, vence os empates de
+especificidade sem `!important`, e não tem uma única regra fora de consulta de
+mídia — no computador o arquivo é inerte. São duas faixas: ≤920px para o que vale
+em celular e em tablet em retrato (navegação e tipografia) e ≤620px para as
+composições que só fazem sentido no celular.
 
-Na lista de indicadores, os filtros e os cinco downloads somam cerca de 600px e no celular
-empurravam a lista para bem abaixo da dobra. Viraram um painel recolhível, fechado por
-padrão, com o resumo do que está filtrado no próprio botão — a lista agora começa a 184px
-do topo. Em `/metas`, tocar numa meta abria o detalhe como último bloco da página, abaixo
-das doze linhas: agora a tela vai até ele, pela mesma regra que o painel do Panorama já
-usava em `app.js`.
+### O que a camada de aparelho traz
 
-Os alvos de toque seguem a consulta `(pointer: coarse)`, e não a largura: um tablet em
-paisagem tem 1024px e continua sendo operado com o dedo, enquanto uma janela estreita no
-computador segue com o mouse. Onde crescer a caixa mudaria o desenho — texto sublinhado,
-bandeira de estado —, quem cresce é a área sensível, num `::after` invisível. Nas bandeiras
-a folga é só vertical: elas ficam lado a lado com 5px de vão, e ampliar na horizontal faria
-a área de uma invadir a da vizinha.
+**Barra inferior de navegação.** No lugar do botão "Menu", que escondia as quatro
+rotas atrás de um toque e de uma gaveta. Na barra elas ficam sempre à vista,
+indicam onde se está sem depender do título da página e caem na faixa que o
+polegar alcança sem trocar a pegada. O botão de menu sai de cena abaixo de 920px;
+acima disso ele continua. Com o aparelho deitado (altura ≤460px) a barra deixa de
+ser fixa e rola com a página, porque ali cada pixel de altura conta.
 
-**Conferência** — `node scripts/conferir-mobile.mjs` percorre seis larguras (320, 390, 768,
-834, 1024 e 1180px) e nove cenas, incluindo as que só existem depois de um toque (estado
-selecionado no mapa, aba de comparação, detalhe da meta, ficha do indicador, filtros
-abertos). Ele acusa rolagem horizontal, elemento que transborda sem um pai que o recorte,
-conteúdo cortado em caixa sem rolagem própria, alvo de toque baixo e erro de JavaScript, e
-grava as capturas em `.shots/conferencia/`. O playwright não é dependência do projeto: vem
+**Escala tipográfica.** O painel tinha cerca de sessenta regras com texto entre 8
+e 10,5px. Nessa faixa a densidade é uma qualidade num monitor a 60cm e um defeito
+num aparelho na mão: o rótulo some, o valor perde a referência e a tela lê como
+uma redução fotográfica de outra coisa. Os rótulos sobem para 10,5–12px e os
+valores acompanham. Nenhuma regra muda cor, peso ou espaçamento entre letras — só
+corpo, para preservar a hierarquia que o desenho já estabelece.
+
+**Menus como folhas inferiores.** Ancorado ao gatilho, o menu de indicador abria
+no terço superior da tela, longe do polegar e espremido contra a borda. Como
+folha ele sobe da base, ocupa a largura inteira, escurece o resto e traz opções de
+60px. Nenhuma linha de JavaScript mudou: o componente não posiciona nada, só
+alterna `is-open`. O fundo escuro é um pseudoelemento do *pai* do menu, e não
+dele — o fecho ao tocar fora é `if (!root.contains(event.target)) close()`, e um
+fundo que pertencesse ao próprio `.dropdown` contaria como "dentro", de modo que a
+folha nunca mais fecharia ao ser tocada fora. `:has()` permite pendurá-lo em quem
+está por fora.
+
+**Os quatro números da região viram um trilho.** Em duas colunas ocupavam 260px de
+altura e ainda quebravam "29,7 mi pessoas" em duas linhas. Deitados num trilho que
+desliza, com `scroll-snap`, os quatro custam a altura de um. O trilho sangra até a
+borda da tela: sem isso não se lê como deslizável.
+
+**Metas e indicadores viram listas de cartão.** Eram linhas dentro de um cartão
+branco só, e numa tela estreita a divisa entre um item e o próximo é um filete de
+1px — a lista inteira lia como um bloco contínuo de texto. Cada item passou a ser
+um cartão com respiro entre eles. No catálogo, um cartão ocupava quase 600px, o
+que dava uma linha e meia de acervo por tela em 59 indicadores; a meta encolheu de
+três linhas para duas e a fonte para uma, e o cartão caiu para 248px sem perder
+nenhum campo.
+
+**Cabeçalho curto.** O título da rota repetia o que a barra inferior já informa.
+Ele e o texto de abertura gastavam a primeira tela antes do primeiro dado.
+
+### O que a camada responsiva corrigiu
+
+O **tablet em paisagem** (921–1180px) era a faixa sem tratamento: recebia o
+desenho de computador espremido. O título e os 484px de seletores não cabiam lado
+a lado e o texto de abertura escorria por baixo do rótulo do seletor; a linha da
+lista de indicadores mantinha o piso de 820px, então a coluna "Situação" ficava
+inteira fora da tela sem nenhum sinal de que existia; e "5,1 mi km²" aparecia como
+"5,1 mi k…" na lateral. A consulta de 1180px empilha o cabeçalho, empilha o mapa e
+a ficha do indicador, transforma cada linha da lista em cartão com as quatro
+células visíveis e deixa os valores da lateral quebrarem em duas linhas em vez de
+sumirem por reticências.
+
+O encavalamento do cabeçalho não era só de tablet: em 1280px sobravam cerca de
+700px para 850px de conteúdo e o defeito se repetia. Agora o cabeçalho quebra por
+`flex-wrap`, com base de 360px no bloco do título, e os seletores descem para a
+linha seguinte exatamente quando param de caber — sem depender de ponto de corte,
+conferido de 320 a 1920px. Uma armadilha ficou registrada no código: enquanto
+houvesse um `flex-direction: column` em qualquer consulta, aquela base de 360px
+passava a valer como **altura** mínima e o cabeçalho abria uma tela de vazio.
+
+O **tablet em retrato** (621–920px) herda o fluxo de uma coluna, que é o arranjo
+certo, mas não o orçamento de tela do celular: numa caixa de ~715px, um mapa de
+300px de altura desenhava a projeção com 430px e deixava quase 300px de branco de
+cada lado. A altura do mapa passou a ser uma variável (`--mapa-altura`), consumida
+também pelo topo do bloco fixo, pelo topo da legenda e pela margem de rolagem do
+painel — antes o mesmo `clamp()` estava escrito em dois lugares, com a observação
+de que precisavam andar juntos. A legenda da escala de cores deixou de flutuar
+solta na areia e passou a ficar presa logo abaixo do mapa, com a mesma moldura.
+
+A **Visão Geral** tem duas mecânicas para o mesmo HTML, e o `metodologia.js` troca
+entre elas na virada da consulta de mídia. Do tablet para cima é o carrossel de
+cinco lâminas. No celular (≤620px) as cinco seções viram um **documento
+contínuo**: a lâmina tem altura fixa e o texto rolava dentro dela, mas essa barra
+de rolagem interna não é desenhada em aparelho de toque, então a leitura terminava
+cortada no meio de uma frase sem nenhum sinal de que havia mais. No tablet a
+lâmina deixou de ter altura fixa e passou a crescer com o texto — em 768px a
+primeira precisa de cerca de 870px e a caixa tinha 804.
+
+Na lista de indicadores, os filtros e os cinco downloads somam cerca de 600px e no
+celular empurravam a lista para bem abaixo da dobra. Viraram um painel recolhível,
+fechado por padrão, com o resumo do que está filtrado no próprio botão. Em
+`/metas`, tocar numa meta abria o detalhe como último bloco da página, abaixo das
+doze linhas: agora a tela vai até ele, pela mesma regra que o painel do Panorama
+já usava em `app.js`.
+
+Os alvos de toque seguem a consulta `(pointer: coarse)`, e não a largura: um
+tablet em paisagem tem 1024px e continua sendo operado com o dedo, enquanto uma
+janela estreita no computador segue com o mouse. Onde crescer a caixa mudaria o
+desenho — texto sublinhado, bandeira de estado —, quem cresce é a área sensível,
+num `::after` invisível. Nas bandeiras a folga é só vertical: elas ficam lado a
+lado com 5px de vão, e ampliar na horizontal faria a área de uma invadir a da
+vizinha.
+
+### Conferência
+
+`node scripts/conferir-mobile.mjs` percorre seis larguras (320, 390, 768, 834,
+1024 e 1180px) e nove cenas, incluindo as que só existem depois de um toque —
+estado selecionado no mapa, aba de comparação, detalhe da meta, ficha do
+indicador, filtros abertos. Ele acusa rolagem horizontal, elemento que transborda
+sem um pai que o recorte, conteúdo cortado em caixa sem rolagem própria, texto
+truncado por reticências, alvo de toque baixo e erro de JavaScript, e grava as
+capturas em `.shots/conferencia/`. A verificação de reticências existe por causa
+da escala tipográfica: aumentar o corpo é exatamente o que faz um rótulo deixar de
+caber numa caixa de largura fixa. O playwright não é dependência do projeto — vem
 do cache do `npx`, e o caminho entra por `PLAYWRIGHT_PATH`.
 
-Dois pontos de contraste ficam registrados sem correção, porque são escolhas de paleta e
-não defeitos de arranjo: o cinza de texto secundário (`--tinta-4`) dá 3,86:1 sobre o papel,
-abaixo dos 4,5:1 da WCAG AA para texto pequeno, e é usado no site inteiro; e o ocre sobre
-o verde-mata-500 do primeiro segmento do fluxo de governança dá 2,75:1. O que era defeito
-foi corrigido: a nota "Fórmula não informada na ficha técnica" usava o cinza de fundo claro
-dentro do cartão de método, que é verde escuro, e dava 1,2:1 — existia no HTML e não se lia.
+Dois pontos de contraste ficam registrados sem correção, porque são escolhas de
+paleta e não defeitos de arranjo: o cinza de texto secundário (`--tinta-4`) dá
+3,86:1 sobre o papel, abaixo dos 4,5:1 da WCAG AA para texto pequeno, e é usado no
+site inteiro; e o ocre sobre o verde-mata-500 do primeiro segmento do fluxo de
+governança dá 2,75:1. O que era defeito foi corrigido: a nota "Fórmula não
+informada na ficha técnica" usava o cinza de fundo claro dentro do cartão de
+método, que é verde escuro, e dava 1,2:1 — existia no HTML e não se lia.
 
 ## Fontes e períodos
 

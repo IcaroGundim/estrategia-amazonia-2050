@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+  <defs>
+    <pattern id="hachura" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><path d="M0 0v9" stroke="#71917c" stroke-width=".7"/></pattern>
+  </defs>
+  <path d="M0 25C110 0 130 180 233 159S287 1 399 24s98 98 241 34v210c-147 28-164-102-245-90s-73 117-176 94S100 85 0 114Z" fill="#dce5d7"/>
+  <path d="M0 25C110 0 130 180 233 159S287 1 399 24s98 98 241 34v210c-147 28-164-102-245-90s-73 117-176 94S100 85 0 114Z" fill="url(#hachura)"/>
+  <g stroke="#809c83" stroke-width="1">
+    <path d="M-5 8C112-20 129 163 231 142S285-17 402 7 500 103 645 40"/>
+    <path d="M-5 132C97 102 127 265 217 287s114-114 180-92 114 112 248 89"/>
+    <path d="M-5 43C97 18 134 198 235 178S292 21 398 43s105 91 247 33"/>
+    <path d="M-5 98C104 68 131 234 224 256s94-120 173-96 105 113 248 90"/>
+  </g>
+  <path d="M-5 69C102 39 138 225 234 211S298 46 394 76s118 91 251 30v35c-134 42-150-37-253-45s-58 160-162 144S102 62-5 86Z" fill="#2d6855"/>
+  <path d="M-5 77C102 45 138 234 230 223S302 58 394 86s121 89 251 39" stroke="#bfd4c2" stroke-width="2"/>
+  <g stroke="#2d6855" stroke-width="3" stroke-linecap="round">
+    <path d="M172 189C176 122 122 89 149 12M151 67l-45-24M151 67l33-40"/>
+    <path d="M326 133c41 18 37 91 95 137m-39-56 50 8m-50-8 6 57"/>
+    <path d="M501 130c23 25 51 58 108 63m-38-11 19 36"/>
+  </g>
+  <g fill="#476e56">
+    <circle cx="50" cy="159" r="2"/><circle cx="62" cy="170" r="2"/><circle cx="42" cy="174" r="2"/>
+    <circle cx="477" cy="31" r="2"/><circle cx="488" cy="22" r="2"/><circle cx="490" cy="37" r="2"/>
+  </g>
+</svg>
