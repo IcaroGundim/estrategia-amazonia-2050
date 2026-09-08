@@ -144,6 +144,12 @@ Dos que têm base secundária, ficou o registro do que foi sondado nesta rodada 
 | I4.2.1 Transportes | CNT/DNIT | A nota do catálogo continua válida: o painel da CNT é Power BI sem API e o vgeo do DNIT só publica geometria, sem estado de conservação. |
 | I1.5.7 e I1.5.8 (CAR) | SICAR | O `car.gov.br` exige TLS legado para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`); com isso a conexão abre, mas o que o SICAR publica é shapefile por estado e boletim em PDF, não série por UF com o recorte que as fichas pedem. |
 
+O **I2.2.3 (telessaúde) ganhou 15 anos**, 2012-2026, pelo `scripts/eixo2_telessaude_cnes.py`. O catálogo trazia só jul/2026. A fonte é a mesma: CNES via TabNet, filtrando o tipo de estabelecimento 35, "TELESSAUDE". A conferência bateu exatamente — os nove estados e o total de 56 estabelecimentos em jul/2026 são idênticos aos do catálogo.
+
+A consulta é **por município, não por UF**, porque a ficha define o indicador como "municípios com estabelecimento de telessaúde ativo / total de municípios da Amazônia Legal": é preciso contar municípios com ao menos um, e não estabelecimentos. A consulta por município dá os dois de uma vez — a soma das linhas é o total de estabelecimentos e a contagem de linhas com valor é o número de municípios cobertos. A diferença importa: os 56 estabelecimentos de 2026 estão em apenas **40 municípios**. O recorte anual é a competência de dezembro, ou a mais recente no ano corrente, porque estabelecimento é estoque.
+
+A série começa em 2012 e não em 2005, onde começam as competências do CNES, simplesmente porque antes disso não havia estabelecimento desse tipo na região. E o retrato é duro: dos 808 municípios da Amazônia Legal, 16 tinham telessaúde em 2015 e 40 em 2026 — **menos de 5%**. Tocantins e Maranhão seguem em 1% e 2%.
+
 O **I2.2.1 (mortalidade evitável) ganhou 31 anos**, 1996-2026, pelo `scripts/eixo2_mortalidade_evitavel.py`. O catálogo trazia só 2024; o TabNet publica a mesma tabulação desde 1996. A fonte e a definição não mudam: `sim/cnv/evita10uf.def`, cujo título é "Óbitos por causas evitáveis em menores de 5 anos" — a Lista Brasileira de Causas de Mortes Evitáveis no recorte de 0 a 4 anos, que é o que a coleta de 2024 já usava. O incremento é "óbitos por residência", que atribui o óbito ao estado onde a pessoa morava.
 
 Duas notas técnicas sobre o acesso, que custaram tempo: o `tabnet.datasus.gov.br` **exige TLS legado** para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`), e o HTML que ele devolve **não fecha `<TR>` nem `<TD>`**, então a leitura da tabela é por corte no `<TD` e não por casamento de tags. O script descobre os anos lendo o próprio formulário, em vez de fixar a faixa.
@@ -278,6 +284,7 @@ python scripts/agregar_cvli.py                               # Sinesp/VDE → CV
 python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/2022 → saneamento
 python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (2005-2025)
 python scripts/eixo2_mortalidade_evitavel.py                 # SIM/TabNet → óbitos evitáveis (1996-2026)
+python scripts/eixo2_telessaude_cnes.py                      # CNES/TabNet → telessaúde (2012-2026)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
