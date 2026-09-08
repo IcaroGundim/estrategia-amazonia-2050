@@ -32,3 +32,10 @@ Thumbs.db
 
 # Capturas de tela da conferência responsiva (scripts/conferir-mobile.mjs)
 /.shots/
+
+# Auxiliares do LaTeX (o .tex e o .pdf ficam versionados)
+*.aux
+*.toc
+*.out
+*.synctex.gz
+INDICADORES_SEM_DADOS.log

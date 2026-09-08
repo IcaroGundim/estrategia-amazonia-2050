@@ -1,0 +1,338 @@
+% Compilar com: pdflatex INDICADORES_SEM_DADOS.tex  (duas vezes, pelo sumário)
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parskip}{0.6em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.25}
+
+% Colunas de largura fixa alinhadas à esquerda, para as tabelas não estourarem a margem.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title{Indicadores sem dados\\[0.3em]
+  \large Estratégia Amazônia 2050 --- o que falta e por quê}
+\author{Consórcio Amazônia Legal}
+\date{Levantamento de 7 de setembro de 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Do que se trata}
+\addcontentsline{toc}{section}{Do que se trata}
+
+Dos 59 indicadores da matriz de resultados, este documento reúne os que \textbf{não}
+foi possível coletar, com a razão de cada caso. O objetivo é duplo: evitar que a mesma
+busca seja refeita e separar o que depende de articulação institucional do que depende
+apenas de uma chave de acesso ou de esperar um sistema voltar ao ar.
+
+Onde há código HTTP ou medição numérica, a verificação foi feita nesta data --- não é
+repetição de anotação anterior.
+
+\section*{Resumo}
+\addcontentsline{toc}{section}{Resumo}
+
+O catálogo tem \textbf{41 indicadores sem valores coletados}: 27 dependem dos estados e
+14 têm base externa. Desses 14, um foi resolvido --- o IDEB, cuja nota de bloqueio
+estava desatualizada ---, restando 13.
+
+\begin{center}
+\begin{tabular}{L{9.5cm} c c}
+\toprule
+\textbf{Situação} & \textbf{Indicadores} & \textbf{Seção} \\
+\midrule
+Sem base secundária por natureza --- dependem dos estados & 27 & 1 \\
+Base externa existe, mas está bloqueada ou incompleta & 13 & 2 \\
+Dado coletado, série histórica impossível & 4 & 3 \\
+Série obtida, mas não ligada ao painel de propósito & 4 & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+As seções 3 e 4 \textbf{não} fazem parte dos 41: são indicadores que já têm valor no
+painel, mas cuja série esbarra em limite da fonte ou em decisão pendente.
+
+Os indicadores resolvidos nesta rodada --- IDEB, mortalidade evitável, telessaúde,
+focos de calor, PEVS, PIA, RAIS, frequência escolar, atenção primária e P\&D --- não
+aparecem aqui.
+
+\vfill
+\tableofcontents
+\newpage
+
+\section{Dependem dos estados, não de base secundária (27)}
+
+São status administrativos de política estadual: se existe lei, se o plano foi
+aprovado, se a câmara técnica foi instalada, quantos hectares o órgão fundiário
+regularizou. \textbf{Nenhuma varredura de dados abertos resolve isso} --- a informação
+está nas secretarias, e a coleta é por ofício ou pactuação no âmbito do Consórcio.
+
+Não são dados difíceis de achar: são dados que só existem se o estado os produzir e
+entregar.
+
+\begin{longtable}{L{1.5cm} L{7.1cm} L{5.9cm}}
+\toprule
+\textbf{Código} & \textbf{Indicador} & \textbf{Onde está} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Código} & \textbf{Indicador} & \textbf{Onde está} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{3}{l}{\textit{Eixo 1 --- Território, Ambiente e Clima (13)}} \\[0.3em]
+I1.1.1 & ZEE vigente e atualizado & Legislação e portal das secretarias \\
+I1.1.3 & Cooperação técnica PNGATI/PNGTAQ & Estados / Diário Oficial \\
+I1.2.1 & Planos Estaduais de Adaptação aprovados & Diário Oficial / portal \\
+I1.2.2 & PEAs alinhados ao Plano Clima/ENA & Texto do PEA \\
+I1.3.3 & Monitoramento por sensoriamento remoto & Estados \\
+I1.3.8 & PPCDQ vigente & Diário Oficial / portal \\
+I1.5.1 & Regularização de áreas públicas estaduais & Órgãos fundiários estaduais \\
+I1.5.2 & Câmaras Técnicas de Destinação & Órgãos fundiários estaduais \\
+I1.5.3 & Mediação de conflitos fundiários & Órgãos fundiários estaduais \\
+I1.5.4 & Adesão ao SICARF Federativo & Órgãos fundiários estaduais \\
+I1.5.5 & Destinação de florestas públicas estaduais & Órgãos fundiários estaduais \\
+I1.5.6 & Integração das bases fundiárias/ambientais & Órgãos fundiários estaduais \\
+I1.5.7 & Sobreposições de CAR & Órgãos fundiários estaduais \\
+\addlinespace
+\multicolumn{3}{l}{\textit{Eixo 2 --- Pessoas e Bem-estar (1)}} \\[0.3em]
+I2.1.2 & Cobertura de programas de inclusão produtiva & Estados \\
+\addlinespace
+\multicolumn{3}{l}{\textit{Eixo 3 --- Desenvolvimento econômico sustentável (8)}} \\[0.3em]
+I3.2.1 & Cadeias produtivas estruturadas & Estados \\
+I3.3.1 & Política de trabalho verde & Estados \\
+I3.3.2 & Pessoas capacitadas em sociobioeconomia & Estados \\
+I3.3.3 & Programas permanentes de formação técnica & Estados \\
+I3.4.1 & Beneficiários de PSA & Estados --- há caminho parcial, ver seção 2 \\
+I3.4.2 & Operações de PSA e mercados de serviços ecossistêmicos & Estados \\
+I3.5.1 & Política de agregação de valor mineral & Estados \\
+I3.5.2 & Projetos minerais com critérios socioambientais & Estados \\
+\addlinespace
+\multicolumn{3}{l}{\textit{Eixo 5 --- Governança e parcerias (5)}} \\[0.3em]
+I5.1.1 & Financiamento climático captado/executado & Estados \\
+I5.2.1 & Taxa de alavancagem (blended finance) & Estados \\
+I5.3.1 & Arranjo jurídico climático estadual & Estados \\
+I5.3.2 & Interoperabilidade de dados prioritários & Estados \\
+I5.5.3 & Modelos regionais de governança compartilhada & Estados e CAL \\
+\end{longtable}
+
+\section{Base externa existe, mas está bloqueada ou incompleta (13)}
+
+Aqui a fonte é identificável. O que impede é acesso, formato ou maturidade do sistema.
+
+\subsection*{I3.4.1 --- Beneficiários de PSA}
+
+\textbf{O caminho existe e falta uma chave.} O endpoint
+\url{https://api.portaldatransparencia.gov.br/api-de-dados/bolsa-verde-por-municipio}
+responde \textbf{401, e não 404} --- ou seja, existe e entrega dados por município.
+Basta a chave de API, que o Portal da Transparência concede a quem se cadastra.
+
+Duas ressalvas antes de usá-la:
+
+\begin{itemize}
+  \item O \textbf{CNPSA}, cadastro nacional que a Lei 14.119/2021 criou justamente para
+    consolidar beneficiários de PSA, \textbf{ainda está em construção}, com conclusão
+    prevista para o ano seguinte. É ele que resolveria o indicador inteiro.
+  \item O Bolsa Verde é \emph{um} programa. Os estaduais --- Bolsa Floresta no Amazonas,
+    REM no Acre e em Mato Grosso --- não estão em base consolidada nenhuma. Uma série só
+    do Bolsa Verde é recorte federal, não o total de beneficiários da região, e o painel
+    precisaria dizer isso.
+\end{itemize}
+
+O painel do Bolsa Verde no \texttt{gov.br/mma} está sob restrição de defeso eleitoral
+até 25/10/2026, e o programa não aparece em nenhum dos 39 conjuntos de download em
+massa do Portal da Transparência.
+
+\subsection*{I5.5.2 --- Transparência pública (EBT 360)}
+
+Bloqueado, e não por falha do dia da coleta: \texttt{mbt.cgu.gov.br} redireciona para
+uma página de manutenção que declara \emph{``O Sistema Mapa Brasil Transparente está
+temporariamente fora do ar para atualizações. Previsão de retorno: novembro/2026''}. O
+\texttt{dadosabertos.cgu.gov.br} não resolve mais em DNS. Vale reconferir depois de
+novembro de 2026.
+
+\subsection*{I2.4.2 e I4.4.2 --- AdaptaBrasil}
+
+Dois problemas independentes:
+
+\begin{enumerate}
+  \item A API \texttt{sistema.adaptabrasil.mcti.gov.br} devolve \textbf{403} mesmo com
+    \texttt{Referer} e \texttt{Origin} do próprio portal.
+  \item Mais decisivo: o AdaptaBrasil publica índices por \textbf{recorte de cenário}
+    (presente, 2030, 2050), e não por ano histórico. Mesmo com a API aberta não existe
+    série temporal a extrair --- é outra natureza de dado.
+\end{enumerate}
+
+\subsection*{I4.2.1 --- Adequação e trafegabilidade de transportes}
+
+O painel da CNT é \textbf{Power BI sem API} e o \texttt{vgeo} do DNIT publica
+\textbf{só geometria}, sem estado de conservação. O indicador precisa exatamente do
+estado de conservação, que é o que não sai em formato aberto.
+
+\subsection*{I2.5.1 --- Renda da sociobioeconomia}
+
+A Plataforma da Ecosociobiodiversidade do MMA, que a ficha aponta como fonte,
+\textbf{está em construção}. Mesma situação do CNPSA: a fonte foi criada, mas ainda não
+publica.
+
+\subsection*{I4.3.1 --- Transição energética (ITEQ)}
+
+Parcial. Os componentes de geração são coletáveis pelo SIGA da ANEEL, mas o índice
+composto depende do PASI/EPE, cujo endpoint de downloads devolveu \textbf{500}. Ver
+também a seção 3, sobre o problema estrutural da matriz elétrica.
+
+\subsection*{I1.5.7 e I1.5.8 --- Cadastro Ambiental Rural}
+
+O \texttt{car.gov.br} exige TLS legado para conectar --- foi resolvido. O que resta é
+que o SICAR publica \textbf{shapefile por estado e boletim em PDF}, não série por UF
+com o recorte que as fichas pedem: sobreposições de CAR e territórios de povos e
+comunidades tradicionais inscritos e analisados.
+
+\subsection*{I1.3.5, I1.3.6, I1.3.7, I1.4.1 e I1.4.2 --- coleta manual}
+
+FBSP (Cartografias da Violência na Amazônia), CAL/Igarapé, Sisfogo/IBAMA, Observatório
+do Código Florestal e registros de TCA/PRADA. São estudos e registros publicados como
+relatório, não como base consultável. O recorte que as fichas pedem --- número de
+delegacias especializadas, planos registrados, área restaurada com sistemas
+agroflorestais --- sai de leitura de documento, não de consulta.
+
+\subsection*{I5.2.2 --- Governança regional e recursos executados pelo CAL}
+
+O site do Consórcio é feito em Wix e a tabela de orçamento carrega por JavaScript. Não
+há endpoint estável para automatizar: é leitura de página.
+
+\section{Dado coletado, série histórica impossível (4)}
+
+Estes têm valor no painel, mas não podem ter série --- e a razão é da fonte, não da
+coleta.
+
+\subsection*{I4.3.2 --- Participação de renováveis (PER)}
+
+\textbf{Nenhuma fonte cruza unidade da federação com fonte de geração ao longo do
+tempo.} O que foi verificado:
+
+\begin{center}
+\begin{tabular}{L{6.0cm} L{4.2cm} L{4.4cm}}
+\toprule
+\textbf{Fonte} & \textbf{O que tem} & \textbf{O que falta} \\
+\midrule
+ANEEL, capacidade instalada por UF & UF $\times$ ano, 2006--2026 & fonte de geração \\
+ANEEL, empreendimentos em operação & fonte $\times$ ano, 2001+ & UF \\
+ANEEL SIGA & UF $\times$ fonte & é fotografia do momento \\
+ONS, capacidade de geração & --- & declara não ter histórico; só usina despachada \\
+EPE Anuário, Tabela 2.1 & UF $\times$ ano, 2004--2025 & fonte de geração \\
+EPE Anuário, Tabela 2.3 & fonte $\times$ ano & UF \\
+EPE Anuário, Tabela 2.8 & renovabilidade & só nacional \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Reconstruir a série pela data de entrada em operação do SIGA \textbf{não funciona}, e o
+erro foi medido, não suposto. São dois defeitos de sinais opostos, que não se cancelam:
+
+\begin{itemize}
+  \item \textbf{Sobrevivência} --- o SIGA não guarda usina desativada. As térmicas a
+    diesel aposentadas somem do passado: o Amazonas em 2010 sai com \textbf{978~MW
+    contra 2.140~MW reais}.
+  \item \textbf{Datação} --- usina escalonada entra numa linha só. Belo Monte é um
+    registro de 11.233~MW datado de abril de 2016, e o Pará daquele ano sai
+    \textbf{70\% acima} do real.
+\end{itemize}
+
+\subsection*{I4.4.1 --- Saneamento e gestão de riscos (ISGR)}
+
+O índice é o mínimo entre água e esgoto adequados, multiplicado pelos fatores climático
+e de governança. \textbf{Dois dos três insumos nascem em 2022}:
+
+\begin{itemize}
+  \item \textbf{Água}: a definição usa uma classificação do Censo 2022 que cruza
+    \emph{existência de ligação à rede} com \emph{forma principal de abastecimento},
+    duas perguntas que só passaram a ser feitas separadamente naquele censo. Em 2000 e
+    2010 há só a forma principal, que não identifica quem tem ligação mas usa outra
+    fonte, nem separa poço profundo de poço raso.
+  \item \textbf{Fatores climático e de governança}: vêm da MUNIC 2024, e edições
+    anteriores têm outro questionário.
+\end{itemize}
+
+O que \emph{é} comparável entre os três censos foi coletado e está guardado, mas
+marcado como \textbf{não sendo o ISGR}: exibir outra medida sob o mesmo rótulo trocaria
+o indicador mantendo o nome.
+
+\subsection*{I1.1.2 --- Gestão de unidades de conservação (CNUC)}
+
+O CNUC é registro do estado atual. Não foram encontradas edições históricas publicadas
+como série. \emph{Esta é a conclusão de menor confiança deste documento}: a busca parou
+na página do portal e não foi esgotada.
+
+\subsection*{I1.3.1 --- Vulnerabilidade climática (IIVCM)}
+
+Mesmo caso do AdaptaBrasil: índice por cenário, não por ano.
+
+\section{Série obtida, mas não ligada ao painel (4)}
+
+Aqui o dado \textbf{existe e está salvo}. O que falta é uma decisão ou um insumo, e
+ligar assim mesmo produziria número errado.
+
+\subsection*{I2.2.1 e I2.4.1 --- falta o denominador certo}
+
+As fichas de mortalidade evitável e de CVLI definem taxa sobre população. O painel
+divide pela \textbf{revisão de 2024 da projeção do IBGE}, que não está publicada na
+SIDRA: a tabela disponível traz a revisão de 2018, que dá 82.857 crianças de 0 a 4 anos
+no Acre em 2024 contra as 88.080 que o painel usa, e diverge em até 218 mil pessoas no
+Amazonas em 2026.
+
+Calcular a taxa com outra revisão poria uma quebra de denominador no meio da série. As
+\textbf{contagens} estão salvas --- 31 anos de óbitos evitáveis e 12 anos de CVLI --- e
+a taxa se monta quando a série de população estiver disponível.
+
+\subsection*{I2.2.3 e F3.2 --- dado salvo, métrica não criada}
+
+Telessaúde e RAIS ganharam série, de 15 e 7 anos, e estão versionados. Não viraram
+métrica do painel porque isso é decisão de escopo, não de coleta.
+
+\section{Correções pendentes que não são de dado}
+
+Achadas na revisão das referências. Só podem ser corrigidas na origem, porque as fichas
+técnicas são geradas de um documento \texttt{.docx}:
+
+\begin{itemize}
+  \item \textbf{I3.4.1 e I3.4.2}, ambos de PSA, trazem no campo do indicador o texto do
+    I5.1.1 --- ``montante de recursos obtidos pelos nove estados com programas
+    jurisdicionais de crédito de carbono''. A meta dos dois está correta; o texto do
+    indicador é que foi copiado do lugar errado.
+  \item \textbf{I2.5.1} descreve ``participação da bioeconomia no PIB'' enquanto o
+    catálogo fala em ``volume de renda no painel da sociobioeconomia''. Pode ser
+    divergência legítima de redação, mas convém conferir.
+\end{itemize}
+
+\section*{Quando reconferir}
+\addcontentsline{toc}{section}{Quando reconferir}
+
+Os casos com data marcada merecem nova sondagem depois do prazo:
+
+\begin{center}
+\begin{tabular}{L{7cm} L{6.5cm}}
+\toprule
+\textbf{Fonte} & \textbf{Prazo declarado} \\
+\midrule
+EBT 360 (Mapa Brasil Transparente, CGU) & novembro de 2026 \\
+Painel do Bolsa Verde (MMA) & 25 de outubro de 2026 \\
+CNPSA --- cadastro nacional de PSA & ``ano seguinte'' \\
+Plataforma da Ecosociobiodiversidade (MMA) & em construção \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Os demais dependem de decisão institucional ou de articulação com os estados, não de
+tentar novamente.
+
+\end{document}
