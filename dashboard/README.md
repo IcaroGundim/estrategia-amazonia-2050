@@ -144,6 +144,12 @@ Dos que têm base secundária, ficou o registro do que foi sondado nesta rodada 
 | I4.2.1 Transportes | CNT/DNIT | A nota do catálogo continua válida: o painel da CNT é Power BI sem API e o vgeo do DNIT só publica geometria, sem estado de conservação. |
 | I1.5.7 e I1.5.8 (CAR) | SICAR | O `car.gov.br` exige TLS legado para conectar (`OP_LEGACY_SERVER_CONNECT` mais `SECLEVEL=1`); com isso a conexão abre, mas o que o SICAR publica é shapefile por estado e boletim em PDF, não série por UF com o recorte que as fichas pedem. |
 
+O **F3.2 (empregos e estabelecimentos) foi de 2 para 7 anos**, 2018-2025, pelo `scripts/eixo3_rais.py`. Mesma fonte e mesmo critério: RAIS Estabelecimentos do MTE, estabelecimentos com `Ind Atividade Ano` = 1 e vínculos ativos em 31/12. Os dois anos que já estavam no painel batem exatamente, e 2025 é mais recente do que o painel tinha.
+
+A série começa em 2018 porque é de lá em diante que o FTP publica um único `RAIS_ESTAB_PUB.7z` nacional; antes disso os microdados vêm partidos por UF (`AC2017.7z`), com outro formato. Três armadilhas de leitura ficaram resolvidas: o nome do arquivo dentro do 7z muda por ano (`.COMT` em 2023-2025, `.txt` em 2018-2021, `.txt.txt` em 2022), o separador muda junto (vírgula no `.COMT`, ponto-e-vírgula no `.txt`), e os `.COMT` descompactados passam de 1 GB cada, então o script apaga a extração a cada ano para não encher o disco.
+
+**2022 fica fora da série, e isso é da fonte, não da leitura.** Naquela edição o campo `Ind Atividade Ano` vem praticamente todo com o código 9 em vez de 1: no Acre são 23.199 linhas com 9 contra 139 com 1, enquanto 2021 traz 11.127 com 1. Sem esse campo não há como saber quais estabelecimentos estavam ativos, e adotar outro critério só nesse ano quebraria a comparação. O script tem uma guarda que descarta o ano quando menos de 5% das linhas da região têm o indicador preenchido — limiar calibrado pelo dado, porque a proporção varia legitimamente de 74-77% nos anos em `.txt` a 20-24% nos anos em `.COMT`, e 2022 fica em 0,28%, duas ordens de grandeza abaixo de qualquer ano válido. Um limiar de 20%, que cheguei a usar, descartaria 2025 sem motivo.
+
 O **I2.2.3 (telessaúde) ganhou 15 anos**, 2012-2026, pelo `scripts/eixo2_telessaude_cnes.py`. O catálogo trazia só jul/2026. A fonte é a mesma: CNES via TabNet, filtrando o tipo de estabelecimento 35, "TELESSAUDE". A conferência bateu exatamente — os nove estados e o total de 56 estabelecimentos em jul/2026 são idênticos aos do catálogo.
 
 A consulta é **por município, não por UF**, porque a ficha define o indicador como "municípios com estabelecimento de telessaúde ativo / total de municípios da Amazônia Legal": é preciso contar municípios com ao menos um, e não estabelecimentos. A consulta por município dá os dois de uma vez — a soma das linhas é o total de estabelecimentos e a contagem de linhas com valor é o número de municípios cobertos. A diferença importa: os 56 estabelecimentos de 2026 estão em apenas **40 municípios**. O recorte anual é a competência de dezembro, ou a mais recente no ano corrente, porque estabelecimento é estoque.
@@ -285,6 +291,7 @@ python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/
 python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (2005-2025)
 python scripts/eixo2_mortalidade_evitavel.py                 # SIM/TabNet → óbitos evitáveis (1996-2026)
 python scripts/eixo2_telessaude_cnes.py                      # CNES/TabNet → telessaúde (2012-2026)
+python scripts/eixo3_rais.py                                 # RAIS/MTE → empregos e estabelecimentos (2018-2025)
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
