@@ -138,6 +138,12 @@ O `scripts/versionar_dados.py` copia esse detalhe para `public/data/csv/`, em CS
 
 ### Indicadores pendentes: o que foi sondado e o que não existe
 
+O levantamento completo — os 41 indicadores sem valores, mais os que têm valor mas não
+podem ter série e os que têm série mas não foram ligados ao painel — está em
+[`INDICADORES_SEM_DADOS.md`](../INDICADORES_SEM_DADOS.md), na raiz do repositório, com
+a evidência de cada caso e os prazos a reconferir. O resumo abaixo cobre só o que foi
+sondado nesta rodada.
+
 Dos 41 indicadores do catálogo sem valores coletados, **cerca de trinta têm "Estados" como fonte** — são status administrativos de política estadual (tem ZEE vigente, tem plano de adaptação aprovado, tem câmara técnica instalada, tem PRA regulamentado). Nenhuma base secundária fornece isso: dependem de coleta junto às secretarias, e nenhuma varredura de dados abertos resolve.
 
 Dos que têm base secundária, ficou o registro do que foi sondado nesta rodada (07/09/2026), para não se repetir o caminho:
