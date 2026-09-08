@@ -1,0 +1,809 @@
+uf,cod_municipio,municipio,taxa
+AC,1200013,Acrelândia,79.52
+AC,1200054,Assis Brasil,78.18
+AC,1200104,Brasiléia,74.78
+AC,1200138,Bujari,77.12
+AC,1200179,Capixaba,72.95
+AC,1200203,Cruzeiro do Sul,80.95
+AC,1200252,Epitaciolândia,83.61
+AC,1200302,Feijó,77.41
+AC,1200328,Jordão,83.82
+AC,1200344,Manoel Urbano,58.77
+AC,1200351,Marechal Thaumaturgo,80.95
+AC,1200336,Mâncio Lima,83.02
+AC,1200385,Plácido de Castro,83.92
+AC,1200807,Porto Acre,83.68
+AC,1200393,Porto Walter,89.11
+AC,1200401,Rio Branco,84.23
+AC,1200427,Rodrigues Alves,85.97
+AC,1200435,Santa Rosa do Purus,78.1
+AC,1200500,Sena Madureira,78.8
+AC,1200450,Senador Guiomard,89.12
+AC,1200609,Tarauacá,78.14
+AC,1200708,Xapuri,71.0
+AM,1300029,Alvarães,83.78
+AM,1300060,Amaturá,89.02
+AM,1300086,Anamã,91.89
+AM,1300102,Anori,85.76
+AM,1300144,Apuí,76.32
+AM,1300201,Atalaia do Norte,78.49
+AM,1300300,Autazes,79.19
+AM,1300409,Barcelos,69.39
+AM,1300508,Barreirinha,89.64
+AM,1300607,Benjamin Constant,86.69
+AM,1300631,Beruri,83.5
+AM,1300680,Boa Vista do Ramos,84.74
+AM,1300706,Boca do Acre,70.99
+AM,1300805,Borba,81.15
+AM,1300839,Caapiranga,84.01
+AM,1300904,Canutama,75.46
+AM,1301001,Carauari,82.91
+AM,1301100,Careiro,84.09
+AM,1301159,Careiro da Várzea,85.93
+AM,1301209,Coari,82.88
+AM,1301308,Codajás,76.68
+AM,1301407,Eirunepé,78.09
+AM,1301506,Envira,75.09
+AM,1301605,Fonte Boa,83.58
+AM,1301654,Guajará,76.35
+AM,1301704,Humaitá,79.0
+AM,1301803,Ipixuna,71.44
+AM,1301852,Iranduba,89.42
+AM,1301902,Itacoatiara,86.28
+AM,1301951,Itamarati,81.68
+AM,1302009,Itapiranga,86.58
+AM,1302108,Japurá,82.48
+AM,1302207,Juruá,90.54
+AM,1302306,Jutaí,79.17
+AM,1302405,Lábrea,78.69
+AM,1302504,Manacapuru,85.57
+AM,1302553,Manaquiri,84.64
+AM,1302603,Manaus,85.19
+AM,1302702,Manicoré,79.43
+AM,1302801,Maraã,80.42
+AM,1302900,Maués,85.62
+AM,1303007,Nhamundá,77.98
+AM,1303106,Nova Olinda do Norte,82.49
+AM,1303205,Novo Airão,77.19
+AM,1303304,Novo Aripuanã,78.09
+AM,1303403,Parintins,90.88
+AM,1303502,Pauini,66.24
+AM,1303536,Presidente Figueiredo,87.56
+AM,1303569,Rio Preto da Eva,88.54
+AM,1303601,Santa Isabel do Rio Negro,78.15
+AM,1303700,Santo Antônio do Içá,83.98
+AM,1304005,Silves,81.74
+AM,1303809,São Gabriel da Cachoeira,84.41
+AM,1303908,São Paulo de Olivença,74.82
+AM,1303957,São Sebastião do Uatumã,82.84
+AM,1304062,Tabatinga,87.97
+AM,1304104,Tapauá,71.93
+AM,1304203,Tefé,82.95
+AM,1304237,Tonantins,74.34
+AM,1304260,Uarini,74.36
+AM,1304302,Urucará,91.17
+AM,1304401,Urucurituba,77.26
+AP,1600105,Amapá,82.99
+AP,1600204,Calçoene,81.84
+AP,1600212,Cutias,84.36
+AP,1600238,Ferreira Gomes,93.28
+AP,1600253,Itaubal,76.74
+AP,1600279,Laranjal do Jari,90.0
+AP,1600303,Macapá,81.32
+AP,1600402,Mazagão,81.06
+AP,1600501,Oiapoque,83.28
+AP,1600154,Pedra Branca do Amapari,89.18
+AP,1600535,Porto Grande,84.28
+AP,1600550,Pracuúba,74.05
+AP,1600600,Santana,86.36
+AP,1600055,Serra do Navio,86.03
+AP,1600709,Tartarugalzinho,81.17
+AP,1600808,Vitória do Jari,91.48
+MA,2100105,Afonso Cunha,90.23
+MA,2100204,Alcântara,92.32
+MA,2100303,Aldeias Altas,83.23
+MA,2100402,Altamira do Maranhão,83.55
+MA,2100436,Alto Alegre do Maranhão,78.03
+MA,2100477,Alto Alegre do Pindaré,86.96
+MA,2100501,Alto Parnaíba,80.73
+MA,2100550,Amapá do Maranhão,83.29
+MA,2100600,Amarante do Maranhão,76.16
+MA,2100709,Anajatuba,87.5
+MA,2100808,Anapurus,80.76
+MA,2100832,Apicum-Açu,87.59
+MA,2100873,Araguanã,84.36
+MA,2100907,Araioses,84.8
+MA,2100956,Arame,70.67
+MA,2101004,Arari,80.03
+MA,2101103,Axixá,86.72
+MA,2100055,Açailândia,88.79
+MA,2101202,Bacabal,86.33
+MA,2101251,Bacabeira,92.41
+MA,2101301,Bacuri,92.43
+MA,2101350,Bacurituba,88.56
+MA,2101400,Balsas,81.31
+MA,2101608,Barra do Corda,84.34
+MA,2101707,Barreirinhas,84.8
+MA,2101509,Barão de Grajaú,90.08
+MA,2101772,Bela Vista do Maranhão,80.06
+MA,2101731,Belágua,88.11
+MA,2101806,Benedito Leite,95.55
+MA,2101905,Bequimão,90.41
+MA,2101939,Bernardo do Mearim,82.49
+MA,2101970,Boa Vista do Gurupi,83.45
+MA,2102002,Bom Jardim,79.91
+MA,2102036,Bom Jesus das Selvas,83.12
+MA,2102077,Bom Lugar,76.4
+MA,2102101,Brejo,89.53
+MA,2102150,Brejo de Areia,71.61
+MA,2102200,Buriti,84.17
+MA,2102309,Buriti Bravo,82.54
+MA,2102325,Buriticupu,84.58
+MA,2102358,Buritirana,83.33
+MA,2102374,Cachoeira Grande,86.29
+MA,2102408,Cajapió,85.44
+MA,2102507,Cajari,78.99
+MA,2102556,Campestre do Maranhão,92.31
+MA,2102705,Cantanhede,85.03
+MA,2102754,Capinzal do Norte,88.4
+MA,2102804,Carolina,77.34
+MA,2102903,Carutapera,85.22
+MA,2103000,Caxias,87.04
+MA,2103109,Cedral,92.6
+MA,2103125,Central do Maranhão,94.23
+MA,2103174,Centro Novo do Maranhão,78.73
+MA,2103158,Centro do Guilherme,78.23
+MA,2103208,Chapadinha,79.56
+MA,2103257,Cidelândia,90.07
+MA,2103307,Codó,87.17
+MA,2103406,Coelho Neto,86.96
+MA,2103505,Colinas,87.97
+MA,2103554,Conceição do Lago-Açu,85.69
+MA,2103604,Coroatá,83.75
+MA,2103703,Cururupu,85.71
+MA,2102606,Cândido Mendes,72.23
+MA,2103752,Davinópolis,87.48
+MA,2103802,Dom Pedro,84.77
+MA,2103901,Duque Bacelar,86.17
+MA,2104008,Esperantinópolis,72.48
+MA,2104057,Estreito,92.54
+MA,2104073,Feira Nova do Maranhão,86.62
+MA,2104081,Fernando Falcão,74.85
+MA,2104099,Formosa da Serra Negra,86.34
+MA,2104107,Fortaleza dos Nogueiras,85.45
+MA,2104206,Fortuna,89.17
+MA,2104305,Godofredo Viana,85.32
+MA,2104404,Gonçalves Dias,80.35
+MA,2104503,Governador Archer,79.02
+MA,2104552,Governador Edison Lobão,85.03
+MA,2104602,Governador Eugênio Barros,86.73
+MA,2104628,Governador Luiz Rocha,83.3
+MA,2104651,Governador Newton Bello,86.89
+MA,2104677,Governador Nunes Freire,88.62
+MA,2104800,Grajaú,82.05
+MA,2104701,Graça Aranha,80.61
+MA,2104909,Guimarães,90.49
+MA,2105005,Humberto de Campos,81.75
+MA,2105104,Icatu,87.33
+MA,2105203,Igarapé Grande,83.95
+MA,2105153,Igarapé do Meio,82.46
+MA,2105302,Imperatriz,84.22
+MA,2105351,Itaipava do Grajaú,79.09
+MA,2105401,Itapecuru Mirim,86.31
+MA,2105427,Itinga do Maranhão,83.72
+MA,2105450,Jatobá,82.63
+MA,2105476,Jenipapo dos Vieiras,77.64
+MA,2105609,Joselândia,78.91
+MA,2105500,João Lisboa,89.94
+MA,2105658,Junco do Maranhão,85.81
+MA,2105906,Lago Verde,78.7
+MA,2105708,Lago da Pedra,83.72
+MA,2105807,Lago do Junco,81.28
+MA,2105948,Lago dos Rodrigues,92.57
+MA,2105963,Lagoa Grande do Maranhão,76.8
+MA,2105922,Lagoa do Mato,84.25
+MA,2105989,Lajeado Novo,87.7
+MA,2106003,Lima Campos,85.1
+MA,2106102,Loreto,88.68
+MA,2106201,Luís Domingues,84.33
+MA,2106300,Magalhães de Almeida,76.79
+MA,2106326,Maracaçumé,90.81
+MA,2106359,Marajá do Sena,58.02
+MA,2106375,Maranhãozinho,80.91
+MA,2106409,Mata Roma,83.24
+MA,2106508,Matinha,88.64
+MA,2106607,Matões,86.25
+MA,2106631,Matões do Norte,81.2
+MA,2106672,Milagres do Maranhão,86.09
+MA,2106706,Mirador,73.24
+MA,2106755,Miranda do Norte,85.67
+MA,2106805,Mirinzal,85.31
+MA,2107001,Montes Altos,82.98
+MA,2106904,Monção,82.46
+MA,2107100,Morros,83.34
+MA,2107209,Nina Rodrigues,91.72
+MA,2107258,Nova Colinas,91.87
+MA,2107308,Nova Iorque,86.97
+MA,2107357,Nova Olinda do Maranhão,88.31
+MA,2107407,Olho d'Água das Cunhãs,85.73
+MA,2107456,Olinda Nova do Maranhão,86.83
+MA,2107605,Palmeirândia,90.69
+MA,2107704,Paraibano,86.5
+MA,2107803,Parnarama,74.84
+MA,2107902,Passagem Franca,85.14
+MA,2108009,Pastos Bons,90.14
+MA,2108058,Paulino Neves,85.57
+MA,2108108,Paulo Ramos,79.03
+MA,2107506,Paço do Lumiar,85.32
+MA,2108207,Pedreiras,85.93
+MA,2108256,Pedro do Rosário,86.86
+MA,2108306,Penalva,84.87
+MA,2108405,Peri Mirim,86.59
+MA,2108454,Peritoró,85.97
+MA,2108504,Pindaré-Mirim,83.78
+MA,2108603,Pinheiro,85.39
+MA,2108702,Pio XII,80.49
+MA,2108801,Pirapemas,87.16
+MA,2109007,Porto Franco,84.12
+MA,2109056,Porto Rico do Maranhão,92.77
+MA,2108900,Poção de Pedras,83.94
+MA,2109106,Presidente Dutra,84.83
+MA,2109205,Presidente Juscelino,89.56
+MA,2109239,Presidente Médici,79.39
+MA,2109270,Presidente Sarney,79.96
+MA,2109304,Presidente Vargas,90.78
+MA,2109403,Primeira Cruz,80.36
+MA,2109452,Raposa,90.52
+MA,2109502,Riachão,84.89
+MA,2109551,Ribamar Fiquene,89.24
+MA,2109601,Rosário,87.38
+MA,2109700,Sambaíba,89.0
+MA,2109759,Santa Filomena do Maranhão,82.92
+MA,2109809,Santa Helena,87.12
+MA,2109908,Santa Inês,87.0
+MA,2110005,Santa Luzia,81.32
+MA,2110039,Santa Luzia do Paruá,89.22
+MA,2110104,Santa Quitéria do Maranhão,81.02
+MA,2110203,Santa Rita,87.41
+MA,2110237,Santana do Maranhão,84.62
+MA,2110278,Santo Amaro do Maranhão,79.05
+MA,2110302,Santo Antônio dos Lopes,85.15
+MA,2111722,Satubinha,82.26
+MA,2111748,Senador Alexandre Costa,80.33
+MA,2111763,Senador La Rocque,80.89
+MA,2111789,Serrano do Maranhão,89.2
+MA,2111904,Sucupira do Norte,83.02
+MA,2111953,Sucupira do Riachão,81.42
+MA,2110401,São Benedito do Rio Preto,81.65
+MA,2110500,São Bento,84.54
+MA,2110609,São Bernardo,85.81
+MA,2110658,São Domingos do Azeitão,87.68
+MA,2110708,São Domingos do Maranhão,87.16
+MA,2110856,São Francisco do Brejão,89.18
+MA,2110906,São Francisco do Maranhão,86.92
+MA,2110807,São Félix de Balsas,83.69
+MA,2111201,São José de Ribamar,83.48
+MA,2111250,São José dos Basílios,80.99
+MA,2111003,São João Batista,84.98
+MA,2111029,São João do Carú,86.24
+MA,2111052,São João do Paraíso,84.47
+MA,2111078,São João do Soter,89.19
+MA,2111102,São João dos Patos,86.97
+MA,2111300,São Luís,86.0
+MA,2111409,São Luís Gonzaga do Maranhão,77.4
+MA,2111508,São Mateus do Maranhão,87.21
+MA,2111532,São Pedro da Água Branca,89.24
+MA,2111573,São Pedro dos Crentes,71.88
+MA,2111607,São Raimundo das Mangabeiras,79.49
+MA,2111631,São Raimundo do Doca Bezerra,78.28
+MA,2111672,São Roberto,84.95
+MA,2111706,São Vicente Ferrer,82.77
+MA,2111805,Sítio Novo,83.59
+MA,2112001,Tasso Fragoso,91.34
+MA,2112100,Timbiras,82.81
+MA,2112209,Timon,87.43
+MA,2112233,Trizidela do Vale,87.54
+MA,2112274,Tufilândia,85.39
+MA,2112308,Tuntum,80.99
+MA,2112407,Turiaçu,84.71
+MA,2112456,Turilândia,78.52
+MA,2112506,Tutóia,87.33
+MA,2112605,Urbano Santos,89.7
+MA,2112704,Vargem Grande,83.67
+MA,2112803,Viana,87.97
+MA,2112852,Vila Nova dos Martírios,85.51
+MA,2113009,Vitorino Freire,87.31
+MA,2112902,Vitória do Mearim,80.7
+MA,2114007,Zé Doca,82.96
+MA,2100154,Água Doce do Maranhão,88.67
+MT,5100102,Acorizal,80.45
+MT,5100250,Alta Floresta,74.79
+MT,5100300,Alto Araguaia,88.57
+MT,5100359,Alto Boa Vista,86.44
+MT,5100409,Alto Garças,76.41
+MT,5100508,Alto Paraguai,90.12
+MT,5100607,Alto Taquari,86.66
+MT,5100805,Apiacás,77.75
+MT,5101001,Araguaiana,81.86
+MT,5101209,Araguainha,87.96
+MT,5101258,Araputanga,88.9
+MT,5101308,Arenápolis,84.71
+MT,5101407,Aripuanã,71.63
+MT,5101704,Barra do Bugres,84.63
+MT,5101803,Barra do Garças,84.29
+MT,5101605,Barão de Melgaço,94.31
+MT,5101852,Bom Jesus do Araguaia,76.22
+MT,5101902,Brasnorte,77.38
+MT,5102603,Campinápolis,86.37
+MT,5102637,Campo Novo do Parecis,84.56
+MT,5102678,Campo Verde,79.66
+MT,5102686,Campos de Júlio,83.85
+MT,5102694,Canabrava do Norte,81.61
+MT,5102702,Canarana,75.36
+MT,5102793,Carlinda,89.95
+MT,5102850,Castanheira,76.89
+MT,5103007,Chapada dos Guimarães,84.5
+MT,5103056,Cláudia,81.73
+MT,5103106,Cocalinho,88.69
+MT,5103254,Colniza,67.29
+MT,5103205,Colíder,80.47
+MT,5103304,Comodoro,80.53
+MT,5103353,Confresa,70.21
+MT,5103361,Conquista D'Oeste,91.59
+MT,5103379,Cotriguaçu,84.48
+MT,5103403,Cuiabá,80.18
+MT,5103437,Curvelândia,85.93
+MT,5102504,Cáceres,84.23
+MT,5103452,Denise,90.87
+MT,5103502,Diamantino,85.2
+MT,5103601,Dom Aquino,82.35
+MT,5103700,Feliz Natal,79.83
+MT,5103809,Figueirópolis D'Oeste,80.32
+MT,5103858,Gaúcha do Norte,79.65
+MT,5103908,General Carneiro,79.54
+MT,5103957,Glória D'Oeste,82.16
+MT,5104104,Guarantã do Norte,73.33
+MT,5104203,Guiratinga,78.86
+MT,5104500,Indiavaí,83.66
+MT,5104526,Ipiranga do Norte,83.66
+MT,5104542,Itanhangá,76.07
+MT,5104559,Itaúba,81.74
+MT,5104609,Itiquira,72.32
+MT,5104807,Jaciara,90.13
+MT,5104906,Jangada,92.95
+MT,5105002,Jauru,88.53
+MT,5105101,Juara,83.34
+MT,5105176,Juruena,79.17
+MT,5105200,Juscimeira,88.54
+MT,5105150,Juína,79.06
+MT,5105234,Lambari D'Oeste,84.07
+MT,5105259,Lucas do Rio Verde,84.22
+MT,5105309,Luciara,62.73
+MT,5105580,Marcelândia,73.94
+MT,5105606,Matupá,72.97
+MT,5105622,Mirassol d'Oeste,84.33
+MT,5105903,Nobres,87.65
+MT,5106000,Nortelândia,88.8
+MT,5106109,Nossa Senhora do Livramento,93.95
+MT,5106158,Nova Bandeirantes,69.04
+MT,5106208,Nova Brasilândia,82.43
+MT,5106216,Nova Canaã do Norte,83.25
+MT,5108808,Nova Guarita,69.29
+MT,5106182,Nova Lacerda,78.96
+MT,5108857,Nova Marilândia,89.48
+MT,5108907,Nova Maringá,78.0
+MT,5108956,Nova Monte Verde,76.68
+MT,5106224,Nova Mutum,80.86
+MT,5106174,Nova Nazaré,71.01
+MT,5106232,Nova Olímpia,87.94
+MT,5106190,Nova Santa Helena,83.88
+MT,5106240,Nova Ubiratã,72.5
+MT,5106257,Nova Xavantina,80.93
+MT,5106273,Novo Horizonte do Norte,69.4
+MT,5106265,Novo Mundo,69.53
+MT,5106315,Novo Santo Antônio,86.88
+MT,5106281,Novo São Joaquim,83.38
+MT,5106307,Paranatinga,64.0
+MT,5106299,Paranaíta,82.38
+MT,5106372,Pedra Preta,85.77
+MT,5106422,Peixoto de Azevedo,72.44
+MT,5106455,Planalto da Serra,70.29
+MT,5106505,Poconé,74.68
+MT,5106653,Pontal do Araguaia,87.62
+MT,5106703,Ponte Branca,92.1
+MT,5106752,Pontes e Lacerda,72.21
+MT,5106778,Porto Alegre do Norte,78.34
+MT,5106828,Porto Esperidião,80.06
+MT,5106851,Porto Estrela,87.61
+MT,5106802,Porto dos Gaúchos,68.49
+MT,5107008,Poxoréu,80.05
+MT,5107040,Primavera do Leste,72.09
+MT,5107065,Querência,79.07
+MT,5107156,Reserva do Cabaçal,87.18
+MT,5107180,Ribeirão Cascalheira,68.41
+MT,5107198,Ribeirãozinho,85.87
+MT,5107206,Rio Branco,81.98
+MT,5107578,Rondolândia,88.72
+MT,5107602,Rondonópolis,83.61
+MT,5107701,Rosário Oeste,86.15
+MT,5107750,Salto do Céu,79.35
+MT,5107248,Santa Carmem,70.91
+MT,5107743,Santa Cruz do Xingu,87.63
+MT,5107768,Santa Rita do Trivelato,87.65
+MT,5107776,Santa Terezinha,82.57
+MT,5107263,Santo Afonso,92.75
+MT,5107800,Santo Antônio de Leverger,86.63
+MT,5107792,Santo Antônio do Leste,85.68
+MT,5107875,Sapezal,88.2
+MT,5107883,Serra Nova Dourada,87.74
+MT,5107909,Sinop,75.11
+MT,5107925,Sorriso,73.84
+MT,5107859,São Félix do Araguaia,81.87
+MT,5107297,São José do Povo,92.24
+MT,5107305,São José do Rio Claro,84.02
+MT,5107354,São José do Xingu,74.37
+MT,5107107,São José dos Quatro Marcos,87.98
+MT,5107404,São Pedro da Cipa,84.92
+MT,5107941,Tabaporã,78.25
+MT,5107958,Tangará da Serra,83.65
+MT,5108006,Tapurah,83.13
+MT,5108055,Terra Nova do Norte,86.69
+MT,5108105,Tesouro,88.17
+MT,5108204,Torixoréu,73.83
+MT,5108303,União do Sul,72.87
+MT,5108352,Vale de São Domingos,92.48
+MT,5108501,Vera,89.59
+MT,5105507,Vila Bela da Santíssima Trindade,83.73
+MT,5108600,Vila Rica,76.65
+MT,5108402,Várzea Grande,79.98
+MT,5100201,Água Boa,81.29
+PA,1500107,Abaetetuba,90.31
+PA,1500131,Abel Figueiredo,86.0
+PA,1500206,Acará,78.44
+PA,1500305,Afuá,66.63
+PA,1500404,Alenquer,76.58
+PA,1500503,Almeirim,85.28
+PA,1500602,Altamira,81.55
+PA,1500701,Anajás,78.92
+PA,1500800,Ananindeua,86.48
+PA,1500859,Anapu,71.38
+PA,1500909,Augusto Corrêa,86.22
+PA,1500958,Aurora do Pará,85.54
+PA,1501006,Aveiro,83.28
+PA,1501105,Bagre,76.1
+PA,1501204,Baião,82.46
+PA,1501253,Bannach,78.75
+PA,1501303,Barcarena,89.82
+PA,1501451,Belterra,85.51
+PA,1501402,Belém,88.24
+PA,1501501,Benevides,84.06
+PA,1501576,Bom Jesus do Tocantins,80.97
+PA,1501600,Bonito,80.54
+PA,1501709,Bragança,82.57
+PA,1501725,Brasil Novo,76.4
+PA,1501758,Brejo Grande do Araguaia,91.59
+PA,1501782,Breu Branco,84.94
+PA,1501808,Breves,72.42
+PA,1501907,Bujaru,88.78
+PA,1502004,Cachoeira do Arari,85.07
+PA,1501956,Cachoeira do Piriá,76.82
+PA,1502103,Cametá,86.82
+PA,1502152,Canaã dos Carajás,85.19
+PA,1502202,Capanema,91.71
+PA,1502301,Capitão Poço,84.37
+PA,1502400,Castanhal,85.83
+PA,1502509,Chaves,70.96
+PA,1502608,Colares,91.15
+PA,1502707,Conceição do Araguaia,89.7
+PA,1502756,Concórdia do Pará,88.14
+PA,1502764,Cumaru do Norte,61.26
+PA,1502772,Curionópolis,85.98
+PA,1502806,Curralinho,88.52
+PA,1502855,Curuá,87.89
+PA,1502905,Curuçá,81.9
+PA,1502939,Dom Eliseu,86.3
+PA,1502954,Eldorado do Carajás,79.03
+PA,1503002,Faro,83.35
+PA,1503044,Floresta do Araguaia,81.18
+PA,1503077,Garrafão do Norte,93.24
+PA,1503093,Goianésia do Pará,83.32
+PA,1503101,Gurupá,69.64
+PA,1503200,Igarapé-Açu,87.44
+PA,1503309,Igarapé-Miri,86.33
+PA,1503408,Inhangapi,87.0
+PA,1503457,Ipixuna do Pará,85.4
+PA,1503507,Irituia,90.65
+PA,1503606,Itaituba,76.55
+PA,1503705,Itupiranga,77.23
+PA,1503754,Jacareacanga,82.89
+PA,1503804,Jacundá,84.08
+PA,1503903,Juruti,93.3
+PA,1504000,Limoeiro do Ajuru,88.73
+PA,1504109,Magalhães Barata,93.5
+PA,1504208,Marabá,83.62
+PA,1504307,Maracanã,91.14
+PA,1504406,Marapanim,88.86
+PA,1504422,Marituba,89.28
+PA,1504455,Medicilândia,68.64
+PA,1504505,Melgaço,77.02
+PA,1504604,Mocajuba,91.95
+PA,1504703,Moju,81.01
+PA,1504752,Mojuí dos Campos,87.79
+PA,1504802,Monte Alegre,82.92
+PA,1504901,Muaná,85.76
+PA,1504059,Mãe do Rio,84.71
+PA,1504950,Nova Esperança do Piriá,76.5
+PA,1504976,Nova Ipixuna,81.62
+PA,1505007,Nova Timboteua,90.3
+PA,1505031,Novo Progresso,72.49
+PA,1505064,Novo Repartimento,72.55
+PA,1505205,Oeiras do Pará,87.48
+PA,1505304,Oriximiná,84.43
+PA,1505437,Ourilândia do Norte,78.32
+PA,1505403,Ourém,88.36
+PA,1505486,Pacajá,76.42
+PA,1505494,Palestina do Pará,91.04
+PA,1505502,Paragominas,85.6
+PA,1505536,Parauapebas,85.2
+PA,1505551,Pau D'Arco,81.61
+PA,1505601,Peixe-Boi,92.55
+PA,1505635,Piçarra,79.93
+PA,1505650,Placas,76.04
+PA,1505700,Ponta de Pedras,84.96
+PA,1505809,Portel,69.66
+PA,1505908,Porto de Moz,74.14
+PA,1506005,Prainha,73.49
+PA,1506104,Primavera,94.76
+PA,1506112,Quatipuru,90.1
+PA,1506138,Redenção,81.03
+PA,1506161,Rio Maria,76.68
+PA,1506187,Rondon do Pará,63.97
+PA,1506195,Rurópolis,83.7
+PA,1506203,Salinópolis,87.14
+PA,1506302,Salvaterra,81.65
+PA,1506351,Santa Bárbara do Pará,95.11
+PA,1506401,Santa Cruz do Arari,82.51
+PA,1506500,Santa Izabel do Pará,88.47
+PA,1506559,Santa Luzia do Pará,87.02
+PA,1506583,Santa Maria das Barreiras,73.83
+PA,1506609,Santa Maria do Pará,84.63
+PA,1506708,Santana do Araguaia,78.26
+PA,1506807,Santarém,85.55
+PA,1506906,Santarém Novo,93.57
+PA,1507003,Santo Antônio do Tauá,93.34
+PA,1507755,Sapucaia,86.35
+PA,1507805,Senador José Porfírio,65.88
+PA,1507904,Soure,83.11
+PA,1507102,São Caetano de Odivelas,88.79
+PA,1507151,São Domingos do Araguaia,84.91
+PA,1507201,São Domingos do Capim,86.86
+PA,1507409,São Francisco do Pará,89.42
+PA,1507300,São Félix do Xingu,72.13
+PA,1507458,São Geraldo do Araguaia,81.55
+PA,1507466,São João da Ponta,86.28
+PA,1507474,São João de Pirabas,86.42
+PA,1507508,São João do Araguaia,84.62
+PA,1507607,São Miguel do Guamá,87.9
+PA,1507706,São Sebastião da Boa Vista,74.9
+PA,1507953,Tailândia,80.44
+PA,1507961,Terra Alta,83.23
+PA,1507979,Terra Santa,89.43
+PA,1508001,Tomé-Açu,80.5
+PA,1508035,Tracuateua,81.74
+PA,1508050,Trairão,73.21
+PA,1508084,Tucumã,80.73
+PA,1508100,Tucuruí,86.35
+PA,1508126,Ulianópolis,83.88
+PA,1508159,Uruará,68.69
+PA,1508209,Vigia,85.97
+PA,1508308,Viseu,82.71
+PA,1508357,Vitória do Xingu,89.43
+PA,1508407,Xinguara,78.93
+PA,1500347,Água Azul do Norte,82.49
+PA,1505106,Óbidos,83.89
+RO,1100015,Alta Floresta D'Oeste,84.23
+RO,1100379,Alto Alegre dos Parecis,74.07
+RO,1100403,Alto Paraíso,87.2
+RO,1100346,Alvorada D'Oeste,87.99
+RO,1100023,Ariquemes,79.66
+RO,1100452,Buritis,84.01
+RO,1100031,Cabixi,91.12
+RO,1100601,Cacaulândia,91.93
+RO,1100049,Cacoal,90.67
+RO,1100700,Campo Novo de Rondônia,84.18
+RO,1100809,Candeias do Jamari,81.83
+RO,1100908,Castanheiras,90.89
+RO,1100056,Cerejeiras,90.99
+RO,1100924,Chupinguaia,88.88
+RO,1100064,Colorado do Oeste,90.9
+RO,1100072,Corumbiara,79.08
+RO,1100080,Costa Marques,86.21
+RO,1100940,Cujubim,77.39
+RO,1100098,Espigão D'Oeste,78.63
+RO,1101005,Governador Jorge Teixeira,87.51
+RO,1100106,Guajará-Mirim,86.26
+RO,1101104,Itapuã do Oeste,72.21
+RO,1100114,Jaru,81.66
+RO,1100122,Ji-Paraná,86.49
+RO,1100130,Machadinho D'Oeste,81.66
+RO,1101203,Ministro Andreazza,90.66
+RO,1101302,Mirante da Serra,91.78
+RO,1101401,Monte Negro,86.12
+RO,1100148,Nova Brasilândia D'Oeste,93.99
+RO,1100338,Nova Mamoré,85.32
+RO,1101435,Nova União,79.26
+RO,1100502,Novo Horizonte do Oeste,87.22
+RO,1100155,Ouro Preto do Oeste,86.07
+RO,1101450,Parecis,83.29
+RO,1100189,Pimenta Bueno,76.93
+RO,1101468,Pimenteiras do Oeste,88.35
+RO,1100205,Porto Velho,82.89
+RO,1100254,Presidente Médici,86.2
+RO,1101476,Primavera de Rondônia,79.34
+RO,1100262,Rio Crespo,90.93
+RO,1100288,Rolim de Moura,88.7
+RO,1100296,Santa Luzia D'Oeste,83.66
+RO,1101500,Seringueiras,81.48
+RO,1101484,São Felipe D'Oeste,95.1
+RO,1101492,São Francisco do Guaporé,91.62
+RO,1100320,São Miguel do Guaporé,88.89
+RO,1101559,Teixeirópolis,95.11
+RO,1101609,Theobroma,90.46
+RO,1101708,Urupá,81.31
+RO,1101757,Vale do Anari,90.85
+RO,1101807,Vale do Paraíso,90.74
+RO,1100304,Vilhena,90.16
+RR,1400050,Alto Alegre,51.23
+RR,1400027,Amajari,53.53
+RR,1400100,Boa Vista,81.93
+RR,1400159,Bonfim,81.79
+RR,1400175,Cantá,77.45
+RR,1400209,Caracaraí,67.49
+RR,1400233,Caroebe,72.78
+RR,1400282,Iracema,70.11
+RR,1400308,Mucajaí,75.56
+RR,1400407,Normandia,85.65
+RR,1400456,Pacaraima,76.94
+RR,1400472,Rorainópolis,80.53
+RR,1400506,São João da Baliza,82.45
+RR,1400605,São Luiz do Anauá,80.2
+RR,1400704,Uiramutã,88.12
+TO,1700251,Abreulândia,74.72
+TO,1700301,Aguiarnópolis,86.81
+TO,1700350,Aliança do Tocantins,85.1
+TO,1700400,Almas,74.3
+TO,1700707,Alvorada,90.48
+TO,1701002,Ananás,79.54
+TO,1701051,Angico,78.42
+TO,1701101,Aparecida do Rio Negro,88.02
+TO,1701309,Aragominas,87.91
+TO,1701903,Araguacema,84.87
+TO,1702158,Araguanã,92.02
+TO,1702208,Araguatins,89.68
+TO,1702000,Araguaçu,86.91
+TO,1702109,Araguaína,86.29
+TO,1702307,Arapoema,84.76
+TO,1702406,Arraias,87.48
+TO,1702554,Augustinópolis,88.08
+TO,1702703,Aurora do Tocantins,91.13
+TO,1702901,Axixá do Tocantins,87.55
+TO,1703008,Babaçulândia,83.32
+TO,1703057,Bandeirantes do Tocantins,80.15
+TO,1703073,Barra do Ouro,79.88
+TO,1703107,Barrolândia,90.27
+TO,1703206,Bernardo Sayão,87.76
+TO,1703305,Bom Jesus do Tocantins,92.94
+TO,1703602,Brasilândia do Tocantins,94.1
+TO,1703701,Brejinho de Nazaré,81.3
+TO,1703800,Buriti do Tocantins,84.93
+TO,1703826,Cachoeirinha,90.72
+TO,1703842,Campos Lindos,91.29
+TO,1703867,Cariri do Tocantins,89.94
+TO,1703883,Carmolândia,89.4
+TO,1703891,Carrasco Bonito,95.55
+TO,1703909,Caseara,95.61
+TO,1704105,Centenário,89.55
+TO,1705102,Chapada da Natividade,91.99
+TO,1704600,Chapada de Areia,86.7
+TO,1705508,Colinas do Tocantins,81.54
+TO,1716703,Colméia,91.69
+TO,1705557,Combinado,81.67
+TO,1705607,Conceição do Tocantins,77.98
+TO,1706001,Couto Magalhães,86.26
+TO,1706100,Cristalândia,80.38
+TO,1706258,Crixás do Tocantins,94.51
+TO,1706506,Darcinópolis,82.98
+TO,1707009,Dianópolis,89.53
+TO,1707108,Divinópolis do Tocantins,77.17
+TO,1707207,Dois Irmãos do Tocantins,76.16
+TO,1707306,Dueré,89.24
+TO,1707405,Esperantina,88.17
+TO,1707652,Figueirópolis,89.71
+TO,1707702,Filadélfia,88.62
+TO,1708205,Formoso do Araguaia,83.26
+TO,1707553,Fátima,89.7
+TO,1708304,Goianorte,93.52
+TO,1709005,Goiatins,88.61
+TO,1709302,Guaraí,88.66
+TO,1709500,Gurupi,84.19
+TO,1709807,Ipueiras,95.41
+TO,1710508,Itacajá,87.75
+TO,1710706,Itaguatins,87.41
+TO,1710904,Itapiratins,80.12
+TO,1711100,Itaporã do Tocantins,89.2
+TO,1711506,Jaú do Tocantins,81.49
+TO,1711803,Juarina,94.17
+TO,1711902,Lagoa da Confusão,82.82
+TO,1711951,Lagoa do Tocantins,95.71
+TO,1712009,Lajeado,91.94
+TO,1712157,Lavandeira,90.74
+TO,1712405,Lizarda,92.92
+TO,1712454,Luzinópolis,87.23
+TO,1712504,Marianópolis do Tocantins,88.37
+TO,1712702,Mateiros,94.15
+TO,1712801,Maurilândia do Tocantins,92.26
+TO,1713205,Miracema do Tocantins,87.88
+TO,1713304,Miranorte,86.32
+TO,1713700,Monte Santo do Tocantins,78.46
+TO,1713601,Monte do Carmo,90.68
+TO,1713957,Muricilândia,92.0
+TO,1714203,Natividade,80.36
+TO,1714302,Nazaré,84.8
+TO,1714880,Nova Olinda,90.82
+TO,1715002,Nova Rosalândia,88.78
+TO,1715101,Novo Acordo,84.51
+TO,1715150,Novo Alegre,92.82
+TO,1715259,Novo Jardim,87.77
+TO,1715507,Oliveira de Fátima,94.55
+TO,1721000,Palmas,83.97
+TO,1715705,Palmeirante,87.05
+TO,1713809,Palmeiras do Tocantins,89.63
+TO,1715754,Palmeirópolis,80.43
+TO,1716208,Paranã,93.32
+TO,1716109,Paraíso do Tocantins,85.26
+TO,1716307,Pau D'Arco,83.12
+TO,1716505,Pedro Afonso,83.56
+TO,1716604,Peixe,81.97
+TO,1716653,Pequizeiro,90.79
+TO,1717008,Pindorama do Tocantins,85.74
+TO,1717206,Piraquê,85.86
+TO,1717503,Pium,88.6
+TO,1717800,Ponte Alta do Bom Jesus,82.83
+TO,1717909,Ponte Alta do Tocantins,92.14
+TO,1718006,Porto Alegre do Tocantins,85.06
+TO,1718204,Porto Nacional,89.78
+TO,1718303,Praia Norte,86.51
+TO,1718402,Presidente Kennedy,71.94
+TO,1718451,Pugmil,82.43
+TO,1718501,Recursolândia,49.09
+TO,1718550,Riachinho,92.18
+TO,1718758,Rio Sono,90.08
+TO,1718659,Rio da Conceição,88.22
+TO,1718709,Rio dos Bois,86.36
+TO,1718808,Sampaio,87.34
+TO,1718840,Sandolândia,80.76
+TO,1718865,Santa Fé do Araguaia,89.84
+TO,1718881,Santa Maria do Tocantins,90.87
+TO,1718899,Santa Rita do Tocantins,91.4
+TO,1718907,Santa Rosa do Tocantins,91.44
+TO,1719004,Santa Tereza do Tocantins,89.75
+TO,1720002,Santa Terezinha do Tocantins,88.77
+TO,1720655,Silvanópolis,77.78
+TO,1720853,Sucupira,92.41
+TO,1720101,São Bento do Tocantins,85.25
+TO,1720150,São Félix do Tocantins,92.61
+TO,1720200,São Miguel do Tocantins,91.27
+TO,1720259,São Salvador do Tocantins,86.05
+TO,1720309,São Sebastião do Tocantins,83.26
+TO,1720499,São Valério,92.02
+TO,1720804,Sítio Novo do Tocantins,83.71
+TO,1708254,Tabocão,94.23
+TO,1720903,Taguatinga,80.8
+TO,1720937,Taipas do Tocantins,83.56
+TO,1720978,Talismã,80.72
+TO,1721208,Tocantinópolis,93.64
+TO,1721109,Tocantínia,86.39
+TO,1721257,Tupirama,94.29
+TO,1721307,Tupiratins,91.51
+TO,1722081,Wanderlândia,92.39
+TO,1722107,Xambioá,80.63

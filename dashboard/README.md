@@ -130,6 +130,12 @@ A série de pobreza do painel (`dados/ibge_ods/pobreza_uf_ano.csv`, 2012-2024) v
 
 O agregado regional impresso pelo script pondera pela população de cada ano; o painel pondera pela população de 2025, a única que carrega, como já fazia com o CVLI. Os dois números não são idênticos nos anos antigos, e a nota da série no painel registra isso.
 
+### Onde os dados ficam salvos
+
+Os JSONs de `public/data/` guardam o recorte por UF, que é o que o painel consome. Mas boa parte do resultado das coletas é mais fino que isso — IDEB por município, RAIS e PIA por divisão CNAE, PEVS por produto, atenção primária mês a mês —, e esse detalhe era gravado só em `dados/`, que está fora do versionamento. Num clone feito por `git pull` ele simplesmente não existia, e refazê-lo custa horas de download.
+
+O `scripts/versionar_dados.py` copia esse detalhe para `public/data/csv/`, em CSV: o dado é tabular e o arquivo fica menos da metade do tamanho do JSON equivalente. A pasta escolhida importa — o `build-static.mjs` só apaga os quatro JSONs que ele mesmo gera, então o que está em `csv/` sobrevive ao `npm run build:static`, e o Astro copia tudo para `dist/`. São 14 arquivos, 1,58 MB, com um `README.md` gerado junto listando o que é cada um. Rode o script depois dos pipelines de coleta; o que ainda não foi coletado na máquina é reportado como ausente, sem falhar.
+
 ### Indicadores pendentes: o que foi sondado e o que não existe
 
 Dos 41 indicadores do catálogo sem valores coletados, **cerca de trinta têm "Estados" como fonte** — são status administrativos de política estadual (tem ZEE vigente, tem plano de adaptação aprovado, tem câmara técnica instalada, tem PRA regulamentado). Nenhuma base secundária fornece isso: dependem de coleta junto às secretarias, e nenhuma varredura de dados abertos resolve.
@@ -292,6 +298,7 @@ python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (20
 python scripts/eixo2_mortalidade_evitavel.py                 # SIM/TabNet → óbitos evitáveis (1996-2026)
 python scripts/eixo2_telessaude_cnes.py                      # CNES/TabNet → telessaúde (2012-2026)
 python scripts/eixo3_rais.py                                 # RAIS/MTE → empregos e estabelecimentos (2018-2025)
+python scripts/versionar_dados.py                            # copia o detalhe de dados/ para public/data/csv/
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
