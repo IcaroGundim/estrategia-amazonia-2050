@@ -607,9 +607,15 @@ const server = createServer(async (req, res) => {
       createReadStream(fullPath).pipe(res);
       return;
     }
+    // A rota de indicadores foi absorvida pelas metas. Segue respondendo porque
+    // o endereço já foi compartilhado; o `#` do código do indicador não viaja no
+    // pedido, então o navegador o preserva sozinho ao seguir o 301.
+    if (url.pathname === '/indicadores' || url.pathname === '/indicadores/') {
+      res.writeHead(301, { Location: '/metas' });
+      res.end();
+      return;
+    }
     const routeAliases = new Map([
-      ['/indicadores', '/indicadores.html'],
-      ['/indicadores/', '/indicadores.html'],
       ['/metodologia', '/metodologia.html'],
       ['/metodologia/', '/metodologia.html'],
       ['/metas', '/metas.html'],

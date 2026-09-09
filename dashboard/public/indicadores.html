@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Indicadores — agora em Metas e indicadores</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://estrategia-amazonia-2050.vercel.app/metas" />
+    <!--
+      A rota de indicadores foi absorvida pelas metas: as duas descreviam a mesma
+      matriz, e as metas são um subconjunto dos indicadores. O endereço continua
+      respondendo porque foi compartilhado.
+
+      Em produção quem redireciona é o 301 do vercel.json, e este arquivo nem
+      chega a ser servido. Ele existe para o `astro preview` e para qualquer
+      hospedagem estática — e é escrito em JavaScript, e não como
+      `<meta http-equiv="refresh">`, porque o refresh descarta o `#` do endereço.
+      É no fragmento que viaja o código do indicador (`/indicadores#I1.3.2`), e é
+      dele que a página de metas abre a ficha certa.
+    -->
+    <script>
+      location.replace('/metas' + location.hash);
+    </script>
+  </head>
+  <body>
+    <p>Esta página agora faz parte de <a href="/metas">Metas e indicadores</a>.</p>
+  </body>
+</html>

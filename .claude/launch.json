@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "dashboard", "--", "--port", "4321"],
+      "port": 4321
+    },
+    {
+      "name": "dashboard-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--prefix", "dashboard", "astro", "preview", "--root", "dashboard", "--port", "4325"],
+      "port": 4325
+    }
+  ]
+}

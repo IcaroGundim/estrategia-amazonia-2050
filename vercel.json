@@ -5,6 +5,13 @@
   "outputDirectory": "dashboard/dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/indicadores",
+      "destination": "/metas",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/dashboard",

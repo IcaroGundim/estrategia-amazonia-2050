@@ -317,11 +317,10 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .ind-footer { margin-top: auto; padding-top: 10px; display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--linha-2); color: var(--tinta-4); font-size: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
 .ind-footer span:last-child { text-align: right; }
 
-.indicators-page { min-height: calc(100vh - 76px); padding-bottom: 92px; background: var(--areia); }
-.indicators-workspace { padding-top: 34px; display: grid; grid-template-columns: clamp(270px, 16vw, 320px) minmax(0, 1fr); align-items: start; gap: clamp(20px, 1.7vw, 32px); }
-
-
-.filters-card { position: sticky; top: 100px; padding: 24px; }
+/* O cartão de filtros era a coluna fixa da rota de indicadores, que deixou de
+   existir. Nas Metas ele é a barra deitada acima do quadro — ver `.goals-toolbar`,
+   que refaz o arranjo. O que sobrou aqui é o que as duas formas compartilham. */
+.filters-card { padding: 24px; }
 /* O arranjo dos grupos vive no invólucro, e não no cartão, porque no celular o
    cartão passa a ter também o botão que abre e fecha o painel. */
 .filters-body { display: flex; flex-direction: column; gap: 24px; }
@@ -374,64 +373,50 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .status-filter { padding: 7px 11px; border: 1px solid var(--linha); border-radius: 999px; background: #efede9; color: var(--tinta-2); font-size: 11px; }
 .status-filter:hover, .status-filter:focus-visible { border-color: var(--mata); outline: none; }
 .status-filter.is-active { border-color: var(--mata); background: var(--mata); color: var(--areia); font-weight: 600; }
-.export-group { display: flex; flex-direction: column; gap: 8px; }
-.export-primary, .export-group a { min-height: 43px; display: flex; align-items: center; justify-content: center; border-radius: 8px; text-align: center; font-size: 11px; font-weight: 600; }
-.export-primary { border: 1px solid var(--urucum); background: var(--urucum); color: var(--areia); }
+/* Downloads recolhidos. São seis destinos — o recorte em CSV e os cinco
+   workbooks — para uma ação que se usa uma vez por visita; abertos, ocupavam
+   uma faixa inteira da barra de busca. */
+.export-group { position: relative; }
+/* Com o cartão de filtros no seletor porque `.filters-card .dropdown-toggle`
+   impõe altura, corpo e cor a qualquer gatilho dentro dele. */
+.filters-card .export-toggle { min-height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--linha); border-radius: 8px; background: var(--papel); color: var(--mata); font: 600 11.5px var(--text); white-space: nowrap; }
+.filters-card .export-toggle:hover, .filters-card .export-toggle:focus-visible { border-color: var(--mata); background: #e7ede8; outline: none; }
+.export-group.is-open .export-toggle { border-color: var(--mata); background: var(--mata); color: var(--areia); }
+/* A seta volta a ser a do resto do painel. As regras genéricas do cartão de
+   filtros foram escritas para um chevron em `svg`: elas dão 11×8 à caixa, e um
+   retângulo girado 45° sai torto; e viram a seta em 180°, que num desenho feito
+   de duas bordas aponta para o canto, não para cima. Quadrada e em −135° ela é
+   a mesma seta do seletor de indicador e do botão de filtros. */
+.filters-card .export-toggle .dropdown-chevron { width: 9px; height: 9px; }
+.filters-card .export-group.is-open .dropdown-chevron { margin-top: 4px; transform: rotate(-135deg); }
+.export-group.is-open .export-toggle .dropdown-chevron { border-color: var(--areia); }
+/* Com o cartão de filtros no seletor por necessidade, e não por gosto: a regra
+   genérica `.filters-card .dropdown-menu` estica o menu de ponta a ponta do
+   gatilho (`left: 0; right: 0`), e um menu de largura própria ancorado num botão
+   de 91px nasceria alinhado à esquerda — 52px para fora da tela. Empatada em
+   especificidade, esta vem depois e ganha; no celular a folha inferior da
+   `mobile.css` vem depois das duas e continua ganhando das duas. */
+.filters-card .export-opcoes { position: absolute; z-index: 40; top: calc(100% + 7px); right: 0; left: auto; width: max-content; min-width: 210px; max-height: none; padding: 8px; display: grid; gap: 2px; overflow: visible; border: 1px solid var(--linha); border-radius: 10px; background: var(--papel); box-shadow: var(--shadow); animation: dropdown-in 130ms ease-out; }
+.export-opcoes[hidden] { display: none; }
+.export-titulo { margin: 8px 0 2px; padding: 0 9px; color: var(--tinta-4); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.export-opcoes a { padding: 9px; border-radius: 6px; color: var(--tinta-2); font-size: 12.5px; }
+.export-opcoes a:hover, .export-opcoes a:focus-visible { background: var(--areia); color: var(--mata); outline: none; }
+.export-primary { padding: 10px 9px; display: block; border: 0; border-radius: 6px; background: var(--urucum); color: var(--areia); text-align: left; font: 600 12.5px var(--text); }
 .export-primary:hover, .export-primary:focus-visible { background: #a83a19; outline: none; }
-.export-group a { border: 1px solid var(--mata); color: var(--mata); }
-.export-group a:hover, .export-group a:focus-visible { background: #e7ede8; outline: none; }
+.export-primary:disabled { cursor: progress; opacity: 0.6; }
 
-.indicators-table-card { min-width: 0; overflow: hidden; scroll-margin-top: 96px; }
-.indicators-toolbar { min-height: 92px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--linha-2); }
-.indicators-toolbar h2 { font-size: 23px; }
-.indicators-toolbar p { margin: 5px 0 0; color: var(--tinta-4); font-size: 11px; }
-.indicator-search { width: min(410px, 42%); min-height: 47px; padding: 0 15px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); color: var(--tinta-4); }
+.indicator-search { width: 100%; min-height: 47px; padding: 0 15px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); color: var(--tinta-4); }
 .indicator-search:focus-within { border-color: var(--mata); box-shadow: 0 0 0 3px rgba(14, 43, 34, 0.07); }
 .indicator-search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--tinta); font: 13px var(--text); }
 .indicator-search input::placeholder { color: var(--tinta-4); }
-.indicator-table { overflow-x: auto; }
-.indicator-table-head, .indicator-table-row { min-width: 820px; display: grid; grid-template-columns: minmax(310px, 2fr) minmax(185px, 1fr) minmax(310px, 1.7fr) 115px; align-items: center; gap: 24px; }
-.indicator-table-head { min-height: 48px; padding: 0 24px; border-bottom: 1px solid var(--linha); background: var(--areia); color: var(--tinta-3); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-.indicator-table-row { min-height: 92px; padding: 15px 24px; border-bottom: 1px solid var(--linha-2); background: var(--papel); cursor: pointer; transition: background 150ms ease, box-shadow 150ms ease; }
-.indicator-table-row:focus-within { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
-.indicator-name-cell strong, .indicator-name-cell span, .indicator-axis-cell strong, .indicator-axis-cell span, .indicator-value-cell strong, .indicator-value-cell small { display: block; }
-.indicator-open { width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; }
-.indicator-open:focus-visible { outline: none; }
-.indicator-name-cell strong { font-size: 15px; font-weight: 600; line-height: 1.3; }
-.indicator-name-cell span { max-width: 430px; margin-top: 5px; overflow: hidden; color: var(--tinta-4); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.indicator-name-cell small { margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; color: var(--urucum); font-size: 9px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
-.indicator-name-cell small i { font-size: 12px; font-style: normal; transition: transform 150ms ease; }
-.indicator-table-row:focus-within .indicator-name-cell small i { transform: translateX(3px); }
-.indicator-axis-cell strong { color: var(--mata); font-size: 12px; }
-.indicator-axis-cell span { margin-top: 3px; color: var(--tinta-3); font-size: 11px; line-height: 1.4; }
+/* A célula de valor sobreviveu à lista que a criou: é ela que a ficha usa para
+   dizer o valor do estado escolhido, ou em quantos dos nove há valor. */
+.indicator-value-cell strong, .indicator-value-cell small { display: block; }
 .indicator-value-cell { text-align: right; font-variant-numeric: tabular-nums; }
 .indicator-value-cell strong { color: var(--mata); font: 800 18px var(--display); }
 .indicator-value-cell small { margin-top: 4px; color: var(--tinta-4); font-size: 10px; line-height: 1.35; }
-.indicator-goal-cell span { display: -webkit-box; overflow: hidden; color: var(--tinta-3); font-size: 11px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
-.indicator-status-cell { text-align: right; }
-.indicator-status-cell .ind-status { font-size: 10.5px; }
 .indicator-empty { min-height: 240px; padding: 50px 24px; display: flex; align-items: center; justify-content: center; color: var(--tinta-4); text-align: center; }
-.indicator-pagination { min-height: 70px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; color: var(--tinta-3); font-size: 12px; }
-.indicator-pagination-controls, .indicator-page-numbers { display: flex; align-items: center; gap: 7px; }
-.indicator-pagination button { min-height: 38px; padding: 0 14px; border: 1px solid var(--linha); border-radius: 7px; background: var(--papel); color: var(--tinta-2); font-size: 11px; cursor: pointer; }
-.indicator-pagination [data-page="next"] { border-color: var(--mata); background: var(--mata); color: var(--areia); }
-.indicator-page-numbers button { width: 38px; min-width: 38px; padding: 0; font-weight: 600; }
-.indicator-page-numbers button.is-current { border-color: var(--urucum); background: var(--urucum); color: var(--papel); }
-.indicator-page-ellipsis { width: 20px; color: var(--tinta-4); text-align: center; }
-.indicator-pagination button:hover:not(:disabled), .indicator-pagination button:focus-visible:not(:disabled) { border-color: var(--urucum); outline: none; }
-.indicator-pagination button:disabled { cursor: not-allowed; opacity: 0.4; }
 
-.indicators-table-card.is-detail .indicators-toolbar { display: none; }
-.indicator-detail-view { min-height: 620px; background: var(--papel); animation: indicator-detail-in 180ms ease-out; }
-.indicator-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: clamp(24px, 2.4vw, 48px); padding: clamp(20px, 1.6vw, 30px) clamp(30px, 2.5vw, 48px) clamp(24px, 2vw, 36px); border-bottom: 1px solid var(--linha); background: var(--papel); }
-.indicator-detail-back { flex: none; margin-bottom: 0; padding: 8px 0 5px; display: inline-flex; align-items: center; gap: 8px; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--urucum); font-size: 12.5px; font-weight: 600; }
-.indicator-detail-back span { color: var(--urucum); font-size: 17px; line-height: 1; }
-.indicator-detail-back:hover, .indicator-detail-back:focus-visible { color: var(--mata); outline: none; }
-.indicator-detail-heading { min-width: 0; text-align: right; }
-
-.indicator-detail-kicker { margin: 0 0 6px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--urucum); font-size: clamp(10px, 0.62vw, 12px); font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; }
-.indicator-detail-header h2 { max-width: none; color: var(--tinta); font-size: clamp(24px, 1.9vw, 34px); line-height: 1.08; text-wrap: balance; }
-.indicator-detail-body { width: 100%; max-width: none; padding: 0 clamp(30px, 2.5vw, 48px) clamp(44px, 3.2vw, 60px); }
 .indicator-detail-summary { display: grid; grid-template-columns: auto auto auto auto auto; border-bottom: 1px solid var(--linha); color: var(--tinta); }
 .indicator-detail-summary > div { min-width: 0; }
 .indicator-detail-summary > div { padding: clamp(22px, 1.6vw, 32px) clamp(24px, 1.6vw, 30px) clamp(22px, 1.6vw, 32px) 0; }
@@ -452,14 +437,14 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-detail-note strong { color: var(--mata); }
 .indicator-detail-content { padding-top: clamp(26px, 2vw, 38px); }
 
-.indicator-detail-top { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 2.4vw, 48px); align-items: start; }
-
-.indicator-detail-top .indicator-detail-block + .indicator-detail-block { margin-top: 0; padding-top: 0; border-top: 0; padding-left: clamp(24px, 2.4vw, 48px); border-left: 1px solid var(--linha-2); }
-
-.indicator-detail-lower { margin-top: clamp(24px, 1.8vw, 34px); padding-top: clamp(24px, 1.8vw, 34px); border-top: 1px solid var(--linha-2); display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); gap: clamp(28px, 2.4vw, 48px); align-items: start; }
+.indicator-detail-lower { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); gap: clamp(28px, 2.4vw, 48px); align-items: start; }
 .indicator-detail-lower > *, .indicator-detail-aside { min-width: 0; }
 .indicator-detail-aside { padding-left: clamp(30px, 2.7vw, 52px); border-left: 1px solid var(--linha); }
 .indicator-detail-block + .indicator-detail-block { margin-top: clamp(24px, 1.8vw, 34px); padding-top: clamp(24px, 1.8vw, 34px); border-top: 1px solid var(--linha-2); }
+/* A meta pactuada só abre a ficha nos indicadores sem patamar — nos demais ela
+   é a primeira seção da aba de resultado. Quando aparece, é ela que se separa
+   do método de cálculo. */
+.indicator-detail-block.is-goal + .indicator-detail-lower { margin-top: clamp(24px, 1.8vw, 34px); padding-top: clamp(24px, 1.8vw, 34px); border-top: 1px solid var(--linha-2); }
 .indicator-detail-section-heading { margin-bottom: 16px; display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 12px; }
 .indicator-detail-section-heading::after { height: 1px; content: ""; background: var(--linha-2); }
 .indicator-detail-section-heading h3 { color: var(--tinta); font-size: clamp(19px, 1.15vw, 23px); white-space: nowrap; }
@@ -516,7 +501,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-detail-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .indicator-detail-links a { padding: 7px 10px 6px; display: inline-flex; align-items: center; gap: 7px; border-bottom: 1px solid currentColor; color: var(--mata); font-size: clamp(10.5px, 0.66vw, 12.5px); font-weight: 600; white-space: normal; }
 .indicator-detail-links a:hover, .indicator-detail-links a:focus-visible { border-color: var(--urucum); color: var(--urucum); outline: none; }
-@keyframes indicator-detail-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 .river-ornament { position: relative; height: 32px; overflow: hidden; background: var(--areia); }
 .river-ornament i { position: absolute; left: -4%; width: 108%; height: 34px; border-top: 3px solid var(--urucum); border-radius: 50%; }
@@ -642,43 +626,72 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-page { padding: 40px 0 88px; background: var(--areia); }
 .goals-board { margin-top: 4px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0fr); align-items: start; column-gap: 0; row-gap: 22px; transition: grid-template-columns 420ms cubic-bezier(.22, 1, .36, 1), column-gap 420ms cubic-bezier(.22, 1, .36, 1); }
 .goals-board.has-detail { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 22px; }
+/* Terceiro estado da mesma grade: a ficha técnica traz equações e uma legenda de
+   símbolos que não cabem nos ~314px da coluna lateral. Aqui a lista recolhe e o
+   painel fica com a largura toda, pela transição que já existia entre os outros
+   dois estados. */
+.goals-board.has-ficha { grid-template-columns: minmax(0, 0fr) minmax(0, 1fr); column-gap: 0; }
+/* Zerar a largura não basta: as 59 linhas continuariam empilhadas numa coluna de
+   poucos pixels e o cartão pediria quase 16.000px de altura, que a página teria
+   de rolar. A altura vai junto, e a opacidade cobre o instante em que ela cai. */
+.goals-board.has-ficha .goals-list-card { max-height: 0; padding-block: 0; border-block-width: 0; overflow: hidden; opacity: 0; transition: opacity 180ms ease; }
+/* A ficha em largura cheia é um bloco da página, não uma coluna que acompanha a
+   rolagem: presa, ela viraria uma caixa de 836px com barra de rolagem própria
+   dentro de uma página que não rola. */
+.goals-board.has-ficha .goals-detail { position: static; max-height: none; overflow: visible; padding: 24px clamp(24px, 2.4vw, 44px) 34px; }
 
-.goals-map-card { padding: 26px 26px 18px; }
-.goals-map-head { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; gap: clamp(20px, 2.4vw, 44px); margin-bottom: 6px; }
-.goals-map-head h1 { max-width: none; font-size: clamp(26px, 2.2vw, 40px); }
-#goals-meta-name { max-width: 24ch; min-height: 3.36em; padding-top: 4px; font-size: clamp(18px, 1.55vw, 25px); line-height: 1.12; text-wrap: balance; }
-.goals-map-body { display: grid; grid-template-columns: minmax(190px, 250px) minmax(0, 1fr); align-items: center; gap: clamp(16px, 2vw, 30px); margin-top: 14px; }
-.goals-reading-figure { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 0; }
-.goals-reading-figure strong { color: var(--mata); font: 800 clamp(30px, 3vw, 44px)/1 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.goals-reading-figure b { margin-left: 12px; color: var(--tinta-3); font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; }
-.goals-reading-figure span { color: var(--tinta-4); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
-.goals-reading-status { margin: 10px 0 0; font-size: 12px; font-weight: 600; }
-.goals-reading-status.is-met { color: var(--mata); }
-.goals-reading-status.is-progress { color: var(--tinta-3); font-weight: 400; }
-.goals-reading-empty { margin: 14px 0 0; color: var(--tinta-3); font-size: 13px; }
-.goals-reading-note { max-width: 74ch; margin: 12px 0 0; color: var(--tinta-4); font-size: 10.5px; line-height: 1.5; }
+/* --- barra de busca, filtros e downloads ------------------------------------
+   Era a coluna fixa da rota de indicadores. Deitada acima do quadro, ela cabe
+   sem tirar largura da lista nem do painel — e o seletor de estado, que naquela
+   rota era um segundo menu suspenso, some: as bandeiras do cabeçalho já dizem o
+   recorte, para a jornada e para a ficha ao mesmo tempo. */
+.goals-list-head.is-pagina { margin-bottom: 16px; padding-right: 0; }
+.goals-toolbar { margin-bottom: 16px; padding: 12px 20px; }
 
-.goals-map-canvas { min-width: 0; }
-#goals-map { width: 100%; height: clamp(280px, 30vw, 520px); display: block; }
-.goals-state path { stroke: var(--areia); stroke-width: 1.1; fill: var(--linha-2); transition: fill 160ms ease; }
-.goals-state.is-met path { fill: var(--mata); }
-.goals-state.is-progress path { fill: var(--mata-500); fill-opacity: var(--avanco, 0.3); }
-@supports (color: color-mix(in srgb, red 50%, blue)) {
-  .goals-state.is-progress path { fill: color-mix(in srgb, var(--mata-500) calc(var(--avanco, 0.3) * 100%), var(--papel)); fill-opacity: 1; }
+/* Deitada só no computador. Abaixo de 920 as consultas de largura mais adiante
+   já reorganizam os grupos, e um seletor com duas classes venceria as duas —
+   a barra apareceria em duas colunas de 141px num aparelho, com cada pastilha
+   de filtro numa linha.
+
+   A busca deixa de ocupar a linha inteira — esticada por 1.283px ela era um
+   campo vazio do tamanho da página — e os rótulos dos filtros passam a ficar ao
+   lado das pastilhas, e não como título acima delas. Com isso os três cabem numa
+   linha só nas telas largas; abaixo disso o `flex-wrap` os desdobra sozinho, sem
+   precisar de mais um ponto de quebra. */
+@media (min-width: 921px) {
+  /* `flex-direction` explícito: a regra base da `.filters-body` é uma coluna, e
+     herdá-la aqui faria o `flex-basis` da busca valer como altura — o campo
+     abria com 280px de altura no meio da barra. */
+  /* Sem moldura no computador: uma faixa de busca e filtros não é um bloco de
+     conteúdo, e o cartão branco com borda, sombra e recheio a fazia pesar como
+     um. Solta sobre a areia, ela lê como o que é — uma barra de controles — e
+     devolve à lista os 40px que a moldura consumia. No celular o cartão fica:
+     lá o bloco recolhe e abre, e a moldura é o que diz onde ele começa. */
+  .goals-toolbar { padding: 0; border: 0; background: none; box-shadow: none; }
+  .goals-toolbar .filters-body { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+  /* Busca e botão de baixar dividem a linha: `.filters-card .dropdown-toggle`
+     impõe 46px ao segundo, e um campo de 38 ao lado de um botão de 46 desalinha
+     a barra inteira. Os dois vêm para 40. */
+  .goals-toolbar .indicator-search { flex: 1 1 200px; max-width: 340px; min-height: 40px; }
+  .goals-toolbar .export-toggle { min-height: 40px; }
+  /* O invólucro sai do caminho para os dois filtros quebrarem cada um por si:
+     como uma peça só ele não cabia ao lado da busca em telas de ~900px e descia
+     inteiro, devolvendo à barra as fileiras que ela tinha antes. */
+  .goals-toolbar .filter-linhas { display: contents; }
+  .goals-toolbar .filter-group { display: flex; align-items: center; gap: 9px; }
+  .goals-toolbar .filter-group + .filter-group { padding-top: 0; border-top: 0; }
+  .goals-toolbar .filter-title { margin: 0; font-size: 10px; letter-spacing: 0.1em; }
+  /* Onze pastilhas em linha: cada pixel de recheio custa onze na largura da
+     barra, e é o que decide se ela cabe numa fileira ou em duas. */
+  .goals-toolbar .status-filter-list { gap: 5px; }
+  .goals-toolbar .status-filter { min-height: 32px; padding: 5px 10px; font-size: 10.5px; }
+  /* Os cinco eixos são um dígito cada: sem um piso de largura eles ficariam com
+     pastilhas de tamanhos diferentes de "Todos", e a fileira lia como irregular. */
+  .goals-toolbar #goals-eixo-filters .status-filter { min-width: 32px; padding-inline: 8px; justify-content: center; display: inline-flex; align-items: center; }
+  /* Encostado à direita: é a única peça da barra que não filtra a lista. */
+  .goals-toolbar .export-group { margin-left: auto; }
 }
-.goals-state.is-empty path { fill: var(--linha-2); cursor: default; }
-.goals-state path:hover { stroke: var(--mata); stroke-width: 2; }
-.goals-state text { font: 800 12px var(--display); text-anchor: middle; dominant-baseline: middle; fill: var(--tinta-3); pointer-events: none; }
-.goals-state.is-met text { fill: var(--areia); }
 
-.goals-map-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 13px; border-top: 1px solid var(--linha-2); }
-.goals-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 0; padding: 0; list-style: none; color: var(--tinta-4); font-size: 10.5px; }
-.goals-legend li { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-.goals-legend i { width: 11px; height: 11px; border-radius: 3px; }
-.goals-legend .is-met { background: var(--mata); }
-.goals-legend .is-progress { background: color-mix(in srgb, var(--mata-500) 68%, var(--papel)); }
-.goals-legend .is-empty { background: var(--linha-2); }
-.goals-map-hint { color: var(--tinta-4); font-size: 10.5px; }
 
 .goals-list-card { padding: 22px 26px 18px; }
 .goals-list-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
@@ -698,8 +711,17 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-list-head { padding-right: 14px; }
 .goals-list-head h2 { font-size: 20px; }
 .goals-list-head p { max-width: 46ch; margin: 8px 0 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.5; }
+.goals-list-summary { margin: 0; color: var(--tinta-4); font-size: 12px; }
+.goals-list-summary span { color: var(--mata); font-weight: 700; font-variant-numeric: tabular-nums; }
 .goals-list { min-width: 0; margin-top: 16px; }
 .goals-eixo + .goals-eixo { margin-top: 22px; }
+/* Dentro de um eixo, o que tem patamar e o que não tem são duas leituras
+   diferentes da mesma matriz: uma tem barra e jornada, a outra tem selo de
+   coleta e o motivo de ficar de fora. A faixa é o que impede que a segunda seja
+   lida como uma meta sem número. */
+.goals-faixa { margin: 16px 0 2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
+.goals-faixa::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
+.goals-eixo-head + .goals-faixa { margin-top: 10px; }
 .goals-eixo-head { display: flex; align-items: center; gap: 10px; padding-bottom: 7px; border-bottom: 2px solid var(--mata); }
 .goals-eixo-head .num { display: grid; place-content: center; flex: none; width: 22px; height: 22px; border-radius: 6px; background: var(--mata); color: var(--areia); font: 800 12px var(--display); }
 .goals-eixo-head h3 { font-size: 13.5px; letter-spacing: 0.01em; }
@@ -729,6 +751,11 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-row.is-empty .goals-row-ler b { color: var(--tinta-4); }
 .goals-row-open { color: var(--tinta-4); font: 700 20px/1 var(--display); transition: transform 160ms ease, color 160ms ease; }
 .goals-row.is-active .goals-row-open { color: var(--urucum); transform: translateX(2px); }
+/* Sem patamar não há barra: a coluna dela sai e o selo de coleta ocupa o lugar
+   que era da jornada. Mesma linha, um campo a menos. */
+.goals-row.is-catalog { grid-template-columns: minmax(0, 1fr) auto 14px; }
+.goals-row.is-catalog .goals-row-name small { color: var(--tinta-4); font-style: italic; }
+.goals-row.is-catalog .goals-row-ler { display: flex; align-items: center; justify-content: flex-end; }
 
 .goals-detail { position: sticky; top: 104px; min-width: 0; max-height: calc(100vh - 124px); padding: 20px; overflow: auto; background: var(--papel); scrollbar-width: thin; scrollbar-color: var(--linha) transparent; }
 .goals-detail[hidden] { display: none; }
@@ -760,7 +787,26 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   to { opacity: 0; transform: translateY(-4px); }
 }
 .goals-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.goals-detail-head > div { min-width: 0; }
 .goals-detail-head h2 { margin: 0; max-width: 27ch; font-size: clamp(16px, 1.15vw, 19px); line-height: 1.22; text-wrap: balance; }
+/* O código e o eixo do indicador. Na rota antiga eles nomeavam a ficha; aqui
+   nomeiam as duas abas, que falam do mesmo indicador por dois lados. */
+.goals-detail-kicker { margin: 0 0 5px; display: flex; align-items: center; gap: 7px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* --- as duas faces de um indicador -----------------------------------------
+   Resultado é a jornada até o patamar; ficha técnica é como o número é
+   apurado. Eram páginas diferentes, e cada uma repetia o nome, o eixo, a meta
+   pactuada e a fonte da outra. */
+.goals-detail-tabs { margin: 15px 0 0; display: flex; gap: 4px; border-bottom: 1px solid var(--linha); }
+.goals-detail-tabs button { margin-bottom: -1px; padding: 9px 12px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--tinta-4); font: 600 12.5px var(--text); cursor: pointer; transition: color 150ms ease, border-color 150ms ease; }
+.goals-detail-tabs button:hover, .goals-detail-tabs button:focus-visible { color: var(--mata); outline: none; }
+.goals-detail-tabs button:focus-visible { border-bottom-color: var(--mata-300); }
+.goals-detail-tabs button.is-active { border-bottom-color: var(--urucum); color: var(--mata); }
+.goals-detail-painel { min-width: 0; }
+/* Dentro do painel a ficha não tem cabeçalho próprio: quem nomeia o indicador é
+   o topo do painel, comum às duas abas. O recheio lateral também é dele. */
+.goals-detail-painel .indicator-detail-summary { margin-top: 4px; }
+.goals-detail-painel .indicator-detail-note { margin-top: clamp(20px, 1.6vw, 32px); }
 .goals-detail-close { flex: none; width: 32px; height: 32px; padding: 0; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); color: var(--tinta-3); font: 500 20px/1 var(--text); cursor: pointer; }
 .goals-detail-close:hover, .goals-detail-close:focus-visible { border-color: var(--mata-500); color: var(--mata); outline: none; }
 .goals-detail-summary { margin: 14px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -830,7 +876,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .menu-open .topnav { position: absolute; top: 100%; right: 0; left: 0; padding: 14px 24px 18px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; background: var(--mata); box-shadow: 0 16px 30px rgba(14, 43, 34, 0.18); }
   .dashboard-grid { grid-template-columns: minmax(0, 1fr) 370px; }
   .method-steps.is-themes, .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .indicators-workspace { grid-template-columns: 230px minmax(0, 1fr); }
   .methodology-layout { grid-template-columns: 230px minmax(0, 1fr); gap: 42px; }
 
   /* O cabeçalho já quebra sozinho pelo `flex-wrap` da regra base, e forçar a
@@ -851,43 +896,13 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
      valor passa a quebrar em duas linhas em vez de sumir. */
   .state-summary-grid b { overflow: visible; white-space: normal; text-overflow: clip; }
 
-  /* ---------------------------------------------------------------------
-     A lista de indicadores vira cartão empilhado. O piso de 820px da linha
-     obrigava a rolar na horizontal dentro do cartão para chegar à meta e à
-     situação — no tablet em paisagem a coluna "Situação" ficava inteira fora
-     da tela, sem nenhum sinal de que existia. Só muda o `display`: os papéis
-     são ARIA explícitos em <div>/<article>, não uma <table> nativa, então a
-     estrutura de tabela continua íntegra para quem usa leitor de tela.
-     --------------------------------------------------------------------- */
-  .indicator-table { overflow-x: visible; }
-  /* Posição explícita em vez de fluxo automático: com a meta ocupando as duas
-     colunas, a situação era empurrada para uma quarta linha e metade da largura
-     do cartão ficava vazia. Assim o eixo e a situação dividem a mesma faixa. */
-  .indicator-table-row { min-width: 0; min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; padding: 16px 18px; }
-  .indicator-name-cell { grid-area: 1 / 1 / 2 / -1; }
-  .indicator-axis-cell { grid-area: 2 / 1 / 3 / 2; }
-  .indicator-status-cell { grid-area: 2 / 2 / 3 / -1; }
-  .indicator-goal-cell { grid-area: 3 / 1 / 4 / -1; }
-  /* `display: none` apagaria os quatro columnheader que dão nome às células;
-     escondido só visualmente, o cabeçalho continua nomeando a tabela.
-     `min-width: 0` junto: o piso de 820px da regra base vence sobre `width` e o
-     cabeçalho escondido continuaria esticando a página em quase o dobro dela. */
-  .indicator-table-head { position: absolute; width: 1px; min-width: 0; height: 1px; padding: 0; overflow: hidden; border: 0; clip-path: inset(50%); white-space: nowrap; }
-  .indicator-name-cell span { max-width: none; white-space: normal; }
-  /* A meta encostada na borda direita do cartão passava de 100 caracteres por
-     linha no tablet em paisagem. */
-  .indicator-goal-cell span { max-width: 92ch; }
-  /* Sem o cabeçalho à vista, o texto da meta fica sem referência. */
-  .indicator-goal-cell::before { content: "Meta"; display: block; margin-bottom: 4px; color: var(--tinta-4); font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-  .indicator-goal-cell span { -webkit-line-clamp: 3; }
-  .indicator-status-cell { text-align: left; }
-
+  /* A ficha técnica desce para uma coluna: cinco campos de resumo lado a lado e
+     a fórmula dividindo a linha com os dados complementares só cabem na largura
+     do computador. */
   .indicator-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .indicator-detail-summary > div:nth-child(3) { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-summary > div:nth-child(4) { border-top: 1px solid var(--linha-2); }
   .indicator-detail-summary > div:nth-child(5) { grid-column: 1 / -1; padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-  .indicator-detail-top { grid-template-columns: 1fr; }
-  .indicator-detail-top .indicator-detail-block + .indicator-detail-block { margin-top: 24px; padding-top: 24px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-lower { grid-template-columns: 1fr; }
   .indicator-detail-aside { margin-top: 28px; padding-top: 28px; padding-left: 0; border-top: 1px solid var(--linha); border-left: 0; }
 }
@@ -900,7 +915,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 @media (pointer: coarse) {
   .filter-option { min-height: 44px; }
   .status-filter { min-height: 44px; padding-inline: 14px; }
-  .indicator-pagination button { min-height: 44px; }
+  .goals-detail-tabs button { min-height: 48px; }
   .goals-flag.map-scope { overflow: visible; }
   .goals-flag.map-scope::after { content: ""; position: absolute; inset: -9px; }
   .goals-flag.map-scope img { border-radius: 3px; }
@@ -929,8 +944,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
      deixaria o rótulo colado no topo da caixa. E mexer no `display` aqui o faria
      reaparecer nas telas largas com toque, onde a navegação já está à vista. */
   .menu-button { padding-block: 11px; }
-  .indicator-detail-back { position: relative; }
-  .indicator-detail-back::after { content: ""; position: absolute; inset: -7px -8px; }
 }
 
 @media (max-width: 920px) {
@@ -964,7 +977,13 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
      dependem delas — o próprio mapa, o topo do bloco fixo, o topo da legenda e
      a margem de rolagem do painel. Antes o mesmo `clamp()` estava escrito em
      dois lugares com a observação de que precisavam andar juntos; agora andam. */
-  .dashboard-grid { --topo-fixo: 68px; --mapa-altura: clamp(180px, 32vh, 300px); }
+  /* `--mapa-chrome` é o que o cartão do mapa acrescenta à altura da projeção
+     acima da legenda: borda de cima (1) mais os dois recheios (10 e 8). Ele
+     existe porque a legenda é um segundo bloco fixo e precisa parar exatamente
+     onde o cartão acaba — antes o valor estava escrito à mão como 18px e ficava
+     1px curto aqui e 3px curto no celular, onde o recheio é outro. Pela fresta
+     que sobrava a página inteira passava rolando entre as duas peças. */
+  .dashboard-grid { --topo-fixo: 68px; --mapa-altura: clamp(180px, 32vh, 300px); --mapa-chrome: 19px; }
   .dashboard-grid { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
   .dashboard-primary, .map-card, .map-body { display: contents; }
   .card-heading.panorama-heading { order: 1; }
@@ -981,7 +1000,11 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
      rodapé perdido e sumia assim que a página rolava, deixando o mapa fixo sem
      nenhuma explicação da rampa. Presa logo abaixo do mapa e com a mesma moldura,
      as duas peças formam um cartão só e permanecem juntas na rolagem. */
-  .map-legend { position: sticky; top: calc(var(--topo-fixo) + var(--mapa-altura) + 18px); z-index: 5; min-height: 0; margin-bottom: 4px; padding: 9px 14px 11px; border: 1px solid var(--linha); border-top: 1px solid var(--linha-2); border-radius: 0 0 14px 14px; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
+  /* O `- 1px` é sobreposição de propósito: `--mapa-altura` é um `vh`, que quase
+     nunca cai num pixel inteiro, e encostar as duas peças no valor exato ainda
+     deixaria meia fresta em algumas alturas de tela. Um pixel a mais some sob o
+     fundo opaco da legenda. */
+  .map-legend { position: sticky; top: calc(var(--topo-fixo) + var(--mapa-altura) + var(--mapa-chrome) - 1px); z-index: 5; min-height: 0; margin-bottom: 4px; padding: 9px 14px 11px; border: 1px solid var(--linha); border-top: 1px solid var(--linha-2); border-radius: 0 0 14px 14px; background: var(--papel); box-shadow: 0 10px 22px rgba(43, 31, 23, 0.1); }
   /* Orçamento de tela: 68px de topbar mais o mapa deixam mais da metade da
      altura para o que rola por baixo. */
   #map { height: var(--mapa-altura); min-height: 0; }
@@ -990,13 +1013,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .dashboard-sidebar { scroll-margin-top: calc(var(--topo-fixo) + var(--mapa-altura) + 74px); }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
   .overview { grid-template-columns: repeat(2, 1fr); }
-  .indicators-workspace { grid-template-columns: 1fr; }
   .panorama-heading h1 { font-size: clamp(26px, 4.4vw, 32px); }
-  .goals-map-head { grid-template-columns: 1fr; gap: 10px; }
-  #goals-meta-name { min-height: 2.3em; }
-  .goals-map-body { grid-template-columns: 1fr; gap: 10px; }
-  .goals-reading { min-height: 118px; }
-  #goals-map { height: clamp(320px, 42vw, 470px); }
   .goals-board, .goals-board.has-detail { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
   .goals-row { grid-template-columns: minmax(0, 1fr) auto 14px; row-gap: 8px; }
   .goals-row-name { grid-column: 1; grid-row: 1; }
@@ -1004,10 +1021,12 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .goals-row-bar { grid-column: 1 / -1; grid-row: 2; }
   .goals-row-open { grid-column: 3; grid-row: 1; }
   .goals-detail { position: static; max-height: none; margin: 0 0 14px; padding: 18px 16px 20px; overflow: visible; scroll-margin-top: 84px; }
-  .filters-card { position: static; }
-  .filters-body { display: grid; grid-template-columns: repeat(2, 1fr); }
+  /* Sem a coluna fixa, a barra vira três blocos empilhados: a busca, os dois
+     filtros lado a lado e os downloads. */
+  .filters-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .filter-linhas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-group + .filter-group { padding-top: 0; padding-left: 18px; border-top: 0; border-left: 1px solid var(--linha-2); }
-  .export-group { grid-column: 1 / -1; padding-top: 18px !important; padding-left: 0 !important; border-top: 1px solid var(--linha-2) !important; border-left: 0 !important; display: grid; grid-template-columns: repeat(3, 1fr); }
+  .export-group { justify-self: start; }
   .methodology-page { padding-top: 42px; }
   .methodology-layout { grid-template-columns: 1fr; gap: 34px; }
   .methodology-index { position: static; padding: 17px; }
@@ -1033,10 +1052,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .overview article { min-height: 132px; }
   .metric-value { font-size: 26px; }
   .metric-value.compact { font-size: 20px; }
-  /* Três colunas cabem: em duas, cada grupo de filtros ficava com metade da
-     largura e a lista de eixos quebrava cada rótulo em três linhas. */
-  .filters-body { grid-template-columns: repeat(3, 1fr); }
-  .export-group { grid-template-columns: repeat(5, 1fr); }
   .goals-row { grid-template-columns: minmax(0, 1fr) minmax(150px, 260px) auto 14px; row-gap: 0; }
   .goals-row-name { grid-column: 1; }
   .goals-row-bar { grid-column: 2; grid-row: 1; }
@@ -1075,8 +1090,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* Só a variável muda: as quatro regras que dependem da altura do mapa
      acompanham sozinhas. */
   .dashboard-grid { --mapa-altura: clamp(170px, 30vh, 260px); }
-  .map-legend { flex-wrap: wrap; }
-  .legend-ramp { width: auto; flex: 1; }
+  /* A composição da legenda no celular está na camada de celular: lá a rampa
+     ganha uma linha própria e estas duas regras — que tentavam resolver o mesmo
+     aperto deixando a rampa espremer entre os rótulos — não teriam mais efeito. */
   .overview { grid-template-columns: 1fr 1fr; }
   .overview article { min-height: 116px; }
   .metric-value { font-size: 27px; }
@@ -1095,22 +1111,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .state-summary-grid div { padding: 11px 0; }
   .state-summary-grid div + div { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   footer { align-items: flex-start; flex-direction: column; padding-inline: 20px; }
-  .indicators-page { padding-bottom: 64px; }
-  /* Anterior e Próxima ancorados nas pontas, com as oito páginas rolando entre
-     eles. Em linha única os botões de 44px não cabiam em 390px e "Próxima"
-     descia sozinha para uma terceira linha, longe do par a que pertence. */
-  .indicator-pagination { align-items: stretch; flex-direction: column; gap: 12px; }
-  .indicator-pagination-controls { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
-  /* `safe` recua para o começo quando a faixa transborda: com `center` puro as
-     primeiras páginas ficavam fora da área rolável e a página atual, que é a 1,
-     não podia ser alcançada. */
-  .indicator-page-numbers { min-width: 0; overflow-x: auto; justify-content: safe center; scrollbar-width: none; }
-  .indicator-page-numbers::-webkit-scrollbar { display: none; }
   .panorama-heading h1 { font-size: 27px; white-space: normal; }
   .goals-page { padding-top: 30px; }
-  .goals-map-card { padding: 18px 16px 14px; }
-  .goals-map-body { gap: 6px; }
-  .goals-reading { min-height: 122px; }
   .goals-list-card { padding: 18px 10px 12px 16px; }
   .goals-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .goals-detail-summary div:last-child { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid var(--linha-2); }
@@ -1120,18 +1122,11 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .filters-card { padding: 4px 18px; }
   .filters-toggle { display: flex; }
   .filters-card:not(.is-open) .filters-body { display: none; }
-  .filters-body { display: flex; padding-bottom: 20px; }
-  .filter-group + .filter-group { padding-top: 18px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
-  .export-group { display: flex; }
-  /* Uma coluna só: as posições explícitas da consulta de 1180px criariam uma
-     segunda coluna implícita para a situação e o cartão voltaria a ter duas. */
-  .indicator-table-row { grid-template-columns: minmax(0, 1fr); padding: 14px 16px; }
-  .indicator-name-cell, .indicator-axis-cell, .indicator-status-cell, .indicator-goal-cell { grid-area: auto; }
-  .indicators-toolbar { align-items: stretch; flex-direction: column; }
-  .indicator-search { width: 100%; }
-  .indicator-detail-header { flex-direction: column; align-items: flex-end; gap: 0; padding: 18px 18px 20px; }
-  .indicator-detail-back { align-self: flex-start; margin-bottom: 18px; }
-  .indicator-detail-body { padding: 20px 18px 42px; }
+  .filters-body { padding-bottom: 18px; }
+  /* Lado a lado, cada faixa de pastilhas ficava com 141px e cada pastilha caía
+     numa linha. Empilhados, os rótulos cabem em duas ou três por linha. */
+  .filter-linhas { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .filter-group + .filter-group { padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-summary, .indicator-detail-grid { grid-template-columns: 1fr; }
   .indicator-detail-summary > div + div { padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-field.is-wide { grid-column: auto; }
@@ -1175,7 +1170,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* O `scroll-behavior: smooth` do topo do arquivo é global e valia até para
      quem pediu menos movimento — inclusive nos saltos que o JS provoca. */
   html { scroll-behavior: auto; }
-  .indicator-detail-view { animation: none; }
   .goals-board { transition: none; }
   .goals-detail, .goals-detail.is-resizing { transition: none; }
   .goals-detail.is-opening, .goals-detail.is-closing, .goals-detail-content.is-entering > *, .goals-detail-content.is-leaving { animation: none; }
@@ -1192,8 +1186,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .state-group:not(.is-selected):hover { transform: translate(var(--jump-x), var(--jump-y)); }
   .state-shape:hover { filter: saturate(1.06) brightness(1.04); }
   .rank-item:hover { background: #f5f1ea; }
-  .indicator-table-row:hover { background: #faf7f2; box-shadow: inset 3px 0 var(--urucum); }
-  .indicator-table-row:hover .indicator-name-cell small i { transform: translateX(3px); }
   .goals-flag:hover { border-color: var(--mata-500); }
   button.goals-row:hover { z-index: 1; box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
 }

@@ -348,6 +348,9 @@ export function buildMetas(catalogo, dashboard) {
       prazo: indicador.prazo,
       anoRef: indicador.anoRef,
       fonte: indicador.fonte,
+      // Viaja junto porque a lista única filtra os 59 por situação de coleta, e
+      // uma meta sem `status` cairia sempre na faixa de "não coletado".
+      status: indicador.status,
       direcao: parametro.direcao,
       tipo: parametro.tipo,
       nota: parametro.nota || null,
@@ -362,6 +365,12 @@ export function buildMetas(catalogo, dashboard) {
     });
   }
 
+  // Os que não entram no quadro não são um resto: são a maior parte do catálogo —
+  // 47 dos 59 — e o Eixo 3 inteiro. A página os lista lado a lado com as metas,
+  // então cada um precisa carregar o mesmo que uma linha de meta carrega: o eixo
+  // a que pertence, de onde vem o número, em que unidade e de que ano, e quantos
+  // dos nove estados já têm valor. Sem isso a lista teria de buscar o catálogo
+  // inteiro só para desenhar a primeira tela.
   const codigosAvaliados = new Set(metas.map((meta) => meta.codigo));
   const foraDoPainel = [];
   for (const [, indicador] of porCodigo) {
@@ -370,14 +379,26 @@ export function buildMetas(catalogo, dashboard) {
       || (indicador.valores
         ? 'A meta não define um patamar numérico comparável aos valores coletados.'
         : 'O indicador ainda não tem valores coletados para os nove estados.');
+    const preenchidos = indicador.valores
+      ? ufs.filter((uf) => {
+        const valor = indicador.valores[uf];
+        return valor !== null && valor !== undefined && valor !== '';
+      }).length
+      : 0;
     foraDoPainel.push({
       codigo: indicador.codigo,
       eixo: indicador.eixo,
       eixoNome: indicador.eixoNome,
+      linhaAcao: indicador.linhaAcao,
       nome: indicador.nome,
       metaTexto: indicador.meta,
+      unidade: indicador.unidade,
+      prazo: indicador.prazo,
+      anoRef: indicador.anoRef,
+      fonte: indicador.fonte,
       status: indicador.status,
       temValores: Boolean(indicador.valores),
+      cobertura: preenchidos,
       motivo
     });
   }

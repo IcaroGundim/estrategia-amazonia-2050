@@ -34,7 +34,10 @@
     z-index: 30;
     inset: auto 0 0;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* Três desde que Metas e Indicadores viraram uma aba só. Cada coluna passou
+       de 93 para 125px num aparelho de 375, o que é o que faz "Metas e
+       indicadores" caber em duas linhas curtas em vez de ser cortado. */
+    grid-template-columns: repeat(3, 1fr);
     /* A faixa de gestos do aparelho fica por baixo da barra; sem a reserva, o
        último rótulo nasce em cima dela. */
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -73,6 +76,20 @@
 @media (max-width: 920px) and (max-height: 460px) {
   .tabbar { position: static; }
   body { padding-bottom: 0; }
+
+  /* Pelo mesmo motivo, o mapa. Um celular deitado tem 812px de largura e cai na
+     faixa do tablet em retrato, onde o mapa vale `clamp(300px, 40vh, 430px)` —
+     mas 40vh de 375px de altura é 150, então o piso de 300px vencia e o cartão
+     do mapa ocupava 319 dos 375px da tela. Com a topbar sobravam vinte e poucos
+     pixels para o painel, e o mapa ainda ficava preso ali.
+
+     Aqui a altura volta a ser medida na altura da tela, e mapa e legenda soltam.
+     O cartão fica `relative`, e não `static`, porque a bandeira da região é
+     posicionada em relação a ele e ficaria à deriva na página; o `top` das duas
+     regras fixas precisa ser desfeito junto, senão viraria deslocamento. */
+  .dashboard-grid { --mapa-altura: clamp(150px, 42vh, 220px); }
+  .map-canvas { position: relative; top: auto; }
+  .map-legend { position: static; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -152,31 +169,59 @@
   .goals-chart-uf, .goals-chart-row > b { font-size: 11px; }
   .goals-chart-scale, .goals-chart-legend { font-size: 10px; }
   .goals-chart-empty { font-size: 12px; }
+  /* O rótulo do seletor de ano do gráfico ficou de fora da varredura e continuava
+     em 9px — o menor texto de todo o painel no aparelho, ao lado de um alvo de
+     44px que ele nomeia. */
+  .goals-chart-year { font-size: 10.5px; }
 
-  .indicators-toolbar h2 { font-size: 25px; }
-  .indicators-toolbar p { font-size: 12.5px; }
+  .goals-detail-kicker { font-size: 11.5px; }
+  .goals-detail-tabs button { font-size: 13.5px; }
+  .goals-faixa { font-size: 10.5px; }
+  .goals-list-summary { font-size: 12px; }
+
   .indicator-search input { font-size: 15px; }
-  .indicator-name-cell strong { font-size: 16.5px; }
-  .indicator-name-cell span { font-size: 12px; }
-  .indicator-name-cell small { font-size: 10.5px; }
-  .indicator-axis-cell strong { font-size: 13px; }
-  .indicator-axis-cell span { font-size: 12px; }
-  .indicator-goal-cell span { font-size: 12.5px; }
-  .indicator-goal-cell::before { font-size: 10.5px; }
-  .indicator-value-cell small { font-size: 11.5px; }
-  .ind-status, .indicator-status-cell .ind-status { font-size: 11.5px; }
-  .indicator-detail-kicker { font-size: 11.5px; }
+  /* Os dois seletores: o resumo da ficha usa um `clamp()` sobre `vw` que num
+     aparelho cai sempre no piso de 10px, e ele é mais específico que o primeiro. */
+  .indicator-value-cell small,
+  .indicator-detail-summary .indicator-value-cell small { font-size: 11.5px; }
+  .ind-status { font-size: 11.5px; }
   .indicator-detail-field dt { font-size: 10.5px; }
   .indicator-detail-summary > div > span { font-size: 10.5px; }
   .filter-option { font-size: 14.5px; }
   .filter-option small { font-size: 12px; }
   .status-filter { font-size: 12.5px; }
-  .export-primary, .export-group a { font-size: 12.5px; }
-  .indicator-pagination { font-size: 13px; }
-  .indicator-pagination button { font-size: 12.5px; }
+  .export-toggle { font-size: 12.5px; }
+  .export-titulo { font-size: 10.5px; }
 
   footer { font-size: 12px; }
   footer span:first-child { font-size: 15px; }
+}
+
+/* ---------------------------------------------------------------------------
+   2b. Celular: o botão de vista para de disputar a barra
+
+   Sobram duas peças na topbar do aparelho — a marca e o botão que devolve a
+   página no formato de computador. Desenhado como pastilha, o botão media 152px
+   contra os 104 do logo: numa barra de 320px ele ficava com 47% da largura e
+   lia como a ação principal da página, quando é uma saída de emergência para
+   quem quer a tabela larga.
+
+   Sem a moldura ele vira o que é — um atalho de texto. O rótulo continua
+   inteiro (137px em 11,5px, contra 174 de folga no aparelho mais estreito) e o
+   alvo continua nos 40px de altura da regra base, que o `min-height` mantém.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .vista-toggle {
+    padding: 0;
+    border: 0;
+    color: rgba(245, 240, 232, 0.74);
+    font-size: 11.5px;
+    text-align: right;
+    text-decoration: underline;
+    text-decoration-color: rgba(245, 240, 232, 0.38);
+    text-underline-offset: 4px;
+  }
+  .vista-toggle:hover, .vista-toggle:focus-visible { background: transparent; color: var(--areia); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -195,7 +240,6 @@
 
   .goals-page { padding-top: 18px; }
   .goals-list-head h1 { font-size: 24px; }
-  .indicators-workspace { padding-top: 18px; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -234,18 +278,20 @@
 }
 
 /* ---------------------------------------------------------------------------
-   5. Celular: listas em cartão
+   5. Celular: a lista em cartões
 
-   Metas e indicadores eram linhas dentro de um cartão branco só. Numa tela
-   estreita a divisa entre um item e o próximo é um filete de 1px, e a lista
-   inteira lê como um bloco contínuo de texto. Cada item vira um cartão com
-   respiro entre eles — a mesma informação, com a unidade de leitura à vista.
+   Os 59 eram linhas dentro de um cartão branco só. Numa tela estreita a divisa
+   entre um item e o próximo é um filete de 1px, e a lista inteira lê como um
+   bloco contínuo de texto. Cada item vira um cartão com respiro entre eles — a
+   mesma informação, com a unidade de leitura à vista.
    --------------------------------------------------------------------------- */
 @media (max-width: 620px) {
-  .goals-list-card, .indicators-table-card { padding: 0; border: 0; background: none; overflow: visible; }
+  .goals-list-card { padding: 0; border: 0; background: none; overflow: visible; }
+  .goals-list-summary { padding: 0 2px; }
   .goals-list-head { padding: 0 2px 4px; }
   .goals-list { margin-top: 14px; }
   .goals-eixo-head { padding: 0 2px 8px; }
+  .goals-faixa { padding: 0 2px; }
 
   .goals-row {
     padding: 14px 14px 15px;
@@ -256,22 +302,20 @@
   .goals-row + .goals-row { margin-top: 8px; border-top: 0; }
   .goals-row.is-active { padding-left: 14px; box-shadow: 0 2px 10px rgba(43, 31, 23, 0.12); }
   .goals-row.is-active::before { top: 14px; bottom: 14px; left: 0; border-radius: 0 2px 2px 0; }
+  /* Uma faixa nunca começa colada na linha anterior: ela é um título, e a
+     margem que a separa é o que a faz ler como um. */
+  .goals-row + .goals-faixa { margin-top: 18px; }
 
-  .indicators-toolbar { padding: 0 2px 16px; border-bottom: 0; }
-  .indicator-table-row {
-    margin-bottom: 8px;
-    padding: 15px 15px 16px;
-    border: 0;
-    border-radius: 13px;
-    box-shadow: 0 1px 3px rgba(43, 31, 23, 0.07);
-  }
-  .indicator-table-row:focus-within { box-shadow: 0 2px 10px rgba(43, 31, 23, 0.12), inset 3px 0 var(--urucum); }
-  .indicator-pagination { margin-top: 4px; padding: 14px 2px 0; }
   .indicator-empty { border-radius: 13px; background: var(--papel); }
 
-  /* O cartão do detalhe do indicador volta a ser uma folha branca inteira: ele
-     substitui a lista, não é um item dela. */
-  .indicators-table-card.is-detail { border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
+  /* O selo de coleta é `nowrap` e come 130px dos 347 do cartão: ao lado dele o
+     nome do indicador quebrava em três linhas e o motivo era cortado por
+     reticências na segunda. Descido para uma linha própria, os dois textos ficam
+     com a largura toda e o cartão ainda encolhe. */
+  .goals-row.is-catalog { grid-template-columns: minmax(0, 1fr) 14px; }
+  .goals-row.is-catalog .goals-row-name { grid-column: 1 / -1; grid-row: 1; }
+  .goals-row.is-catalog .goals-row-ler { grid-column: 1; grid-row: 2; justify-content: flex-start; }
+  .goals-row.is-catalog .goals-row-open { grid-column: 2; grid-row: 2; align-self: center; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -282,9 +326,60 @@
    diferença: a projeção continua legível e o painel ganha uma dobra inteira.
    --------------------------------------------------------------------------- */
 @media (max-width: 620px) {
-  .dashboard-grid { --mapa-altura: clamp(150px, 26vh, 215px); }
+  /* As duas variáveis andam juntas: `--mapa-chrome` tem de somar a borda de cima
+     e os dois recheios declarados na linha seguinte (1 + 8 + 6), senão a legenda
+     fixa para no lugar errado e abre uma fresta sobre o mapa. */
+  .dashboard-grid { --mapa-altura: clamp(150px, 26vh, 215px); --mapa-chrome: 15px; }
   .map-canvas { padding: 8px 10px 6px; }
   .map-legend { padding: 8px 12px 10px; }
+
+  /* A projeção é calculada com 34 unidades de folga em cada borda de uma caixa
+     de 720×500, e a caixa ainda é encaixada por altura numa moldura mais larga
+     que ela. As duas coisas somadas desenhavam o mapa com 252×182 dentro de um
+     cartão de 347px: um quarto da largura e um sétimo da altura eram margem.
+     Num monitor essa folga é respiro; num aparelho em que o mapa já está limitado
+     a 26vh, ela é o que faz o Amapá não ser um alvo de toque.
+
+     A ampliação é da própria projeção, em torno do centro — a folga é simétrica
+     nos dois eixos, então o mapa cresce sem sair do lugar. O que passa da moldura
+     é área transparente, e o mapa desenhado continua dentro dela: 285×206 dos
+     325×211 disponíveis. A bandeira da região segue sobre a ponta noroeste, que
+     continua sem nenhum estado desenhado. */
+  #map { transform: scale(1.13); }
+
+  /* A rampa de cores ganha uma linha inteira.
+     Em linha única os dois rótulos são `nowrap` e não cedem: a rampa ficava com
+     a sobra — 102px num aparelho de 390px e 32px num de 320. Trinta e dois pixels
+     para cinco faixas é uma tarja, não uma escala, e é ela que dá sentido ao
+     verde do mapa. Deitada em cima, a rampa fica com a largura toda e os dois
+     rótulos passam a marcar as pontas dela, como os extremos de um eixo. */
+  .map-legend {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px 12px;
+    padding-bottom: 9px;
+  }
+  .legend-ramp { grid-area: 1 / 1 / 2 / -1; width: auto; height: 9px; }
+  .map-legend > span { grid-row: 2; }
+
+  /* Os três números da região em duas colunas. Empilhados eles custavam 244px de
+     uma tela em que o mapa e a moldura já tomam mais da metade, e nenhum dos três
+     valores precisa da largura toda: o mais longo, "5,1 mi km²", mede 95px. O
+     terceiro atravessa as duas colunas para não ficar sozinho em meia linha. */
+  .state-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .state-summary-grid div + div { padding-left: 0; border-top: 0; border-left: 0; }
+  .state-summary-grid div:nth-child(2n) { padding-left: 13px; border-left: 1px solid var(--linha-2); }
+  .state-summary-grid div:nth-child(n + 3) { border-top: 1px solid var(--linha-2); }
+  .state-summary-grid div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+  /* "Comparação estadual" mede 140px em 13,5px e a aba tinha 139 úteis num
+     aparelho de 375: quebrava em duas linhas ao lado de "Visão geral" numa só.
+     O recheio das duas caixas devolve a largura que faltava, e o corpo acompanha
+     a tela para o rótulo continuar inteiro até 320px. */
+  .sidebar-tabs { padding-inline: 8px; }
+  .sidebar-tabs button { padding-inline: 2px; font-size: clamp(12.5px, 3.55vw, 13.5px); }
 
   /* O rótulo e a posição do estado dividiam uma linha só, com a posição em
      `nowrap`. Nos 254px úteis de um aparelho de 320px os dois não cabem, e a
@@ -308,7 +403,10 @@
    --------------------------------------------------------------------------- */
 @media (max-width: 620px) {
   .select-wrap:has(.dropdown.is-open)::before,
-  .filter-group:has(.dropdown.is-open)::before {
+  .filter-group:has(.dropdown.is-open)::before,
+  /* O menu de downloads é ele próprio o `.dropdown`, então o fundo tem de ser
+     pendurado no invólucro da barra — pela mesma razão explicada acima. */
+  .filters-body:has(.export-group.is-open)::before {
     content: "";
     position: fixed;
     z-index: 39;
@@ -378,15 +476,67 @@
     transform: rotate(-45deg);
   }
 
-  /* Um cartão de indicador ocupava quase 600px: sobrava uma linha e meia de
-     catálogo por tela, num acervo de 59. A meta encolhe de três linhas para
-     duas e a fonte para uma, o que devolve cerca de um terço da altura sem tirar
-     nenhum dos campos da lista. */
-  .indicator-table-row { gap: 7px 16px; }
-  .indicator-name-cell span { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
-  .indicator-name-cell small { margin-top: 6px; }
-  .indicator-goal-cell span { -webkit-line-clamp: 2; }
-  .indicator-goal-cell::before { margin-bottom: 2px; }
+  /* O motivo de um indicador não ter jornada é uma frase inteira, e num acervo
+     de 59 ela custaria uma tela a cada três linhas. Duas linhas dizem o bastante
+     — o painel de detalhe traz a frase completa. */
+  .goals-row.is-catalog .goals-row-name small {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   8b. Celular: o seletor de estado das Metas vira grade
+
+   São onze peças numa faixa que quebra sozinha: o nome do recorte em vigor e
+   dez bandeiras — a região e os nove estados. Em 375px o nome ocupava 148px da
+   primeira linha e empurrava sete bandeiras para a segunda, deixando a linha de
+   cima com três. O resultado é uma faixa desalinhada em que a bandeira da
+   região, que é a opção de voltar ao todo, cai no meio de uma fileira e não se
+   distingue das outras.
+
+   Com o nome numa linha própria, as dez bandeiras ocupam duas fileiras de cinco
+   e a da região volta a abrir a primeira. As colunas têm a largura da bandeira,
+   e não uma fração da linha: as bandeiras têm proporção própria e esticá-las só
+   as faria serem cortadas pelo `object-fit: cover`. A grade fica com 234px e
+   alinhada à esquerda, que é onde o nome dela também começa.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  .goals-flags { display: grid; grid-template-columns: repeat(5, 42px); gap: 9px 6px; }
+  .goals-flags-nome { grid-column: 1 / -1; margin-right: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   8c. Celular: os créditos das fotografias da Visão Geral
+
+   A Visão Geral tem folhas próprias (`overview-slides.css` e
+   `overview-compositions.css`) e ficou de fora da varredura tipográfica da seção
+   2, que só conhece as classes do painel. Sobraram ali os últimos textos de 8 e
+   9px do site — a etiqueta do lugar retratado e os créditos da imagem, que num
+   aparelho aparecem sobre a fotografia, em claro sobre escuro, que é a condição
+   em que corpo pequeno se lê pior.
+
+   Os créditos são dois links, e o da licença mede 57×11px: menos de um quarto do
+   alvo que o resto do painel adota. O recheio é vertical e em elemento em linha,
+   então cresce a área sensível sem mover nada — o vão da legenda abre junto para
+   as duas faixas não se sobreporem.
+
+   O `[data-modo="documento"]` não é enfeite. A premissa desta folha — vir depois
+   da geral e vencer os empates — só vale contra a `global.css`, que viaja no
+   mesmo pacote. As folhas próprias de uma página são um pacote à parte, e a
+   ordem entre os dois muda conforme como se chegou ali: numa carga direta de
+   /metodologia o pacote da página vem antes, numa navegação pela barra inferior
+   vem depois. Empatada, a mesma regra venceria num caso e perderia no outro.
+   O atributo tira o empate — e é o mesmo que a folha da página usa para marcar
+   o modo de celular, então diz também a que arranjo estas medidas pertencem.
+   --------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  [data-modo="documento"] .slide-photo-caption > span { font-size: 10px; }
+  [data-modo="documento"] .slide-photo figcaption { gap: 7px; font-size: 10.5px; }
+  [data-modo="documento"] .slide-photo figcaption a { padding-block: 5px; }
+  [data-modo="documento"] .method-source-block > span { font-size: 11px; }
 }
 
 /* ---------------------------------------------------------------------------
