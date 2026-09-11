@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Visão Geral — opções para o painel da capa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff; --linha: #ddd3c6;
+    --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --capa: url("../dashboard/public/photos/capa-estrategia-2050.jpg");
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #e9e3d8; font: 14px/1.5 "Libre Franklin", system-ui, sans-serif; color: var(--tinta); }
+  .grade { display: grid; grid-template-columns: repeat(2, 672px); gap: 28px 24px; }
+  .opcao > h2 { margin: 0 0 10px; font: 800 18px var(--display); letter-spacing: -.02em; }
+  .opcao > h2 b { color: var(--urucum); margin-right: 6px; }
+  .opcao > p { margin: -4px 0 10px; color: var(--tinta-3); font-size: 13px; }
+
+  /* Painel com as medidas da coluna da capa num monitor largo (672 × 725). */
+  .painel { position: relative; isolation: isolate; width: 672px; height: 725px; overflow: hidden; border-radius: 0 15px 15px 0; display: flex; flex-direction: column; padding: 34px 38px 24px; }
+  .poco { flex: 1; min-height: 0; display: grid; place-items: center; container-type: size; }
+  .poco img { display: block; width: min(100cqw, 100cqh * 1241 / 1754); height: auto; }
+  .rotulo { margin: 16px 0 8px; font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+  .credito { display: grid; gap: 4px; font-size: 10px; }
+
+  /* A — Papel: o painel vira a folha clara das páginas internas do documento. */
+  .a { background: #efe9dd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .a .poco img { box-shadow: 0 1px 2px rgba(40, 30, 15, .25), 0 22px 40px -16px rgba(40, 30, 15, .55); }
+  .a .rotulo { color: var(--urucum); }
+  .a .credito { color: var(--tinta-3); }
+
+  /* B — Floresta: a própria capa, desfocada, preenche o painel atrás dela. */
+  .b { background: #0b140e; color: var(--areia); }
+  .b::before { content: ''; position: absolute; inset: -60px; z-index: -1; background: var(--capa) 50% 45% / cover; filter: blur(34px) saturate(1.25) brightness(.5); }
+  .b::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 60%, rgba(5, 10, 6, .75)); }
+  .b .poco img { border-radius: 2px; box-shadow: 0 30px 60px -18px rgba(0, 0, 0, .85), 0 0 0 1px rgba(255, 255, 255, .08); }
+  .b .rotulo { color: var(--ocre); }
+
+  /* C — Sangria: sem moldura. O fundo é o preto-esverdeado da capa e as bordas dela
+     se dissolvem nele, então a capa parece ser o próprio painel. */
+  .c { background: #121810; color: var(--areia); padding: 0 0 24px; }
+  .c .poco img { width: min(100cqw, 100cqh * 1241 / 1754); -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, #000 88%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, #000 88%, transparent); mask-composite: intersect; }
+  .c .rotulo, .c .credito { margin-left: 38px; }
+  .c .rotulo { color: var(--ocre); margin-top: 6px; }
+
+  /* D — Gravura: o verde da lâmina com a folhagem do kit de ornamentos e um filete
+     dourado deslocado, como a marca de um carimbo, em vez de moldura. */
+  .d { background: var(--mata); color: var(--areia); }
+  .d::before { content: ''; position: absolute; z-index: -1; right: -120px; bottom: -60px; width: 560px; height: 560px; background: url("../dashboard/public/ornaments/folhagem.svg") center / contain no-repeat; opacity: .28; transform: rotate(-18deg); }
+  .d::after { content: ''; position: absolute; z-index: -1; left: -140px; top: -80px; width: 460px; height: 460px; background: url("../dashboard/public/ornaments/folhagem.svg") center / contain no-repeat; opacity: .16; transform: rotate(150deg); }
+  .d .moldura { position: relative; display: block; }
+  .d .moldura::before { content: ''; position: absolute; inset: 0; transform: translate(12px, 12px); border: 1.5px solid var(--ocre); z-index: -1; }
+  .d .poco img { box-shadow: 0 20px 40px -16px rgba(0, 0, 0, .7); }
+  .d .poco { padding: 0 14px 14px 0; }
+  .d .rotulo { color: var(--ocre); }
+</style>
+</head>
+<body>
+<div class="grade">
+  <section class="opcao">
+    <h2><b>A</b>Papel</h2>
+    <p>O painel vira a folha clara e texturizada das páginas internas do documento.</p>
+    <div class="painel a">
+      <div class="poco"><img src="../dashboard/public/photos/capa-estrategia-2050.jpg" alt=""></div>
+      <div class="rotulo">Capa da publicação</div>
+      <div class="credito"><span>Estratégia Regional Amazônia 2050</span><span>Consórcio da Amazônia Legal, com apoio técnico do IPAM</span></div>
+    </div>
+  </section>
+  <section class="opcao">
+    <h2><b>B</b>Floresta</h2>
+    <p>A própria capa, desfocada, preenche o fundo; a capa nítida fica à frente.</p>
+    <div class="painel b">
+      <div class="poco"><img src="../dashboard/public/photos/capa-estrategia-2050.jpg" alt=""></div>
+      <div class="rotulo">Capa da publicação</div>
+      <div class="credito"><span>Estratégia Regional Amazônia 2050</span><span>Consórcio da Amazônia Legal, com apoio técnico do IPAM</span></div>
+    </div>
+  </section>
+  <section class="opcao">
+    <h2><b>C</b>Sangria</h2>
+    <p>Sem moldura: a capa se dissolve no fundo escuro e ocupa o painel inteiro.</p>
+    <div class="painel c">
+      <div class="poco"><img src="../dashboard/public/photos/capa-estrategia-2050.jpg" alt=""></div>
+      <div class="rotulo">Capa da publicação</div>
+      <div class="credito"><span>Estratégia Regional Amazônia 2050</span><span>Consórcio da Amazônia Legal, com apoio técnico do IPAM</span></div>
+    </div>
+  </section>
+  <section class="opcao">
+    <h2><b>D</b>Gravura</h2>
+    <p>O verde atual com a folhagem do kit de ornamentos e um filete dourado deslocado.</p>
+    <div class="painel d">
+      <div class="poco"><span class="moldura"><img src="../dashboard/public/photos/capa-estrategia-2050.jpg" alt=""></span></div>
+      <div class="rotulo">Capa da publicação</div>
+      <div class="credito"><span>Estratégia Regional Amazônia 2050</span><span>Consórcio da Amazônia Legal, com apoio técnico do IPAM</span></div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

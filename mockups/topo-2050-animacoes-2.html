@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topo — animações do 2050 (segunda rodada)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-100: #c6d2c7; --mata-300: #7fa08c;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --text: "Libre Franklin", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px clamp(16px, 4vw, 48px) 48px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { margin: 0 0 6px; font: 800 26px var(--display); letter-spacing: -.03em; }
+  .intro { margin: 0 0 28px; max-width: 80ch; color: var(--tinta-3); }
+  .opcao { margin-bottom: 30px; }
+  .opcao h2 { margin: 0 0 4px; font: 800 18px var(--display); letter-spacing: -.02em; }
+  .opcao h2 b { color: var(--urucum); margin-right: 6px; }
+  .opcao p { margin: 0 0 10px; max-width: 90ch; color: var(--tinta-3); font-size: 14px; }
+
+  /* Barra do topo, com as medidas da real (84px, verde-mata). */
+  .topbar { border-radius: 12px; background: var(--mata); color: var(--areia); box-shadow: 0 4px 20px rgba(14, 43, 34, .16); overflow: hidden; }
+  .topbar-inner { min-height: 84px; padding: 10px 36px; display: flex; align-items: center; gap: 34px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand-logo { width: 172px; height: 60px; object-fit: contain; display: block; }
+  .brand-product { display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, .2); white-space: nowrap; }
+  .brand-product-nome { display: grid; gap: 4px; }
+  .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--mata-100); }
+  .brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -.02em; }
+  .ano { position: relative; isolation: isolate; display: inline-flex; font: 800 46px/.78 var(--display); letter-spacing: -.045em; color: var(--ocre); }
+  .ano > span { display: inline-block; }
+  .topnav { display: flex; gap: 25px; margin-left: 18px; font-size: 13px; color: rgba(245, 240, 232, .7); }
+  .topnav .ativo { color: var(--ocre); font-weight: 600; box-shadow: 0 10px 0 -8px var(--ocre); }
+  .acao { margin-left: auto; padding: 10px 16px; border: 1px solid rgba(245, 240, 232, .45); border-radius: 8px; font-size: 12px; font-weight: 600; }
+
+  /* E — Folhagem: duas folhas de palmeira, como as que cercam o 2050 na capa,
+     balançam atrás do número, cada uma no seu tempo. */
+  .e .ano { margin-inline: 6px 10px; }
+  .e .folha { position: absolute; z-index: -1; width: 34px; height: 34px; opacity: .8; transform-origin: 10% 90%; animation: balanca 3.6s ease-in-out infinite alternate; }
+  .e .folha.um { right: -18px; top: -19px; }
+  .e .folha.dois { left: -17px; bottom: -13px; width: 26px; height: 26px; animation-duration: 4.4s; animation-delay: -2s; }
+  .e .folha.dois svg { transform: scaleX(-1) rotate(20deg); }
+  .e .folha svg { display: block; width: 100%; height: 100%; }
+  @keyframes balanca { from { transform: rotate(-8deg); } to { transform: rotate(6deg); } }
+
+  /* F — Letreiro: os algarismos acendem um a um, como lâmpadas, e descansam. */
+  .f .ano > span { animation: acende 3.4s ease-in-out infinite; }
+  .f .ano > span:nth-child(2) { animation-delay: .22s; }
+  .f .ano > span:nth-child(3) { animation-delay: .44s; }
+  .f .ano > span:nth-child(4) { animation-delay: .66s; }
+  @keyframes acende {
+    0%, 26%, 100% { color: var(--ocre); text-shadow: none; }
+    10% { color: #fff1c9; text-shadow: 0 0 14px rgba(224, 168, 60, .95), 0 0 3px rgba(255, 241, 201, .9); }
+  }
+
+  /* G — Rede: pontos nas cores do logo do Consórcio percorrem uma linha fina sob o
+     número, como os nós da rede que forma o logo. */
+  .g .ano { padding-bottom: 2px; }
+  .g .linha { position: absolute; left: -2px; right: -2px; bottom: -10px; height: 1px; background: linear-gradient(90deg, transparent, rgba(245, 240, 232, .35) 12%, rgba(245, 240, 232, .35) 88%, transparent); }
+  .g .no { position: absolute; bottom: -12px; width: 5px; height: 5px; border-radius: 50%; animation: viaja 3.3s linear infinite; }
+  .g .no.amarelo { background: #f2c230; box-shadow: 0 0 6px #f2c230; }
+  .g .no.verde { background: #43a85a; box-shadow: 0 0 6px #43a85a; animation-delay: -1.1s; }
+  .g .no.azul { background: #3b7ddd; box-shadow: 0 0 6px #3b7ddd; animation-delay: -2.2s; }
+  @keyframes viaja { 0% { left: -2%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { left: 98%; opacity: 0; } }
+
+  /* H — Placa: cada algarismo vira como num painel de aeroporto, em sequência. Sem
+     o vinco horizontal das placas: parado, ele parecia um risco sobre o número. */
+  .h .ano { perspective: 260px; }
+  .h .ano > span { position: relative; transform-origin: 50% 52%; animation: vira 5s cubic-bezier(.5, 0, .3, 1) infinite; }
+  .h .ano > span:nth-child(2) { animation-delay: .1s; }
+  .h .ano > span:nth-child(3) { animation-delay: .2s; }
+  .h .ano > span:nth-child(4) { animation-delay: .3s; }
+  @keyframes vira {
+    0%, 14%, 100% { transform: rotateX(0); filter: brightness(1); }
+    7% { transform: rotateX(-88deg); filter: brightness(.55); }
+  }
+
+  /* Quem pede menos movimento vê o número parado. No painel vale o mesmo. */
+  @media (prefers-reduced-motion: reduce) {
+    .ano, .ano *, .ano *::after { animation: none !important; }
+  }
+  .nota { margin-top: 8px; padding: 14px 18px; border-left: 3px solid var(--ocre); background: rgba(255, 255, 255, .5); color: var(--tinta-3); font-size: 13px; max-width: 90ch; }
+</style>
+</head>
+<body>
+  <h1>Animações para o “2050” — segunda rodada</h1>
+  <p class="intro">Mais quatro opções em loop, na barra com as medidas reais (84px, verde-mata). As da primeira rodada (Brilho, Contagem, Onda e Rio) continuam em <code>topo-2050-animacoes.html</code>.</p>
+
+  <section class="opcao e">
+    <h2><b>E</b>Folhagem</h2>
+    <p>Duas folhas de palmeira, como as que cercam o 2050 na capa da publicação, balançam atrás do número, cada uma num tempo. Liga a barra à capa que abre a Visão Geral.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span>
+        <b class="ano">2050
+          <span class="folha um" aria-hidden="true"><svg viewBox="0 0 40 40"><g fill="none" stroke="#a8dca0" stroke-width="2" stroke-linecap="round"><path d="M4 36 Q16 22 36 6"/><path d="M10.5 28.9 L22.3 31.3 M10.5 28.9 L8.8 17 M14.9 24.5 L25.7 26.7 M14.9 24.5 L13.4 13.6 M19.6 20 L28.9 21.9 M19.6 20 L18.3 10.6 M24.7 15.4 L32 16.9 M24.7 15.4 L23.6 8 M30.2 10.8 L35.1 11.8 M30.2 10.8 L29.5 5.9"/></g></svg></span>
+          <span class="folha dois" aria-hidden="true"><svg viewBox="0 0 40 40"><g fill="none" stroke="#8fce88" stroke-width="2.2" stroke-linecap="round"><path d="M4 36 Q16 22 36 6"/><path d="M10.5 28.9 L22.3 31.3 M10.5 28.9 L8.8 17 M14.9 24.5 L25.7 26.7 M14.9 24.5 L13.4 13.6 M19.6 20 L28.9 21.9 M19.6 20 L18.3 10.6 M24.7 15.4 L32 16.9 M24.7 15.4 L23.6 8 M30.2 10.8 L35.1 11.8 M30.2 10.8 L29.5 5.9"/></g></svg></span>
+        </b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao f">
+    <h2><b>F</b>Letreiro</h2>
+    <p>Os algarismos acendem um a um, da esquerda para a direita, como lâmpadas de letreiro, e o número descansa até a próxima passagem (a cada 3,4 s).</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano"><span>2</span><span>0</span><span>5</span><span>0</span></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao g">
+    <h2><b>G</b>Rede</h2>
+    <p>Três pontos nas cores do logo do Consórcio — amarelo, verde e azul — percorrem sem parar uma linha fina sob o número, como os nós da rede que desenha o logo. O número fica parado.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050<i class="linha" aria-hidden="true"></i><i class="no amarelo" aria-hidden="true"></i><i class="no verde" aria-hidden="true"></i><i class="no azul" aria-hidden="true"></i></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao h">
+    <h2><b>H</b>Placa</h2>
+    <p>Cada algarismo vira como num painel de aeroporto, um depois do outro, a cada 5 s, e o número descansa entre uma virada e outra.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano"><span>2</span><span>0</span><span>5</span><span>0</span></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <p class="nota">Em todas as opções, quem ativou “reduzir movimento” no sistema vê o número parado.</p>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topo — opções para a troca de língua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-100: #c6d2c7; --mata-300: #7fa08c; --mata-700: #1c4437;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --text: "Libre Franklin", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px clamp(16px, 4vw, 48px) 48px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { margin: 0 0 6px; font: 800 26px var(--display); letter-spacing: -.03em; }
+  .intro { margin: 0 0 28px; max-width: 86ch; color: var(--tinta-3); }
+  .opcao { margin-bottom: 30px; }
+  .opcao h2 { margin: 0 0 4px; font: 800 18px var(--display); letter-spacing: -.02em; }
+  .opcao h2 b { color: var(--urucum); margin-right: 6px; }
+  .opcao p { margin: 0 0 10px; max-width: 90ch; color: var(--tinta-3); font-size: 14px; }
+  .pares { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .legenda { margin: 0 0 6px; font: 600 11px var(--text); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-3); }
+
+  /* Ponta direita da barra do topo, com as medidas da real. */
+  .barra { display: flex; align-items: center; justify-content: flex-end; gap: 12px; min-height: 84px; padding: 10px 28px; border-radius: 12px; background: var(--mata); color: var(--areia); }
+  .acao { min-height: 40px; padding: 0 15px; display: inline-flex; align-items: center; border: 1px solid rgba(245, 240, 232, .34); border-radius: 9px; font-size: 12px; font-weight: 600; }
+  a { color: inherit; text-decoration: none; }
+  .bandeira { display: block; height: 13px; width: auto; border-radius: 2px; }
+
+  /* A — Chave: um trilho arredondado com PT e EN e um cursor ocre sob a língua da
+     página. Toda a chave é o link para a outra língua; ao passar o mouse, o cursor
+     começa a ir para o outro lado. */
+  .chave { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; align-items: center; height: 32px; padding: 3px; margin-left: 6px; border-radius: 999px; background: rgba(245, 240, 232, .1); box-shadow: inset 0 0 0 1px rgba(245, 240, 232, .14); font: 700 11px var(--text); letter-spacing: .08em; }
+  .chave span { position: relative; z-index: 1; width: 36px; text-align: center; line-height: 26px; color: rgba(245, 240, 232, .62); transition: color .25s; }
+  .chave span.atual { color: var(--mata); }
+  .chave::before { content: ''; position: absolute; top: 3px; bottom: 3px; left: 3px; width: 36px; border-radius: 999px; background: var(--ocre); transition: transform .3s cubic-bezier(.65, 0, .35, 1); }
+  .chave.en::before { transform: translateX(36px); }
+  .chave:hover::before { transform: translateX(7px); }
+  .chave.en:hover::before { transform: translateX(29px); }
+  .chave:focus-visible { outline: 2px solid var(--ocre); outline-offset: 3px; }
+
+  /* B — Texto: as duas siglas separadas por um fio, sem moldura. A da página fica
+     em ocre, sublinhada como a aba ativa da navegação; a outra é o link. */
+  .texto { display: inline-flex; align-items: center; gap: 12px; margin-left: 10px; font: 700 12px var(--text); letter-spacing: .1em; }
+  .texto .fio { width: 1px; height: 14px; background: rgba(245, 240, 232, .3); }
+  .texto .atual { color: var(--ocre); box-shadow: 0 7px 0 -5px var(--ocre); }
+  .texto a { color: rgba(245, 240, 232, .62); transition: color .2s; }
+  .texto a:hover { color: var(--areia); }
+
+  /* C — Bandeiras redondas: as duas bandeiras em círculo, sem texto. A da página
+     fica acesa, com um anel ocre; a outra, apagada, acende ao passar o mouse. */
+  .redondas { display: inline-flex; align-items: center; gap: 8px; margin-left: 8px; }
+  .redondas .disco { display: block; width: 22px; height: 22px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1px rgba(245, 240, 232, .35); transition: opacity .2s, box-shadow .2s; }
+  .redondas .disco img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .redondas .atual { box-shadow: 0 0 0 2px var(--mata), 0 0 0 3.5px var(--ocre); }
+  .redondas a.disco { opacity: .45; filter: saturate(.6); }
+  .redondas a.disco:hover { opacity: 1; filter: none; }
+
+  /* D — Globo: um ícone de globo em traço e o nome da outra língua por extenso, sem
+     moldura. É a convenção dos portais de governo e de organismos internacionais. */
+  .globo { display: inline-flex; align-items: center; gap: 8px; margin-left: 10px; color: rgba(245, 240, 232, .82); font: 600 12.5px var(--text); }
+  .globo svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.4; }
+  .globo span { box-shadow: 0 1px 0 rgba(245, 240, 232, .0); transition: box-shadow .2s, color .2s; }
+  .globo:hover { color: var(--ocre); }
+  .globo:hover span { box-shadow: 0 1px 0 var(--ocre); }
+  .nota { margin-top: 8px; padding: 14px 18px; border-left: 3px solid var(--ocre); background: rgba(255, 255, 255, .5); color: var(--tinta-3); font-size: 13px; max-width: 90ch; }
+</style>
+</head>
+<body>
+  <h1>Troca de língua — quatro desenhos sem caixinha</h1>
+  <p class="intro">Cada opção aparece na ponta direita da barra do topo, ao lado do botão de ação, nas duas situações: na página em português e na página em inglês. Passe o mouse para ver a reação de cada uma.</p>
+
+  <section class="opcao">
+    <h2><b>A</b>Chave</h2>
+    <p>Uma chave de verdade: trilho arredondado com PT e EN e um cursor ocre sob a língua da página. Mostra as duas línguas o tempo todo e deixa claro qual está ativa. Ao passar o mouse, o cursor começa a deslizar para o outro lado.</p>
+    <div class="pares">
+      <div><p class="legenda">Página em português</p><div class="barra"><span class="acao">Baixar nota técnica</span><a class="chave" href="#" aria-label="Read this page in English"><span class="atual">PT</span><span>EN</span></a></div></div>
+      <div><p class="legenda">Página em inglês</p><div class="barra"><span class="acao">Download the technical note</span><a class="chave en" href="#" aria-label="Ler esta página em português"><span>PT</span><span class="atual">EN</span></a></div></div>
+    </div>
+  </section>
+
+  <section class="opcao">
+    <h2><b>B</b>Texto</h2>
+    <p>As duas siglas separadas por um fio fino, sem moldura. A da página fica em ocre e sublinhada, como a aba ativa da navegação; a outra é o link e clareia ao passar o mouse.</p>
+    <div class="pares">
+      <div><p class="legenda">Página em português</p><div class="barra"><span class="acao">Baixar nota técnica</span><span class="texto"><span class="atual" aria-current="true">PT</span><span class="fio" aria-hidden="true"></span><a href="#" lang="en" aria-label="Read this page in English">EN</a></span></div></div>
+      <div><p class="legenda">Página em inglês</p><div class="barra"><span class="acao">Download the technical note</span><span class="texto"><a href="#" lang="pt-BR" aria-label="Ler esta página em português">PT</a><span class="fio" aria-hidden="true"></span><span class="atual" aria-current="true">EN</span></span></div></div>
+    </div>
+  </section>
+
+  <section class="opcao">
+    <h2><b>C</b>Bandeiras redondas</h2>
+    <p>As duas bandeiras em círculo, sem texto. A da página fica acesa, com um anel ocre em volta; a outra fica apagada e acende ao passar o mouse.</p>
+    <div class="pares">
+      <div><p class="legenda">Página em português</p><div class="barra"><span class="acao">Baixar nota técnica</span><span class="redondas"><span class="disco atual" aria-current="true"><img src="../dashboard/public/idiomas/Bandeira_do_Brasil.svg" alt="Português"></span><a class="disco" href="#" lang="en" aria-label="Read this page in English"><img src="../dashboard/public/idiomas/Bandeira_EUA_Reino_Unido.svg" alt=""></a></span></div></div>
+      <div><p class="legenda">Página em inglês</p><div class="barra"><span class="acao">Download the technical note</span><span class="redondas"><a class="disco" href="#" lang="pt-BR" aria-label="Ler esta página em português"><img src="../dashboard/public/idiomas/Bandeira_do_Brasil.svg" alt=""></a><span class="disco atual" aria-current="true"><img src="../dashboard/public/idiomas/Bandeira_EUA_Reino_Unido.svg" alt="English"></span></span></div></div>
+    </div>
+  </section>
+
+  <section class="opcao">
+    <h2><b>D</b>Globo</h2>
+    <p>Um globo em traço fino e o nome da outra língua por extenso — “English” na página em português, “Português” na página em inglês. É a convenção de portais de governo e de organismos internacionais.</p>
+    <div class="pares">
+      <div><p class="legenda">Página em português</p><div class="barra"><span class="acao">Baixar nota técnica</span><a class="globo" href="#" lang="en" aria-label="Read this page in English"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.5 3.9 5.5 3.9 9s-1.3 6.5-3.9 9c-2.6-2.5-3.9-5.5-3.9-9s1.3-6.5 3.9-9z"/></svg><span>English</span></a></div></div>
+      <div><p class="legenda">Página em inglês</p><div class="barra"><span class="acao">Download the technical note</span><a class="globo" href="#" lang="pt-BR" aria-label="Ler esta página em português"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.5 3.9 5.5 3.9 9s-1.3 6.5-3.9 9c-2.6-2.5-3.9-5.5-3.9-9s1.3-6.5 3.9-9z"/></svg><span>Português</span></a></div></div>
+    </div>
+  </section>
+
+  <p class="nota">Em todas, a troca continua sendo um link para o endereço da outra língua — o mesmo que o site já usa —, e o leitor de tela anuncia “Read this page in English” ou “Ler esta página em português”.</p>
+</body>
+</html>

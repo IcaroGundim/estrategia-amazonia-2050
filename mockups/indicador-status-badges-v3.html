@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups — Situação da coleta v3 (com ícones)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+  --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff;
+  --linha: #ddd3c6; --linha-2: #ede6dc;
+  --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078;
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Libre Franklin", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--areia); color: var(--tinta); font: 400 15px/1.55 var(--text); }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 100px; }
+.mock-head h1 { font-size: 34px; }
+.mock-head h1 em { font-style: normal; color: var(--urucum); }
+.mock-head p { max-width: 90ch; margin: 10px 0 0; color: var(--tinta-3); font-size: 13.5px; }
+
+.opt { margin-top: 30px; }
+.opt-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.opt-head .tag { padding: 3px 10px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--urucum); font: 700 11px var(--display); letter-spacing: .06em; }
+.opt-head h2 { font-size: 17px; }
+.opt-note { max-width: 92ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12px; }
+
+.demo { margin-top: 12px; padding: 22px 24px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px; align-items: center; }
+@media (max-width: 760px) { .demo { grid-template-columns: 1fr; } .demo .divider { border-left: 0; padding-left: 0; border-top: 1px solid var(--linha-2); padding-top: 18px; } }
+.demo .cell-label { color: var(--tinta-4); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.demo .divider { border-left: 1px solid var(--linha-2); padding-left: 28px; }
+.demo .row-sample { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; padding: 12px 0; }
+
+/* base */
+.st { display: inline-flex; align-items: center; gap: 8px; font: 700 10.5px var(--text); letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; }
+.st.lg { font: 700 15px var(--text); letter-spacing: .06em; }
+.st.ok { color: var(--mata-700); }
+.st.partial { color: #76550e; }
+.st.pending { color: #8e3213; }
+.st.manual { color: var(--tinta-3); }
+
+.ic { flex: none; width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.st.lg .ic { width: 19px; height: 19px; }
+.ic .fill { fill: currentColor; stroke: none; }
+
+/* J · ícones de traço livre */
+/* usa .ic direto: check / meia-lua / relógio / x */
+
+/* K · emblema circular vazado */
+.emb { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 21px; height: 21px; border: 1.5px solid currentColor; border-radius: 50%; }
+.st.lg .emb { width: 27px; height: 27px; }
+.emb .ic { width: 11px; height: 11px; stroke-width: 2.2; }
+.st.lg .emb .ic { width: 14px; height: 14px; }
+.emb.dash { border-style: dashed; }
+
+/* L · caixa de formulário */
+.box { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1.5px solid currentColor; border-radius: 3px; overflow: hidden; }
+.st.lg .box { width: 23px; height: 23px; }
+.box .ic { width: 10px; height: 10px; stroke-width: 2.4; }
+.st.lg .box .ic { width: 13px; height: 13px; }
+.box.half { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.box.dash { border-style: dashed; }
+
+/* N · ícones sólidos */
+.ic.solid { fill: currentColor; stroke: none; }
+.ic.solid .cut { fill: none; stroke: var(--papel); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.ic.solid .cutfill { fill: var(--papel); stroke: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mock-head">
+    <h1>Mockup v3 — <em>Situação da coleta com ícones</em></h1>
+    <p>Quatro linguagens de ícone, todas em traço fino (2px, pontas arredondadas) — estilo manual técnico, não emoji. Ícones por estado: ✓ coletado · meia-lua parcial · relógio pendente · ✕ não coletado.</p>
+  </header>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO J</span><h2>Traço livre — ícone solto</h2></div>
+    <p class="opt-note">O ícone direto ao lado da palavra, sem recipiente. Semântica clara: ✓, meia-lua, relógio e ✕.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p>
+        <span class="st lg ok"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Coletado</span>
+      </div>
+      <div class="divider">
+        <div class="row-sample">
+          <span class="st ok"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Coletado</span>
+          <span class="st partial"><svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path class="fill" d="M8 2a6 6 0 0 1 0 12z"/></svg>Parcial</span>
+          <span class="st pending"><svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.2 1.8"/></svg>Pendente</span>
+          <span class="st manual"><svg class="ic" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg>Não coletado</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO K</span><h2>Emblema circular — ícone no selo</h2></div>
+    <p class="opt-note">Ícones mínimos dentro de um círculo vazado; "não coletado" com borda tracejada. Parece selo de conferência.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p>
+        <span class="st lg ok"><i class="emb"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></i>Coletado</span>
+      </div>
+      <div class="divider">
+        <div class="row-sample">
+          <span class="st ok"><i class="emb"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></i>Coletado</span>
+          <span class="st partial"><i class="emb"><svg class="ic" viewBox="0 0 16 16"><path class="fill" d="M8 2a6 6 0 0 1 0 12z"/></svg></i>Parcial</span>
+          <span class="st pending"><i class="emb"><svg class="ic" viewBox="0 0 16 16"><circle class="fill" cx="8" cy="8" r="2.5"/></svg></i>Pendente</span>
+          <span class="st manual"><i class="emb dash"><svg class="ic" viewBox="0 0 16 16"><path d="M5 8h6"/></svg></i>Não coletado</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO L</span><h2>Caixa de formulário — checklist</h2></div>
+    <p class="opt-note">Linguagem de formulário em papel: caixinha com ✓, metade sombreada, vazia e com ✕. Combina com o tema "coleta".</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p>
+        <span class="st lg ok"><i class="box"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></i>Coletado</span>
+      </div>
+      <div class="divider">
+        <div class="row-sample">
+          <span class="st ok"><i class="box"><svg class="ic" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg></i>Coletado</span>
+          <span class="st partial"><i class="box half"></i>Parcial</span>
+          <span class="st pending"><i class="box"></i>Pendente</span>
+          <span class="st manual"><i class="box dash"><svg class="ic" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></i>Não coletado</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO N</span><h2>Sólido — ícone cheio</h2></div>
+    <p class="opt-note">Ícones preenchidos (só o desenho interno em claro). Mais presença e contraste que o traço; mantém a mesma semântica.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p>
+        <span class="st lg ok"><svg class="ic solid" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path class="cut" d="M4.8 8.5l2.2 2.2 4.2-5"/></svg>Coletado</span>
+      </div>
+      <div class="divider">
+        <div class="row-sample">
+          <span class="st ok"><svg class="ic solid" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path class="cut" d="M4.8 8.5l2.2 2.2 4.2-5"/></svg>Coletado</span>
+          <span class="st partial"><svg class="ic solid" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path class="cutfill" d="M8 1a7 7 0 0 0 0 14z"/></svg>Parcial</span>
+          <span class="st pending"><svg class="ic solid" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path class="cut" d="M8 4.5V8l2.2 1.8"/></svg>Pendente</span>
+          <span class="st manual"><svg class="ic solid" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path class="cut" d="M5 8h6"/></svg>Não coletado</span>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+</body>
+</html>

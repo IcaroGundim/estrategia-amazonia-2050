@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups — Situação da coleta v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+  --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff;
+  --linha: #ddd3c6; --linha-2: #ede6dc;
+  --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078;
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Libre Franklin", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--areia); color: var(--tinta); font: 400 15px/1.55 var(--text); }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 100px; }
+.mock-head h1 { font-size: 34px; }
+.mock-head h1 em { font-style: normal; color: var(--urucum); }
+.mock-head p { max-width: 90ch; margin: 10px 0 0; color: var(--tinta-3); font-size: 13.5px; }
+
+.opt { margin-top: 30px; }
+.opt-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.opt-head .tag { padding: 3px 10px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--urucum); font: 700 11px var(--display); letter-spacing: .06em; }
+.opt-head h2 { font-size: 17px; }
+.opt-note { max-width: 92ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12px; }
+
+.demo { margin-top: 12px; padding: 22px 24px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px; align-items: center; }
+@media (max-width: 760px) { .demo { grid-template-columns: 1fr; } .demo .divider { border-left: 0; padding-left: 0; border-top: 1px solid var(--linha-2); padding-top: 18px; } }
+.demo .cell-label { color: var(--tinta-4); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.demo .divider { border-left: 1px solid var(--linha-2); padding-left: 28px; }
+.demo .row-sample { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; padding: 12px 0; }
+
+/* base */
+.st { display: inline-flex; align-items: baseline; font: 700 12px var(--text); letter-spacing: .02em; white-space: nowrap; }
+.st.lg { font: 800 20px var(--display); letter-spacing: -0.01em; }
+.st.ok { color: var(--mata-700); }
+.st.partial { color: #76550e; }
+.st.pending { color: #8e3213; }
+.st.manual { color: var(--tinta-3); }
+
+/* F · valor tipográfico (sem marca) */
+.F { font-size: 13px; }
+.F.lg { font-size: 21px; }
+
+/* G · sublinhado marcador */
+.G { padding-bottom: 3px; border-bottom: 2px solid currentColor; }
+.G.lg { padding-bottom: 4px; border-bottom-width: 3.5px; }
+
+/* H · etiqueta invertida */
+.H { align-items: center; padding: 4px 10px 3px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border-radius: 2px; }
+.H.lg { padding: 7px 14px 6px; font: 700 14px var(--display); letter-spacing: .04em; }
+.H.ok { background: var(--mata-700); color: var(--areia); }
+.H.partial { background: #96690f; color: var(--papel); }
+.H.pending { background: #9c3a13; color: var(--papel); }
+.H.manual { background: transparent; color: var(--tinta-3); border: 1px dashed var(--tinta-4); }
+
+/* I · marca-texto */
+.I { padding: 0 5px; background: linear-gradient(180deg, transparent 52%, var(--hl) 48%); }
+.I.lg { font-size: 20px; padding: 0 7px; }
+.I.ok { --hl: #dce7df; }
+.I.partial { --hl: #f3e5c0; }
+.I.pending { --hl: #f6dcd0; }
+.I.manual { --hl: #eae6e0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mock-head">
+    <h1>Mockup v2 — <em>Situação da coleta</em></h1>
+    <p>Quatro direções novas, agora <strong>sem nenhum ícone ou glifo</strong> — a palavra é o marcador. Mesma régua de cores: verde = coletado, âmbar = parcial, urucum = pendente, cinza = não coletado.</p>
+  </header>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO F</span><h2>Valor tipográfico — palavra como dado</h2></div>
+    <p class="opt-note">Sem marca alguma: o status é tratado como os outros valores da ficha ("2035", "Anual"). A cor separa os estados. O mais limpo.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg F ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st F ok">Coletado</span><span class="st F partial">Parcial</span><span class="st F pending">Pendente</span><span class="st F manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO G</span><h2>Sublinhado marcador — régua na cor</h2></div>
+    <p class="opt-note">A palavra recebe uma régua grossa na cor do estado, como marcação de legenda. Chama atenção sem transformar em "chip".</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg G ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st G ok">Coletado</span><span class="st G partial">Parcial</span><span class="st G pending">Pendente</span><span class="st G manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO H</span><h2>Etiqueta invertida — bloco cheio</h2></div>
+    <p class="opt-note">Retângulo de canto vivo com fundo na cor e texto claro — estilo etiqueta de arquivo/impresso. Forte presença; "não coletado" fica vazado e tracejado.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg H ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st H ok">Coletado</span><span class="st H partial">Parcial</span><span class="st H pending">Pendente</span><span class="st H manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO I</span><h2>Marca-texto — realce atrás da palavra</h2></div>
+    <p class="opt-note">Meia-tom de cor atrás da metade inferior da palavra, como caneta marca-texto. Humano e discreto; cor do realce segue o estado.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg I ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st I ok">Coletado</span><span class="st I partial">Parcial</span><span class="st I pending">Pendente</span><span class="st I manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topo — animações do 2050 (quarta rodada)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-100: #c6d2c7; --mata-300: #7fa08c;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --text: "Libre Franklin", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px clamp(16px, 4vw, 48px) 48px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { margin: 0 0 6px; font: 800 26px var(--display); letter-spacing: -.03em; }
+  .intro { margin: 0 0 28px; max-width: 80ch; color: var(--tinta-3); }
+  .opcao { margin-bottom: 30px; }
+  .opcao h2 { margin: 0 0 4px; font: 800 18px var(--display); letter-spacing: -.02em; }
+  .opcao h2 b { color: var(--urucum); margin-right: 6px; }
+  .opcao p { margin: 0 0 10px; max-width: 90ch; color: var(--tinta-3); font-size: 14px; }
+
+  /* Barra do topo, com as medidas da real (84px, verde-mata). */
+  .topbar { border-radius: 12px; background: var(--mata); color: var(--areia); box-shadow: 0 4px 20px rgba(14, 43, 34, .16); overflow: hidden; }
+  .topbar-inner { min-height: 84px; padding: 10px 36px; display: flex; align-items: center; gap: 34px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand-logo { width: 172px; height: 60px; object-fit: contain; display: block; }
+  .brand-product { display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, .2); white-space: nowrap; }
+  .brand-product-nome { display: grid; gap: 4px; }
+  .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--mata-100); }
+  .brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -.02em; }
+  .ano { position: relative; display: inline-flex; font: 800 46px/.78 var(--display); letter-spacing: -.045em; color: var(--ocre); }
+  .topnav { display: flex; gap: 25px; margin-left: 18px; font-size: 13px; color: rgba(245, 240, 232, .7); }
+  .topnav .ativo { color: var(--ocre); font-weight: 600; box-shadow: 0 10px 0 -8px var(--ocre); }
+  .acao { margin-left: auto; padding: 10px 16px; border: 1px solid rgba(245, 240, 232, .45); border-radius: 8px; font-size: 12px; font-weight: 600; }
+
+  /* Propriedades registradas: é o que deixa ângulo, comprimento e cor da sombra
+     serem animados suavemente, em vez de pularem de um valor para o outro. */
+  @property --sol { syntax: '<angle>'; inherits: true; initial-value: 90deg; }
+  @property --comp { syntax: '<number>'; inherits: true; initial-value: 1; }
+  @property --prof { syntax: '<number>'; inherits: true; initial-value: 4; }
+  @property --luz { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+  @property --tom { syntax: '<color>'; inherits: true; initial-value: #e0a83c; }
+  @property --relevo { syntax: '<color>'; inherits: true; initial-value: #7a4d12; }
+
+  /* Relevo em camadas, comum às opções: cinco degraus de 1px na direção --sol,
+     esticados por --comp, e uma sombra difusa no fim. */
+  .relevo {
+    text-shadow:
+      calc(cos(var(--sol)) * var(--comp) * 1px) calc(sin(var(--sol)) * var(--comp) * 1px) 0 var(--relevo),
+      calc(cos(var(--sol)) * var(--comp) * 2px) calc(sin(var(--sol)) * var(--comp) * 2px) 0 var(--relevo),
+      calc(cos(var(--sol)) * var(--comp) * 3px) calc(sin(var(--sol)) * var(--comp) * 3px) 0 var(--relevo),
+      calc(cos(var(--sol)) * var(--comp) * 4px) calc(sin(var(--sol)) * var(--comp) * 4px) 0 var(--relevo),
+      calc(cos(var(--sol)) * var(--comp) * 5px) calc(sin(var(--sol)) * var(--comp) * 5px) 0 color-mix(in srgb, var(--relevo), #000 22%),
+      calc(cos(var(--sol)) * var(--comp) * 9px) calc(sin(var(--sol)) * var(--comp) * 9px) 8px rgba(0, 0, 0, .45);
+  }
+
+  /* M — Dia inteiro: o sol nasce à esquerda, passa pelo alto e se põe à direita.
+     A sombra é longa de manhã e à tarde e curta ao meio-dia, e a cor acompanha:
+     dourado claro ao nascer, ocre ao meio-dia, laranja de urucum ao pôr do sol. */
+  .m .ano { color: var(--tom); animation: dia 10s ease-in-out infinite alternate; }
+  @keyframes dia {
+    0% { --sol: 18deg; --comp: 1.7; --tom: #f2c46a; --relevo: #8a5a1c; }
+    50% { --sol: 90deg; --comp: .75; --tom: #e0a83c; --relevo: #7a4d12; }
+    100% { --sol: 162deg; --comp: 1.7; --tom: #ec8a3c; --relevo: #7a2f12; }
+  }
+
+  /* N — Giro 3D: o número tem espessura de verdade — sete cópias empilhadas em
+     profundidade — e gira devagar para um lado e para o outro, mostrando a lateral. */
+  .n .brand-product { perspective: 380px; }
+  .n .ano { transform-style: preserve-3d; animation: giro 6s ease-in-out infinite alternate; }
+  .n .face { position: relative; transform: translateZ(.1px); }
+  .n .camada { position: absolute; inset: 0; transform: translateZ(calc(var(--i) * -1.3px)); color: color-mix(in srgb, #7a4d12, #4a2c08 calc(var(--i) * 14%)); }
+  @keyframes giro { from { transform: rotateY(-24deg) rotateX(8deg); } to { transform: rotateY(24deg) rotateX(8deg); } }
+
+  /* O — Holofote: um ponto de luz passa sobre os algarismos da esquerda para a
+     direita e volta; a sombra do relevo vai sempre para o lado oposto ao da luz. */
+  .o .ano { --comp: 1; animation: holofote 5s ease-in-out infinite alternate; }
+  .o .ano::after { content: '2050'; position: absolute; inset: 0; color: transparent; text-shadow: none; -webkit-background-clip: text; background-clip: text; background-image: radial-gradient(circle at var(--luz) 30%, rgba(255, 247, 222, .95), rgba(255, 236, 190, .45) 16%, transparent 34%); pointer-events: none; }
+  @keyframes holofote { from { --luz: 4%; --sol: 32deg; } to { --luz: 96%; --sol: 148deg; } }
+
+  /* P — Respiração: o número sobe da barra e volta. O relevo cresce e diminui e o
+     algarismo se desloca para cima e para a esquerda na mesma medida, como se de
+     fato se erguesse em direção à luz. */
+  .p .ano { --sol: 58deg; --comp: calc(var(--prof) / 4); transform: translate(calc(var(--prof) * -.35px), calc(var(--prof) * -.45px)); animation: respira 4.5s ease-in-out infinite alternate; }
+  @keyframes respira { from { --prof: 1; } to { --prof: 8; } }
+
+  /* Quem pede menos movimento vê o número parado, com o relevo. */
+  @media (prefers-reduced-motion: reduce) {
+    .ano, .ano * { animation: none !important; }
+  }
+  .nota { margin-top: 8px; padding: 14px 18px; border-left: 3px solid var(--ocre); background: rgba(255, 255, 255, .5); color: var(--tinta-3); font-size: 13px; max-width: 90ch; }
+</style>
+</head>
+<body>
+  <h1>Animações para o “2050” — quarta rodada</h1>
+  <p class="intro">Quatro variações na linha da opção L (Luz do dia), que é a que está aplicada no painel agora: relevo e luz sobre o próprio número. As rodadas anteriores continuam em <code>topo-2050-animacoes.html</code>, <code>-2.html</code> e <code>-3.html</code>.</p>
+
+  <section class="opcao m">
+    <h2><b>M</b>Dia inteiro</h2>
+    <p>O sol nasce à esquerda, passa pelo alto e se põe à direita, e volta (10 s em cada sentido). A sombra é longa de manhã e à tarde e curta ao meio-dia, e a cor do número esquenta junto: dourado claro ao nascer, ocre ao meio-dia, laranja ao pôr do sol.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano relevo">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao n">
+    <h2><b>N</b>Giro 3D</h2>
+    <p>O número ganha espessura de verdade e gira devagar para um lado e para o outro (6 s em cada sentido), mostrando a lateral como uma placa de metal sob a luz.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span>
+        <b class="ano" aria-label="2050"><span class="camada" style="--i:7" aria-hidden="true">2050</span><span class="camada" style="--i:6" aria-hidden="true">2050</span><span class="camada" style="--i:5" aria-hidden="true">2050</span><span class="camada" style="--i:4" aria-hidden="true">2050</span><span class="camada" style="--i:3" aria-hidden="true">2050</span><span class="camada" style="--i:2" aria-hidden="true">2050</span><span class="camada" style="--i:1" aria-hidden="true">2050</span><span class="face">2050</span></b>
+      </span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao o">
+    <h2><b>O</b>Holofote</h2>
+    <p>Um ponto de luz passa sobre os algarismos da esquerda para a direita e volta (5 s em cada sentido), e a sombra do relevo vai sempre para o lado oposto ao da luz.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano relevo">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao p">
+    <h2><b>P</b>Respiração</h2>
+    <p>O número sobe da barra e volta, como se respirasse (4,5 s para subir, 4,5 s para descer): o relevo cresce e diminui, e o algarismo se ergue na direção da luz.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano relevo">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <p class="nota">Em todas as opções, quem ativou “reduzir movimento” no sistema vê o número parado, com o relevo.</p>
+
+<script>
+  // Só para gerar capturas: ?t=1500 congela todas as animações nesse instante.
+  const congelar = new URLSearchParams(location.search).get('t');
+  if (congelar) {
+    const parar = () => document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(congelar); });
+    document.fonts.ready.then(() => requestAnimationFrame(parar));
+  }
+</script>
+</body>
+</html>

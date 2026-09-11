@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topo — animações do 2050 (quinta rodada)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Carrega a Bricolage com os eixos variáveis (largura e peso), de que a opção R precisa. -->
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-100: #c6d2c7; --mata-300: #7fa08c;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --text: "Libre Franklin", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px clamp(16px, 4vw, 48px) 48px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { margin: 0 0 6px; font: 800 26px var(--display); letter-spacing: -.03em; }
+  .intro { margin: 0 0 28px; max-width: 80ch; color: var(--tinta-3); }
+  .opcao { margin-bottom: 30px; }
+  .opcao h2 { margin: 0 0 4px; font: 800 18px var(--display); letter-spacing: -.02em; }
+  .opcao h2 b { color: var(--urucum); margin-right: 6px; }
+  .opcao p { margin: 0 0 10px; max-width: 90ch; color: var(--tinta-3); font-size: 14px; }
+
+  /* Barra do topo, com as medidas da real (84px, verde-mata). */
+  .topbar { border-radius: 12px; background: var(--mata); color: var(--areia); box-shadow: 0 4px 20px rgba(14, 43, 34, .16); overflow: hidden; }
+  .topbar-inner { min-height: 84px; padding: 10px 36px; display: flex; align-items: center; gap: 34px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand-logo { width: 172px; height: 60px; object-fit: contain; display: block; }
+  .brand-product { display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, .2); white-space: nowrap; }
+  .brand-product-nome { display: grid; gap: 4px; }
+  .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--mata-100); }
+  .brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -.02em; }
+  .ano { position: relative; display: inline-flex; font: 800 46px/.78 var(--display); letter-spacing: -.045em; color: var(--ocre); }
+  .ano > span { display: inline-block; }
+  .topnav { display: flex; gap: 25px; margin-left: 18px; font-size: 13px; color: rgba(245, 240, 232, .7); }
+  .topnav .ativo { color: var(--ocre); font-weight: 600; box-shadow: 0 10px 0 -8px var(--ocre); }
+  .acao { margin-left: auto; padding: 10px 16px; border: 1px solid rgba(245, 240, 232, .45); border-radius: 8px; font-size: 12px; font-weight: 600; }
+
+  /* Q — Neon: só o contorno, claro como o tubo aceso, com o brilho em volta. O
+     brilho respira devagar e, de vez em quando, o 5 falha como lâmpada cansada. */
+  .q .ano { color: transparent; -webkit-text-stroke: 1.6px #fff0c8; filter: drop-shadow(0 0 2px #ffe3a0) drop-shadow(0 0 6px var(--ocre)) drop-shadow(0 0 14px rgba(224, 168, 60, .7)); animation: zumbido 3s ease-in-out infinite alternate; }
+  .q .ano > span:nth-child(3) { animation: falha 7s linear infinite; }
+  @keyframes zumbido { from { opacity: .88; } to { opacity: 1; } }
+  @keyframes falha { 0%, 60%, 63%, 65%, 68%, 100% { opacity: 1; } 61%, 64%, 66.5% { opacity: .15; } }
+
+  /* R — Tipografia viva: a Bricolage é variável em peso e largura; uma onda passa
+     pelos algarismos, que afinam e estreitam e depois voltam ao 800. A caixa tem
+     largura fixa para a navegação ao lado não andar junto. */
+  .r .ano { width: 108px; justify-content: center; }
+  .r .ano > span { font-variation-settings: 'wght' 800, 'wdth' 100; animation: peso 3.2s ease-in-out infinite; }
+  .r .ano > span:nth-child(2) { animation-delay: .18s; }
+  .r .ano > span:nth-child(3) { animation-delay: .36s; }
+  .r .ano > span:nth-child(4) { animation-delay: .54s; }
+  @keyframes peso {
+    0%, 60%, 100% { font-variation-settings: 'wght' 800, 'wdth' 100; }
+    25% { font-variation-settings: 'wght' 220, 'wdth' 75; }
+  }
+
+  /* S — Vaga-lumes: pontinhos de luz voam em volta do número, piscando, alguns à
+     frente e outros atrás dele. Cada um tem rota, tempo e atraso próprios. */
+  .s .ano { isolation: isolate; }
+  .s .vagalume { position: absolute; left: var(--x); top: var(--y); width: 4px; height: 4px; border-radius: 50%; background: #f6f3a8; box-shadow: 0 0 6px 2px rgba(236, 240, 140, .75); opacity: 0; animation: voo var(--dur) ease-in-out var(--atraso) infinite; }
+  .s .vagalume.atras { z-index: -1; }
+  @keyframes voo {
+    0% { transform: translate(0, 0); opacity: 0; }
+    15% { opacity: 1; }
+    35% { opacity: .35; }
+    50% { transform: translate(var(--dx), var(--dy)); opacity: 1; }
+    70% { opacity: .5; }
+    85% { opacity: 1; }
+    100% { transform: translate(calc(var(--dx) * -.5), calc(var(--dy) * .7)); opacity: 0; }
+  }
+
+  /* T — Digitação: o número é digitado com um cursor piscando, fica um tempo, é
+     apagado e digitado de novo. Largura fixa para a navegação não andar. */
+  .t .ano { width: 112px; align-items: center; }
+  .t .cursor { display: inline-block; width: 4px; height: .72em; margin-left: 4px; background: var(--ocre); animation: pisca 1s steps(1) infinite; }
+  @keyframes pisca { 50% { opacity: 0; } }
+
+  /* Quem pede menos movimento vê o número parado. No painel vale o mesmo. */
+  @media (prefers-reduced-motion: reduce) {
+    .ano, .ano * { animation: none !important; }
+    .s .vagalume, .t .cursor { display: none; }
+  }
+  .nota { margin-top: 8px; padding: 14px 18px; border-left: 3px solid var(--ocre); background: rgba(255, 255, 255, .5); color: var(--tinta-3); font-size: 13px; max-width: 90ch; }
+</style>
+</head>
+<body>
+  <h1>Animações para o “2050” — quinta rodada</h1>
+  <p class="intro">Quatro estilos bem diferentes entre si e das rodadas anteriores. A opção L (Luz do dia) continua aplicada no painel; as rodadas anteriores estão em <code>topo-2050-animacoes.html</code> e <code>-2</code> a <code>-4.html</code>.</p>
+
+  <section class="opcao q">
+    <h2><b>Q</b>Neon</h2>
+    <p>O 2050 vira um letreiro de neon: só o contorno aceso, com o brilho em volta respirando devagar. De vez em quando o 5 falha e pisca, como uma lâmpada cansada.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano"><span>2</span><span>0</span><span>5</span><span>0</span></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao r">
+    <h2><b>R</b>Tipografia viva</h2>
+    <p>A fonte do painel é variável em peso e largura: uma onda passa pelos algarismos, que ficam finos e estreitos e voltam ao grosso, um depois do outro (a cada 3,2 s). Para ir ao painel, a fonte precisaria ser carregada na versão variável.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano"><span>2</span><span>0</span><span>5</span><span>0</span></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao s">
+    <h2><b>S</b>Vaga-lumes</h2>
+    <p>Pontinhos de luz voam em volta do número, piscando, alguns à frente e outros atrás dele, cada um no seu tempo — como vaga-lumes na mata ao anoitecer. O número fica parado.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050
+        <i class="vagalume" aria-hidden="true" style="--x:-8px; --y:4px; --dx:10px; --dy:-9px; --dur:5.2s; --atraso:-1s"></i>
+        <i class="vagalume atras" aria-hidden="true" style="--x:22px; --y:-10px; --dx:14px; --dy:6px; --dur:6.4s; --atraso:-3.2s"></i>
+        <i class="vagalume" aria-hidden="true" style="--x:48px; --y:30px; --dx:-12px; --dy:-8px; --dur:4.6s; --atraso:-2.1s"></i>
+        <i class="vagalume atras" aria-hidden="true" style="--x:70px; --y:-6px; --dx:-9px; --dy:12px; --dur:5.8s; --atraso:-.4s"></i>
+        <i class="vagalume" aria-hidden="true" style="--x:98px; --y:12px; --dx:11px; --dy:-10px; --dur:6.9s; --atraso:-4.5s"></i>
+        <i class="vagalume atras" aria-hidden="true" style="--x:86px; --y:34px; --dx:-14px; --dy:-5px; --dur:5.4s; --atraso:-2.8s"></i>
+        <i class="vagalume" aria-hidden="true" style="--x:30px; --y:36px; --dx:8px; --dy:-14px; --dur:7.3s; --atraso:-5.6s"></i>
+        <i class="vagalume" aria-hidden="true" style="--x:112px; --y:-4px; --dx:-10px; --dy:9px; --dur:4.9s; --atraso:-1.7s"></i>
+      </b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao t">
+    <h2><b>T</b>Digitação</h2>
+    <p>O número é digitado algarismo por algarismo, com um cursor piscando; fica na tela por uns segundos, é apagado e digitado de novo, como num terminal.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano" aria-label="2050"><span class="digitado" aria-hidden="true">2050</span><span class="cursor" aria-hidden="true"></span></b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <p class="nota">Em todas as opções, quem ativou “reduzir movimento” no sistema vê o número parado.</p>
+
+<script>
+  // Digitação da opção T: digita, espera, apaga e recomeça.
+  const alvo = document.querySelector('.t .digitado');
+  if (alvo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const TEXTO = '2050';
+    const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+    (async function ciclo() {
+      for (;;) {
+        for (let i = 1; i <= TEXTO.length; i++) { alvo.textContent = TEXTO.slice(0, i); await esperar(160 + Math.random() * 90); }
+        await esperar(3600);
+        for (let i = TEXTO.length - 1; i >= 0; i--) { alvo.textContent = TEXTO.slice(0, i); await esperar(85); }
+        await esperar(650);
+      }
+    })();
+  }
+
+  // Só para gerar capturas: ?t=1500 congela as animações de CSS nesse instante.
+  const congelar = new URLSearchParams(location.search).get('t');
+  if (congelar) {
+    const parar = () => document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(congelar); });
+    document.fonts.ready.then(() => requestAnimationFrame(parar));
+  }
+</script>
+</body>
+</html>

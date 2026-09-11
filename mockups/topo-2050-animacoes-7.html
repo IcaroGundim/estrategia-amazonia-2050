@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topo — animações do 2050 (institucionais, segunda rodada)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mata: #0e2b22; --mata-100: #c6d2c7; --mata-300: #7fa08c;
+    --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --tinta: #1a1613; --tinta-3: #5c544c;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --text: "Libre Franklin", system-ui, sans-serif;
+    --suave: cubic-bezier(.65, 0, .35, 1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px clamp(16px, 4vw, 48px) 48px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { margin: 0 0 6px; font: 800 26px var(--display); letter-spacing: -.03em; }
+  .intro { margin: 0 0 28px; max-width: 86ch; color: var(--tinta-3); }
+  .opcao { margin-bottom: 30px; }
+  .opcao h2 { margin: 0 0 4px; font: 800 18px var(--display); letter-spacing: -.02em; display: flex; align-items: center; gap: 12px; }
+  .opcao h2 b { color: var(--urucum); margin-right: -6px; }
+  .opcao p { margin: 0 0 10px; max-width: 90ch; color: var(--tinta-3); font-size: 14px; }
+  .rever { padding: 4px 12px; border: 1px solid var(--linha, #ddd3c6); border-radius: 999px; background: #fff; color: var(--tinta-3); font: 600 12px var(--text); cursor: pointer; }
+
+  /* Barra do topo, com as medidas da real (84px, verde-mata). */
+  .topbar { border-radius: 12px; background: var(--mata); color: var(--areia); box-shadow: 0 4px 20px rgba(14, 43, 34, .16); overflow: hidden; }
+  .topbar-inner { min-height: 84px; padding: 10px 36px; display: flex; align-items: center; gap: 34px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand-logo { width: 172px; height: 60px; object-fit: contain; display: block; }
+  .brand-product { position: relative; display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, .2); white-space: nowrap; }
+  .brand-product-nome { display: grid; gap: 4px; }
+  .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--mata-100); }
+  .brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -.02em; }
+  .ano { position: relative; display: inline-flex; font: 800 46px/.78 var(--display); letter-spacing: -.045em; color: var(--ocre); }
+  .topnav { display: flex; gap: 25px; margin-left: 18px; font-size: 13px; color: rgba(245, 240, 232, .7); }
+  .topnav .ativo { color: var(--ocre); font-weight: 600; box-shadow: 0 10px 0 -8px var(--ocre); }
+  .acao { margin-left: auto; padding: 10px 16px; border: 1px solid rgba(245, 240, 232, .45); border-radius: 8px; font-size: 12px; font-weight: 600; }
+
+  /* Y — Luz ambiente: dois tons próximos de ocre se alternam ao longo do número e
+     derivam devagar, sem pausa e sem faixa de brilho. O padrão se repete a cada
+     meia largura do fundo, então o laço de 20 s não tem emenda. */
+  .y .ano {
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+    background-image: linear-gradient(90deg, #d09a34 0%, #eab958 25%, #d09a34 50%, #eab958 75%, #d09a34 100%);
+    background-size: 200% 100%;
+    animation: ambiente 20s linear infinite;
+  }
+  @keyframes ambiente { from { background-position: 0% 0; } to { background-position: 100% 0; } }
+
+  /* Z — Entreletra: o espaço entre os algarismos abre e fecha devagar. A caixa tem
+     a largura do número aberto, para a navegação ao lado não andar junto. */
+  .z .ano { width: 116px; animation: entreletra 10s var(--suave) infinite alternate; }
+  @keyframes entreletra { from { letter-spacing: -.045em; } to { letter-spacing: .02em; } }
+
+  /* AA — Contorno: o número alterna entre cheio e só contorno, com transição de
+     1,2 s e 4,8 s em cada estado. O traço só existe no estado de contorno, para o
+     número cheio ficar com o peso exato da marca. */
+  .aa .ano { -webkit-text-stroke: 0 var(--ocre); animation: contorno 12s var(--suave) infinite; }
+  @keyframes contorno {
+    0%, 40% { color: var(--ocre); -webkit-text-stroke-width: 0; }
+    50%, 90% { color: rgba(224, 168, 60, 0); -webkit-text-stroke-width: 1.3px; }
+    100% { color: var(--ocre); -webkit-text-stroke-width: 0; }
+  }
+
+  /* AB — Entrada única: ao abrir a página, o nome aparece e o ano sobe 10px com a
+     entreletra se fechando. Depois, nada se mexe até a próxima página. */
+  .ab .brand-product-nome { animation: surge 1s var(--suave) .15s both; }
+  .ab .ano { animation: entrada 1.4s var(--suave) .45s both; }
+  @keyframes surge { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+  @keyframes entrada { from { opacity: 0; transform: translateY(10px); letter-spacing: .06em; } to { opacity: 1; transform: none; letter-spacing: -.045em; } }
+
+  /* Quem pede menos movimento vê tudo parado. No painel vale o mesmo. */
+  @media (prefers-reduced-motion: reduce) {
+    .ano, .brand-product-nome { animation: none !important; }
+  }
+  .nota { margin-top: 8px; padding: 14px 18px; border-left: 3px solid var(--ocre); background: rgba(255, 255, 255, .5); color: var(--tinta-3); font-size: 13px; max-width: 90ch; }
+</style>
+</head>
+<body>
+  <h1>Animações para o “2050” — institucionais, segunda rodada</h1>
+  <p class="intro">Ainda mais contidas que U–X: nenhum elemento novo na barra, nenhum efeito sobre o número. O movimento fica no tom, no espaçamento e no estado da letra — o que um manual de marca permitiria. A opção L (Luz do dia) continua aplicada no painel até a escolha.</p>
+
+  <section class="opcao y">
+    <h2><b>Y</b>Luz ambiente</h2>
+    <p>Dois tons próximos de ocre se alternam ao longo do número e derivam devagar, sem parar, como luz natural atravessando uma superfície. Não há brilho, nem pausa, nem mudança de forma: só o tom (ciclo de 20 s).</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao z">
+    <h2><b>Z</b>Entreletra</h2>
+    <p>O espaço entre os algarismos abre e fecha muito devagar (10 s em cada sentido), como uma respiração tipográfica. A forma e a cor do número não mudam.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao aa">
+    <h2><b>AA</b>Contorno</h2>
+    <p>O número alterna devagar entre a versão cheia e a versão só em contorno — as duas que um manual de marca costuma prever —, com 1,2 s de transição e cerca de 5 s em cada uma.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <section class="opcao ab">
+    <h2><b>AB</b>Entrada única <button class="rever" type="button" data-rever>Rever a entrada</button></h2>
+    <p>O nome aparece e o ano sobe de leve, com a entreletra se fechando, quando a página abre (1,4 s) — e depois fica parado. É o que a maioria das instituições faz, mas não é constante: repete só ao trocar de página.</p>
+    <div class="topbar"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""><span class="brand-product"><span class="brand-product-nome"><small>Estratégia Regional</small><strong>Amazônia</strong></span><b class="ano">2050</b></span></span>
+      <nav class="topnav"><span>Panorama</span><span class="ativo">Visão Geral</span><span>Metas e indicadores</span></nav>
+      <span class="acao">Baixar nota técnica</span>
+    </div></div>
+  </section>
+
+  <p class="nota">Em todas as opções, quem ativou “reduzir movimento” no sistema vê o número parado.</p>
+
+<script>
+  // Opção AB: o botão reinicia a entrada, que no painel só aconteceria ao abrir a página.
+  document.querySelector('[data-rever]')?.addEventListener('click', () => {
+    document.querySelectorAll('.ab .brand-product-nome, .ab .ano').forEach((el) => {
+      el.getAnimations().forEach((a) => { a.cancel(); a.play(); });
+    });
+  });
+
+  // Só para gerar capturas: ?t=1500 congela as animações nesse instante.
+  const congelar = new URLSearchParams(location.search).get('t');
+  if (congelar) {
+    const parar = () => document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(congelar); });
+    document.fonts.ready.then(() => requestAnimationFrame(parar));
+  }
+</script>
+</body>
+</html>

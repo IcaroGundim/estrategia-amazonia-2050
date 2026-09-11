@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups — Situação da coleta (marcadores de status)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+  --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff;
+  --linha: #ddd3c6; --linha-2: #ede6dc;
+  --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078;
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Libre Franklin", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--areia); color: var(--tinta); font: 400 15px/1.55 var(--text); }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 100px; }
+.mock-head h1 { font-size: 34px; }
+.mock-head h1 em { font-style: normal; color: var(--urucum); }
+.mock-head p { max-width: 90ch; margin: 10px 0 0; color: var(--tinta-3); font-size: 13.5px; }
+
+.opt { margin-top: 30px; }
+.opt-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.opt-head .tag { padding: 3px 10px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--urucum); font: 700 11px var(--display); letter-spacing: .06em; }
+.opt-head h2 { font-size: 17px; }
+.opt-note { max-width: 92ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12px; }
+
+.demo { margin-top: 12px; padding: 22px 24px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 28px; align-items: center; }
+@media (max-width: 760px) { .demo { grid-template-columns: 1fr; } }
+.demo .cell-label { color: var(--tinta-4); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.demo .divider { border-left: 1px solid var(--linha-2); padding-left: 28px; }
+.demo .row-sample { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; padding: 10px 0; border-top: 1px solid var(--linha-2); border-bottom: 1px solid var(--linha-2); }
+.demo .row-sample + .row-sample { border-top: 0; }
+
+/* ================= base comum ================= */
+.st { display: inline-flex; align-items: center; gap: 8px; font: 700 10.5px var(--text); letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; }
+.st.lg { font: 700 16px var(--display); letter-spacing: .05em; }
+.st.ok { color: var(--mata-700); }
+.st.partial { color: #76550e; }
+.st.pending { color: #8e3213; }
+.st.manual { color: var(--tinta-3); }
+
+/* A · quadrados (implementado hoje) */
+.A::before { content: ""; flex: none; width: 8px; height: 8px; border: 1.5px solid currentColor; }
+.A.lg::before { width: 10px; height: 10px; }
+.A.ok::before { background: currentColor; }
+.A.partial::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.A.manual::before { border-style: dashed; }
+
+/* B · círculos */
+.B::before { content: ""; flex: none; width: 9px; height: 9px; border: 1.5px solid currentColor; border-radius: 50%; }
+.B.lg::before { width: 11px; height: 11px; }
+.B.ok::before { background: currentColor; }
+.B.partial::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.B.manual::before { border-style: dashed; }
+
+/* C · mini barra de preenchimento */
+.C::before { content: ""; flex: none; width: 18px; height: 4px; background: linear-gradient(90deg, currentColor 100%, transparent 0); box-shadow: 0 0 0 1px var(--linha-2) inset; }
+.C.lg::before { width: 26px; height: 5px; }
+.C.partial::before { background: linear-gradient(90deg, currentColor 50%, var(--linha-2) 50%); box-shadow: none; }
+.C.pending::before { background: var(--linha-2); box-shadow: none; }
+.C.manual::before { background: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 6px); box-shadow: none; }
+
+/* D · traço tipográfico */
+.D { gap: 9px; }
+.D::before { content: ""; flex: none; width: 14px; height: 2px; background: currentColor; }
+.D.lg::before { width: 20px; height: 2.5px; }
+.D.manual::before { height: 1px; opacity: .65; }
+
+/* E · selo retangular (carimbo) */
+.E { gap: 0; padding: 4px 9px 3px; border: 1px solid currentColor; border-radius: 2px; font-size: 10px; }
+.E.lg { padding: 6px 12px 5px; font-size: 14px; }
+.E.manual { border-style: dashed; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mock-head">
+    <h1>Mockup — <em>Situação da coleta</em></h1>
+    <p>Cinco linguagens para o marcador de status, todas sem pílula arredondada. Cada opção mostra o tamanho grande (ficha do indicador) e o tamanho pequeno (linha da tabela), nos quatro estados. A <strong>Opção A</strong> é a implementada hoje, de referência.</p>
+  </header>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO A</span><h2>Quadrados — implementado hoje</h2></div>
+    <p class="opt-note">Cheio = coletado · meio preenchido = parcial · vazio = pendente · tracejado = não coletado.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg A ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st A ok">Coletado</span><span class="st A partial">Parcial</span><span class="st A pending">Pendente</span><span class="st A manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO B</span><h2>Círculos — semáforo contido</h2></div>
+    <p class="opt-note">Mesma progressão de A, mas em círculos; leitura mais suave, remete a "luz de status".</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg B ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st B ok">Coletado</span><span class="st B partial">Parcial</span><span class="st B pending">Pendente</span><span class="st B manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO C</span><h2>Mini barra — nível de preenchimento</h2></div>
+    <p class="opt-note">Uma barrinha que enche conforme a situação: cheia, meia, vazia, ou em tracinhos. Dialoga com as barras de progresso do painel.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg C ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st C ok">Coletado</span><span class="st C partial">Parcial</span><span class="st C pending">Pendente</span><span class="st C manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO D</span><h2>Traço tipográfico — o mais minimalista</h2></div>
+    <p class="opt-note">Só um travessão colorido antes da palavra; a cor carrega o estado. Quase um item de legenda editorial.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg D ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st D ok">Coletado</span><span class="st D partial">Parcial</span><span class="st D pending">Pendente</span><span class="st D manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="opt-head"><span class="tag">OPÇÃO E</span><h2>Selo retangular — carimbo</h2></div>
+    <p class="opt-note">Contorno reto (cantos quase vivos), como um carimbo de relatório. Diferencia do formato pílula sem voltar ao fundo colorido; "não coletado" ganha borda tracejada.</p>
+    <div class="demo">
+      <div><p class="cell-label">Situação da coleta</p><span class="st lg E ok">Coletado</span></div>
+      <div class="divider">
+        <div class="row-sample"><span class="st E ok">Coletado</span><span class="st E partial">Parcial</span><span class="st E pending">Pendente</span><span class="st E manual">Não coletado</span></div>
+      </div>
+    </div>
+  </article>
+</div>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups — Método de cálculo & Dados complementares (v2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7;
+  --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff;
+  --linha: #ddd3c6; --linha-2: #ede6dc;
+  --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078;
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Libre Franklin", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--areia); color: var(--tinta); font: 400 15px/1.55 var(--text); }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 40px 24px 100px; }
+.mock-head h1 { font-size: 34px; }
+.mock-head h1 em { font-style: normal; color: var(--urucum); }
+.mock-head p { max-width: 90ch; margin: 10px 0 0; color: var(--tinta-3); font-size: 13.5px; }
+.mock-head code { padding: 2px 7px; border: 1px solid var(--linha); border-radius: 6px; background: var(--papel); font-size: 12px; }
+
+section { margin-top: 52px; }
+.group-title { display: flex; align-items: baseline; gap: 12px; }
+.group-title .num { padding: 3px 10px; border-radius: 999px; background: var(--mata); color: var(--areia); font: 700 11px var(--display); letter-spacing: .06em; }
+.group-title h2 { font-size: 22px; }
+.group-note { max-width: 92ch; margin: 8px 0 0; color: var(--tinta-3); font-size: 12.5px; }
+
+.opt { margin-top: 26px; }
+.opt-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.opt-head .tag { padding: 3px 10px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--urucum); font: 700 11px var(--display); letter-spacing: .06em; }
+.opt-head .tag.ok { border-color: var(--mata-300); color: var(--mata); }
+.opt-head h2 { font-size: 17px; }
+.opt-note { max-width: 92ch; margin: 5px 0 0; color: var(--tinta-4); font-size: 12px; }
+
+/* ---- demo: replica o card da página real ---- */
+.demo { margin-top: 12px; padding: 26px 28px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
+.cols { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); gap: clamp(28px, 3vw, 48px); align-items: start; }
+@media (max-width: 860px) { .cols { grid-template-columns: 1fr; } .aside-demo { border-left: 0 !important; padding-left: 0 !important; border-top: 1px solid var(--linha-2); padding-top: 22px; margin-top: 4px; } }
+.aside-demo { min-width: 0; padding-left: clamp(24px, 2.5vw, 44px); border-left: 1px solid var(--linha-2); }
+.sect { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.sect::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
+.sect h3 { font-size: 17px; white-space: nowrap; }
+.blk + .blk { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--linha-2); }
+.blk > p { margin: 0; color: var(--tinta-2); font-size: 13.5px; line-height: 1.65; }
+
+/* fórmula falsa (aparência KaTeX) */
+.fml-wrap { padding: 4px 0; }
+.fml { color: var(--mata); font: 400 21px/1.4 Georgia, "Times New Roman", serif; text-align: center; }
+.fml .frac { display: inline-flex; flex-direction: column; vertical-align: middle; margin: 0 4px; text-align: center; }
+.fml .frac .num { padding: 0 8px 3px; border-bottom: 1.2px solid currentColor; font-size: 17px; }
+.fml .frac .den { padding-top: 3px; font-size: 17px; }
+.fml sub { font-size: 11px; }
+.fml-notes { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--linha-2); display: grid; gap: 6px; }
+.fml-notes p { margin: 0; color: var(--tinta-3); font-size: 11.5px; line-height: 1.55; }
+
+/* campos (dados complementares) */
+/* ============ GRUPO 3 · pontuação com algo a mais ============ */
+.p3 { display: grid; gap: 16px; }
+.p3 .val { display: flex; align-items: center; gap: 10px; margin-top: 6px; color: var(--tinta-2); font-size: 13px; }
+/* i · escala inline */
+.m1 .track { position: relative; width: 56px; height: 2px; background: var(--linha); }
+.m1 .track::before, .m1 .track::after { content: ""; position: absolute; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--mata-500); transform: translateY(-50%); }
+.m1 .track::before { left: 0; } .m1 .track::after { right: 0; background: var(--urucum); }
+/* ii · números em destaque */
+.m2 .val b { color: var(--mata); font: 800 14px var(--display); }
+.m2 .val .seta { color: var(--urucum); font-weight: 700; }
+/* iii · régua abaixo */
+.m3 .regua { position: relative; width: 140px; height: 2px; margin-top: 8px; background: var(--linha); }
+.m3 .regua::before, .m3 .regua::after { content: ""; position: absolute; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: var(--mata-500); transform: translateY(-50%); }
+.m3 .regua::before { left: 0; } .m3 .regua::after { right: 0; background: var(--urucum); }
+.m3 .qual .seta { color: var(--urucum); font-weight: 700; }
+
+.field { padding: 12px 0 4px; border-top: 1px solid var(--linha-2); }
+.field:first-of-type { border-top: 0; padding-top: 0; }
+.field dt { color: var(--tinta-4); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.field dd { margin: 6px 0 0; color: var(--tinta-2); font-size: 13px; line-height: 1.6; }
+
+/* ============ GRUPO 1 v2 · caixas ============ */
+/* D · recuo com fio neutro (meta + método) */
+.vD .goal > p, .vD .fml-wrap { margin-left: 18px; }
+.vD .goal, .vD .fml-wrap { position: relative; }
+.vD .goal::before, .vD .fml-wrap::before { content: ""; position: absolute; top: 2px; bottom: 2px; left: 0; width: 2px; border-radius: 1px; background: var(--linha); }
+/* E · fórmula entre réguas horizontais (meta pura) */
+.vE .fml-wrap { padding: 18px 0 16px; border-top: 2px solid var(--mata); border-bottom: 1px solid var(--linha); }
+/* F · fórmula em cartão escuro (meta pura) */
+.vF .fml-box { padding: 20px 24px; border-radius: 12px; background: var(--mata); }
+.vF .fml { color: var(--areia); }
+.vF .fml-notes { border-top-color: rgba(245, 240, 232, 0.22); }
+.vF .fml-notes p { color: var(--mata-100); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mock-head">
+    <h1>Mockup v2 — <em>Caixas de Meta e Método</em></h1>
+    <p>Três opções novas para substituir as caixas bege com listra. A Pontuação já foi decidida (<code>texto simples</code>). Responda no formato <code>Caixa D/E/F</code>. Conteúdo real do indicador I1.1.2.</p>
+  </header>
+
+  <section id="caixas">
+    <div class="group-title"><span class="num">GRUPO 1</span><h2>Caixas de Meta e Método — opções novas</h2></div>
+    <p class="group-note">Em D o recuo vale para os dois blocos; em E e F a Meta fica em texto puro e o destaque vai só para a fórmula.</p>
+
+    <article class="opt vD">
+      <div class="opt-head"><span class="tag">OPÇÃO D</span><h2>Recuo editorial com fio neutro</h2></div>
+      <p class="opt-note">Sem caixa e sem cor: o conteúdo recuado com um fio vertical cinza-claro à esquerda, estilo citação de relatório. Vale para Meta e Método.</p>
+      <div class="demo">
+        <div class="cols">
+          <div>
+            <div class="blk goal"><div class="sect"><h3>Meta pactuada</h3></div><p>40% de Unidades de Conservação estaduais da Amazônia Legal com plano de manejo elaborado/atualizado e conselho gestor em funcionamento.</p></div>
+            <div class="blk fml-box"><div class="sect"><h3>Método de cálculo</h3></div>
+              <div class="fml-wrap">
+                <div class="fml">IUCs = <span class="frac"><span class="num">N<sub>conformes</sub></span><span class="den">N<sub>total</sub></span></span> × 100</div>
+                <div class="fml-notes">
+                  <p>— NConformes = Número de UCs estaduais que atendem aos dois critérios de gestão: SIM para Plano de Manejo e SIM para Conselho Gestor</p>
+                  <p>— NTotal = Número total de UCs estaduais registradas no cadastro oficial (CNUC/MMA)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="aside-demo">
+            <div class="sect"><h3>Dados complementares</h3></div>
+            <div class="field"><dt>Linha de ação</dt><dd>11. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.</dd></div>
+            <div class="field"><dt>Unidade</dt><dd>%</dd></div>
+            <div class="field"><dt>Pontuação</dt><dd>0 a 100</dd></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="opt vE">
+      <div class="opt-head"><span class="tag">OPÇÃO E</span><h2>Fórmula entre réguas horizontais</h2></div>
+      <p class="opt-note">Estilo relatório técnico: a fórmula fica entre uma régua grossa (verde) e uma fina, em largura total, sem fundo. A Meta permanece em texto puro.</p>
+      <div class="demo">
+        <div class="cols">
+          <div>
+            <div class="blk goal"><div class="sect"><h3>Meta pactuada</h3></div><p>40% de Unidades de Conservação estaduais da Amazônia Legal com plano de manejo elaborado/atualizado e conselho gestor em funcionamento.</p></div>
+            <div class="blk fml-box"><div class="sect"><h3>Método de cálculo</h3></div>
+              <div class="fml-wrap">
+                <div class="fml">IUCs = <span class="frac"><span class="num">N<sub>conformes</sub></span><span class="den">N<sub>total</sub></span></span> × 100</div>
+                <div class="fml-notes">
+                  <p>— NConformes = Número de UCs estaduais que atendem aos dois critérios de gestão: SIM para Plano de Manejo e SIM para Conselho Gestor</p>
+                  <p>— NTotal = Número total de UCs estaduais registradas no cadastro oficial (CNUC/MMA)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="aside-demo">
+            <div class="sect"><h3>Dados complementares</h3></div>
+            <div class="field"><dt>Linha de ação</dt><dd>11. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.</dd></div>
+            <div class="field"><dt>Unidade</dt><dd>%</dd></div>
+            <div class="field"><dt>Pontuação</dt><dd>0 a 100</dd></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="opt vF">
+      <div class="opt-head"><span class="tag">OPÇÃO F</span><h2>Fórmula em cartão verde-escuro</h2></div>
+      <p class="opt-note">A fórmula ganha um bloco na cor institucional (verde-mata) com texto claro — o ponto de destaque da ficha. A Meta permanece em texto puro.</p>
+      <div class="demo">
+        <div class="cols">
+          <div>
+            <div class="blk goal"><div class="sect"><h3>Meta pactuada</h3></div><p>40% de Unidades de Conservação estaduais da Amazônia Legal com plano de manejo elaborado/atualizado e conselho gestor em funcionamento.</p></div>
+            <div class="blk fml-box"><div class="sect" style="--linha-2: rgba(245,240,232,.25);"><h3 style="color: var(--areia);">Método de cálculo</h3></div>
+              <div class="fml-wrap">
+                <div class="fml">IUCs = <span class="frac"><span class="num">N<sub>conformes</sub></span><span class="den">N<sub>total</sub></span></span> × 100</div>
+                <div class="fml-notes">
+                  <p>— NConformes = Número de UCs estaduais que atendem aos dois critérios de gestão: SIM para Plano de Manejo e SIM para Conselho Gestor</p>
+                  <p>— NTotal = Número total de UCs estaduais registradas no cadastro oficial (CNUC/MMA)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="aside-demo">
+            <div class="sect"><h3>Dados complementares</h3></div>
+            <div class="field"><dt>Linha de ação</dt><dd>11. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.</dd></div>
+            <div class="field"><dt>Unidade</dt><dd>%</dd></div>
+            <div class="field"><dt>Pontuação</dt><dd>0 a 100</dd></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section id="pontuacao">
+    <div class="group-title"><span class="num">GRUPO 2</span><h2>Pontuação — decidido</h2></div>
+    <p class="group-note">Opção 1 escolhida: campo de texto simples, no mesmo padrão de Unidade. Aparece abaixo como ficará.</p>
+    <div class="demo">
+      <div class="aside-demo" style="border-left: 0; padding-left: 0; max-width: 460px;">
+        <div class="sect"><h3>Dados complementares</h3></div>
+        <div class="field"><dt>Linha de ação</dt><dd>11. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.</dd></div>
+        <div class="field"><dt>Unidade</dt><dd>%</dd></div>
+        <div class="field"><dt>Pontuação</dt><dd>0 a 100</dd></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pontuacao-mais">
+    <div class="group-title"><span class="num">GRUPO 3</span><h2>Pontuação — "algo a mais" (discreto)</h2></div>
+    <p class="group-note">Partem do campo de texto simples decidido no Grupo 2 e adicionam um detalhe pequeno. Mostram os dois casos: escala numérica (0 a 100) e qualitativa ("quanto menor melhor").</p>
+
+    <article class="opt">
+      <div class="opt-head"><span class="tag">OPÇÃO i</span><h2>Escala inline — tracinho ao lado do valor</h2></div>
+      <p class="opt-note">Valor seguido de uma micro-régua (2px, 56px de largura) na mesma linha. Chama atenção sem ocupar espaço.</p>
+      <div class="demo">
+        <div class="aside-demo p3" style="border-left: 0; padding-left: 0; max-width: 460px;">
+          <div class="case m1 field" style="border-top: 0; padding-top: 0;"><dt>Pontuação</dt>
+            <div class="val"><span>0 a 100</span><i class="track" aria-hidden="true"></i></div>
+          </div>
+          <div class="case m1 field"><dt>Pontuação · qualitativa</dt>
+            <div class="val"><span>quanto menor melhor</span><i class="track" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <div class="opt-head"><span class="tag">OPÇÃO ii</span><h2>Números em destaque tipográfico</h2></div>
+      <p class="opt-note">Sem gráfico: os números ganham peso da fonte de título (verde-escuro); qualitativas recebem uma setinha ↘ indicando a direção.</p>
+      <div class="demo">
+        <div class="aside-demo p3" style="border-left: 0; padding-left: 0; max-width: 460px;">
+          <div class="case m2 field" style="border-top: 0; padding-top: 0;"><dt>Pontuação</dt>
+            <div class="val"><b>0</b><span>a</span><b>100</b></div>
+          </div>
+          <div class="case m2 field"><dt>Pontuação · qualitativa</dt>
+            <div class="val"><span class="seta">↘</span><span>quanto menor melhor</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="opt">
+      <div class="opt-head"><span class="tag">OPÇÃO iii</span><h2>Régua curta abaixo do valor</h2></div>
+      <p class="opt-note">O valor fica em texto normal e recebe uma régua de 140px logo abaixo, com marcadores nas pontas.</p>
+      <div class="demo">
+        <div class="aside-demo p3" style="border-left: 0; padding-left: 0; max-width: 460px;">
+          <div class="case m3 field" style="border-top: 0; padding-top: 0;"><dt>Pontuação</dt>
+            <div class="val"><span>0 a 100</span></div>
+            <i class="regua" aria-hidden="true"></i>
+          </div>
+          <div class="case m3 field"><dt>Pontuação · qualitativa</dt>
+            <div class="val qual"><span class="seta">↘</span><span>quanto menor melhor</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+</div>
+</body>
+</html>
