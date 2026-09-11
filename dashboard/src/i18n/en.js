@@ -333,12 +333,9 @@ export const en = {
   Anterior: 'Previous',
   Próximo: 'Next',
 
-  'Consórcio da Amazônia Legal · Brasília, 2026':
-    'Interstate Consortium for the Legal Amazon · Brasília, 2026',
-  'A Estratégia Regional': 'The regional strategy',
   'Amazônia 2050': 'Amazônia 2050',
-  'Um instrumento de planejamento regional de longo prazo, que estabelece uma visão compartilhada de desenvolvimento sustentável para os nove estados da Amazônia Legal até 2050. É distinta do Planejamento Estratégico do Consórcio, que organiza a atuação institucional da autarquia.':
-    'A long-term regional planning instrument that sets out a shared vision of sustainable development for the nine states of the Legal Amazon through to 2050. It is a separate document from the Consortium’s own Strategic Plan, which governs how the authority itself operates.',
+  'Um instrumento de planejamento regional de longo prazo, que estabelece uma visão compartilhada de desenvolvimento sustentável para os nove estados da Amazônia Legal até 2050.':
+    'A long-term regional planning instrument that sets out a shared vision of sustainable development for the nine states of the Legal Amazon through to 2050.',
   'estados consorciados': 'member states',
   'temas estratégicos': 'strategic themes',
   'horizonte pactuado': 'agreed target year',
