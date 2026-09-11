@@ -54,6 +54,32 @@
 .slide-photo figcaption { left: 36px; right: 28px; }
 .methodology-page .methodology-article { align-items: flex-start; overflow-y: hidden; }
 
+/* A Estratégia: a capa da publicação, sozinha no painel. Recortada como as fotos
+   das outras lâminas, perderia o logotipo em cima ou as bandeiras embaixo conforme a
+   proporção da coluna; e o degradê e a frase de abertura cairiam sobre o título da
+   própria capa. Em vez de moldura, sangria: o fundo do painel é o preto-esverdeado
+   das bordas da capa e as margens dela se dissolvem nele. */
+#a-estrategia > .slide-photo { background: #121810; }
+#a-estrategia .slide-photo::after { display: none; }
+/* O poço cobre o painel e mede o espaço; a capa se ajusta a ele sem distorcer. Ela
+   fica 8% mais alta que o painel: o excedente sai das margens escuras acima do
+   logotipo e abaixo das bandeiras (cerca de 8% e 7% da altura da capa), que o
+   painel corta sem tocar no conteúdo. Quando é a largura que limita, cabe inteira. */
+/* Centrada por flex, e não por `transform`: o deslocamento de -50% caía em fração
+   de pixel e o navegador reamostrava a capa, que saía borrada. O flex centra mesmo
+   quando a capa passa da altura do poço — o excedente se divide em cima e embaixo. */
+#a-estrategia .slide-photo-well { display: flex; align-items: center; justify-content: center; position: absolute; inset: 0; container-type: size; }
+#a-estrategia .slide-photo-main {
+  position: static; flex: none;
+  width: min(100cqw, 100cqh * 1.08 * 1241 / 1754); height: auto;
+  /* As bordas esmaecem até o fundo. Os 7% das laterais param antes do logotipo e
+     das bandeiras. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 3%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(180deg, transparent, #000 3%, #000 95%, transparent);
+  mask-composite: intersect;
+}
+
 /* Visão 2050: mesma moldura das demais lâminas — texto à esquerda, fotografia à
    direita. O bloco da visão é o único destaque; o resto acompanha o slide 1 para
    que a troca de lâmina não mude a linguagem visual. Os espaçamentos seguem a
@@ -291,6 +317,9 @@
   [data-modo="documento"] #calculo > .slide-photo { height: 196px; margin: 14px 14px 0; }
   [data-modo="documento"] #calculo .slide-photo-caption { position: static; bottom: auto; }
   [data-modo="documento"] #calculo .slide-photo-caption p { display: none; }
+  /* A capa abre o documento: sem legenda a disputar a faixa, ela ganha altura
+     própria em vez dos 172px das fotografias. */
+  [data-modo="documento"] #a-estrategia > .slide-photo { height: clamp(240px, 78vw, 340px); }
 }
 
 /* A lâmina dos temas tem a fotografia em faixa larga e baixa, com a frase de

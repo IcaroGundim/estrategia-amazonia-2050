@@ -68,6 +68,8 @@
   /* Sobra a marca e o botão de vista, que passam a dividir a barra de cima com
      folga — e o nome escrito do produto volta a caber ao lado do logo. */
   .topbar-actions { display: none; }
+  /* Sem o botão de ação, é o idioma quem abre o grupo da direita. */
+  .topbar-actions + .idioma-toggle { margin-left: auto; }
 }
 
 /* Aparelho deitado: 390px de altura menos a topbar e a barra inferior deixam

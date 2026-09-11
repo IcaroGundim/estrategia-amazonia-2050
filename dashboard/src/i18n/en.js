@@ -19,6 +19,7 @@ export const en = {
   // Esqueleto: topbar, navegação, rodapé
   // -------------------------------------------------------------------------
   'Estratégia 2050': 'Amazônia 2050',
+  'Estratégia Regional': 'Regional Strategy',
   'Estratégia 2050 — Amazônia Legal': 'Amazônia 2050 — the Legal Amazon',
   'Estratégia Amazônia 2050 · Consórcio da Amazônia Legal':
     'Amazônia 2050 Strategy · Interstate Consortium for the Legal Amazon',
@@ -44,7 +45,7 @@ export const en = {
 
   'Como ler os dados': 'How to read the data',
   'Sobre a Estratégia': 'About the Strategy',
-  'Baixar nota técnica': 'Download the technical note',
+  'Baixar nota técnica': 'Technical note (Portuguese)',
 
   // Rodapé do inglês: o painel publica números oficiais, e a redação que vale
   // é a portuguesa.
@@ -438,13 +439,12 @@ export const en = {
 
   // Fotografias das lâminas. Topônimo e nome de autor ficam; descrição e frase
   // de abertura são reescritas.
-  'Rio Solimões · Amazonas': 'Rio Solimões · Amazonas',
   'Floresta amazônica · Amazonas': 'Amazon rainforest · Amazonas',
   'Jalapão · Tocantins': 'Jalapão · Tocantins',
   'Ver-o-Peso · Belém, Pará': 'Ver-o-Peso · Belém, Pará',
   'Teatro Amazonas · Manaus': 'Teatro Amazonas · Manaus',
-  'Vista aérea do rio Solimões entre áreas de floresta amazônica.':
-    'Aerial view of the Solimões river running between stretches of Amazon rainforest.',
+  'Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.':
+    'Cover of the Amazônia 2050 Regional Strategy: a macaw in flight against dark forest, with the publication title, the Consortium’s logo and the flags of the nine member states.',
   'Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.':
     'Aerial view of forest and a river near Manaus, in Amazonas.',
   'Paisagem do Parque Estadual do Jalapão, no Tocantins.':
@@ -635,7 +635,6 @@ export const en = {
   '<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.':
     '<strong>{estado}</strong> ranks {posicao} of the nine states on the indicator shown.',
 
-  'Um território. Um futuro compartilhado.': 'One territory. One shared future.',
   'Floresta em pé, qualidade de vida.': 'Forest left standing, lives made better.',
   'Conectar prioridades. Valorizar o território.':
     'Connect the priorities. Value the territory.',

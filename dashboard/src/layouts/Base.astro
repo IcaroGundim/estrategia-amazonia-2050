@@ -44,7 +44,6 @@ const alternativas = IDIOMAS.map((idioma) => ({
   href: new URL(rota(pagina, idioma.codigo), Astro.site).href
 }));
 const canonico = alternativas.find((item) => item.codigo === lang)?.href;
-const outroIdioma = IDIOMAS.find((idioma) => idioma.codigo !== lang);
 
 // A rota e a chave continuam sendo `metodologia`: muda o rótulo e a ordem do menu,
 // não o endereço da página nem as âncoras que o resto do site aponta para ela.
@@ -57,11 +56,13 @@ const NAVEGACAO = [
 ];
 
 // O atalho da topbar leva a uma âncora da Visão Geral, que é a mesma dos dois
-// lados: só o caminho da rota muda de língua.
+// lados: só o caminho da rota muda de língua. A nota técnica é um PDF gerado por
+// `npm run nota-tecnica` a partir dos mesmos dados do painel e só existe em
+// português — o rótulo em inglês avisa isso.
 const ACOES = {
   index: { destino: rota('metodologia', lang), rotulo: 'Como ler os dados' },
   metas: { destino: `${rota('metodologia', lang)}#a-estrategia`, rotulo: 'Sobre a Estratégia' },
-  metodologia: { destino: '/downloads/RELATORIO_DE_COLETA.md', rotulo: 'Baixar nota técnica' }
+  metodologia: { destino: '/downloads/nota-tecnica-painel-amazonia-2050.pdf', rotulo: 'Baixar nota técnica' }
 };
 
 const acao = ACOES[pagina];
@@ -87,6 +88,12 @@ const acao = ACOES[pagina];
       })();
     </script>
     <meta name="theme-color" content="#0e2b22" />
+    {/* Ícone da aba: só o emblema do Consórcio, sem o nome, que não se lê em 16px.
+        O .ico traz 16, 32 e 48px; o PNG maior serve às telas de alta densidade,
+        e o do iOS tem fundo branco porque ele pinta a transparência de preto. */}
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonico} />
     {alternativas.map((item) => (
@@ -130,7 +137,12 @@ const acao = ACOES[pagina];
       <div class="topbar-inner">
         <a href={rota('index', lang)} class="brand" aria-label={t('Estratégia 2050 do Consórcio da Amazônia Legal, início')}>
           <img class="brand-logo" src="/logo-consorcio-clara.avif" alt="" />
-          <span class="brand-product">{t('Estratégia 2050')}</span>
+          {/* Marca da Estratégia em texto, não em imagem: sai da mesma família do
+              painel e o rótulo se traduz. "Amazônia" e o ano são nome próprio. */}
+          <span class="brand-product">
+            <span class="brand-product-nome"><small>{t('Estratégia Regional')}</small><strong>Amazônia</strong></span>
+            <b class="brand-product-ano">2050</b>
+          </span>
         </a>
 
         <nav class="topnav" aria-label={t('Navegação principal')}>
@@ -154,21 +166,36 @@ const acao = ACOES[pagina];
             `lang` do <html> — que é quem decide o idioma no cliente — ficaria
             o da página anterior.
 
-            A bandeira é a do idioma de destino, a mesma coisa que a sigla ao
-            lado diz: o link leva para lá. `alt` vazio porque ela não acrescenta
-            nada ao `aria-label`, que já é uma frase inteira — descrevê-la faria
-            o leitor de tela anunciar a bandeira e o rótulo duas vezes. */}
-        <a
-          class="idioma-toggle"
-          href={rota(pagina, outroIdioma.codigo)}
-          lang={outroIdioma.codigo}
-          hreflang={outroIdioma.codigo}
-          data-astro-reload
-          aria-label={outroIdioma.codigo === 'en' ? 'Read this page in English' : 'Ler esta página em português'}
-        >
-          <img src={`/idiomas/${outroIdioma.bandeira}`} style={`aspect-ratio:${outroIdioma.bandeiraRatio}`} alt="" />
-          <span>{outroIdioma.curto}</span>
-        </a>
+            As duas bandeiras ficam lado a lado, separadas por um fio, sem sigla:
+            a da página, acesa e sublinhada, e a da outra língua, apagada, que é
+            o link. A da página é `aria-hidden` — o leitor de tela já sabe a
+            língua pelo <html> — e a do link tem `alt` vazio porque o
+            `aria-label` já é uma frase inteira; descrevê-la faria o leitor
+            anunciar a bandeira e o rótulo duas vezes. O `title` dá a mesma
+            frase a quem passa o mouse, já que a bandeira sozinha não diz a ação. */}
+        <div class="idioma-toggle">
+          {IDIOMAS.map((idioma, indice) => (
+            <Fragment>
+              {indice > 0 && <span class="idioma-fio" aria-hidden="true"></span>}
+              {idioma.codigo === lang ? (
+                <span class="idioma-atual" aria-hidden="true">
+                  <img src={`/idiomas/${idioma.bandeira}`} style={`aspect-ratio:${idioma.bandeiraRatio}`} alt="" />
+                </span>
+              ) : (
+                <a
+                  href={rota(pagina, idioma.codigo)}
+                  lang={idioma.codigo}
+                  hreflang={idioma.codigo}
+                  data-astro-reload
+                  aria-label={idioma.codigo === 'en' ? 'Read this page in English' : 'Ler esta página em português'}
+                  title={idioma.codigo === 'en' ? 'Read this page in English' : 'Ler esta página em português'}
+                >
+                  <img src={`/idiomas/${idioma.bandeira}`} style={`aspect-ratio:${idioma.bandeiraRatio}`} alt="" />
+                </a>
+              )}
+            </Fragment>
+          ))}
+        </div>
 
         <!-- Os dois rótulos vivem no HTML e o CSS mostra um por vez: nenhum texto
              é escrito por JS, então não há troca visível depois da pintura. -->

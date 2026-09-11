@@ -7,27 +7,40 @@ const t = traduzirCom(lang);
 // O nome do lugar e o crédito do autor não se traduzem: são topônimo e nome
 // próprio. O que muda de língua é a descrição alternativa, a frase de abertura
 // e a nota de recorte.
+// A primeira lâmina não traz fotografia do Commons, e sim a capa da própria
+// publicação: sem `source`, ela vai sozinha, sem legenda nem créditos — o título
+// e a marca do Consórcio já estão na capa, e a descrição alternativa a nomeia.
+// Só ela tem `srcset`: é a única imagem com texto e traço fino, que amolecem
+// quando o navegador reduz muito a imagem. Telas comuns recebem 900 px já
+// reduzidos com leve nitidez; telas densas, até 2067 px, a resolução nativa da
+// fotografia no PDF. `sizes` repete a conta do CSS — a capa mede 0,764 da altura
+// da lâmina (100vh − 220px, no máximo 900px), limitada pela largura da coluna —
+// para o navegador escolher pelo tamanho real, e não pela coluna. O `.jpg` fica
+// como reserva.
 const photos = [
-  { file: 'solimoes.jpg', source: 'Aerial_view_of_the_Amazon_Rainforest.jpg', author: 'lubasi', license: '2.0', height: 786, place: 'Rio Solimões · Amazonas', alt: 'Vista aérea do rio Solimões entre áreas de floresta amazônica.' },
-  { file: 'manaus.jpg', source: 'Amazon4.jpg', author: 'Neil Palmer / CIAT', license: '2.0', height: 850, place: 'Floresta amazônica · Amazonas', alt: 'Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.' },
-  { file: 'jalapao.jpg', source: 'Jalapao_05.jpg', author: 'Pedro Henrique Álvares', license: '3.0', height: 836, place: 'Jalapão · Tocantins', alt: 'Paisagem do Parque Estadual do Jalapão, no Tocantins.' },
-  { file: 'ver-o-peso.jpg', source: 'Bel%C3%A9m_Ver-o-Peso_01.jpg', author: 'Cayambe', license: '3.0', height: 828, place: 'Ver-o-Peso · Belém, Pará', alt: 'O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.' },
-  { file: 'teatro-amazonas.jpg', source: 'TeatroAmazonas.jpg', author: 'Jaques Sabon', license: '3.0', height: 1000, place: 'Teatro Amazonas · Manaus', alt: 'Fachada e cúpula do Teatro Amazonas, em Manaus.' },
+  { file: 'capa-estrategia-2050.jpg', srcset: '/photos/capa-estrategia-2050-900.webp 900w, /photos/capa-estrategia-2050-1241.webp 1241w, /photos/capa-estrategia-2050-2067.webp 2067w', sizes: '(max-width: 620px) 65vw, min(34vw, calc((100vh - 220px) * .764), 688px)', source: null, author: null, license: null, width: 1241, height: 1754, place: null, title: null, alt: 'Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.' },
+  { file: 'manaus.jpg', srcset: null, sizes: null, source: 'Amazon4.jpg', author: 'Neil Palmer / CIAT', license: '2.0', width: 1280, height: 850, place: 'Floresta amazônica · Amazonas', title: 'Floresta em pé, qualidade de vida.', alt: 'Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.' },
+  { file: 'jalapao.jpg', srcset: null, sizes: null, source: 'Jalapao_05.jpg', author: 'Pedro Henrique Álvares', license: '3.0', width: 1280, height: 836, place: 'Jalapão · Tocantins', title: 'Conectar prioridades. Valorizar o território.', alt: 'Paisagem do Parque Estadual do Jalapão, no Tocantins.' },
+  { file: 'ver-o-peso.jpg', srcset: null, sizes: null, source: 'Bel%C3%A9m_Ver-o-Peso_01.jpg', author: 'Cayambe', license: '3.0', width: 1280, height: 828, place: 'Ver-o-Peso · Belém, Pará', title: 'Cooperação que atravessa fronteiras.', alt: 'O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.' },
+  { file: 'teatro-amazonas.jpg', srcset: null, sizes: null, source: 'TeatroAmazonas.jpg', author: 'Jaques Sabon', license: '3.0', width: 683, height: 1000, place: 'Teatro Amazonas · Manaus', title: 'Evidências para orientar o futuro.', alt: 'Fachada e cúpula do Teatro Amazonas, em Manaus.' },
 ];
 const photo = photos[variant - 1];
-const source = (item: typeof photo) => `https://commons.wikimedia.org/wiki/File:${item.source}`;
-const titles = ['Um território. Um futuro compartilhado.', 'Floresta em pé, qualidade de vida.', 'Conectar prioridades. Valorizar o território.', 'Cooperação que atravessa fronteiras.', 'Evidências para orientar o futuro.'];
 ---
 <figure class="slide-photo">
-  {/* `display: contents` por padrão: o invólucro só existe como caixa na lâmina
-      emoldurada, onde precisa centrar a foto e dar a ela um box do tamanho exato
-      da imagem. Nas demais, some do layout e a foto segue posicionada como antes. */}
+  {/* `display: contents` por padrão: o invólucro só existe como caixa nas lâminas
+      que exibem a imagem inteira (a capa e a foto emoldurada), onde precisa centrá-la
+      e dar a ela um box do tamanho exato da imagem. Nas demais, some do layout e a
+      foto segue posicionada como antes. */}
   <div class="slide-photo-well">
-    <img class="slide-photo-main" src={`/photos/${photo.file}`} alt={t(photo.alt)} width={variant === 5 ? 683 : 1280} height={photo.height} loading={variant === 1 ? 'eager' : 'lazy'} />
+    <img class="slide-photo-main" src={`/photos/${photo.file}`} srcset={photo.srcset ?? undefined} sizes={photo.sizes ?? undefined} alt={t(photo.alt)} width={photo.width} height={photo.height} loading={variant === 1 ? 'eager' : 'lazy'} />
   </div>
-  <div class="slide-photo-caption"><span>{t(photo.place)}</span><p>{t(titles[variant - 1])}</p></div>
-  <figcaption>
-    <a href={source(photo)} target="_blank" rel="noreferrer">{photo.author} · Wikimedia Commons ↗</a>
-    <span><a href={`https://creativecommons.org/licenses/by-sa/${photo.license}/`} target="_blank" rel="noreferrer">CC BY-SA {photo.license}</a> · {t('recorte de exibição')}</span>
-  </figcaption>
+  {photo.source && (
+    <>
+      <div class="slide-photo-caption"><span>{t(photo.place)}</span><p>{t(photo.title)}</p></div>
+      <figcaption>
+        <a href={`https://commons.wikimedia.org/wiki/File:${photo.source}`} target="_blank" rel="noreferrer">{photo.author} · Wikimedia Commons ↗</a>
+        <span><a href={`https://creativecommons.org/licenses/by-sa/${photo.license}/`} target="_blank" rel="noreferrer">CC BY-SA {photo.license}</a> · {t('recorte de exibição')}</span>
+      </figcaption>
+    </>
+  )}
 </figure>
