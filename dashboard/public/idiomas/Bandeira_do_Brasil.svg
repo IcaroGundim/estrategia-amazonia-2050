@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Bandeira do Brasil, marca do português no seletor de idioma.
+
+  É um desenho para 15px de altura, não uma reprodução. A geometria oficial está
+  respeitada — proporção 10:7, losango a 1,7 unidade das bordas, disco de raio
+  3,5 — mas as 27 estrelas viraram um punhado de pontos em posição aproximada e a
+  legenda "ORDEM E PROGRESSO" não existe: no tamanho em que a bandeira aparece,
+  as letras teriam menos de um terço de pixel e só sujariam a faixa branca.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 14" role="img">
+  <defs>
+    <clipPath id="disco"><circle cx="10" cy="7" r="3.5"/></clipPath>
+  </defs>
+  <rect width="20" height="14" fill="#009c3b"/>
+  <path d="M10 1.7 18.3 7 10 12.3 1.7 7Z" fill="#ffdf00"/>
+  <circle cx="10" cy="7" r="3.5" fill="#002776"/>
+  <g clip-path="url(#disco)" fill="#fff">
+    <!-- A faixa é o trecho, dentro do disco, entre dois arcos de raio 8 e 8,9
+         centrados bem acima da bandeira: por isso ela mergulha no meio e sobe
+         nas pontas, como na bandeira de verdade. -->
+    <path d="M4 4.79A8 8 0 0 0 16 4.79L16 6.07A8.9 8.9 0 0 1 4 6.07Z"/>
+    <circle cx="10" cy="4.2" r=".22"/>
+    <circle cx="7.6" cy="5" r=".18"/>
+    <circle cx="12.4" cy="5.2" r=".16"/>
+    <circle cx="8.6" cy="6" r=".2"/>
+    <circle cx="11.6" cy="6.2" r=".14"/>
+    <circle cx="6.9" cy="6.6" r=".15"/>
+    <circle cx="13.1" cy="6.8" r=".15"/>
+    <circle cx="8" cy="9" r=".19"/>
+    <circle cx="9.4" cy="9.6" r=".16"/>
+    <circle cx="11" cy="9.4" r=".17"/>
+    <circle cx="12.3" cy="8.9" r=".14"/>
+    <circle cx="10.2" cy="10.1" r=".13"/>
+  </g>
+</svg>

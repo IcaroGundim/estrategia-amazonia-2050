@@ -52,7 +52,26 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
 .menu-button { display: none; margin-left: auto; padding: 8px 0; border: 0; background: none; color: var(--areia); font-weight: 600; }
 /* Alternância de vista: escondida no desktop, onde não faz sentido. Só um dos
    dois rótulos aparece, conforme o modo em vigor no <html>. */
-.vista-toggle { display: none; min-height: 40px; margin-left: auto; padding: 0 13px; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 9px; background: transparent; color: var(--areia); font-size: 12px; font-weight: 600; }
+/* Seletor de idioma. Bandeira e sigla do idioma de destino: a sigla nomeia, a
+   bandeira é o que se acha varrendo a barra de olho, sem ler. Duas letras, e não
+   o nome por extenso, porque o par PT/EN já é o vocabulário de quem procura a
+   troca e um rótulo inteiro disputaria a barra com a marca. É um link, e não um
+   botão: o inglês tem endereço próprio, e é ele que o `hreflang` do <head>
+   anuncia. `margin-left: auto` o empurra para a direita quando o botão de vista
+   não está na barra — no computador ele fica escondido. */
+.idioma-toggle { min-height: 34px; margin-left: 18px; padding: 0 9px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(245, 240, 232, 0.28); border-radius: 7px; color: rgba(245, 240, 232, 0.82); font: 700 11px var(--text); letter-spacing: 0.08em; }
+/* A moldura fina existe porque as duas bandeiras encostam branco na borda — a
+   faixa de cima da mesclada, as pontas do losango da brasileira — e sem ela o
+   desenho sangraria no marrom da barra. Não acompanha o ocre do `hover`: as
+   cores da bandeira não mudam, e um contorno que muda faria a imagem parecer
+   outro estado. */
+.idioma-toggle img { height: 13px; width: auto; display: block; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 2px; }
+.idioma-toggle:hover, .idioma-toggle:focus-visible { border-color: var(--ocre); color: var(--ocre); outline: none; }
+/* No aparelho a barra tem a marca e o atalho de vista; o idioma entra antes dele,
+   sem a moldura, para os três não brigarem pela largura. */
+.topbar-actions + .idioma-toggle { margin-left: auto; }
+
+.vista-toggle { display: none; min-height: 40px; margin-left: 14px; padding: 0 13px; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 9px; background: transparent; color: var(--areia); font-size: 12px; font-weight: 600; }
 .vista-toggle:hover, .vista-toggle:focus-visible { background: rgba(245, 240, 232, 0.1); outline: none; }
 html[data-vista="fluxo"] .vista-para-fluxo, html[data-vista="desktop"] .vista-para-desktop { display: none; }
 /* Fora de qualquer media query: com o modo de computador ligado as consultas
@@ -508,6 +527,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .river-ornament i:last-child { top: 25px; border-color: var(--linha); border-width: 2px; }
 footer { padding: 24px clamp(24px, 3.2vw, 72px); display: flex; justify-content: space-between; gap: 24px; background: var(--mata); color: rgba(245, 240, 232, 0.72); font-size: 11px; }
 footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
+/* A ressalva só existe em inglês: o painel publica números oficiais, e a
+   redação que vale é a portuguesa. Fica discreta — é nota de rodapé, não aviso. */
+.footer-traducao { max-width: 46ch; color: rgba(245, 240, 232, 0.5); font-size: 10px; line-height: 1.5; }
 
 .methodology-page { padding: 58px 0 96px; background: radial-gradient(circle at 88% 2%, rgba(224, 168, 60, 0.1), transparent 22rem), var(--areia); }
 .methodology-layout { display: grid; grid-template-columns: clamp(240px, 17vw, 330px) minmax(0, 1fr); gap: clamp(40px, 4.2vw, 84px); }

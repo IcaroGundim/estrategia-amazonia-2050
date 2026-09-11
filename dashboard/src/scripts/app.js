@@ -1,22 +1,43 @@
 import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
+import { idiomaAtual, localeDe, rota, t, tp } from '../i18n/index.js';
+
+/** Descrição da bandeira de um estado, que muda de preposição entre as línguas. */
+function bandeiraDe(nome) {
+  return tp('Bandeira do {estado}', { estado: nome });
+}
+
+/** Os links internos do painel precisam do caminho da língua em curso. */
+function rotaVisaoGeral() {
+  return rota('metodologia', idiomaAtual());
+}
+
+// Ordinal. Em português é º ou ª conforme o gênero da palavra que segue —
+// "7º de 9", mas "7ª posição". Em inglês o sufixo não tem gênero e depende do
+// último dígito, com a exceção conhecida da dezena do 11 ao 13.
+function ordinal(numero, genero = 'm') {
+  if (idiomaAtual() !== 'en') return `${numero}${genero === 'f' ? 'ª' : 'º'}`;
+  const dezena = numero % 100;
+  if (dezena >= 11 && dezena <= 13) return `${numero}th`;
+  return `${numero}${({ 1: 'st', 2: 'nd', 3: 'rd' })[numero % 10] || 'th'}`;
+}
 
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null, sparkRef: null };
 
 const metrics = {
-  prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / mil km²` },
-  heatRate: { label: 'Focos de calor', subtitle: 'menos focos = melhor posição', description: 'Focos de calor detectados pelo satélite de referência do INPE, por mil km² de área do estado. É contagem de focos, não área queimada.', source: 'INPE/Queimadas · satélite de referência', serie: 'heatRate', field: 'heatRate', direction: 'low', formatter: (value) => `${number(value, 1)} / mil km²` },
+  prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / ${t('mil km²')}` },
+  heatRate: { label: 'Focos de calor', subtitle: 'menos focos = melhor posição', description: 'Focos de calor detectados pelo satélite de referência do INPE, por mil km² de área do estado. É contagem de focos, não área queimada.', source: 'INPE/Queimadas · satélite de referência', serie: 'heatRate', field: 'heatRate', direction: 'low', formatter: (value) => `${number(value, 1)} / ${t('mil km²')}` },
   poverty: { label: 'Pobreza', subtitle: 'menor percentual = melhor posição', description: 'Percentual da população abaixo da linha de pobreza regional do IBGE (indicador ODS P1.1.1), na série anual da PNAD Contínua.', source: 'IBGE/PNADc · ODS P1.1.1', serie: 'poverty', field: 'poverty', direction: 'low', formatter: (value) => percent(value, 1) },
   school: { label: 'Frequência escolar 15–17', subtitle: 'maior percentual = melhor posição', description: 'Parcela das pessoas de 15 a 17 anos que frequentam a escola em cada estado, na série anual da PNAD Contínua.', source: 'IBGE/PNADc · módulo Educação', serie: 'school', field: 'school', direction: 'high', formatter: (value) => percent(value, 1) },
-  cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ', serie: 'cvliRate', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / 100 mil` },
+  cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ', serie: 'cvliRate', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / ${t('100 mil')}` },
   apsCobertura: { label: 'Atenção primária', subtitle: 'maior cobertura = melhor posição', description: 'Cobertura populacional estimada da Atenção Primária à Saúde. A partir de 2021 a medida parte da capacidade de atendimento das equipes e por isso passa de 100% em vários estados.', source: 'MS/e-Gestor · cobertura APS', serie: 'apsCobertura', field: 'apsCobertura', direction: 'high', formatter: (value) => percent(value, 1) },
   vulnerability: { label: 'Vulnerabilidade climática', subtitle: 'menor índice = melhor posição', description: 'Média estadual do índice municipal de vulnerabilidade às mudanças climáticas.', source: 'AdaptaBrasil · linha de base 2025', field: 'vulnerability', direction: 'low', formatter: (value) => number(value, 1) },
   conservationManaged: { label: 'Gestão de unidades de conservação', subtitle: 'maior percentual = melhor posição', description: 'Percentual de unidades estaduais com plano de manejo e conselho gestor registrados.', source: 'CNUC/MMA · referência 2026', field: 'conservationManaged', direction: 'high', formatter: (value) => percent(value, 0) },
-  ibc: { label: 'Conectividade digital (IBC-AMZ)', subtitle: 'maior índice = melhor posição', description: 'Índice de Conectividade da Amazônia Legal ponderado pela população municipal.', source: 'ANATEL', serie: 'ibc', field: 'ibc', direction: 'high', formatter: (value) => `${number(value, 1)} pts` },
+  ibc: { label: 'Conectividade digital (IBC-AMZ)', subtitle: 'maior índice = melhor posição', description: 'Índice de Conectividade da Amazônia Legal ponderado pela população municipal.', source: 'ANATEL', serie: 'ibc', field: 'ibc', direction: 'high', formatter: (value) => `${number(value, 1)} ${t('pts')}` },
   perRenovavel: { label: 'Renovabilidade da matriz elétrica', subtitle: 'maior percentual = melhor posição', description: 'Participação de fontes renováveis na potência de geração fiscalizada em operação.', source: 'ANEEL/SIGA · base ago. 2026', field: 'perRenovavel', direction: 'high', formatter: (value) => percent(value, 1) },
   isgr: { label: 'Saneamento e gestão de riscos', subtitle: 'maior percentual = melhor posição', description: 'Proxy do ISGR com água e esgoto adequados (Censo 2022) e fatores climáticos e de governança (MUNIC 2024).', source: 'IBGE · Censo 2022 + MUNIC 2024', field: 'isgr', direction: 'high', formatter: (value) => percent(value, 1) },
-  pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS', serie: 'pevsBilhoes', field: 'pevsBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
-  piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa', serie: 'piaBilhoes', field: 'piaBilhoes', direction: 'high', formatter: (value) => `R$ ${number(value, 2)} bi` },
+  pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS', serie: 'pevsBilhoes', field: 'pevsBilhoes', direction: 'high', formatter: (value) => tp('R$ {valor} bi', { valor: number(value, 2) }) },
+  piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa', serie: 'piaBilhoes', field: 'piaBilhoes', direction: 'high', formatter: (value) => tp('R$ {valor} bi', { valor: number(value, 2) }) },
   idebAnosIniciais: { label: 'IDEB anos iniciais', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica nos anos iniciais do ensino fundamental, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebAnosIniciais', field: 'idebAnosIniciais', direction: 'high', formatter: (value) => number(value, 1) },
   idebAnosFinais: { label: 'IDEB anos finais', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica nos anos finais do ensino fundamental, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebAnosFinais', field: 'idebAnosFinais', direction: 'high', formatter: (value) => number(value, 1) },
   idebEnsinoMedio: { label: 'IDEB ensino médio', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica no ensino médio, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebEnsinoMedio', field: 'idebEnsinoMedio', direction: 'high', formatter: (value) => number(value, 1) },
@@ -114,10 +135,10 @@ function amplitudeEstados(metric) {
 }
 
 function valueAt(object, path) { return path.split('.').reduce((value, part) => value?.[part], object); }
-function number(value, digits = 0) { return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value); }
+function number(value, digits = 0) { return new Intl.NumberFormat(localeDe(), { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value); }
 function percent(value, digits = 0) { return `${number(value, digits)}%`; }
-function compactPopulation(value) { return `${new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(value)} pessoas`; }
-function compactNumber(value) { return new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(value); }
+function compactPopulation(value) { return tp('{valor} pessoas', { valor: new Intl.NumberFormat(localeDe(), { notation: 'compact', maximumFractionDigits: 1 }).format(value) }); }
+function compactNumber(value) { return new Intl.NumberFormat(localeDe(), { notation: 'compact', maximumFractionDigits: 1 }).format(value); }
 async function init() {
   const [dashboard, geo, catalogo] = await Promise.all([
     fetch('/data/dashboard.json').then(readResponse),
@@ -238,10 +259,10 @@ let metricDropdown = null;
 function populateSelect() {
   const options = Object.entries(metrics).map(([key, metric]) => ({
     value: key,
-    label: metric.label,
-    sublabel: metric.subtitle,
+    label: t(metric.label),
+    sublabel: t(metric.subtitle),
     group: 'indicadores',
-    groupLabel: 'Indicadores oficiais'
+    groupLabel: t('Indicadores oficiais')
   }));
   metricDropdown = createDropdown(document.querySelector('#metric-select'), options, state.metric, (value) => { state.metric = value; ajustaAno(); renderAll(); });
 }
@@ -332,7 +353,7 @@ function renderYearSelect() {
           value: String(ano),
           label: String(ano),
           group: parciais.includes(ano) ? 'parcial' : 'fechado',
-          groupLabel: parciais.includes(ano) ? 'Ano em curso' : 'Série histórica'
+          groupLabel: parciais.includes(ano) ? t('Ano em curso') : t('Série histórica')
         }))
       : [{ value: '', label: 'Indisponível', group: 'indisponivel', groupLabel: 'Sem série temporal' }];
     // O componente devolve o valor como texto; o resto do painel trabalha com número.
@@ -353,17 +374,17 @@ function renderIndicatorCard() {
   const metric = currentMetric();
   const { parciais } = anosDaMetrica(metric);
   const parcial = parciais.includes(state.ano);
-  const fonte = metric.serie && state.ano ? `${metric.source} · ${state.ano}` : metric.source;
+  const fonte = metric.serie && state.ano ? `${t(metric.source)} · ${state.ano}` : t(metric.source);
 
   document.querySelector('#map-indicator-card').innerHTML = `
-    <h3>${escape(metric.label)}</h3>
-    <p class="map-indicator-description">${escape(metric.description)}</p>
+    <h3>${escape(t(metric.label))}</h3>
+    <p class="map-indicator-description">${escape(t(metric.description))}</p>
     <dl>
-      <div><dt>Leitura</dt><dd>${escape(metric.subtitle)}</dd></div>
-      <div><dt>Fonte</dt><dd>${escape(fonte)}</dd></div>
+      <div><dt>${t('Leitura')}</dt><dd>${escape(t(metric.subtitle))}</dd></div>
+      <div><dt>${t('Fonte')}</dt><dd>${escape(fonte)}</dd></div>
     </dl>
-    ${parcial ? '<p class="map-year-warning">Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.</p>' : ''}
-    <a href="/metodologia#calculo">Entenda o cálculo <span aria-hidden="true">↗</span></a>`;
+    ${parcial ? `<p class="map-year-warning">${t('Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.')}</p>` : ''}
+    <a href="${rotaVisaoGeral()}#calculo">${t('Entenda o cálculo')} <span aria-hidden="true">↗</span></a>`;
 }
 
 function renderPanelView() {
@@ -394,8 +415,8 @@ function renderRanking() {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const list = document.querySelector('#ranking-list');
-  document.querySelector('[data-ranking-title]').textContent = metric.label;
-  document.querySelector('[data-ranking-subtitle]').textContent = metric.subtitle;
+  document.querySelector('[data-ranking-title]').textContent = t(metric.label);
+  document.querySelector('[data-ranking-subtitle]').textContent = t(metric.subtitle);
   // A largura do medidor é sempre relativa aos nove estados. A região entra como
   // régua e não pode mexer nessa escala, então `min` e `max` continuam vindo só
   // deles — como no minigráfico, uma média ponderada cai dentro desse intervalo.
@@ -430,7 +451,7 @@ function renderRanking() {
         <span class="rank-number"${regiao ? ' aria-hidden="true"' : ''}>${regiao ? '' : ++posicao}</span>
         ${flagImage(regiao ? BANDEIRA_REGIAO : item, '')}
         <span class="rank-name">${regiao
-          ? '<b>Amazônia Legal</b><small>Conjunto dos 9 Estados</small>'
+          ? `<b>${t('Amazônia Legal')}</b><small>${t('Conjunto dos 9 Estados')}</small>`
           : `<b>${escape(item.name)}</b><small>${item.uf} · ${escape(item.capital)}</small>`}</span>
       ${medida}
       </button>
@@ -480,7 +501,7 @@ function renderMap() {
       <text class="state-label" x="${x}" y="${y}" fill="${labelColor}">${uf}</text>
     </g>`;
   }).join('');
-  svg.innerHTML = `<title>Mapa comparativo da Amazônia Legal para ${escape(currentMetric().label)}</title>${groups}`;
+  svg.innerHTML = `<title>${tp('Mapa comparativo da Amazônia Legal para {indicador}', { indicador: escape(t(currentMetric().label)) })}</title>${groups}`;
 }
 
 function positionMapTooltip(clientX, clientY) {
@@ -503,7 +524,7 @@ function showMapTooltip(uf, clientX, clientY) {
   const metric = currentMetric();
   const value = valorDoIndicador(item, metric);
   const tooltip = document.querySelector('#map-tooltip');
-  tooltip.innerHTML = `<strong>${escape(item.name)}</strong><span>${escape(metric.label)}${state.ano ? ' · ' + state.ano : ''}</span><b>${textoDoValor(metric, value)}</b>`;
+  tooltip.innerHTML = `<strong>${escape(item.name)}</strong><span>${escape(t(metric.label))}${state.ano ? ' · ' + state.ano : ''}</span><b>${textoDoValor(metric, value)}</b>`;
   tooltip.hidden = false;
   positionMapTooltip(clientX, clientY);
 }
@@ -691,19 +712,19 @@ function renderPainelRegional() {
   // Sem entrada em AGREGACAO o indicador é uma síntese relativa entre os nove
   // estados: a média dela é ~50 por construção. Dizer isso vale mais que um número.
   const bloco = agregacao
-    ? `<div><span>Indicador exibido</span><small>${escape(metric.serie && state.ano ? String(state.ano) : 'ano de referência')}</small></div>
+    ? `<div><span>${t('Indicador exibido')}</span><small>${escape(metric.serie && state.ano ? String(state.ano) : t('ano de referência'))}</small></div>
        <strong>${textoDoValor(metric, valor)}</strong>
-       <p>${escape(metric.label)} · por ${escape(agregacao.rotulo)}</p>`
-    : `<div><span>Indicador exibido</span><small>sem valor regional</small></div>
-       <strong>Não se aplica</strong>
-       <p>${escape(metric.label)} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.</p>`;
+       <p>${tp('{indicador} · por {metodo}', { indicador: escape(t(metric.label)), metodo: escape(t(agregacao.rotulo)) })}</p>`
+    : `<div><span>${t('Indicador exibido')}</span><small>${t('sem valor regional')}</small></div>
+       <strong>${t('Não se aplica')}</strong>
+       <p>${tp('{indicador} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.', { indicador: escape(t(metric.label)) })}</p>`;
 
   // Os pontos ficam no estado: o hover e o teclado os leem sem refazer a agregação.
   state.spark = serie.length > 1 ? pontosDaSpark(serie) : null;
   state.sparkRef = null;
   const grafico = state.spark
-    ? `<section class="state-spark-block" aria-label="Série histórica regional">
-         <div class="state-section-title"><span>Trajetória da região</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
+    ? `<section class="state-spark-block" aria-label="${t('Série histórica regional')}">
+         <div class="state-section-title"><span>${t('Trajetória da região')}</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
          ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: 'regional' })}
        </section>`
     : '';
@@ -712,38 +733,45 @@ function renderPainelRegional() {
   // (21,1), quando é só um ano que ainda não fechou. O cartão ao lado do mapa já
   // alerta; aqui o número é maior e precisa do mesmo cuidado.
   const notas = [
-    parciais.includes(state.ano) ? 'Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.' : null,
-    agregacao?.nota,
-    serie.length > 1 ? agregacao?.notaSerie : null
+    parciais.includes(state.ano) ? t('Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.') : null,
+    agregacao?.nota ? t(agregacao.nota) : null,
+    serie.length > 1 && agregacao?.notaSerie ? t(agregacao.notaSerie) : null
   ].filter(Boolean);
+
+  const leitura = agregacao
+    ? tp('A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.', {
+      valor: textoDoValor(metric, valor),
+      indicador: escape(t(metric.label)),
+      ano: metric.serie && state.ano ? tp(', em {ano}', { ano: state.ano }) : '',
+      faixa: amplitude ? tp(', entre {menor} e {maior}', { menor: escape(amplitude.menor.uf), maior: escape(amplitude.maior.uf) }) : ''
+    })
+    : t('Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.');
 
   document.querySelector('#state-panel').innerHTML = `
     <div class="state-panel-body">
       <div class="state-panel-kicker">
-        <p class="eyebrow">Perspectiva regional</p>
+        <p class="eyebrow">${t('Perspectiva regional')}</p>
       </div>
       <div class="state-identity is-regional">
-        ${flagImage(BANDEIRA_REGIAO, 'Bandeira da Amazônia Legal')}
-        <div><h2>Amazônia Legal</h2><p>${escape(resumo.statesCount)} estados · ${number(resumo.municipalities)} municípios</p></div>
+        ${flagImage(BANDEIRA_REGIAO, t('Bandeira da Amazônia Legal'))}
+        <div><h2>${t('Amazônia Legal')}</h2><p>${tp('{estados} estados · {municipios} municípios', { estados: escape(resumo.statesCount), municipios: number(resumo.municipalities) })}</p></div>
       </div>
 
-      <div class="state-summary-grid" aria-label="Resumo da região">
-        <div><span>População</span><b>${compactNumber(resumo.population)}</b><small>projeção IBGE 2025</small></div>
-        <div><span>Área territorial</span><b>${compactNumber(resumo.territoryKm2)} km²</b><small>base cartográfica</small></div>
-        <div><span>UCs cadastradas</span><b>${number(resumo.conservationUnits)}</b><small>federais e estaduais</small></div>
+      <div class="state-summary-grid" aria-label="${t('Resumo da região')}">
+        <div><span>${t('População')}</span><b>${compactNumber(resumo.population)}</b><small>${t('projeção IBGE 2025')}</small></div>
+        <div><span>${t('Área territorial')}</span><b>${compactNumber(resumo.territoryKm2)} km²</b><small>${t('base cartográfica')}</small></div>
+        <div><span>${t('UCs cadastradas')}</span><b>${number(resumo.conservationUnits)}</b><small>${t('federais e estaduais')}</small></div>
       </div>
 
-      <section class="state-metric-block" aria-label="Indicador selecionado na região">${bloco}</section>
+      <section class="state-metric-block" aria-label="${t('Indicador selecionado na região')}">${bloco}</section>
       ${grafico}
-      ${amplitude && agregacao ? `<section class="state-amplitude" aria-label="Amplitude entre os estados">
-        <div class="state-section-title"><span>Amplitude entre os nove</span></div>
-        <p><b>${textoDoValor(metric, amplitude.menor.valor)}</b> ${flagImage(amplitude.menor.item, `Bandeira do ${amplitude.menor.item.name}`)} <i aria-hidden="true">→</i> <b>${textoDoValor(metric, amplitude.maior.valor)}</b> ${flagImage(amplitude.maior.item, `Bandeira do ${amplitude.maior.item.name}`)}</p>
+      ${amplitude && agregacao ? `<section class="state-amplitude" aria-label="${t('Amplitude entre os estados')}">
+        <div class="state-section-title"><span>${t('Amplitude entre os nove')}</span></div>
+        <p><b>${textoDoValor(metric, amplitude.menor.valor)}</b> ${flagImage(amplitude.menor.item, bandeiraDe(amplitude.menor.item.name))} <i aria-hidden="true">→</i> <b>${textoDoValor(metric, amplitude.maior.valor)}</b> ${flagImage(amplitude.maior.item, bandeiraDe(amplitude.maior.item.name))}</p>
       </section>` : ''}
 
       <div class="state-reading">
-        <p>${agregacao
-          ? `A <strong>Amazônia Legal</strong> registra <strong>${textoDoValor(metric, valor)}</strong> em ${escape(metric.label)}${metric.serie && state.ano ? `, em ${state.ano}` : ''}${amplitude ? `, entre ${escape(amplitude.menor.uf)} e ${escape(amplitude.maior.uf)}` : ''}.`
-          : 'Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.'}</p>
+        <p>${leitura}</p>
         ${notas.map((nota) => `<p class="state-reading-nota">${escape(nota)}</p>`).join('')}
       </div>
     </div>`;
@@ -766,40 +794,40 @@ function renderPainelEstado() {
   state.spark = serie.length > 1 ? pontosDaSpark(serie, dominio) : null;
   state.sparkRef = state.spark && serieRef.length > 1 ? pontosDaSpark(serieRef, dominio) : null;
   const grafico = state.spark
-    ? `<section class="state-spark-block" aria-label="Série histórica de ${escape(item.name)}">
-         <div class="state-section-title"><span>Trajetória do estado</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
+    ? `<section class="state-spark-block" aria-label="${tp('Série histórica de {estado}', { estado: escape(item.name) })}">
+         <div class="state-section-title"><span>${t('Trajetória do estado')}</span><small>${serie[0].ano}–${serie.at(-1).ano}</small></div>
          ${sparkline(state.spark, { parciais, anoAtivo: state.ano, escopo: `de ${item.name}`, referencia: state.sparkRef, referenciaRotulo: agregacao?.rotulo || '' })}
-         ${state.sparkRef ? `<p class="spark-legend"><span class="is-estado">${escape(item.name)}</span><span class="is-regiao">Amazônia Legal · ${escape(agregacao.rotulo)}</span></p>` : ''}
+         ${state.sparkRef ? `<p class="spark-legend"><span class="is-estado">${escape(item.name)}</span><span class="is-regiao">Amazônia Legal · ${escape(t(agregacao.rotulo))}</span></p>` : ''}
        </section>`
     : '';
   document.querySelector('#state-panel').innerHTML = `
     <div class="state-panel-body">
       <div class="state-panel-kicker">
-        <p class="eyebrow">Detalhamento do estado</p>
-        <span>${metricRank}º de 9 · ciclo 2025–2026</span>
+        <p class="eyebrow">${t('Detalhamento do estado')}</p>
+        <span>${tp('{posicao} de 9 · ciclo 2025–2026', { posicao: ordinal(metricRank) })}</span>
       </div>
       <div class="state-identity">
-        ${flagImage(item, `Bandeira do ${item.name}`)}
-        <div><h2>${escape(item.name)}</h2><p>Capital ${escape(item.capital)}</p></div>
+        ${flagImage(item, bandeiraDe(item.name))}
+        <div><h2>${escape(item.name)}</h2><p>${tp('Capital {cidade}', { cidade: escape(item.capital) })}</p></div>
       </div>
 
-      <div class="state-summary-grid" aria-label="Resumo do estado">
-        <div><span>População</span><b>${compactNumber(item.population)}</b><small>estimativa 2025</small></div>
-        <div><span>Área territorial</span><b>${compactNumber(item.area)} km²</b><small>base cartográfica</small></div>
-        <div><span>UCs estaduais</span><b>${item.conservationUnits}</b><small>unidades cadastradas</small></div>
+      <div class="state-summary-grid" aria-label="${t('Resumo do estado')}">
+        <div><span>${t('População')}</span><b>${compactNumber(item.population)}</b><small>${t('estimativa 2025')}</small></div>
+        <div><span>${t('Área territorial')}</span><b>${compactNumber(item.area)} km²</b><small>${t('base cartográfica')}</small></div>
+        <div><span>${t('UCs estaduais')}</span><b>${item.conservationUnits}</b><small>${t('unidades cadastradas')}</small></div>
       </div>
 
-      <section class="state-metric-block" aria-label="Indicador selecionado">
-        <div><span>Indicador exibido</span><small>${metricRank}º entre os nove estados</small></div>
+      <section class="state-metric-block" aria-label="${t('Indicador selecionado')}">
+        <div><span>${t('Indicador exibido')}</span><small>${tp('{posicao} entre os nove estados', { posicao: ordinal(metricRank) })}</small></div>
         <strong>${textoDoValor(metric, metricValue)}</strong>
-        <p>${escape(metric.label)} · ${escape(metric.subtitle)}</p>
+        <p>${escape(t(metric.label))} · ${escape(t(metric.subtitle))}</p>
       </section>
 
       ${grafico}
 
       <div class="state-reading">
-        <p><strong>${escape(item.name)}</strong> está na ${metricRank}ª posição entre os nove estados para o indicador exibido.</p>
-        ${state.sparkRef && agregacao.notaSerie ? `<p class="state-reading-nota">${escape(agregacao.notaSerie)}</p>` : ''}
+        <p>${tp('<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.', { estado: escape(item.name), posicao: ordinal(metricRank, 'f') })}</p>
+        ${state.sparkRef && agregacao.notaSerie ? `<p class="state-reading-nota">${escape(t(agregacao.notaSerie))}</p>` : ''}
       </div>
     </div>`;
 }

@@ -15,9 +15,13 @@ Dashboard dos nove estados da Amazônia Legal, construído em [Astro](https://as
 src/
   layouts/Base.astro     head, topbar, navegação, rodapé — um único lugar
   pages/*.astro          uma página por rota; só o conteúdo do <main>
+  components/Pagina*.astro  corpo de cada rota, comum às duas línguas
   scripts/*.js           JS de cliente, um módulo por página
   scripts/shared.js      escape, number, flagImage, readResponse, bindMenu
   scripts/fichas.js      ficha técnica: selo de coleta, fórmula, carga sob demanda
+  scripts/conteudo.js    sobrepõe o conteúdo dos indicadores na língua da página
+  i18n/index.js          t(), tp(), rotas, locale de número e ordinal
+  i18n/en.js             dicionário de interface, com o português como chave
   styles/global.css      desenho de computador, importado pelo layout
   styles/mobile.css      camada de celular e tablet, importada depois dela
 public/                  copiado literalmente para dist/ (data, flags, downloads, og)
@@ -49,6 +53,7 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 | `npm run build:static` | Regenera os dados em `public/data/` a partir das fontes locais. |
 | `npm run snapshot` | Grava o snapshot de auditoria do payload do painel. |
 | `npm run prepare-data` | Valida a leitura das bases sem gerar nada. |
+| `npm run check:i18n` | Aponta textos sem tradução e entradas de dicionário sem uso. |
 
 ## O que está no painel
 
@@ -348,7 +353,7 @@ Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são ex
 
    Isso escreve, dentro de `public/`: `data/dashboard.json`, `data/geo.json`, `data/catalogo.json`, `data/metas.json`, `flags/*.svg` e `downloads/*` (5 XLSX + `RELATORIO_DE_COLETA.md`).
 
-2. Versione o resultado no git — **`public/data/`, `public/flags/` e `public/downloads/` precisam estar commitados**, pois são a carga do deploy.
+2. Versione o resultado no git — **`public/data/`, `public/flags/` e `public/downloads/` precisam estar commitados**, pois são a carga do deploy. (`public/idiomas/` também é versionado, mas não sai daqui: são as duas bandeiras do seletor de idioma, escritas à mão.)
 
 3. Na Vercel, crie o projeto apontando para este repositório. **Não é preciso ajustar o Root Directory**: o `vercel.json` da raiz do repositório instala e constrói dentro de `dashboard/` e publica `dashboard/dist`. Se você preferir definir **Root Directory = `dashboard`**, também funciona — nesse caso vale o `dashboard/vercel.json` e o da raiz é ignorado. O preset Astro é detectado sozinho; o `vercel.json` define `outputDirectory: dist`, `cleanUrls`, `Content-Disposition: attachment` em `/downloads/*` e mantém as reescritas de `/api/dashboard|geo|catalogo|metas` para os JSONs em `/data/` — hoje as páginas já buscam `/data/*.json` direto, as reescritas ficam só para não quebrar links antigos.
 
@@ -381,6 +386,78 @@ python scripts/versionar_dados.py                            # copia o detalhe d
 cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
 # depois: copiar os arquivos alterados para o servidor
 ```
+
+## Duas línguas
+
+O painel responde em português e em inglês, em endereços diferentes:
+
+| Português | Inglês |
+|---|---|
+| `/` | `/en` |
+| `/metodologia` | `/en/overview` |
+| `/metas` | `/en/goals` |
+
+O inglês tem caminho próprio — `/en/goals` e não `/en/metas` — porque quem lê em
+inglês também lê a barra de endereço. O par vive em `src/i18n/index.js`, num lugar
+só, porque o seletor de idioma precisa saber para onde levar e o `hreflang`
+precisa saber o que anunciar. O seletor é um link, e não um botão que troca
+textos no ar: assim o endereço em inglês existe, pode ser compartilhado e é o que
+o buscador indexa. Ele leva `data-astro-reload` porque o ClientRouter trocaria só
+o `<body>`, e o `lang` do `<html>` — que é quem decide o idioma no cliente —
+ficaria o da página anterior.
+
+O seletor mostra a bandeira do idioma de destino ao lado da sigla: "PT" e "EN" só
+se distinguem depois de lidos, e quem procura a troca varre a barra de olho. O
+inglês não tem bandeira própria, então a dele é mesclada de Estados Unidos e
+Reino Unido, dividida na diagonal — a convenção dos seletores de idioma para esse
+caso, que evita dizer de qual dos dois ingleses o painel fala. As duas são
+desenhos para 15px de altura, não reproduções: as estrelas viraram pontos e a
+legenda da bandeira brasileira não existe, porque nesse tamanho as letras teriam
+menos de um terço de pixel. Elas ficam em **`public/idiomas/`**, e não com as dos
+estados em `public/flags/`, porque aquela pasta é gerada — o `build-static.mjs`
+apaga e recopia da pasta de bandeiras do Consórcio a cada rodada, e um arquivo
+escrito à mão ali desapareceria na primeira atualização de dados.
+
+O corpo de cada rota vive em `src/components/Pagina*.astro` e as páginas de
+`src/pages/` são só a casca que escolhe a língua. Assim o arranjo existe num
+lugar só e as duas versões não têm como divergir em silêncio.
+
+**A tradução é em duas camadas.** A interface passa por `t()`, com o português
+como chave — o mesmo arranjo do gettext. Não é preguiça: o painel é escrito e
+mantido em português, e um dicionário de chaves abstratas obrigaria a ler dois
+arquivos para saber o que uma tela diz. O preço é que mudar uma frase no código a
+desliga da tradução em silêncio; `npm run check:i18n` é o alarme, e ele varre os
+fontes apontando o que ficou sem par e o que virou peso morto.
+
+O conteúdo — nome dos 59 indicadores, metas pactuadas, definições técnicas,
+fontes, linhas de ação e as equações em LaTeX — vem por sobreposição, de
+`public/data/i18n/en.json`, aplicada campo a campo por `scripts/conteudo.js`. É
+sobreposição e não um segundo catálogo porque o `catalogo.json` é gerado pelo
+`server.mjs` a partir de planilhas que não estão neste repositório: uma cópia
+traduzida sairia do ar na primeira atualização de dados. O que falta degrada para
+o português, que é feio mas verdadeiro — melhor que sumir da lista.
+
+Três decisões de tradução, seguidas em todo lugar:
+
+1. **Nome de instituição e de programa não se traduz.** CNUC/MMA, PRODES/INPE,
+   Sinaflor/IBAMA, CAPAG/STN, PNAD Contínua, Atlas da Violência, Meu Município,
+   Terras do Brasil e Brasil Sem Fome são o endereço do dado; trocá-los por uma
+   versão inglesa romperia a trilha até a fonte. Quando a sigla não diz nada
+   sozinha, entra um aposto: “CNUC / Ministry of the Environment (MMA)”.
+2. **Sigla que é jargão em português vira palavra em inglês.** UC é *protected
+   area*, AL é *the Legal Amazon*, PCT/PIQCTAF são *Indigenous peoples and
+   traditional communities*. Deixá-las cruas seria escrever em português com
+   letras inglesas.
+3. **O que muda de língua não é só texto.** `29,7 mi` vira `29.7M` e `1,13 km²`
+   vira `1.13 km²` — vírgula e ponto trocam de papel, e `1,13` lido em inglês é
+   mil cento e trinta. Os ordinais mudam de forma (`7º de 9` e `7ª posição`
+   contra `7th`), e as equações têm português dentro do LaTeX
+   (`\mathrm{Taxa\ de\ pobreza}`, `\operatorname{média}`), o que exige a equação
+   inteira em inglês e não o mesmo desenho com rótulo trocado por fora.
+
+O rodapé em inglês registra que a tradução é cortesia e que a redação que vale é
+a portuguesa. O painel publica números oficiais de uma estratégia pactuada; a
+versão inglesa ajuda a ler, não substitui o documento.
 
 ## Metas: o que entra no quadro
 

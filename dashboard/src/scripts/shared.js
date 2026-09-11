@@ -1,12 +1,16 @@
 // Helpers usados por mais de uma página. Antes existiam quatro cópias de `escape`
 // e do binding do menu, duas de `readResponse`, `flagImage` e `number`.
 
+import { localeDe, t } from '../i18n/index.js';
+
+export { t };
+
 export function escape(value) {
   return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char]);
 }
 
 export async function readResponse(response) {
-  if (!response.ok) throw new Error('Não foi possível carregar os dados do painel.');
+  if (!response.ok) throw new Error(t('Não foi possível carregar os dados do painel.'));
   return response.json();
 }
 
@@ -18,8 +22,11 @@ export function decimals(value) {
   return 3;
 }
 
+// A vírgula decimal do português é o ponto de milhar do inglês: "1,13 km²" lido
+// por quem fala inglês vira mil cento e trinta. Todo número do painel passa por
+// aqui, e o `locale` acompanha o idioma da página.
 export function number(value, casas = decimals(value)) {
-  return value.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: casas });
+  return value.toLocaleString(localeDe(), { minimumFractionDigits: 0, maximumFractionDigits: casas });
 }
 
 // A região não tem bandeira oficial: esta é a silhueta dos nove estados, gerada
@@ -38,15 +45,19 @@ export function bindMenu() {
   // Idempotente: páginas podem ter mais de um módulo chamando bindMenu.
   if (!menuButton || menuButton.dataset.menuBound) return;
   menuButton.dataset.menuBound = '1';
+  // Os dois rótulos vêm do HTML, já traduzidos pelo layout: escrevê-los aqui
+  // obrigaria o dicionário do cliente a saber de um texto que o servidor já sabe.
+  const abrir = menuButton.dataset.menuAbrir || 'Menu';
+  const fechar = menuButton.dataset.menuFechar || 'Fechar';
   menuButton.addEventListener('click', () => {
     const isOpen = document.body.classList.toggle('menu-open');
     menuButton.setAttribute('aria-expanded', String(isOpen));
-    menuButton.textContent = isOpen ? 'Fechar' : 'Menu';
+    menuButton.textContent = isOpen ? fechar : abrir;
   });
   document.querySelectorAll('.topnav a, .topnav button').forEach((link) => link.addEventListener('click', () => {
     document.body.classList.remove('menu-open');
     menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = 'Menu';
+    menuButton.textContent = abrir;
   }));
 }
 

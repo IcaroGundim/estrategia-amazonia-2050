@@ -12,7 +12,8 @@
     "build:static": "node build-static.mjs",
     "check:data": "node --check server.mjs && node --check metas.mjs && node --check build-static.mjs",
     "prepare-data": "node server.mjs --validate",
-    "snapshot": "node snapshot.mjs"
+    "snapshot": "node snapshot.mjs",
+    "check:i18n": "node scripts/conferir-traducao.mjs"
   },
   "dependencies": {
     "astro": "^7.2.9",

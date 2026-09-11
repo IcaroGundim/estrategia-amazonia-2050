@@ -615,11 +615,20 @@ const server = createServer(async (req, res) => {
       res.end();
       return;
     }
+    // As mesmas três rotas nas duas línguas. O inglês tem caminho próprio —
+    // `/en/goals` e não `/en/metas` — porque quem lê em inglês também lê a
+    // barra de endereço; o par vive em `src/i18n/index.js`.
     const routeAliases = new Map([
       ['/metodologia', '/metodologia.html'],
       ['/metodologia/', '/metodologia.html'],
       ['/metas', '/metas.html'],
-      ['/metas/', '/metas.html']
+      ['/metas/', '/metas.html'],
+      ['/en', '/en.html'],
+      ['/en/', '/en.html'],
+      ['/en/overview', '/en/overview.html'],
+      ['/en/overview/', '/en/overview.html'],
+      ['/en/goals', '/en/goals.html'],
+      ['/en/goals/', '/en/goals.html']
     ]);
     const pagePath = routeAliases.get(url.pathname) || url.pathname;
     if (!(await sendStatic(req, res, pagePath, url.origin))) json(res, { error: 'Página não encontrada.' }, 404);

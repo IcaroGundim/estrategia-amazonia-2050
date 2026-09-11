@@ -1,5 +1,13 @@
 import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
 import { carregaDossie, carregaKatexSeNecessario, exportCsv, normalise, renderFicha, selo, statusOf, STATUS } from './fichas.js';
+import { idiomaAtual, rota, t, tp } from '../i18n/index.js';
+import { campo, carregaConteudo, nomeDoEixo } from './conteudo.js';
+
+// Nome e meta pactuada vêm do catálogo, em português, e a versão inglesa entra
+// por sobreposição — ver conteudo.js.
+function nomeDe(item) { return campo(item.codigo, 'nome', item.nome); }
+function metaTextoDe(item) { return campo(item.codigo, 'meta', item.metaTexto); }
+function motivoDe(item) { return t(item.motivo || ''); }
 
 // A página reúne as duas leituras da mesma matriz: as metas com patamar
 // mensurável, que têm jornada e gráfico, e o restante do catálogo, que só tem
@@ -48,8 +56,8 @@ function ehPercentual(meta) {
 }
 
 function unidadeCurta(meta) {
-  if (ehPercentual(meta)) return 'pontos percentuais';
-  return UNIDADES[String(meta.unidade || '').trim()] || '';
+  if (ehPercentual(meta)) return t('pontos percentuais');
+  return t(UNIDADES[String(meta.unidade || '').trim()] || '');
 }
 
 function valor(meta, value) {
@@ -86,7 +94,7 @@ function passaNoFiltro(item) {
   if (state.eixos.size && !state.eixos.has(String(item.eixo))) return false;
   if (state.status !== 'all' && statusOf(item) !== state.status) return false;
   if (state.busca) {
-    const palheiro = normalise([item.codigo, item.nome, item.metaTexto, item.fonte, item.eixoNome, item.linhaAcao].join(' '));
+    const palheiro = normalise([item.codigo, item.nome, nomeDe(item), item.metaTexto, metaTextoDe(item), item.fonte, item.eixoNome, item.linhaAcao].join(' '));
     if (!palheiro.includes(normalise(state.busca))) return false;
   }
   return true;
@@ -113,15 +121,15 @@ function dadosDaMeta(meta) {
 }
 
 function rotuloTipo(tipo) {
-  return ({ declarada: 'Meta declarada', inferida: 'Meta inferida', derivada: 'Meta derivada da baseline' })[tipo]
-    || 'Critério não informado';
+  return ({ declarada: t('Meta declarada'), inferida: t('Meta inferida'), derivada: t('Meta derivada da baseline') })[tipo]
+    || t('Critério não informado');
 }
 
 // ---------- gráfico por estado ----------
 
 function renderGrafico(meta) {
   const historico = Array.isArray(meta.historico) ? meta.historico : [];
-  if (!historico.length) return '<p class="goals-chart-empty">Não há valores anuais disponíveis para este indicador.</p>';
+  if (!historico.length) return `<p class="goals-chart-empty">${t('Não há valores anuais disponíveis para este indicador.')}</p>`;
 
   const anos = historico.map((item) => String(item.ano));
   const anoGuardado = String(state.anosGrafico[meta.codigo] || '');
@@ -129,12 +137,12 @@ function renderGrafico(meta) {
   state.anosGrafico[meta.codigo] = ano;
   const recorte = historico.find((item) => String(item.ano) === ano);
   const opcoes = anos.slice().reverse().map((item) => `<li role="option" tabindex="-1" data-goals-chart-year="${escape(item)}" class="${item === ano ? 'is-selected' : ''}" aria-selected="${item === ano}">${escape(item)}</li>`).join('');
-  const seletor = `<div class="goals-chart-year"><span>Ano</span><div class="dropdown goals-year-dropdown${anos.length === 1 ? ' is-disabled' : ''}">
+  const seletor = `<div class="goals-chart-year"><span>${t('Ano')}</span><div class="dropdown goals-year-dropdown${anos.length === 1 ? ' is-disabled' : ''}">
     <button type="button" class="dropdown-toggle" data-goals-year-toggle aria-haspopup="listbox" aria-expanded="false"${anos.length === 1 ? ' disabled aria-disabled="true"' : ''}>
       <span data-goals-year-value>${escape(ano)}</span>
       <svg class="dropdown-chevron" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <ul class="dropdown-menu" role="listbox" aria-label="Selecionar ano" hidden>${opcoes}</ul>
+    <ul class="dropdown-menu" role="listbox" aria-label="${t('Selecionar ano')}" hidden>${opcoes}</ul>
   </div></div>`;
 
   if (meta.direcao === 'categoria') {
@@ -144,8 +152,8 @@ function renderGrafico(meta) {
       return faixa ? { ...estado, nota, faixa } : null;
     }).filter(Boolean);
     if (!linhas.length) {
-      return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
-        <p class="goals-chart-empty">Não há classificações estaduais disponíveis para ${escape(ano)}.</p>`;
+      return `<div class="goals-detail-chart-head"><h3>${t('Amazônia Legal e estados')}</h3>${seletor}</div>
+        <p class="goals-chart-empty">${tp('Não há classificações estaduais disponíveis para {ano}.', { ano: escape(ano) })}</p>`;
     }
 
     const ultimaFaixa = ESCALA_CAPAG.length - 1;
@@ -154,7 +162,7 @@ function renderGrafico(meta) {
       const largura = ESCALA_CAPAG.indexOf(item.faixa) / ultimaFaixa * 100;
       const cumpre = ESCALA_CAPAG.indexOf(item.faixa) >= ESCALA_CAPAG.indexOf('B');
       const selecionado = state.uf === item.uf ? ' is-selected' : '';
-      return `<div class="goals-chart-row goals-chart-row-category${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: classificação ${escape(item.nota)}">
+      return `<div class="goals-chart-row goals-chart-row-category${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${tp('{estado}: classificação {nota}', { estado: escape(item.name), nota: escape(item.nota) })}">
         <span class="goals-chart-uf">${escape(item.uf)}</span>
         <span class="goals-chart-track" aria-hidden="true">
           <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
@@ -165,10 +173,10 @@ function renderGrafico(meta) {
     }).join('');
     const escala = ESCALA_CAPAG.map((faixa, indice) => `<span style="left:${(indice / ultimaFaixa * 100).toFixed(2)}%">${escape(faixa)}</span>`).join('');
 
-    return `<div class="goals-detail-chart-head"><h3>Valores por estado</h3>${seletor}</div>
-      <div class="goals-chart-bars" role="list" aria-label="Classificação CAPAG dos estados em ${escape(ano)}">${barras}</div>
-      <div class="goals-chart-scale" aria-label="Escala CAPAG, de D a A mais">${escala}</div>
-      <p class="goals-chart-legend"><i aria-hidden="true"></i> meta mínima: B</p>`;
+    return `<div class="goals-detail-chart-head"><h3>${t('Valores por estado')}</h3>${seletor}</div>
+      <div class="goals-chart-bars" role="list" aria-label="${tp('Classificação CAPAG dos estados em {ano}', { ano: escape(ano) })}">${barras}</div>
+      <div class="goals-chart-scale" aria-label="${t('Escala CAPAG, de D a A mais')}">${escala}</div>
+      <p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('meta mínima: B')}</p>`;
   }
 
   const estados = state.data.estados.map((estado) => {
@@ -183,8 +191,8 @@ function renderGrafico(meta) {
     : [];
   const linhas = [...linhaRegional, ...estados];
   if (!linhas.length) {
-    return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
-      <p class="goals-chart-empty">Não há valores estaduais disponíveis para ${escape(ano)}.</p>`;
+    return `<div class="goals-detail-chart-head"><h3>${t('Amazônia Legal e estados')}</h3>${seletor}</div>
+      <p class="goals-chart-empty">${tp('Não há valores estaduais disponíveis para {ano}.', { ano: escape(ano) })}</p>`;
   }
 
   const maximo = Math.max(...linhas.flatMap((item) => [item.valor, Number.isFinite(item.alvo) ? item.alvo : 0]), 0);
@@ -208,9 +216,9 @@ function renderGrafico(meta) {
     </div>`;
   }).join('');
 
-  return `<div class="goals-detail-chart-head"><h3>Amazônia Legal e estados</h3>${seletor}</div>
-    <div class="goals-chart-bars" role="list" aria-label="Valor da Amazônia Legal e dos estados em ${escape(ano)}">${barras}</div>
-    <p class="goals-chart-legend"><i aria-hidden="true"></i> marcador da meta</p>`;
+  return `<div class="goals-detail-chart-head"><h3>${t('Amazônia Legal e estados')}</h3>${seletor}</div>
+    <div class="goals-chart-bars" role="list" aria-label="${tp('Valor da Amazônia Legal e dos estados em {ano}', { ano: escape(ano) })}">${barras}</div>
+    <p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('marcador da meta')}</p>`;
 }
 
 // ---------- bandeiras de estado ----------
@@ -220,9 +228,9 @@ function renderFlags() {
   if (!wrap) return;
   const nome = state.uf
     ? (state.data.estados.find((estado) => estado.uf === state.uf)?.name || state.uf)
-    : 'Amazônia Legal (região)';
+    : t('Amazônia Legal (região)');
   wrap.innerHTML = `<span class="goals-flags-nome">${escape(nome)}</span>`
-    + `<button type="button" class="goals-flag${state.uf ? '' : ' is-active'}" data-uf="" title="Amazônia Legal — visão regional" aria-label="Amazônia Legal, visão regional" aria-pressed="${state.uf ? 'false' : 'true'}">${flagImage(BANDEIRA_REGIAO, '')}</button>`
+    + `<button type="button" class="goals-flag${state.uf ? '' : ' is-active'}" data-uf="" title="${t('Amazônia Legal — visão regional')}" aria-label="${t('Amazônia Legal, visão regional')}" aria-pressed="${state.uf ? 'false' : 'true'}">${flagImage(BANDEIRA_REGIAO, '')}</button>`
     + state.data.estados.map((estado) => `<button type="button" class="goals-flag${state.uf === estado.uf ? ' is-active' : ''}" data-uf="${estado.uf}" title="${escape(estado.name)}" aria-label="${escape(estado.name)}" aria-pressed="${state.uf === estado.uf ? 'true' : 'false'}">${flagImage(estado, '')}</button>`).join('');
 }
 
@@ -238,11 +246,11 @@ function renderEixoFilters() {
   if (!alvo) return;
   const eixos = [...new Set(acervo().map((item) => item.eixo))].sort((a, b) => a - b);
   const opcoes = [
-    { valor: 'all', rotulo: 'Todos', nome: 'Todos os eixos', ativo: state.eixos.size === 0 },
+    { valor: 'all', rotulo: t('Todos'), nome: t('Todos os eixos'), ativo: state.eixos.size === 0 },
     ...eixos.map((eixo) => ({
       valor: String(eixo),
       rotulo: String(eixo),
-      nome: `Eixo ${eixo}`,
+      nome: tp('Eixo {n}', { n: eixo }),
       ativo: state.eixos.has(String(eixo))
     }))
   ];
@@ -254,8 +262,8 @@ function renderStatusFilters() {
   const alvo = document.querySelector('#goals-status-filters');
   if (!alvo) return;
   const opcoes = [
-    { valor: 'all', rotulo: 'Todas' },
-    ...Object.entries(STATUS).map(([valor, { label }]) => ({ valor, rotulo: label }))
+    { valor: 'all', rotulo: t('Todas') },
+    ...Object.entries(STATUS).map(([valor, { label }]) => ({ valor, rotulo: t(label) }))
   ];
   alvo.innerHTML = opcoes.map((opcao) => `
     <button type="button" class="status-filter${state.status === opcao.valor ? ' is-active' : ''}" data-status="${opcao.valor}" aria-pressed="${state.status === opcao.valor}">${escape(opcao.rotulo)}</button>`).join('');
@@ -268,18 +276,17 @@ function renderFiltersSummary() {
   const resumo = document.querySelector('[data-filters-summary]');
   if (!resumo) return;
   const partes = [];
-  if (state.eixos.size) partes.push(`${state.eixos.size} eixo${state.eixos.size > 1 ? 's' : ''}`);
-  if (state.status !== 'all') partes.push(STATUS[state.status]?.label ?? state.status);
+  if (state.eixos.size) partes.push(state.eixos.size > 1 ? tp('{n} eixos', { n: state.eixos.size }) : tp('{n} eixo', { n: state.eixos.size }));
+  if (state.status !== 'all') partes.push(t(STATUS[state.status]?.label ?? state.status));
   if (state.busca) partes.push(`“${state.busca}”`);
-  resumo.textContent = partes.length ? partes.join(' · ') : 'Todos os indicadores';
+  resumo.textContent = partes.length ? partes.join(' · ') : t('Todos os indicadores');
 }
 
 function renderContagem(lista) {
   const alvo = document.querySelector('[data-lista-resumo]');
   if (!alvo) return;
   const comMeta = lista.filter((item) => item.temMeta).length;
-  alvo.innerHTML = `<span>${lista.length}</span> ${lista.length === 1 ? 'indicador' : 'indicadores'}`
-    + ` · <span>${comMeta}</span> com meta mensurável`;
+  alvo.innerHTML = tp(lista.length === 1 ? '<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável' : '<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável', { total: lista.length, comMeta });
 }
 
 // Divulgação simples, e não `role="menu"`: o conteúdo são um botão e cinco
@@ -298,17 +305,17 @@ function abreExport(abrir) {
 async function baixarCsv() {
   const botao = document.querySelector('#export-csv');
   const rotulo = botao?.textContent;
-  if (botao) { botao.disabled = true; botao.textContent = 'Preparando…'; }
+  if (botao) { botao.disabled = true; botao.textContent = t('Preparando…'); }
   try {
     const dossie = await carregaDossie();
     state.dossie = dossie;
     exportCsv(visiveis(), dossie.indicadores, state.uf);
     abreExport(false);
   } catch {
-    if (botao) botao.textContent = 'Não foi possível exportar';
+    if (botao) botao.textContent = t('Não foi possível exportar');
     return;
   } finally {
-    if (botao) { botao.disabled = false; if (botao.textContent === 'Preparando…') botao.textContent = rotulo; }
+    if (botao) { botao.disabled = false; if (botao.textContent === t('Preparando…')) botao.textContent = rotulo; }
   }
 }
 
@@ -322,22 +329,22 @@ function corpoResultado(meta) {
   const { item: recorte, cumprem, total, contaEstados, progresso, semEscala } = dadosDaMeta(meta);
   const valorAtual = recorte
     ? valor(meta, recorte.valor)
-    : (contaEstados ? `${cumprem} de ${total} estados` : 'Sem dado');
+    : (contaEstados ? tp('{cumprem} de {total} estados', { cumprem, total }) : t('Sem dado'));
   const alvo = recorte
-    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, recorte.alvo)}${meta.prazo ? ` até ${meta.prazo}` : ''}`
-    : (contaEstados ? `A ou B nos ${total} estados` : '—');
+    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, recorte.alvo)}${meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : ''}`
+    : (contaEstados ? tp('A ou B nos {total} estados', { total }) : '—');
   const jornada = recorte?.categoria && state.uf
     ? (recorte.cumpre ? '100%' : '—')
-    : (semEscala || (!recorte && !contaEstados) ? 'Sem escala' : `${progresso}%`);
+    : (semEscala || (!recorte && !contaEstados) ? t('Sem escala') : `${progresso}%`);
   const agregacao = !state.uf && recorte?.metodoRotulo
-    ? `<p class="goals-detail-method"><strong>Leitura regional:</strong> ${escape(recorte.metodoRotulo)}.${recorte.nota ? ` ${escape(recorte.nota)}` : ''}</p>`
+    ? `<p class="goals-detail-method"><strong>${t('Leitura regional:')}</strong> ${escape(t(recorte.metodoRotulo))}.${recorte.nota ? ` ${escape(recorte.nota)}` : ''}</p>`
     : '';
 
   return `
     <dl class="goals-detail-summary">
-      <div><dt>Valor atual</dt><dd>${escape(valorAtual)}</dd></div>
-      <div><dt>Meta</dt><dd>${escape(alvo)}</dd></div>
-      <div><dt>Jornada</dt><dd>${escape(jornada)}</dd></div>
+      <div><dt>${t('Valor atual')}</dt><dd>${escape(valorAtual)}</dd></div>
+      <div><dt>${t('Meta')}</dt><dd>${escape(alvo)}</dd></div>
+      <div><dt>${t('Jornada')}</dt><dd>${escape(jornada)}</dd></div>
     </dl>
 
     <section class="goals-detail-chart">
@@ -345,25 +352,35 @@ function corpoResultado(meta) {
     </section>
 
     <section class="goals-detail-section">
-      <h3>Meta pactuada</h3>
-      <p class="goals-detail-meta">${escape(meta.metaTexto || 'Meta não informada.')}</p>
+      <h3>${t('Meta pactuada')}</h3>
+      <p class="goals-detail-meta">${escape(metaTextoDe(meta) || t('Meta não informada.'))}</p>
     </section>
 
     <section class="goals-detail-section">
-      <h3>Critério do patamar</h3>
+      <h3>${t('Critério do patamar')}</h3>
       <dl class="goals-detail-facts">
-        <div><dt>Referência</dt><dd>${escape(meta.anoRef || 'Não informada')}</dd></div>
-        <div><dt>Critério</dt><dd>${escape(rotuloTipo(meta.tipo))}</dd></div>
+        <div><dt>${t('Referência')}</dt><dd>${escape(meta.anoRef || t('Não informada'))}</dd></div>
+        <div><dt>${t('Critério')}</dt><dd>${escape(rotuloTipo(meta.tipo))}</dd></div>
       </dl>
       ${agregacao}
     </section>`;
 }
 
 function corpoFicha(item) {
-  if (!state.dossie) return '<p class="method-loading">Carregando ficha técnica…</p>';
+  if (!state.dossie) return `<p class="method-loading">${t('Carregando ficha técnica…')}</p>`;
   // O catálogo é a fonte dos valores por estado, da descrição técnica e da
   // situação de coleta; o que veio da lista preenche o que faltar nele.
-  const indicador = { ...item, ...(state.dossie.indicadores[item.codigo] || {}) };
+  // O catálogo traz os valores por estado e a descrição técnica; a
+  // sobreposição de idioma entra por último, para a ficha herdar o texto já
+  // traduzido em vez de reescrever a mesma regra de precedência.
+  const doCatalogo = state.dossie.indicadores[item.codigo] || {};
+  const indicador = {
+    ...item,
+    ...doCatalogo,
+    nome: nomeDe(item),
+    descricao: campo(item.codigo, 'descricao', doCatalogo.descricao ?? item.descricao),
+    fonte: campo(item.codigo, 'fonte', doCatalogo.fonte ?? item.fonte)
+  };
   return renderFicha({
     indicador,
     ficha: state.dossie.fichas[item.codigo] || null,
@@ -371,7 +388,7 @@ function corpoFicha(item) {
     katex: state.katex,
     // Nas 12 com patamar a meta pactuada é a primeira coisa da aba Resultado;
     // repeti-la aqui seria escrevê-la duas vezes no mesmo painel.
-    metaTexto: item.temMeta ? null : item.metaTexto
+    metaTexto: item.temMeta ? null : metaTextoDe(item)
   });
 }
 
@@ -388,7 +405,7 @@ async function garanteDossie(codigo) {
   } catch (erro) {
     if (state.codigo !== codigo || state.aba !== 'ficha') return;
     const alvo = document.querySelector('#goals-detail .method-loading');
-    if (alvo) alvo.outerHTML = `<p class="load-error">${escape(erro.message)} Atualize a página para tentar novamente.</p>`;
+    if (alvo) alvo.outerHTML = `<p class="load-error">${escape(erro.message)} ${t('Atualize a página para tentar novamente.')}</p>`;
   }
 }
 
@@ -416,9 +433,9 @@ function renderDetail() {
   // uma aba "Resultado" vazia ao lado da única que tem conteúdo é ruído.
   const naFicha = !item.temMeta || state.aba === 'ficha';
   const abas = item.temMeta
-    ? `<div class="goals-detail-tabs" role="tablist" aria-label="Faces deste indicador">
-        <button type="button" role="tab" data-aba="resultado" id="goals-aba-resultado" aria-selected="${!naFicha}" aria-controls="goals-detail-painel" class="${naFicha ? '' : 'is-active'}">Resultado</button>
-        <button type="button" role="tab" data-aba="ficha" id="goals-aba-ficha" aria-selected="${naFicha}" aria-controls="goals-detail-painel" class="${naFicha ? 'is-active' : ''}">Ficha técnica</button>
+    ? `<div class="goals-detail-tabs" role="tablist" aria-label="${t('Faces deste indicador')}">
+        <button type="button" role="tab" data-aba="resultado" id="goals-aba-resultado" aria-selected="${!naFicha}" aria-controls="goals-detail-painel" class="${naFicha ? '' : 'is-active'}">${t('Resultado')}</button>
+        <button type="button" role="tab" data-aba="ficha" id="goals-aba-ficha" aria-selected="${naFicha}" aria-controls="goals-detail-painel" class="${naFicha ? 'is-active' : ''}">${t('Ficha técnica')}</button>
       </div>`
     : '';
   const painelAria = item.temMeta
@@ -429,9 +446,9 @@ function renderDetail() {
       <header class="goals-detail-head">
         <div>
           <p class="goals-detail-kicker">${escape(item.codigo)}</p>
-          <h2 id="goals-detail-title">${escape(item.nome)}</h2>
+          <h2 id="goals-detail-title">${escape(nomeDe(item))}</h2>
         </div>
-        <button class="goals-detail-close" type="button" aria-label="Fechar detalhes do indicador">×</button>
+        <button class="goals-detail-close" type="button" aria-label="${t('Fechar detalhes do indicador')}">×</button>
       </header>
 
       ${abas}
@@ -598,8 +615,8 @@ function linhaDeMeta(meta, anterior) {
   let valorHoje;
   let leitura;
   if (!item) {
-    if (state.uf) { valorHoje = 'sem dado'; leitura = '—'; }
-    else { valorHoje = `${cumprem} de ${total}`; leitura = `${cumprem}/${total}`; }
+    if (state.uf) { valorHoje = t('sem dado'); leitura = '—'; }
+    else { valorHoje = tp('{cumprem} de {total}', { cumprem, total }); leitura = `${cumprem}/${total}`; }
   } else if (item.categoria) {
     valorHoje = valor(meta, item.valor);
     leitura = item.cumpre ? '✓' : (state.uf ? '—' : `${cumprem}/${total}`);
@@ -610,7 +627,7 @@ function linhaDeMeta(meta, anterior) {
 
   const partida = anterior.has(meta.codigo) ? anterior.get(meta.codigo) : p;
   const rotulo = semEscala
-    ? `<em class="goals-row-val sem fora" data-fixo="sim" style="left:0%">${escape(valorHoje)} · sem escala</em>`
+    ? `<em class="goals-row-val sem fora" data-fixo="sim" style="left:0%">${escape(valorHoje)} · ${t('sem escala')}</em>`
     : (p >= 22
       ? `<em class="goals-row-val dentro" style="left:${partida}%">${escape(valorHoje)}</em>`
       : `<em class="goals-row-val fora" style="left:${partida}%">${escape(valorHoje)}</em>`);
@@ -621,14 +638,14 @@ function linhaDeMeta(meta, anterior) {
   const prefixo = meta.direcao === 'menor' ? '≤ ' : '';
   const patamar = item
     ? `<b>${escape(prefixo + valor(meta, item.alvo))}</b>`
-    : (state.uf ? '<b>—</b>' : '<b>A ou B</b> nos 9 estados');
+    : (state.uf ? '<b>—</b>' : `<b>A ou B</b> ${t('nos 9 estados')}`);
 
   const ativa = state.detalhesAbertos && meta.codigo === state.codigo ? ' is-active' : '';
   const expandida = state.detalhesAbertos && meta.codigo === state.codigo;
   return `<button type="button" data-codigo="${meta.codigo}" class="goals-row ${classe}${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
-    <span class="goals-row-name">${escape(meta.nome)}<small>meta ${patamar}${meta.prazo ? ` até ${meta.prazo}` : ''}</small></span>
+    <span class="goals-row-name">${escape(nomeDe(meta))}<small>${tp('meta {patamar}{prazo}', { patamar, prazo: meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : '' })}</small></span>
     <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" data-meta-barra="${meta.codigo}" data-destino="${p}" style="width:${partida}%"></i>${rotulo}</span>
-    <span class="goals-row-ler"><b>${leitura}</b><small>jornada</small></span>
+    <span class="goals-row-ler"><b>${leitura}</b><small>${t('jornada')}</small></span>
     <span class="goals-row-open" aria-hidden="true">›</span>
   </button>`;
 }
@@ -639,7 +656,7 @@ function linhaDeCatalogo(item) {
   const ativa = state.detalhesAbertos && item.codigo === state.codigo ? ' is-active' : '';
   const expandida = state.detalhesAbertos && item.codigo === state.codigo;
   return `<button type="button" data-codigo="${item.codigo}" class="goals-row is-catalog${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
-    <span class="goals-row-name">${escape(item.nome)}<small>${escape(item.motivo)}</small></span>
+    <span class="goals-row-name">${escape(nomeDe(item))}<small>${escape(motivoDe(item))}</small></span>
     <span class="goals-row-ler">${selo(item)}</span>
     <span class="goals-row-open" aria-hidden="true">›</span>
   </button>`;
@@ -653,7 +670,7 @@ function renderList() {
   renderContagem(lista);
 
   if (!lista.length) {
-    alvo.innerHTML = '<p class="indicator-empty">Nenhum indicador corresponde aos filtros selecionados.</p>';
+    alvo.innerHTML = `<p class="indicator-empty">${t('Nenhum indicador corresponde aos filtros selecionados.')}</p>`;
     return;
   }
 
@@ -670,18 +687,18 @@ function renderList() {
     // As faixas são rótulos, não contadores: o total do eixo está no cabeçalho
     // logo acima, e escrever "4" e "19" ao lado dele seria dizer 23 três vezes.
     const faixaMetas = metas.length
-      ? `<p class="goals-faixa">Metas com patamar mensurável</p>
+      ? `<p class="goals-faixa">${t('Metas com patamar mensurável')}</p>
          ${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}`
       : '';
     const faixaCatalogo = catalogo.length
-      ? `<p class="goals-faixa">${metas.length ? 'Demais indicadores do eixo' : 'Indicadores do eixo'}</p>
+      ? `<p class="goals-faixa">${metas.length ? t('Demais indicadores do eixo') : t('Indicadores do eixo')}</p>
          ${catalogo.map(linhaDeCatalogo).join('')}`
       : '';
     return `<section class="goals-eixo">
       <header class="goals-eixo-head">
         <span class="num" aria-hidden="true">${eixo}</span>
-        <h3>${escape(eixoNome || `Eixo ${eixo}`)}</h3>
-        <span>${total} ${total === 1 ? 'indicador' : 'indicadores'}</span>
+        <h3>${escape(nomeDoEixo(eixo, eixoNome) || tp('Eixo {n}', { n: eixo }))}</h3>
+        <span>${tp(total === 1 ? '{n} indicador' : '{n} indicadores', { n: total })}</span>
       </header>
       ${faixaMetas}
       ${faixaCatalogo}
@@ -901,7 +918,8 @@ function codigoDoEndereco() {
 }
 
 async function init() {
-  state.data = await fetch('/data/metas.json').then(readResponse);
+  const [dados] = await Promise.all([fetch('/data/metas.json').then(readResponse), carregaConteudo()]);
+  state.data = dados;
   state.uf = null;
   const doEndereco = codigoDoEndereco();
   state.codigo = doEndereco || state.data.metas[0]?.codigo || state.data.foraDoPainel[0]?.codigo || null;
@@ -919,5 +937,5 @@ const ANCORA = '#goals-list';
 
 aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
   const alvo = document.querySelector('#goals-list');
-  if (alvo) alvo.innerHTML = `<p class="load-error">${escape(error.message)} Atualize a página para tentar novamente.</p>`;
+  if (alvo) alvo.innerHTML = `<p class="load-error">${escape(error.message)} ${t('Atualize a página para tentar novamente.')}</p>`;
 }));

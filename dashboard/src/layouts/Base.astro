@@ -4,6 +4,7 @@ import '../styles/global.css';
 // Depois da folha geral, e só ela: a camada de celular e tablet sobrescreve o
 // que o desenho de computador define. Ver o cabeçalho do arquivo.
 import '../styles/mobile.css';
+import { IDIOMAS, IDIOMA_PADRAO, ehTraducao, rota, traduzirCom } from '../i18n/index.js';
 
 interface Props {
   title: string;
@@ -12,41 +13,62 @@ interface Props {
   ogDescription?: string;
   mainClass?: string;
   pagina: 'index' | 'metas' | 'metodologia';
+  /** `pt-BR` ou `en`. Decide os rótulos, os endereços e a formatação de número. */
+  lang?: string;
   /** JSONs que o script da página busca; pré-carregados para não esperarem o JS. */
   dados?: string[];
 }
 
-const { title, description, ogTitle, ogDescription, mainClass, pagina, dados = [] } = Astro.props;
+const {
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  mainClass,
+  pagina,
+  lang = IDIOMA_PADRAO,
+  dados = []
+} = Astro.props;
+
+const t = traduzirCom(lang);
 
 // `Astro.site` vem de astro.config.mjs. A URL absoluta é obrigatória no Open Graph:
 // antes ela era injetada por uma substituição de texto no build-static.mjs.
 const ogImage = new URL('/og.png', Astro.site).href;
 
+// Cada página existe nas duas línguas, em endereços diferentes. O `hreflang`
+// declara o par para o buscador não tratar as duas como conteúdo duplicado, e
+// `x-default` aponta para o português, que é a versão de origem.
+const alternativas = IDIOMAS.map((idioma) => ({
+  codigo: idioma.codigo,
+  href: new URL(rota(pagina, idioma.codigo), Astro.site).href
+}));
+const canonico = alternativas.find((item) => item.codigo === lang)?.href;
+const outroIdioma = IDIOMAS.find((idioma) => idioma.codigo !== lang);
+
 // A rota e a chave continuam sendo `metodologia`: muda o rótulo e a ordem do menu,
 // não o endereço da página nem as âncoras que o resto do site aponta para ela.
 // `icone` só é desenhado na barra inferior do celular. Traços simples de 24px,
 // sem preenchimento, para ler no tamanho em que aparecem.
-// Eram quatro rotas. Metas e Indicadores descreviam a mesma matriz por dois
-// caminhos — as metas são um subconjunto dos indicadores, e cada uma reaparecia
-// na outra aba com nome, eixo, meta pactuada e fonte escritos de novo. Agora são
-// uma só: a meta é a espinha, e a ficha técnica é a segunda aba do detalhe.
 const NAVEGACAO = [
-  { href: '/', rotulo: 'Panorama', chave: 'index', icone: 'M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20zM9 4v13.5M15 6.5V20' },
-  { href: '/metodologia', rotulo: 'Visão Geral', chave: 'metodologia', icone: 'M12 6.5A3.5 3.5 0 0 0 8.5 4H3v14h5.5A3.5 3.5 0 0 1 12 21a3.5 3.5 0 0 1 3.5-3H21V4h-5.5A3.5 3.5 0 0 0 12 6.5zM12 6.5V21' },
-  { href: '/metas', rotulo: 'Metas e indicadores', chave: 'metas', icone: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z' }
+  { chave: 'index', rotulo: 'Panorama', icone: 'M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20zM9 4v13.5M15 6.5V20' },
+  { chave: 'metodologia', rotulo: 'Visão Geral', icone: 'M12 6.5A3.5 3.5 0 0 0 8.5 4H3v14h5.5A3.5 3.5 0 0 1 12 21a3.5 3.5 0 0 1 3.5-3H21V4h-5.5A3.5 3.5 0 0 0 12 6.5zM12 6.5V21' },
+  { chave: 'metas', rotulo: 'Metas e indicadores', icone: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z' }
 ];
 
+// O atalho da topbar leva a uma âncora da Visão Geral, que é a mesma dos dois
+// lados: só o caminho da rota muda de língua.
 const ACOES = {
-  index: { href: '/metodologia', rotulo: 'Como ler os dados' },
-  metas: { href: '/metodologia#a-estrategia', rotulo: 'Sobre a Estratégia' },
-  metodologia: { href: '/downloads/RELATORIO_DE_COLETA.md', rotulo: 'Baixar nota técnica' }
+  index: { destino: rota('metodologia', lang), rotulo: 'Como ler os dados' },
+  metas: { destino: `${rota('metodologia', lang)}#a-estrategia`, rotulo: 'Sobre a Estratégia' },
+  metodologia: { destino: '/downloads/RELATORIO_DE_COLETA.md', rotulo: 'Baixar nota técnica' }
 };
 
 const acao = ACOES[pagina];
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,7 +88,13 @@ const acao = ACOES[pagina];
     </script>
     <meta name="theme-color" content="#0e2b22" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonico} />
+    {alternativas.map((item) => (
+      <link rel="alternate" hreflang={item.codigo} href={item.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={alternativas[0].href} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'pt_BR'} />
     <meta property="og:title" content={ogTitle ?? title} />
     <meta property="og:description" content={ogDescription ?? description} />
     <meta property="og:image" content={ogImage} />
@@ -83,6 +111,11 @@ const acao = ACOES[pagina];
     {dados.map((nome) => (
       <link rel="preload" as="fetch" type="application/json" href={`/data/${nome}.json`} />
     ))}
+    {/* O inglês sobrepõe o conteúdo em português com um arquivo só; ele entra na
+        mesma leva dos dados para não esperar o módulo da página. */}
+    {ehTraducao(lang) && dados.length > 0 && (
+      <link rel="preload" as="fetch" type="application/json" href="/data/i18n/en.json" />
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -91,35 +124,59 @@ const acao = ACOES[pagina];
     />
   </head>
   <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <a class="skip-link" href="#conteudo">{t('Pular para o conteúdo')}</a>
 
     <header class="topbar">
       <div class="topbar-inner">
-        <a href="/" class="brand" aria-label="Estratégia 2050 do Consórcio da Amazônia Legal, início">
+        <a href={rota('index', lang)} class="brand" aria-label={t('Estratégia 2050 do Consórcio da Amazônia Legal, início')}>
           <img class="brand-logo" src="/logo-consorcio-clara.avif" alt="" />
-          <span class="brand-product">Estratégia 2050</span>
+          <span class="brand-product">{t('Estratégia 2050')}</span>
         </a>
 
-        <nav class="topnav" aria-label="Navegação principal">
-          {NAVEGACAO.map(({ href, rotulo, chave }) => (
+        <nav class="topnav" aria-label={t('Navegação principal')}>
+          {NAVEGACAO.map(({ chave, rotulo }) => (
             <a
-              href={href}
+              href={rota(chave, lang)}
               class={chave === pagina ? 'is-active' : undefined}
               aria-current={chave === pagina ? 'page' : undefined}
-            >{rotulo}</a>
+            >{t(rotulo)}</a>
           ))}
         </nav>
 
         <div class="topbar-actions">
-          <a class="outline-button action-link" href={acao.href}>{acao.rotulo}</a>
+          <a class="outline-button action-link" href={acao.destino}>{t(acao.rotulo)}</a>
         </div>
+
+        {/* Seletor de idioma: um link para o mesmo lugar na outra língua, e não
+            um botão que troca textos no ar. Assim o endereço em inglês existe,
+            pode ser compartilhado e é o que o `hreflang` acima anuncia.
+            `data-astro-reload` porque o ClientRouter trocaria só o <body>, e o
+            `lang` do <html> — que é quem decide o idioma no cliente — ficaria
+            o da página anterior.
+
+            A bandeira é a do idioma de destino, a mesma coisa que a sigla ao
+            lado diz: o link leva para lá. `alt` vazio porque ela não acrescenta
+            nada ao `aria-label`, que já é uma frase inteira — descrevê-la faria
+            o leitor de tela anunciar a bandeira e o rótulo duas vezes. */}
+        <a
+          class="idioma-toggle"
+          href={rota(pagina, outroIdioma.codigo)}
+          lang={outroIdioma.codigo}
+          hreflang={outroIdioma.codigo}
+          data-astro-reload
+          aria-label={outroIdioma.codigo === 'en' ? 'Read this page in English' : 'Ler esta página em português'}
+        >
+          <img src={`/idiomas/${outroIdioma.bandeira}`} style={`aspect-ratio:${outroIdioma.bandeiraRatio}`} alt="" />
+          <span>{outroIdioma.curto}</span>
+        </a>
+
         <!-- Os dois rótulos vivem no HTML e o CSS mostra um por vez: nenhum texto
              é escrito por JS, então não há troca visível depois da pintura. -->
         <button class="vista-toggle" type="button" data-vista-toggle>
-          <span class="vista-para-desktop">Ver como no computador</span>
-          <span class="vista-para-fluxo">Ver versão para celular</span>
+          <span class="vista-para-desktop">{t('Ver como no computador')}</span>
+          <span class="vista-para-fluxo">{t('Ver versão para celular')}</span>
         </button>
-        <button class="menu-button" type="button" aria-expanded="false" aria-label="Abrir menu">Menu</button>
+        <button class="menu-button" type="button" aria-expanded="false" aria-label={t('Abrir menu')} data-menu-fechar={t('Fechar')} data-menu-abrir={t('Menu')}>{t('Menu')}</button>
       </div>
     </header>
 
@@ -128,26 +185,29 @@ const acao = ACOES[pagina];
     </main>
 
     {/* Barra inferior do celular e do tablet. Substitui o botão de menu, que
-        escondia as quatro rotas atrás de um toque; aqui elas ficam sempre à
-        vista e ao alcance do polegar. O CSS decide quando ela aparece — no
-        computador não existe. */}
-    <nav class="tabbar" aria-label="Seções do painel">
-      {NAVEGACAO.map(({ href, rotulo, chave, icone }) => (
+        escondia as rotas atrás de um toque; aqui elas ficam sempre à vista e ao
+        alcance do polegar. O CSS decide quando ela aparece — no computador não
+        existe. */}
+    <nav class="tabbar" aria-label={t('Seções do painel')}>
+      {NAVEGACAO.map(({ chave, rotulo, icone }) => (
         <a
-          href={href}
+          href={rota(chave, lang)}
           class={chave === pagina ? 'is-active' : undefined}
           aria-current={chave === pagina ? 'page' : undefined}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icone} /></svg>
-          <span>{rotulo}</span>
+          <span>{t(rotulo)}</span>
         </a>
       ))}
     </nav>
 
     <div class="river-ornament" aria-hidden="true"><i></i><i></i></div>
     <footer>
-      <span>Estratégia 2050</span>
-      <span>Estratégia Amazônia 2050 · Consórcio da Amazônia Legal</span>
+      <span>{t('Estratégia 2050')}</span>
+      <span>{t('Estratégia Amazônia 2050 · Consórcio da Amazônia Legal')}</span>
+      {ehTraducao(lang) && (
+        <span class="footer-traducao">English is a courtesy translation. The official wording is the Portuguese one.</span>
+      )}
     </footer>
   </body>
 </html>

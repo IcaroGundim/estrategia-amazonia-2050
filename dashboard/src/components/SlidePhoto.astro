@@ -1,5 +1,12 @@
 ---
-const { variant = 1 } = Astro.props;
+import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+
+const { variant = 1, lang = IDIOMA_PADRAO } = Astro.props;
+const t = traduzirCom(lang);
+
+// O nome do lugar e o crédito do autor não se traduzem: são topônimo e nome
+// próprio. O que muda de língua é a descrição alternativa, a frase de abertura
+// e a nota de recorte.
 const photos = [
   { file: 'solimoes.jpg', source: 'Aerial_view_of_the_Amazon_Rainforest.jpg', author: 'lubasi', license: '2.0', height: 786, place: 'Rio Solimões · Amazonas', alt: 'Vista aérea do rio Solimões entre áreas de floresta amazônica.' },
   { file: 'manaus.jpg', source: 'Amazon4.jpg', author: 'Neil Palmer / CIAT', license: '2.0', height: 850, place: 'Floresta amazônica · Amazonas', alt: 'Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.' },
@@ -16,11 +23,11 @@ const titles = ['Um território. Um futuro compartilhado.', 'Floresta em pé, qu
       emoldurada, onde precisa centrar a foto e dar a ela um box do tamanho exato
       da imagem. Nas demais, some do layout e a foto segue posicionada como antes. */}
   <div class="slide-photo-well">
-    <img class="slide-photo-main" src={`/photos/${photo.file}`} alt={photo.alt} width={variant === 5 ? 683 : 1280} height={photo.height} loading={variant === 1 ? 'eager' : 'lazy'} />
+    <img class="slide-photo-main" src={`/photos/${photo.file}`} alt={t(photo.alt)} width={variant === 5 ? 683 : 1280} height={photo.height} loading={variant === 1 ? 'eager' : 'lazy'} />
   </div>
-  <div class="slide-photo-caption"><span>{photo.place}</span><p>{titles[variant - 1]}</p></div>
+  <div class="slide-photo-caption"><span>{t(photo.place)}</span><p>{t(titles[variant - 1])}</p></div>
   <figcaption>
     <a href={source(photo)} target="_blank" rel="noreferrer">{photo.author} · Wikimedia Commons ↗</a>
-    <span><a href={`https://creativecommons.org/licenses/by-sa/${photo.license}/`} target="_blank" rel="noreferrer">CC BY-SA {photo.license}</a> · recorte de exibição</span>
+    <span><a href={`https://creativecommons.org/licenses/by-sa/${photo.license}/`} target="_blank" rel="noreferrer">CC BY-SA {photo.license}</a> · {t('recorte de exibição')}</span>
   </figcaption>
 </figure>

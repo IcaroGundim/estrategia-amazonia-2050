@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaginaMetas from '../../components/PaginaMetas.astro';
+---
+
+<Base
+  title="Goals — Amazônia 2050"
+  description="Progress against the Amazônia 2050 Strategy targets, with the full catalogue of the results matrix."
+  ogDescription="Where the Legal Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
+  mainClass="goals-page"
+  pagina="metas"
+  lang="en"
+  dados={['metas']}
+>
+  <PaginaMetas lang="en" />
+
+  <script>
+    import '../../scripts/metas.js';
+  </script>
+</Base>

@@ -1,0 +1,101 @@
+---
+// Corpo do Panorama, comum às duas línguas. As páginas de `pages/` são só a
+// casca que escolhe o idioma — assim o arranjo existe num lugar só e não há
+// como as duas versões divergirem em silêncio.
+import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = IDIOMA_PADRAO } = Astro.props;
+const t = traduzirCom(lang);
+---
+
+<section class="panorama" id="inicio">
+  <div class="section-shell">
+    <div class="dashboard-grid">
+      <div class="dashboard-primary">
+        <article class="map-card card" aria-labelledby="map-title">
+          <div class="card-heading panorama-heading">
+            <div>
+              <h1 id="map-title">{t('Panorama - ')}<em>{t('Amazônia Legal.')}</em></h1>
+              <p class="lead">{t('Explore os indicadores oficiais e compare os nove estados')}</p>
+            </div>
+            <div class="map-controls">
+              <div class="select-wrap">
+                <span class="select-wrap-label">{t('Indicador exibido')}</span>
+                <div id="metric-select"></div>
+              </div>
+              <div class="select-wrap is-year" id="year-select-wrap">
+                <span class="select-wrap-label">{t('Ano exibido')}</span>
+                <div id="year-select"></div>
+              </div>
+            </div>
+          </div>
+          <div class="map-body">
+            <aside id="map-indicator-card" class="map-indicator-card" aria-live="polite">
+              <p>{t('Carregando indicador…')}</p>
+            </aside>
+            <div class="map-canvas">
+              <button id="scope-regional" class="goals-flag map-scope is-active" type="button" aria-pressed="true" aria-label={t('Amazônia Legal, visão regional')} title={t('Amazônia Legal — visão regional')}><img src="/flags/Bandeira_da_Amazonia_Legal.svg" style="aspect-ratio:3 / 2" alt=""></button>
+              <svg id="map" viewBox="0 0 720 500" role="img" aria-label={t('Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.')}></svg>
+              <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
+            </div>
+          </div>
+          <div class="map-legend" aria-label={t('Escala de desempenho relativo')}>
+            <span>{t('menor desempenho')}</span>
+            <i class="legend-ramp" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></i>
+            <span>{t('maior desempenho')}</span>
+          </div>
+        </article>
+
+        <section class="overview" aria-label={t('Resumo regional')}>
+          <article class="card">
+            <p class="metric-label">{t('População observada')}</p>
+            <p class="metric-value" data-population>—</p>
+            <p>{t('projeção IBGE para 2025')}</p>
+          </article>
+          <article class="card">
+            <p class="metric-label">{t('Território')}</p>
+            <p class="metric-value" data-territorio>—</p>
+            <p>{t('área total dos nove estados')}</p>
+          </article>
+          <article class="card">
+            <p class="metric-label">{t('Municípios')}</p>
+            <p class="metric-value" data-municipios>—</p>
+            <p>{t('na Amazônia Legal · base AdaptaBrasil')}</p>
+          </article>
+          <article class="card">
+            <p class="metric-label">{t('Unidades de conservação')}</p>
+            <p class="metric-value" data-ucs>—</p>
+            <p>{t('federais e estaduais · CNUC/MMA 2026')}</p>
+          </article>
+        </section>
+      </div>
+
+      <aside class="dashboard-sidebar card" aria-label={t('Detalhes e comparação estadual')}>
+        <div class="sidebar-tabs" role="tablist" aria-label={t('Conteúdo da coluna lateral')}>
+          <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="state-panel" data-panel-view="state">{t('Visão geral')}</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="ranking" data-panel-view="ranking">{t('Comparação estadual')}</button>
+        </div>
+
+        <section id="state-panel" class="state-panel sidebar-panel" role="tabpanel" aria-live="polite" aria-label={t('Visão geral da região ou do estado selecionado')}>
+          <div class="state-panel-loading">{t('Carregando painel…')}</div>
+        </section>
+
+        <section id="ranking" class="ranking-card sidebar-panel" role="tabpanel" aria-label={t('Comparação estadual')} hidden>
+          <div class="ranking-panel-head">
+            <div>
+              <p class="eyebrow">{t('Comparação estadual')}</p>
+              <h2 data-ranking-title>{t('Síntese comparativa')}</h2>
+              <small data-ranking-subtitle>{t('maior pontuação = melhor posição')}</small>
+            </div>
+            <a class="text-button" href={`${lang === 'en' ? '/en/overview' : '/metodologia'}#calculo`}>{t('Critérios')} <span aria-hidden="true">↗</span></a>
+          </div>
+          <ol id="ranking-list" class="ranking-list" aria-live="polite"></ol>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>

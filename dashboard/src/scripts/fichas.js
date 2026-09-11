@@ -6,6 +6,8 @@
 // paginação, colunas) morreu junto com a duplicação que ela criava.
 
 import { escape } from './shared.js';
+import { ehTraducao, t, tp } from '../i18n/index.js';
+import { campoDaFicha, equacoesDe, linhaDeAcao, notasDaFormula, sobreposicaoDaFicha } from './conteudo.js';
 // `?url` devolve o endereço do arquivo já versionado, sem registrar a folha como
 // estilo da página: importada da forma comum, o Astro a promoveria a um <link>
 // no <head> de /metas e os 30KB dela seriam baixados e analisados em toda visita,
@@ -140,7 +142,7 @@ export function statusOf(indicador) {
 
 export function selo(indicador) {
   const status = STATUS[statusOf(indicador)];
-  return `<span class="ind-status ${status.cls}">${status.mark}${status.label}</span>`;
+  return `<span class="ind-status ${status.cls}">${status.mark}${t(status.label)}</span>`;
 }
 
 function formatNumber(value) {
@@ -149,15 +151,15 @@ function formatNumber(value) {
 }
 
 function valueCell(indicador, uf) {
-  if (!indicador.valores) return '<strong>—</strong><small>sem valor coletado</small>';
+  if (!indicador.valores) return `<strong>—</strong><small>${t('sem valor coletado')}</small>`;
   const presente = (value) => value !== null && value !== undefined && value !== '';
   if (!uf) {
     const total = ORDEM_ESTADOS.filter((sigla) => presente(indicador.valores[sigla])).length;
-    return `<strong>${total} de 9</strong><small>estados · ${escape(indicador.anoRef ? `ref. ${indicador.anoRef}` : indicador.unidade || '')}</small>`;
+    return `<strong>${tp('{n} de 9', { n: total })}</strong><small>${t('estados')} · ${escape(indicador.anoRef ? tp('ref. {ano}', { ano: indicador.anoRef }) : t(indicador.unidade || ''))}</small>`;
   }
   const value = indicador.valores[uf];
   const rendered = typeof value === 'string' ? value : formatNumber(value);
-  return `<strong>${rendered}</strong><small>${escape(indicador.unidade || '')}${indicador.anoRef ? ` · ref. ${escape(indicador.anoRef)}` : ''}</small>`;
+  return `<strong>${rendered}</strong><small>${escape(indicador.unidade || '')}${indicador.anoRef ? ` · ${tp('ref. {ano}', { ano: escape(indicador.anoRef) })}` : ''}</small>`;
 }
 
 function detailField(label, value, className = '') {
@@ -169,13 +171,13 @@ function detailField(label, value, className = '') {
 function detailScoreField(value) {
   const content = String(value ?? '').trim();
   if (!content || content === '-') return '';
-  return `<div class="indicator-detail-field"><dt>Pontuação</dt><dd class="has-track"><span>${escape(content)}</span><i class="score-track" aria-hidden="true"></i></dd></div>`;
+  return `<div class="indicator-detail-field"><dt>${t('Pontuação')}</dt><dd class="has-track"><span>${escape(content)}</span><i class="score-track" aria-hidden="true"></i></dd></div>`;
 }
 
 function renderSource(source, references = []) {
-  const links = references.map((url, index) => `<a href="${escape(url)}" target="_blank" rel="noreferrer">Abrir referência${references.length > 1 ? ` ${index + 1}` : ''}<span aria-hidden="true">↗</span></a>`).join('');
-  const label = references.length ? 'Fontes e referências' : 'Fonte';
-  return `<div class="indicator-detail-summary-source"><span>${label}</span><strong>${escape(source || 'Não informada')}</strong>${links ? `<div class="indicator-detail-links">${links}</div>` : ''}</div>`;
+  const links = references.map((url, index) => `<a href="${escape(url)}" target="_blank" rel="noreferrer">${tp('Abrir referência{n}', { n: references.length > 1 ? ` ${index + 1}` : '' })}<span aria-hidden="true">↗</span></a>`).join('');
+  const label = references.length ? t('Fontes e referências') : t('Fonte');
+  return `<div class="indicator-detail-summary-source"><span>${label}</span><strong>${escape(source || t('Não informada'))}</strong>${links ? `<div class="indicator-detail-links">${links}</div>` : ''}</div>`;
 }
 
 function renderNote(note) {
@@ -249,27 +251,35 @@ function temEquacao(codigo) {
 }
 
 function renderFormula(indicador, ficha, katex) {
-  const rawFormula = String(ficha?.formula ?? '').trim();
+  // A fórmula em texto vem da ficha e as equações em LaTeX vêm daqui — e as duas
+  // têm português dentro. `\mathrm{Taxa\ de\ pobreza}` e `\operatorname{média}`
+  // são tipografia, não código: numa página em inglês a equação inteira precisa
+  // ser outra, e não a mesma com rótulo traduzido por fora.
+  const rawFormula = String(campoDaFicha(indicador.codigo, 'formula', ficha?.formula) ?? '').trim();
   const presentation = FORMULAS[indicador.codigo];
+  const equacoes = equacoesDe(indicador.codigo) ?? presentation?.equations;
   const hasRawFormula = rawFormula && rawFormula !== '-';
-  if (!presentation && !hasRawFormula) return '<p class="indicator-detail-empty">Fórmula não informada na ficha técnica.</p>';
+  if (!equacoes && !hasRawFormula) return `<p class="indicator-detail-empty">${t('Fórmula não informada na ficha técnica.')}</p>`;
 
-  if (!presentation || !katex) {
+  if (!equacoes || !katex) {
     // Sem apresentação em LaTeX, ou antes de o KaTeX chegar: o texto da ficha já
     // diz o cálculo, e é o que estava publicado até aqui de qualquer forma.
-    const texto = hasRawFormula ? rawFormula : presentation.equations.join('\n');
+    const texto = hasRawFormula ? rawFormula : equacoes.join('\n');
     return `<div class="indicator-formula-card is-prose"><p>${escape(texto)}</p></div>`;
   }
 
-  const equations = presentation.equations.map((equation) => katex.renderToString(equation, {
+  const equations = equacoes.map((equation) => katex.renderToString(equation, {
     displayMode: true,
     throwOnError: false,
     strict: 'ignore',
     output: 'htmlAndMathml'
   })).map((html) => `<div class="indicator-formula-equation">${html}</div>`).join('');
 
-  const sourceNotes = rawFormula.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).slice(presentation.skip ?? 1);
-  const ownNotes = presentation.notes ?? (presentation.note ? [presentation.note] : []);
+  // As legendas dos símbolos podem vir inteiras da sobreposição; quando vêm, o
+  // texto da ficha em português não entra junto, senão a lista sairia bilíngue.
+  const legendaTraduzida = notasDaFormula(indicador.codigo);
+  const sourceNotes = legendaTraduzida ?? rawFormula.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).slice(presentation?.skip ?? 1);
+  const ownNotes = legendaTraduzida ? [] : (presentation?.notes ?? (presentation?.note ? [presentation.note] : []));
   const notes = groupNotes([...ownNotes, ...sourceNotes]);
   const noteHtml = notes.length
     ? `<div class="indicator-formula-notes">${notes.map(renderNote).join('')}</div>`
@@ -286,46 +296,57 @@ function renderFormula(indicador, ficha, katex) {
  */
 export function renderFicha({ indicador, ficha, uf, katex, metaTexto = null }) {
   const status = STATUS[statusOf(indicador)];
-  const rotuloContexto = uf ? `Valor em ${NOMES_ESTADOS[uf] || uf}` : 'Cobertura nos estados';
+  const rotuloContexto = uf ? tp('Valor em {estado}', { estado: NOMES_ESTADOS[uf] || uf }) : t('Cobertura nos estados');
   const aviso = ficha
     ? ''
-    : '<p class="indicator-detail-note"><strong>Ficha técnica não localizada no documento.</strong> Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.</p>';
-  const comoMedido = ficha?.indicador || indicador.descricao;
-  const fonte = ficha?.fontes || indicador.fonte;
+    : `<p class="indicator-detail-note"><strong>${t('Ficha técnica não localizada no documento.')}</strong> ${t('Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.')}</p>`;
+  // Ordem de preferência, e o inglês inverte a do português.
+  //
+  // Em português a ficha técnica manda: ela é o documento de origem, e a
+  // descrição do catálogo é o resumo. Em inglês, a ficha só manda se alguém a
+  // traduziu; sem isso, o texto do catálogo — que está traduzido — vale mais
+  // que o mesmo campo em português, porque o leitor consegue lê-lo.
+  const daFicha = (nome, doCatalogo, doDocumento) => {
+    const traduzido = sobreposicaoDaFicha(indicador.codigo, nome);
+    if (traduzido) return traduzido;
+    return ehTraducao() ? (doCatalogo || doDocumento) : (doDocumento || doCatalogo);
+  };
+  const comoMedido = daFicha('indicador', indicador.descricao, ficha?.indicador);
+  const fonte = daFicha('fontes', indicador.fonte, ficha?.fontes);
   const referencias = ficha?.referencias?.filter((url) => /^https?:\/\//i.test(url)) || [];
   const meta = metaTexto
     ? `<section class="indicator-detail-block is-goal">
-        <div class="indicator-detail-section-heading"><h3>Meta pactuada</h3></div>
+        <div class="indicator-detail-section-heading"><h3>${t('Meta pactuada')}</h3></div>
         <p>${escape(metaTexto)}</p>
       </section>`
     : '';
 
   return `
-    <section class="indicator-detail-summary" aria-label="Resumo do indicador">
+    <section class="indicator-detail-summary" aria-label="${t('Resumo do indicador')}">
       <div><span>${escape(rotuloContexto)}</span><div class="indicator-value-cell">${valueCell(indicador, uf)}</div></div>
-      <div><span>Situação da coleta</span><strong class="ind-status ${status.cls}">${status.mark}${escape(status.label)}</strong></div>
-      <div><span>Prazo</span><strong class="indicator-detail-summary-value">${escape(ficha?.prazo || indicador.prazo || '—')}</strong></div>
-      <div><span>Frequência</span><strong class="indicator-detail-summary-value">${escape(ficha?.frequencia || 'Não informada')}</strong></div>
+      <div><span>${t('Situação da coleta')}</span><strong class="ind-status ${status.cls}">${status.mark}${escape(t(status.label))}</strong></div>
+      <div><span>${t('Prazo')}</span><strong class="indicator-detail-summary-value">${escape(t(ficha?.prazo || indicador.prazo || '') || '—')}</strong></div>
+      <div><span>${t('Frequência')}</span><strong class="indicator-detail-summary-value">${escape(t(campoDaFicha(indicador.codigo, 'frequencia', ficha?.frequencia) || '') || t('Não informada'))}</strong></div>
       ${renderSource(fonte, referencias)}
     </section>
     <div class="indicator-detail-content">
       ${meta}
       <div class="indicator-detail-lower">
         <section class="indicator-detail-block is-method">
-          <div class="indicator-detail-section-heading"><h3>Método de cálculo</h3></div>
+          <div class="indicator-detail-section-heading"><h3>${t('Método de cálculo')}</h3></div>
           ${renderFormula(indicador, ficha, katex)}
         </section>
-        <aside class="indicator-detail-aside" aria-label="Dados complementares da ficha">
+        <aside class="indicator-detail-aside" aria-label="${t('Dados complementares da ficha')}">
           <section class="indicator-detail-block">
-            <div class="indicator-detail-section-heading"><h3>Como o indicador é medido</h3></div>
-            <p>${escape(comoMedido || 'Definição não informada.')}</p>
+            <div class="indicator-detail-section-heading"><h3>${t('Como o indicador é medido')}</h3></div>
+            <p>${escape(comoMedido || t('Definição não informada.'))}</p>
           </section>
           <section class="indicator-detail-block">
-            <div class="indicator-detail-section-heading"><h3>Dados complementares</h3></div>
+            <div class="indicator-detail-section-heading"><h3>${t('Dados complementares')}</h3></div>
             <dl class="indicator-detail-grid">
-              ${detailField('Linha de ação', ficha?.linhaAcao || indicador.linhaAcao, 'is-wide')}
-              ${detailField('Unidade', ficha?.unidade || indicador.unidade)}
-              ${detailScoreField(ficha?.pontuacao)}
+              ${detailField(t('Linha de ação'), linhaDeAcao(ficha?.linhaAcao || indicador.linhaAcao), 'is-wide')}
+              ${detailField(t('Unidade'), t(campoDaFicha(indicador.codigo, 'unidade', ficha?.unidade || indicador.unidade) || ''))}
+              ${detailScoreField(t(ficha?.pontuacao || ""))}
             </dl>
           </section>
         </aside>
@@ -349,7 +370,7 @@ export function carregaDossie() {
   if (!dossiePromise) {
     dossiePromise = Promise.all([
       fetch('/data/catalogo.json').then((resposta) => {
-        if (!resposta.ok) throw new Error('Não foi possível carregar o catálogo.');
+        if (!resposta.ok) throw new Error(t('Não foi possível carregar o catálogo.'));
         return resposta.json();
       }),
       fetch('/data/fichas.json').then((resposta) => (resposta.ok ? resposta.json() : { fichas: {} }))

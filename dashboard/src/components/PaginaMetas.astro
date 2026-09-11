@@ -1,0 +1,82 @@
+---
+// Corpo da página de metas e indicadores, comum às duas línguas.
+import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = IDIOMA_PADRAO } = Astro.props;
+const t = traduzirCom(lang);
+
+// Os cinco workbooks continuam sendo o download bruto da matriz. Eram o atalho
+// da topbar da rota /indicadores, que deixou de existir.
+const WORKBOOKS = [1, 2, 3, 4, 5];
+---
+
+<div class="section-shell">
+  {/* O título e o seletor de estado abrem a página; os filtros vêm logo abaixo,
+      deitados, e não numa terceira coluna — a lista e o painel de detalhe já
+      dividem a largura entre si. A classe `filters-card` vem junto porque é ela
+      que o celular usa para recolher o bloco; `goals-toolbar` é quem o deita no
+      computador. */}
+  <header class="goals-list-head is-pagina">
+    <h1>{t('Metas - ')}<em>{t('Amazônia Legal.')}</em></h1>
+    <div id="goals-flags" class="goals-flags" role="group" aria-label={t('Estado exibido na progressão das metas')}></div>
+  </header>
+
+  <div class="goals-toolbar filters-card card">
+    <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="goals-filters">
+      <span>{t('Busca e filtros')}</span>
+      <small data-filters-summary>{t('Todos os indicadores')}</small>
+    </button>
+
+    <div class="filters-body" id="goals-filters">
+      <label class="indicator-search">
+        <span aria-hidden="true">⌕</span>
+        <input id="indicator-search" type="search" placeholder={t('Buscar meta, indicador ou código')} autocomplete="off" />
+      </label>
+
+      <div class="filter-linhas">
+        <div class="filter-group">
+          <p class="filter-title" id="goals-eixo-label">{t('Eixo')}</p>
+          <div id="goals-eixo-filters" class="status-filter-list" role="group" aria-labelledby="goals-eixo-label"></div>
+        </div>
+
+        <div class="filter-group">
+          <p class="filter-title" id="goals-status-label">{t('Coleta')}</p>
+          <div id="goals-status-filters" class="status-filter-list" role="group" aria-labelledby="goals-status-label"></div>
+        </div>
+      </div>
+
+      {/* Seis destinos de download ocupavam uma faixa inteira da barra para
+          uma ação que se usa uma vez. Recolhidos num menu, eles cabem ao lado
+          da busca e dos filtros — a barra toda vira uma linha. */}
+      <div class="export-group dropdown" id="export-menu">
+        {/* A seta é a mesma do resto do painel: um `span` que o CSS desenha com
+            duas bordas giradas. Num `svg` com traçado próprio os dois desenhos
+            se somavam — o traçado e o canto da borda — e o resultado não era
+            nem uma coisa nem outra. */}
+        <button class="dropdown-toggle export-toggle" type="button" data-export-toggle aria-expanded="false" aria-controls="export-opcoes">
+          <span>{t('Baixar')}</span>
+          <span class="dropdown-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="dropdown-menu export-opcoes" id="export-opcoes" hidden>
+          <button id="export-csv" class="export-primary" type="button">{t('Seleção atual em CSV')}</button>
+          <p class="export-titulo">{t('Matriz completa em XLSX')}</p>
+          {WORKBOOKS.map((eixo) => (
+            <a href={`/downloads/Indicadores_Resultado_Eixo${eixo}_Amazonia2050.xlsx`}>{t('Eixo')} {eixo}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="goals-board">
+    <section class="goals-list-card card" aria-label={t('Metas e indicadores da Estratégia')}>
+      <p class="goals-list-summary" aria-live="polite" data-lista-resumo></p>
+      <div id="goals-list" class="goals-list" role="list" aria-label={t('Metas e indicadores por eixo')}></div>
+    </section>
+    <aside id="goals-detail" class="goals-detail card" aria-labelledby="goals-detail-title" aria-live="polite" hidden></aside>
+  </div>
+</div>

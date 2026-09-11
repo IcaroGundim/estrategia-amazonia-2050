@@ -1,4 +1,5 @@
 import { aoEntrarNaPagina, bindMenu, bindVista, sinalDaPagina } from './shared.js';
+import { t } from '../i18n/index.js';
 
 // ---------------------------------------------------------------------------
 // A Visão Geral tem duas mecânicas para o mesmo conteúdo e o mesmo HTML.
@@ -205,7 +206,7 @@ async function init() {
   bindVista();
   bindSectionNavigation();
   const response = await fetch('/data/dashboard.json');
-  if (!response.ok) throw new Error('Não foi possível carregar a nota metodológica.');
+  if (!response.ok) throw new Error(t('Não foi possível carregar a nota metodológica.'));
   const data = await response.json();
   document.querySelector('[data-method-sources]').textContent = data.methodology.sources;
 }
@@ -213,5 +214,5 @@ async function init() {
 const ANCORA = '[data-method-sources]';
 
 aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
-  document.querySelector('[data-method-sources]').textContent = 'As fontes não puderam ser carregadas.';
+  document.querySelector('[data-method-sources]').textContent = t('As fontes não puderam ser carregadas.');
 }));
