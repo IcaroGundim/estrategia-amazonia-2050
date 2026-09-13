@@ -71,7 +71,7 @@ const somaPesos = sintese.pesos.reduce((total, item) => total + item.peso, 0);
 
 <Admin title="Síntese comparativa" sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/panorama">Panorama</a> · Síntese</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/panorama">Panorama</a> / Síntese</p>
     <h1>Síntese comparativa</h1>
     <p>O índice de 0 a 100 do Panorama é a média ponderada da posição relativa de cada estado nas métricas escolhidas. Os pesos do índice somam 1 (hoje {somaPesos.toFixed(2)}). Cada dimensão é um recorte com pesos próprios, que também somam 1. Os nomes das dimensões e o texto explicativo ficam em <a href="/admin/textos">Textos</a>.</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
@@ -88,9 +88,9 @@ const somaPesos = sintese.pesos.reduce((total, item) => total + item.peso, 0);
                 <tr>
                   <td>{metrica.rotulo || metrica.chave} <small>{metrica.chave}</small></td>
                   <td>{metrica.rank === 'low' ? 'menor é melhor' : 'maior é melhor'}</td>
-                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`peso:${metrica.chave}`} value={pesoDe.get(metrica.chave) ?? ''} placeholder="—" /></td>
+                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`peso:${metrica.chave}`} value={pesoDe.get(metrica.chave) ?? ''} /></td>
                   <td><select name={`dim:${metrica.chave}`}><option value="">(nenhuma)</option>{nomesDimensoes.map((nome, indice) => <option value={nome} selected={dim?.nome === nome}>{rotuloDimensao(nome, indice)}</option>)}</select></td>
-                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`pesoDim:${metrica.chave}`} value={dim?.peso ?? ''} placeholder="—" /></td>
+                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`pesoDim:${metrica.chave}`} value={dim?.peso ?? ''} /></td>
                 </tr>
               );
             })}

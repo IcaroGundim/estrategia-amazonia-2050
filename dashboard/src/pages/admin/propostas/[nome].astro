@@ -50,9 +50,9 @@ const ordenadas = [...comparacao.diferencas].sort((a, b) => (a.situacao === 'igu
 
 <Admin title={`Proposta ${proposta.dados.id}`} sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/propostas">Propostas</a> · {proposta.dados.id}</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/propostas">Propostas</a> / {proposta.dados.id}</p>
     <h1>{proposta.dados.descricao || proposta.dados.script}</h1>
-    <p>Gerada por <b>{proposta.dados.script}</b> em {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? <> · fonte: {proposta.dados.fonte}</> : null}.</p>
+    <p>Gerada por <b>{proposta.dados.script}</b> em {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? <>, fonte: {proposta.dados.fonte}</> : null}.</p>
     <Mensagens erro={erro} />
     <div class="admin-grade">
       <div class="admin-numero"><strong>{resumo.novas}</strong><span>células novas</span></div>
@@ -82,9 +82,9 @@ const ordenadas = [...comparacao.diferencas].sort((a, b) => (a.situacao === 'igu
               <tr class={`is-${item.situacao}`}>
                 <td class="is-selecao">{item.situacao !== 'igual' && <input type="checkbox" name="celula" value={item.chave} />}</td>
                 <td>{item.codigo}</td><td>{item.campo}</td><td>{item.uf}</td><td>{item.ano || 'atual'}</td>
-                <td>{item.antes === null ? '—' : item.antes}</td>
+                <td>{item.antes === null ? '' : item.antes}</td>
                 <td><b>{item.depois === '' ? '(vazio)' : item.depois}</b></td>
-                <td>{item.situacao}{item.aviso ? ` · ${item.aviso}` : ''}</td>
+                <td>{item.situacao}{item.aviso ? `, ${item.aviso}` : ''}</td>
               </tr>
             ))}
           </tbody>

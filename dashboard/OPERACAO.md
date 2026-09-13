@@ -17,7 +17,7 @@ do painel seguido de `/admin` (por exemplo, `https://SEU-PAINEL/admin`).
 Tudo o que você salva vai para um **rascunho**. O site público não muda até
 alguém **publicar**. Isso permite conferir antes.
 
-1. Faça as edições (valores, textos, catálogo…) e salve cada tela.
+1. Faça as edições (valores, textos, catálogo) e salve cada tela.
 2. Na página inicial da administração, clique em **Atualizar prévia**. Em 1 a
    2 minutos a prévia fica pronta; abra-a por **Abrir prévia** e confira as
    páginas afetadas.

@@ -63,10 +63,10 @@ const colunas = [
 ];
 ---
 
-<Admin title={`Valores · ${codigo}`} sessao={sessao}>
+<Admin title={`Valores: ${codigo}`} sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/valores">Valores</a> · {codigo}</p>
-    <h1>{codigo} · {info.nome}</h1>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/valores">Valores</a> / {codigo}</p>
+    <h1>{codigo} {info.nome}</h1>
     <p>{info.unidade ? <><b>Unidade:</b> {info.unidade}. </> : null}<b>Atual</b> é o valor sem ano, exibido nas listas; os anos formam a série; os campos auxiliares são números de apoio (totais, denominadores). Use ponto ou vírgula como decimal. Célula vazia apaga o valor.</p>
     <Mensagens erro={erro} salvo={salvo ? `${salvo} célula(s) gravada(s) no rascunho.` : null} />
 
@@ -97,7 +97,7 @@ const colunas = [
       <div class="admin-acoes">
         <button type="submit" class="admin-botao">Salvar no rascunho</button>
         <a class="admin-botao is-secundario" href="/admin/valores">Voltar</a>
-        <small>Dica: copie um bloco no Excel (estados nas linhas, anos nas colunas) e cole na célula do canto superior esquerdo do bloco.</small>
+        <small>Copie um bloco no Excel (estados nas linhas, anos nas colunas) e cole na célula do canto superior esquerdo do bloco.</small>
       </div>
     </form>
   </section>

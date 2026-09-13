@@ -27,10 +27,10 @@ const salvo = Astro.url.searchParams.get('salvo');
 <Admin title="Valores" sessao={sessao}>
   <Mensagens salvo={salvo} />
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Valores</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Valores</p>
     <h1>Valores por indicador</h1>
     <p>Cada código tem uma grade estados × anos, onde dá para digitar ou colar um bloco copiado do Excel. Para muitos indicadores de uma vez, use a importação abaixo.</p>
-    <Busca placeholder="Buscar código ou indicador…" />
+    <Busca placeholder="Buscar código ou indicador" />
   </section>
 
   <section class="admin-cartao" id="importar">
@@ -59,7 +59,7 @@ const salvo = Astro.url.searchParams.get('salvo');
           const conta = contagem.get(item.codigo);
           return (
             <li>
-              <div><a href={`/admin/valores/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.unidade ? `${item.unidade} · ` : ''}{conta ? `${conta.linhas} valor(es), última alteração ${conta.ultimo}` : 'sem valores'}</small></div>
+              <div><a href={`/admin/valores/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.unidade ? `${item.unidade}, ` : ''}{conta ? `${conta.linhas} valor(es), última alteração ${conta.ultimo}` : 'sem valores'}</small></div>
               {!conta && <span class="admin-etiqueta is-manual">sem valores</span>}
             </li>
           );
@@ -115,7 +115,7 @@ const salvo = Astro.url.searchParams.get('salvo');
     mostraErro('');
     previa.innerHTML = '';
     aplicar.disabled = true;
-    resumo.textContent = 'Conferindo…';
+    resumo.textContent = 'Conferindo';
     try {
       lote = await montaLote();
       const resposta = await fetch('/api/admin/valores/diferencas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote }) });
@@ -124,7 +124,7 @@ const salvo = Astro.url.searchParams.get('salvo');
       versao = corpo.versao;
       const { novas, alteradas, iguais, avisos } = corpo.resumo;
       resumo.textContent = `${novas} nova(s), ${alteradas} alterada(s), ${iguais} igual(is)${avisos ? `, ${avisos} aviso(s)` : ''}${corpo.problemas.length ? `, ${corpo.problemas.length} com problema` : ''}.`;
-      const linhasTabela = corpo.diferencas.filter((d: any) => d.situacao !== 'igual').map((d: any) => `<tr class="is-${d.situacao}"><td>${escapa(d.codigo)}</td><td>${escapa(d.campo)}</td><td>${escapa(d.uf)}</td><td>${escapa(d.ano)}</td><td>${d.antes === null ? '—' : escapa(d.antes)}</td><td><b>${escapa(d.depois)}</b></td><td>${d.situacao}${d.aviso ? ` · ${escapa(d.aviso)}` : ''}</td></tr>`).join('');
+      const linhasTabela = corpo.diferencas.filter((d: any) => d.situacao !== 'igual').map((d: any) => `<tr class="is-${d.situacao}"><td>${escapa(d.codigo)}</td><td>${escapa(d.campo)}</td><td>${escapa(d.uf)}</td><td>${escapa(d.ano)}</td><td>${d.antes === null ? '' : escapa(d.antes)}</td><td><b>${escapa(d.depois)}</b></td><td>${d.situacao}${d.aviso ? `, ${escapa(d.aviso)}` : ''}</td></tr>`).join('');
       const problemas = corpo.problemas.map((p: string) => `<li>${escapa(p)}</li>`).join('');
       previa.innerHTML = `${problemas ? `<p class="admin-aviso">Linhas ignoradas:</p><ul class="admin-problemas">${problemas}</ul>` : ''}${linhasTabela ? `<div class="admin-tabela-rolagem"><table class="admin-tabela"><thead><tr><th>código</th><th>campo</th><th>UF</th><th>ano</th><th>antes</th><th>depois</th><th>situação</th></tr></thead><tbody>${linhasTabela}</tbody></table></div>` : '<p>Nenhuma célula muda.</p>'}`;
       aplicar.disabled = !(novas + alteradas) || corpo.problemas.length > 0;

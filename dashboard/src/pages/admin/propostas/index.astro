@@ -25,7 +25,7 @@ const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { d
 <Admin title="Propostas" sessao={sessao}>
   <Mensagens salvo={salvo} erro={erro} />
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Propostas</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Propostas</p>
     <h1>Propostas dos scripts de coleta</h1>
     <p>Os scripts que baixam dados das fontes públicas não alteram o painel: cada execução vira uma proposta, que fica aqui até alguém aceitar ou rejeitar. Ao aceitar, as células entram no rascunho como qualquer outra edição; o site só muda quando o rascunho é publicado.</p>
   </section>
@@ -36,7 +36,7 @@ const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { d
     <ul class="admin-lista">
       {propostas.map((proposta) => (
         <li>
-          <div><a href={`/admin/propostas/${encodeURIComponent(proposta.nome)}`}>{proposta.dados.descricao || proposta.dados.script}</a><br /><small>{proposta.dados.valores.length} célula(s) · {proposta.dados.script} · {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? ` · ${proposta.dados.fonte}` : ''}</small></div>
+          <div><a href={`/admin/propostas/${encodeURIComponent(proposta.nome)}`}>{proposta.dados.descricao || proposta.dados.script}</a><br /><small>{proposta.dados.valores.length} célula(s), {proposta.dados.script} {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? `, ${proposta.dados.fonte}` : ''}</small></div>
           <span class="admin-etiqueta is-pendente">pendente</span>
         </li>
       ))}

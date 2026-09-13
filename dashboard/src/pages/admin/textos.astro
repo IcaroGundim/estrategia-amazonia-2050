@@ -38,12 +38,12 @@ function poe(no: unknown, caminho: string[], par: Par) {
 }
 
 const GRUPOS: { chave: string; titulo: string; descricao: string }[] = [
-  { chave: 'visaoGeral.estrategia', titulo: 'Visão Geral · lâmina 1 — A Estratégia', descricao: 'Título, abertura, os três números e o fechamento.' },
-  { chave: 'visaoGeral.visao2050', titulo: 'Visão Geral · lâmina 2 — Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.' },
-  { chave: 'visaoGeral.temas', titulo: 'Visão Geral · lâmina 3 — Temas estratégicos', descricao: 'Os seis temas.' },
-  { chave: 'visaoGeral.governanca', titulo: 'Visão Geral · lâmina 4 — Governança', descricao: 'Os seis blocos e o fluxo de implementação.' },
-  { chave: 'visaoGeral.estePainel', titulo: 'Visão Geral · lâmina 5 — Este painel', descricao: 'Como os dados são lidos.' },
-  { chave: 'panorama.metodologia', titulo: 'Panorama · metodologia da síntese', descricao: 'Título, texto, dimensões e fontes consolidadas, exibidos no Panorama e na lâmina 5.' }
+  { chave: 'visaoGeral.estrategia', titulo: 'Visão Geral, lâmina 1: A Estratégia', descricao: 'Título, abertura, os três números e o fechamento.' },
+  { chave: 'visaoGeral.visao2050', titulo: 'Visão Geral, lâmina 2: Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.' },
+  { chave: 'visaoGeral.temas', titulo: 'Visão Geral, lâmina 3: Temas estratégicos', descricao: 'Os seis temas.' },
+  { chave: 'visaoGeral.governanca', titulo: 'Visão Geral, lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.' },
+  { chave: 'visaoGeral.estePainel', titulo: 'Visão Geral, lâmina 5: Este painel', descricao: 'Como os dados são lidos.' },
+  { chave: 'panorama.metodologia', titulo: 'Panorama: metodologia da síntese', descricao: 'Título, texto, dimensões e fontes consolidadas, exibidos no Panorama e na lâmina 5.' }
 ];
 
 if (Astro.request.method === 'POST') {
@@ -67,12 +67,12 @@ if (Astro.request.method === 'POST') {
 }
 
 const todas = folhas(lido.dados);
-const rotuloDe = (caminho: string) => caminho.split('.').slice(-2).map((parte) => (/^\d+$/.test(parte) ? `item ${Number(parte) + 1}` : parte)).join(' · ');
+const rotuloDe = (caminho: string) => caminho.split('.').slice(-2).map((parte) => (/^\d+$/.test(parte) ? `item ${Number(parte) + 1}` : parte)).join(' / ');
 ---
 
 <Admin title="Textos" sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Textos</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Textos</p>
     <h1>Textos do painel</h1>
     <p>Português à esquerda, inglês à direita. Um inglês vazio faz a página em inglês mostrar o português naquele ponto. Os textos de interface (botões, menus, rótulos) não estão aqui; vivem no código.</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />

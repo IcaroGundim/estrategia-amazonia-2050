@@ -41,7 +41,7 @@ const pesoDe = new Map(lido.dados.sintese.pesos.map((item) => [item.chave, item.
 <Admin title="Panorama" sessao={sessao}>
   <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Panorama</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Panorama</p>
     <h1>Configuração do Panorama</h1>
     <p>As métricas do mapa, na ordem em que aparecem no seletor. Cada uma diz de onde vem a série, como se exibe e como o valor da Amazônia Legal é calculado. A <a href="/admin/panorama/sintese">síntese comparativa</a> define quais entram no índice, com que peso e em que dimensão.</p>
     <div class="admin-acoes"><a class="admin-botao" href="/admin/panorama/nova">Criar métrica</a><a class="admin-botao is-secundario" href="/admin/panorama/sintese">Síntese: pesos e dimensões</a></div>
@@ -52,7 +52,7 @@ const pesoDe = new Map(lido.dados.sintese.pesos.map((item) => [item.chave, item.
     <ul class="admin-lista is-compacta">
       {lido.dados.metricas.map((metrica, indice) => (
         <li>
-          <div><a href={`/admin/panorama/${encodeURIComponent(metrica.chave)}`}><b>{metrica.rotulo || metrica.chave}</b> <small>{metrica.chave}</small></a><br /><small>{metrica.tipo}{metrica.codigoCatalogo ? ` · ${metrica.codigoCatalogo}` : ''}{metrica.referencia ? ` · ref. ${metrica.referencia}` : ''}{pesoDe.has(metrica.chave) ? ` · peso ${pesoDe.get(metrica.chave)}` : ''}</small></div>
+          <div><a href={`/admin/panorama/${encodeURIComponent(metrica.chave)}`}><b>{metrica.rotulo || metrica.chave}</b> <small>{metrica.chave}</small></a><br /><small>{metrica.tipo}{metrica.codigoCatalogo ? `, ${metrica.codigoCatalogo}` : ''}{metrica.referencia ? `, ref. ${metrica.referencia}` : ''}{pesoDe.has(metrica.chave) ? `, peso ${pesoDe.get(metrica.chave)}` : ''}</small></div>
           <div class="admin-acoes" style="margin: 0">
             <span class={`admin-etiqueta${metrica.seletor ? ' is-coletado' : ' is-manual'}`}>{metrica.seletor ? 'no seletor' : 'fora do seletor'}</span>
             <form method="post"><input type="hidden" name="versao" value={lido.versao} /><input type="hidden" name="chave" value={metrica.chave} /><button type="submit" name="mover" value="cima" class="admin-botao is-secundario is-mini" disabled={indice === 0} title="Subir">↑</button> <button type="submit" name="mover" value="baixo" class="admin-botao is-secundario is-mini" disabled={indice === lido.dados.metricas.length - 1} title="Descer">↓</button></form>

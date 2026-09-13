@@ -40,12 +40,12 @@ const { dados } = await leContas();
 
 <Admin title="Contas" sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Contas</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Contas</p>
     <h1>Contas da administração</h1>
     <p>Cada pessoa entra com a própria conta, e o histórico registra quem salvou o quê. Contas não passam pelo rascunho: valem a partir do deploy seguinte, em 1 a 2 minutos. A senha temporária aparece uma única vez; passe-a à pessoa e peça que a troque em "Minha senha".</p>
     <Mensagens erro={erro} aviso={aviso} />
     {senhaMostrada && (
-      <p class="admin-ok"><b>Senha temporária de {senhaMostrada.usuario}:</b> <code>{senhaMostrada.senha}</code> — copie agora; ela não será mostrada de novo.</p>
+      <p class="admin-ok"><b>Senha temporária de {senhaMostrada.usuario}:</b> <code>{senhaMostrada.senha}</code>: copie agora; ela não será mostrada de novo.</p>
     )}
   </section>
 
@@ -66,7 +66,7 @@ const { dados } = await leContas();
     <ul class="admin-lista">
       {dados.usuarios.map((conta) => (
         <li>
-          <div><b>{conta.nome}</b> <small>· {conta.usuario} · desde {conta.criadoEm}{conta.trocarSenha ? ' · senha temporária' : ''}</small></div>
+          <div><b>{conta.nome}</b> <small>{conta.usuario}, desde {conta.criadoEm}{conta.trocarSenha ? ', senha temporária' : ''}</small></div>
           <div class="admin-acoes" style="margin: 0">
             <span class={`admin-etiqueta${conta.ativo ? ' is-coletado' : ' is-manual'}`}>{conta.ativo ? 'ativa' : 'inativa'}</span>
             <form method="post" onsubmit={`return confirm('Gerar senha nova para ${conta.usuario}? A atual deixa de valer no próximo deploy.')`}><input type="hidden" name="acao" value="redefinir" /><input type="hidden" name="usuario" value={conta.usuario} /><button type="submit" class="admin-botao is-secundario is-mini">Redefinir senha</button></form>

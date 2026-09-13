@@ -71,7 +71,7 @@ const ATALHOS = [
 <Admin title="Início" sessao={sessao}>
   <section class="admin-cartao">
     <p class="admin-chapeu">Administração do painel</p>
-    <h1>Olá, {sessao.nome}</h1>
+    <h1>Início</h1>
     <p>Tudo o que você salva vai para o rascunho. Ele só chega ao site quando alguém publica; antes disso dá para conferir na prévia.</p>
   </section>
 
@@ -87,7 +87,7 @@ const ATALHOS = [
         </div>
         <div class="admin-acoes" style="margin: 0">
           <form method="post" action="/api/admin/previa"><button type="submit" class="admin-botao is-secundario">Atualizar prévia</button></form>
-          {estado.previewUrl && <a class="admin-botao is-secundario" href={estado.previewUrl} target="_blank" rel="noopener">Abrir prévia ↗</a>}
+          {estado.previewUrl && <a class="admin-botao is-secundario" href={estado.previewUrl} target="_blank" rel="noopener">Abrir prévia</a>}
           <form method="post" action="/api/admin/publicar" onsubmit="return confirm('Publicar o rascunho no site?')">
             <button type="submit" class="admin-botao" disabled={!estado.podePublicar}>Publicar no site</button>
           </form>
@@ -96,7 +96,7 @@ const ATALHOS = [
       {estado.pendentes.length > 0 && (
         <ul class="admin-linha-tempo">
           {estado.pendentes.slice(0, 10).map((commit) => (
-            <li>{commit.mensagem}<small>{commit.autor}{commit.data ? ` · ${quando(commit.data)}` : ''}</small></li>
+            <li>{commit.mensagem}<small>{commit.autor}{commit.data ? `, ${quando(commit.data)}` : ''}</small></li>
           ))}
           {estado.pendentes.length > 10 && <li><small>e mais {estado.pendentes.length - 10}</small></li>}
         </ul>

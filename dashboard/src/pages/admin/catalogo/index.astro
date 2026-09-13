@@ -27,20 +27,20 @@ const nivel = (status: string) => {
 <Admin title="Catálogo" sessao={sessao}>
   <Mensagens salvo={salvo} />
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Catálogo</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Catálogo</p>
     <h1>Catálogo de indicadores</h1>
     <p>Os {catalogo.eixos.reduce((soma, eixo) => soma + eixo.indicadores.length, 0)} indicadores da Estratégia, por eixo. O texto de cada um (nome, meta, descrição, fonte, situação da coleta) edita-se aqui; os números ficam na tela de valores.</p>
     <div class="admin-acoes"><a class="admin-botao" href="/admin/catalogo/novo">Criar indicador</a></div>
-    <Busca placeholder="Buscar indicador por código, nome ou unidade…" />
+    <Busca placeholder="Buscar indicador por código, nome ou unidade" />
   </section>
 
   {catalogo.eixos.map((eixo) => (
     <section class="admin-cartao">
-      <h2>Eixo {eixo.numero} · {eixo.nome}</h2>
+      <h2>Eixo {eixo.numero} {eixo.nome}</h2>
       <ul class="admin-lista is-compacta">
         {eixo.indicadores.map((indicador) => (
           <li>
-            <div><a href={`/admin/catalogo/${encodeURIComponent(indicador.codigo)}`}><b>{indicador.codigo}</b> {indicador.nome}</a><br /><small>{indicador.unidade}{indicador.anoRef ? ` · ref. ${indicador.anoRef}` : ''}</small></div>
+            <div><a href={`/admin/catalogo/${encodeURIComponent(indicador.codigo)}`}><b>{indicador.codigo}</b> {indicador.nome}</a><br /><small>{indicador.unidade}{indicador.anoRef ? `, ref. ${indicador.anoRef}` : ''}</small></div>
             <span class={`admin-etiqueta is-${nivel(indicador.status)}`}>{nivel(indicador.status) === 'manual' ? 'não coletado' : nivel(indicador.status)}</span>
           </li>
         ))}

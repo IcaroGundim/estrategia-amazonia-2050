@@ -32,8 +32,8 @@ const textoEn = en === null || en === undefined ? '' : String(en);
     )}
     {tipo === 'numero' && <input type="text" inputmode="decimal" name={nome} value={texto} required={obrigatorio} />}
     {tipo === 'texto' && <input type="text" name={nome} value={texto} required={obrigatorio} placeholder={comEn ? 'Português' : undefined} />}
-    {comEn && tipo === 'area' && <textarea name={`${nome}__en`} rows={linhas} placeholder="English (opcional)">{textoEn}</textarea>}
-    {comEn && tipo === 'texto' && <input type="text" name={`${nome}__en`} value={textoEn} placeholder="English (opcional)" />}
+    {comEn && tipo === 'area' && <textarea name={`${nome}__en`} rows={linhas} placeholder="Inglês">{textoEn}</textarea>}
+    {comEn && tipo === 'texto' && <input type="text" name={`${nome}__en`} value={textoEn} placeholder="Inglês" />}
   </div>
   {ajuda && <small>{ajuda}</small>}
 </div>

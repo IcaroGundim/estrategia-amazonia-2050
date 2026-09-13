@@ -102,7 +102,7 @@ const titulo = nova ? 'Criar métrica' : `${metrica!.rotulo || metrica!.chave}`;
 
 <Admin title={titulo} sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/panorama">Panorama</a> · {nova ? 'Nova' : metrica!.chave}</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/panorama">Panorama</a> / {nova ? 'Nova' : metrica!.chave}</p>
     <h1>{titulo}</h1>
     <p>Os números da métrica ficam na tela de <a href="/admin/valores">valores</a>, sob o código indicado aqui. Uma métrica nova só aparece no mapa quando está no seletor com rótulo, formato e agregação; para entrar no índice, acrescente-a na <a href="/admin/panorama/sintese">síntese</a>.</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
@@ -117,7 +117,7 @@ const titulo = nova ? 'Criar métrica' : `${metrica!.rotulo || metrica!.chave}`;
             { valor: 'taxa', rotulo: 'Taxa: valor bruto por ano ÷ área ou população' },
             { valor: 'valor', rotulo: 'Valor: um número por estado, sem série' }
           ]} />
-          <Campo nome="codigoCatalogo" rotulo="Indicador do catálogo correspondente" tipo="select" valor={metrica?.codigoCatalogo ?? ''} opcoes={[{ valor: '', rotulo: '(nenhum)' }, ...indicadores.map((item) => ({ valor: item.codigo, rotulo: `${item.codigo} · ${item.nome}` }))]} />
+          <Campo nome="codigoCatalogo" rotulo="Indicador do catálogo correspondente" tipo="select" valor={metrica?.codigoCatalogo ?? ''} opcoes={[{ valor: '', rotulo: '(nenhum)' }, ...indicadores.map((item) => ({ valor: item.codigo, rotulo: `${item.codigo}, ${item.nome}` }))]} />
         </div>
         <div class="admin-form-linha">
           <Campo nome="codigo" rotulo="Código dos valores (série ou valor)" valor={metrica?.codigo ?? ''} ajuda="Vazio = a própria chave. Ex.: apsEquipes" />

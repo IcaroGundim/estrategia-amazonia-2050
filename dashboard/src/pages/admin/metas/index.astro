@@ -30,10 +30,10 @@ const descreveAlvo = (parametro: Parametro) => {
 <Admin title="Metas" sessao={sessao}>
   <Mensagens salvo={salvo} />
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · Metas</p>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Metas</p>
     <h1>Metas confrontáveis</h1>
     <p>Uma meta só entra no quadro quando o patamar pode ser comparado com os valores coletados, na mesma unidade. As demais aparecem na lista pública como "fora do quadro", com o motivo escrito aqui ou com o motivo padrão.</p>
-    <Busca placeholder="Buscar indicador por código ou nome…" />
+    <Busca placeholder="Buscar indicador por código ou nome" />
   </section>
 
   <section class="admin-cartao">
@@ -41,7 +41,7 @@ const descreveAlvo = (parametro: Parametro) => {
     <ul class="admin-lista is-compacta">
       {metas.parametros.map((parametro) => (
         <li>
-          <div><a href={`/admin/metas/${encodeURIComponent(parametro.codigo)}`}><b>{parametro.codigo}</b> {nomeDe(parametro.codigo)}</a><br /><small>{descreveAlvo(parametro)} · meta {parametro.tipo} · {parametro.agregacao || 'sem agregação'}</small></div>
+          <div><a href={`/admin/metas/${encodeURIComponent(parametro.codigo)}`}><b>{parametro.codigo}</b> {nomeDe(parametro.codigo)}</a><br /><small>{descreveAlvo(parametro)}, meta {parametro.tipo} {parametro.agregacao || 'sem agregação'}</small></div>
           <span class="admin-etiqueta">avaliada</span>
         </li>
       ))}

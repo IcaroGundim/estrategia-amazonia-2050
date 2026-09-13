@@ -117,8 +117,8 @@ const opcoesValorDe = [
 
 <Admin title={`Meta ${codigo}`} sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/metas">Metas</a> · {codigo}</p>
-    <h1>{codigo} · {indicador.nome}</h1>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/metas">Metas</a> / {codigo}</p>
+    <h1>{codigo} {indicador.nome}</h1>
     <p><b>Meta pactuada:</b> {indicador.meta}</p>
     <p><b>Unidade do catálogo:</b> {indicador.unidade}</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
@@ -126,7 +126,7 @@ const opcoesValorDe = [
     <form class="admin-form" method="post" data-form-meta>
       <input type="hidden" name="versao" value={versao} />
       <Campo nome="situacao" rotulo="Situação no quadro de metas" tipo="select" valor={situacao} opcoes={[
-        { valor: 'avaliada', rotulo: 'Avaliada — a meta é confrontada com os valores por estado' },
+        { valor: 'avaliada', rotulo: 'Avaliada: a meta é confrontada com os valores por estado' },
         { valor: 'excluida', rotulo: 'Fora do quadro, com motivo próprio' },
         { valor: 'padrao', rotulo: 'Fora do quadro, com o motivo padrão' }
       ]} />
@@ -140,9 +140,9 @@ const opcoesValorDe = [
             { valor: 'categoria', rotulo: 'Cumpre por categoria (ex.: CAPAG A ou B)' }
           ]} />
           <Campo nome="tipo" rotulo="Tipo de meta" tipo="select" valor={parametro?.tipo || 'declarada'} opcoes={[
-            { valor: 'declarada', rotulo: 'Declarada — o número está escrito na meta' },
-            { valor: 'inferida', rotulo: 'Inferida — meta qualitativa ou regional, operacionalizada aqui' },
-            { valor: 'derivada', rotulo: 'Derivada — alvo calculado da série de cada estado' }
+            { valor: 'declarada', rotulo: 'Declarada: o número está escrito na meta' },
+            { valor: 'inferida', rotulo: 'Inferida: meta qualitativa ou regional, operacionalizada aqui' },
+            { valor: 'derivada', rotulo: 'Derivada: alvo calculado da série de cada estado' }
           ]} />
         </div>
         <div class="admin-form-linha">

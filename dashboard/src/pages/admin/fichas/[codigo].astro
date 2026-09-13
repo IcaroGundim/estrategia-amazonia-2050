@@ -64,8 +64,8 @@ if (Astro.request.method === 'POST') {
 
 <Admin title={`Ficha ${codigo}`} sessao={sessao}>
   <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/catalogo">Catálogo</a> · <a href={`/admin/catalogo/${encodeURIComponent(codigo)}`}>{codigo}</a> · Ficha</p>
-    <h1>Ficha técnica · {codigo}</h1>
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/catalogo">Catálogo</a> / <a href={`/admin/catalogo/${encodeURIComponent(codigo)}`}>{codigo}</a> / Ficha</p>
+    <h1>Ficha técnica {codigo}</h1>
     <p>{doCatalogo.nome}. {existia ? 'A ficha é o detalhe que abre na página de Metas e indicadores.' : 'Este indicador ainda não tem ficha; ao salvar, ela passa a existir.'}</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
 
