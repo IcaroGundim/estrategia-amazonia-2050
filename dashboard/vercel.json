@@ -29,6 +29,5 @@
       ]
     }
   ],
-  "_leia": "Root Directory do projeto na Vercel = dashboard. Rotas, redirecionamentos e barra final vêm do adapter (@astrojs/vercel, .vercel/output/config.json); aqui ficam os cabeçalhos de download e cache e a regra que evita um deploy por salvamento: na branch de rascunho só constrói quando a mensagem do commit traz [previa].",
   "ignoreCommand": "bash -c '[ \"$VERCEL_GIT_COMMIT_REF\" = \"rascunho\" ] && ! echo \"$VERCEL_GIT_COMMIT_MESSAGE\" | grep -q \"\\[previa\\]\"'"
 }
