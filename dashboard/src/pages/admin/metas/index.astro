@@ -5,6 +5,7 @@ export const prerender = false;
 
 import Admin from '../../../layouts/Admin.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
+import Busca from '../../../components/admin/Busca.astro';
 import { leJson } from '../../../lib/admin/edicao';
 
 interface Parametro { codigo: string; alvo?: number | { tipo: string } | null; direcao: string; tipo: string; agregacao?: string }
@@ -32,6 +33,7 @@ const descreveAlvo = (parametro: Parametro) => {
     <p class="admin-chapeu"><a href="/admin">Início</a> · Metas</p>
     <h1>Metas confrontáveis</h1>
     <p>Uma meta só entra no quadro quando o patamar pode ser comparado com os valores coletados, na mesma unidade. As demais aparecem na lista pública como "fora do quadro", com o motivo escrito aqui ou com o motivo padrão.</p>
+    <Busca placeholder="Buscar indicador por código ou nome…" />
   </section>
 
   <section class="admin-cartao">

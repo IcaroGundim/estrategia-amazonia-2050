@@ -6,6 +6,7 @@ export const prerender = false;
 
 import Admin from '../../../layouts/Admin.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
+import Busca from '../../../components/admin/Busca.astro';
 import { leJson, leValores } from '../../../lib/admin/edicao';
 import { codigosDisponiveis } from '../../../lib/admin/valores';
 
@@ -29,6 +30,7 @@ const salvo = Astro.url.searchParams.get('salvo');
     <p class="admin-chapeu"><a href="/admin">Início</a> · Valores</p>
     <h1>Valores por indicador</h1>
     <p>Cada código tem uma grade estados × anos, onde dá para digitar ou colar um bloco copiado do Excel. Para muitos indicadores de uma vez, use a importação abaixo.</p>
+    <Busca placeholder="Buscar código ou indicador…" />
   </section>
 
   <section class="admin-cartao" id="importar">

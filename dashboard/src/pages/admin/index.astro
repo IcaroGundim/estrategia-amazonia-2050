@@ -1,12 +1,13 @@
 ---
-// Início da administração: o estado do rascunho (o que ainda não foi
-// publicado), os botões de prévia e publicação e as telas de edição.
+// Início da administração: o estado do rascunho, as ações de prévia e
+// publicação, a linha do tempo do que ainda não foi publicado e os atalhos.
 export const prerender = false;
 
 import Admin from '../../layouts/Admin.astro';
 import Mensagens from '../../components/admin/Mensagens.astro';
 import { deposito, type Estado } from '../../lib/admin/deposito';
-import { leJson } from '../../lib/admin/edicao';
+import { leJson, leValores } from '../../lib/admin/edicao';
+import { PASTA_PROPOSTAS } from '../../lib/admin/propostas';
 
 const sessao = Astro.locals.sessao!;
 const msg = Astro.url.searchParams.get('msg');
@@ -14,14 +15,27 @@ let erro = Astro.url.searchParams.get('erro');
 
 let estado: Estado | null = null;
 let totalIndicadores = 0;
+let comValores = 0;
 let atualizadoEm = '';
+let totalValores = 0;
+let propostasPendentes = 0;
+let contas = 0;
 try {
-  const [catalogo, painel] = await Promise.all([
-    leJson<{ eixos: { indicadores: unknown[] }[] }>('catalogo'),
-    leJson<{ atualizadoEm: string }>('painel')
+  const [catalogo, painel, valores, usuarios, propostas] = await Promise.all([
+    leJson<{ eixos: { indicadores: { codigo: string }[] }[] }>('catalogo'),
+    leJson<{ atualizadoEm: string }>('painel'),
+    leValores(),
+    leJson<{ usuarios: { ativo: boolean }[] }>('usuarios'),
+    deposito().lista(PASTA_PROPOSTAS)
   ]);
-  totalIndicadores = catalogo.dados.eixos.reduce((soma, eixo) => soma + eixo.indicadores.length, 0);
+  const codigos = new Set(valores.dados.map((linha) => linha.codigo));
+  const indicadores = catalogo.dados.eixos.flatMap((eixo) => eixo.indicadores);
+  totalIndicadores = indicadores.length;
+  comValores = indicadores.filter((item) => codigos.has(item.codigo)).length;
   atualizadoEm = painel.dados.atualizadoEm;
+  totalValores = valores.dados.length;
+  contas = usuarios.dados.usuarios.filter((conta) => conta.ativo).length;
+  propostasPendentes = propostas.filter((nome) => nome.endsWith('.json')).length;
   estado = await deposito().estado();
 } catch (falha) {
   erro = erro || `Não consegui ler o depósito: ${(falha as Error).message}`;
@@ -29,62 +43,92 @@ try {
 
 const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '');
 
-const TELAS = [
-  { href: '/admin/catalogo', nome: 'Catálogo de indicadores', detalhe: 'nome, meta, descrição, fonte, prazo e situação da coleta; criar indicador', pronta: true },
-  { href: '/admin/metas', nome: 'Metas confrontáveis', detalhe: 'alvo, direção, agregação regional e motivos de exclusão', pronta: true },
-  { href: '/admin/textos', nome: 'Textos do painel', detalhe: 'as cinco lâminas da Visão Geral e a metodologia da síntese, em português e inglês', pronta: true },
-  { href: '/admin/painel', nome: 'Data e constantes', detalhe: 'data de atualização exibida e número de municípios', pronta: true },
-  { href: '/admin/valores', nome: 'Valores por indicador', detalhe: 'grade estados × anos, colar do Excel, importar XLSX ou JSON', pronta: true },
-  { href: '/admin/propostas', nome: 'Propostas dos scripts de coleta', detalhe: 'aceitar ou rejeitar o que a coleta automática trouxe', pronta: true },
-  { href: '/admin/panorama', nome: 'Configuração do Panorama', detalhe: 'quais indicadores entram no mapa, pesos e dimensões', pronta: true },
-  { href: '/admin/contas', nome: 'Contas', detalhe: 'criar, desativar e redefinir senha', pronta: true },
-  { href: '/admin/ajuda', nome: 'Ajuda', detalhe: 'como manter o painel: passo a passo para quem edita', pronta: true }
+const ICONES: Record<string, string> = {
+  valores: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16M15 4v16"/>',
+  propostas: '<path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 14l3 3 5-5"/>',
+  catalogo: '<path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  metas: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M21 12h-2M12 21v-2M3 12h2"/>',
+  textos: '<path d="M4 5h16M4 10h16M4 15h10M4 20h7"/>',
+  painel: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  panorama: '<path d="M3 18 9 6l4 8 3-5 5 9z"/>',
+  contas: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 11a3 3 0 1 0 0-6M21.5 20a6 6 0 0 0-4.5-5.8"/>',
+  ajuda: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>'
+};
+
+const ATALHOS = [
+  { href: '/admin/valores', icone: 'valores', nome: 'Valores por indicador', detalhe: 'Grade estados × anos, colar do Excel, importar planilha ou JSON.' },
+  { href: '/admin/propostas', icone: 'propostas', nome: 'Propostas da coleta', detalhe: propostasPendentes ? `${propostasPendentes} proposta(s) esperando decisão.` : 'Aceitar ou rejeitar o que os scripts de coleta trouxeram.', destaque: propostasPendentes > 0 },
+  { href: '/admin/catalogo', icone: 'catalogo', nome: 'Catálogo de indicadores', detalhe: 'Nome, meta, descrição, fonte, prazo e situação da coleta.' },
+  { href: '/admin/metas', icone: 'metas', nome: 'Metas confrontáveis', detalhe: 'Alvo, direção, valor regional e motivos de exclusão.' },
+  { href: '/admin/textos', icone: 'textos', nome: 'Textos do painel', detalhe: 'As cinco lâminas da Visão Geral e a metodologia, em pt e en.' },
+  { href: '/admin/painel', icone: 'painel', nome: 'Data e constantes', detalhe: 'A data "atualizado em" e o número de municípios.' },
+  { href: '/admin/panorama', icone: 'panorama', nome: 'Configuração do Panorama', detalhe: 'Métricas do mapa, ordem do seletor, pesos e dimensões.' },
+  { href: '/admin/contas', icone: 'contas', nome: 'Contas', detalhe: 'Criar, desativar e redefinir senhas.' },
+  { href: '/admin/ajuda', icone: 'ajuda', nome: 'Ajuda', detalhe: 'O passo a passo para quem edita o painel.' }
 ];
 ---
 
 <Admin title="Início" sessao={sessao}>
-  <Mensagens erro={erro} salvo={msg} aviso={estado?.aviso} />
-
   <section class="admin-cartao">
-    <p class="admin-chapeu">Rascunho</p>
+    <p class="admin-chapeu">Administração do painel</p>
     <h1>Olá, {sessao.nome}</h1>
     <p>Tudo o que você salva vai para o rascunho. Ele só chega ao site quando alguém publica; antes disso dá para conferir na prévia.</p>
-    {estado && (
-      <div class="admin-grade">
-        <div class="admin-numero"><strong>{estado.pendentes.length}</strong><span>{estado.modo === 'local' ? 'arquivos de conteudo/ alterados sem commit' : 'alterações salvas e ainda não publicadas'}</span></div>
-        <div class="admin-numero"><strong>{totalIndicadores}</strong><span>indicadores no catálogo</span></div>
-        <div class="admin-numero"><strong>{atualizadoEm}</strong><span>data de atualização exibida no painel</span></div>
-        <div class="admin-numero"><strong>{estado.head ? quando(estado.head.data) : '—'}</strong><span>{estado.head ? `última gravação, por ${estado.head.autor}` : `depósito: ${estado.branch}`}</span></div>
-      </div>
-    )}
-    {estado && (
-      <div class="admin-acoes">
-        <form method="post" action="/api/admin/previa"><button type="submit" class="admin-botao is-secundario">Atualizar prévia</button></form>
-        {estado.previewUrl && <a class="admin-botao is-secundario" href={estado.previewUrl} target="_blank" rel="noopener">Abrir prévia ↗</a>}
-        <form method="post" action="/api/admin/publicar" onsubmit="return confirm('Publicar o rascunho no site?')">
-          <button type="submit" class="admin-botao" disabled={!estado.podePublicar}>Publicar no site</button>
-        </form>
-      </div>
-    )}
-    {estado && estado.pendentes.length > 0 && (
-      <ul class="admin-lista is-compacta">
-        {estado.pendentes.slice(0, 12).map((commit) => (
-          <li><div>{commit.mensagem}</div><small>{commit.autor}{commit.data ? ` · ${quando(commit.data)}` : ''}</small></li>
-        ))}
-        {estado.pendentes.length > 12 && <li><small>e mais {estado.pendentes.length - 12}</small></li>}
-      </ul>
-    )}
   </section>
+
+  <Mensagens erro={erro} salvo={msg} aviso={estado?.aviso} />
+
+  {estado && (
+    <section class="admin-cartao">
+      <div class="admin-cabecalho-cartao">
+        <div>
+          <p class="admin-chapeu">Rascunho</p>
+          <h2>{estado.pendentes.length ? `${estado.pendentes.length} alteração(ões) esperando publicação` : 'Nada pendente: o site está igual ao rascunho'}</h2>
+          <p>{estado.head ? `Última gravação por ${estado.head.autor}, ${quando(estado.head.data)}.` : `Depósito: ${estado.branch}.`}</p>
+        </div>
+        <div class="admin-acoes" style="margin: 0">
+          <form method="post" action="/api/admin/previa"><button type="submit" class="admin-botao is-secundario">Atualizar prévia</button></form>
+          {estado.previewUrl && <a class="admin-botao is-secundario" href={estado.previewUrl} target="_blank" rel="noopener">Abrir prévia ↗</a>}
+          <form method="post" action="/api/admin/publicar" onsubmit="return confirm('Publicar o rascunho no site?')">
+            <button type="submit" class="admin-botao" disabled={!estado.podePublicar}>Publicar no site</button>
+          </form>
+        </div>
+      </div>
+      {estado.pendentes.length > 0 && (
+        <ul class="admin-linha-tempo">
+          {estado.pendentes.slice(0, 10).map((commit) => (
+            <li>{commit.mensagem}<small>{commit.autor}{commit.data ? ` · ${quando(commit.data)}` : ''}</small></li>
+          ))}
+          {estado.pendentes.length > 10 && <li><small>e mais {estado.pendentes.length - 10}</small></li>}
+        </ul>
+      )}
+    </section>
+  )}
+
+  {estado && (
+    <div class="admin-grade">
+      <div class="admin-numero is-destaque"><strong>{atualizadoEm}</strong><span>data de atualização exibida no painel</span></div>
+      <div class="admin-numero"><strong>{totalIndicadores}</strong><span>indicadores no catálogo, {comValores} com valores</span></div>
+      <div class="admin-numero"><strong>{totalValores.toLocaleString('pt-BR')}</strong><span>valores registrados (código × estado × ano)</span></div>
+      <div class="admin-numero"><strong>{propostasPendentes}</strong><span>propostas da coleta esperando decisão</span></div>
+      <div class="admin-numero"><strong>{contas}</strong><span>contas ativas na administração</span></div>
+    </div>
+  )}
 
   <section class="admin-cartao">
     <h2>O que editar</h2>
-    <ul class="admin-lista">
-      {TELAS.map((tela) => (
-        <li>
-          <div>{tela.pronta ? <a href={tela.href}>{tela.nome}</a> : tela.nome}<br /><small>{tela.detalhe}</small></div>
-          {!tela.pronta && <span class="admin-etiqueta is-pendente">{tela.fase}</span>}
-        </li>
+    <div class="admin-atalhos">
+      {ATALHOS.map((atalho) => (
+        <a class="admin-atalho" href={atalho.href}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONES[atalho.icone]} />
+          <b>{atalho.nome}</b>
+          <small>{atalho.detalhe}</small>
+          {atalho.destaque && <span class="admin-etiqueta is-pendente">pendente</span>}
+        </a>
       ))}
-    </ul>
+    </div>
   </section>
 </Admin>
+
+<style>
+  .admin-cabecalho-cartao { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; }
+</style>

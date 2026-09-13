@@ -1,0 +1,36 @@
+---
+// Busca instantânea nas listas longas: filtra os <li> das listas seguintes pelo
+// texto e esconde os cartões que ficarem vazios.
+interface Props {
+  placeholder?: string;
+}
+const { placeholder = 'Buscar por código ou nome…' } = Astro.props;
+---
+
+<div class="admin-busca" data-busca>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+  <input type="search" placeholder={placeholder} autocomplete="off" aria-label="Buscar na lista" />
+  <small data-busca-resumo></small>
+</div>
+
+<script>
+  const semAcento = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  document.querySelectorAll<HTMLElement>('[data-busca]').forEach((caixa) => {
+    const entrada = caixa.querySelector('input')!;
+    const resumo = caixa.querySelector<HTMLElement>('[data-busca-resumo]')!;
+    const cartoes = [...document.querySelectorAll<HTMLElement>('.admin-cartao')].filter((cartao) => cartao.querySelector('.admin-lista'));
+    const itens = cartoes.flatMap((cartao) => [...cartao.querySelectorAll<HTMLElement>('.admin-lista li')]);
+    const filtra = () => {
+      const termo = semAcento(entrada.value.trim());
+      let visiveis = 0;
+      for (const item of itens) {
+        const bate = !termo || semAcento(item.textContent || '').includes(termo);
+        item.hidden = !bate;
+        if (bate) visiveis += 1;
+      }
+      for (const cartao of cartoes) cartao.classList.toggle('is-vazio-na-busca', Boolean(termo) && ![...cartao.querySelectorAll<HTMLElement>('.admin-lista li')].some((item) => !item.hidden));
+      resumo.textContent = termo ? `${visiveis} de ${itens.length}` : '';
+    };
+    entrada.addEventListener('input', filtra);
+  });
+</script>
