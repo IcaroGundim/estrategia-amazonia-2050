@@ -189,15 +189,24 @@ class DepositoGitHub implements Deposito {
     return status === 200 ? dados.object.sha : null;
   }
 
-  // A branch de rascunho nasce da main na primeira vez que alguém a usa.
-  private async garanteRascunho(): Promise<string> {
-    const existente = await this.shaDaBranch(this.config.rascunho);
-    if (existente) { this.rascunhoGarantida = true; return existente; }
-    const main = await this.shaDaBranch(this.config.main);
-    if (!main) throw new ErroDeDeposito(`a branch ${this.config.main} não existe no repositório`);
-    await this.api('/git/refs', { metodo: 'POST', corpo: { ref: `refs/heads/${this.config.rascunho}`, sha: main } });
-    this.rascunhoGarantida = true;
-    return main;
+  // A branch de rascunho nasce da main na primeira vez que alguém a usa. Duas
+  // leituras em paralelo passam pela mesma promessa, e um "já existe" da API
+  // (422) vale como sucesso: outra instância da função pode ter chegado antes.
+  private garantia: Promise<string> | null = null;
+
+  private garanteRascunho(): Promise<string> {
+    if (!this.garantia) {
+      this.garantia = (async () => {
+        const existente = await this.shaDaBranch(this.config.rascunho);
+        if (existente) { this.rascunhoGarantida = true; return existente; }
+        const main = await this.shaDaBranch(this.config.main);
+        if (!main) throw new ErroDeDeposito(`a branch ${this.config.main} não existe no repositório`);
+        const { status } = await this.api('/git/refs', { metodo: 'POST', aceita: [201, 422], corpo: { ref: `refs/heads/${this.config.rascunho}`, sha: main } });
+        this.rascunhoGarantida = true;
+        return status === 422 ? (await this.shaDaBranch(this.config.rascunho)) || main : main;
+      })().catch((erro) => { this.garantia = null; throw erro; });
+    }
+    return this.garantia;
   }
 
   async le(caminho: string): Promise<Versao> {
