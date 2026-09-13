@@ -15,15 +15,12 @@ const WORKBOOKS = [1, 2, 3, 4, 5];
 ---
 
 <div class="section-shell">
-  {/* O título e o seletor de estado abrem a página; os filtros vêm logo abaixo,
-      deitados, e não numa terceira coluna — a lista e o painel de detalhe já
-      dividem a largura entre si. A classe `filters-card` vem junto porque é ela
+  {/* O título fica só para leitores de tela; o seletor de estado mora no topo do
+      cartão da lista, ao lado do resumo. Os filtros vêm deitados, e não numa
+      terceira coluna — a lista e o painel de detalhe já dividem a largura entre si. A classe `filters-card` vem junto porque é ela
       que o celular usa para recolher o bloco; `goals-toolbar` é quem o deita no
       computador. */}
-  <header class="goals-list-head is-pagina">
-    <h1>{t('Metas - ')}<em>{t('Amazônia Legal.')}</em></h1>
-    <div id="goals-flags" class="goals-flags" role="group" aria-label={t('Estado exibido na progressão das metas')}></div>
-  </header>
+  <h1 class="sr-only">{t('Metas e indicadores')}</h1>
 
   <div class="goals-toolbar filters-card card">
     <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="goals-filters">
@@ -74,7 +71,10 @@ const WORKBOOKS = [1, 2, 3, 4, 5];
 
   <div class="goals-board">
     <section class="goals-list-card card" aria-label={t('Metas e indicadores da Estratégia')}>
-      <p class="goals-list-summary" aria-live="polite" data-lista-resumo></p>
+      <div class="goals-list-top">
+        <p class="goals-list-summary" aria-live="polite" data-lista-resumo></p>
+        <div id="goals-flags" class="goals-flags" role="group" aria-label={t('Estado exibido na progressão das metas')}></div>
+      </div>
       <div id="goals-list" class="goals-list" role="list" aria-label={t('Metas e indicadores por eixo')}></div>
     </section>
     <aside id="goals-detail" class="goals-detail card" aria-labelledby="goals-detail-title" aria-live="polite" hidden></aside>

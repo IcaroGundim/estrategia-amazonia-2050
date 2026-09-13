@@ -24,66 +24,64 @@ function ordinal(numero, genero = 'm') {
 
 const state = { data: null, geo: null, catalogo: null, metric: 'prodesRate', ano: null, selected: null, panelView: 'state', spark: null, sparkRef: null };
 
-const metrics = {
-  prodesRate: { label: 'Desmatamento PRODES', subtitle: 'menor taxa = melhor posição', description: 'Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.', source: 'PRODES/INPE', serie: 'prodesRate', field: 'prodesRate', direction: 'low', formatter: (value) => `${number(value, 2)} km² / ${t('mil km²')}` },
-  heatRate: { label: 'Focos de calor', subtitle: 'menos focos = melhor posição', description: 'Focos de calor detectados pelo satélite de referência do INPE, por mil km² de área do estado. É contagem de focos, não área queimada.', source: 'INPE/Queimadas · satélite de referência', serie: 'heatRate', field: 'heatRate', direction: 'low', formatter: (value) => `${number(value, 1)} / ${t('mil km²')}` },
-  poverty: { label: 'Pobreza', subtitle: 'menor percentual = melhor posição', description: 'Percentual da população abaixo da linha de pobreza regional do IBGE (indicador ODS P1.1.1), na série anual da PNAD Contínua.', source: 'IBGE/PNADc · ODS P1.1.1', serie: 'poverty', field: 'poverty', direction: 'low', formatter: (value) => percent(value, 1) },
-  school: { label: 'Frequência escolar 15–17', subtitle: 'maior percentual = melhor posição', description: 'Parcela das pessoas de 15 a 17 anos que frequentam a escola em cada estado, na série anual da PNAD Contínua.', source: 'IBGE/PNADc · módulo Educação', serie: 'school', field: 'school', direction: 'high', formatter: (value) => percent(value, 1) },
-  cvliRate: { label: 'Segurança (CVLI)', subtitle: 'menor taxa = melhor posição', description: 'Crimes violentos letais intencionais registrados para cada 100 mil habitantes.', source: 'Sinesp/MJ', serie: 'cvliRate', field: 'cvliRate', direction: 'low', formatter: (value) => `${number(value, 1)} / ${t('100 mil')}` },
-  apsCobertura: { label: 'Atenção primária', subtitle: 'maior cobertura = melhor posição', description: 'Cobertura populacional estimada da Atenção Primária à Saúde. A partir de 2021 a medida parte da capacidade de atendimento das equipes e por isso passa de 100% em vários estados.', source: 'MS/e-Gestor · cobertura APS', serie: 'apsCobertura', field: 'apsCobertura', direction: 'high', formatter: (value) => percent(value, 1) },
-  vulnerability: { label: 'Vulnerabilidade climática', subtitle: 'menor índice = melhor posição', description: 'Média estadual do índice municipal de vulnerabilidade às mudanças climáticas.', source: 'AdaptaBrasil · linha de base 2025', field: 'vulnerability', direction: 'low', formatter: (value) => number(value, 1) },
-  conservationManaged: { label: 'Gestão de unidades de conservação', subtitle: 'maior percentual = melhor posição', description: 'Percentual de unidades estaduais com plano de manejo e conselho gestor registrados.', source: 'CNUC/MMA · referência 2026', field: 'conservationManaged', direction: 'high', formatter: (value) => percent(value, 0) },
-  ibc: { label: 'Conectividade digital (IBC-AMZ)', subtitle: 'maior índice = melhor posição', description: 'Índice de Conectividade da Amazônia Legal ponderado pela população municipal.', source: 'ANATEL', serie: 'ibc', field: 'ibc', direction: 'high', formatter: (value) => `${number(value, 1)} ${t('pts')}` },
-  perRenovavel: { label: 'Renovabilidade da matriz elétrica', subtitle: 'maior percentual = melhor posição', description: 'Participação de fontes renováveis na potência de geração fiscalizada em operação.', source: 'ANEEL/SIGA · base ago. 2026', field: 'perRenovavel', direction: 'high', formatter: (value) => percent(value, 1) },
-  isgr: { label: 'Saneamento e gestão de riscos', subtitle: 'maior percentual = melhor posição', description: 'Proxy do ISGR com água e esgoto adequados (Censo 2022) e fatores climáticos e de governança (MUNIC 2024).', source: 'IBGE · Censo 2022 + MUNIC 2024', field: 'isgr', direction: 'high', formatter: (value) => percent(value, 1) },
-  pevsBilhoes: { label: 'Produção da sociobioeconomia', subtitle: 'maior valor = melhor posição', description: 'Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.', source: 'IBGE/PEVS', serie: 'pevsBilhoes', field: 'pevsBilhoes', direction: 'high', formatter: (value) => tp('R$ {valor} bi', { valor: number(value, 2) }) },
-  piaBilhoes: { label: 'Transformação industrial', subtitle: 'maior valor = melhor posição', description: 'Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.', source: 'IBGE/PIA-Empresa', serie: 'piaBilhoes', field: 'piaBilhoes', direction: 'high', formatter: (value) => tp('R$ {valor} bi', { valor: number(value, 2) }) },
-  idebAnosIniciais: { label: 'IDEB anos iniciais', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica nos anos iniciais do ensino fundamental, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebAnosIniciais', field: 'idebAnosIniciais', direction: 'high', formatter: (value) => number(value, 1) },
-  idebAnosFinais: { label: 'IDEB anos finais', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica nos anos finais do ensino fundamental, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebAnosFinais', field: 'idebAnosFinais', direction: 'high', formatter: (value) => number(value, 1) },
-  idebEnsinoMedio: { label: 'IDEB ensino médio', subtitle: 'maior nota = melhor posição', description: 'Índice de Desenvolvimento da Educação Básica no ensino médio, rede total. Bienal.', source: 'INEP/IDEB', serie: 'idebEnsinoMedio', field: 'idebEnsinoMedio', direction: 'high', formatter: (value) => number(value, 1) },
-  pdPctPib: { label: 'P&D estadual (% do PIB)', subtitle: 'maior percentual = melhor posição', description: 'Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).', source: 'MCTI + IBGE/SIDRA', serie: 'pdPctPib', field: 'pdPctPib', direction: 'high', formatter: (value) => percent(value, 2) }
+// As métricas do Panorama vêm de dashboard.json (`panorama.metricas`), que o
+// build deriva de conteudo/panorama.json: rótulo, descrição, fonte, direção,
+// formato de exibição e método de agregação regional, com o inglês ao lado.
+// Os textos são resolvidos para a língua da página uma vez, aqui, e o resto do
+// módulo os usa como se fossem constantes.
+let metrics = {};
+let AGREGACAO = {};
+
+const FORMATOS = {
+  km2PorMilKm2: (value) => `${number(value, 2)} km² / ${t('mil km²')}`,
+  porMilKm2: (value) => `${number(value, 1)} / ${t('mil km²')}`,
+  porCemMil: (value) => `${number(value, 1)} / ${t('100 mil')}`,
+  pct0: (value) => percent(value, 0),
+  pct1: (value) => percent(value, 1),
+  pct2: (value) => percent(value, 2),
+  num1: (value) => number(value, 1),
+  num2: (value) => number(value, 2),
+  pontos1: (value) => `${number(value, 1)} ${t('pts')}`,
+  reaisBi: (value) => tp('R$ {valor} bi', { valor: number(value, 2) })
 };
 
-const STATE_ORDER = ['AC', 'AP', 'AM', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'];
-const accentByUf = { TO: '#e0a83c', AP: '#3e6fa8', AM: '#3e6e57', RO: '#8a8078', RR: '#157f72', MT: '#c0451f', AC: '#157f72', PA: '#4a2a6a', MA: '#a8613a' };
-function accentOf(uf) { return accentByUf[uf] || '#00766d'; }
+// Em inglês prefere o campo `en`; sem ele, cai no dicionário e, por fim, no
+// português — um texto novo aparece em português até alguém traduzi-lo.
+function naLingua(objeto, campo) {
+  const pt = objeto?.[campo] ?? null;
+  if (idiomaAtual() !== 'en') return pt;
+  return objeto?.en?.[campo] || (pt ? t(pt) : pt);
+}
 
-// ---------------------------------------------------------------------------
-// Valor da Amazônia Legal como um todo.
-//
-// Toda métrica vira uma média ponderada por um peso — e para as taxas isso não é
-// uma aproximação, é o total sobre o total. A taxa do PRODES é km²/área×1000, logo
-// Σ(taxa×área)/Σárea = 1000×Σkm²/Σárea. O mesmo vale para CVLI e atenção primária
-// (peso população) e para a gestão de UCs (peso número de unidades). Conferido
-// contra os totais que o build calcula por conta própria a partir dos CSVs: bate
-// com summary.cvliRate e summary.prodesKm2 até a sexta casa.
-//
-// `peso: null` é média simples; `metodo: 'soma'` soma os nove valores. O rótulo
-// segue o vocabulário de metas.mjs (ROTULO_AGREGACAO), para que os dois lugares do
-// site que produzem número regional descrevam o método da mesma forma.
-// ---------------------------------------------------------------------------
-const AGREGACAO = {
-  prodesRate: { peso: 'area', rotulo: 'área desmatada dos nove estados sobre a área da região' },
-  heatRate: { peso: 'area', rotulo: 'total de focos sobre a área da região', nota: 'A contagem vem só do satélite de referência do INPE. A série de todos os satélites é maior, mas não serve para comparar anos, porque o número de satélites mudou ao longo do tempo.', notaSerie: 'Rondônia fica sem 2006 e sem 2016: para esses dois anos o servidor do INPE entrega o arquivo do ano anterior, então não há medição própria a mostrar.' },
-  cvliRate: { peso: 'population', rotulo: 'total de CVLI sobre a população regional', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
-  apsCobertura: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'A cobertura acima de 100% não é erro: desde 2021 a medida compara a capacidade de atendimento das equipes com a população, e não o número de pessoas efetivamente cadastradas.', notaSerie: 'A série tem quebra de metodologia em 2021. Até 2020 vale a regra da Atenção Básica, que divide equipes parametrizadas pela população e trava em 100%; de 2021 em diante vale a do Previne Brasil. O salto entre os dois anos é mudança de definição, não de cobertura.' },
-  poverty: { peso: 'population', rotulo: 'média ponderada pela população', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
-  school: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Ponderação pela população total de cada estado, e não pela população de 15 a 17 anos, que não está na base consolidada.', notaSerie: 'O módulo de Educação da PNAD Contínua não foi a campo em 2020 e 2021, então esses dois anos não estão no seletor e o intervalo de 2019 a 2022 não é uma variação anual.' },
-  isgr: { peso: 'population', rotulo: 'média ponderada pela população' },
-  ibc: { peso: 'population', rotulo: 'média ponderada pela população', notaSerie: 'Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.' },
-  conservationManaged: { peso: 'conservationUnits', rotulo: 'unidades com plano e conselho sobre o total de unidades' },
-  vulnerability: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura correta ponderaria pelo número de municípios de cada estado, que não está na base consolidada.' },
-  perRenovavel: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.' },
-  idebAnosIniciais: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.', notaSerie: 'A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.' },
-  idebAnosFinais: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.', notaSerie: 'A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.' },
-  idebEnsinoMedio: { peso: 'population', rotulo: 'média ponderada pela população', nota: 'Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.', notaSerie: 'A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.' },
-  pdPctPib: { peso: null, rotulo: 'média simples dos nove estados', nota: 'Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.', notaSerie: 'Em 2021 e 2023 só oito estados têm valor, então a média desses anos não é composta pelos mesmos estados dos demais.' },
-  pevsBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados', notaSerie: 'Os valores são a preços correntes de cada ano, como o IBGE publica. Numa série de três décadas isso pesa: o Pará sai de R$ 2,05 bi em 1995 para R$ 2,73 bi em 2024, mas em reais de 2024 o valor de 1995 equivale a R$ 11,7 bi — em termos reais a produção caiu, não cresceu. A série deflacionada pelo IPCA está em public/data/pevs-extracao-vegetal.json.' },
-  piaBilhoes: { metodo: 'soma', rotulo: 'soma dos nove estados', notaSerie: 'Os valores são a preços correntes de cada ano, como o IBGE publica; em dezoito anos a inflação pesa na comparação. A série deflacionada pelo IPCA está em public/data/pia-transformacao-industrial.json. A passagem de 2023 para 2024 troca de tabela porque o IBGE trocou de série da PIA — é a mesma emenda que o painel já fazia antes desta extensão.' }
-  // Todo indicador do seletor tem entrada aqui. A guarda por ausência segue no
-  // painel regional: um indicador novo sem método de agregação definido precisa
-  // dizer isso na tela, não inventar um número para a região.
-};
+function montaMetricas(panorama) {
+  metrics = {};
+  AGREGACAO = {};
+  for (const metrica of panorama?.metricas || []) {
+    metrics[metrica.chave] = {
+      label: naLingua(metrica, 'rotulo'),
+      subtitle: naLingua(metrica, 'subtitulo'),
+      description: naLingua(metrica, 'descricao'),
+      source: naLingua(metrica, 'fonte'),
+      serie: metrica.serie ? metrica.chave : undefined,
+      field: metrica.chave,
+      direction: metrica.direcao,
+      formatter: FORMATOS[metrica.formato] || FORMATOS.num1
+    };
+    // Todo indicador do seletor tem agregação. A guarda por ausência segue no
+    // painel regional: um indicador novo sem método precisa dizer isso na tela,
+    // não inventar um número para a região.
+    if (metrica.agregacao) {
+      const agregacao = metrica.agregacao;
+      AGREGACAO[metrica.chave] = {
+        peso: agregacao.peso ?? null,
+        metodo: agregacao.metodo,
+        rotulo: naLingua(agregacao, 'rotulo'),
+        nota: naLingua(agregacao, 'nota'),
+        notaSerie: naLingua(agregacao, 'notaSerie')
+      };
+    }
+  }
+}
 
 function agregacaoDe(metricKey) { return AGREGACAO[metricKey] || null; }
 
@@ -146,6 +144,7 @@ async function init() {
     fetch('/data/catalogo.json').then(readResponse)
   ]);
   state.data = dashboard;
+  montaMetricas(dashboard.panorama);
   state.geo = geo;
   state.catalogo = catalogo;
   // null = Amazônia Legal. A região é a perspectiva de entrada; o estado é o recorte.

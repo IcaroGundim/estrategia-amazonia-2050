@@ -1,0 +1,139 @@
+---
+// Um indicador do catálogo: os campos de texto, em português e inglês, e a
+// situação da coleta. Em `/admin/catalogo/novo` cria um indicador.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto, textoOuNulo } from '../../../lib/admin/edicao';
+
+interface En { nome?: string | null; meta?: string | null; descricao?: string | null; fonte?: string | null; unidade?: string | null }
+interface Indicador { codigo: string; linhaAcao: string; nome: string; meta: string; descricao: string; unidade: string; fonte: string; prazo: number | null; status: string; anoRef: string | null; en?: En }
+interface Catalogo { eixos: { numero: number; nome: string; indicadores: Indicador[] }[] }
+
+const sessao = Astro.locals.sessao!;
+const codigoDaRota = decodeURIComponent(Astro.params.codigo || '');
+const novo = codigoDaRota === 'novo';
+
+const NIVEIS = [
+  { valor: 'coletado', rotulo: 'Coletado — há valores para os estados, de fonte pública' },
+  { valor: 'parcial', rotulo: 'Parcial — parte coletada; o resto depende de fonte sem acesso aberto' },
+  { valor: 'pendente', rotulo: 'Pendente — fonte identificada, mas sem acesso aberto ou sem critério definido' },
+  { valor: 'coleta manual', rotulo: 'Não coletado — depende de informação produzida pelos próprios estados' }
+];
+
+// A situação é um texto livre com prefixo fixo ("coletado (proxy…)"); a tela
+// separa o prefixo da nota entre parênteses e junta de volta ao salvar.
+function separaStatus(status: string) {
+  const bruto = String(status || '').trim();
+  const nivel = NIVEIS.map((item) => item.valor).find((item) => bruto.toLowerCase().startsWith(item)) || 'coleta manual';
+  const resto = bruto.slice(nivel.length).trim();
+  const nota = resto.startsWith('(') && resto.endsWith(')') ? resto.slice(1, -1) : resto;
+  return { nivel, nota };
+}
+const juntaStatus = (nivel: string, nota: string) => (nota ? `${nivel} (${nota})` : nivel);
+
+const lido = await leJson<Catalogo>('catalogo');
+const eixoDe = (catalogo: Catalogo, codigo: string) => catalogo.eixos.find((eixo) => eixo.indicadores.some((item) => item.codigo === codigo));
+let eixoAtual = novo ? lido.dados.eixos[0] : eixoDe(lido.dados, codigoDaRota);
+let indicador: Indicador | undefined = novo ? undefined : eixoAtual?.indicadores.find((item) => item.codigo === codigoDaRota);
+if (!novo && !indicador) return new Response('Indicador não encontrado.', { status: 404 });
+
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  const codigo = novo ? texto(dados, 'codigo') : codigoDaRota;
+  const eixoNumero = Number(texto(dados, 'eixo'));
+  try {
+    if (novo && !/^[A-Z]\d+(\.\d+)*$/.test(codigo)) throw new ErroDeEdicao('O código precisa ter a forma I1.2.3 ou F3.2 (letra maiúscula, números e pontos).');
+    const campos = {
+      linhaAcao: texto(dados, 'linhaAcao'),
+      nome: texto(dados, 'nome'),
+      meta: texto(dados, 'meta'),
+      descricao: texto(dados, 'descricao'),
+      unidade: texto(dados, 'unidade'),
+      fonte: texto(dados, 'fonte'),
+      prazo: numeroOuNulo(dados, 'prazo'),
+      status: juntaStatus(texto(dados, 'nivel'), texto(dados, 'statusNota')),
+      anoRef: textoOuNulo(dados, 'anoRef'),
+      en: {
+        nome: textoOuNulo(dados, 'nome__en'),
+        meta: textoOuNulo(dados, 'meta__en'),
+        descricao: textoOuNulo(dados, 'descricao__en'),
+        fonte: textoOuNulo(dados, 'fonte__en'),
+        unidade: textoOuNulo(dados, 'unidade__en')
+      }
+    };
+    if (!campos.nome) throw new ErroDeEdicao('O nome do indicador é obrigatório.');
+    await salvaJson<Catalogo>('catalogo', versao, (catalogo) => {
+      const destino = catalogo.eixos.find((eixo) => eixo.numero === eixoNumero);
+      if (!destino) throw new ErroDeEdicao(`Eixo ${eixoNumero} não existe.`);
+      if (novo) {
+        if (eixoDe(catalogo, codigo)) throw new ErroDeEdicao(`Já existe um indicador com o código ${codigo}.`);
+        destino.indicadores.push({ codigo, ...campos });
+        return catalogo;
+      }
+      const origem = eixoDe(catalogo, codigo);
+      const existente = origem?.indicadores.find((item) => item.codigo === codigo);
+      if (!origem || !existente) throw new ErroDeEdicao(`O indicador ${codigo} não está mais no catálogo.`);
+      Object.assign(existente, campos);
+      if (origem !== destino) {
+        origem.indicadores = origem.indicadores.filter((item) => item.codigo !== codigo);
+        destino.indicadores.push(existente);
+      }
+      return catalogo;
+    }, `${novo ? 'cria' : 'edita'} o indicador ${codigo}`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/catalogo/${encodeURIComponent(codigo)}?salvo=1`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    // Mantém o que a pessoa digitou na tela.
+    indicador = { codigo, ...(indicador || {} as Indicador), linhaAcao: texto(dados, 'linhaAcao'), nome: texto(dados, 'nome'), meta: texto(dados, 'meta'), descricao: texto(dados, 'descricao'), unidade: texto(dados, 'unidade'), fonte: texto(dados, 'fonte'), prazo: Number(texto(dados, 'prazo')) || null, status: juntaStatus(texto(dados, 'nivel'), texto(dados, 'statusNota')), anoRef: textoOuNulo(dados, 'anoRef'), en: { nome: textoOuNulo(dados, 'nome__en'), meta: textoOuNulo(dados, 'meta__en'), descricao: textoOuNulo(dados, 'descricao__en'), fonte: textoOuNulo(dados, 'fonte__en'), unidade: textoOuNulo(dados, 'unidade__en') } };
+    eixoAtual = lido.dados.eixos.find((eixo) => eixo.numero === eixoNumero) || eixoAtual;
+  }
+}
+
+const status = separaStatus(indicador?.status || '');
+const titulo = novo ? 'Criar indicador' : `${indicador!.codigo} · ${indicador!.nome}`;
+---
+
+<Admin title={titulo} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/catalogo">Catálogo</a> · {novo ? 'Novo' : indicador!.codigo}</p>
+    <h1>{titulo}</h1>
+    <p>{novo ? 'Um indicador novo entra na lista de Metas e indicadores como "não coletado" até receber valores. Se a meta dele puder ser confrontada com números, parametrize-a depois em Metas.' : 'Os números deste indicador ficam na tela de valores; aqui é só o texto.'}{!novo && <> Ficha técnica: <a href={`/admin/fichas/${encodeURIComponent(indicador!.codigo)}`}>editar</a>.</>}</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form class="admin-form" method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <div class="admin-form-linha">
+        {novo
+          ? <Campo nome="codigo" rotulo="Código" valor="" obrigatorio ajuda="Ex.: I1.6.1. Não muda depois de criado." />
+          : <div class="admin-campo"><span>Código</span><div class="admin-campo-controles"><input type="text" value={indicador!.codigo} disabled /></div></div>}
+        <Campo nome="eixo" rotulo="Eixo" tipo="select" valor={String(eixoAtual?.numero ?? 1)} opcoes={lido.dados.eixos.map((eixo) => ({ valor: String(eixo.numero), rotulo: `${eixo.numero} · ${eixo.nome}` }))} />
+        <Campo nome="linhaAcao" rotulo="Linha de ação" valor={indicador?.linhaAcao} ajuda="Só o número, ex.: 1.1" />
+      </div>
+      <Campo nome="nome" rotulo="Nome" valor={indicador?.nome} en={indicador?.en?.nome} comEn obrigatorio largo />
+      <Campo nome="meta" rotulo="Meta pactuada" tipo="area" valor={indicador?.meta} en={indicador?.en?.meta} comEn largo />
+      <Campo nome="descricao" rotulo="Descrição (o que se mede)" tipo="area" valor={indicador?.descricao} en={indicador?.en?.descricao} comEn largo />
+      <div class="admin-form-linha">
+        <Campo nome="unidade" rotulo="Unidade" valor={indicador?.unidade} en={indicador?.en?.unidade} comEn />
+        <Campo nome="prazo" rotulo="Prazo (ano)" tipo="numero" valor={indicador?.prazo} />
+        <Campo nome="anoRef" rotulo="Ano de referência exibido" valor={indicador?.anoRef} ajuda="Texto livre, ex.: 2024 ou 03/2026" />
+      </div>
+      <Campo nome="fonte" rotulo="Fonte" valor={indicador?.fonte} en={indicador?.en?.fonte} comEn largo />
+      <div class="admin-form-linha">
+        <Campo nome="nivel" rotulo="Situação da coleta" tipo="select" valor={status.nivel} opcoes={NIVEIS} />
+        <Campo nome="statusNota" rotulo="Observação da coleta" valor={status.nota} ajuda="Aparece entre parênteses depois da situação, ex.: proxy SIS/PNADc 2024" largo />
+      </div>
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">{novo ? 'Criar no rascunho' : 'Salvar no rascunho'}</button>
+        <a class="admin-botao is-secundario" href="/admin/catalogo">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

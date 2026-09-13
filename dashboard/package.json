@@ -5,22 +5,25 @@
   "type": "module",
   "description": "Dashboard de resultados para os estados da Amazônia Legal.",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "dev": "node build-static.mjs && astro dev",
+    "start": "node build-static.mjs && astro dev",
+    "build": "node build-static.mjs && node -r ./scripts/shim-cpsync.cjs node_modules/astro/bin/astro.mjs build",
     "preview": "astro preview",
     "build:static": "node build-static.mjs",
-    "check:data": "node --check server.mjs && node --check metas.mjs && node --check build-static.mjs",
-    "prepare-data": "node server.mjs --validate",
-    "snapshot": "node snapshot.mjs",
+    "check:data": "node --check build-static.mjs && node scripts/conferir-derivacao.mjs",
     "check:i18n": "node scripts/conferir-traducao.mjs",
-    "nota-tecnica": "node scripts/gerar-nota-tecnica.mjs"
+    "nota-tecnica": "node scripts/gerar-nota-tecnica.mjs",
+    "usuario": "node scripts/usuario.mjs"
   },
   "dependencies": {
+    "@astrojs/vercel": "^11.0.10",
     "astro": "^7.2.9",
-    "katex": "^0.18.5"
+    "bcryptjs": "^3.0.3",
+    "exceljs": "^4.4.0",
+    "katex": "^0.18.5",
+    "xlsx": "^0.18.5"
   },
-  "devDependencies": {
-    "shapefile": "^0.6.6"
+  "engines": {
+    "node": ">=22"
   }
 }

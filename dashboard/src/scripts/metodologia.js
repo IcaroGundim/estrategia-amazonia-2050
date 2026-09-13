@@ -1,5 +1,5 @@
 import { aoEntrarNaPagina, bindMenu, bindVista, sinalDaPagina } from './shared.js';
-import { t } from '../i18n/index.js';
+import { idiomaAtual, t } from '../i18n/index.js';
 
 // ---------------------------------------------------------------------------
 // A Visão Geral tem duas mecânicas para o mesmo conteúdo e o mesmo HTML.
@@ -208,7 +208,8 @@ async function init() {
   const response = await fetch('/data/dashboard.json');
   if (!response.ok) throw new Error(t('Não foi possível carregar a nota metodológica.'));
   const data = await response.json();
-  document.querySelector('[data-method-sources]').textContent = data.methodology.sources;
+  const fontes = idiomaAtual() === 'en' ? (data.methodology.en?.sources || data.methodology.sources) : data.methodology.sources;
+  document.querySelector('[data-method-sources]').textContent = fontes;
 }
 
 const ANCORA = '[data-method-sources]';

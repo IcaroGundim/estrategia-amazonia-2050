@@ -1,0 +1,13 @@
+{
+  "_leia": "Contas da tela de administração. O hash é bcrypt e não é segredo; a senha nunca é gravada. Contas valem a partir do deploy seguinte ao commit.",
+  "usuarios": [
+    {
+      "usuario": "icaro",
+      "nome": "Ícaro Gundim",
+      "hash": "$2b$11$N.ZiSycgJT6cHjKDGO/XYOy5qykQ8WUAAfDV4GZ2alAlL4zZTTA1q",
+      "ativo": true,
+      "trocarSenha": false,
+      "criadoEm": "2026-09-13"
+    }
+  ]
+}

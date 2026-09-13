@@ -1,0 +1,45 @@
+---
+// Propostas pendentes dos scripts de coleta: os JSONs de conteudo/propostas/
+// que ainda não foram aceitos nem rejeitados.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { deposito } from '../../../lib/admin/deposito';
+import { PASTA_PROPOSTAS, leProposta } from '../../../lib/admin/propostas';
+
+const sessao = Astro.locals.sessao!;
+const salvo = Astro.url.searchParams.get('salvo');
+const erro = Astro.url.searchParams.get('erro');
+const nomes = (await deposito().lista(PASTA_PROPOSTAS)).filter((nome) => nome.endsWith('.json'));
+const propostas = (await Promise.all(nomes.map(async (nome) => {
+  try {
+    return await leProposta(nome);
+  } catch {
+    return null;
+  }
+}))).filter((item): item is NonNullable<typeof item> => item !== null);
+const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '');
+---
+
+<Admin title="Propostas" sessao={sessao}>
+  <Mensagens salvo={salvo} erro={erro} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Propostas</p>
+    <h1>Propostas dos scripts de coleta</h1>
+    <p>Os scripts que baixam dados das fontes públicas não alteram o painel: cada execução vira uma proposta, que fica aqui até alguém aceitar ou rejeitar. Ao aceitar, as células entram no rascunho como qualquer outra edição; o site só muda quando o rascunho é publicado.</p>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>Pendentes ({propostas.length})</h2>
+    {propostas.length === 0 && <p>Nenhuma proposta pendente. Para gerar uma, rode os coletores e depois <code>python scripts/gerar_propostas.py</code>; na Vercel, faça commit e push do arquivo gerado em <code>dashboard/conteudo/propostas/</code>.</p>}
+    <ul class="admin-lista">
+      {propostas.map((proposta) => (
+        <li>
+          <div><a href={`/admin/propostas/${encodeURIComponent(proposta.nome)}`}>{proposta.dados.descricao || proposta.dados.script}</a><br /><small>{proposta.dados.valores.length} célula(s) · {proposta.dados.script} · {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? ` · ${proposta.dados.fonte}` : ''}</small></div>
+          <span class="admin-etiqueta is-pendente">pendente</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Admin>

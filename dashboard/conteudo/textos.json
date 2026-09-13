@@ -1,0 +1,371 @@
+{
+  "_leia": "Textos do painel que não são dados. Cada texto é um par { pt, en }; quando en está vazio, a página em inglês mostra o português. visaoGeral: as cinco lâminas. panorama.metodologia: a síntese comparativa, exibida em dashboard.json.",
+  "panorama": {
+    "metodologia": {
+      "title": {
+        "pt": "Síntese comparativa experimental",
+        "en": null
+      },
+      "text": {
+        "pt": "A síntese padroniza oito indicadores disponíveis em uma escala relativa de 0 a 100 entre os nove estados. Ela serve para leitura exploratória e não substitui metas oficiais, auditorias ou avaliação de políticas.",
+        "en": null
+      },
+      "sources": {
+        "pt": "PRODES/INPE, INPE Queimadas, CNUC/MMA, IBGE (SIS, PEVS, PIA-Empresa, Censo 2022/MUNIC), Sinesp/MJ, RAIS/MTE, CNES/DATASUS, ANATEL, ANEEL SIGA, AdaptaBrasil, MCTI e STN. Períodos variam conforme a fonte.",
+        "en": null
+      },
+      "dimensions": [
+        {
+          "name": {
+            "pt": "Território e clima",
+            "en": null
+          },
+          "weight": "40%",
+          "indicators": {
+            "pt": "taxa PRODES 2025, focos de calor 2024 e gestão de UCs",
+            "en": null
+          }
+        },
+        {
+          "name": {
+            "pt": "Pessoas",
+            "en": "People"
+          },
+          "weight": "40%",
+          "indicators": {
+            "pt": "pobreza, frequência escolar 15–17 e cobertura da atenção primária",
+            "en": null
+          }
+        },
+        {
+          "name": {
+            "pt": "Segurança",
+            "en": null
+          },
+          "weight": "12%",
+          "indicators": {
+            "pt": "CVLI por 100 mil habitantes",
+            "en": null
+          }
+        },
+        {
+          "name": {
+            "pt": "Resiliência",
+            "en": null
+          },
+          "weight": "8%",
+          "indicators": {
+            "pt": "IIVCM municipal médio",
+            "en": null
+          }
+        }
+      ]
+    }
+  },
+  "visaoGeral": {
+    "estrategia": {
+      "tituloLinha1": {
+        "pt": "Estratégia Regional",
+        "en": "Regional Strategy"
+      },
+      "tituloLinha2": {
+        "pt": "Amazônia 2050",
+        "en": null
+      },
+      "abertura": {
+        "pt": "O instrumento de planejamento de longo prazo da Amazônia Legal. Define uma visão compartilhada para 2050, organizada por temas e eixos estratégicos, metas, indicadores e uma estrutura de governança para orientar investimentos e políticas públicas nos nove estados.",
+        "en": "The long-term planning instrument for the Legal Amazon. It sets out a shared vision for 2050, organised around strategic themes and axes, targets, indicators and a governance structure to guide investment and public policy across the nine states."
+      },
+      "numeros": [
+        {
+          "valor": "09",
+          "rotulo": {
+            "pt": "estados consorciados",
+            "en": "member states"
+          }
+        },
+        {
+          "valor": "06",
+          "rotulo": {
+            "pt": "temas estratégicos",
+            "en": "strategic themes"
+          }
+        },
+        {
+          "valor": "2050",
+          "rotulo": {
+            "pt": "horizonte pactuado",
+            "en": "agreed target year"
+          }
+        }
+      ],
+      "fechamento": {
+        "pt": "A Estratégia consolida uma agenda sistêmica orientada por resultados, capaz de alinhar desenvolvimento produtivo, conservação ambiental e bem-estar social.",
+        "en": "The Strategy consolidates a systemic, results-oriented agenda able to align productive development, environmental conservation and social well-being."
+      },
+      "botaoPdf": {
+        "rotulo": {
+          "pt": "Abrir a Estratégia em PDF",
+          "en": "Open the Strategy as PDF"
+        },
+        "href": "https://7a98d2b3-3159-4136-8ede-0281e5e3b6ee.filesusr.com/ugd/8edb8f_58edf9f14c4f4be6bd8eb47156aa448b.pdf"
+      }
+    },
+    "visao2050": {
+      "chapeu": {
+        "pt": "O horizonte",
+        "en": "The horizon"
+      },
+      "titulo": {
+        "pt": "A visão regional para 2050",
+        "en": "The regional vision for 2050"
+      },
+      "selo": {
+        "pt": "Visão 2050",
+        "en": "Vision 2050"
+      },
+      "paragrafos": [
+        {
+          "pt": "Em 2050, a Amazônia Legal terá alcançado o desenvolvimento regional sustentável e a resiliência climática, conciliando conservação ambiental, crescimento econômico e justiça social. A região será reconhecida pelo equilíbrio entre produção e conservação, pela valorização de seus ativos ambientais e pela melhoria dos indicadores socioeconômicos.",
+          "en": "By 2050 the Legal Amazon will have achieved sustainable regional development and climate resilience, reconciling environmental conservation, economic growth and social justice. The region will be known for the balance it strikes between production and conservation, for the value it places on its environmental assets, and for improvement across its socioeconomic indicators."
+        },
+        {
+          "pt": "Os saberes e modos de vida dos povos e comunidades tradicionais serão preservados, assegurando qualidade de vida, inclusão e contribuição efetiva para a estabilidade climática global.",
+          "en": "The knowledge and ways of life of Indigenous peoples and traditional communities will be preserved, securing quality of life, inclusion and a real contribution to global climate stability."
+        }
+      ],
+      "subChapeu": {
+        "pt": "Na prática",
+        "en": "In practice"
+      },
+      "subTitulo": {
+        "pt": "Como a Estratégia auxilia os estados",
+        "en": "What the Strategy does for the states"
+      },
+      "lista": [
+        {
+          "pt": "Alinha a visão de longo prazo ao planejamento governamental de médio prazo.",
+          "en": "Aligns the long-term vision with medium-term government planning."
+        },
+        {
+          "pt": "Subsidia a revisão e a formulação de PPAs, LDOs e planos setoriais.",
+          "en": "Informs the drafting and revision of multi-year plans (PPA), budget guidelines (LDO) and sector plans."
+        },
+        {
+          "pt": "Dá coerência entre as prioridades estaduais e a agenda regional.",
+          "en": "Keeps state priorities and the regional agenda coherent with one another."
+        },
+        {
+          "pt": "Fortalece a articulação com a União, organismos multilaterais e financiadores.",
+          "en": "Strengthens engagement with the federal government, multilateral bodies and funders."
+        },
+        {
+          "pt": "Qualifica a priorização de investimentos estruturantes.",
+          "en": "Sharpens the case for prioritising structural investment."
+        }
+      ]
+    },
+    "temas": {
+      "chapeu": {
+        "pt": "Estrutura da Estratégia",
+        "en": "How the Strategy is organised"
+      },
+      "titulo": {
+        "pt": "Seis temas estratégicos",
+        "en": "Six strategic themes"
+      },
+      "abertura": {
+        "pt": "Os temas organizam as prioridades regionais e servem de referência para a leitura dos indicadores deste painel.",
+        "en": "The themes organise the regional priorities and frame how the indicators in this dashboard should be read."
+      },
+      "itens": [
+        {
+          "numero": "01",
+          "titulo": {
+            "pt": "Integração regional",
+            "en": "Regional integration"
+          },
+          "texto": {
+            "pt": "Ordenamento territorial, segurança fundiária, conectividade física e digital e cooperação interestadual e transfronteiriça.",
+            "en": "Land-use planning, secure land tenure, physical and digital connectivity, and cooperation between states and across borders."
+          }
+        },
+        {
+          "numero": "02",
+          "titulo": {
+            "pt": "Sistemas produtivos sustentáveis",
+            "en": "Sustainable production systems"
+          },
+          "texto": {
+            "pt": "Uma economia de baixo carbono, inovadora e centrada na sociobiodiversidade, gerando valor e renda a partir da floresta em pé.",
+            "en": "A low-carbon, innovative economy built on socio-biodiversity, generating value and income from the forest left standing."
+          }
+        },
+        {
+          "numero": "03",
+          "titulo": {
+            "pt": "Soluções baseadas na natureza",
+            "en": "Nature-based solutions"
+          },
+          "texto": {
+            "pt": "Valorização econômica dos ativos ambientais, com conservação, restauração e uso sustentável dos ecossistemas.",
+            "en": "Putting economic value on environmental assets, through conservation, restoration and sustainable use of ecosystems."
+          }
+        },
+        {
+          "numero": "04",
+          "titulo": {
+            "pt": "Transição energética",
+            "en": "Energy transition"
+          },
+          "texto": {
+            "pt": "A Amazônia como polo de inovação em energia limpa, ampliando o acesso à energia renovável.",
+            "en": "The Amazon as a hub for clean-energy innovation, widening access to renewable power."
+          }
+        },
+        {
+          "numero": "05",
+          "titulo": {
+            "pt": "Inclusão social e resiliência",
+            "en": "Social inclusion and resilience"
+          },
+          "texto": {
+            "pt": "Redução de desigualdades, acesso a serviços essenciais e resiliência das populações frente às mudanças climáticas.",
+            "en": "Narrowing inequality, securing access to essential services, and building people’s resilience to climate change."
+          }
+        },
+        {
+          "numero": "06",
+          "titulo": {
+            "pt": "Infraestrutura sustentável",
+            "en": "Sustainable infrastructure"
+          },
+          "texto": {
+            "pt": "Infraestrutura física, logística e digital integrada e resiliente, respeitando os limites socioambientais.",
+            "en": "Physical, logistical and digital infrastructure that is integrated and resilient, and that respects social and environmental limits."
+          }
+        }
+      ]
+    },
+    "governanca": {
+      "chapeu": {
+        "pt": "Implementação",
+        "en": "Implementation"
+      },
+      "titulo": {
+        "pt": "Governança e próximos passos",
+        "en": "Governance and next steps"
+      },
+      "itens": [
+        {
+          "titulo": {
+            "pt": "Priorização e aderência",
+            "en": "Priorities that fit"
+          },
+          "texto": {
+            "pt": "Consolidar e validar as prioridades estaduais, com aderência à realidade de cada território.",
+            "en": "Consolidate and validate state priorities so that they match the reality of each territory."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Qualificação de projetos",
+            "en": "Project readiness"
+          },
+          "texto": {
+            "pt": "Mapear os projetos prioritários, identificando maturidade, gargalos e oportunidades.",
+            "en": "Map the priority projects, identifying how ready each one is, where it is stuck and where the openings are."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Compatibilização institucional",
+            "en": "Fitting the budget cycle"
+          },
+          "texto": {
+            "pt": "Integrar a Estratégia aos PPAs, LDOs, LOAs e planos setoriais.",
+            "en": "Write the Strategy into the multi-year plans (PPA), budget guidelines (LDO), annual budgets (LOA) and sector plans."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Articulação transversal",
+            "en": "Working across departments"
+          },
+          "texto": {
+            "pt": "Articular secretarias finalísticas e áreas técnicas entre as agendas.",
+            "en": "Bring line departments and technical teams together across the agendas."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Interdependência regional",
+            "en": "Regional interdependence"
+          },
+          "texto": {
+            "pt": "Incorporar a lógica regional ao planejamento estadual.",
+            "en": "Build the regional logic into state-level planning."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Monitoramento e avaliação",
+            "en": "Monitoring and evaluation"
+          },
+          "texto": {
+            "pt": "Acompanhar a Estratégia e manter indicadores e metas atualizados.",
+            "en": "Track the Strategy and keep its indicators and targets current."
+          }
+        }
+      ],
+      "fluxo": [
+        {
+          "pt": "Definição de prioridades regionais",
+          "en": "Set the regional priorities"
+        },
+        {
+          "pt": "Compatibilização com os PPAs estaduais",
+          "en": "Align with the state multi-year plans"
+        },
+        {
+          "pt": "Desdobramento em LDO, LOA e planos setoriais",
+          "en": "Carry through into budget guidelines, annual budgets and sector plans"
+        },
+        {
+          "pt": "Monitoramento e avaliação regional",
+          "en": "Monitor and evaluate at regional level"
+        }
+      ]
+    },
+    "estePainel": {
+      "chapeu": {
+        "pt": "Este painel",
+        "en": "This dashboard"
+      },
+      "titulo": {
+        "pt": "Como os dados são lidos aqui",
+        "en": "How the data is read here"
+      },
+      "abertura": {
+        "pt": "O painel organiza indicadores de fontes públicas para comparar os nove estados. Ele antecipa uma leitura enquanto a metodologia de monitoramento da Estratégia não é definida.",
+        "en": "The dashboard draws indicators from public sources so the nine states can be compared. It is a first reading, standing in until the Strategy’s own monitoring methodology is settled."
+      },
+      "itens": [
+        {
+          "titulo": {
+            "pt": "Períodos diferentes",
+            "en": "Different reference years"
+          },
+          "texto": {
+            "pt": "Cada base entra com seu período mais recente, então os anos de referência não são uniformes entre indicadores.",
+            "en": "Each source comes in at its own most recent period, so reference years are not uniform across indicators."
+          }
+        }
+      ],
+      "fontesRotulo": {
+        "pt": "Fontes consolidadas",
+        "en": "Consolidated sources"
+      }
+    }
+  }
+}

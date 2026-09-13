@@ -1,0 +1,55 @@
+---
+// Moldura da administração: só em português, sem o menu público, com a marca
+// e o nome de quem está logado. Servida sob demanda (não é pré-renderizada).
+import '../styles/global.css';
+import '../styles/admin.css';
+
+interface Props {
+  title: string;
+  sessao?: { usuario: string; nome: string } | null;
+}
+
+const { title, sessao = null } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} — Administração · Estratégia Amazônia 2050</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="admin-body">
+    <header class="admin-topo">
+      <a class="admin-marca" href="/admin">
+        <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
+        <span class="admin-marca-sub">Administração do painel</span>
+      </a>
+      {sessao && (
+        <div class="admin-sessao">
+          <span>{sessao.nome}</span>
+          <a class="admin-botao is-leve" href="/admin/senha">Minha senha</a>
+          <a class="admin-botao is-leve" href="/admin/ajuda" title="Como manter o painel">Ajuda</a>
+          <form method="post" action="/api/admin/sair">
+            <button type="submit" class="admin-botao is-leve">Sair</button>
+          </form>
+        </div>
+      )}
+    </header>
+    <main class="admin-main">
+      <slot />
+    </main>
+    <footer class="admin-rodape">
+      <a href="/" target="_blank" rel="noopener">Abrir o painel público ↗</a>
+    </footer>
+  </body>
+</html>

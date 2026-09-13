@@ -25,12 +25,16 @@ src/
   styles/global.css      desenho de computador, importado pelo layout
   styles/mobile.css      camada de celular e tablet, importada depois dela
 public/                  copiado literalmente para dist/ (data, flags, downloads, og)
-build-static.mjs         gera public/data/* a partir das fontes locais
-server.mjs               pipeline de dados (CSVs, shapefile, catálogo)
-metas.mjs                parametrização e avaliação das metas
+conteudo/                a fonte editável: catálogo, valores.csv, metas, panorama, textos
+pipeline/fonte.mjs       lê e valida conteudo/; parser e escritor do CSV de valores
+pipeline/derivar.mjs     Panorama: estados, séries, síntese e resumo a partir da fonte
+pipeline/catalogo.mjs    catálogo público (texto + números)
+pipeline/metas.mjs       avaliação das metas a partir de conteudo/metas.json
+pipeline/workbooks.mjs   os cinco XLSX de download, um por eixo
+build-static.mjs         orquestra o pipeline e grava public/data/* e public/downloads/*.xlsx
 ```
 
-As páginas **não** leem dados no frontmatter do Astro: todo carregamento é no cliente, via `fetch('/data/*.json')`. Isso é deliberado — as fontes (`dados/`, shapefile, `entregaveis/`) não estão neste repositório, então qualquer leitura em tempo de build quebraria o deploy na Vercel enquanto passaria na máquina local.
+As páginas **não** leem dados no frontmatter do Astro: todo carregamento é no cliente, via `fetch('/data/*.json')`. Os JSONs são derivados de `conteudo/` pelo `build-static.mjs`, que roda antes do `astro build` em qualquer clone e na Vercel — nada fora do repositório é necessário.
 
 ## Como executar
 
@@ -47,13 +51,13 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 
 | Script | O que faz |
 |---|---|
-| `npm run dev` | Servidor de desenvolvimento do Astro (é o que a Vercel **não** roda). |
-| `npm run build` | `astro build` → gera `dist/`. É o comando que a Vercel executa. |
+| `npm run dev` | Deriva os dados de `conteudo/` e sobe o servidor de desenvolvimento do Astro. |
+| `npm run build` | `node build-static.mjs && astro build` → gera `dist/`. É o comando que a Vercel executa. |
 | `npm run preview` | Serve `dist/` para conferir o resultado do build. |
-| `npm run build:static` | Regenera os dados em `public/data/` a partir das fontes locais. |
-| `npm run snapshot` | Grava o snapshot de auditoria do payload do painel. |
-| `npm run prepare-data` | Valida a leitura das bases sem gerar nada. |
+| `npm run build:static` | Só a derivação: regenera `public/data/*.json` e `public/downloads/*.xlsx` a partir de `conteudo/`. |
+| `npm run check:data` | Deriva em memória e compara com os JSONs do último commit (`scripts/conferir-derivacao.mjs`). |
 | `npm run check:i18n` | Aponta textos sem tradução e entradas de dicionário sem uso. |
+| `npm run nota-tecnica` | Gera o PDF da nota técnica em `public/downloads/` (exige Edge ou Chrome). |
 
 ## O que está no painel
 
@@ -300,7 +304,7 @@ A série de **P&D estadual (I5.4.1) passou de 5 para 22 anos** sem trocar de fon
 
 A série começa em 2002, e não em 2000, porque é aí que começa o PIB por UF da referência 2010; termina em 2023 porque o PIB de 2024 ainda não saiu, embora o dispêndio de 2024 já exista. Dava para alcançar 2000 e 2001 pela tabela SIDRA 21 (referência 2002, 1999-2012), mas nos dez anos de sobreposição as duas referências divergem 4,3% em média e até 17,7% no Pará de 2012 — poria uma quebra de referência bem no início da linha, então ficou de fora e a medição está registrada em `limites.extensaoDescartada` no JSON.
 
-O `server.mjs` não precisou de mudança: ele já monta `series.pdPctPib` a partir da coluna `pct_pib` do CSV, então a extensão entra sozinha no próximo `build:static`. O `pdPctPib` também não entra na síntese comparativa, e seu valor plano segue a regra do ano mais recente com dado em cada UF — por isso a extensão não mexeu em score nem em ranking. Como os CSVs do MCTI só existem na máquina de trabalho, o script cai para o `catalogo.json` quando eles faltam: é a mesma série 2000-2024 do mesmo workbook, e a conferência bateu em todos os anos que já estavam no painel.
+No pipeline atual a série de P&D é a métrica `pdPctPib` de `conteudo/panorama.json`, lida de `valores.csv`; o valor exibido é o do ano mais recente com dado em cada UF (`valorAtual: 'ultimo'`), porque o MCTI não publica todos os anos para todos os estados.
 
 Para a **renovabilidade da matriz elétrica (I4.3.2) não existe série histórica publicada por UF**, e o script `scripts/eixo4_matriz_eletrica.py` documenta a busca para ninguém refazer o caminho. Nenhuma fonte oficial cruza unidade da federação com fonte de geração ao longo do tempo: na ANEEL, `capacidade-instalada-por-unidade-da-federacao` é UF × ano sem fonte e `empreendimentos-em-operacao` é fonte × ano sem UF; o ONS declara que `capacidade-geracao` não tem histórico e cobre só usina despachada, deixando de fora os sistemas isolados, que é onde está o diesel; no Anuário da EPE a Tabela 2.1 é UF × ano sem fonte, a 2.3 é fonte × ano sem UF e a 2.8 traz a renovabilidade apenas nacional.
 
@@ -310,11 +314,11 @@ O que o script grava é o que é medido de verdade: capacidade instalada total p
 
 O painel segue exibindo a fotografia do SIGA, sem seletor de ano, porque não há série para ligar.
 
-Como o `build:static` não roda em quem só fez `git pull` — `dados/`, `entregaveis/`, o shapefile e as bandeiras estão no `.gitignore` e não vêm no clone —, o script `dashboard/scripts/aplicar-series.mjs` injeta as séries no `public/data/dashboard.json` já versionado lendo apenas arquivos do repositório: elas saem do `frequencia-escolar-15a17.json` e do `atencao-primaria.json`, e os demais indicadores saem do próprio `dashboard.json`. Ele cobre os dois indicadores de uma vez e recalcula a síntese comparativa uma única vez no fim — aplicar um de cada vez daria score intermediário errado. Repete o cálculo do server.mjs (mesmo `minMaxScore`, mesmos pesos), é idempotente e produz o mesmo resultado que o `build:static` produzirá na máquina de trabalho, então não precisa ser desfeito antes de reassar.
+Historicamente o `build:static` só rodava na máquina com `dados/`, e um script paralelo (`aplicar-series.mjs`) injetava séries no JSON versionado. Isso acabou: os números vivem em `conteudo/valores.csv`, versionado, e o build deriva tudo dele em qualquer clone.
 
 O painel lê a série do CSV por UF (`dados/ibge_educacao/freq_escolar_15a17_uf_ano.csv`) e o ano de referência segue 2024, não 2025: é o ano que a tela já mostrava a partir do SIS, e os nove estados batem na casa decimal, então a troca da fonte não mexe em score, ranking nem ordem dos estados — só acrescenta o histórico ao seletor. A SIDRA publica com uma casa decimal e o xls do SIS carregava a precisão cheia, então os valores por UF variam até 0,03 p.p. e a dimensão "pessoas" da síntese sobe 1 ponto no Amapá (47 para 48) e no Maranhão (26 para 27); nada mais se move. O catálogo e a página de metas continuam com o valor do SIS, que vem dos workbooks (`montar_workbook_eixo2.py` ainda lê `dados/ibge_sis/sis_freq_escolar_uf.csv`); aqui, ao contrário da pobreza, as duas páginas não divergem. O JSON consolidado está fora da lista `DATA_GERADOS` do `build-static.mjs`, então `npm run build:static` não o apaga.
 
-O catálogo de indicadores (`dados/catalogo/indicadores.json`) é gerado a partir dos cinco workbooks `entregaveis/Indicadores_Resultado_Eixo1..5_Amazonia2050.xlsx` pelo script `scripts/exportar_catalogo.py` (requer `openpyxl`; reexecute-o sempre que os workbooks forem atualizados). A síntese comparativa normaliza apenas os oito indicadores com disponibilidade para todos os estados e não substitui o catálogo, análise temática ou metas pactuadas.
+O catálogo de indicadores é `conteudo/catalogo.json` (texto: código, nome, meta, descrição, unidade, fonte, prazo, situação da coleta) reunido no build aos números de `conteudo/valores.csv`. Os workbooks de `entregaveis/` deixaram de ser fonte: os cinco XLSX de download passaram a ser gerados pelo build (`pipeline/workbooks.mjs`).
 
 As fichas e o catálogo descrevem os mesmos indicadores a partir de origens independentes — o `.docx` e os workbooks —, então divergir entre eles é sinal de erro de digitação. O `scripts/auditar_fichas.py` cruza os dois e separa o que é troca de assunto do que é só redação diferente. Uma revisão das referências encontrou o seguinte.
 
@@ -330,62 +334,61 @@ Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são ex
 
 ## Persistência e deploy
 
-**Todos os dados exibidos pelo painel vivem como arquivos dentro do projeto** — o servidor não consulta nenhuma API externa em tempo de execução e não grava nada em disco ao rodar:
+**Todos os dados exibidos pelo painel vivem como arquivos versionados em `dashboard/conteudo/`** — a fonte editável. O site não consulta API nenhuma em tempo de execução: o build deriva os JSONs e os XLSX, e as páginas os buscam como arquivos estáticos.
 
-| Consumido por | Arquivo no projeto |
+| Arquivo em `conteudo/` | O que guarda |
 |---|---|
-| `/api/catalogo` | `dados/catalogo/indicadores.json` (pré-gerado dos 5 workbooks) |
-| `/api/dashboard` | 15 CSVs em `dados/` (PRODES, focos, CNUC, IIVCM, Sinesp, IBGE, PNADc/ODS, CNES, PEVS, PIA, ANATEL, ANEEL, saneamento, P&D) |
-| `/api/metas` | `metas.mjs` sobre o catálogo + o payload do `/api/dashboard` |
-| `/api/geo` | `BR_UF_2025 (2)/BR_UF_2025.shp + .dbf` |
-| `/flags/*` | 9 SVGs na pasta de bandeiras |
-| `/downloads/*` | 5 workbooks de `entregaveis/` + `RELATORIO_DE_COLETA.md` |
+| `catalogo.json` | Os 59 indicadores por eixo: código, linha de ação, nome, meta, descrição, unidade, fonte, prazo, situação da coleta, ano de referência. Só texto. |
+| `valores.csv` | Todo número do painel, um por linha: `codigo,campo,uf,ano,valor,origem,atualizadoEm,por,nota`. `campo` vazio é o valor principal; preenchido é um campo auxiliar (o `extra` do catálogo). `ano` vazio é o valor atual; preenchido é um ponto da série. `valor` vazio é um nulo registrado. Também guarda as métricas do Panorama (`prodesKm2`, `focos`, `cvli`, `POP`, `AREA`, …). |
+| `metas.json` | Parametrização das metas confrontáveis e a lista de exclusões, com os motivos. |
+| `panorama.json` | Estados, métricas do mapa e pesos da síntese comparativa. Cada métrica declara o cálculo (taxa, série ou valor; ano de referência; direção do ranking), a apresentação (rótulo, subtítulo, descrição, fonte, formato) e o método de agregação regional com as notas — tudo com o inglês em `en`. A ordem do array é a ordem do seletor do Panorama. |
+| `textos.json` | Textos do painel que não são dados: as cinco lâminas da Visão Geral e a metodologia da síntese. Cada texto é um par `{ pt, en }`; o inglês que faltar aparece em português. |
+| `painel.json` | Data de atualização exibida e constantes sem fonte por estado. |
+| `fichas.json` | Fichas técnicas extraídas do `.docx` (`scripts/extract-fichas.ps1`), com equações e notas de fórmula em inglês em `en`. |
+| `usuarios.json` | Contas da administração: usuário, nome, hash bcrypt, ativo, senha temporária. |
 
-**Deploy na Vercel** — a Vercel roda `npm install && npm run build` (`astro build`) e publica `dist/`. Os arquivos pesados (`dados/`, o shapefile, `entregaveis/`) ficam fora do repositório: eles são consumidos **na sua máquina** pelo `build-static.mjs`, que congela o resultado em `public/`, e o Astro copia `public/` para `dist/` no build.
+O inglês do conteúdo dos indicadores (nome, meta, descrição, fonte de cada indicador; nome dos eixos; linhas de ação) vive nos campos `en` de `catalogo.json`; o build monta `public/data/i18n/en.json` a partir deles, no formato que `src/scripts/conteudo.js` sobrepõe ao português. O dicionário `src/i18n/en.js` fica só com a interface.
 
-1. Gere os artefatos (sempre que os dados ou os workbooks mudarem):
+O que o build escreve a partir disso está no `.gitignore` e não se edita à mão: `public/data/dashboard.json`, `catalogo.json`, `metas.json`, `fichas.json`, `i18n/en.json` e `public/downloads/*.xlsx`. Continuam versionados, porque são fonte e não saída: `public/data/geo.json`, os JSONs de detalhe por tema (`ideb.json`, `focos-calor.json`, …), `public/data/csv/`, `public/flags/` e os `.md`/`.pdf` de `public/downloads/`.
 
-   ```powershell
-   cd dashboard
-   npm install
-   npm run build:static
-   ```
+**Deploy na Vercel** — o projeto usa o adapter `@astrojs/vercel`: o site continua estático, mas as rotas da administração (`/admin/*`, `/api/admin/*`) são servidas sob demanda por uma função. O adapter escreve `.vercel/output/`, então **o Root Directory do projeto na Vercel precisa ser `dashboard`** (é o `dashboard/vercel.json` que vale). O `build` é `node build-static.mjs && astro build`: a derivação de `conteudo/` acontece lá, a cada commit. Rotas, redirecionamentos (`/api/dashboard|geo|catalogo|metas` → `/data/*.json`, barra final) e a página 404 vêm do adapter; o `vercel.json` guarda só os cabeçalhos de download e cache. A saída é em pastas (`metas/index.html`), que a Vercel serve em `/metas` sem depender de `cleanUrls`.
 
-   Isso escreve, dentro de `public/`: `data/dashboard.json`, `data/geo.json`, `data/catalogo.json`, `data/metas.json`, `flags/*.svg` e `downloads/*` (5 XLSX + `RELATORIO_DE_COLETA.md`).
+Variáveis de ambiente na Vercel (Production e Preview): `SESSION_SECRET` (32+ caracteres, assina o cookie da administração; trocar derruba todas as sessões). Localmente vai em `dashboard/.env` (ver `.env.example`); sem ela, o `astro dev` usa um segredo fixo de desenvolvimento.
 
-2. Versione o resultado no git — **`public/data/`, `public/flags/` e `public/downloads/` precisam estar commitados**, pois são a carga do deploy. (`public/idiomas/` também é versionado, mas não sai daqui: são as duas bandeiras do seletor de idioma, escritas à mão.)
-
-3. Na Vercel, crie o projeto apontando para este repositório. **Não é preciso ajustar o Root Directory**: o `vercel.json` da raiz do repositório instala e constrói dentro de `dashboard/` e publica `dashboard/dist`. Se você preferir definir **Root Directory = `dashboard`**, também funciona — nesse caso vale o `dashboard/vercel.json` e o da raiz é ignorado. O preset Astro é detectado sozinho; o `vercel.json` define `outputDirectory: dist`, `cleanUrls`, `Content-Disposition: attachment` em `/downloads/*` e mantém as reescritas de `/api/dashboard|geo|catalogo|metas` para os JSONs em `/data/` — hoje as páginas já buscam `/data/*.json` direto, as reescritas ficam só para não quebrar links antigos.
+> **Node 24.11 no Windows:** o `fs.cpSync` recursivo aborta o processo, e o adapter o usa para copiar os arquivos estáticos. O `npm run build` pré-carrega `scripts/shim-cpsync.cjs`, que só nessa combinação troca a função por uma cópia em JS. Em Linux (Vercel) e em outras versões ele não faz nada.
 
 O domínio das metatags Open Graph vem de `site` em `astro.config.mjs`. Para publicar em outro domínio, altere esse valor — o layout monta a URL absoluta a partir dele.
 
-> **Nota:** `node server.mjs` ainda sobe o servidor HTTP antigo, mas ele não serve mais as páginas (não há HTML em `public/`). Use `npm run dev`. O `server.mjs` permanece como pipeline de dados, importado por `build-static.mjs` e `snapshot.mjs`.
+**Conferência** — `npm run check:data` deriva em memória e compara, valor a valor, com os JSONs do último commit (ou de uma pasta passada como argumento). Serve para saber o que uma edição em `conteudo/` muda antes de publicar. `flagVersion` fica fora da comparação: é um hash do SVG da bandeira, que só fura cache.
 
-**Deploy em servidor Node** (alternativa, se preferir o servidor dinâmico em vez da Vercel): copie o projeto mantendo a estrutura — `dashboard/`, `dados/`, `entregaveis/`, `BR_UF_2025 (2)/`, a pasta `Bandeiras - Amazônia Legal-…/` e `RELATORIO_DE_COLETA.md` (dispensa `.venv/` e `fontes_originais/`) — e rode `cd dashboard && npm install && npm start` (porta via `PORT`; padrão 4173). Python não é necessário no servidor.
+**Migração** — `scripts/migrar-para-fonte.mjs` escreveu `conteudo/` a partir dos JSONs que estavam publicados, e `scripts/migrar-fase2.mjs` levou para lá os textos e a apresentação das métricas que estavam no código, ambos uma única vez. Rodá-lo de novo sobrescreve a fonte com o que estiver em `public/data/`, então só faz sentido enquanto os dois dizem a mesma coisa.
 
-**Snapshot de auditoria** — `npm run snapshot` grava `dados/catalogo/dashboard_snapshot.json` com o payload exato que o `/api/dashboard` serve no momento da geração (com `generatedAt`). Serve como registro persistido dos valores publicados e para conferência pós-deploy. Fluxo de atualização de dados:
+**Scripts de coleta (Python)** — continuam em `scripts/` como apoio: baixam das fontes públicas e gravam CSV em `dados/` e os JSONs de detalhe em `public/data/`. Eles não escrevem mais em `conteudo/`; o que trazem entra no painel como proposta, a ser aceita na tela de administração (fase seguinte deste trabalho).
+
+## Administração
+
+`/admin` é a área de edição da fonte, restrita a contas de `conteudo/usuarios.json` (hash bcrypt; a senha nunca é gravada). A sessão é um cookie assinado com `SESSION_SECRET`, válido por 12 horas; `src/middleware.ts` protege `/admin/*` e `/api/admin/*`. Contas, por enquanto, pela linha de comando:
 
 ```bash
-# na máquina de trabalho (com o venv do projeto):
-.venv/Scripts/python.exe scripts/exportar_catalogo.py        # workbooks → catálogo
-.venv/Scripts/python.exe scripts/eixo2_frequencia_escolar.py # SIDRA → frequência escolar 15-17
-.venv/Scripts/python.exe scripts/eixo2_atencao_primaria.py   # e-Gestor → cobertura da APS
-.venv/Scripts/python.exe scripts/eixo4_aneel_siga.py         # SIGA → PER do momento
-.venv/Scripts/python.exe scripts/eixo4_matriz_eletrica.py    # EPE + ANEEL → capacidade e renovabilidade
-.venv/Scripts/python.exe scripts/eixo5_pd.py                  # MCTI + SIDRA → P&D % do PIB (2002-2023)
-python scripts/baixar_focos.py                               # INPE → focos de calor (2003-2024)
-python scripts/eixo3_pevs.py                                 # SIDRA 289 → PEVS (1994-2024)
-python scripts/eixo3_pia.py                                  # SIDRA 1849+10457 → PIA (2007-2024)
-python scripts/agregar_cvli.py                               # Sinesp/VDE → CVLI (2015-2026)
-python scripts/eixo4_saneamento_censos.py                    # censos 2000/2010/2022 → saneamento
-python scripts/eixo2_ideb_inep.py                            # INEP → IDEB (2005-2025)
-python scripts/eixo2_mortalidade_evitavel.py                 # SIM/TabNet → óbitos evitáveis (1996-2026)
-python scripts/eixo2_telessaude_cnes.py                      # CNES/TabNet → telessaúde (2012-2026)
-python scripts/eixo3_rais.py                                 # RAIS/MTE → empregos e estabelecimentos (2018-2025)
-python scripts/versionar_dados.py                            # copia o detalhe de dados/ para public/data/csv/
-cd dashboard && npm run snapshot                             # payload do dashboard → snapshot
-# depois: copiar os arquivos alterados para o servidor
+npm run usuario -- criar maria "Maria Silva"   # cria com senha temporária, impressa uma vez
+npm run usuario -- senha maria                 # gera senha nova
+npm run usuario -- desativar maria
+npm run usuario -- listar
 ```
+
+Uma conta nova ou uma senha trocada valem a partir do deploy seguinte ao commit de `usuarios.json`; desativar uma conta derruba a sessão dela no deploy seguinte.
+
+**Onde a administração grava** (`src/lib/admin/deposito.ts`). Na Vercel o disco é só leitura, então o depósito é o próprio repositório, pela API do GitHub: cada "salvar" é um commit na branch `rascunho` (criada da `main` na primeira vez), assinado com o nome de quem editou; "Atualizar prévia" faz um commit vazio marcado com `[previa]`, o único que a Vercel constrói nessa branch (`ignoreCommand` em `vercel.json`, para não gastar um deploy por salvamento); "Publicar" avança a `main` até o rascunho (ou mescla, se a `main` andou por fora) e realinha o rascunho — só no endereço de produção. Variáveis na Vercel: `GITHUB_TOKEN` (fine-grained, só este repositório, Contents leitura e escrita + Metadata), `GITHUB_REPO`, `PREVIEW_URL` (endereço do deploy da branch `rascunho`), e as opcionais `BRANCH_PRINCIPAL`, `BRANCH_RASCUNHO`. No `astro dev` sem token, o depósito é a pasta `conteudo/` em disco: as edições vão direto para os arquivos e "Publicar" só regenera `public/data/`; o commit fica por sua conta.
+
+**Dois editores ao mesmo tempo** (`src/lib/admin/mesclar.ts`). Cada formulário carrega a versão do arquivo que leu. Ao salvar, se o arquivo mudou no meio, a gravação mescla a três vias — chave a chave nos JSONs, célula a célula no CSV — e só recusa quando os dois lados mudaram a mesma coisa, dizendo quem foi e quando. Toda gravação passa pela validação do build (`validaFonte`) antes do commit.
+
+**Telas**: valores e propostas (abaixo), catálogo (texto de cada indicador, situação da coleta, criar indicador), metas (parametrização e exclusões), textos (Visão Geral e metodologia, pt/en), fichas técnicas, data e constantes, configuração do Panorama (métricas do mapa, ordem do seletor, síntese com pesos e dimensões — a validação exige que os pesos somem 1), contas e a troca da própria senha. O manual para quem edita, sem jargão, está em [`OPERACAO.md`](OPERACAO.md) e dentro da administração, em Ajuda.
+
+**Contas pela tela** (`src/lib/admin/contas.ts`). Criar, redefinir senha, desativar e reativar, e "Minha senha", gravam `usuarios.json` **direto na branch principal**, fora do rascunho — uma conta não deve esperar uma publicação de dados. Como o arquivo entra no pacote da função, a mudança vale no deploy seguinte (1 a 2 minutos); até lá a senha antiga ainda abre a tela. A última conta ativa não pode ser desativada, nem a própria.
+
+**Propostas** (`/admin/propostas`, `src/lib/admin/propostas.ts`, `scripts/proposta.py`). Os scripts de coleta não escrevem mais nos números do painel. `scripts/gerar_propostas.py` lê os JSONs de detalhe que os coletores gravam em `public/data/` (IDEB, focos, frequência escolar, atenção primária, P&D, PEVS, PIA) e grava uma proposta em `conteudo/propostas/`; um coletor novo pode montar a própria proposta com `from proposta import Proposta`. A tela compara a proposta com `valores.csv` célula a célula e oferece aceitar tudo, aceitar só as marcadas ou rejeitar. Aceitar grava as células com `origem = script` e move o arquivo para `propostas/aplicadas/` no mesmo commit; rejeitar move para `propostas/rejeitadas/`, com o motivo. Na Vercel, a proposta gerada na máquina do dev precisa de commit e push (na branch `rascunho` ou na `main`) para aparecer na tela.
+
+**Valores** (`/admin/valores`, `src/lib/admin/valores.ts`). Cada código — os 59 do catálogo e as métricas do Panorama (`prodesKm2`, `focos`, `cvli`, `POP`, `AREA`…) — tem uma grade estados × colunas: "Atual" (valor sem ano), os anos da série e os campos auxiliares (`campo` do CSV). Dá para digitar, colar um bloco copiado do Excel (tabs e quebras de linha espalham pelas células à direita e abaixo) e acrescentar um ano ou um campo. Célula vazia apaga a linha, salvo se ela já existia vazia (nulo registrado). Vírgula decimal é aceita. Para lotes, a importação recebe uma planilha (aba `Modelo_importacao` ou a primeira com a coluna `codigo`, lida no navegador com SheetJS) ou uma lista em JSON, mostra a prévia célula a célula — nova, alterada, igual, com aviso quando o valor varia mais de 50% contra o ano anterior — e só grava as células que mudam. O build gera `public/downloads/modelo-importacao.xlsx` com a tabela inteira, além da aba `Modelo_importacao` em cada workbook por eixo.
 
 ## Duas línguas
 
@@ -461,12 +464,12 @@ versão inglesa ajuda a ler, não substitui o documento.
 
 ## Metas: o que entra no quadro
 
-`metas.mjs` é a única fonte da parametrização. Uma meta só entra no quadro quando o patamar pode ser confrontado com os valores já coletados, na mesma unidade. Cada parâmetro declara seu `tipo`:
+`conteudo/metas.json` é a única fonte da parametrização, aplicada por `pipeline/metas.mjs`. Uma meta só entra no quadro quando o patamar pode ser confrontado com os valores já coletados, na mesma unidade. Cada parâmetro declara seu `tipo`:
 
 - `declarada` — o número está escrito na meta do catálogo (ex.: CVLI ≤ 10 por 100 mil; ISGR 80).
 - `inferida` — a meta é qualitativa ou regional e foi operacionalizada aqui; a página mostra a nota explicando a escolha (ex.: “universalizar o atendimento escolar” lido como 100%).
 - `derivada` — o alvo é calculado por estado a partir da própria série (ex.: redução de 30% sobre a média histórica de focos de calor).
 
-Os valores vêm sempre do catálogo, para que meta e valor não possam divergir. A única exceção é `I5.4.1`: os valores do catálogo estão em R$ milhões, então o percentual do PIB vem do campo já consolidado pelo `/api/dashboard`. O objeto `EXCLUSOES` registra, com justificativa, os indicadores que têm dados mas cuja meta não é confrontável; os demais aparecem como “sem dados coletados”.
+Os valores vêm sempre do catálogo, para que meta e valor não possam divergir. A única exceção é `I5.4.1`: os valores do catálogo estão em R$ milhões, então o percentual do PIB vem do campo já consolidado no Panorama (`valorDe: { panorama: 'pdPctPib' }`). O objeto `exclusoes` registra, com justificativa, os indicadores que têm dados mas cuja meta não é confrontável; os demais aparecem como “sem dados coletados”.
 
 As duas listas são renderizadas na mesma página, dentro do mesmo eixo — a cobertura é parte do resultado, não uma omissão. Por isso `foraDoPainel` carrega os mesmos campos de uma meta (eixo, linha de ação, unidade, ano de referência, fonte) mais a `cobertura`, que é em quantos dos nove estados já há valor: a lista dos 59 é desenhada só com `metas.json`, e o catálogo e as fichas só são buscados quando alguém abre a ficha técnica ou exporta o CSV.

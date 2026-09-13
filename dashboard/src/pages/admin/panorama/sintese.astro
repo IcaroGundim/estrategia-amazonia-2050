@@ -1,0 +1,107 @@
+---
+// Síntese comparativa: quais métricas entram no índice, com que peso e em
+// que dimensão. Os pesos do índice somam 1; dentro de cada dimensão, também.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto } from '../../../lib/admin/edicao';
+
+interface Panorama {
+  metricas: { chave: string; rotulo?: string; rank?: string; seletor?: boolean }[];
+  sintese: { pesos: { chave: string; direcao: string; peso: number }[]; dimensoes: Record<string, { chave: string; peso: number }[]> };
+}
+interface Textos { panorama: { metodologia: { dimensions: { name: { pt: string }; weight: string }[] } } }
+
+const sessao = Astro.locals.sessao!;
+const [lido, { dados: textos }] = await Promise.all([leJson<Panorama>('panorama'), leJson<Textos>('textos')]);
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+let sintese = lido.dados.sintese;
+const nomesDimensoes = Object.keys(sintese.dimensoes);
+const rotuloDimensao = (chave: string, indice: number) => textos.panorama.metodologia.dimensions[indice]?.name.pt || chave;
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  try {
+    const pesos: Panorama['sintese']['pesos'] = [];
+    const dimensoes: Record<string, { chave: string; peso: number }[]> = Object.fromEntries(nomesDimensoes.map((nome) => [nome, []]));
+    for (const metrica of lido.dados.metricas) {
+      const peso = numeroOuNulo(dados, `peso:${metrica.chave}`);
+      const dimensao = texto(dados, `dim:${metrica.chave}`);
+      const pesoDimensao = numeroOuNulo(dados, `pesoDim:${metrica.chave}`);
+      if (peso !== null && peso > 0) {
+        if (!metrica.rank) throw new ErroDeEdicao(`${metrica.rotulo || metrica.chave} precisa de direção de ranking (menor ou maior é melhor) para entrar no índice.`);
+        pesos.push({ chave: metrica.chave, direcao: metrica.rank, peso });
+      }
+      if (dimensao && pesoDimensao !== null && pesoDimensao > 0) dimensoes[dimensao].push({ chave: metrica.chave, peso: pesoDimensao });
+    }
+    const soma = pesos.reduce((total, item) => total + item.peso, 0);
+    if (Math.abs(soma - 1) > 1e-9) throw new ErroDeEdicao(`Os pesos do índice somam ${soma.toFixed(3)}; precisam somar 1.`);
+    for (const [nome, partes] of Object.entries(dimensoes)) {
+      const somaDim = partes.reduce((total, item) => total + item.peso, 0);
+      if (!partes.length) throw new ErroDeEdicao(`A dimensão ${nome} ficou sem métricas.`);
+      if (Math.abs(somaDim - 1) > 1e-9) throw new ErroDeEdicao(`Os pesos da dimensão ${nome} somam ${somaDim.toFixed(3)}; precisam somar 1.`);
+    }
+    await salvaJson<Panorama>('panorama', versao, (panorama) => ({ ...panorama, sintese: { ...panorama.sintese, pesos, dimensoes } }), 'ajusta os pesos e as dimensões da síntese comparativa', { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect('/admin/panorama/sintese?salvo=1', 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    // Reconstrói o que foi digitado para a tela não perder o trabalho.
+    const pesos: Panorama['sintese']['pesos'] = [];
+    const dimensoes: Record<string, { chave: string; peso: number }[]> = Object.fromEntries(nomesDimensoes.map((nome) => [nome, []]));
+    for (const metrica of lido.dados.metricas) {
+      const peso = Number(texto(dados, `peso:${metrica.chave}`).replace(',', '.'));
+      if (peso > 0) pesos.push({ chave: metrica.chave, direcao: metrica.rank || 'high', peso });
+      const dimensao = texto(dados, `dim:${metrica.chave}`);
+      const pesoDim = Number(texto(dados, `pesoDim:${metrica.chave}`).replace(',', '.'));
+      if (dimensao && pesoDim > 0) dimensoes[dimensao]?.push({ chave: metrica.chave, peso: pesoDim });
+    }
+    sintese = { pesos, dimensoes };
+  }
+}
+
+const pesoDe = new Map(sintese.pesos.map((item) => [item.chave, item.peso]));
+const dimensaoDe = new Map<string, { nome: string; peso: number }>();
+for (const [nome, partes] of Object.entries(sintese.dimensoes)) for (const parte of partes) dimensaoDe.set(parte.chave, { nome, peso: parte.peso });
+const somaPesos = sintese.pesos.reduce((total, item) => total + item.peso, 0);
+---
+
+<Admin title="Síntese comparativa" sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/panorama">Panorama</a> · Síntese</p>
+    <h1>Síntese comparativa</h1>
+    <p>O índice de 0 a 100 do Panorama é a média ponderada da posição relativa de cada estado nas métricas escolhidas. Os pesos do índice somam 1 (hoje {somaPesos.toFixed(2)}). Cada dimensão é um recorte com pesos próprios, que também somam 1. Os nomes das dimensões e o texto explicativo ficam em <a href="/admin/textos">Textos</a>.</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <div class="admin-tabela-rolagem">
+        <table class="admin-tabela">
+          <thead><tr><th>métrica</th><th>direção</th><th>peso no índice</th><th>dimensão</th><th>peso na dimensão</th></tr></thead>
+          <tbody>
+            {lido.dados.metricas.filter((metrica) => metrica.rank).map((metrica) => {
+              const dim = dimensaoDe.get(metrica.chave);
+              return (
+                <tr>
+                  <td>{metrica.rotulo || metrica.chave} <small>{metrica.chave}</small></td>
+                  <td>{metrica.rank === 'low' ? 'menor é melhor' : 'maior é melhor'}</td>
+                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`peso:${metrica.chave}`} value={pesoDe.get(metrica.chave) ?? ''} placeholder="—" /></td>
+                  <td><select name={`dim:${metrica.chave}`}><option value="">(nenhuma)</option>{nomesDimensoes.map((nome, indice) => <option value={nome} selected={dim?.nome === nome}>{rotuloDimensao(nome, indice)}</option>)}</select></td>
+                  <td><input class="admin-numero-curto" type="text" inputmode="decimal" name={`pesoDim:${metrica.chave}`} value={dim?.peso ?? ''} placeholder="—" /></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p><small>Só métricas com direção de ranking podem entrar. Métricas sem direção: {lido.dados.metricas.filter((metrica) => !metrica.rank).map((metrica) => metrica.chave).join(', ') || 'nenhuma'}.</small></p>
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        <a class="admin-botao is-secundario" href="/admin/panorama">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

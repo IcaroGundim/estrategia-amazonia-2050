@@ -14,7 +14,7 @@
 //
 //   npm run check:i18n
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -51,14 +51,16 @@ const tudo = fontes.join('\n');
 // passam pelo `t()` como variável — a frequência de uma ficha ("Anual"), a
 // unidade ("Pessoas"), o motivo de um indicador ficar fora do quadro. Procurá-los
 // nos JSONs é o que distingue uma entrada viva de uma sobra de verdade.
-// `metas.mjs` entra junto porque é ele quem escreve os motivos de um indicador
-// ficar fora do quadro — texto que só chega à tela pelos dados, mas que nasce
-// ali, e cujas variantes nem sempre aparecem no metas.json de uma dada coleta.
+// `pipeline/metas.mjs` e `conteudo/metas.json` entram juntos porque é deles que
+// saem os motivos de um indicador ficar fora do quadro — texto que só chega à
+// tela pelos dados, mas que nasce ali, e cujas variantes nem sempre aparecem no
+// metas.json de uma dada coleta.
 const dados = [
   '../public/data/catalogo.json',
   '../public/data/fichas.json',
   '../public/data/metas.json',
-  '../metas.mjs'
+  '../pipeline/metas.mjs',
+  '../conteudo/metas.json'
 ]
   .map((caminho) => {
     try {
@@ -96,6 +98,22 @@ if (!orfas.length && !sobras.length) {
   console.log(`Dicionário em dia: ${usadas.size} textos, todos traduzidos e todos em uso.`);
 } else {
   console.log(`\n${usadas.size} textos no código · ${Object.keys(en).length} no dicionário · ${orfas.length} sem tradução · ${sobras.length} sem uso`);
+}
+
+// `--apagar` remove as sobras do dicionário. Cada entrada ocupa uma linha
+// (`  'pt': 'en',`) ou duas (valor na linha seguinte), sem comentário no meio;
+// o que não casar com esse desenho fica e é avisado, para não estragar o arquivo.
+if (sobras.length && process.argv.includes('--apagar')) {
+  const caminho = fileURLToPath(new URL('../src/i18n/en.js', import.meta.url));
+  let fonte = readFileSync(caminho, 'utf8');
+  const escapa = (texto) => texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/'/g, "\\\\'");
+  let apagadas = 0;
+  for (const texto of sobras) {
+    const padrao = new RegExp(`^  '${escapa(texto)}':\\s*\\n?\\s*'(?:[^'\\\\]|\\\\.)*',?\\n`, 'm');
+    if (padrao.test(fonte)) { fonte = fonte.replace(padrao, ''); apagadas += 1; } else console.log(`  não apaguei (desenho diferente): ${corte(texto)}`);
+  }
+  writeFileSync(caminho, fonte);
+  console.log(`\n${apagadas} entrada(s) apagada(s) de src/i18n/en.js.`);
 }
 
 // Sem tradução é erro; sobra é só aviso.

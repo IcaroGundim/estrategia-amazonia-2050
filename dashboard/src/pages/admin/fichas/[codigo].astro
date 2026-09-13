@@ -1,0 +1,97 @@
+---
+// A ficha técnica de um indicador (o que o .docx trazia), com as equações e
+// notas de fórmula em inglês. Um indicador sem ficha pode ganhar uma aqui.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
+
+interface Ficha {
+  eixo: string; linhaAcao: string; meta: string; indicador: string; prazo: string; formula: string; unidade: string;
+  fontes: string; frequencia: string; pontuacao: string; referencias: string[]; en?: { equacoes?: string[]; notasFormula?: string[] };
+}
+interface Fichas { fichas: Record<string, Ficha>; total?: number }
+interface Catalogo { eixos: { nome: string; indicadores: { codigo: string; nome: string; linhaAcao: string }[] }[] }
+
+const sessao = Astro.locals.sessao!;
+const codigo = decodeURIComponent(Astro.params.codigo || '');
+const [lido, { dados: catalogo }] = await Promise.all([leJson<Fichas>('fichas'), leJson<Catalogo>('catalogo')]);
+const doCatalogo = catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((item) => ({ ...item, eixoNome: eixo.nome }))).find((item) => item.codigo === codigo);
+if (!doCatalogo) return new Response('Indicador não encontrado.', { status: 404 });
+
+let ficha: Ficha = lido.dados.fichas[codigo] || { eixo: doCatalogo.eixoNome, linhaAcao: doCatalogo.linhaAcao, meta: '', indicador: '', prazo: '', formula: '', unidade: '', fontes: '', frequencia: '', pontuacao: '', referencias: [] };
+const existia = Boolean(lido.dados.fichas[codigo]);
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+const linhas = (valor: string) => valor.split(/\r?\n/).map((linha) => linha.trim()).filter(Boolean);
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  const nova: Ficha = {
+    eixo: texto(dados, 'eixo'),
+    linhaAcao: texto(dados, 'linhaAcao'),
+    meta: texto(dados, 'meta'),
+    indicador: texto(dados, 'indicador'),
+    prazo: texto(dados, 'prazo'),
+    formula: texto(dados, 'formula'),
+    unidade: texto(dados, 'unidade'),
+    fontes: texto(dados, 'fontes'),
+    frequencia: texto(dados, 'frequencia'),
+    pontuacao: texto(dados, 'pontuacao'),
+    referencias: linhas(texto(dados, 'referencias'))
+  };
+  const equacoes = linhas(texto(dados, 'equacoes__en'));
+  const notas = linhas(texto(dados, 'notasFormula__en'));
+  if (equacoes.length || notas.length) nova.en = { ...(equacoes.length ? { equacoes } : {}), ...(notas.length ? { notasFormula: notas } : {}) };
+  ficha = nova;
+  try {
+    if (!nova.indicador) throw new ErroDeEdicao('A definição do indicador é obrigatória.');
+    await salvaJson<Fichas>('fichas', versao, (fichas) => {
+      fichas.fichas[codigo] = nova;
+      fichas.total = Object.keys(fichas.fichas).length;
+      return fichas;
+    }, `edita a ficha técnica de ${codigo}`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/fichas/${encodeURIComponent(codigo)}?salvo=1`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+  }
+}
+---
+
+<Admin title={`Ficha ${codigo}`} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/catalogo">Catálogo</a> · <a href={`/admin/catalogo/${encodeURIComponent(codigo)}`}>{codigo}</a> · Ficha</p>
+    <h1>Ficha técnica · {codigo}</h1>
+    <p>{doCatalogo.nome}. {existia ? 'A ficha é o detalhe que abre na página de Metas e indicadores.' : 'Este indicador ainda não tem ficha; ao salvar, ela passa a existir.'}</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form class="admin-form" method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <div class="admin-form-linha">
+        <Campo nome="eixo" rotulo="Eixo (como a ficha o nomeia)" valor={ficha.eixo} largo />
+        <Campo nome="prazo" rotulo="Prazo" valor={ficha.prazo} />
+      </div>
+      <Campo nome="linhaAcao" rotulo="Linha de ação (número e texto)" tipo="area" linhas={2} valor={ficha.linhaAcao} largo />
+      <Campo nome="meta" rotulo="Meta" tipo="area" valor={ficha.meta} largo />
+      <Campo nome="indicador" rotulo="Definição do indicador" tipo="area" valor={ficha.indicador} obrigatorio largo />
+      <Campo nome="formula" rotulo="Fórmula e legenda (texto livre, uma informação por linha)" tipo="area" linhas={5} valor={ficha.formula} largo />
+      <div class="admin-form-linha">
+        <Campo nome="unidade" rotulo="Unidade" valor={ficha.unidade} />
+        <Campo nome="frequencia" rotulo="Frequência" valor={ficha.frequencia} />
+        <Campo nome="pontuacao" rotulo="Pontuação (faixa)" valor={ficha.pontuacao} />
+      </div>
+      <Campo nome="fontes" rotulo="Fontes" tipo="area" linhas={2} valor={ficha.fontes} largo />
+      <Campo nome="referencias" rotulo="Referências (uma por linha)" tipo="area" linhas={3} valor={ficha.referencias.join('\n')} largo />
+      <Campo nome="equacoes__en" rotulo="Equações em inglês (LaTeX, uma por linha)" tipo="area" linhas={3} valor={(ficha.en?.equacoes || []).join('\n')} ajuda="As equações em português vêm do código; aqui só a versão em inglês, quando a equação tem palavra dentro." largo />
+      <Campo nome="notasFormula__en" rotulo="Notas da fórmula em inglês (uma por linha)" tipo="area" linhas={3} valor={(ficha.en?.notasFormula || []).join('\n')} largo />
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        <a class="admin-botao is-secundario" href={`/admin/catalogo/${encodeURIComponent(codigo)}`}>Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

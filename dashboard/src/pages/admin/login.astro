@@ -1,0 +1,62 @@
+---
+// Entrada da administração. O mesmo endereço recebe o formulário (POST): confere
+// usuário e senha contra conteudo/usuarios.json, grava o cookie de sessão e
+// manda para onde a pessoa queria ir. Servida sob demanda.
+export const prerender = false;
+
+import Admin from '../../layouts/Admin.astro';
+import { buscaUsuario, CONTA_FALSA, senhaConfere } from '../../lib/admin/usuarios';
+import { criaSessao, gravaCookie, leSessao, NOME_COOKIE, origemConfere } from '../../lib/admin/sessao';
+
+const destino = (() => {
+  const voltar = Astro.url.searchParams.get('voltar') || '/admin';
+  // Só caminhos internos: um `voltar` para outro site seria uma porta aberta.
+  return voltar.startsWith('/') && !voltar.startsWith('//') ? voltar : '/admin';
+})();
+
+if (Astro.request.method === 'GET' && leSessao(Astro.cookies.get(NOME_COOKIE)?.value)) {
+  return Astro.redirect(destino, 302);
+}
+
+let erro: string | null = null;
+let usuarioDigitado = '';
+
+if (Astro.request.method === 'POST') {
+  if (!origemConfere(Astro.request)) {
+    erro = 'O pedido veio de outro endereço. Abra o login pelo próprio painel.';
+  } else {
+    const dados = await Astro.request.formData();
+    usuarioDigitado = String(dados.get('usuario') || '').trim();
+    const senha = String(dados.get('senha') || '');
+    const conta = buscaUsuario(usuarioDigitado);
+    // A conferência corre mesmo sem conta, para o tempo de resposta não
+    // entregar quais nomes existem.
+    const confere = await senhaConfere(conta ?? CONTA_FALSA, senha);
+    if (conta && confere) {
+      gravaCookie(Astro.cookies, criaSessao(conta.usuario, conta.nome));
+      return Astro.redirect(destino, 303);
+    }
+    erro = 'Usuário ou senha não conferem.';
+  }
+}
+---
+
+<Admin title="Entrar">
+  <section class="admin-cartao admin-login">
+    <p class="admin-chapeu">Acesso restrito</p>
+    <h1>Entrar na administração</h1>
+    <p>Use a conta criada para você. Se esqueceu a senha, peça uma nova a quem mantém o painel.</p>
+    <form class="admin-form" method="post" action={`/admin/login?voltar=${encodeURIComponent(destino)}`} autocomplete="on">
+      {erro && <p class="admin-erro" role="alert">{erro}</p>}
+      <label class="admin-campo">
+        <span>Usuário</span>
+        <input type="text" name="usuario" value={usuarioDigitado} required autocomplete="username" autocapitalize="off" spellcheck="false" autofocus />
+      </label>
+      <label class="admin-campo">
+        <span>Senha</span>
+        <input type="password" name="senha" required autocomplete="current-password" />
+      </label>
+      <button type="submit" class="admin-botao">Entrar</button>
+    </form>
+  </section>
+</Admin>

@@ -1,0 +1,53 @@
+---
+// Data de atualização exibida no painel e constantes sem fonte por estado.
+export const prerender = false;
+
+import Admin from '../../layouts/Admin.astro';
+import Campo from '../../components/admin/Campo.astro';
+import Mensagens from '../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto } from '../../lib/admin/edicao';
+
+interface Painel { atualizadoEm: string; municipios: number }
+
+const sessao = Astro.locals.sessao!;
+const lido = await leJson<Painel>('painel');
+let painel = lido.dados;
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  try {
+    const atualizadoEm = texto(dados, 'atualizadoEm');
+    const municipios = numeroOuNulo(dados, 'municipios');
+    if (!atualizadoEm) throw new ErroDeEdicao('A data de atualização não pode ficar vazia.');
+    if (municipios === null || municipios < 1) throw new ErroDeEdicao('Informe o número de municípios.');
+    await salvaJson<Painel>('painel', versao, (atual) => ({ ...atual, atualizadoEm, municipios }), 'atualiza a data e as constantes do painel', { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect('/admin/painel?salvo=1', 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    painel = { ...painel, atualizadoEm: texto(dados, 'atualizadoEm'), municipios: Number(texto(dados, 'municipios')) || painel.municipios };
+  }
+}
+---
+
+<Admin title="Data e constantes" sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Data e constantes</p>
+    <h1>Data e constantes do painel</h1>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+    <form class="admin-form" method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <div class="admin-form-linha">
+        <Campo nome="atualizadoEm" rotulo="Data de atualização exibida" valor={painel.atualizadoEm} ajuda="Texto livre, como aparece no topo do Panorama. Ex.: 30 ago. 2026" obrigatorio />
+        <Campo nome="municipios" rotulo="Municípios da Amazônia Legal" tipo="numero" valor={painel.municipios} ajuda="Só aparece no resumo regional; não tem fonte por estado." obrigatorio />
+      </div>
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        <a class="admin-botao is-secundario" href="/admin">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

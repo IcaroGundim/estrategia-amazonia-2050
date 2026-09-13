@@ -1,0 +1,39 @@
+---
+// Um campo de formulário da administração: rótulo, controle e ajuda opcional.
+// `tipo` escolhe o controle; `en` é o valor em inglês, que abre um segundo
+// controle ao lado com o mesmo nome e o sufixo `__en`.
+interface Opcao { valor: string; rotulo: string }
+interface Props {
+  nome: string;
+  rotulo: string;
+  valor?: string | number | null;
+  en?: string | null;
+  comEn?: boolean;
+  tipo?: 'texto' | 'area' | 'numero' | 'select';
+  opcoes?: Opcao[];
+  ajuda?: string;
+  obrigatorio?: boolean;
+  linhas?: number;
+  largo?: boolean;
+}
+const { nome, rotulo, valor = '', en = '', comEn = false, tipo = 'texto', opcoes = [], ajuda, obrigatorio = false, linhas = 3, largo = false } = Astro.props;
+const texto = valor === null || valor === undefined ? '' : String(valor);
+const textoEn = en === null || en === undefined ? '' : String(en);
+---
+
+<div class={`admin-campo${largo ? ' is-largo' : ''}${comEn ? ' is-bilingue' : ''}`}>
+  <span>{rotulo}{obrigatorio && <b aria-hidden="true"> *</b>}</span>
+  <div class="admin-campo-controles">
+    {tipo === 'area' && <textarea name={nome} rows={linhas} required={obrigatorio} placeholder={comEn ? 'Português' : undefined}>{texto}</textarea>}
+    {tipo === 'select' && (
+      <select name={nome} required={obrigatorio}>
+        {opcoes.map((opcao) => <option value={opcao.valor} selected={opcao.valor === texto}>{opcao.rotulo}</option>)}
+      </select>
+    )}
+    {tipo === 'numero' && <input type="text" inputmode="decimal" name={nome} value={texto} required={obrigatorio} />}
+    {tipo === 'texto' && <input type="text" name={nome} value={texto} required={obrigatorio} placeholder={comEn ? 'Português' : undefined} />}
+    {comEn && tipo === 'area' && <textarea name={`${nome}__en`} rows={linhas} placeholder="English (opcional)">{textoEn}</textarea>}
+    {comEn && tipo === 'texto' && <input type="text" name={`${nome}__en`} value={textoEn} placeholder="English (opcional)" />}
+  </div>
+  {ajuda && <small>{ajuda}</small>}
+</div>

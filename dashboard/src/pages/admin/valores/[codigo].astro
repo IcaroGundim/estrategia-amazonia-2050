@@ -1,0 +1,172 @@
+---
+// A grade de um código: estados nas linhas; "Atual" (valor sem ano), os anos
+// da série e os campos auxiliares nas colunas. Dá para digitar, colar um
+// bloco do Excel (a colagem espalha pelas células à direita e abaixo) e
+// acrescentar um ano ou um campo auxiliar.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, leValores, salvaValores, texto } from '../../../lib/admin/edicao';
+import { aplicaGrade, codigosDisponiveis, montaGrade, ufsDe, validaAno } from '../../../lib/admin/valores';
+
+const sessao = Astro.locals.sessao!;
+const codigo = decodeURIComponent(Astro.params.codigo || '');
+const [{ dados: catalogo }, { dados: panorama }, lido] = await Promise.all([leJson<any>('catalogo'), leJson<any>('panorama'), leValores()]);
+const info = codigosDisponiveis(catalogo, panorama).find((item) => item.codigo === codigo);
+if (!info) return new Response('Código não encontrado.', { status: 404 });
+const ufs = ufsDe(panorama);
+const nomeDaUf = (uf: string) => panorama.estados[uf]?.name || uf;
+
+let grade = montaGrade(lido.dados, codigo);
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+let anosExtra: string[] = [];
+let camposExtra: string[] = [];
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  const celulas: Record<string, string> = {};
+  for (const [nome, valor] of dados.entries()) {
+    if (nome.startsWith('c:')) celulas[nome.slice(2)] = String(valor);
+  }
+  try {
+    for (const chave of Object.keys(celulas)) validaAno(chave.split('|')[2]);
+    let alteradas = 0;
+    await salvaValores(versao, (linhas) => {
+      const resultado = aplicaGrade(linhas, codigo, celulas, ufs, sessao.usuario);
+      alteradas = resultado.alteradas;
+      if (!alteradas) throw new ErroDeEdicao('Nada mudou em relação ao que está gravado.');
+      return resultado.linhas;
+    }, `valores de ${codigo}: ${alteradas} célula(s)`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/valores/${encodeURIComponent(codigo)}?salvo=${alteradas}`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    // Reconstrói a grade com o que foi digitado, inclusive colunas novas.
+    grade = { anos: [...grade.anos], campos: [...grade.campos], celulas: { ...grade.celulas, ...celulas }, notas: grade.notas };
+    for (const chave of Object.keys(celulas)) {
+      const [campo, , ano] = chave.split('|');
+      if (ano && !grade.anos.includes(ano)) grade.anos.push(ano);
+      if (campo && !grade.campos.includes(campo)) grade.campos.push(campo);
+    }
+    grade.anos.sort();
+  }
+}
+anosExtra = grade.anos;
+camposExtra = grade.campos;
+const colunas = [
+  { campo: '', ano: '', rotulo: 'Atual' },
+  ...anosExtra.map((ano) => ({ campo: '', ano, rotulo: ano })),
+  ...camposExtra.map((campo) => ({ campo, ano: '', rotulo: campo }))
+];
+---
+
+<Admin title={`Valores · ${codigo}`} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/valores">Valores</a> · {codigo}</p>
+    <h1>{codigo} · {info.nome}</h1>
+    <p>{info.unidade ? <><b>Unidade:</b> {info.unidade}. </> : null}<b>Atual</b> é o valor sem ano, exibido nas listas; os anos formam a série; os campos auxiliares são números de apoio (totais, denominadores). Use ponto ou vírgula como decimal. Célula vazia apaga o valor.</p>
+    <Mensagens erro={erro} salvo={salvo ? `${salvo} célula(s) gravada(s) no rascunho.` : null} />
+
+    <form method="post" data-grade>
+      <input type="hidden" name="versao" value={versao} />
+      <div class="admin-acoes is-topo">
+        <label class="admin-inline"><span>Acrescentar ano</span><input type="text" inputmode="numeric" maxlength="4" placeholder="2026" data-novo-ano /><button type="button" class="admin-botao is-secundario is-mini" data-add-ano>Coluna</button></label>
+        <label class="admin-inline"><span>Acrescentar campo auxiliar</span><input type="text" placeholder="ex.: total" data-novo-campo /><button type="button" class="admin-botao is-secundario is-mini" data-add-campo>Coluna</button></label>
+      </div>
+      <div class="admin-tabela-rolagem">
+        <table class="admin-tabela is-grade" data-tabela>
+          <thead>
+            <tr><th>Estado</th>{colunas.map((coluna) => <th data-campo={coluna.campo} data-ano={coluna.ano}>{coluna.rotulo}</th>)}</tr>
+          </thead>
+          <tbody>
+            {ufs.map((uf) => (
+              <tr data-uf={uf}>
+                <th scope="row"><b>{uf}</b> <small>{nomeDaUf(uf)}</small></th>
+                {colunas.map((coluna) => {
+                  const chave = `${coluna.campo}|${uf}|${coluna.ano}`;
+                  return <td><input type="text" name={`c:${chave}`} value={grade.celulas[chave] ?? ''} title={grade.notas[chave] || ''} autocomplete="off" /></td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        <a class="admin-botao is-secundario" href="/admin/valores">Voltar</a>
+        <small>Dica: copie um bloco no Excel (estados nas linhas, anos nas colunas) e cole na célula do canto superior esquerdo do bloco.</small>
+      </div>
+    </form>
+  </section>
+</Admin>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-grade]')!;
+  const tabela = form.querySelector<HTMLTableElement>('[data-tabela]')!;
+
+  // Colar: espalha o bloco (tabs = colunas, quebras de linha = linhas) a partir
+  // da célula onde se colou, pulando a coluna dos estados.
+  tabela.addEventListener('paste', (evento) => {
+    const alvo = evento.target as HTMLInputElement;
+    if (!(alvo instanceof HTMLInputElement)) return;
+    const texto = evento.clipboardData?.getData('text/plain') ?? '';
+    if (!texto.includes('\t') && !texto.includes('\n')) return;
+    evento.preventDefault();
+    const linhas = texto.replace(/\r/g, '').split('\n').filter((linha, indice, lista) => linha !== '' || indice < lista.length - 1);
+    const celulaInicial = alvo.closest('td')!;
+    const linhaInicial = celulaInicial.parentElement as HTMLTableRowElement;
+    const colunaInicial = [...linhaInicial.children].indexOf(celulaInicial);
+    let linhaAtual: HTMLTableRowElement | null = linhaInicial;
+    for (const linha of linhas) {
+      if (!linhaAtual) break;
+      const valores = linha.split('\t');
+      valores.forEach((valor, deslocamento) => {
+        const celula = linhaAtual!.children[colunaInicial + deslocamento];
+        const entrada = celula?.querySelector('input');
+        if (entrada) { entrada.value = valor.trim(); entrada.classList.add('is-alterada'); }
+      });
+      linhaAtual = linhaAtual.nextElementSibling as HTMLTableRowElement | null;
+    }
+  });
+
+  tabela.addEventListener('input', (evento) => {
+    (evento.target as HTMLElement).classList.add('is-alterada');
+  });
+
+  function adicionaColuna(campo: string, ano: string, rotulo: string) {
+    const existe = [...tabela.tHead!.rows[0].cells].some((th) => th.dataset.campo === campo && th.dataset.ano === ano);
+    if (existe) return;
+    const th = document.createElement('th');
+    th.textContent = rotulo;
+    th.dataset.campo = campo;
+    th.dataset.ano = ano;
+    tabela.tHead!.rows[0].appendChild(th);
+    for (const linha of tabela.tBodies[0].rows) {
+      const td = document.createElement('td');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `c:${campo}|${linha.dataset.uf}|${ano}`;
+      input.autocomplete = 'off';
+      td.appendChild(input);
+      linha.appendChild(td);
+    }
+  }
+
+  form.querySelector('[data-add-ano]')!.addEventListener('click', () => {
+    const campo = form.querySelector<HTMLInputElement>('[data-novo-ano]')!;
+    const ano = campo.value.trim();
+    if (!/^\d{4}$/.test(ano)) { alert('Informe o ano com quatro dígitos.'); return; }
+    adicionaColuna('', ano, ano);
+    campo.value = '';
+  });
+  form.querySelector('[data-add-campo]')!.addEventListener('click', () => {
+    const campo = form.querySelector<HTMLInputElement>('[data-novo-campo]')!;
+    const nome = campo.value.trim();
+    if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(nome)) { alert('O nome do campo usa letras e números, sem espaços (ex.: total, comPlano).'); return; }
+    adicionaColuna(nome, '', nome);
+    campo.value = '';
+  });
+</script>

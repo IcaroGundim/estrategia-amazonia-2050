@@ -2,7 +2,8 @@
 //
 // A nota é montada a partir dos mesmos arquivos que alimentam o painel —
 // public/data/catalogo.json, metas.json e dashboard.json —, das definições de
-// indicador do Panorama (src/scripts/app.js) e dos pesos da síntese (server.mjs).
+// indicador do Panorama (src/scripts/app.js) e dos pesos da síntese
+// (conteudo/panorama.json).
 // Nenhum número do texto é escrito à mão: quando os dados mudam, basta rodar
 // `npm run nota-tecnica` de novo. As conferências do meio do caminho param o
 // script se uma contagem deixar de fechar ou se uma definição mudar de lugar,
@@ -43,38 +44,17 @@ const SITE = readFileSync(join(RAIZ, 'astro.config.mjs'), 'utf8').match(/site:\s
 confere(SITE, 'não achei `site` em astro.config.mjs');
 const SITE_CURTO = SITE.replace(/^https?:\/\//, '');
 
-// Definições do Panorama. Ficam em app.js, que é código de navegador e não se
-// importa daqui; cada indicador ocupa uma linha, e a leitura confere a contagem.
-const appJs = readFileSync(join(RAIZ, 'src', 'scripts', 'app.js'), 'utf8');
+// Definições do Panorama: as mesmas de conteudo/panorama.json que o build usa
+// para montar dashboard.json — rótulo, descrição, fonte, direção e agregação.
+const PANORAMA = JSON.parse(readFileSync(join(RAIZ, 'conteudo', 'panorama.json'), 'utf8'));
+const METRICAS = PANORAMA.metricas
+  .filter((metrica) => metrica.seletor)
+  .map((metrica) => ({ chave: metrica.chave, rotulo: metrica.rotulo, descricao: metrica.descricao, fonte: metrica.fonte, direcao: metrica.rank }));
+const AGREGACAO = Object.fromEntries(PANORAMA.metricas
+  .filter((metrica) => metrica.agregacao)
+  .map((metrica) => [metrica.chave, { rotulo: metrica.agregacao.rotulo, nota: metrica.agregacao.nota ?? null, notaSerie: metrica.agregacao.notaSerie ?? null }]));
 
-function bloco(fonte, abertura) {
-  const inicio = fonte.indexOf(abertura);
-  confere(inicio >= 0, `não achei "${abertura}"`);
-  return fonte.slice(inicio, fonte.indexOf('\n};', inicio));
-}
-
-function campo(linha, nome) {
-  const achado = linha.match(new RegExp(`\\b${nome}: '((?:[^'\\\\]|\\\\.)*)'`));
-  return achado ? achado[1].replace(/\\'/g, "'") : null;
-}
-
-const METRICAS = bloco(appJs, 'const metrics = {')
-  .split('\n')
-  .filter((linha) => /^\s+\w+: \{ label:/.test(linha))
-  .map((linha) => ({
-    chave: linha.match(/^\s+(\w+):/)[1],
-    rotulo: campo(linha, 'label'),
-    descricao: campo(linha, 'description'),
-    fonte: campo(linha, 'source'),
-    direcao: campo(linha, 'direction')
-  }));
-
-const AGREGACAO = Object.fromEntries(bloco(appJs, 'const AGREGACAO = {')
-  .split('\n')
-  .filter((linha) => /^\s+\w+: \{ (peso|metodo):/.test(linha))
-  .map((linha) => [linha.match(/^\s+(\w+):/)[1], { rotulo: campo(linha, 'rotulo'), nota: campo(linha, 'nota'), notaSerie: campo(linha, 'notaSerie') }]));
-
-confere(METRICAS.length >= 10, `li só ${METRICAS.length} indicadores do Panorama em app.js`);
+confere(METRICAS.length >= 10, `li só ${METRICAS.length} indicadores do Panorama em conteudo/panorama.json`);
 for (const metrica of METRICAS) {
   confere(metrica.rotulo && metrica.descricao && metrica.fonte, `${metrica.chave} sem rótulo, descrição ou fonte`);
   confere(['low', 'high'].includes(metrica.direcao), `${metrica.chave} sem direção`);
@@ -82,10 +62,10 @@ for (const metrica of METRICAS) {
   confere(metrica.chave in painel.states[0], `${metrica.chave} não existe em dashboard.json`);
 }
 
-// Pesos da síntese, na ordem em que server.mjs os declara.
-const PESOS = [...bloco(readFileSync(join(RAIZ, 'server.mjs'), 'utf8'), 'const scoring = [')
-  .matchAll(/\['(\w+)', '(low|high)', ([\d.]+)\]/g)]
-  .map(([, chave, direcao, peso]) => ({ chave, direcao, peso: Number(peso) }));
+// Pesos da síntese, na ordem em que conteudo/panorama.json os declara — é o
+// mesmo arquivo que o build lê para calcular o score.
+const PESOS = JSON.parse(readFileSync(join(RAIZ, 'conteudo', 'panorama.json'), 'utf8')).sintese.pesos
+  .map(({ chave, direcao, peso }) => ({ chave, direcao, peso: Number(peso) }));
 confere(Math.abs(PESOS.reduce((soma, item) => soma + item.peso, 0) - 1) < 1e-9, 'os pesos da síntese não somam 1');
 
 // Dimensão de cada indicador da síntese, como em server.mjs (state.dimensions).

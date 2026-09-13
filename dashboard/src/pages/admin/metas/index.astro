@@ -1,0 +1,70 @@
+---
+// As metas confrontáveis e os motivos das que ficam fora: uma lista por
+// situação, com o caminho para editar cada indicador.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { leJson } from '../../../lib/admin/edicao';
+
+interface Parametro { codigo: string; alvo?: number | { tipo: string } | null; direcao: string; tipo: string; agregacao?: string }
+interface Metas { parametros: Parametro[]; exclusoes: Record<string, string> }
+interface Catalogo { eixos: { numero: number; nome: string; indicadores: { codigo: string; nome: string; meta: string }[] }[] }
+
+const sessao = Astro.locals.sessao!;
+const [{ dados: metas }, { dados: catalogo }] = await Promise.all([leJson<Metas>('metas'), leJson<Catalogo>('catalogo')]);
+const salvo = Astro.url.searchParams.get('salvo');
+const indicadores = catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((item) => ({ ...item, eixo: eixo.numero })));
+const nomeDe = (codigo: string) => indicadores.find((item) => item.codigo === codigo)?.nome || '';
+const avaliadas = new Set(metas.parametros.map((item) => item.codigo));
+const excluidas = new Set(Object.keys(metas.exclusoes));
+const semNada = indicadores.filter((item) => !avaliadas.has(item.codigo) && !excluidas.has(item.codigo));
+const descreveAlvo = (parametro: Parametro) => {
+  if (parametro.direcao === 'categoria') return 'classificação por categoria';
+  if (parametro.alvo && typeof parametro.alvo === 'object') return 'alvo derivado da série de cada estado';
+  return `${parametro.direcao === 'menor' ? 'no máximo' : 'pelo menos'} ${parametro.alvo}`;
+};
+---
+
+<Admin title="Metas" sessao={sessao}>
+  <Mensagens salvo={salvo} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Metas</p>
+    <h1>Metas confrontáveis</h1>
+    <p>Uma meta só entra no quadro quando o patamar pode ser comparado com os valores coletados, na mesma unidade. As demais aparecem na lista pública como "fora do quadro", com o motivo escrito aqui ou com o motivo padrão.</p>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>No quadro ({metas.parametros.length})</h2>
+    <ul class="admin-lista is-compacta">
+      {metas.parametros.map((parametro) => (
+        <li>
+          <div><a href={`/admin/metas/${encodeURIComponent(parametro.codigo)}`}><b>{parametro.codigo}</b> {nomeDe(parametro.codigo)}</a><br /><small>{descreveAlvo(parametro)} · meta {parametro.tipo} · {parametro.agregacao || 'sem agregação'}</small></div>
+          <span class="admin-etiqueta">avaliada</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>Fora do quadro, com motivo próprio ({excluidas.size})</h2>
+    <ul class="admin-lista is-compacta">
+      {[...excluidas].map((codigo) => (
+        <li>
+          <div><a href={`/admin/metas/${encodeURIComponent(codigo)}`}><b>{codigo}</b> {nomeDe(codigo)}</a><br /><small>{metas.exclusoes[codigo]}</small></div>
+          <span class="admin-etiqueta is-pendente">excluída</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>Fora do quadro, com motivo padrão ({semNada.length})</h2>
+    <p>Sem valores coletados ou sem patamar numérico. Abra um para parametrizar a meta ou escrever um motivo específico.</p>
+    <ul class="admin-lista is-compacta">
+      {semNada.map((item) => (
+        <li><div><a href={`/admin/metas/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.meta}</small></div></li>
+      ))}
+    </ul>
+  </section>
+</Admin>

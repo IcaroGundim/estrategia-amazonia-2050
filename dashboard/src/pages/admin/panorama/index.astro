@@ -1,0 +1,64 @@
+---
+// Configuração do Panorama: as métricas do mapa, na ordem do seletor, e a
+// síntese comparativa (pesos e dimensões).
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
+
+interface Metrica { chave: string; tipo: string; seletor?: boolean; rotulo?: string; codigoCatalogo?: string | null; referencia?: number; rank?: string; formato?: string }
+interface Panorama { metricas: Metrica[]; sintese: { pesos: { chave: string; peso: number }[] } }
+
+const sessao = Astro.locals.sessao!;
+let erro: string | null = null;
+const salvo = Astro.url.searchParams.get('salvo');
+let lido = await leJson<Panorama>('panorama');
+
+// Mover uma métrica para cima ou para baixo na ordem do seletor.
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  const chave = texto(dados, 'chave');
+  const direcao = texto(dados, 'mover');
+  try {
+    await salvaJson<Panorama>('panorama', texto(dados, 'versao') || lido.versao, (panorama) => {
+      const indice = panorama.metricas.findIndex((metrica) => metrica.chave === chave);
+      const destino = direcao === 'cima' ? indice - 1 : indice + 1;
+      if (indice < 0 || destino < 0 || destino >= panorama.metricas.length) throw new ErroDeEdicao('Não dá para mover nessa direção.');
+      const [item] = panorama.metricas.splice(indice, 1);
+      panorama.metricas.splice(destino, 0, item);
+      return panorama;
+    }, `move ${chave} para ${direcao} no seletor do Panorama`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect('/admin/panorama?salvo=1', 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    lido = await leJson<Panorama>('panorama');
+  }
+}
+const pesoDe = new Map(lido.dados.sintese.pesos.map((item) => [item.chave, item.peso]));
+---
+
+<Admin title="Panorama" sessao={sessao}>
+  <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Panorama</p>
+    <h1>Configuração do Panorama</h1>
+    <p>As métricas do mapa, na ordem em que aparecem no seletor. Cada uma diz de onde vem a série, como se exibe e como o valor da Amazônia Legal é calculado. A <a href="/admin/panorama/sintese">síntese comparativa</a> define quais entram no índice, com que peso e em que dimensão.</p>
+    <div class="admin-acoes"><a class="admin-botao" href="/admin/panorama/nova">Criar métrica</a><a class="admin-botao is-secundario" href="/admin/panorama/sintese">Síntese: pesos e dimensões</a></div>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>Métricas ({lido.dados.metricas.length})</h2>
+    <ul class="admin-lista is-compacta">
+      {lido.dados.metricas.map((metrica, indice) => (
+        <li>
+          <div><a href={`/admin/panorama/${encodeURIComponent(metrica.chave)}`}><b>{metrica.rotulo || metrica.chave}</b> <small>{metrica.chave}</small></a><br /><small>{metrica.tipo}{metrica.codigoCatalogo ? ` · ${metrica.codigoCatalogo}` : ''}{metrica.referencia ? ` · ref. ${metrica.referencia}` : ''}{pesoDe.has(metrica.chave) ? ` · peso ${pesoDe.get(metrica.chave)}` : ''}</small></div>
+          <div class="admin-acoes" style="margin: 0">
+            <span class={`admin-etiqueta${metrica.seletor ? ' is-coletado' : ' is-manual'}`}>{metrica.seletor ? 'no seletor' : 'fora do seletor'}</span>
+            <form method="post"><input type="hidden" name="versao" value={lido.versao} /><input type="hidden" name="chave" value={metrica.chave} /><button type="submit" name="mover" value="cima" class="admin-botao is-secundario is-mini" disabled={indice === 0} title="Subir">↑</button> <button type="submit" name="mover" value="baixo" class="admin-botao is-secundario is-mini" disabled={indice === lido.dados.metricas.length - 1} title="Descer">↓</button></form>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Admin>

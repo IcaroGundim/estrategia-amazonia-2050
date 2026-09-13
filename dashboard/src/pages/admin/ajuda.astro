@@ -1,0 +1,16 @@
+---
+// O manual de operação (OPERACAO.md), dentro da administração.
+export const prerender = false;
+
+import Admin from '../../layouts/Admin.astro';
+import { Content as Manual } from '../../../OPERACAO.md';
+
+const sessao = Astro.locals.sessao!;
+---
+
+<Admin title="Ajuda" sessao={sessao}>
+  <section class="admin-cartao admin-manual">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Ajuda</p>
+    <Manual />
+  </section>
+</Admin>

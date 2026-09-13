@@ -1,0 +1,690 @@
+{
+  "_leia": "Métricas do mapa e da síntese comparativa. Cada métrica declara o cálculo (tipo taxa/serie/valor, referência, parciais, rank), a apresentação (rotulo, subtitulo, descricao, fonte, formato) e a agregação regional (peso ou metodo, rotulo, nota, notaSerie), com o inglês em `en`. A ordem do array é a ordem do seletor; seletor:false tira a métrica do menu. formato: km2PorMilKm2, porMilKm2, porCemMil, pct0, pct1, pct2, num1, num2, pontos1, reaisBi.",
+  "estados": {
+    "AC": {
+      "name": "Acre",
+      "capital": "Rio Branco",
+      "flag": "Bandeira_do_Acre.svg"
+    },
+    "AP": {
+      "name": "Amapá",
+      "capital": "Macapá",
+      "flag": "Bandeira_do_Amapa.svg"
+    },
+    "AM": {
+      "name": "Amazonas",
+      "capital": "Manaus",
+      "flag": "Bandeira_do_Amazonas.svg"
+    },
+    "MA": {
+      "name": "Maranhão",
+      "capital": "São Luís",
+      "flag": "Bandeira_do_Maranhao.svg"
+    },
+    "MT": {
+      "name": "Mato Grosso",
+      "capital": "Cuiabá",
+      "flag": "Bandeira_de_Mato_Grosso.svg"
+    },
+    "PA": {
+      "name": "Pará",
+      "capital": "Belém",
+      "flag": "Bandeira_do_Para.svg"
+    },
+    "RO": {
+      "name": "Rondônia",
+      "capital": "Porto Velho",
+      "flag": "Bandeira_de_Rondonia.svg"
+    },
+    "RR": {
+      "name": "Roraima",
+      "capital": "Boa Vista",
+      "flag": "Bandeira_de_Roraima.svg"
+    },
+    "TO": {
+      "name": "Tocantins",
+      "capital": "Palmas",
+      "flag": "Bandeira_do_Tocantins.svg"
+    }
+  },
+  "denominadores": {
+    "area": "AREA",
+    "populacao": "POP",
+    "anoPopulacao": 2025
+  },
+  "metricas": [
+    {
+      "chave": "prodesRate",
+      "codigoCatalogo": "I1.3.2",
+      "tipo": "taxa",
+      "bruto": "prodesKm2",
+      "campoBruto": "prodesKm2",
+      "denominador": "AREA",
+      "fator": 1000,
+      "referencia": 2025,
+      "parciais": [],
+      "campoVariacao": "prodesVariation",
+      "rank": "low",
+      "seletor": true,
+      "rotulo": "Desmatamento PRODES",
+      "subtitulo": "menor taxa = melhor posição",
+      "descricao": "Área desmatada detectada pelo PRODES, ajustada para cada mil km² do território estadual.",
+      "fonte": "PRODES/INPE",
+      "formato": "km2PorMilKm2",
+      "en": {
+        "rotulo": "Deforestation (PRODES)",
+        "subtitulo": "lower rate = better rank",
+        "descricao": "Area cleared as detected by PRODES, expressed per thousand km² of the state’s territory.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "área desmatada dos nove estados sobre a área da região",
+        "peso": "area",
+        "en": {
+          "rotulo": "area cleared across the nine states over the area of the region",
+          "nota": null,
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "heatRate",
+      "codigoCatalogo": "I1.3.4",
+      "tipo": "taxa",
+      "bruto": "focos",
+      "campoBruto": "heat",
+      "denominador": "AREA",
+      "fator": 1000,
+      "referencia": 2024,
+      "parciais": [],
+      "campoVariacao": "heatVariation",
+      "rank": "low",
+      "seletor": true,
+      "rotulo": "Focos de calor",
+      "subtitulo": "menos focos = melhor posição",
+      "descricao": "Focos de calor detectados pelo satélite de referência do INPE, por mil km² de área do estado. É contagem de focos, não área queimada.",
+      "fonte": "INPE/Queimadas · satélite de referência",
+      "formato": "porMilKm2",
+      "en": {
+        "rotulo": "Fire hotspots",
+        "subtitulo": "fewer hotspots = better rank",
+        "descricao": "Fire hotspots detected by INPE’s reference satellite, per thousand km² of state area. It counts hotspots, not burned area.",
+        "fonte": "INPE/Queimadas · reference satellite"
+      },
+      "agregacao": {
+        "rotulo": "total de focos sobre a área da região",
+        "peso": "area",
+        "nota": "A contagem vem só do satélite de referência do INPE. A série de todos os satélites é maior, mas não serve para comparar anos, porque o número de satélites mudou ao longo do tempo.",
+        "notaSerie": "Rondônia fica sem 2006 e sem 2016: para esses dois anos o servidor do INPE entrega o arquivo do ano anterior, então não há medição própria a mostrar.",
+        "en": {
+          "rotulo": "total hotspots over the area of the region",
+          "nota": "The count comes from INPE’s reference satellite alone. The all-satellite series is larger, but it cannot be compared across years, because the number of satellites changed over time.",
+          "notaSerie": "Rondônia has no figure for 2006 or 2016: for those two years INPE’s server returns the previous year’s file, so there is no measurement of its own to show."
+        }
+      }
+    },
+    {
+      "chave": "poverty",
+      "codigoCatalogo": "I2.1.1",
+      "tipo": "serie",
+      "referencia": 2024,
+      "parciais": [],
+      "rank": "low",
+      "seletor": true,
+      "rotulo": "Pobreza",
+      "subtitulo": "menor percentual = melhor posição",
+      "descricao": "Percentual da população abaixo da linha de pobreza regional do IBGE (indicador ODS P1.1.1), na série anual da PNAD Contínua.",
+      "fonte": "IBGE/PNADc · ODS P1.1.1",
+      "formato": "pct1",
+      "en": {
+        "rotulo": "Poverty",
+        "subtitulo": "lower share = better rank",
+        "descricao": "Share of the population below IBGE’s regional poverty line (SDG indicator P1.1.1), from the annual PNAD Contínua series.",
+        "fonte": "IBGE/PNADc · SDG P1.1.1"
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "notaSerie": "Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": null,
+          "notaSerie": "For earlier years the weighting uses the 2025 population, the only one the dashboard loads; the reference year itself is exact."
+        }
+      }
+    },
+    {
+      "chave": "school",
+      "codigoCatalogo": null,
+      "tipo": "serie",
+      "referencia": 2024,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Frequência escolar 15–17",
+      "subtitulo": "maior percentual = melhor posição",
+      "descricao": "Parcela das pessoas de 15 a 17 anos que frequentam a escola em cada estado, na série anual da PNAD Contínua.",
+      "fonte": "IBGE/PNADc · módulo Educação",
+      "formato": "pct1",
+      "en": {
+        "rotulo": "School attendance, ages 15–17",
+        "subtitulo": "higher share = better rank",
+        "descricao": "Share of 15-to-17-year-olds attending school in each state, from the annual PNAD Contínua series.",
+        "fonte": "IBGE/PNADc · education module"
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "nota": "Ponderação pela população total de cada estado, e não pela população de 15 a 17 anos, que não está na base consolidada.",
+        "notaSerie": "O módulo de Educação da PNAD Contínua não foi a campo em 2020 e 2021, então esses dois anos não estão no seletor e o intervalo de 2019 a 2022 não é uma variação anual.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": "Weighted by each state’s total population rather than by its 15-to-17-year-olds, which the consolidated base does not carry.",
+          "notaSerie": "The PNAD Contínua education module was not fielded in 2020 or 2021, so those years are absent from the selector and the 2019-to-2022 gap is not a year-on-year change."
+        }
+      }
+    },
+    {
+      "chave": "cvliRate",
+      "codigoCatalogo": "I2.4.1",
+      "tipo": "taxa",
+      "bruto": "cvli",
+      "campoBruto": "cvli",
+      "denominador": "POP",
+      "fator": 100000,
+      "referencia": 2025,
+      "parciais": [
+        2026
+      ],
+      "serieDireta": "cvliRate",
+      "rank": "low",
+      "seletor": true,
+      "rotulo": "Segurança (CVLI)",
+      "subtitulo": "menor taxa = melhor posição",
+      "descricao": "Crimes violentos letais intencionais registrados para cada 100 mil habitantes.",
+      "fonte": "Sinesp/MJ",
+      "formato": "porCemMil",
+      "en": {
+        "rotulo": "Violent deaths (CVLI)",
+        "subtitulo": "lower rate = better rank",
+        "descricao": "Intentional violent deaths recorded per 100,000 inhabitants.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "total de CVLI sobre a população regional",
+        "peso": "population",
+        "notaSerie": "Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.",
+        "en": {
+          "rotulo": "total violent deaths over the regional population",
+          "nota": null,
+          "notaSerie": "For earlier years the weighting uses the 2025 population, the only one the dashboard loads; the reference year itself is exact."
+        }
+      }
+    },
+    {
+      "chave": "apsCobertura",
+      "codigoCatalogo": "I2.2.2",
+      "tipo": "serie",
+      "referencia": 2026,
+      "parciais": [
+        2026
+      ],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Atenção primária",
+      "subtitulo": "maior cobertura = melhor posição",
+      "descricao": "Cobertura populacional estimada da Atenção Primária à Saúde. A partir de 2021 a medida parte da capacidade de atendimento das equipes e por isso passa de 100% em vários estados.",
+      "fonte": "MS/e-Gestor · cobertura APS",
+      "formato": "pct1",
+      "en": {
+        "rotulo": "Primary health care",
+        "subtitulo": "wider coverage = better rank",
+        "descricao": "Estimated share of the population covered by primary health care. From 2021 the measure starts from what the teams can handle, which is why several states come out above 100%.",
+        "fonte": "Ministry of Health / e-Gestor · primary care coverage"
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "nota": "A cobertura acima de 100% não é erro: desde 2021 a medida compara a capacidade de atendimento das equipes com a população, e não o número de pessoas efetivamente cadastradas.",
+        "notaSerie": "A série tem quebra de metodologia em 2021. Até 2020 vale a regra da Atenção Básica, que divide equipes parametrizadas pela população e trava em 100%; de 2021 em diante vale a do Previne Brasil. O salto entre os dois anos é mudança de definição, não de cobertura.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": "Coverage above 100% is not a mistake: since 2021 the measure compares what the teams can handle against the population, rather than counting people actually registered.",
+          "notaSerie": "The series breaks methodologically in 2021. Up to 2020 it follows the old primary-care rule, which divides standardised teams by population and caps at 100%; from 2021 it follows the Previne Brasil rule. The jump between those two years is a change of definition, not of coverage."
+        }
+      }
+    },
+    {
+      "chave": "vulnerability",
+      "codigoCatalogo": "I1.3.1",
+      "tipo": "valor",
+      "rank": "low",
+      "seletor": true,
+      "rotulo": "Vulnerabilidade climática",
+      "subtitulo": "menor índice = melhor posição",
+      "descricao": "Média estadual do índice municipal de vulnerabilidade às mudanças climáticas.",
+      "fonte": "AdaptaBrasil · linha de base 2025",
+      "formato": "num1",
+      "en": {
+        "rotulo": "Climate vulnerability",
+        "subtitulo": "lower index = better rank",
+        "descricao": "State average of the municipal index of vulnerability to climate change.",
+        "fonte": "AdaptaBrasil · 2025 baseline"
+      },
+      "agregacao": {
+        "rotulo": "média simples dos nove estados",
+        "peso": null,
+        "nota": "Média simples dos nove estados. A leitura correta ponderaria pelo número de municípios de cada estado, que não está na base consolidada.",
+        "en": {
+          "rotulo": "simple average of the nine states",
+          "nota": "Simple average of the nine states. A correct reading would weight by each state’s number of municipalities, which the consolidated base does not carry.",
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "conservationManaged",
+      "codigoCatalogo": "I1.1.2",
+      "tipo": "valor",
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Gestão de unidades de conservação",
+      "subtitulo": "maior percentual = melhor posição",
+      "descricao": "Percentual de unidades estaduais com plano de manejo e conselho gestor registrados.",
+      "fonte": "CNUC/MMA · referência 2026",
+      "formato": "pct0",
+      "en": {
+        "rotulo": "Protected-area management",
+        "subtitulo": "higher share = better rank",
+        "descricao": "Share of state protected areas with a registered management plan and governing council.",
+        "fonte": "CNUC/MMA · 2026 reference"
+      },
+      "agregacao": {
+        "rotulo": "unidades com plano e conselho sobre o total de unidades",
+        "peso": "conservationUnits",
+        "en": {
+          "rotulo": "areas with a plan and a council over all protected areas",
+          "nota": null,
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "ibc",
+      "codigoCatalogo": "I4.1.1",
+      "tipo": "serie",
+      "referencia": 2025,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Conectividade digital (IBC-AMZ)",
+      "subtitulo": "maior índice = melhor posição",
+      "descricao": "Índice de Conectividade da Amazônia Legal ponderado pela população municipal.",
+      "fonte": "ANATEL",
+      "formato": "pontos1",
+      "en": {
+        "rotulo": "Digital connectivity (IBC-AMZ)",
+        "subtitulo": "higher index = better rank",
+        "descricao": "Legal Amazon connectivity index, weighted by municipal population.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "notaSerie": "Nos anos anteriores a ponderação usa a população de 2025, a única que o painel carrega; o ano de referência é exato.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": null,
+          "notaSerie": "For earlier years the weighting uses the 2025 population, the only one the dashboard loads; the reference year itself is exact."
+        }
+      }
+    },
+    {
+      "chave": "perRenovavel",
+      "codigoCatalogo": "I4.3.2",
+      "tipo": "valor",
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Renovabilidade da matriz elétrica",
+      "subtitulo": "maior percentual = melhor posição",
+      "descricao": "Participação de fontes renováveis na potência de geração fiscalizada em operação.",
+      "fonte": "ANEEL/SIGA · base ago. 2026",
+      "formato": "pct1",
+      "en": {
+        "rotulo": "Renewable share of power capacity",
+        "subtitulo": "higher share = better rank",
+        "descricao": "Share of renewable sources in the licensed generating capacity in operation.",
+        "fonte": "ANEEL/SIGA · Aug 2026 extract"
+      },
+      "agregacao": {
+        "rotulo": "média simples dos nove estados",
+        "peso": null,
+        "nota": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
+        "en": {
+          "rotulo": "simple average of the nine states",
+          "nota": "Simple average of the nine states. A correct regional reading would weight by each state’s installed capacity, which the consolidated base does not carry.",
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "isgr",
+      "codigoCatalogo": "I4.4.1",
+      "tipo": "valor",
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Saneamento e gestão de riscos",
+      "subtitulo": "maior percentual = melhor posição",
+      "descricao": "Proxy do ISGR com água e esgoto adequados (Censo 2022) e fatores climáticos e de governança (MUNIC 2024).",
+      "fonte": "IBGE · Censo 2022 + MUNIC 2024",
+      "formato": "pct1",
+      "en": {
+        "rotulo": "Sanitation and risk management",
+        "subtitulo": "higher share = better rank",
+        "descricao": "Proxy for the ISGR index, combining adequate water and sewerage (2022 Census) with climate and governance factors (MUNIC 2024).",
+        "fonte": "IBGE · 2022 Census + MUNIC 2024"
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": null,
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "pevsBilhoes",
+      "codigoCatalogo": "I3.1.1",
+      "tipo": "serie",
+      "referencia": 2024,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Produção da sociobioeconomia",
+      "subtitulo": "maior valor = melhor posição",
+      "descricao": "Valor da produção da extração vegetal (PEVS), proxy da sociobioeconomia da Estratégia 2050.",
+      "fonte": "IBGE/PEVS",
+      "formato": "reaisBi",
+      "en": {
+        "rotulo": "Socio-bioeconomy output",
+        "subtitulo": "higher value = better rank",
+        "descricao": "Value of plant extraction and forestry output (PEVS), used as a proxy for the Strategy’s socio-bioeconomy.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "soma dos nove estados",
+        "metodo": "soma",
+        "notaSerie": "Os valores são a preços correntes de cada ano, como o IBGE publica. Numa série de três décadas isso pesa: o Pará sai de R$ 2,05 bi em 1995 para R$ 2,73 bi em 2024, mas em reais de 2024 o valor de 1995 equivale a R$ 11,7 bi — em termos reais a produção caiu, não cresceu. A série deflacionada pelo IPCA está em public/data/pevs-extracao-vegetal.json.",
+        "en": {
+          "rotulo": "sum of the nine states",
+          "nota": null,
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "piaBilhoes",
+      "codigoCatalogo": "F3.5",
+      "tipo": "serie",
+      "referencia": 2024,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "Transformação industrial",
+      "subtitulo": "maior valor = melhor posição",
+      "descricao": "Valor da transformação industrial das empresas com 5 ou mais pessoas ocupadas.",
+      "fonte": "IBGE/PIA-Empresa",
+      "formato": "reaisBi",
+      "en": {
+        "rotulo": "Industrial output",
+        "subtitulo": "higher value = better rank",
+        "descricao": "Value added by manufacturing in firms with five or more employees.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "soma dos nove estados",
+        "metodo": "soma",
+        "notaSerie": "Os valores são a preços correntes de cada ano, como o IBGE publica; em dezoito anos a inflação pesa na comparação. A série deflacionada pelo IPCA está em public/data/pia-transformacao-industrial.json. A passagem de 2023 para 2024 troca de tabela porque o IBGE trocou de série da PIA — é a mesma emenda que o painel já fazia antes desta extensão.",
+        "en": {
+          "rotulo": "sum of the nine states",
+          "nota": null,
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "idebAnosIniciais",
+      "codigoCatalogo": "I2.3.1",
+      "tipo": "serie",
+      "referencia": 2025,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "IDEB anos iniciais",
+      "subtitulo": "maior nota = melhor posição",
+      "descricao": "Índice de Desenvolvimento da Educação Básica nos anos iniciais do ensino fundamental, rede total. Bienal.",
+      "fonte": "INEP/IDEB",
+      "formato": "num1",
+      "en": {
+        "rotulo": "IDEB, primary",
+        "subtitulo": "higher score = better rank",
+        "descricao": "Basic Education Development Index (IDEB) for primary education, years 1 to 5, all school systems. Published every two years.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "nota": "Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.",
+        "notaSerie": "A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": "Weighted by each state’s total population. The right weight would be enrolment in the relevant stage, which the dashboard does not carry. IDEB is published every two years, so the series has one point every other year.",
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "idebAnosFinais",
+      "codigoCatalogo": "I2.3.1",
+      "tipo": "serie",
+      "referencia": 2025,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "IDEB anos finais",
+      "subtitulo": "maior nota = melhor posição",
+      "descricao": "Índice de Desenvolvimento da Educação Básica nos anos finais do ensino fundamental, rede total. Bienal.",
+      "fonte": "INEP/IDEB",
+      "formato": "num1",
+      "en": {
+        "rotulo": "IDEB, lower secondary",
+        "subtitulo": "higher score = better rank",
+        "descricao": "Basic Education Development Index (IDEB) for lower secondary education, years 6 to 9, all school systems. Published every two years.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "nota": "Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.",
+        "notaSerie": "A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": "Weighted by each state’s total population. The right weight would be enrolment in the relevant stage, which the dashboard does not carry. IDEB is published every two years, so the series has one point every other year.",
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "idebEnsinoMedio",
+      "codigoCatalogo": "I2.3.1",
+      "tipo": "serie",
+      "referencia": 2025,
+      "parciais": [],
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "IDEB ensino médio",
+      "subtitulo": "maior nota = melhor posição",
+      "descricao": "Índice de Desenvolvimento da Educação Básica no ensino médio, rede total. Bienal.",
+      "fonte": "INEP/IDEB",
+      "formato": "num1",
+      "en": {
+        "rotulo": "IDEB, upper secondary",
+        "subtitulo": "higher score = better rank",
+        "descricao": "Basic Education Development Index (IDEB) for upper secondary education, all school systems. Published every two years.",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "média ponderada pela população",
+        "peso": "population",
+        "nota": "Média ponderada pela população total do estado. O correto seria ponderar pelo número de matrículas da etapa, que o painel não carrega. O IDEB é bienal, então a série tem um ponto a cada dois anos.",
+        "notaSerie": "A ficha do I2.3.1 define o indicador como o percentual que atingiu ou superou a meta, e não a nota em si. O INEP projetou metas só até 2021 — 2023 e 2025 saíram sem meta —, então o painel exibe a nota observada, que existe nas onze edições, e o cumprimento de meta fica em public/data/ideb.json.",
+        "en": {
+          "rotulo": "population-weighted average",
+          "nota": "Weighted by each state’s total population. The right weight would be enrolment in the relevant stage, which the dashboard does not carry. IDEB is published every two years, so the series has one point every other year.",
+          "notaSerie": null
+        }
+      }
+    },
+    {
+      "chave": "pdPctPib",
+      "codigoCatalogo": "I5.4.1",
+      "tipo": "serie",
+      "referencia": 2023,
+      "parciais": [],
+      "valorAtual": "ultimo",
+      "campoAno": "pdPctPibAno",
+      "rank": "high",
+      "seletor": true,
+      "rotulo": "P&D estadual (% do PIB)",
+      "subtitulo": "maior percentual = melhor posição",
+      "descricao": "Dispêndio dos governos estaduais em pesquisa e desenvolvimento como parcela do PIB, no último ano disponível de cada estado (2022–2023).",
+      "fonte": "MCTI + IBGE/SIDRA",
+      "formato": "pct2",
+      "en": {
+        "rotulo": "State R&D (% of GDP)",
+        "subtitulo": "higher share = better rank",
+        "descricao": "State government spending on research and development as a share of GDP, in each state’s latest available year (2022–2023).",
+        "fonte": null
+      },
+      "agregacao": {
+        "rotulo": "média simples dos nove estados",
+        "peso": null,
+        "nota": "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.",
+        "notaSerie": "Em 2021 e 2023 só oito estados têm valor, então a média desses anos não é composta pelos mesmos estados dos demais.",
+        "en": {
+          "rotulo": "simple average of the nine states",
+          "nota": "Simple average of the nine states. Weighting by GDP would require GDP for the same reference year in every state, which the series does not offer.",
+          "notaSerie": "In 2021 and 2023 only eight states have a figure, so the average for those years is not built from the same set of states as the rest."
+        }
+      }
+    },
+    {
+      "chave": "esfTeams",
+      "codigoCatalogo": "I2.2.2",
+      "tipo": "valor",
+      "codigo": "apsEquipes",
+      "ano": 2026,
+      "seletor": false
+    },
+    {
+      "chave": "conservationUnits",
+      "codigoCatalogo": "I1.1.2",
+      "tipo": "valor",
+      "seletor": false
+    }
+  ],
+  "sintese": {
+    "pesos": [
+      {
+        "chave": "prodesRate",
+        "direcao": "low",
+        "peso": 0.22
+      },
+      {
+        "chave": "heatRate",
+        "direcao": "low",
+        "peso": 0.08
+      },
+      {
+        "chave": "conservationManaged",
+        "direcao": "high",
+        "peso": 0.1
+      },
+      {
+        "chave": "poverty",
+        "direcao": "low",
+        "peso": 0.17
+      },
+      {
+        "chave": "school",
+        "direcao": "high",
+        "peso": 0.12
+      },
+      {
+        "chave": "apsCobertura",
+        "direcao": "high",
+        "peso": 0.11
+      },
+      {
+        "chave": "cvliRate",
+        "direcao": "low",
+        "peso": 0.12
+      },
+      {
+        "chave": "vulnerability",
+        "direcao": "low",
+        "peso": 0.08
+      }
+    ],
+    "dimensoes": {
+      "territorio": [
+        {
+          "chave": "prodesRate",
+          "peso": 0.55
+        },
+        {
+          "chave": "heatRate",
+          "peso": 0.2
+        },
+        {
+          "chave": "conservationManaged",
+          "peso": 0.25
+        }
+      ],
+      "pessoas": [
+        {
+          "chave": "poverty",
+          "peso": 0.42
+        },
+        {
+          "chave": "school",
+          "peso": 0.3
+        },
+        {
+          "chave": "apsCobertura",
+          "peso": 0.28
+        }
+      ],
+      "seguranca": [
+        {
+          "chave": "cvliRate",
+          "peso": 1
+        }
+      ],
+      "resiliencia": [
+        {
+          "chave": "vulnerability",
+          "peso": 1
+        }
+      ]
+    }
+  },
+  "resumo": {
+    "desmatamento": "prodesRate",
+    "focos": "heatRate",
+    "violencia": "cvliRate",
+    "unidadesConservacao": "conservationUnits"
+  }
+}

@@ -27,6 +27,21 @@ Thumbs.db
 *.pptx
 /Logomarca Consórcio Horizontal CLARA.avif
 
+# Derivados de dashboard/conteudo/ pelo build (node build-static.mjs).
+# geo.json, os JSONs de detalhe por tema, flags/ e os .md/.pdf de downloads
+# continuam versionados: são fonte, não saída.
+/dashboard/public/data/dashboard.json
+/dashboard/public/data/catalogo.json
+/dashboard/public/data/metas.json
+/dashboard/public/data/fichas.json
+/dashboard/public/data/i18n/en.json
+/dashboard/public/downloads/*.xlsx
+/.tmp-oraculo/
+
+# Saída do adapter da Vercel e segredos locais da administração
+/dashboard/.vercel/
+/dashboard/.env
+
 # Canvas da identidade visual, gerado a partir da pasta de identidade
 /identidade-estrategia-2050.html
 
@@ -39,3 +54,6 @@ Thumbs.db
 *.out
 *.synctex.gz
 INDICADORES_SEM_DADOS.log
+
+# Backups locais da fonte e dos dados (pasta backups/, com zip)
+/backups/

@@ -1,0 +1,1269 @@
+{
+  "eixos": [
+    {
+      "numero": 1,
+      "nome": "Território, Ambiente e Clima",
+      "indicadores": [
+        {
+          "codigo": "I1.1.1",
+          "linhaAcao": "1.1",
+          "nome": "ZEE vigente e atualizado",
+          "meta": "100% do território dos estados da AL com ZEE vigente, atualizado (revisão nos últimos 10 anos) e incorporado ao planejamento/licenciamento",
+          "descricao": "Percentual do território do Estado com ZEE aprovado por lei/decreto vigente e atualizado nos últimos 10 anos / uso formal em licenciamento (sim/não) / nº de políticas públicas estaduais que citam o ZEE",
+          "unidade": "% / Sim-Não",
+          "fonte": "Legislação/portal das secretarias estaduais de meio ambiente",
+          "prazo": 2035,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Ecological-economic zoning in force and up to date",
+            "meta": "100% of the territory of the Legal Amazon states covered by ecological-economic zoning (ZEE) that is in force, reviewed within the past 10 years and built into planning and permitting",
+            "descricao": "Share of the state’s territory covered by ZEE approved by law or decree, in force and revised within the past 10 years / whether it is formally used in permitting (yes/no) / number of state policies that cite the ZEE",
+            "fonte": "State environment departments — legislation and web portals",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.1.2",
+          "linhaAcao": "1.1",
+          "nome": "UCs estaduais com plano de manejo e conselho gestor",
+          "meta": "40% de UCs estaduais da AL com plano de manejo elaborado/atualizado e conselho gestor em funcionamento",
+          "descricao": "% de UCs estaduais com plano de manejo e conselho gestor ativos",
+          "unidade": "%",
+          "fonte": "CNUC/MMA (dados.mma.gov.br)",
+          "prazo": 2035,
+          "status": "coletado",
+          "anoRef": "03/2026",
+          "en": {
+            "nome": "State protected areas with a management plan and an active council",
+            "meta": "40% of state protected areas in the Legal Amazon with a management plan drawn up or updated and a functioning governing council",
+            "descricao": "Share of state protected areas with an active management plan and governing council",
+            "fonte": "CNUC / Ministry of the Environment (MMA) — dados.mma.gov.br",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.1.3",
+          "linhaAcao": "1.1",
+          "nome": "Cooperação técnica PNGATI/PNGTAQ",
+          "meta": "Instrumento de cooperação técnica com órgão federal (PNGATI/PNGTAQ) nos estados, mediante demanda das comunidades",
+          "descricao": "Nº de estados da AL com instrumento de cooperação técnica vigente",
+          "unidade": "nº (0-9)",
+          "fonte": "Estados / Diário Oficial",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Technical cooperation on Indigenous and traditional land management",
+            "meta": "A technical cooperation instrument with the federal government (PNGATI/PNGTAQ) in every state, where communities ask for one",
+            "descricao": "Number of Legal Amazon states with a technical cooperation instrument in force",
+            "fonte": "State governments / official gazettes",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.2.1",
+          "linhaAcao": "1.2",
+          "nome": "Planos Estaduais de Adaptação aprovados e em execução",
+          "meta": "100% dos estados com PEA aprovados e em execução",
+          "descricao": "100% de estados com planos aprovados e com execução orçamentária iniciada (LOA estadual)",
+          "unidade": "% / Sim-Não",
+          "fonte": "Diário Oficial / portal da secretaria estadual de meio ambiente",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "State adaptation plans approved and under way",
+            "meta": "100% of states with a state adaptation plan approved and under way",
+            "descricao": "100% of states with an approved plan and budget execution already started in the state annual budget",
+            "fonte": "Official gazettes / state environment department portals",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.2.2",
+          "linhaAcao": "1.2",
+          "nome": "PEAs alinhados ao Plano Clima/ENA",
+          "meta": "PEAs alinhados ao Plano Clima Nacional e com previsão de revisão periódica",
+          "descricao": "Nº de planos setoriais/temáticos da ENA (de 16) referenciados no PEA / cláusula formal de revisão periódica (sim ou não)",
+          "unidade": "nº / Sim-Não",
+          "fonte": "Texto do PEA (Diário Oficial/portal), cotejado com Plano Clima/ENA (MMA/Casa Civil)",
+          "prazo": 2028,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Adaptation plans aligned with the national climate plan",
+            "meta": "State adaptation plans aligned with the national climate plan and with periodic review written in",
+            "descricao": "Number of the national adaptation strategy’s 16 sector plans referenced in the state plan / whether a formal review clause exists (yes or no)",
+            "fonte": "Text of the state plan (official gazette or portal), checked against the national climate plan (MMA / Chief of Staff Office)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.1",
+          "linhaAcao": "1.3",
+          "nome": "Vulnerabilidade climática municipal (IIVCM)",
+          "meta": "Redução de 12,2% da vulnerabilidade climática de municípios prioritários da AL (convergência: média 52,1 pts do grupo menos vulnerável, baseline 2025)",
+          "descricao": "Avaliação periódica do Índice de Intensidade da Vulnerabilidade Climática Municipal (IIVCM)",
+          "unidade": "pontos (0-100)",
+          "fonte": "AdaptaBrasil/MCTI (lista IIVCM da ficha técnica)",
+          "prazo": 2050,
+          "status": "coletado",
+          "anoRef": "2025",
+          "en": {
+            "nome": "Municipal climate vulnerability (IIVCM)",
+            "meta": "A 12.2% fall in climate vulnerability across the Legal Amazon’s priority municipalities (converging on the 52.1-point average of the least vulnerable group, 2025 baseline)",
+            "descricao": "Periodic reading of the Municipal Climate Vulnerability Intensity Index (IIVCM)",
+            "fonte": "AdaptaBrasil/MCTI (IIVCM list from the technical sheet)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.2",
+          "linhaAcao": "1.3",
+          "nome": "Desmatamento ilegal",
+          "meta": "Desmatamento ilegal zero em todos os estados",
+          "descricao": "% de desmatamento ilegal = (ha desmatamento − ha autorizações de supressão)",
+          "unidade": "% / ha",
+          "fonte": "INPE (PRODES) + IBAMA (Sinaflor)",
+          "prazo": 2030,
+          "status": "parcial (PRODES ok; Sinaflor exige login)",
+          "anoRef": "2024",
+          "en": {
+            "nome": "Illegal deforestation",
+            "meta": "Zero illegal deforestation in every state",
+            "descricao": "Share of illegal clearing = (hectares cleared − hectares under clearing permits)",
+            "fonte": "INPE (PRODES) + IBAMA (Sinaflor)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.3",
+          "linhaAcao": "1.3",
+          "nome": "Monitoramento por sensoriamento remoto",
+          "meta": "Ampliar % do território estadual monitorado por sensoriamento remoto com alerta acionável e reduzir tempo de resposta",
+          "descricao": "% do território estadual monitorado com geração de alerta acionável / tempo médio alerta→fiscalização",
+          "unidade": "% / dias",
+          "fonte": "Estados",
+          "prazo": 2027,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Remote-sensing monitoring",
+            "meta": "Widen the share of state territory monitored by remote sensing with actionable alerts, and cut the response time",
+            "descricao": "Share of state territory monitored with actionable alerts / average time from alert to enforcement",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.4",
+          "linhaAcao": "1.3",
+          "nome": "Focos de calor",
+          "meta": "Redução dos focos de incêndio em 30% em relação à baseline 2015-2025",
+          "descricao": "Nº de focos de calor",
+          "unidade": "nº",
+          "fonte": "INPE Queimadas (data.inpe.br/queimadas)",
+          "prazo": 2035,
+          "status": "coletado",
+          "anoRef": "média 2015-2024",
+          "en": {
+            "nome": "Fire hotspots",
+            "meta": "A 30% fall in fire hotspots against the 2015–2025 baseline",
+            "descricao": "Number of fire hotspots",
+            "fonte": "INPE Queimadas (data.inpe.br/queimadas)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.5",
+          "linhaAcao": "1.3",
+          "nome": "Delegacias especializadas em crimes ambientais",
+          "meta": "Estruturação de delegacias especializadas em crimes ambientais em todos os 9 estados",
+          "descricao": "Nº de delegacias especializadas e fluviais em operação; frota operacional por estado",
+          "unidade": "nº",
+          "fonte": "FBSP (Cartografias da Violência na Amazônia)",
+          "prazo": 2027,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Specialised environmental crime units",
+            "meta": "Specialised environmental crime police units set up in all nine states",
+            "descricao": "Number of specialised and river police units in operation; operational fleet per state",
+            "fonte": "Brazilian Public Security Forum (FBSP) — Cartografias da Violência na Amazônia",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.6",
+          "linhaAcao": "1.3",
+          "nome": "Sistema regional de crimes ambientais",
+          "meta": "Sistema regional integrado de registro/monitoramento de ocorrências com protocolos padronizados",
+          "descricao": "Nº de estados reportando ao sistema com protocolo padronizado",
+          "unidade": "nº (0-9)",
+          "fonte": "CAL (parceria com Igarapé)",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Regional environmental crime system",
+            "meta": "An integrated regional system for recording and monitoring incidents, with standard protocols",
+            "descricao": "Number of states reporting to the system under a standard protocol",
+            "fonte": "Interstate Consortium for the Legal Amazon (in partnership with Igarapé)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.7",
+          "linhaAcao": "1.3",
+          "nome": "Plano de Manejo Integrado do Fogo",
+          "meta": "100% dos estados com Plano de Manejo Integrado do Fogo elaborado (2027) e vigente (revisão a cada 4 anos até 2050)",
+          "descricao": "Nº de estados com Plano registrado no Sisfogo",
+          "unidade": "nº (0-9)",
+          "fonte": "Sisfogo (IBAMA)",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Integrated fire management plan",
+            "meta": "100% of states with an integrated fire management plan drawn up by 2027 and kept in force, reviewed every four years through 2050",
+            "descricao": "Number of states with a plan registered in Sisfogo",
+            "fonte": "Sisfogo (IBAMA)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.3.8",
+          "linhaAcao": "1.3",
+          "nome": "PPCDQ vigente",
+          "meta": "100% dos estados com PPCDQ (ou equivalente) vigente, revisão nos últimos 4 anos, continuamente até 2050",
+          "descricao": "Nº de estados com PPCDQ vigente (revisão concluída nos últimos 4 anos)",
+          "unidade": "nº (0-9)",
+          "fonte": "Diário Oficial / portal da secretaria estadual de meio ambiente",
+          "prazo": 2027,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Deforestation and fire control plan in force",
+            "meta": "100% of states with a deforestation and fire control plan (or equivalent) in force, reviewed within the past four years, continuously through 2050",
+            "descricao": "Number of states with a plan in force whose review was completed within the past four years",
+            "fonte": "Official gazettes / state environment department portals",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.4.1",
+          "linhaAcao": "1.4",
+          "nome": "PRA regulamentado e em execução",
+          "meta": "100% dos estados com PRA regulamentado e em execução, com TCAs firmados e monitorados",
+          "descricao": "Estado tem PRA regulamentado? (Sim/Não) / Hectares sob Termo de Compromisso de restauração no âmbito do PRA",
+          "unidade": "Sim-Não / ha",
+          "fonte": "Observatório do Código Florestal / CAR-SICAR / órgão ambiental estadual",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Environmental compliance programme regulated and running",
+            "meta": "100% of states with the environmental compliance programme (PRA) regulated and running, with restoration agreements signed and monitored",
+            "descricao": "Does the state have the programme regulated? (Yes/No) / Hectares under a restoration commitment within the programme",
+            "fonte": "Forest Code Observatory / CAR-SICAR / state environment agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.4.2",
+          "linhaAcao": "1.4",
+          "nome": "Restauração com SAFs",
+          "meta": "40% da área restaurada utilizando Sistemas Agroflorestais",
+          "descricao": "Percentual da área restaurada implantada com SAFs",
+          "unidade": "%",
+          "fonte": "Registros de TCA/PRADA do PRA de cada estado",
+          "prazo": 2035,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Restoration using agroforestry",
+            "meta": "40% of the restored area using agroforestry systems",
+            "descricao": "Share of the restored area established with agroforestry systems",
+            "fonte": "Restoration agreement and plan records from each state’s compliance programme",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.1",
+          "linhaAcao": "1.5",
+          "nome": "Regularização de áreas públicas estaduais",
+          "meta": "100% das áreas públicas prioritárias de domínio estadual destinadas (conservação + PIQCTAF), em especial áreas sob conflito",
+          "descricao": "Percentual da área pública prioritária de domínio estadual regularizada para conservação; Percentual regularizada para PIQCTAF",
+          "unidade": "%",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2035,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Tenure regularisation of state public land",
+            "meta": "100% of priority state-owned public land allocated — to conservation and to Indigenous peoples and traditional communities — with land under dispute treated first",
+            "descricao": "Share of priority state-owned public land regularised for conservation; share regularised for Indigenous peoples and traditional communities",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.2",
+          "linhaAcao": "1.5",
+          "nome": "Câmaras Técnicas de Destinação",
+          "meta": "Câmaras Técnicas de Destinação estaduais constituídas e em operação com participação social nos 9 estados",
+          "descricao": "Nº de Câmaras Técnicas de Destinação estaduais constituídas e operantes",
+          "unidade": "nº (0-9)",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Land allocation boards",
+            "meta": "State land allocation boards set up and operating with public participation in all nine states",
+            "descricao": "Number of state land allocation boards set up and operating",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.3",
+          "linhaAcao": "1.5",
+          "nome": "Mediação de conflitos fundiários",
+          "meta": "Institucionalizar espaços de governança de mediação e conciliação de conflitos de PCTs nos 9 estados",
+          "descricao": "Nº de resoluções administrativas de conflitos; % redução da judicialização; aumento da taxa de titulação de PCTs",
+          "unidade": "nº / %",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Mediation of land disputes",
+            "meta": "Formal mediation and conciliation bodies for disputes involving traditional communities in all nine states",
+            "descricao": "Number of disputes settled administratively; fall in cases going to court; rise in the rate at which traditional communities receive title",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.4",
+          "linhaAcao": "1.5",
+          "nome": "Adesão ao SICARF Federativo",
+          "meta": "Órgãos estaduais de terras utilizando sistemas (ex.: Terras do Brasil/SICARF-Federativo) na regularização",
+          "descricao": "% de adesão ao SICARF Federativo; aumento da taxa de titulação anual",
+          "unidade": "%",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Adoption of the federal land registry platform",
+            "meta": "State land agencies using the federal platforms (Terras do Brasil / SICARF-Federativo) for regularisation",
+            "descricao": "Share of adoption of the federal registry platform; rise in the annual rate of titling",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.5",
+          "linhaAcao": "1.5",
+          "nome": "Destinação de florestas públicas estaduais",
+          "meta": "Destinação de 100% das florestas públicas de domínio estadual não destinadas",
+          "descricao": "% de incremento de florestas públicas de domínio estadual destinadas",
+          "unidade": "%",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Allocation of state public forests",
+            "meta": "Allocation of 100% of state-owned public forests still unallocated",
+            "descricao": "Increase in the share of state-owned public forest that has been allocated",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.6",
+          "linhaAcao": "1.5",
+          "nome": "Integração das bases fundiárias/ambientais",
+          "meta": "Integração e interoperabilidade das bases fundiárias, ambientais e registrais (Decreto de Governança da Terra / ADPF 743)",
+          "descricao": "% de integração das bases com o uso do SICARF-Federativo",
+          "unidade": "%",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2035,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Integration of land and environmental registries",
+            "meta": "Land, environmental and property registries integrated and interoperable (Land Governance Decree / ADPF 743)",
+            "descricao": "Number of priority databases integrated or made interoperable between agencies",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.7",
+          "linhaAcao": "1.5",
+          "nome": "Sobreposições de CAR",
+          "meta": "Resolução de 100% das sobreposições de CAR para desbloqueio de validações",
+          "descricao": "Redução do número de sobreposições de CAR nas bases estaduais",
+          "unidade": "nº",
+          "fonte": "Órgãos fundiários estaduais",
+          "prazo": 2035,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Overlaps in the rural environmental registry",
+            "meta": "100% of overlaps in the rural environmental registry (CAR) resolved, so that validations can proceed",
+            "descricao": "Fall in the number of overlapping CAR entries in the state databases",
+            "fonte": "State land agencies",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I1.5.8",
+          "linhaAcao": "1.5",
+          "nome": "CAR de povos e comunidades tradicionais",
+          "meta": "Elaboração, análise e validação de 100% dos registros de CAR de PIQCTAFs",
+          "descricao": "Nº de registros de CAR/PCT elaborados e analisados por estado por ano",
+          "unidade": "nº",
+          "fonte": "SICAR / órgãos ambientais estaduais / INCRA",
+          "prazo": 2030,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Rural registry for Indigenous peoples and traditional communities",
+            "meta": "100% of rural environmental registry entries for Indigenous peoples and traditional communities drawn up, reviewed and validated",
+            "descricao": "Number of registry entries for these communities drawn up and reviewed, per state, per year",
+            "fonte": "SICAR / state environment agencies / INCRA",
+            "unidade": null
+          }
+        }
+      ],
+      "en": {
+        "nome": "Territory, Environment and Climate"
+      }
+    },
+    {
+      "numero": 2,
+      "nome": "Pessoas e Bem-estar",
+      "indicadores": [
+        {
+          "codigo": "I2.1.1",
+          "linhaAcao": "2.1",
+          "nome": "Pobreza (CadÚnico)",
+          "meta": "Redução da taxa de pobreza para patamar ≤ 3%",
+          "descricao": "Menos de 3% da população em situação de pobreza (CadUnico)",
+          "unidade": "%",
+          "fonte": "MDS (Cadastro Único); proxy: SIS/PNADc 2024 (IBGE)",
+          "prazo": 2050,
+          "status": "coletado (proxy SIS/PNADc 2024: % abaixo das linhas de pobreza)",
+          "anoRef": "2024 (SIS/PNADc)",
+          "en": {
+            "nome": "Poverty (CadÚnico)",
+            "meta": "Poverty rate down to 3% or below",
+            "descricao": "Fewer than 3% of the population living in poverty, by the federal social registry (CadÚnico)",
+            "fonte": "Ministry of Social Development (CadÚnico); proxy: IBGE SIS/PNADc 2024",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.1.2",
+          "linhaAcao": "2.1",
+          "nome": "Cobertura de programas de inclusão produtiva",
+          "meta": "Ampliação da população apoiada por programas integrados de inclusão produtiva e social",
+          "descricao": "Todos os territórios (municípios) com cobertura de pelo menos 4 programas federais (Brasil Sem Fome, Bolsa Verde, PNAE e PAA)",
+          "unidade": "nº de programas",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Reach of productive inclusion programmes",
+            "meta": "More people reached by integrated productive and social inclusion programmes",
+            "descricao": "Every municipality covered by at least four federal programmes (Brasil Sem Fome, Bolsa Verde, the school meals programme and the food procurement programme)",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.2.1",
+          "linhaAcao": "2.2",
+          "nome": "Mortalidade por causas evitáveis",
+          "meta": "Redução de mortes evitáveis em pelo menos 50% na região",
+          "descricao": "Taxa de mortalidade por causas evitáveis, segundo metodologia do SUS (Lista Brasileira de Causas de Mortes Evitáveis)",
+          "unidade": "taxa / 100 mil",
+          "fonte": "DATASUS (SIM/TabNet)",
+          "prazo": 2050,
+          "status": "parcial (TabNet só disponibiliza LBE <5 anos — dado de referência incluído; LBE completa exige microdados SIM)",
+          "anoRef": "2024 (SIM)",
+          "en": {
+            "nome": "Avoidable mortality",
+            "meta": "Avoidable deaths down by at least 50% across the region",
+            "descricao": "Mortality rate from avoidable causes, following the national health service methodology (Brazilian List of Avoidable Causes of Death)",
+            "fonte": "DATASUS (SIM/TabNet)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.2.2",
+          "linhaAcao": "2.2",
+          "nome": "Cobertura da Atenção Primária",
+          "meta": "Ampliar a cobertura da APS para 100% da população",
+          "descricao": "% de cobertura populacional de APS",
+          "unidade": "%",
+          "fonte": "Ministério da Saúde (e-Gestor Atenção Básica)",
+          "prazo": 2035,
+          "status": "parcial (nº eSF/eAP do CNES como referência; % oficial exige e-Gestor)",
+          "anoRef": "jul/2026 (CNES)",
+          "en": {
+            "nome": "Primary health care coverage",
+            "meta": "Primary health care extended to 100% of the population",
+            "descricao": "Share of the population covered by primary health care",
+            "fonte": "Ministry of Health (e-Gestor Atenção Básica)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.2.3",
+          "linhaAcao": "2.2",
+          "nome": "Telessaúde em municípios remotos",
+          "meta": "Atendimento em territórios remotos, com pelo menos 50% dos municípios da AL com telessaúde ativa",
+          "descricao": "Municípios com serviço de telessaúde ativo",
+          "unidade": "nº de municípios",
+          "fonte": "Ministério da Saúde; Secretarias Estaduais de Saúde (CNES)",
+          "prazo": 2050,
+          "status": "coletado (proxy: estabelecimentos TELESSAUDE ativos no CNES)",
+          "anoRef": "jul/2026 (CNES)",
+          "en": {
+            "nome": "Telehealth in remote municipalities",
+            "meta": "Care reaching remote areas, with at least 50% of Legal Amazon municipalities running telehealth",
+            "descricao": "Municipalities with an active telehealth service",
+            "fonte": "Ministry of Health; state health departments (CNES)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.3.1",
+          "linhaAcao": "2.3",
+          "nome": "IDEB",
+          "meta": "Alcançar as metas de proficiência (IDEB) do INEP nas três etapas",
+          "descricao": "Percentual de municípios/estados da AL que atingiram ou superaram a meta do IDEB (Anos Iniciais, Anos Finais e Ensino Médio)",
+          "unidade": "%",
+          "fonte": "INEP (IDEB)",
+          "prazo": 2050,
+          "status": "pendente (INEP Data sem API aberta; download.inep.gov.br bloqueado)",
+          "anoRef": null,
+          "en": {
+            "nome": "Basic education index (IDEB)",
+            "meta": "Meet INEP’s IDEB proficiency targets at all three stages of basic education",
+            "descricao": "Share of Legal Amazon municipalities and states that met or beat the IDEB target (primary, lower secondary and upper secondary)",
+            "fonte": "INEP (IDEB)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.3.2",
+          "linhaAcao": "2.3",
+          "nome": "Atendimento escolar 4-17 anos",
+          "meta": "Universalizar o acesso à educação básica de qualidade, inclusive em territórios remotos",
+          "descricao": "Taxa de atendimento escolar da população de 4 a 17 anos (%) e creche (0 a 3 anos)",
+          "unidade": "%",
+          "fonte": "INEP e IBGE (SIS/PNADc 2024)",
+          "prazo": 2050,
+          "status": "coletado (SIS/PNADc 2024: faixas etárias por UF)",
+          "anoRef": "2024 (SIS/PNADc)",
+          "en": {
+            "nome": "School attendance, ages 4 to 17",
+            "meta": "Universal access to quality basic education, including in remote areas",
+            "descricao": "School attendance rate for ages 4 to 17 (%) and nursery provision (ages 0 to 3)",
+            "fonte": "INEP and IBGE (SIS/PNADc 2024)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.4.1",
+          "linhaAcao": "2.4",
+          "nome": "Crimes Violentos Letais Intencionais (CVLI)",
+          "meta": "Reduzir as mortes por CVLI para 10 mortes por 100 mil habitantes",
+          "descricao": "Taxa de Crimes Violentos Letais Intencionais (CVLI) por 100 mil habitantes",
+          "unidade": "taxa / 100 mil",
+          "fonte": "Atlas da Violência; MJ (Sinesp VDE) + IBGE",
+          "prazo": 2050,
+          "status": "coletado (Sinesp + população IBGE)",
+          "anoRef": "2025",
+          "en": {
+            "nome": "Intentional violent deaths (CVLI)",
+            "meta": "Intentional violent deaths down to 10 per 100,000 inhabitants",
+            "descricao": "Rate of intentional violent deaths per 100,000 inhabitants",
+            "fonte": "Atlas da Violência; Ministry of Justice (Sinesp VDE) + IBGE",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.4.2",
+          "linhaAcao": "2.4",
+          "nome": "Segurança cidadã e planos de adaptação",
+          "meta": "Estratégias integradas de segurança cidadã e ambiental em 100% dos municípios",
+          "descricao": "100% dos municípios com aderência formal a programas de segurança cidadã; 100% com Planos de Adaptação Climática produzidos e ativos",
+          "unidade": "% / Sim-Não",
+          "fonte": "PRONASCI 2 (MJ); AdaptaBrasil (MCTI)",
+          "prazo": 2050,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Citizen security and adaptation plans",
+            "meta": "Integrated citizen and environmental security strategies in 100% of municipalities",
+            "descricao": "100% of municipalities formally signed up to citizen security programmes; 100% with climate adaptation plans produced and active",
+            "fonte": "PRONASCI 2 (Ministry of Justice); AdaptaBrasil (MCTI)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I2.5.1",
+          "linhaAcao": "2.5",
+          "nome": "Renda da sociobioeconomia",
+          "meta": "Criação e fomento de empregos verdes e renda com foco em jovens, mulheres e populações tradicionais",
+          "descricao": "Volume de renda no painel da sociobioeconomia do MMA",
+          "unidade": "R$",
+          "fonte": "MMA (Plataforma da Ecosociobiodiversidade)",
+          "prazo": 2050,
+          "status": "pendente (plataforma do MMA em construção)",
+          "anoRef": null,
+          "en": {
+            "nome": "Income from the socio-bioeconomy",
+            "meta": "Green jobs and income created and supported, with a focus on young people, women and traditional populations",
+            "descricao": "Income recorded on the Ministry of the Environment’s socio-bioeconomy dashboard",
+            "fonte": "Ministry of the Environment (Ecosociobiodiversity Platform)",
+            "unidade": null
+          }
+        }
+      ],
+      "en": {
+        "nome": "People and Wellbeing"
+      }
+    },
+    {
+      "numero": 3,
+      "nome": "Desenvolvimento econômico sustentável",
+      "indicadores": [
+        {
+          "codigo": "I3.1.1",
+          "linhaAcao": "3.1",
+          "nome": "Valor da produção da sociobioeconomia",
+          "meta": "Aumentar em 100 milhões de reais o valor da produção das atividades da sociobioeconomia",
+          "descricao": "Valor da produção das atividades da sociobioeconomia (MMA)",
+          "unidade": "R$",
+          "fonte": "MMA (Plataforma da Ecosociobiodiversidade, em construção); proxy: IBGE PEVS (SIDRA 289)",
+          "prazo": 2050,
+          "status": "coletado (proxy PEVS/IBGE: valor da produção da extração vegetal, 2015-2024)",
+          "anoRef": "2024",
+          "en": {
+            "nome": "Value of socio-bioeconomy output",
+            "meta": "Raise the value of socio-bioeconomy output by R$ 100 million",
+            "descricao": "Value of output from socio-bioeconomy activities (Ministry of the Environment)",
+            "fonte": "Ministry of the Environment (Ecosociobiodiversity Platform, under construction); proxy: IBGE PEVS (SIDRA 289)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.2.1",
+          "linhaAcao": "3.2",
+          "nome": "Cadeias produtivas estruturadas",
+          "meta": "Estruturação de pelo menos 02 cadeias produtivas sustentáveis em todos os estados da AL",
+          "descricao": "Número de cadeias estruturadas que atendam a critérios de sociobioeconomia",
+          "unidade": "nº de cadeias",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental — critérios de cadeia não definidos publicamente)",
+          "anoRef": null,
+          "en": {
+            "nome": "Value chains established",
+            "meta": "At least two sustainable value chains established in every Legal Amazon state",
+            "descricao": "Number of established chains that meet socio-bioeconomy criteria",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.3.1",
+          "linhaAcao": "3.3",
+          "nome": "Política de trabalho verde",
+          "meta": "Estabelecimento de políticas estaduais de promoção do trabalho verde",
+          "descricao": "Número e percentual de UFs com política de trabalho verde regulamentada, orçamento definido e ações em execução",
+          "unidade": "nº / %",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "Green work policy",
+            "meta": "State policies for promoting green work put in place",
+            "descricao": "Number and share of states with a green work policy regulated, budgeted and in action",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.3.2",
+          "linhaAcao": "3.3",
+          "nome": "Pessoas capacitadas em sociobioeconomia",
+          "meta": "Capacitação de pelo menos 10 mil pessoas em atividades ligadas à sociobioeconomia",
+          "descricao": "Colaboradores capacitados; Cidadãos capacitados",
+          "unidade": "pessoas",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "People trained in the socio-bioeconomy",
+            "meta": "At least 10,000 people trained in socio-bioeconomy activities",
+            "descricao": "Staff trained; members of the public trained",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.3.3",
+          "linhaAcao": "3.3",
+          "nome": "Programas permanentes de formação técnica",
+          "meta": "Institucionalização de programas permanentes de formação técnica regional",
+          "descricao": "Número de UFs com programa permanente formalizado e oferta regular",
+          "unidade": "nº de UFs",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "Standing technical training programmes",
+            "meta": "Standing regional technical training programmes made permanent",
+            "descricao": "Number of states with a formalised standing programme and regular intake",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.4.1",
+          "linhaAcao": "3.4",
+          "nome": "Beneficiários de PSA",
+          "meta": "Aumento do número de beneficiários de PSA na Amazônia Legal em 100%",
+          "descricao": "Número de beneficiários ativos de programas de PSA",
+          "unidade": "nº de beneficiários",
+          "fonte": "Estados (devem possuir esta informação)",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "Beneficiaries of payments for ecosystem services",
+            "meta": "Double the number of people receiving payments for ecosystem services in the Legal Amazon",
+            "descricao": "Number of active beneficiaries of payment-for-ecosystem-services programmes",
+            "fonte": "State governments (which are expected to hold this information)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.4.2",
+          "linhaAcao": "3.4",
+          "nome": "Operações de PSA e mercados de serviços ecossistêmicos",
+          "meta": "Consolidação de mercados regionais de serviços ecossistêmicos financeiramente sustentáveis",
+          "descricao": "Número e valor de operações de PSA, créditos ambientais, fundos verdes e outros instrumentos de financiamento sustentável",
+          "unidade": "nº / R$",
+          "fonte": "Estados (devem possuir esta informação)",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "Ecosystem service transactions and markets",
+            "meta": "Financially sustainable regional markets for ecosystem services consolidated",
+            "descricao": "Number and value of payment-for-ecosystem-services transactions, environmental credits, green funds and other sustainable finance instruments",
+            "fonte": "State governments (which are expected to hold this information)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.5.1",
+          "linhaAcao": "3.5",
+          "nome": "Política de agregação de valor mineral",
+          "meta": "Implementação de políticas de agregação de valor mineral em 100% dos estados mineradores",
+          "descricao": "Percentual de estados com política formalizada, regulamentada, financiada e em execução",
+          "unidade": "%",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental)",
+          "anoRef": null,
+          "en": {
+            "nome": "Policy on adding value to minerals",
+            "meta": "Policies for adding value to minerals in place in 100% of mining states",
+            "descricao": "Share of states with a policy formalised, regulated, funded and in action",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I3.5.2",
+          "linhaAcao": "3.5",
+          "nome": "Projetos minerais com critérios socioambientais",
+          "meta": "100% dos projetos minerais estratégicos estaduais com critérios socioambientais atendidos",
+          "descricao": "Percentual de projetos estratégicos avaliados e conformes com uma matriz padronizada de critérios socioambientais",
+          "unidade": "%",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "pendente (documental — matriz de critérios a definir)",
+          "anoRef": null,
+          "en": {
+            "nome": "Mining projects meeting social and environmental criteria",
+            "meta": "100% of strategic state mining projects meeting social and environmental criteria",
+            "descricao": "Share of strategic projects assessed against a standard matrix of social and environmental criteria and found compliant",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "F3.2",
+          "linhaAcao": "3.2 (ficha)",
+          "nome": "Empregos e empresas nas cadeias produtivas",
+          "meta": "Estruturação de cadeias produtivas sustentáveis (ficha técnica: aumento do valor da produção, do nº de empregos e do nº de empresas)",
+          "descricao": "Aumento do valor da produção, do número de empregos e do número de empresas nas cadeias produtivas definidas pelos estados",
+          "unidade": "nº de vínculos",
+          "fonte": "MMA; proxy: MTE (RAIS Estabelecimentos 2023-2024)",
+          "prazo": 2050,
+          "status": "coletado (proxy RAIS: vínculos ativos e estabelecimentos ativos por UF x divisão CNAE, 2023-2024)",
+          "anoRef": "2024",
+          "en": {
+            "nome": "Jobs and firms in the value chains",
+            "meta": "Sustainable value chains established (technical sheet: growth in output value, in jobs and in the number of firms)",
+            "descricao": "Growth in output value, in the number of jobs and in the number of firms across the value chains each state has defined",
+            "fonte": "Ministry of the Environment; proxy: Ministry of Labour (RAIS Establishments 2023–2024)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "F3.5",
+          "linhaAcao": "3.5 (ficha)",
+          "nome": "Valor da transformação industrial",
+          "meta": "Aumento de 10% ao ano do valor agregado de produtos de transformação industrial",
+          "descricao": "Valor da renda líquida total de empresas de transformação industrial (ficha: Valor da transformação industrial)",
+          "unidade": "R$ (mil)",
+          "fonte": "IBGE (PIA-Empresa, SIDRA 1849/10457)",
+          "prazo": 2050,
+          "status": "coletado (PIA-Empresa: valor da transformação industrial por UF, 2015-2024)",
+          "anoRef": "2024",
+          "en": {
+            "nome": "Value added by manufacturing",
+            "meta": "10% annual growth in the value added by manufactured products",
+            "descricao": "Total net income of manufacturing firms (technical sheet: value added by manufacturing)",
+            "fonte": "IBGE (PIA-Empresa, SIDRA 1849/10457)",
+            "unidade": null
+          }
+        }
+      ],
+      "en": {
+        "nome": "Sustainable economic development"
+      }
+    },
+    {
+      "numero": 4,
+      "nome": "Infraestrutura e integração regional sustentável",
+      "indicadores": [
+        {
+          "codigo": "I4.1.1",
+          "linhaAcao": "4.1",
+          "nome": "Conectividade digital (IBC-AMZ)",
+          "meta": "Elevar o Índice Brasileiro de Conectividade médio da AL de 53,52 pontos (2025) para 80,00 pontos até 2050",
+          "descricao": "Índice de Conectividade da Amazônia Legal (IBC-AMZ) ponderado pela população",
+          "unidade": "0 a 100",
+          "fonte": "ANATEL (painel Meu Município)",
+          "prazo": 2050,
+          "status": "coletado (IBC estadual e ponderado pela população municipal, 2021-2025; AL 2025 = 53,52 — confere com o baseline da ficha)",
+          "anoRef": "2025",
+          "en": {
+            "nome": "Digital connectivity (IBC-AMZ)",
+            "meta": "Raise the Legal Amazon’s average connectivity index from 53.52 points (2025) to 80.00 points by 2050",
+            "descricao": "Legal Amazon connectivity index (IBC-AMZ), weighted by population",
+            "fonte": "ANATEL (Meu Município dashboard)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I4.2.1",
+          "linhaAcao": "4.2",
+          "nome": "Adequação e trafegabilidade de transportes",
+          "meta": "Elevar a adequação e trafegabilidade da infraestrutura estadual de 46,5% para 65% até 2050",
+          "descricao": "Taxa de adequação e trafegabilidade da infraestrutura de transportes (%)",
+          "unidade": "%",
+          "fonte": "Min. Transportes; DNIT; CNT",
+          "prazo": 2050,
+          "status": "pendente (painel CNT em Power BI sem API; DNIT vgeo só publica geometria, sem estado de conservação)",
+          "anoRef": null,
+          "en": {
+            "nome": "Road condition and passability",
+            "meta": "Raise the condition and passability of state transport infrastructure from 46.5% to 65% by 2050",
+            "descricao": "Rate of adequacy and passability of transport infrastructure (%)",
+            "fonte": "Ministry of Transport; DNIT; CNT",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I4.3.1",
+          "linhaAcao": "4.3",
+          "nome": "Transição energética (ITEQ)",
+          "meta": "Aumentar 12,37% o acesso estruturado a energia limpa (baseline 60,13% em 2025)",
+          "descricao": "Indicador de Transição Energética e Qualidade Distributiva Amazônica (%)",
+          "unidade": "0 a 100%",
+          "fonte": "ANEEL; EPE (PASI)",
+          "prazo": 2035,
+          "status": "parcial (componentes coletáveis: renovabilidade da geração AL via SIGA; POP_SIN/POP_isolado e DEC/FEC exigem PASI/ANEEL sem API aberta)",
+          "anoRef": null,
+          "en": {
+            "nome": "Energy transition (ITEQ)",
+            "meta": "Widen structured access to clean energy by 12.37% (baseline 60.13% in 2025)",
+            "descricao": "Amazon Energy Transition and Distributive Quality Index (%)",
+            "fonte": "ANEEL; EPE (PASI)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I4.3.2",
+          "linhaAcao": "4.3",
+          "nome": "Participação de renováveis (PER)",
+          "meta": "Atingir 80% de renováveis na oferta de energia até 2050 (baseline 65,24% em 2025)",
+          "descricao": "Participação de Energias Renováveis e Sustentáveis na oferta de energia (%)",
+          "unidade": "%",
+          "fonte": "ANEEL (SIGA); EPE",
+          "prazo": 2035,
+          "status": "coletado (proxy: % renovável da potência fiscalizada de usinas em operação — SIGA/CKAN, base 25/08/2026)",
+          "anoRef": "base 25/08/2026",
+          "en": {
+            "nome": "Renewable share of energy supply (PER)",
+            "meta": "Reach 80% renewables in the energy supply by 2050 (baseline 65.24% in 2025)",
+            "descricao": "Share of renewable and sustainable energy in the energy supply (%)",
+            "fonte": "ANEEL (SIGA); EPE",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I4.4.1",
+          "linhaAcao": "4.4",
+          "nome": "Saneamento básico e gestão de riscos (ISGR)",
+          "meta": "Atingir 80% no Índice de Saneamento Básico e Gestão de Riscos da Amazônia Legal até 2050 (baseline 41,52% em 2022/2024)",
+          "descricao": "Índice de Saneamento Básico e Gestão de Riscos",
+          "unidade": "0 a 100",
+          "fonte": "IBGE (Censo 2022; MUNIC 2024)",
+          "prazo": 2050,
+          "status": "coletado (proxy: Censo 2022 + fatores FClima/FGov da MUNIC 2024; FHidro não publicado => 1)",
+          "anoRef": "Censo 2022 + MUNIC 2024",
+          "en": {
+            "nome": "Sanitation and risk management (ISGR)",
+            "meta": "Reach 80% on the Legal Amazon’s sanitation and risk management index by 2050 (baseline 41.52% in 2022/2024)",
+            "descricao": "Sanitation and Risk Management Index",
+            "fonte": "IBGE (2022 Census; MUNIC 2024)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I4.4.2",
+          "linhaAcao": "4.4",
+          "nome": "Capacidade adaptativa urbana",
+          "meta": "80% dos municípios com capacidade adaptativa média acima de 0,5",
+          "descricao": "% de municípios com média de capacidade adaptativa acima de 0.5",
+          "unidade": "% de municípios",
+          "fonte": "AdaptaBrasil MCTI (Painel Cidades)",
+          "prazo": 2035,
+          "status": "pendente (Painel Cidades é SPA sem API; API do AdaptaBrasil 403)",
+          "anoRef": null,
+          "en": {
+            "nome": "Urban adaptive capacity",
+            "meta": "80% of municipalities with average adaptive capacity above 0.5",
+            "descricao": "Share of municipalities with average adaptive capacity above 0.5",
+            "fonte": "AdaptaBrasil MCTI (Cities dashboard)",
+            "unidade": null
+          }
+        }
+      ],
+      "en": {
+        "nome": "Sustainable infrastructure and regional integration"
+      }
+    },
+    {
+      "numero": 5,
+      "nome": "Governança e parcerias",
+      "indicadores": [
+        {
+          "codigo": "I5.1.1",
+          "linhaAcao": "5.1",
+          "nome": "Financiamento climático captado/executado",
+          "meta": "Mobilizar recursos para financiamento climático e ambiental equivalentes a, no mínimo, 0,1% do PIB da AL",
+          "descricao": "Valor anual e acumulado dos recursos captados e efetivamente executados, por estado, origem e instrumento financeiro",
+          "unidade": "R$",
+          "fonte": "Estados (programas jurisdicionais de crédito de carbono, financiamento climático e fundos multilaterais)",
+          "prazo": 2050,
+          "status": "coleta manual (não há base consolidada pública por estado; documentos estaduais e relatórios de fundos)",
+          "anoRef": null,
+          "en": {
+            "nome": "Climate finance raised and spent",
+            "meta": "Mobilise climate and environmental finance worth at least 0.1% of the Legal Amazon’s GDP",
+            "descricao": "Annual and cumulative value of funds raised and actually spent, by state, by origin and by financial instrument",
+            "fonte": "State governments (jurisdictional carbon credit programmes, climate finance and multilateral funds)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.2.1",
+          "linhaAcao": "5.2",
+          "nome": "Taxa de alavancagem (blended finance)",
+          "meta": "Estruturar pelo menos 2 mecanismos regionais de financiamento misto (blended finance)",
+          "descricao": "Aumento do volume de capital privado mobilizado para cada R$ de recurso público aportado nesses mecanismos",
+          "unidade": "R$ privado / R$ público",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "coleta manual (mecanismos ainda por estruturar)",
+          "anoRef": null,
+          "en": {
+            "nome": "Leverage ratio (blended finance)",
+            "meta": "Set up at least two regional blended finance mechanisms",
+            "descricao": "Growth in private capital mobilised for each real of public money put into those mechanisms",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.2.2",
+          "linhaAcao": "5.2",
+          "nome": "Governança regional / recursos executados pelo CAL",
+          "meta": "Institucionalizar modelo permanente de governança regional coordenado pelo CAL, com participação dos 9 estados",
+          "descricao": "Nº de mecanismos de governança regional instituídos e em operação; volume de recursos (R$) captados e executados de forma centralizada pelo Consórcio da Amazônia Legal",
+          "unidade": "nº / R$",
+          "fonte": "CAL (consorcioamazonialegal.gov.br/orcamento-anual)",
+          "prazo": 2050,
+          "status": "pendente via automação (site do CAL em Wix — tabela carrega via JS autenticado; coleta manual junto ao CAL. Ref. da ficha técnica: orçamento executado 2026 = R$ 6.120.000; crescimento médio de R$ 483.566/ano no histórico 2019-2026)",
+          "anoRef": null,
+          "en": {
+            "nome": "Regional governance and funds managed by the Consortium",
+            "meta": "A permanent regional governance model coordinated by the Consortium, with all nine states taking part",
+            "descricao": "Number of regional governance mechanisms set up and operating; value of funds raised and spent centrally by the Interstate Consortium for the Legal Amazon",
+            "fonte": "Interstate Consortium for the Legal Amazon (consorcioamazonialegal.gov.br/orcamento-anual)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.3.1",
+          "linhaAcao": "5.3",
+          "nome": "Arranjo jurídico climático estadual",
+          "meta": "Desenvolver e implementar arranjo jurídico-institucional climático regional com diretrizes comuns entre os 9 estados",
+          "descricao": "Número ou percentual de estados que incorporaram as diretrizes em normas ou instrumentos próprios",
+          "unidade": "nº / %",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "coleta manual (diretrizes regionais em desenvolvimento)",
+          "anoRef": null,
+          "en": {
+            "nome": "State climate legal framework",
+            "meta": "A regional climate legal and institutional framework developed and in place, with guidelines shared across the nine states",
+            "descricao": "Number or share of states that have written the guidelines into their own rules or instruments",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.3.2",
+          "linhaAcao": "5.3",
+          "nome": "Interoperabilidade de dados prioritários",
+          "meta": "Implantar sistema regional de governança e interoperabilidade de dados prioritários, com adesão dos 9 estados",
+          "descricao": "Percentual das bases de dados prioritárias integradas ou interoperáveis",
+          "unidade": "% / bases",
+          "fonte": "Estados",
+          "prazo": 2050,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Interoperability of priority data",
+            "meta": "A regional system for governing and connecting priority data, with all nine states signed up",
+            "descricao": "Share of priority databases integrated or made interoperable",
+            "fonte": "State governments",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.4.1",
+          "linhaAcao": "5.4",
+          "nome": "Dispêndio em P&D (% do PIB estadual)",
+          "meta": "Ampliar o investimento público e privado em P&D nos estados da AL, alcançando o equivalente a 1% do PIB estadual ao ano",
+          "descricao": "Dispêndio público e privado em P&D como percentual do PIB de cada estado",
+          "unidade": "% do PIB",
+          "fonte": "Estados e CAL; proxy: MCTI (dispêndio estadual em P&D) + IBGE/SIDRA (PIB por UF)",
+          "prazo": 2050,
+          "status": "parcial (componente público estadual coletada — MCTI t.1.2.2.5/1.2.2.7, 2000-2024, e P&D/PIB via SIDRA t5938; dispêndio empresarial/privado exige PINTEC por UF, disponível só para UFs selecionadas)",
+          "anoRef": "2024",
+          "en": {
+            "nome": "R&D spending (% of state GDP)",
+            "meta": "Raise public and private R&D investment in the Legal Amazon states to the equivalent of 1% of state GDP a year",
+            "descricao": "Public and private R&D spending as a share of each state’s GDP",
+            "fonte": "State governments and the Consortium; proxy: MCTI (state R&D spending) + IBGE/SIDRA (GDP by state)",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.5.1",
+          "linhaAcao": "5.5",
+          "nome": "CAPAG A ou B (capacidade de pagamento)",
+          "meta": "Fortalecer a capacidade de gestão pública em todos os estados, com foco em transparência e eficiência",
+          "descricao": "Número e percentual de estados com classificação A ou B na CAPAG",
+          "unidade": "grau A-C",
+          "fonte": "STN — Tesouro Transparente (Capacidade de Pagamento dos Estados)",
+          "prazo": 2050,
+          "status": "coletado (CKAN do Tesouro Transparente, 2018-2025; 2024 = revisão de 04/2025)",
+          "anoRef": "2025",
+          "en": {
+            "nome": "CAPAG rating of A or B (creditworthiness)",
+            "meta": "Stronger public management in every state, with an emphasis on transparency and efficiency",
+            "descricao": "Number and share of states rated A or B on the National Treasury’s CAPAG creditworthiness scale",
+            "fonte": "National Treasury (STN) — Tesouro Transparente, state creditworthiness",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.5.2",
+          "linhaAcao": "5.5",
+          "nome": "Transparência pública (EBT 360)",
+          "meta": "Atender 90% dos critérios da principal avaliação nacional de transparência pública vigente",
+          "descricao": "Número e percentual de estados que atingem o patamar mínimo estabelecido (Escala Brasil Transparente 360)",
+          "unidade": "0 a 10",
+          "fonte": "CGU — Escala Brasil Transparente 360 (Mapa Brasil Transparente)",
+          "prazo": 2050,
+          "status": "pendente (sistema MBT/CGU fora do ar para atualização — retorno previsto nov/2026; portal dadosabertos.cgu.gov.br inacessível no dia da coleta)",
+          "anoRef": null,
+          "en": {
+            "nome": "Public transparency (EBT 360)",
+            "meta": "Meet 90% of the criteria of the national public transparency assessment in force",
+            "descricao": "Number and share of states reaching the minimum threshold on the Escala Brasil Transparente 360",
+            "fonte": "Office of the Comptroller General (CGU) — Escala Brasil Transparente 360",
+            "unidade": null
+          }
+        },
+        {
+          "codigo": "I5.5.3",
+          "linhaAcao": "5.5",
+          "nome": "Modelos regionais de governança compartilhada",
+          "meta": "Consolidar modelos regionais de governança compartilhada para temas prioritários da AL, com equipe, orçamento e plano de implementação",
+          "descricao": "Número de modelos construídos e em operação com equipe delegada para a sua implementação",
+          "unidade": "modelos",
+          "fonte": "Estados e CAL",
+          "prazo": 2050,
+          "status": "coleta manual",
+          "anoRef": null,
+          "en": {
+            "nome": "Shared regional governance models",
+            "meta": "Shared regional governance models consolidated for the Legal Amazon’s priority themes, each with a team, a budget and an implementation plan",
+            "descricao": "Number of models built and operating with a team assigned to deliver them",
+            "fonte": "State governments and the Consortium",
+            "unidade": null
+          }
+        }
+      ],
+      "en": {
+        "nome": "Governance and partnerships"
+      }
+    }
+  ],
+  "linhasAcao": {
+    "1.1": {
+      "pt": "1.1. Fortalecer a implementação da política de Zoneamento Ecológico e Econômico (ZEE), do Sistema Nacional de Unidades de Conservação (SNUC), na Amazônia Legal.",
+      "en": "1.1. Strengthen the rollout of ecological-economic zoning (ZEE) and of the protected-area system, and the land-use planning that follows from them."
+    },
+    "1.2": {
+      "pt": "1.2. Garantir a existência e a operação de Planos de Adaptação Climática em todos os Estados da Amazônia Legal.",
+      "en": "1.2. Ensure that climate adaptation plans exist and are running in every state of the Legal Amazon."
+    },
+    "1.3": {
+      "pt": "1.3. Previnir, combater, controlar e monitorar os incêndios florestais ilegais, o desmatamento ilegal e os crimes ambientais na Amazônia Legal, por meio de ações integradas de prevenção, controle e uso de tecnologia.",
+      "en": "1.3. Prevent, fight, control and monitor illegal forest fires, illegal clearing and environmental crime."
+    },
+    "1.4": {
+      "pt": "1.4. Recuperar áreas degradadas nos territórios da Amazônia Legal, com foco na restauração ecológica e produtiva.",
+      "en": "1.4. Recover degraded land across the Legal Amazon, with an emphasis on ecological and productive restoration."
+    },
+    "1.5": {
+      "pt": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "en": "1.5. Build a multi-level land and environmental governance system, using remote sensing and interoperable registries."
+    },
+    "2.1": {
+      "pt": "2.1. Erradicar a pobreza extrema e reduzir a pobreza na Amazônia Legal, promovendo inclusão social e geração de oportunidades. Implementar programas de inclusão social e geração de oportunidades que promovam a erradicação da pobreza extrema na Amazônia Legal.",
+      "en": "2.1. Eradicate extreme poverty and reduce poverty in the Legal Amazon, advancing social inclusion and income generation."
+    },
+    "2.2": {
+      "pt": "2.2. Fortalecer a gestão e ampliar a oferta e a qualidade dos serviços públicos de saúde, com foco na redução dos índices de mortalidade e melhoria do acesso.",
+      "en": "2.2. Strengthen management and widen the reach and quality of public health services, with an emphasis on reducing avoidable deaths."
+    },
+    "2.3": {
+      "pt": "2.3. Fortalecer a educação pública na Amazônia Legal, com foco na elevação dos indicadores de qualidade da educação básica, especialmente o IDEB.",
+      "en": "2.3. Strengthen public education in the Legal Amazon, with an emphasis on raising the quality indicators of basic education."
+    },
+    "2.4": {
+      "pt": "2.4. Melhorar a segurança pública na região, com foco na redução das mortes violentas intencionais e na proteção das populações mais vulneráveis.",
+      "en": "2.4. Improve public safety in the region, with an emphasis on reducing intentional violent deaths and on protecting communities."
+    },
+    "2.5": {
+      "pt": "2.5. Gerar empregos para gerar renda, a partir do desenvolvimento de um ambiente de negócios inclusivo, moderno e equitativo, que valorize os serviços e os ativos socioambientais e proporcione agregação de valor aos produtos amazônicos, com oferta de renda digna à população local.",
+      "en": "2.5. Create jobs and income by building an inclusive, modern business environment."
+    },
+    "3.1": {
+      "pt": "3.1. Ampliar a representatividade da sociobioeconomia no PIB regional, por meio do fortalecimento de cadeias produtivas sustentáveis baseadas na biodiversidade amazônica.",
+      "en": "3.1. Raise the share of the socio-bioeconomy in regional GDP by strengthening its value chains."
+    },
+    "3.2": {
+      "pt": "3.2. Ampliar a oferta de empregos verdes por meio da transição para uma economia de baixo carbono e da valorização da sociobiodiversidade.",
+      "en": "3.2. Widen the supply of green jobs through the transition to a low-carbon economy and the valuing of standing forest."
+    },
+    "3.3": {
+      "pt": "3.3. Promover a qualificação técnica e profissional em sociobioeconomia por meio de iniciativas de capacitação em larga escala.",
+      "en": "3.3. Promote technical and vocational training in the socio-bioeconomy through capacity-building initiatives."
+    },
+    "3.4": {
+      "pt": "3.4. Ampliar o número de beneficiários e dos instrumentos de pagamento por serviços ambientais, com foco em povos indígenas, comunidades tradicionais e agricultores familiares, bem como aumentar a monetização dos serviços ecossistêmicos.",
+      "en": "3.4. Increase the number of beneficiaries and the range of payment-for-ecosystem-services instruments, focusing on traditional populations."
+    },
+    "3.5": {
+      "pt": "3.5. Estabelecer uso inteligente e ordenado dos recursos minerais, abordando a agregação de valor aos minerais críticos, promovendo a inovação tecnológica e o respeito aos limites socioambientais dos diferentes territórios e resiliência das paisagens.",
+      "en": "3.5. Establish intelligent, orderly use of mineral resources, including adding value to the minerals extracted."
+    },
+    "4.1": {
+      "pt": "4.1. Expandir e integrar a infraestrutura tecnológica na Amazônia Legal, promovendo conectividade digital universal e equitativa entre os municípios.",
+      "en": "4.1. Expand and integrate technological infrastructure in the Legal Amazon, advancing universal digital connectivity."
+    },
+    "4.2": {
+      "pt": "4.2. Ampliar, modernizar e integrar a rede de transporte intermodal e de logística regional e Pan-Amazônia. Aprimorar a integração logística regional, com foco na melhoria das rodovias, ferrovias, hidrovias, portos e conexões aéreas sustentáveis.",
+      "en": "4.2. Expand, modernise and integrate the intermodal transport and logistics network across the region and the Pan-Amazon."
+    },
+    "4.3": {
+      "pt": "4.3. Impulsionar a transição energética na Amazônia Legal, com foco na ampliação da geração e distribuição de energia limpa e descentralizada.",
+      "en": "4.3. Drive the energy transition in the Legal Amazon, with an emphasis on generating and distributing more renewable power."
+    },
+    "4.4": {
+      "pt": "4.4. Implantar políticas de desenvolvimento urbano e de saneamento básico integrado com infraestruturas modernas, inteligentes e eficientes, que tornem as cidades mais resilientes às mudanças climáticas.",
+      "en": "4.4. Put in place urban development and integrated sanitation policies with modern, resilient infrastructure."
+    },
+    "5.1": {
+      "pt": "5.1. Ampliar a captação de recursos financeiros por meio de parcerias nacionais e internacionais voltadas ao desenvolvimento sustentável da Amazônia Legal.",
+      "en": "5.1. Raise more finance through national and international partnerships for sustainable development."
+    },
+    "5.2": {
+      "pt": "5.2. Fortalecer a governança, a cooperação e a integração multinível interestadual e de fronteiras, com o setor privado e a sociedade civil, promovendo o compartilhamento de responsabilidades e soluções.",
+      "en": "5.2. Strengthen governance, cooperation and multi-level integration between states, across borders and with the private sector."
+    },
+    "5.3": {
+      "pt": "5.3. Desenvolver capacidades para implantação de um arranjo jurídico climático justo na Amazônia Legal e cooperação interestadual.",
+      "en": "5.3. Build the capacity to put in place a fair climate legal framework for the Legal Amazon, and cooperate around it."
+    },
+    "5.4": {
+      "pt": "5.4. Ampliar e fortalecer os mecanismos de pesquisa, desenvolvimento e inovação na Amazônia Legal, com incentivo ao aumento dos investimentos públicos e privados e maior integração e cooperação das instituições e dos centros de excelência com atuação na região.",
+      "en": "5.4. Expand and strengthen research, development and innovation in the Legal Amazon, with incentives to match."
+    },
+    "5.5": {
+      "pt": "5.5. Fortalecer a governança e a gestão dos serviços públicos na Amazônia Legal, com foco no emprego racional e transparente dos recursos públicos.",
+      "en": "5.5. Strengthen the governance and management of public services in the Legal Amazon, with an emphasis on the sound use of public resources."
+    }
+  },
+  "_leia": "Os 59 indicadores por eixo, só texto; os números ficam em valores.csv. Cada eixo e cada indicador traz o inglês em `en`. linhasAcao: as 25 linhas de ação citadas pelas fichas, com o inglês."
+}

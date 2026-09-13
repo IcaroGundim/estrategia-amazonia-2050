@@ -1,0 +1,194 @@
+---
+// A parametrização da meta de um indicador: avaliada no quadro (com alvo,
+// direção e agregação), fora do quadro com motivo próprio, ou fora com o
+// motivo padrão.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto, textoOuNulo } from '../../../lib/admin/edicao';
+
+interface Regra { tipo: 'reducaoSobreMedia'; desde: number; fator: number }
+interface Parametro {
+  codigo: string; alvo?: number | Regra | null; direcao: 'maior' | 'menor' | 'categoria'; tipo: 'declarada' | 'inferida' | 'derivada';
+  agregacao?: string; valorDe?: 'ultimoDaSerie' | { panorama: string }; baselineAno?: number; unidade?: string;
+  categoriasCumpre?: string[]; nota?: string; notaAgregacao?: string;
+}
+interface Metas { parametros: Parametro[]; exclusoes: Record<string, string> }
+interface Catalogo { eixos: { indicadores: { codigo: string; nome: string; meta: string; unidade: string }[] }[] }
+interface Panorama { metricas: { chave: string; rotulo?: string }[] }
+
+const sessao = Astro.locals.sessao!;
+const codigo = decodeURIComponent(Astro.params.codigo || '');
+const [lido, { dados: catalogo }, { dados: panorama }] = await Promise.all([leJson<Metas>('metas'), leJson<Catalogo>('catalogo'), leJson<Panorama>('panorama')]);
+const indicador = catalogo.eixos.flatMap((eixo) => eixo.indicadores).find((item) => item.codigo === codigo);
+if (!indicador) return new Response('Indicador não encontrado.', { status: 404 });
+
+let parametro: Parametro | undefined = lido.dados.parametros.find((item) => item.codigo === codigo);
+let motivo: string = lido.dados.exclusoes[codigo] || '';
+let situacao = parametro ? 'avaliada' : motivo ? 'excluida' : 'padrao';
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+
+const AGREGACOES = [
+  { valor: 'soma', rotulo: 'Soma dos nove estados' },
+  { valor: 'media', rotulo: 'Média simples dos nove estados' },
+  { valor: 'populacao', rotulo: 'Média ponderada pela população' },
+  { valor: 'razaoUc', rotulo: 'Unidades com plano e conselho sobre o total (só I1.1.2)' },
+  { valor: 'razaoCvli', rotulo: 'Total de CVLI sobre a população regional (só I2.4.1)' },
+  { valor: 'contagem', rotulo: 'Sem valor regional (classificação por estado)' }
+];
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  situacao = texto(dados, 'situacao');
+  try {
+    let novoParametro: Parametro | null = null;
+    if (situacao === 'avaliada') {
+      const direcao = texto(dados, 'direcao') as Parametro['direcao'];
+      const usaRegra = texto(dados, 'alvoModo') === 'regra';
+      novoParametro = {
+        codigo,
+        direcao,
+        tipo: texto(dados, 'tipo') as Parametro['tipo'],
+        agregacao: texto(dados, 'agregacao')
+      };
+      if (direcao === 'categoria') {
+        const categorias = texto(dados, 'categoriasCumpre').split(',').map((item) => item.trim()).filter(Boolean);
+        if (!categorias.length) throw new ErroDeEdicao('Diga quais categorias cumprem a meta, separadas por vírgula (ex.: A+, A, B+, B).');
+        novoParametro.categoriasCumpre = categorias;
+      } else if (usaRegra) {
+        const desde = numeroOuNulo(dados, 'regraDesde');
+        const fator = numeroOuNulo(dados, 'regraFator');
+        if (fator === null) throw new ErroDeEdicao('A regra precisa do fator (ex.: 0,7 para redução de 30%).');
+        novoParametro.alvo = { tipo: 'reducaoSobreMedia', desde: desde ?? 0, fator };
+        novoParametro.valorDe = 'ultimoDaSerie';
+      } else {
+        const alvo = numeroOuNulo(dados, 'alvo');
+        if (alvo === null) throw new ErroDeEdicao('Informe o alvo numérico da meta.');
+        novoParametro.alvo = alvo;
+      }
+      const valorDe = texto(dados, 'valorDe');
+      if (!usaRegra && valorDe === 'ultimoDaSerie') novoParametro.valorDe = 'ultimoDaSerie';
+      if (valorDe.startsWith('panorama:')) novoParametro.valorDe = { panorama: valorDe.slice('panorama:'.length) };
+      const baseline = numeroOuNulo(dados, 'baselineAno');
+      if (baseline !== null) novoParametro.baselineAno = baseline;
+      const unidade = textoOuNulo(dados, 'unidade');
+      if (unidade) novoParametro.unidade = unidade;
+      const nota = textoOuNulo(dados, 'nota');
+      if (nota) novoParametro.nota = nota;
+      const notaAgregacao = textoOuNulo(dados, 'notaAgregacao');
+      if (notaAgregacao) novoParametro.notaAgregacao = notaAgregacao;
+    }
+    const novoMotivo = situacao === 'excluida' ? texto(dados, 'motivo') : '';
+    if (situacao === 'excluida' && !novoMotivo) throw new ErroDeEdicao('Escreva o motivo de a meta ficar fora do quadro.');
+
+    await salvaJson<Metas>('metas', versao, (metas) => {
+      metas.parametros = metas.parametros.filter((item) => item.codigo !== codigo);
+      delete metas.exclusoes[codigo];
+      if (novoParametro) {
+        // Mantém a ordem do catálogo: entra antes do primeiro código maior.
+        const ordem = catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((item) => item.codigo));
+        const posicao = metas.parametros.findIndex((item) => ordem.indexOf(item.codigo) > ordem.indexOf(codigo));
+        if (posicao < 0) metas.parametros.push(novoParametro); else metas.parametros.splice(posicao, 0, novoParametro);
+      }
+      if (novoMotivo) metas.exclusoes[codigo] = novoMotivo;
+      return metas;
+    }, `parametriza a meta de ${codigo} (${situacao})`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/metas/${encodeURIComponent(codigo)}?salvo=1`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    motivo = texto(dados, 'motivo');
+    parametro = { codigo, direcao: texto(dados, 'direcao') as Parametro['direcao'], tipo: texto(dados, 'tipo') as Parametro['tipo'], agregacao: texto(dados, 'agregacao'), alvo: texto(dados, 'alvoModo') === 'regra' ? { tipo: 'reducaoSobreMedia', desde: Number(texto(dados, 'regraDesde')) || 0, fator: Number(texto(dados, 'regraFator')) || 0 } : (Number(texto(dados, 'alvo').replace(',', '.')) || null), baselineAno: Number(texto(dados, 'baselineAno')) || undefined, unidade: textoOuNulo(dados, 'unidade') || undefined, nota: textoOuNulo(dados, 'nota') || undefined, notaAgregacao: textoOuNulo(dados, 'notaAgregacao') || undefined, categoriasCumpre: texto(dados, 'categoriasCumpre').split(',').map((s) => s.trim()).filter(Boolean) };
+  }
+}
+
+const regra = parametro?.alvo && typeof parametro.alvo === 'object' ? (parametro.alvo as Regra) : null;
+const valorDeAtual = parametro?.valorDe ? (typeof parametro.valorDe === 'string' ? parametro.valorDe : `panorama:${parametro.valorDe.panorama}`) : 'catalogo';
+const opcoesValorDe = [
+  { valor: 'catalogo', rotulo: 'Valor atual do catálogo (padrão)' },
+  { valor: 'ultimoDaSerie', rotulo: 'Último ponto da série anual' },
+  ...panorama.metricas.map((metrica) => ({ valor: `panorama:${metrica.chave}`, rotulo: `Panorama: ${metrica.rotulo || metrica.chave}` }))
+];
+---
+
+<Admin title={`Meta ${codigo}`} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/metas">Metas</a> · {codigo}</p>
+    <h1>{codigo} · {indicador.nome}</h1>
+    <p><b>Meta pactuada:</b> {indicador.meta}</p>
+    <p><b>Unidade do catálogo:</b> {indicador.unidade}</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form class="admin-form" method="post" data-form-meta>
+      <input type="hidden" name="versao" value={versao} />
+      <Campo nome="situacao" rotulo="Situação no quadro de metas" tipo="select" valor={situacao} opcoes={[
+        { valor: 'avaliada', rotulo: 'Avaliada — a meta é confrontada com os valores por estado' },
+        { valor: 'excluida', rotulo: 'Fora do quadro, com motivo próprio' },
+        { valor: 'padrao', rotulo: 'Fora do quadro, com o motivo padrão' }
+      ]} />
+
+      <fieldset class="admin-bloco" data-quando="avaliada">
+        <legend>Parametrização</legend>
+        <div class="admin-form-linha">
+          <Campo nome="direcao" rotulo="Direção" tipo="select" valor={parametro?.direcao || 'maior'} opcoes={[
+            { valor: 'maior', rotulo: 'Cumpre quando o valor é maior ou igual ao alvo' },
+            { valor: 'menor', rotulo: 'Cumpre quando o valor é menor ou igual ao alvo' },
+            { valor: 'categoria', rotulo: 'Cumpre por categoria (ex.: CAPAG A ou B)' }
+          ]} />
+          <Campo nome="tipo" rotulo="Tipo de meta" tipo="select" valor={parametro?.tipo || 'declarada'} opcoes={[
+            { valor: 'declarada', rotulo: 'Declarada — o número está escrito na meta' },
+            { valor: 'inferida', rotulo: 'Inferida — meta qualitativa ou regional, operacionalizada aqui' },
+            { valor: 'derivada', rotulo: 'Derivada — alvo calculado da série de cada estado' }
+          ]} />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="alvoModo" rotulo="Como o alvo é definido" tipo="select" valor={regra ? 'regra' : 'fixo'} opcoes={[
+            { valor: 'fixo', rotulo: 'Um número, igual para todos os estados' },
+            { valor: 'regra', rotulo: 'Redução sobre a média histórica de cada estado' }
+          ]} />
+          <Campo nome="alvo" rotulo="Alvo" tipo="numero" valor={regra ? '' : (typeof parametro?.alvo === 'number' ? parametro.alvo : '')} ajuda="Na unidade do indicador. Ignorado na direção por categoria." />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="regraDesde" rotulo="Regra: média a partir do ano" tipo="numero" valor={regra?.desde ?? ''} />
+          <Campo nome="regraFator" rotulo="Regra: fator sobre a média" tipo="numero" valor={regra?.fator ?? ''} ajuda="0,7 = redução de 30%" />
+          <Campo nome="categoriasCumpre" rotulo="Categorias que cumprem" valor={(parametro?.categoriasCumpre || []).join(', ')} ajuda="Só para direção por categoria; separadas por vírgula" />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="agregacao" rotulo="Valor regional (Amazônia Legal)" tipo="select" valor={parametro?.agregacao || 'media'} opcoes={AGREGACOES} />
+          <Campo nome="valorDe" rotulo="De onde vem o valor por estado" tipo="select" valor={valorDeAtual} opcoes={opcoesValorDe} />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="baselineAno" rotulo="Ano de partida (baseline)" tipo="numero" valor={parametro?.baselineAno ?? ''} ajuda="Opcional: mede o avanço desde este ano da série" />
+          <Campo nome="unidade" rotulo="Unidade exibida" valor={parametro?.unidade ?? ''} ajuda="Só se for diferente da unidade do catálogo" />
+        </div>
+        <Campo nome="nota" rotulo="Nota da parametrização" tipo="area" valor={parametro?.nota ?? ''} ajuda="Aparece na página de Metas explicando a escolha" largo />
+        <Campo nome="notaAgregacao" rotulo="Nota do valor regional" tipo="area" valor={parametro?.notaAgregacao ?? ''} linhas={2} largo />
+      </fieldset>
+
+      <fieldset class="admin-bloco" data-quando="excluida">
+        <legend>Motivo</legend>
+        <Campo nome="motivo" rotulo="Por que a meta não é confrontável" tipo="area" valor={motivo} largo />
+      </fieldset>
+
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        <a class="admin-botao is-secundario" href="/admin/metas">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>
+
+<script>
+  // Mostra só o bloco da situação escolhida.
+  const form = document.querySelector('[data-form-meta]');
+  const situacao = form?.querySelector('select[name="situacao"]') as HTMLSelectElement | null;
+  const atualiza = () => {
+    form?.querySelectorAll<HTMLElement>('[data-quando]').forEach((bloco) => { bloco.hidden = bloco.dataset.quando !== situacao?.value; });
+  };
+  situacao?.addEventListener('change', atualiza);
+  atualiza();
+</script>

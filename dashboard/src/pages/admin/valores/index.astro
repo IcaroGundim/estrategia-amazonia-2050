@@ -1,0 +1,148 @@
+---
+// Valores: a lista de códigos que têm ou podem ter números (catálogo e
+// Panorama), e a importação em lote por planilha ou por JSON, com prévia das
+// diferenças antes de gravar.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { leJson, leValores } from '../../../lib/admin/edicao';
+import { codigosDisponiveis } from '../../../lib/admin/valores';
+
+const sessao = Astro.locals.sessao!;
+const [{ dados: catalogo }, { dados: panorama }, { dados: linhas }] = await Promise.all([leJson<any>('catalogo'), leJson<any>('panorama'), leValores()]);
+const codigos = codigosDisponiveis(catalogo, panorama);
+const contagem = new Map<string, { linhas: number; ultimo: string }>();
+for (const linha of linhas) {
+  const atual = contagem.get(linha.codigo) || { linhas: 0, ultimo: '' };
+  atual.linhas += 1;
+  if (linha.atualizadoEm > atual.ultimo) atual.ultimo = linha.atualizadoEm;
+  contagem.set(linha.codigo, atual);
+}
+const grupos = [...new Set(codigos.map((item) => item.grupo))];
+const salvo = Astro.url.searchParams.get('salvo');
+---
+
+<Admin title="Valores" sessao={sessao}>
+  <Mensagens salvo={salvo} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Valores</p>
+    <h1>Valores por indicador</h1>
+    <p>Cada código tem uma grade estados × anos, onde dá para digitar ou colar um bloco copiado do Excel. Para muitos indicadores de uma vez, use a importação abaixo.</p>
+  </section>
+
+  <section class="admin-cartao" id="importar">
+    <h2>Importar em lote</h2>
+    <p>O formato é o da aba <b>Modelo_importacao</b> dos arquivos de download: uma linha por célula, com as colunas <code>codigo, campo, uf, ano, valor, nota</code>. <a href="/downloads/modelo-importacao.xlsx">Baixe o modelo preenchido</a>, edite ou acrescente linhas no Excel e envie o arquivo. Também aceita a mesma lista em JSON.</p>
+    <div class="admin-form" data-importacao data-versao="">
+      <div class="admin-form-linha">
+        <label class="admin-campo"><span>Planilha (.xlsx ou .csv)</span><div class="admin-campo-controles"><input type="file" name="arquivo" accept=".xlsx,.xls,.csv" data-arquivo /></div></label>
+        <label class="admin-campo is-largo"><span>ou JSON</span><div class="admin-campo-controles"><textarea rows="4" data-json placeholder='[{"codigo":"I1.1.2","uf":"AC","ano":"","valor":75}]'></textarea></div></label>
+      </div>
+      <div class="admin-acoes">
+        <button type="button" class="admin-botao is-secundario" data-conferir>Conferir diferenças</button>
+        <button type="button" class="admin-botao" data-aplicar disabled>Gravar no rascunho</button>
+        <span data-resumo></span>
+      </div>
+      <p class="admin-erro" data-erro hidden></p>
+      <div data-previa></div>
+    </div>
+  </section>
+
+  {grupos.map((grupo) => (
+    <section class="admin-cartao">
+      <h2>{grupo}</h2>
+      <ul class="admin-lista is-compacta">
+        {codigos.filter((item) => item.grupo === grupo).map((item) => {
+          const conta = contagem.get(item.codigo);
+          return (
+            <li>
+              <div><a href={`/admin/valores/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.unidade ? `${item.unidade} · ` : ''}{conta ? `${conta.linhas} valor(es), última alteração ${conta.ultimo}` : 'sem valores'}</small></div>
+              {!conta && <span class="admin-etiqueta is-manual">sem valores</span>}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+</Admin>
+
+<script>
+  import * as XLSX from 'xlsx';
+
+  const raiz = document.querySelector<HTMLElement>('[data-importacao]')!;
+  const arquivo = raiz.querySelector<HTMLInputElement>('[data-arquivo]')!;
+  const jsonCampo = raiz.querySelector<HTMLTextAreaElement>('[data-json]')!;
+  const conferir = raiz.querySelector<HTMLButtonElement>('[data-conferir]')!;
+  const aplicar = raiz.querySelector<HTMLButtonElement>('[data-aplicar]')!;
+  const resumo = raiz.querySelector<HTMLElement>('[data-resumo]')!;
+  const erro = raiz.querySelector<HTMLElement>('[data-erro]')!;
+  const previa = raiz.querySelector<HTMLElement>('[data-previa]')!;
+  let lote: unknown[] = [];
+  let versao = '';
+  let origem = 'json';
+
+  const mostraErro = (texto: string) => { erro.textContent = texto; erro.hidden = !texto; };
+  const escapa = (texto: unknown) => String(texto ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  // Lê a planilha no navegador: a aba Modelo_importacao se existir, senão a
+  // primeira que tiver a coluna "codigo".
+  async function lePlanilha(ficheiro: File): Promise<unknown[]> {
+    const dados = new Uint8Array(await ficheiro.arrayBuffer());
+    const livro = XLSX.read(dados, { type: 'array' });
+    const nomes = livro.SheetNames;
+    const escolhida = nomes.includes('Modelo_importacao') ? 'Modelo_importacao' : nomes.find((nome) => {
+      const linhas = XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[nome], { defval: '' });
+      return linhas.length && 'codigo' in linhas[0];
+    });
+    if (!escolhida) throw new Error('Não achei uma aba com a coluna "codigo".');
+    return XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[escolhida], { defval: '' })
+      .map((linha) => ({ codigo: linha.codigo, campo: linha.campo, uf: linha.uf, ano: linha.ano, valor: linha.valor, nota: linha.nota }));
+  }
+
+  async function montaLote(): Promise<unknown[]> {
+    if (arquivo.files && arquivo.files[0]) { origem = 'xlsx'; return lePlanilha(arquivo.files[0]); }
+    const texto = jsonCampo.value.trim();
+    if (!texto) throw new Error('Escolha uma planilha ou cole o JSON.');
+    origem = 'json';
+    const lido = JSON.parse(texto);
+    return Array.isArray(lido) ? lido : lido.linhas;
+  }
+
+  conferir.addEventListener('click', async () => {
+    mostraErro('');
+    previa.innerHTML = '';
+    aplicar.disabled = true;
+    resumo.textContent = 'Conferindo…';
+    try {
+      lote = await montaLote();
+      const resposta = await fetch('/api/admin/valores/diferencas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote }) });
+      const corpo = await resposta.json();
+      if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a prévia.');
+      versao = corpo.versao;
+      const { novas, alteradas, iguais, avisos } = corpo.resumo;
+      resumo.textContent = `${novas} nova(s), ${alteradas} alterada(s), ${iguais} igual(is)${avisos ? `, ${avisos} aviso(s)` : ''}${corpo.problemas.length ? `, ${corpo.problemas.length} com problema` : ''}.`;
+      const linhasTabela = corpo.diferencas.filter((d: any) => d.situacao !== 'igual').map((d: any) => `<tr class="is-${d.situacao}"><td>${escapa(d.codigo)}</td><td>${escapa(d.campo)}</td><td>${escapa(d.uf)}</td><td>${escapa(d.ano)}</td><td>${d.antes === null ? '—' : escapa(d.antes)}</td><td><b>${escapa(d.depois)}</b></td><td>${d.situacao}${d.aviso ? ` · ${escapa(d.aviso)}` : ''}</td></tr>`).join('');
+      const problemas = corpo.problemas.map((p: string) => `<li>${escapa(p)}</li>`).join('');
+      previa.innerHTML = `${problemas ? `<p class="admin-aviso">Linhas ignoradas:</p><ul class="admin-problemas">${problemas}</ul>` : ''}${linhasTabela ? `<div class="admin-tabela-rolagem"><table class="admin-tabela"><thead><tr><th>código</th><th>campo</th><th>UF</th><th>ano</th><th>antes</th><th>depois</th><th>situação</th></tr></thead><tbody>${linhasTabela}</tbody></table></div>` : '<p>Nenhuma célula muda.</p>'}`;
+      aplicar.disabled = !(novas + alteradas) || corpo.problemas.length > 0;
+    } catch (falha) {
+      resumo.textContent = '';
+      mostraErro((falha as Error).message);
+    }
+  });
+
+  aplicar.addEventListener('click', async () => {
+    mostraErro('');
+    aplicar.disabled = true;
+    try {
+      const resposta = await fetch('/api/admin/valores/aplicar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote, versao, origem }) });
+      const corpo = await resposta.json();
+      if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a gravação.');
+      location.href = `/admin/valores?salvo=${encodeURIComponent(`${corpo.alteradas} célula(s) gravada(s) no rascunho.`)}`;
+    } catch (falha) {
+      mostraErro((falha as Error).message);
+      aplicar.disabled = false;
+    }
+  });
+</script>

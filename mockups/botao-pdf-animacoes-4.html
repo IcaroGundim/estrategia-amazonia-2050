@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup 4 — borda que se desenha, com movimento constante</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --urucum: #c0451f; --urucum-esc: #9a3416; --papel: #fff; --tinta: #1a1613; --tinta-3: #5c544c; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  body { margin: 0; padding: 40px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 18px; max-width: 72ch; }
+  .replay { margin: 0 0 26px; padding: 9px 16px; border: 0; border-radius: 6px; background: var(--tinta); color: #fff; font: 600 13px var(--text); cursor: pointer; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1180px; }
+  .card { background: var(--papel); border-radius: 16px; padding: 34px 36px 40px; min-height: 250px; position: relative; }
+  .card h2 { font: 800 21px var(--display); margin: 0 0 4px; }
+  .card h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .card p { margin: 0 0 26px; color: var(--tinta-3); font-size: 14px; max-width: 46ch; }
+  .fake-title { font: 800 26px/1.1 var(--display); }
+  .fake-title span { display: block; font-size: .64em; margin-bottom: 6px; }
+  .fake-title em { font-style: normal; color: var(--urucum); }
+  .stage { position: relative; padding-top: 12px; }
+
+  /* Base: a "Borda que se desenha" escolhida. Traço contorna a caixa na entrada,
+     texto surge em seguida; no hover o fundo preenche da esquerda e o texto fica branco. */
+  .btn { position: absolute; top: 12px; right: 0; display: inline-flex; flex-direction: column; gap: 3px; padding: 12px 18px; border: 1.5px solid transparent; border-radius: 6px; background: var(--papel); color: var(--tinta); text-decoration: none; overflow: hidden; isolation: isolate; }
+  .btn svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .btn rect { fill: none; stroke: var(--urucum); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; animation: desenha 1.1s ease-in-out .3s forwards; }
+  .btn .lbl, .btn strong { position: relative; z-index: 1; animation: surge .5s ease-out 1.1s both; transition: color .25s; }
+  .btn .lbl { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .btn strong { font: 700 16px/1.3 var(--display); }
+  .btn .seta { display: inline-block; }
+  .btn::before { content: ""; position: absolute; inset: 0; background: var(--urucum); transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.4,0,.2,1); }
+  .btn:hover::before { transform: scaleX(1); }
+  .btn:hover .lbl, .btn:hover strong { color: #fff; }
+  @keyframes desenha { to { stroke-dashoffset: 0; } }
+  @keyframes surge { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* 1 — Cometa na borda: depois de desenhada, um ponto de luz branco percorre a borda urucum sem parar. */
+  .a1 rect.cometa { stroke: #fff; stroke-opacity: .85; stroke-width: 3; stroke-linecap: round; stroke-dasharray: .07 .93; stroke-dashoffset: 1; animation: cometa 3.6s linear 1.5s infinite; }
+  @keyframes cometa { to { stroke-dashoffset: 0; } }
+  .a1:hover rect.cometa { animation-play-state: paused; opacity: 0; }
+
+  /* 2 — Seta que respira: a seta vai e volta na diagonal, como quem aponta para fora. */
+  .a2 .seta { animation: respira 1.6s ease-in-out 1.6s infinite; }
+  @keyframes respira { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(3px,-3px); } }
+  .a2:hover .seta { animation: none; transform: translate(3px,-3px); transition: transform .25s; }
+
+  /* 3 — Sublinhado vai-e-volta: uma linha fina urucum cresce sob o texto principal e recolhe pelo outro lado. */
+  .a3 strong { padding-bottom: 3px; }
+  .a3 strong::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--urucum); transform: scaleX(0); transform-origin: left; animation: sublinha 2.8s cubic-bezier(.65,0,.35,1) 1.6s infinite; }
+  @keyframes sublinha { 0% { transform: scaleX(0); transform-origin: left; } 40% { transform: scaleX(1); transform-origin: left; } 50% { transform: scaleX(1); transform-origin: right; } 90%, 100% { transform: scaleX(0); transform-origin: right; } }
+  .a3:hover strong::after { background: #fff; animation: none; transform: scaleX(1); }
+
+  /* 4 — Ponto vivo: um pontinho urucum antes do rótulo pulsa como sinal de "ao vivo"; o resto fica parado. */
+  .a4 .lbl { display: inline-flex; align-items: center; gap: 7px; }
+  .a4 .ponto { width: 7px; height: 7px; border-radius: 50%; background: var(--urucum); position: relative; }
+  .a4 .ponto::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid var(--urucum); animation: onda 1.8s ease-out 1.6s infinite; }
+  @keyframes onda { 0% { transform: scale(.5); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+  .a4:hover .ponto { background: #fff; }
+  .a4:hover .ponto::after { border-color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) { .btn *, .btn::before { animation: none !important; } }
+</style>
+</head>
+<body>
+<h1>Borda que se desenha, com movimento constante</h1>
+<p class="sub">As quatro partem da mesma base escolhida: o traço contorna a caixa na entrada e o hover preenche em urucum. O que muda é o que continua se mexendo depois. Passe o mouse para ver o hover.</p>
+<button class="replay" type="button" onclick="location.reload()">↻ Repetir as entradas</button>
+<div class="grid">
+  <section class="card">
+    <h2><small>1</small>Cometa na borda</h2>
+    <p>Depois que a borda se desenha, um ponto de luz branco percorre o contorno urucum continuamente, dando a volta a cada 3,6 s. No hover ele some e a caixa preenche.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a1" href="#"><svg><rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/><rect class="cometa" x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/></svg><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+  <section class="card">
+    <h2><small>2</small>Seta que respira</h2>
+    <p>Só a seta se move, indo e voltando na diagonal, como quem aponta para fora da página. No hover ela fica na posição "fora" e a caixa preenche.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a2" href="#"><svg><rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/></svg><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+  <section class="card">
+    <h2><small>3</small>Sublinhado vai-e-volta</h2>
+    <p>Uma linha fina urucum cresce da esquerda sob o texto principal e recolhe pela direita, a cada 2,8 s. No hover a linha fica branca e fixa sobre o fundo urucum.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a3" href="#"><svg><rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/></svg><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+  <section class="card">
+    <h2><small>4</small>Ponto vivo</h2>
+    <p>Um pontinho urucum antes de "Publicação completa" emite uma onda a cada 1,8 s, como um sinal de "ao vivo". O resto fica parado. É o mais discreto dos quatro.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a4" href="#"><svg><rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/></svg><span class="lbl"><span class="ponto"></span>Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+</div>
+</body>
+</html>

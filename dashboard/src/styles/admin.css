@@ -1,0 +1,119 @@
+/* Administração do painel: moldura própria, com os mesmos tokens do site. */
+.admin-body { min-height: 100dvh; display: flex; flex-direction: column; background: #e8e0d6; }
+.admin-topo { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 28px; background: var(--mata); color: var(--areia, #f5f0e8); }
+.admin-marca { display: flex; flex-direction: column; gap: 2px; color: inherit; text-decoration: none; }
+.admin-marca-nome { font: 800 18px/1 var(--display); letter-spacing: -0.01em; }
+.admin-marca-nome b { color: var(--ocre); }
+.admin-marca-sub { font: 600 10px var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-100); }
+.admin-sessao { display: flex; align-items: center; gap: 14px; font-size: 13px; }
+.admin-sessao form { margin: 0; }
+.admin-main { flex: 1; width: min(1080px, calc(100% - 40px)); margin: 0 auto; padding: 34px 0 48px; }
+.admin-rodape { padding: 16px 28px; font-size: 12px; color: var(--tinta-4); }
+.admin-rodape a { color: inherit; }
+
+.admin-cartao { padding: 26px 28px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
+.admin-cartao + .admin-cartao { margin-top: 18px; }
+.admin-cartao h1, .admin-cartao h2 { margin: 0 0 6px; font: 800 24px/1.15 var(--display); color: var(--tinta); }
+.admin-cartao h2 { font-size: 19px; }
+.admin-cartao p { margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.6; }
+.admin-cartao p + p { margin-top: 8px; }
+.admin-chapeu { margin: 0 0 8px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+
+.admin-login { width: min(420px, 100%); margin: 6vh auto 0; }
+.admin-form { display: grid; gap: 14px; margin-top: 18px; }
+.admin-campo { display: grid; gap: 6px; }
+.admin-campo span { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta-3); }
+.admin-campo input { min-height: 46px; padding: 0 14px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel); color: var(--tinta); font: 400 15px var(--text); }
+.admin-campo input:focus-visible { border-color: var(--mata-500); box-shadow: 0 0 0 4px rgba(62, 110, 87, 0.14); outline: none; }
+.admin-botao { min-height: 44px; padding: 0 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--mata-700); border-radius: 8px; background: var(--mata-700); color: #fff; font: 600 13px var(--text); cursor: pointer; transition: background .2s, border-color .2s; }
+.admin-botao:hover { background: var(--mata); border-color: var(--mata); }
+.admin-botao.is-leve { min-height: 34px; padding: 0 12px; border-color: rgba(255, 255, 255, 0.35); background: transparent; color: inherit; }
+.admin-botao.is-leve:hover { background: rgba(255, 255, 255, 0.1); }
+.admin-erro { margin: 0; padding: 12px 14px; border-radius: 8px; background: #fbeee8; color: var(--urucum); font-size: 13px; }
+.admin-aviso { margin: 0; padding: 12px 14px; border-radius: 8px; background: #fff6df; color: #7a5a14; font-size: 13px; }
+
+.admin-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 18px; }
+.admin-numero { padding: 16px 18px; border: 1px solid var(--linha); border-radius: 10px; background: #fbf8f3; }
+.admin-numero strong { display: block; font: 800 28px/1 var(--display); color: var(--mata); }
+.admin-numero span { display: block; margin-top: 6px; font-size: 12px; color: var(--tinta-4); }
+.admin-lista { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.admin-lista li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid var(--linha); border-radius: 9px; font-size: 14px; }
+.admin-lista li small { color: var(--tinta-4); font-size: 12px; }
+.admin-etiqueta { padding: 3px 8px; border-radius: 999px; background: var(--mata-100); color: var(--mata); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.admin-etiqueta.is-pendente { background: #fff1d6; color: #7a5a14; }
+/* O global.css pinta <footer> de verde-mata; aqui o rodapé é só uma linha discreta. */
+.admin-body .admin-rodape { background: transparent; color: var(--tinta-4); }
+
+/* Formulários das telas de edição. */
+.admin-campo.is-largo { grid-column: 1 / -1; }
+.admin-campo-controles { display: grid; gap: 8px; }
+.admin-campo.is-bilingue .admin-campo-controles { grid-template-columns: 1fr 1fr; }
+.admin-campo textarea, .admin-campo select { padding: 10px 14px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel); color: var(--tinta); font: 400 14px/1.5 var(--text); }
+.admin-campo select { min-height: 46px; }
+.admin-campo textarea { resize: vertical; }
+.admin-campo textarea:focus-visible, .admin-campo select:focus-visible { border-color: var(--mata-500); box-shadow: 0 0 0 4px rgba(62, 110, 87, 0.14); outline: none; }
+.admin-campo input:disabled { color: var(--tinta-4); background: #f3efe9; }
+.admin-campo small { color: var(--tinta-4); font-size: 12px; line-height: 1.4; }
+.admin-campo span b { color: var(--urucum); }
+.admin-form-linha { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.admin-bloco { margin: 0; padding: 16px 18px 18px; border: 1px solid var(--linha); border-radius: 10px; display: grid; gap: 14px; }
+.admin-bloco legend { padding: 0 6px; font: 700 13px var(--display); color: var(--mata); }
+.admin-bloco[hidden] { display: none; }
+.admin-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; }
+.admin-acoes form { margin: 0; }
+.admin-botao.is-secundario { background: var(--papel); color: var(--mata-700); }
+.admin-botao.is-secundario:hover { background: #f3efe9; color: var(--mata); }
+.admin-botao:disabled { opacity: .5; cursor: not-allowed; }
+.admin-ok { margin: 0 0 14px; padding: 12px 14px; border-radius: 8px; background: #e7f2ea; color: var(--mata-700); font-size: 13px; }
+.admin-erro { margin-bottom: 14px; }
+.admin-aviso { margin-bottom: 14px; }
+.admin-lista.is-compacta li { padding: 9px 12px; font-size: 13px; }
+.admin-lista a { color: var(--mata-700); text-decoration: none; }
+.admin-lista a:hover { text-decoration: underline; }
+.admin-chapeu a { color: inherit; text-decoration: none; }
+.admin-cartao p b { color: var(--tinta); }
+.admin-etiqueta.is-coletado { background: #e7f2ea; color: var(--mata-700); }
+.admin-etiqueta.is-parcial { background: #fff1d6; color: #7a5a14; }
+.admin-etiqueta.is-pendente { background: #fff1d6; color: #7a5a14; }
+.admin-etiqueta.is-manual { background: #eeeae4; color: var(--tinta-3); }
+@media (max-width: 720px) { .admin-campo.is-bilingue .admin-campo-controles { grid-template-columns: 1fr; } }
+
+/* Tabelas: prévia de importação e grade de valores. */
+.admin-tabela-rolagem { overflow-x: auto; margin-top: 14px; border: 1px solid var(--linha); border-radius: 10px; }
+.admin-tabela { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-tabela th, .admin-tabela td { padding: 7px 10px; border-bottom: 1px solid var(--linha); text-align: left; white-space: nowrap; }
+.admin-tabela thead th { position: sticky; top: 0; background: #fbf8f3; font: 600 11px var(--text); letter-spacing: 0.06em; text-transform: uppercase; color: var(--tinta-3); }
+.admin-tabela tbody tr:last-child td { border-bottom: 0; }
+.admin-tabela tr.is-nova td:nth-child(6) b { color: var(--mata-700); }
+.admin-tabela tr.is-alterada td:nth-child(6) b { color: var(--urucum); }
+.admin-tabela tr.is-invalida { color: var(--urucum); }
+.admin-tabela.is-grade th[scope="row"] { min-width: 150px; background: #fbf8f3; font-weight: 500; }
+.admin-tabela.is-grade th[scope="row"] small { color: var(--tinta-4); font-weight: 400; }
+.admin-tabela.is-grade td { padding: 3px 4px; }
+.admin-tabela.is-grade input { width: 110px; min-height: 34px; padding: 0 8px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--tinta); font: 400 13px var(--text); text-align: right; }
+.admin-tabela.is-grade input:hover { border-color: var(--mata-100); }
+.admin-tabela.is-grade input:focus-visible { border-color: var(--mata-500); background: var(--papel); box-shadow: 0 0 0 3px rgba(62, 110, 87, 0.14); outline: none; }
+.admin-tabela.is-grade input.is-alterada { background: #fff6df; }
+.admin-acoes.is-topo { margin: 14px 0 0; }
+.admin-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--tinta-3); }
+.admin-inline input { width: 110px; min-height: 34px; padding: 0 10px; border: 1px solid var(--mata-100); border-radius: 7px; font: 400 13px var(--text); }
+.admin-botao.is-mini { min-height: 34px; padding: 0 12px; font-size: 12px; }
+.admin-problemas { margin: 8px 0 0; padding-left: 18px; color: var(--tinta-3); font-size: 12px; }
+.admin-cartao code { font-size: 12px; background: #f3efe9; padding: 1px 5px; border-radius: 4px; }
+
+/* Propostas: seleção de células e marcação de situação. */
+.admin-tabela td.is-selecao { width: 28px; text-align: center; }
+.admin-tabela input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mata-700); }
+.admin-tabela tr.is-igual { color: var(--tinta-4); }
+.admin-botao.is-perigo { border-color: var(--urucum); background: var(--papel); color: var(--urucum); }
+.admin-botao.is-perigo:hover { background: #fbeee8; }
+
+/* Síntese e manual. */
+.admin-numero-curto { width: 80px; min-height: 34px; padding: 0 8px; border: 1px solid var(--mata-100); border-radius: 6px; font: 400 13px var(--text); text-align: right; }
+.admin-tabela select { min-height: 34px; padding: 0 8px; border: 1px solid var(--mata-100); border-radius: 6px; background: var(--papel); font: 400 13px var(--text); }
+.admin-manual h1 { font-size: 26px; }
+.admin-manual h2 { margin-top: 26px; font: 800 18px/1.2 var(--display); color: var(--mata); }
+.admin-manual p, .admin-manual li { color: var(--tinta-2); font-size: 14px; line-height: 1.65; }
+.admin-manual ul, .admin-manual ol { padding-left: 22px; }
+.admin-manual li { margin: 4px 0; }
+.admin-manual code { font-size: 12px; background: #f3efe9; padding: 1px 5px; border-radius: 4px; }

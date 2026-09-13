@@ -289,7 +289,9 @@
    --------------------------------------------------------------------------- */
 @media (max-width: 620px) {
   .goals-list-card { padding: 0; border: 0; background: none; overflow: visible; }
-  .goals-list-summary { padding: 0 2px; }
+  .goals-list-top { padding: 0 2px 12px; }
+  .goals-list-top .goals-flags { margin-left: 0; }
+  .goals-list-summary { padding: 0; }
   .goals-list-head { padding: 0 2px 4px; }
   .goals-list { margin-top: 14px; }
   .goals-eixo-head { padding: 0 2px 8px; }

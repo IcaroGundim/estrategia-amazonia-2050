@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup 3 — caixinha do PDF em urucum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --urucum: #c0451f; --urucum-esc: #9a3416; --papel: #fff; --tinta: #1a1613; --tinta-3: #5c544c; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  body { margin: 0; padding: 40px; background: #e8e0d6; color: var(--tinta); font: 400 15px/1.55 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 18px; max-width: 72ch; }
+  .replay { margin: 0 0 26px; padding: 9px 16px; border: 0; border-radius: 6px; background: var(--tinta); color: #fff; font: 600 13px var(--text); cursor: pointer; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1180px; }
+  .card { background: var(--papel); border-radius: 16px; padding: 34px 36px 40px; min-height: 250px; position: relative; }
+  .card h2 { font: 800 21px var(--display); margin: 0 0 4px; }
+  .card h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .card p { margin: 0 0 26px; color: var(--tinta-3); font-size: 14px; max-width: 46ch; }
+  .fake-title { font: 800 26px/1.1 var(--display); }
+  .fake-title span { display: block; font-size: .64em; margin-bottom: 6px; }
+  .fake-title em { font-style: normal; color: var(--urucum); }
+  .stage { position: relative; padding-top: 12px; }
+
+  .btn { position: absolute; top: 12px; right: 0; display: inline-flex; flex-direction: column; gap: 3px; padding: 12px 18px; border: 1.5px solid var(--urucum); border-radius: 6px; background: var(--papel); color: var(--tinta); text-decoration: none; }
+  .btn .lbl { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .btn strong { font: 700 16px/1.3 var(--display); }
+  .btn .seta { display: inline-block; transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+
+  /* 1 — Sólida, com entrada em deslize. */
+  .a1 { background: var(--urucum); border-color: var(--urucum); color: #fff; box-shadow: 0 8px 22px -10px rgba(192,69,31,.6); animation: entra-direita .7s cubic-bezier(.2,.8,.2,1) .35s both; transition: background .2s, transform .2s, box-shadow .2s; }
+  .a1 .lbl { color: rgba(255,255,255,.75); }
+  .a1:hover { background: var(--urucum-esc); border-color: var(--urucum-esc); transform: translateY(-2px); box-shadow: 0 14px 28px -12px rgba(154,52,22,.7); }
+  .a1:hover .seta { transform: translate(3px,-3px); }
+  @keyframes entra-direita { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+
+  /* 2 — Borda que se desenha na entrada; no hover o fundo preenche da esquerda. */
+  .a2 { border-color: transparent; overflow: hidden; isolation: isolate; }
+  .a2 svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .a2 rect { fill: none; stroke: var(--urucum); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; animation: desenha 1.1s ease-in-out .3s forwards; }
+  .a2 .lbl, .a2 strong { position: relative; z-index: 1; animation: surge .5s ease-out 1.1s both; transition: color .25s; }
+  .a2::before { content: ""; position: absolute; inset: 0; background: var(--urucum); transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.4,0,.2,1); }
+  .a2:hover::before { transform: scaleX(1); }
+  .a2:hover .lbl, .a2:hover strong { color: #fff; }
+  @keyframes desenha { to { stroke-dashoffset: 0; } }
+  @keyframes surge { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* 3 — Ícone de documento; no hover o canto dobra e a barra lateral cresce. */
+  .a3 { flex-direction: row; align-items: center; gap: 14px; padding-left: 14px; animation: fade .6s ease-out .3s both; transition: box-shadow .2s, transform .2s; }
+  .a3 .doc { position: relative; width: 26px; height: 34px; flex: none; border: 2px solid var(--urucum); border-radius: 3px; background: #fff; }
+  .a3 .doc::before { content: ""; position: absolute; top: 8px; left: 5px; right: 5px; height: 2px; background: var(--urucum); box-shadow: 0 5px 0 var(--urucum), 0 10px 0 var(--urucum); opacity: .55; }
+  .a3 .doc::after { content: ""; position: absolute; top: -2px; right: -2px; width: 0; height: 0; border-style: solid; border-width: 0 10px 10px 0; border-color: transparent #fff transparent transparent; box-shadow: -1px 1px 0 var(--urucum); transition: border-width .25s; }
+  .a3:hover .doc::after { border-width: 0 16px 16px 0; }
+  .a3 .txt { display: flex; flex-direction: column; gap: 3px; }
+  .a3::before { content: ""; position: absolute; left: -1.5px; top: -1.5px; bottom: -1.5px; width: 5px; border-radius: 6px 0 0 6px; background: var(--urucum); transform: scaleY(.35); transform-origin: center; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+  .a3:hover::before { transform: scaleY(1); }
+  .a3:hover { box-shadow: 0 10px 24px -12px rgba(192,69,31,.5); transform: translateY(-2px); }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* 4 — Troca de rótulo no hover; entrada sobe de leve. */
+  .a4 { animation: sobe .6s cubic-bezier(.2,.8,.2,1) .35s both; transition: border-color .2s, box-shadow .2s; }
+  .a4 .lbl { position: relative; height: 15px; overflow: hidden; }
+  .a4 .lbl span { display: block; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+  .a4 .lbl .alt { position: absolute; top: 0; left: 0; transform: translateY(120%); color: var(--urucum-esc); white-space: nowrap; }
+  .a4:hover .lbl .um { transform: translateY(-120%); }
+  .a4:hover .lbl .alt { transform: translateY(0); }
+  .a4:hover { box-shadow: 0 0 0 1px var(--urucum), 0 10px 24px -12px rgba(192,69,31,.5); }
+  .a4:hover .seta { transform: translate(3px,-3px); }
+  @keyframes sobe { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) { .btn, .a2 rect, .a2 .lbl, .a2 strong { animation: none !important; } }
+</style>
+</head>
+<body>
+<h1>Caixinha do PDF — quatro opções em urucum</h1>
+<p class="sub">Nenhuma fica em loop. Cada uma tem uma animação de entrada, que roda uma vez quando a lâmina aparece, e uma resposta ao hover. Passe o mouse em cada caixa para ver.</p>
+<button class="replay" type="button" onclick="location.reload()">↻ Repetir as entradas</button>
+<div class="grid">
+  <section class="card">
+    <h2><small>1</small>Sólida, com deslize</h2>
+    <p>Caixa preenchida em urucum, com sombra colorida. Entra deslizando da direita logo após o título. No hover escurece, sobe 2 px e a seta sai para a diagonal.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a1" href="#"><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+  <section class="card">
+    <h2><small>2</small>Borda que se desenha</h2>
+    <p>Um traço urucum contorna a caixa uma vez na entrada e depois o texto surge. No hover o fundo se preenche da esquerda para a direita e o texto fica branco.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a2" href="#"><svg><rect x="1.5" y="1.5" width="calc(100% - 3px)" height="calc(100% - 3px)" rx="5" pathLength="1"/></svg><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+  <section class="card">
+    <h2><small>3</small>Ícone de documento</h2>
+    <p>Um ícone de página à esquerda deixa claro que é um PDF. No hover, o canto da página dobra mais, a barra lateral urucum cresce e a caixa sobe com sombra. Entrada: só um fade.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a3" href="#"><span class="doc"></span><span class="txt"><span class="lbl">Publicação completa</span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></span></a></div>
+  </section>
+  <section class="card">
+    <h2><small>4</small>Troca de rótulo</h2>
+    <p>No hover, o rótulo "Publicação completa" sobe e sai, e "PDF · abre em nova aba" entra no lugar, enquanto a borda ganha peso e a seta se move. Entrada: sobe de leve.</p>
+    <div class="stage"><div class="fake-title"><span>Estratégia Regional</span><em>Amazônia 2050</em></div>
+      <a class="btn a4" href="#"><span class="lbl"><span class="um">Publicação completa</span><span class="alt">PDF · abre em nova aba</span></span><strong>Abrir a Estratégia em PDF <span class="seta">↗</span></strong></a></div>
+  </section>
+</div>
+</body>
+</html>

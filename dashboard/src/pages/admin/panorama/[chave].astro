@@ -1,0 +1,175 @@
+---
+// Uma métrica do Panorama: cálculo (de onde vem a série), apresentação
+// (rótulo, descrição, formato) e agregação regional, com o inglês ao lado.
+// Em `/admin/panorama/nova` cria uma métrica.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto, textoOuNulo } from '../../../lib/admin/edicao';
+import { FORMATOS } from '../../../../pipeline/fonte.mjs';
+
+interface Agregacao { peso?: string | null; metodo?: string; rotulo: string; nota?: string; notaSerie?: string; en?: { rotulo?: string | null; nota?: string | null; notaSerie?: string | null } }
+interface Metrica {
+  chave: string; tipo: 'taxa' | 'serie' | 'valor'; codigoCatalogo?: string | null; codigo?: string; bruto?: string; campoBruto?: string; denominador?: string; fator?: number;
+  serieDireta?: string; campoVariacao?: string; referencia?: number; parciais?: number[]; valorAtual?: string; campoAno?: string; ano?: number; rank?: string;
+  seletor?: boolean; rotulo?: string; subtitulo?: string; descricao?: string; fonte?: string; formato?: string; en?: Record<string, string | null>; agregacao?: Agregacao | null;
+}
+interface Panorama { metricas: Metrica[]; denominadores: { area: string; populacao: string }; sintese: { pesos: { chave: string }[]; dimensoes: Record<string, { chave: string }[]> } }
+interface Catalogo { eixos: { indicadores: { codigo: string; nome: string }[] }[] }
+
+const sessao = Astro.locals.sessao!;
+const chaveDaRota = decodeURIComponent(Astro.params.chave || '');
+const nova = chaveDaRota === 'nova';
+const [lido, { dados: catalogo }] = await Promise.all([leJson<Panorama>('panorama'), leJson<Catalogo>('catalogo')]);
+let metrica: Metrica | undefined = nova ? undefined : lido.dados.metricas.find((item) => item.chave === chaveDaRota);
+if (!nova && !metrica) return new Response('Métrica não encontrada.', { status: 404 });
+
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+const indicadores = catalogo.eixos.flatMap((eixo) => eixo.indicadores);
+
+const LISTA = (valores: string[]) => valores.join(', ');
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  const chave = nova ? texto(dados, 'chave') : chaveDaRota;
+  try {
+    if (nova && !/^[a-z][A-Za-z0-9]*$/.test(chave)) throw new ErroDeEdicao('A chave começa com letra minúscula e só tem letras e números (ex.: coberturaVegetal).');
+    const tipo = texto(dados, 'tipo') as Metrica['tipo'];
+    const seletor = texto(dados, 'seletor') === '1';
+    const campos: Metrica = { chave, tipo, seletor };
+    campos.codigoCatalogo = textoOuNulo(dados, 'codigoCatalogo');
+    if (tipo === 'taxa') {
+      campos.bruto = texto(dados, 'bruto');
+      campos.denominador = texto(dados, 'denominador');
+      campos.fator = numeroOuNulo(dados, 'fator') ?? 1;
+      if (!campos.bruto) throw new ErroDeEdicao('Uma taxa precisa do código do valor bruto.');
+      const campoBruto = textoOuNulo(dados, 'campoBruto'); if (campoBruto) campos.campoBruto = campoBruto;
+      const campoVariacao = textoOuNulo(dados, 'campoVariacao'); if (campoVariacao) campos.campoVariacao = campoVariacao;
+      const serieDireta = textoOuNulo(dados, 'serieDireta'); if (serieDireta) campos.serieDireta = serieDireta;
+    } else {
+      const codigo = textoOuNulo(dados, 'codigo'); if (codigo && codigo !== chave) campos.codigo = codigo;
+    }
+    if (tipo === 'valor') {
+      const ano = numeroOuNulo(dados, 'ano'); if (ano) campos.ano = ano;
+    } else {
+      campos.referencia = numeroOuNulo(dados, 'referencia') ?? undefined;
+      if (!campos.referencia) throw new ErroDeEdicao('Informe o ano de referência exibido por padrão.');
+      campos.parciais = texto(dados, 'parciais').split(',').map((item) => Number(item.trim())).filter((item) => Number.isFinite(item) && item > 0);
+      if (texto(dados, 'valorAtual') === 'ultimo') { campos.valorAtual = 'ultimo'; const campoAno = textoOuNulo(dados, 'campoAno'); if (campoAno) campos.campoAno = campoAno; }
+    }
+    const rank = texto(dados, 'rank'); if (rank) campos.rank = rank;
+    if (seletor) {
+      campos.rotulo = texto(dados, 'rotulo'); campos.subtitulo = texto(dados, 'subtitulo'); campos.descricao = texto(dados, 'descricao'); campos.fonte = texto(dados, 'fonte'); campos.formato = texto(dados, 'formato');
+      campos.en = { rotulo: textoOuNulo(dados, 'rotulo__en'), subtitulo: textoOuNulo(dados, 'subtitulo__en'), descricao: textoOuNulo(dados, 'descricao__en'), fonte: textoOuNulo(dados, 'fonte__en') };
+      const agregacao: Agregacao = { rotulo: texto(dados, 'agRotulo') };
+      const metodo = texto(dados, 'agMetodo');
+      if (metodo === 'soma') agregacao.metodo = 'soma'; else agregacao.peso = metodo === 'media' ? null : metodo;
+      const nota = textoOuNulo(dados, 'agNota'); if (nota) agregacao.nota = nota;
+      const notaSerie = textoOuNulo(dados, 'agNotaSerie'); if (notaSerie) agregacao.notaSerie = notaSerie;
+      agregacao.en = { rotulo: textoOuNulo(dados, 'agRotulo__en'), nota: textoOuNulo(dados, 'agNota__en'), notaSerie: textoOuNulo(dados, 'agNotaSerie__en') };
+      campos.agregacao = agregacao;
+    } else if (metrica?.rotulo) {
+      // Fora do seletor a apresentação não é exigida, mas fica guardada.
+      Object.assign(campos, { rotulo: metrica.rotulo, subtitulo: metrica.subtitulo, descricao: metrica.descricao, fonte: metrica.fonte, formato: metrica.formato, en: metrica.en, agregacao: metrica.agregacao });
+    }
+    await salvaJson<Panorama>('panorama', versao, (panorama) => {
+      const indice = panorama.metricas.findIndex((item) => item.chave === chave);
+      if (nova) {
+        if (indice >= 0) throw new ErroDeEdicao(`Já existe a métrica ${chave}.`);
+        panorama.metricas.push(campos);
+      } else {
+        if (indice < 0) throw new ErroDeEdicao(`A métrica ${chave} não está mais no Panorama.`);
+        panorama.metricas[indice] = campos;
+      }
+      return panorama;
+    }, `${nova ? 'cria' : 'edita'} a métrica ${chave} do Panorama`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/panorama/${encodeURIComponent(chave)}?salvo=1`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    metrica = { ...(metrica || { chave, tipo: 'serie' }), chave, tipo: texto(dados, 'tipo') as Metrica['tipo'], seletor: texto(dados, 'seletor') === '1', rotulo: texto(dados, 'rotulo'), subtitulo: texto(dados, 'subtitulo'), descricao: texto(dados, 'descricao'), fonte: texto(dados, 'fonte'), formato: texto(dados, 'formato'), codigoCatalogo: textoOuNulo(dados, 'codigoCatalogo'), bruto: texto(dados, 'bruto'), denominador: texto(dados, 'denominador'), codigo: textoOuNulo(dados, 'codigo') || undefined, referencia: Number(texto(dados, 'referencia')) || undefined, rank: texto(dados, 'rank') || undefined };
+  }
+}
+
+const ag = metrica?.agregacao;
+const metodoAtual = ag ? (ag.metodo === 'soma' ? 'soma' : (ag.peso ?? 'media')) : 'media';
+const titulo = nova ? 'Criar métrica' : `${metrica!.rotulo || metrica!.chave}`;
+---
+
+<Admin title={titulo} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/panorama">Panorama</a> · {nova ? 'Nova' : metrica!.chave}</p>
+    <h1>{titulo}</h1>
+    <p>Os números da métrica ficam na tela de <a href="/admin/valores">valores</a>, sob o código indicado aqui. Uma métrica nova só aparece no mapa quando está no seletor com rótulo, formato e agregação; para entrar no índice, acrescente-a na <a href="/admin/panorama/sintese">síntese</a>.</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form class="admin-form" method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <fieldset class="admin-bloco"><legend>Identidade e cálculo</legend>
+        <div class="admin-form-linha">
+          {nova ? <Campo nome="chave" rotulo="Chave" obrigatorio ajuda="Nome interno, ex.: coberturaVegetal. Não muda depois." /> : <div class="admin-campo"><span>Chave</span><div class="admin-campo-controles"><input type="text" value={metrica!.chave} disabled /></div></div>}
+          <Campo nome="tipo" rotulo="Tipo" tipo="select" valor={metrica?.tipo || 'serie'} opcoes={[
+            { valor: 'serie', rotulo: 'Série: um valor por ano, como exibido' },
+            { valor: 'taxa', rotulo: 'Taxa: valor bruto por ano ÷ área ou população' },
+            { valor: 'valor', rotulo: 'Valor: um número por estado, sem série' }
+          ]} />
+          <Campo nome="codigoCatalogo" rotulo="Indicador do catálogo correspondente" tipo="select" valor={metrica?.codigoCatalogo ?? ''} opcoes={[{ valor: '', rotulo: '(nenhum)' }, ...indicadores.map((item) => ({ valor: item.codigo, rotulo: `${item.codigo} · ${item.nome}` }))]} />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="codigo" rotulo="Código dos valores (série ou valor)" valor={metrica?.codigo ?? ''} ajuda="Vazio = a própria chave. Ex.: apsEquipes" />
+          <Campo nome="bruto" rotulo="Taxa: código do valor bruto" valor={metrica?.bruto ?? ''} ajuda="Ex.: prodesKm2, focos, cvli" />
+          <Campo nome="denominador" rotulo="Taxa: denominador" tipo="select" valor={metrica?.denominador || lido.dados.denominadores.area} opcoes={[{ valor: lido.dados.denominadores.area, rotulo: 'Área do estado (AREA)' }, { valor: lido.dados.denominadores.populacao, rotulo: 'População do estado (POP)' }]} />
+          <Campo nome="fator" rotulo="Taxa: fator" tipo="numero" valor={metrica?.fator ?? 1000} ajuda="1000 = por mil km²; 100000 = por 100 mil hab." />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="campoBruto" rotulo="Taxa: nome do campo bruto no painel" valor={metrica?.campoBruto ?? ''} ajuda="Opcional, ex.: prodesKm2" />
+          <Campo nome="campoVariacao" rotulo="Taxa: campo da variação anual" valor={metrica?.campoVariacao ?? ''} ajuda="Opcional, ex.: prodesVariation" />
+          <Campo nome="serieDireta" rotulo="Taxa: série já em taxa (código)" valor={metrica?.serieDireta ?? ''} ajuda="Quando a série não pode ser recalculada (CVLI)" />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="referencia" rotulo="Ano de referência exibido" tipo="numero" valor={metrica?.referencia ?? ''} />
+          <Campo nome="parciais" rotulo="Anos ainda parciais" valor={LISTA((metrica?.parciais || []).map(String))} ajuda="Separados por vírgula" />
+          <Campo nome="valorAtual" rotulo="Valor atual" tipo="select" valor={metrica?.valorAtual || 'referencia'} opcoes={[{ valor: 'referencia', rotulo: 'O do ano de referência' }, { valor: 'ultimo', rotulo: 'O último ano disponível em cada estado' }]} />
+          <Campo nome="campoAno" rotulo="Campo com o ano usado" valor={metrica?.campoAno ?? ''} ajuda="Só com 'último ano', ex.: pdPctPibAno" />
+          <Campo nome="ano" rotulo="Valor: ano fixo dos valores" tipo="numero" valor={metrica?.ano ?? ''} ajuda="Só para tipo valor lido de um ano específico" />
+          <Campo nome="rank" rotulo="Ranking" tipo="select" valor={metrica?.rank || ''} opcoes={[{ valor: '', rotulo: 'Não entra no ranking' }, { valor: 'low', rotulo: 'Menor é melhor' }, { valor: 'high', rotulo: 'Maior é melhor' }]} />
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-bloco"><legend>Apresentação no mapa</legend>
+        <Campo nome="seletor" rotulo="Aparece no seletor do mapa" tipo="select" valor={metrica?.seletor ? '1' : '0'} opcoes={[{ valor: '1', rotulo: 'Sim' }, { valor: '0', rotulo: 'Não (só alimenta cálculos)' }]} />
+        <Campo nome="rotulo" rotulo="Rótulo" valor={metrica?.rotulo ?? ''} en={metrica?.en?.rotulo} comEn largo />
+        <Campo nome="subtitulo" rotulo="Leitura (subtítulo)" valor={metrica?.subtitulo ?? ''} en={metrica?.en?.subtitulo} comEn ajuda="Ex.: menor taxa = melhor posição" largo />
+        <Campo nome="descricao" rotulo="Descrição" tipo="area" valor={metrica?.descricao ?? ''} en={metrica?.en?.descricao} comEn largo />
+        <div class="admin-form-linha">
+          <Campo nome="fonte" rotulo="Fonte" valor={metrica?.fonte ?? ''} en={metrica?.en?.fonte} comEn largo />
+          <Campo nome="formato" rotulo="Formato do número" tipo="select" valor={metrica?.formato || 'num1'} opcoes={[...FORMATOS].map((formato) => ({ valor: formato, rotulo: formato }))} ajuda="pct = percentual; num = número com casas; porMilKm2, porCemMil, km2PorMilKm2, pontos1, reaisBi" />
+        </div>
+      </fieldset>
+
+      <fieldset class="admin-bloco"><legend>Valor da Amazônia Legal</legend>
+        <div class="admin-form-linha">
+          <Campo nome="agMetodo" rotulo="Como agregar os nove estados" tipo="select" valor={metodoAtual} opcoes={[
+            { valor: 'media', rotulo: 'Média simples' },
+            { valor: 'population', rotulo: 'Média ponderada pela população' },
+            { valor: 'area', rotulo: 'Média ponderada pela área (= total sobre total, nas taxas por km²)' },
+            { valor: 'conservationUnits', rotulo: 'Média ponderada pelo nº de unidades de conservação' },
+            { valor: 'soma', rotulo: 'Soma dos nove' }
+          ]} />
+          <Campo nome="agRotulo" rotulo="Rótulo do método" valor={ag?.rotulo ?? ''} en={ag?.en?.rotulo} comEn ajuda="Ex.: média ponderada pela população" largo />
+        </div>
+        <Campo nome="agNota" rotulo="Nota sobre o valor regional" tipo="area" linhas={2} valor={ag?.nota ?? ''} en={ag?.en?.nota} comEn largo />
+        <Campo nome="agNotaSerie" rotulo="Nota sobre a série" tipo="area" linhas={2} valor={ag?.notaSerie ?? ''} en={ag?.en?.notaSerie} comEn largo />
+      </fieldset>
+
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">{nova ? 'Criar no rascunho' : 'Salvar no rascunho'}</button>
+        <a class="admin-botao is-secundario" href="/admin/panorama">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

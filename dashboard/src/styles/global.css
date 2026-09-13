@@ -47,19 +47,29 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
 .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-100); }
 .brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -0.02em; }
 .brand-product-ano { font: 800 46px/0.78 var(--display); letter-spacing: -0.045em; color: var(--ocre); }
-/* Entrada única: ao abrir a página, o nome aparece e o ano sobe 10px com a
-   entreletra se fechando; depois a marca fica parada. O ClientRouter refaz o
-   <body> a cada troca de rota, então a entrada acompanha a navegação e nunca
-   repete no lugar. Os `@keyframes` só têm `from`: o fim é o próprio estilo do
-   elemento, o que vale também para o tamanho menor da barra estreita.
+/* Entrada única: ao abrir o painel, o nome aparece e o ano sobe 10px com a
+   entreletra se fechando; depois a marca fica parada. Os `@keyframes` só têm
+   `from`: o fim é o próprio estilo do elemento, o que vale também para o
+   tamanho menor da barra estreita.
    A entreletra aberta alargava o número e empurrava a navegação ao lado durante
    a entrada. A margem negativa anda junto e desconta o excesso quadro a quadro:
-   4 algarismos × 0,105em a mais de entreletra = 0,42em. */
-.brand-product-nome { animation: marca-surge 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both; }
-.brand-product-ano { animation: marca-entrada 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.45s both; }
+   4 algarismos × 0,105em a mais de entreletra = 0,42em.
+
+   "Única" de verdade: o ClientRouter refaz o <body> a cada troca de aba, e sem
+   trava a marca reencenava a entrada em toda navegação — um sobressalto num
+   elemento que não mudou de lugar. `data-navegado` é marcado no <html>, que
+   sobrevive à troca (ver `shared.js`), e tira a animação dali em diante. Só
+   uma carga nova da página — F5, endereço digitado, troca de língua — reabre
+   o painel e reencena. */
+html:not([data-navegado]) .brand-product-nome { animation: marca-surge 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both; }
+html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.45s both; }
 @keyframes marca-surge { from { opacity: 0; transform: translateX(-6px); } }
 @keyframes marca-entrada { from { opacity: 0; transform: translateY(10px); letter-spacing: 0.06em; margin-right: -0.42em; } }
-@media (prefers-reduced-motion: reduce) { .brand-product-nome, .brand-product-ano { animation: none; } }
+/* Mesmo prefixo do seletor acima: sem ele esta regra perde na especificidade. */
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-navegado]) .brand-product-nome,
+  html:not([data-navegado]) .brand-product-ano { animation: none; }
+}
 .topnav { display: flex; align-self: stretch; align-items: center; gap: 25px; margin-left: 18px; }
 .topnav a, .topnav button { position: relative; padding: 10px 0; border: 0; background: none; color: rgba(245, 240, 232, 0.7); font-size: 13px; }
 .topnav a:hover, .topnav button:hover, .topnav a:focus-visible, .topnav button:focus-visible, .topnav .is-active { color: var(--ocre); outline: none; }
@@ -736,7 +746,10 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
      pastilhas de tamanhos diferentes de "Todos", e a fileira lia como irregular. */
   .goals-toolbar #goals-eixo-filters .status-filter { min-width: 32px; padding-inline: 8px; justify-content: center; display: inline-flex; align-items: center; }
   /* Encostado à direita: é a única peça da barra que não filtra a lista. */
-  .goals-toolbar .export-group { margin-left: auto; }
+  /* A busca fica à esquerda; os filtros de eixo e coleta se encostam no botão
+     de baixar, à direita, como um só bloco de controles. */
+  .goals-toolbar .filter-linhas .filter-group:first-child { margin-left: auto; }
+  .goals-toolbar .export-group { margin-left: 0; }
 }
 
 
@@ -758,6 +771,16 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-list-head { padding-right: 14px; }
 .goals-list-head h2 { font-size: 20px; }
 .goals-list-head p { max-width: 46ch; margin: 8px 0 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.5; }
+.goals-list-top { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--linha); }
+.goals-list-top .goals-flags { margin-left: auto; }
+/* Quando a coluna da lista fica estreita, o seletor desce para a própria linha,
+   com o nome em cima e as dez bandeiras juntas embaixo, em vez de uma sobrar
+   sozinha na quebra. */
+@media (max-width: 1500px) {
+  .goals-list-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .goals-list-top .goals-flags { margin-left: 0; }
+  .goals-list-top .goals-flags-nome { flex-basis: 100%; margin: 0 0 2px; }
+}
 .goals-list-summary { margin: 0; color: var(--tinta-4); font-size: 12px; }
 .goals-list-summary span { color: var(--mata); font-weight: 700; font-variant-numeric: tabular-nums; }
 .goals-list { min-width: 0; margin-top: 16px; }

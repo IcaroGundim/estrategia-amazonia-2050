@@ -1,0 +1,107 @@
+---
+// Uma proposta: cada célula comparada com a tabela atual, com caixas para
+// aceitar tudo, aceitar só as marcadas ou rejeitar.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, texto } from '../../../lib/admin/edicao';
+import { aceitaProposta, comparaProposta, leProposta, rejeitaProposta } from '../../../lib/admin/propostas';
+
+const sessao = Astro.locals.sessao!;
+const nome = decodeURIComponent(Astro.params.nome || '');
+let proposta;
+try {
+  proposta = await leProposta(nome);
+} catch (falha) {
+  return Astro.redirect(`/admin/propostas?erro=${encodeURIComponent(`Não achei a proposta ${nome}: ${(falha as Error).message}`)}`, 302);
+}
+
+let erro: string | null = null;
+const autor = { usuario: sessao.usuario, nome: sessao.nome };
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  const acao = texto(dados, 'acao');
+  try {
+    if (acao === 'rejeitar') {
+      await rejeitaProposta(proposta, texto(dados, 'motivo'), autor);
+      return Astro.redirect(`/admin/propostas?salvo=${encodeURIComponent('Proposta rejeitada e arquivada.')}`, 303);
+    }
+    const chaves = new Set(acao === 'aceitar-marcadas' ? dados.getAll('celula').map(String) : []);
+    if (acao === 'aceitar-marcadas' && !chaves.size) throw new ErroDeEdicao('Marque ao menos uma célula para aceitar.');
+    const alteradas = await aceitaProposta(proposta, chaves, texto(dados, 'versaoValores'), autor);
+    return Astro.redirect(`/admin/propostas?salvo=${encodeURIComponent(`Proposta aceita: ${alteradas} célula(s) gravada(s) no rascunho.`)}`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui aplicar: ${(falha as Error).message}`;
+  }
+}
+
+const comparacao = await comparaProposta(proposta);
+const resumo = {
+  novas: comparacao.diferencas.filter((item) => item.situacao === 'nova').length,
+  alteradas: comparacao.diferencas.filter((item) => item.situacao === 'alterada').length,
+  iguais: comparacao.diferencas.filter((item) => item.situacao === 'igual').length,
+  avisos: comparacao.diferencas.filter((item) => item.aviso).length
+};
+const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '');
+const ordenadas = [...comparacao.diferencas].sort((a, b) => (a.situacao === 'igual' ? 1 : 0) - (b.situacao === 'igual' ? 1 : 0) || a.chave.localeCompare(b.chave));
+---
+
+<Admin title={`Proposta ${proposta.dados.id}`} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · <a href="/admin/propostas">Propostas</a> · {proposta.dados.id}</p>
+    <h1>{proposta.dados.descricao || proposta.dados.script}</h1>
+    <p>Gerada por <b>{proposta.dados.script}</b> em {quando(proposta.dados.geradoEm)}{proposta.dados.fonte ? <> · fonte: {proposta.dados.fonte}</> : null}.</p>
+    <Mensagens erro={erro} />
+    <div class="admin-grade">
+      <div class="admin-numero"><strong>{resumo.novas}</strong><span>células novas</span></div>
+      <div class="admin-numero"><strong>{resumo.alteradas}</strong><span>células que mudam de valor</span></div>
+      <div class="admin-numero"><strong>{resumo.iguais}</strong><span>iguais ao que já está gravado</span></div>
+      <div class="admin-numero"><strong>{resumo.avisos}</strong><span>avisos de variação acima de 50%</span></div>
+    </div>
+    {comparacao.problemas.length > 0 && (
+      <>
+        <p class="admin-aviso">{comparacao.problemas.length} linha(s) da proposta não passaram e serão ignoradas:</p>
+        <ul class="admin-problemas">{comparacao.problemas.slice(0, 20).map((problema) => <li>{problema}</li>)}</ul>
+      </>
+    )}
+
+    <form method="post" data-proposta>
+      <input type="hidden" name="versaoValores" value={comparacao.versaoValores} />
+      <div class="admin-acoes">
+        <button type="submit" name="acao" value="aceitar-tudo" class="admin-botao" disabled={!(resumo.novas + resumo.alteradas)}>Aceitar tudo ({resumo.novas + resumo.alteradas})</button>
+        <button type="submit" name="acao" value="aceitar-marcadas" class="admin-botao is-secundario">Aceitar só as marcadas</button>
+        <label class="admin-inline"><input type="checkbox" data-marcar-todas /> marcar todas as que mudam</label>
+      </div>
+      <div class="admin-tabela-rolagem">
+        <table class="admin-tabela">
+          <thead><tr><th></th><th>código</th><th>campo</th><th>UF</th><th>ano</th><th>gravado</th><th>proposto</th><th>situação</th></tr></thead>
+          <tbody>
+            {ordenadas.map((item) => (
+              <tr class={`is-${item.situacao}`}>
+                <td class="is-selecao">{item.situacao !== 'igual' && <input type="checkbox" name="celula" value={item.chave} />}</td>
+                <td>{item.codigo}</td><td>{item.campo}</td><td>{item.uf}</td><td>{item.ano || 'atual'}</td>
+                <td>{item.antes === null ? '—' : item.antes}</td>
+                <td><b>{item.depois === '' ? '(vazio)' : item.depois}</b></td>
+                <td>{item.situacao}{item.aviso ? ` · ${item.aviso}` : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <fieldset class="admin-bloco" style="margin-top: 18px">
+        <legend>Rejeitar</legend>
+        <label class="admin-campo is-largo"><span>Motivo (opcional)</span><div class="admin-campo-controles"><input type="text" name="motivo" /></div></label>
+        <div class="admin-acoes"><button type="submit" name="acao" value="rejeitar" class="admin-botao is-perigo" onclick="return confirm('Rejeitar a proposta inteira?')">Rejeitar a proposta</button></div>
+      </fieldset>
+    </form>
+  </section>
+</Admin>
+
+<script>
+  const marcar = document.querySelector<HTMLInputElement>('[data-marcar-todas]');
+  marcar?.addEventListener('change', () => {
+    document.querySelectorAll<HTMLInputElement>('input[name="celula"]').forEach((caixa) => { caixa.checked = marcar.checked; });
+  });
+</script>

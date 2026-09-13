@@ -1,0 +1,48 @@
+---
+// Lista do catálogo, por eixo, com o caminho para editar cada indicador e
+// para criar um novo.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { leJson } from '../../../lib/admin/edicao';
+
+interface Indicador { codigo: string; nome: string; status: string; unidade: string; anoRef: string | null }
+interface Catalogo { eixos: { numero: number; nome: string; indicadores: Indicador[] }[] }
+
+const sessao = Astro.locals.sessao!;
+const { dados: catalogo } = await leJson<Catalogo>('catalogo');
+const salvo = Astro.url.searchParams.get('salvo');
+
+const nivel = (status: string) => {
+  const texto = String(status || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  if (texto.startsWith('coletado')) return 'coletado';
+  if (texto.startsWith('parcial')) return 'parcial';
+  if (texto.startsWith('pendente')) return 'pendente';
+  return 'manual';
+};
+---
+
+<Admin title="Catálogo" sessao={sessao}>
+  <Mensagens salvo={salvo} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Catálogo</p>
+    <h1>Catálogo de indicadores</h1>
+    <p>Os {catalogo.eixos.reduce((soma, eixo) => soma + eixo.indicadores.length, 0)} indicadores da Estratégia, por eixo. O texto de cada um (nome, meta, descrição, fonte, situação da coleta) edita-se aqui; os números ficam na tela de valores.</p>
+    <div class="admin-acoes"><a class="admin-botao" href="/admin/catalogo/novo">Criar indicador</a></div>
+  </section>
+
+  {catalogo.eixos.map((eixo) => (
+    <section class="admin-cartao">
+      <h2>Eixo {eixo.numero} · {eixo.nome}</h2>
+      <ul class="admin-lista is-compacta">
+        {eixo.indicadores.map((indicador) => (
+          <li>
+            <div><a href={`/admin/catalogo/${encodeURIComponent(indicador.codigo)}`}><b>{indicador.codigo}</b> {indicador.nome}</a><br /><small>{indicador.unidade}{indicador.anoRef ? ` · ref. ${indicador.anoRef}` : ''}</small></div>
+            <span class={`admin-etiqueta is-${nivel(indicador.status)}`}>{nivel(indicador.status) === 'manual' ? 'não coletado' : nivel(indicador.status)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Admin>

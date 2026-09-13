@@ -49,10 +49,27 @@
 .slide-copy .method-timeline { gap: 12px 20px; margin-top: 22px; }
 .slide-copy .method-timeline article { padding: 4px 0 4px 12px; }
 .slide-copy .method-timeline b { font-size: 15px; }
-.slide-photo-caption { bottom: 96px; left: 36px; right: 36px; }
-.slide-photo-caption p { max-width: 19ch; line-height: 1.1; text-wrap: balance; }
-.slide-photo figcaption { left: 36px; right: 28px; }
-.methodology-page .methodology-article { align-items: flex-start; overflow-y: hidden; }
+
+/* Caixinha de acesso ao PDF da publicação, no canto superior direito da primeira lâmina.
+   Borda verde-mata fixa; no hover o fundo preenche em verde-mata da esquerda para a direita
+   e o texto fica branco. */
+#a-estrategia .slide-copy { position: relative; }
+.method-pdf-link { position: absolute; top: clamp(28px, 3.2vw, 58px); right: clamp(28px, 3.2vw, 58px); display: inline-flex; padding: 14px 20px; border: 1.5px solid var(--mata-700); border-radius: 6px; color: var(--tinta); text-decoration: none; overflow: hidden; isolation: isolate; transform: translateZ(0);
+  /* Malha esparsa de pontinhos em ocre claro (o amarelo do "2050", aclarado) que desliza devagar na diagonal, sobre o papel. */
+  background-color: var(--papel);
+  background-image: radial-gradient(circle, #f0d7a6 1px, transparent 1.5px);
+  background-size: 14px 14px;
+  animation: pdf-malha 3.5s linear infinite; }
+@keyframes pdf-malha { to { background-position: 14px 14px; } }
+.method-pdf-link strong { position: relative; z-index: 1; font: 700 var(--slide-body) var(--display); line-height: 1.3; transition: color .25s; }
+/* O preenchimento desliza em vez de escalar: `scaleX(0)` com `overflow: hidden`
+   deixava listras de subpixel ao sair do hover. A camada sangra 1px além da
+   caixa e ganha o mesmo raio, para não sobrar fio nas quinas. */
+.method-pdf-link::before { content: ""; position: absolute; inset: -1px; z-index: 0; border-radius: inherit; background: var(--mata-700); transform: translate3d(-101%, 0, 0); transition: transform .35s cubic-bezier(.4, 0, .2, 1); will-change: transform; }
+.method-pdf-link:hover::before { transform: translate3d(0, 0, 0); }
+.method-pdf-link:hover strong { color: #fff; }
+.method-pdf-link:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(28, 68, 55, 0.22); }
+@media (prefers-reduced-motion: reduce) { .method-pdf-link { animation: none; } .method-pdf-link::before, .method-pdf-link strong { transition: none; } }
 
 /* A Estratégia: a capa da publicação, sozinha no painel. Recortada como as fotos
    das outras lâminas, perderia o logotipo em cima ou as bandeiras embaixo conforme a
@@ -84,14 +101,22 @@
    direita. O bloco da visão é o único destaque; o resto acompanha o slide 1 para
    que a troca de lâmina não mude a linguagem visual. Os espaçamentos seguem a
    altura da janela porque esta é a lâmina mais densa do conjunto. */
-#visao-2050 .method-vision { margin-top: clamp(12px, 1.8vh, 16px); padding: clamp(13px, 1.8vh, 16px) clamp(16px, 2.2vh, 22px); }
-#visao-2050 .method-vision p { max-width: 74ch; margin-top: clamp(7px, 1vh, 9px); }
-#visao-2050 .method-vision p + p { margin-top: clamp(8px, 1.15vh, 10px); }
-#visao-2050 .method-subsection { margin-top: clamp(13px, 2vh, 18px); }
+/* Visão 2050: em telas altas os tokens param de crescer nos 16px e sobra um terço
+   da coluna; aqui os tetos sobem para que texto e espaços sigam a altura da tela.
+   Abaixo de ~900px de altura os valores são os mesmos de antes. */
+@media (min-width: 921px) {
+  #visao-2050 { --slide-body: clamp(13px, 1.78vh, 20px); --slide-label: clamp(11px, 1.45vh, 15px); --slide-h3: clamp(17px, 2.33vh, 26px); }
+  #visao-2050 .slide-copy { display: flex; flex-direction: column; justify-content: center; }
+  #visao-2050 .slide-copy h2 { font-size: clamp(30px, 4.4vh, 52px); }
+}
+#visao-2050 .method-vision { margin-top: clamp(12px, 1.8vh, 20px); padding: clamp(13px, 1.8vh, 20px) clamp(16px, 2.2vh, 26px); }
+#visao-2050 .method-vision p { max-width: 74ch; margin-top: clamp(7px, 1vh, 11px); }
+#visao-2050 .method-vision p + p { margin-top: clamp(8px, 1.15vh, 13px); }
+#visao-2050 .method-subsection { margin-top: clamp(13px, 2vh, 24px); }
 #visao-2050 .method-subsection .eyebrow { margin-bottom: 6px; }
-#visao-2050 .method-list.is-duas { margin-top: clamp(6px, 1vh, 9px); }
-#visao-2050 .method-list li { padding: clamp(7px, 1vh, 9px) 2px clamp(7px, 1vh, 9px) 22px; }
-#visao-2050 .method-list li::before { top: clamp(13px, 1.75vh, 16px); }
+#visao-2050 .method-list.is-duas { margin-top: clamp(6px, 1vh, 12px); }
+#visao-2050 .method-list li { padding: clamp(7px, 1vh, 12px) 2px clamp(7px, 1vh, 12px) 22px; }
+#visao-2050 .method-list li::before { top: clamp(13px, 1.75vh, 20px); }
 
 /* Temas: faixa panorâmica acima da grade de seis prioridades. */
 /* A faixa fica com o que sobrar depois do texto, em vez de uma altura fixa: os seis
@@ -183,10 +208,19 @@
 #calculo .slide-copy { grid-column: 2; grid-row: 1; display: block; width: 100%; max-width: none; padding: clamp(26px,3vw,48px); }
 #calculo .slide-copy h2 { max-width: 22ch; }
 #calculo .slide-copy > h2 + p { max-width: 78ch; }
-#calculo .method-guidance-grid, #calculo .method-source-block { margin-top: 24px; }
-#calculo .method-source-block { padding: 18px 22px; background: var(--areia); border: 0; }
+#calculo .method-guidance-grid, #calculo .method-source-block { margin-top: clamp(10px, 3vh, 34px); }
+#calculo .method-source-block { padding: clamp(11px, 2.2vh, 24px) clamp(16px, 2.6vh, 30px); background: var(--areia); border: 0; }
 #calculo .method-guidance-grid { grid-template-columns: 1fr; }
-#calculo .method-actions { justify-content: start; margin-top: 24px; }
+#calculo .method-actions { justify-content: start; margin-top: clamp(10px, 3vh, 34px); }
+/* Este painel: pouco texto e um terço da coluna vazio em telas altas. Texto e
+   espaços seguem a altura da tela; abaixo de ~800px encolhem um pouco para caber. */
+@media (min-width: 921px) {
+  #calculo { --slide-body: clamp(12.5px, 1.9vh, 21px); --slide-label: clamp(10px, 1.45vh, 15px); --slide-h3: clamp(16px, 2.4vh, 27px); }
+  #calculo .slide-copy { display: flex; flex-direction: column; justify-content: center; }
+  #calculo .slide-copy h2 { font-size: clamp(27px, 4.4vh, 54px); }
+  #calculo .slide-copy > h2 + p { margin-top: clamp(10px, 2vh, 22px); }
+  #calculo .method-guidance-grid p, #calculo .method-source-block p { margin-top: clamp(4px, 1vh, 10px); }
+}
 
 /* Guia: links curtos, contador e setas em uma linha. */
 .overview-controls { gap: 24px; border-top: 1px solid var(--linha-2); }
@@ -336,4 +370,28 @@
      classe — e cobria os créditos. Invisível, e ainda assim capturando o toque:
      o link da licença ficava inalcançável. */
   #temas-estrategicos .slide-photo-caption { bottom: auto; max-width: none; }
+}
+
+/* Em telas estreitas a lâmina cresce em vez de rolar, e a caixinha volta para o fluxo,
+   entre o título e o parágrafo de abertura, para não cobrir o texto. */
+@media (max-width: 920px) {
+  .method-pdf-link { position: relative; top: auto; right: auto; order: 1; margin-top: 18px; align-self: flex-start; }
+  #a-estrategia .slide-copy { display: flex; flex-direction: column; }
+  #a-estrategia .slide-copy h1 { order: 0; }
+  #a-estrategia .slide-copy .methodology-lead { order: 2; }
+  #a-estrategia .slide-copy .method-facts { order: 3; }
+  #a-estrategia .slide-copy .method-timeline { order: 4; }
+}
+
+/* A Estratégia: com o texto enxuto, a lâmina ganha escala própria para não sobrar
+   metade da coluna em branco. Só esta lâmina cresce; as demais seguem os tokens. */
+@media (min-width: 921px) {
+  #a-estrategia .slide-copy { display: flex; flex-direction: column; justify-content: center; }
+  #a-estrategia .slide-copy h1 { font-size: clamp(36px, 6.4vh, 68px); }
+  #a-estrategia .slide-copy h1 span { margin-bottom: clamp(6px, 1.2vh, 12px); }
+  #a-estrategia .slide-copy .methodology-lead { max-width: 62ch; margin-top: clamp(16px, 3vh, 30px); font-size: clamp(15px, 2.2vh, 21px); line-height: 1.55; }
+  #a-estrategia .slide-copy .method-facts { margin-top: clamp(16px, 3.4vh, 34px); padding: clamp(14px, 2.6vh, 26px) 0; gap: clamp(14px, 2.2vh, 22px); }
+  #a-estrategia .slide-copy .method-facts strong { font-size: clamp(30px, 4.4vh, 44px); }
+  #a-estrategia .slide-copy .method-facts span { font-size: clamp(12px, 1.6vh, 15px); }
+  #a-estrategia .slide-copy .method-facts p { margin-top: clamp(2px, .8vh, 8px); max-width: 66ch; font-size: clamp(15px, 2.2vh, 21px); line-height: 1.55; }
 }

@@ -88,6 +88,12 @@ document.addEventListener('astro:before-swap', (evento) => {
   const novo = evento.newDocument;
   if (!novo) return;
   novo.documentElement.dataset.vista = document.documentElement.dataset.vista || 'fluxo';
+  // A partir da primeira troca de aba a sessão deixa de ser uma abertura: a
+  // entrada da marca no topo, que o CSS prende a `html:not([data-navegado])`,
+  // não se repete. Marcado no documento que entra, e não no atual, porque é
+  // dele que os atributos do <html> vêm depois da troca. Vale para o histórico
+  // também: voltar não é reabrir o painel.
+  novo.documentElement.dataset.navegado = '1';
   const metaAtual = document.querySelector('meta[name="viewport"]');
   const metaNova = novo.querySelector('meta[name="viewport"]');
   if (metaAtual && metaNova) metaNova.content = metaAtual.content;

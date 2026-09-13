@@ -1,8 +1,12 @@
 ---
 // Corpo da Visão Geral — as cinco lâminas sobre a Estratégia —, comum às duas
-// línguas.
+// línguas. Os textos vêm de conteudo/textos.json (visaoGeral), editáveis sem
+// tocar no código; cada um é um par { pt, en }, e o inglês que faltar aparece
+// em português. Só a moldura (botões, navegação, rótulos de interface) continua
+// no dicionário.
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
 import SlidePhoto from './SlidePhoto.astro';
+import textos from '../../conteudo/textos.json';
 
 interface Props {
   lang?: string;
@@ -10,55 +14,10 @@ interface Props {
 
 const { lang = IDIOMA_PADRAO } = Astro.props;
 const t = traduzirCom(lang);
+const tx = (par: { pt: string; en?: string | null } | string) =>
+  (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
 
-const TEMAS = [
-  {
-    numero: '01',
-    titulo: 'Integração regional',
-    texto: 'Ordenamento territorial, segurança fundiária, conectividade física e digital e cooperação interestadual e transfronteiriça.'
-  },
-  {
-    numero: '02',
-    titulo: 'Sistemas produtivos sustentáveis',
-    texto: 'Uma economia de baixo carbono, inovadora e centrada na sociobiodiversidade, gerando valor e renda a partir da floresta em pé.'
-  },
-  {
-    numero: '03',
-    titulo: 'Soluções baseadas na natureza',
-    texto: 'Valorização econômica dos ativos ambientais, com conservação, restauração e uso sustentável dos ecossistemas.'
-  },
-  {
-    numero: '04',
-    titulo: 'Transição energética',
-    texto: 'A Amazônia como polo de inovação em energia limpa, ampliando o acesso à energia renovável.'
-  },
-  {
-    numero: '05',
-    titulo: 'Inclusão social e resiliência',
-    texto: 'Redução de desigualdades, acesso a serviços essenciais e resiliência das populações frente às mudanças climáticas.'
-  },
-  {
-    numero: '06',
-    titulo: 'Infraestrutura sustentável',
-    texto: 'Infraestrutura física, logística e digital integrada e resiliente, respeitando os limites socioambientais.'
-  }
-];
-
-const GOVERNANCA = [
-  { titulo: 'Priorização e aderência', texto: 'Consolidar e validar as prioridades estaduais, com aderência à realidade de cada território.' },
-  { titulo: 'Qualificação de projetos', texto: 'Mapear os projetos prioritários, identificando maturidade, gargalos e oportunidades.' },
-  { titulo: 'Compatibilização institucional', texto: 'Integrar a Estratégia aos PPAs, LDOs, LOAs e planos setoriais.' },
-  { titulo: 'Articulação transversal', texto: 'Articular secretarias finalísticas e áreas técnicas entre as agendas.' },
-  { titulo: 'Interdependência regional', texto: 'Incorporar a lógica regional ao planejamento estadual.' },
-  { titulo: 'Monitoramento e avaliação', texto: 'Acompanhar a Estratégia e manter indicadores e metas atualizados.' }
-];
-
-const FLUXO = [
-  'Definição de prioridades regionais',
-  'Compatibilização com os PPAs estaduais',
-  'Desdobramento em LDO, LOA e planos setoriais',
-  'Monitoramento e avaliação regional'
-];
+const { estrategia, visao2050, temas, governanca, estePainel } = textos.visaoGeral;
 
 const INDICE = [
   { href: '#a-estrategia', rotulo: 'A Estratégia' },
@@ -76,21 +35,17 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
     <article class="methodology-article" tabindex="0" aria-label={t('Slides; use as setas para navegar')}>
       <section id="a-estrategia" class="methodology-intro method-section">
         <div class="slide-copy">
-          <h1><span>{t('Estratégia Regional')}</span><em>{t('Amazônia 2050')}</em></h1>
-          <p class="methodology-lead">{t('Um instrumento de planejamento regional de longo prazo, que estabelece uma visão compartilhada de desenvolvimento sustentável para os nove estados da Amazônia Legal até 2050.')}</p>
+          <a class="method-pdf-link" href={estrategia.botaoPdf.href} target="_blank" rel="noopener">
+            <strong>{tx(estrategia.botaoPdf.rotulo)} ↗</strong>
+          </a>
+          <h1><span>{tx(estrategia.tituloLinha1)}</span><em>{tx(estrategia.tituloLinha2)}</em></h1>
+          <p class="methodology-lead">{tx(estrategia.abertura)}</p>
 
           <div class="method-facts">
-            <div><strong>09</strong><span>{t('estados consorciados')}</span></div>
-            <div><strong>06</strong><span>{t('temas estratégicos')}</span></div>
-            <div><strong>2050</strong><span>{t('horizonte pactuado')}</span></div>
-            <p>{t('Construída ao longo de 2025 em processo participativo, a partir da solicitação do Ministério do Planejamento e Orçamento para a Estratégia Brasil 2050. Teve Grupo de Trabalho com os nove estados, oficina presencial em Belém e apoio técnico do IPAM. Foi apresentada na COP30 como uma das principais entregas do Consórcio.')}</p>
-          </div>
-
-          <div class="method-timeline">
-            <article><b>2019</b><span>{t('Primeiro Planejamento do Consórcio, com as diretrizes regionais essenciais.')}</span></article>
-            <article><b>2023</b><span>{t('Revisão do instrumento, consolidando aprendizados e novas prioridades.')}</span></article>
-            <article><b>2024–2035</b><span>{t('Planejamento Estratégico, que orienta a atuação institucional.')}</span></article>
-            <article><b>2025</b><span>{t('Estratégia Amazônia 2050, o horizonte regional de longo prazo.')}</span></article>
+            {estrategia.numeros.map(({ valor, rotulo }) => (
+              <div><strong>{valor}</strong><span>{tx(rotulo)}</span></div>
+            ))}
+            <p>{tx(estrategia.fechamento)}</p>
           </div>
         </div>
         <SlidePhoto variant={1} lang={lang} />
@@ -98,27 +53,22 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 
       <section id="visao-2050" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{t('O horizonte')}</p>
-          <h2>{t('A visão regional para 2050')}</h2>
+          <p class="eyebrow">{tx(visao2050.chapeu)}</p>
+          <h2>{tx(visao2050.titulo)}</h2>
 
           <div class="method-vision">
-            <span>{t('Visão 2050')}</span>
-            <p>{t('Em 2050, a Amazônia Legal terá alcançado o desenvolvimento regional sustentável e a resiliência climática, conciliando conservação ambiental, crescimento econômico e justiça social. A região será reconhecida pelo equilíbrio entre produção e conservação, pela valorização de seus ativos ambientais e pela melhoria dos indicadores socioeconômicos.')}</p>
-            <p>{t('Os saberes e modos de vida dos povos e comunidades tradicionais serão preservados, assegurando qualidade de vida, inclusão e contribuição efetiva para a estabilidade climática global.')}</p>
+            <span>{tx(visao2050.selo)}</span>
+            {visao2050.paragrafos.map((paragrafo) => <p>{tx(paragrafo)}</p>)}
           </div>
 
           <div class="method-subsection is-single">
             <div>
-              <p class="eyebrow">{t('Na prática')}</p>
-              <h3>{t('Como a Estratégia auxilia os estados')}</h3>
+              <p class="eyebrow">{tx(visao2050.subChapeu)}</p>
+              <h3>{tx(visao2050.subTitulo)}</h3>
             </div>
           </div>
           <ul class="method-list is-duas">
-            <li>{t('Alinha a visão de longo prazo ao planejamento governamental de médio prazo.')}</li>
-            <li>{t('Subsidia a revisão e a formulação de PPAs, LDOs e planos setoriais.')}</li>
-            <li>{t('Dá coerência entre as prioridades estaduais e a agenda regional.')}</li>
-            <li>{t('Fortalece a articulação com a União, organismos multilaterais e financiadores.')}</li>
-            <li>{t('Qualifica a priorização de investimentos estruturantes.')}</li>
+            {visao2050.lista.map((item) => <li>{tx(item)}</li>)}
           </ul>
         </div>
         <SlidePhoto variant={2} lang={lang} />
@@ -126,15 +76,15 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 
       <section id="temas-estrategicos" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{t('Estrutura da Estratégia')}</p>
-          <h2>{t('Seis temas estratégicos')}</h2>
-          <p>{t('Os temas organizam as prioridades regionais e servem de referência para a leitura dos indicadores deste painel.')}</p>
+          <p class="eyebrow">{tx(temas.chapeu)}</p>
+          <h2>{tx(temas.titulo)}</h2>
+          <p>{tx(temas.abertura)}</p>
           <div class="method-steps is-themes">
-            {TEMAS.map(({ numero, titulo, texto }) => (
+            {temas.itens.map(({ numero, titulo, texto }) => (
               <article>
                 <b>{numero}</b>
-                <h3>{t(titulo)}</h3>
-                <p>{t(texto)}</p>
+                <h3>{tx(titulo)}</h3>
+                <p>{tx(texto)}</p>
               </article>
             ))}
           </div>
@@ -144,17 +94,17 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 
       <section id="governanca" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{t('Implementação')}</p>
-          <h2>{t('Governança e próximos passos')}</h2>
+          <p class="eyebrow">{tx(governanca.chapeu)}</p>
+          <h2>{tx(governanca.titulo)}</h2>
           <div class="method-guidance-grid is-compacta">
-            {GOVERNANCA.map(({ titulo, texto }) => (
-              <article><h3>{t(titulo)}</h3><p>{t(texto)}</p></article>
+            {governanca.itens.map(({ titulo, texto }) => (
+              <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>
             ))}
           </div>
 
           <ol class="method-flow">
-            {FLUXO.map((etapa, indice) => (
-              <li><b>{String(indice + 1).padStart(2, '0')}</b><span>{t(etapa)}</span></li>
+            {governanca.fluxo.map((etapa, indice) => (
+              <li><b>{String(indice + 1).padStart(2, '0')}</b><span>{tx(etapa)}</span></li>
             ))}
           </ol>
         </div>
@@ -163,16 +113,18 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 
       <section id="calculo" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{t('Este painel')}</p>
-          <h2>{t('Como os dados são lidos aqui')}</h2>
-          <p>{t('O painel organiza indicadores de fontes públicas para comparar os nove estados. Ele antecipa uma leitura enquanto a metodologia de monitoramento da Estratégia não é definida.')}</p>
+          <p class="eyebrow">{tx(estePainel.chapeu)}</p>
+          <h2>{tx(estePainel.titulo)}</h2>
+          <p>{tx(estePainel.abertura)}</p>
 
           <div class="method-guidance-grid">
-            <article><h3>{t('Períodos diferentes')}</h3><p>{t('Cada base entra com seu período mais recente, então os anos de referência não são uniformes entre indicadores.')}</p></article>
+            {estePainel.itens.map(({ titulo, texto }) => (
+              <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>
+            ))}
           </div>
 
           <div class="method-source-block">
-            <span>{t('Fontes consolidadas')}</span>
+            <span>{tx(estePainel.fontesRotulo)}</span>
             <p data-method-sources>{t('Carregando fontes…')}</p>
           </div>
 

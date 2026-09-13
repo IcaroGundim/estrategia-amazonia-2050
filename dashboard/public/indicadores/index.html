@@ -10,9 +10,9 @@
       matriz, e as metas são um subconjunto dos indicadores. O endereço continua
       respondendo porque foi compartilhado.
 
-      Em produção quem redireciona é o 301 do vercel.json, e este arquivo nem
-      chega a ser servido. Ele existe para o `astro preview` e para qualquer
-      hospedagem estática — e é escrito em JavaScript, e não como
+      Este arquivo é quem redireciona, em produção e no `astro preview`: fica
+      em `indicadores/index.html` para a Vercel servi-lo em `/indicadores` sem
+      depender de regra de rota — e é escrito em JavaScript, e não como
       `<meta http-equiv="refresh">`, porque o refresh descarta o `#` do endereço.
       É no fragmento que viaja o código do indicador (`/indicadores#I1.3.2`), e é
       dele que a página de metas abre a ficha certa.

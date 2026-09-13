@@ -1,0 +1,127 @@
+{
+  "_leia": "Parametrização das metas confrontáveis (ver pipeline/metas.mjs para o significado de cada campo) e os motivos das que ficam fora do quadro.",
+  "contexto": {
+    "cvli": "cvli"
+  },
+  "parametros": [
+    {
+      "codigo": "I1.1.2",
+      "alvo": 40,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "razaoUc",
+      "nota": "A meta é regional (40% das UCs estaduais da Amazônia Legal). Aqui ela é aplicada como referência para cada estado, o que não equivale ao compromisso pactuado no agregado."
+    },
+    {
+      "codigo": "I1.3.1",
+      "alvo": 52.1,
+      "direcao": "menor",
+      "tipo": "declarada",
+      "agregacao": "media",
+      "notaAgregacao": "Média simples dos nove estados: o catálogo traz a média estadual já consolidada, não o número de municípios prioritários que a compõe.",
+      "nota": "Convergência para 52,1 pontos, a média do grupo menos vulnerável. O valor estadual é a média dos municípios prioritários, o mesmo recorte citado na meta."
+    },
+    {
+      "codigo": "I1.3.2",
+      "alvo": 0,
+      "direcao": "menor",
+      "tipo": "declarada",
+      "agregacao": "soma",
+      "nota": "A meta é desmatamento ilegal zero e não define ano de partida, então não há percentual de percurso: o que se lê é a área que falta zerar."
+    },
+    {
+      "codigo": "I1.3.4",
+      "alvo": {
+        "tipo": "reducaoSobreMedia",
+        "desde": 2015,
+        "fator": 0.7
+      },
+      "direcao": "menor",
+      "tipo": "derivada",
+      "agregacao": "soma",
+      "valorDe": "ultimoDaSerie",
+      "nota": "Redução de 30% sobre a média histórica de cada estado. A meta cita a baseline 2015–2025; a série consolidada termina em 2024, então a janela usada é 2015–2024."
+    },
+    {
+      "codigo": "I2.1.1",
+      "alvo": 3,
+      "direcao": "menor",
+      "tipo": "declarada",
+      "agregacao": "populacao"
+    },
+    {
+      "codigo": "I2.3.2",
+      "alvo": 100,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "populacao",
+      "notaAgregacao": "Ponderação pela população total de cada estado, e não pela população de 4 a 17 anos, que não está na base consolidada.",
+      "nota": "A meta fala em universalizar o acesso, sem número. Adotamos 100% de atendimento como leitura da universalização; um patamar de 98%, por exemplo, produziria outro resultado."
+    },
+    {
+      "codigo": "I2.4.1",
+      "alvo": 10,
+      "direcao": "menor",
+      "tipo": "declarada",
+      "agregacao": "razaoCvli"
+    },
+    {
+      "codigo": "I4.1.1",
+      "alvo": 80,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "populacao",
+      "baselineAno": 2021
+    },
+    {
+      "codigo": "I4.3.2",
+      "alvo": 80,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "media",
+      "notaAgregacao": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada."
+    },
+    {
+      "codigo": "I4.4.1",
+      "alvo": 80,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "unidade": "%",
+      "agregacao": "populacao"
+    },
+    {
+      "codigo": "I5.4.1",
+      "alvo": 1,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "valorDe": {
+        "panorama": "pdPctPib"
+      },
+      "unidade": "% do PIB",
+      "agregacao": "media",
+      "notaAgregacao": "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.",
+      "nota": "Os valores de I5.4.1 no catálogo estão em R$ milhões, não em percentual do PIB. Para confrontar com a meta de 1% do PIB usamos o campo pct_pib da mesma base (MCTI), já consolidado pelo painel."
+    },
+    {
+      "codigo": "I5.5.1",
+      "direcao": "categoria",
+      "tipo": "declarada",
+      "agregacao": "contagem",
+      "categoriasCumpre": [
+        "A+",
+        "A",
+        "B+",
+        "B"
+      ],
+      "nota": "A meta do indicador é CAPAG A ou B. Notas com sinal (A+, B+) são contadas dentro da faixa correspondente."
+    }
+  ],
+  "exclusoes": {
+    "I2.2.1": "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
+    "I2.2.2": "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
+    "I2.2.3": "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
+    "I3.1.1": "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
+    "F3.2": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
+    "F3.5": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050."
+  }
+}

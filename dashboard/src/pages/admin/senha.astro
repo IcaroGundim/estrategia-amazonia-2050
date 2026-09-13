@@ -1,0 +1,42 @@
+---
+// Troca da própria senha. Vai direto para a branch principal e vale no
+// deploy seguinte; até lá a senha antiga continua abrindo a tela.
+export const prerender = false;
+
+import Admin from '../../layouts/Admin.astro';
+import Mensagens from '../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, texto } from '../../lib/admin/edicao';
+import { trocaPropriaSenha } from '../../lib/admin/contas';
+import { deposito } from '../../lib/admin/deposito';
+
+const sessao = Astro.locals.sessao!;
+let erro: string | null = null;
+let ok: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  try {
+    const nova = texto(dados, 'nova');
+    if (nova !== texto(dados, 'confirma')) throw new ErroDeEdicao('A confirmação não bate com a senha nova.');
+    await trocaPropriaSenha(sessao.usuario, texto(dados, 'atual'), nova, { usuario: sessao.usuario, nome: sessao.nome });
+    ok = deposito().modo === 'local' ? 'Senha trocada.' : 'Senha trocada. Ela passa a valer no próximo deploy, em 1 a 2 minutos; até lá a antiga ainda abre a tela.';
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui gravar: ${(falha as Error).message}`;
+  }
+}
+---
+
+<Admin title="Minha senha" sessao={sessao}>
+  <section class="admin-cartao admin-login">
+    <p class="admin-chapeu"><a href="/admin">Início</a> · Minha senha</p>
+    <h1>Trocar a minha senha</h1>
+    <p>Ao menos 10 caracteres. Use uma senha que não sirva em outro lugar.</p>
+    <Mensagens erro={erro} salvo={ok} />
+    <form class="admin-form" method="post" autocomplete="on">
+      <label class="admin-campo"><span>Senha atual</span><div class="admin-campo-controles"><input type="password" name="atual" required autocomplete="current-password" /></div></label>
+      <label class="admin-campo"><span>Senha nova</span><div class="admin-campo-controles"><input type="password" name="nova" required minlength="10" autocomplete="new-password" /></div></label>
+      <label class="admin-campo"><span>Confirmar a senha nova</span><div class="admin-campo-controles"><input type="password" name="confirma" required minlength="10" autocomplete="new-password" /></div></label>
+      <div class="admin-acoes"><button type="submit" class="admin-botao">Trocar</button><a class="admin-botao is-secundario" href="/admin">Voltar</a></div>
+    </form>
+  </section>
+</Admin>

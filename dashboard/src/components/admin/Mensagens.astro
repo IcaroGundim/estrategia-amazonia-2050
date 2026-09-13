@@ -1,0 +1,14 @@
+---
+// Avisos de resultado das telas: erro (inline, depois de um POST que falhou) e
+// confirmação (por query string, depois do redirecionamento de um POST que deu certo).
+interface Props {
+  erro?: string | null;
+  salvo?: string | null;
+  aviso?: string | null;
+}
+const { erro = null, salvo = null, aviso = null } = Astro.props;
+---
+
+{erro && <p class="admin-erro" role="alert">{erro}</p>}
+{salvo && <p class="admin-ok" role="status">{salvo}</p>}
+{aviso && <p class="admin-aviso">{aviso}</p>}

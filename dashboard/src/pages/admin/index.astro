@@ -1,0 +1,90 @@
+---
+// Início da administração: o estado do rascunho (o que ainda não foi
+// publicado), os botões de prévia e publicação e as telas de edição.
+export const prerender = false;
+
+import Admin from '../../layouts/Admin.astro';
+import Mensagens from '../../components/admin/Mensagens.astro';
+import { deposito, type Estado } from '../../lib/admin/deposito';
+import { leJson } from '../../lib/admin/edicao';
+
+const sessao = Astro.locals.sessao!;
+const msg = Astro.url.searchParams.get('msg');
+let erro = Astro.url.searchParams.get('erro');
+
+let estado: Estado | null = null;
+let totalIndicadores = 0;
+let atualizadoEm = '';
+try {
+  const [catalogo, painel] = await Promise.all([
+    leJson<{ eixos: { indicadores: unknown[] }[] }>('catalogo'),
+    leJson<{ atualizadoEm: string }>('painel')
+  ]);
+  totalIndicadores = catalogo.dados.eixos.reduce((soma, eixo) => soma + eixo.indicadores.length, 0);
+  atualizadoEm = painel.dados.atualizadoEm;
+  estado = await deposito().estado();
+} catch (falha) {
+  erro = erro || `Não consegui ler o depósito: ${(falha as Error).message}`;
+}
+
+const quando = (iso: string) => (iso ? new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '');
+
+const TELAS = [
+  { href: '/admin/catalogo', nome: 'Catálogo de indicadores', detalhe: 'nome, meta, descrição, fonte, prazo e situação da coleta; criar indicador', pronta: true },
+  { href: '/admin/metas', nome: 'Metas confrontáveis', detalhe: 'alvo, direção, agregação regional e motivos de exclusão', pronta: true },
+  { href: '/admin/textos', nome: 'Textos do painel', detalhe: 'as cinco lâminas da Visão Geral e a metodologia da síntese, em português e inglês', pronta: true },
+  { href: '/admin/painel', nome: 'Data e constantes', detalhe: 'data de atualização exibida e número de municípios', pronta: true },
+  { href: '/admin/valores', nome: 'Valores por indicador', detalhe: 'grade estados × anos, colar do Excel, importar XLSX ou JSON', pronta: true },
+  { href: '/admin/propostas', nome: 'Propostas dos scripts de coleta', detalhe: 'aceitar ou rejeitar o que a coleta automática trouxe', pronta: false, fase: 'fase 6' },
+  { href: '/admin/panorama', nome: 'Configuração do Panorama', detalhe: 'quais indicadores entram no mapa, pesos e dimensões', pronta: true },
+  { href: '/admin/contas', nome: 'Contas', detalhe: 'criar, desativar e redefinir senha', pronta: true },
+  { href: '/admin/ajuda', nome: 'Ajuda', detalhe: 'como manter o painel: passo a passo para quem edita', pronta: true }
+];
+---
+
+<Admin title="Início" sessao={sessao}>
+  <Mensagens erro={erro} salvo={msg} aviso={estado?.aviso} />
+
+  <section class="admin-cartao">
+    <p class="admin-chapeu">Rascunho</p>
+    <h1>Olá, {sessao.nome}</h1>
+    <p>Tudo o que você salva vai para o rascunho. Ele só chega ao site quando alguém publica; antes disso dá para conferir na prévia.</p>
+    {estado && (
+      <div class="admin-grade">
+        <div class="admin-numero"><strong>{estado.pendentes.length}</strong><span>{estado.modo === 'local' ? 'arquivos de conteudo/ alterados sem commit' : 'alterações salvas e ainda não publicadas'}</span></div>
+        <div class="admin-numero"><strong>{totalIndicadores}</strong><span>indicadores no catálogo</span></div>
+        <div class="admin-numero"><strong>{atualizadoEm}</strong><span>data de atualização exibida no painel</span></div>
+        <div class="admin-numero"><strong>{estado.head ? quando(estado.head.data) : '—'}</strong><span>{estado.head ? `última gravação, por ${estado.head.autor}` : `depósito: ${estado.branch}`}</span></div>
+      </div>
+    )}
+    {estado && (
+      <div class="admin-acoes">
+        <form method="post" action="/api/admin/previa"><button type="submit" class="admin-botao is-secundario">Atualizar prévia</button></form>
+        {estado.previewUrl && <a class="admin-botao is-secundario" href={estado.previewUrl} target="_blank" rel="noopener">Abrir prévia ↗</a>}
+        <form method="post" action="/api/admin/publicar" onsubmit="return confirm('Publicar o rascunho no site?')">
+          <button type="submit" class="admin-botao" disabled={!estado.podePublicar}>Publicar no site</button>
+        </form>
+      </div>
+    )}
+    {estado && estado.pendentes.length > 0 && (
+      <ul class="admin-lista is-compacta">
+        {estado.pendentes.slice(0, 12).map((commit) => (
+          <li><div>{commit.mensagem}</div><small>{commit.autor}{commit.data ? ` · ${quando(commit.data)}` : ''}</small></li>
+        ))}
+        {estado.pendentes.length > 12 && <li><small>e mais {estado.pendentes.length - 12}</small></li>}
+      </ul>
+    )}
+  </section>
+
+  <section class="admin-cartao">
+    <h2>O que editar</h2>
+    <ul class="admin-lista">
+      {TELAS.map((tela) => (
+        <li>
+          <div>{tela.pronta ? <a href={tela.href}>{tela.nome}</a> : tela.nome}<br /><small>{tela.detalhe}</small></div>
+          {!tela.pronta && <span class="admin-etiqueta is-pendente">{tela.fase}</span>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</Admin>
