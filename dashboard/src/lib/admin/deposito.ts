@@ -148,6 +148,8 @@ class DepositoLocal implements Deposito {
 interface ConfigGitHub {
   token: string;
   repo: string;
+  /** Pasta do painel dentro do repositório (os caminhos das telas são relativos a ela). */
+  pasta: string;
   main: string;
   rascunho: string;
   previewUrl: string | null;
@@ -161,6 +163,12 @@ class DepositoGitHub implements Deposito {
 
   constructor(config: ConfigGitHub) {
     this.config = config;
+  }
+
+  // `conteudo/valores.csv` na tela é `dashboard/conteudo/valores.csv` no repositório.
+  private noRepo(caminho: string): string {
+    const pasta = this.config.pasta.replace(/^\/+|\/+$/g, '');
+    return pasta ? `${pasta}/${caminho}` : caminho;
   }
 
   private async api<T = unknown>(caminho: string, opcoes: { metodo?: string; corpo?: unknown; aceita?: number[] } = {}): Promise<{ status: number; dados: T }> {
@@ -215,7 +223,7 @@ class DepositoGitHub implements Deposito {
   }
 
   private async leNaBranch(caminho: string, branch: string): Promise<Versao> {
-    const { dados } = await this.api<{ content: string; sha: string; encoding: string }>(`/contents/${caminho}?ref=${branch}`);
+    const { dados } = await this.api<{ content: string; sha: string; encoding: string }>(`/contents/${this.noRepo(caminho)}?ref=${branch}`);
     return { texto: Buffer.from(dados.content, 'base64').toString('utf8'), versao: dados.sha };
   }
 
@@ -226,7 +234,7 @@ class DepositoGitHub implements Deposito {
 
   async lista(pasta: string): Promise<string[]> {
     if (!this.rascunhoGarantida) await this.garanteRascunho();
-    const { status, dados } = await this.api<{ type: string; name: string }[]>(`/contents/${pasta.replace(/\/$/, '')}?ref=${this.config.rascunho}`, { aceita: [200, 404] });
+    const { status, dados } = await this.api<{ type: string; name: string }[]>(`/contents/${this.noRepo(pasta.replace(/\/$/, ''))}?ref=${this.config.rascunho}`, { aceita: [200, 404] });
     if (status !== 200 || !Array.isArray(dados)) return [];
     return dados.filter((item) => item.type === 'file').map((item) => item.name).sort();
   }
@@ -246,7 +254,7 @@ class DepositoGitHub implements Deposito {
       const [{ caminho, texto: conteudo }] = arquivos;
       for (let tentativa = 0; tentativa < 3; tentativa += 1) {
         const atual = await this.leNaBranch(caminho, branch);
-        const { status, dados } = await this.api<{ content: { sha: string } }>(`/contents/${caminho}`, {
+        const { status, dados } = await this.api<{ content: { sha: string } }>(`/contents/${this.noRepo(caminho)}`, {
           metodo: 'PUT',
           aceita: [200, 201, 409],
           corpo: { message: texto, content: Buffer.from(conteudo).toString('base64'), sha: atual.versao, branch, committer: this.committer(autor), author: this.committer(autor) }
@@ -261,9 +269,9 @@ class DepositoGitHub implements Deposito {
       const { dados: commitBase } = await this.api<{ tree: { sha: string } }>(`/git/commits/${head}`);
       const tree = await Promise.all(arquivos.map(async ({ caminho, texto: conteudo }) => {
         // `sha: null` numa árvore apaga o arquivo.
-        if (conteudo === null) return { path: caminho, mode: '100644', type: 'blob', sha: null };
+        if (conteudo === null) return { path: this.noRepo(caminho), mode: '100644', type: 'blob', sha: null };
         const { dados: blob } = await this.api<{ sha: string }>('/git/blobs', { metodo: 'POST', corpo: { content: conteudo, encoding: 'utf-8' } });
-        return { path: caminho, mode: '100644', type: 'blob', sha: blob.sha };
+        return { path: this.noRepo(caminho), mode: '100644', type: 'blob', sha: blob.sha };
       }));
       const { dados: novaTree } = await this.api<{ sha: string }>('/git/trees', { metodo: 'POST', corpo: { base_tree: commitBase.tree.sha, tree } });
       const { dados: commit } = await this.api<{ sha: string }>('/git/commits', { metodo: 'POST', corpo: { message: texto, tree: novaTree.sha, parents: [head], author: this.committer(autor), committer: this.committer(autor) } });
@@ -337,6 +345,7 @@ export function deposito(): Deposito {
   instancia = new DepositoGitHub({
     token: env.GITHUB_TOKEN,
     repo: env.GITHUB_REPO,
+    pasta: env.GITHUB_PASTA ?? 'dashboard',
     main: env.BRANCH_PRINCIPAL || 'main',
     rascunho: env.BRANCH_RASCUNHO || 'rascunho',
     previewUrl: env.PREVIEW_URL || null,
