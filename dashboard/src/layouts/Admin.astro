@@ -1,6 +1,7 @@
 ---
-// Moldura da administração: barra lateral com a navegação, cabeçalho com a
-// conta e área de conteúdo. Só em português; servida sob demanda.
+// Moldura da administração, no mesmo vocabulário do painel público: barra
+// superior verde-mata com a navegação em texto e o filete ocre na seção
+// ativa; conteúdo em colunas de texto separadas por filetes, sem molduras.
 import '../styles/global.css';
 import '../styles/admin.css';
 
@@ -12,43 +13,21 @@ interface Props {
 const { title, sessao = null } = Astro.props;
 const caminho = Astro.url.pathname;
 
-// Ícones em traço simples, 20px, herdam a cor do texto.
-const ICONES: Record<string, string> = {
-  inicio: '<path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/>',
-  valores: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16M15 4v16"/>',
-  propostas: '<path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5M8 14l3 3 5-5"/>',
-  catalogo: '<path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
-  metas: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M21 12h-2M12 21v-2M3 12h2"/>',
-  textos: '<path d="M4 5h16M4 10h16M4 15h10M4 20h7"/>',
-  painel: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-  panorama: '<path d="M3 18 9 6l4 8 3-5 5 9z"/>',
-  contas: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M17 11a3 3 0 1 0 0-6M21.5 20a6 6 0 0 0-4.5-5.8"/>',
-  ajuda: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',
-  senha: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
-  sair: '<path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/>'
-};
-
-const NAVEGACAO: { grupo: string; itens: { href: string; nome: string; icone: string; prefixo?: string }[] }[] = [
-  { grupo: 'Painel', itens: [{ href: '/admin', nome: 'Início', icone: 'inicio' }] },
-  { grupo: 'Dados', itens: [
-    { href: '/admin/valores', nome: 'Valores', icone: 'valores' },
-    { href: '/admin/propostas', nome: 'Propostas', icone: 'propostas' }
-  ] },
-  { grupo: 'Conteúdo', itens: [
-    { href: '/admin/catalogo', nome: 'Catálogo', icone: 'catalogo', prefixo: '/admin/fichas' },
-    { href: '/admin/metas', nome: 'Metas', icone: 'metas' },
-    { href: '/admin/textos', nome: 'Textos', icone: 'textos' },
-    { href: '/admin/painel', nome: 'Data e constantes', icone: 'painel' }
-  ] },
-  { grupo: 'Configuração', itens: [
-    { href: '/admin/panorama', nome: 'Panorama', icone: 'panorama' },
-    { href: '/admin/contas', nome: 'Contas', icone: 'contas' },
-    { href: '/admin/ajuda', nome: 'Ajuda', icone: 'ajuda' }
-  ] }
+const NAVEGACAO: { href: string; nome: string; prefixos?: string[] }[] = [
+  { href: '/admin', nome: 'Início' },
+  { href: '/admin/valores', nome: 'Valores' },
+  { href: '/admin/propostas', nome: 'Propostas' },
+  { href: '/admin/catalogo', nome: 'Catálogo', prefixos: ['/admin/fichas'] },
+  { href: '/admin/metas', nome: 'Metas' },
+  { href: '/admin/textos', nome: 'Textos' },
+  { href: '/admin/painel', nome: 'Data' },
+  { href: '/admin/panorama', nome: 'Panorama' },
+  { href: '/admin/contas', nome: 'Contas' },
+  { href: '/admin/ajuda', nome: 'Ajuda' }
 ];
 
-const ativo = (item: { href: string; prefixo?: string }) =>
-  item.href === '/admin' ? caminho === '/admin' : caminho.startsWith(item.href) || (item.prefixo ? caminho.startsWith(item.prefixo) : false);
+const ativo = (item: { href: string; prefixos?: string[] }) =>
+  item.href === '/admin' ? caminho === '/admin' : [item.href, ...(item.prefixos || [])].some((prefixo) => caminho.startsWith(prefixo));
 ---
 
 <!doctype html>
@@ -67,65 +46,32 @@ const ativo = (item: { href: string; prefixo?: string }) =>
       rel="stylesheet"
     />
   </head>
-  <body class={`admin-body${sessao ? '' : ' is-sem-nav'}`}>
-    {sessao ? (
-      <div class="admin-app">
-        <aside class="admin-nav" aria-label="Navegação da administração">
-          <a class="admin-marca" href="/admin">
-            <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
-            <span class="admin-marca-sub">Administração do painel</span>
-          </a>
-          <nav>
-            {NAVEGACAO.map((grupo) => (
-              <div class="admin-nav-grupo">
-                <span class="admin-nav-titulo">{grupo.grupo}</span>
-                {grupo.itens.map((item) => (
-                  <a href={item.href} class={`admin-nav-item${ativo(item) ? ' is-ativo' : ''}`} aria-current={ativo(item) ? 'page' : undefined}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONES[item.icone]} />
-                    <span>{item.nome}</span>
-                  </a>
-                ))}
-              </div>
-            ))}
-          </nav>
-          <div class="admin-nav-rodape">
-            <a href="/" target="_blank" rel="noopener">Abrir o painel público</a>
-          </div>
-        </aside>
-        <div class="admin-corpo">
-          <header class="admin-topo">
-            <button type="button" class="admin-menu-botao" aria-label="Abrir navegação" data-abre-nav>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-            </button>
-            <span class="admin-topo-titulo">{title}</span>
-            <div class="admin-sessao">
-              <span class="admin-sessao-nome"><b>{sessao.nome}</b><small>{sessao.usuario}</small></span>
-              <a class="admin-botao is-leve" href="/admin/senha" title="Trocar a minha senha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" set:html={ICONES.senha} /><span>Minha senha</span></a>
-              <form method="post" action="/api/admin/sair">
-                <button type="submit" class="admin-botao is-leve" title="Sair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" set:html={ICONES.sair} /><span>Sair</span></button>
-              </form>
-            </div>
-          </header>
-          <main class="admin-main">
-            <slot />
-          </main>
-        </div>
-      </div>
-    ) : (
-      <main class="admin-main is-solta">
-        <a class="admin-marca is-escura" href="/">
+  <body class="admin-body">
+    <header class="admin-topo">
+      <div class="admin-topo-linha">
+        <a class="admin-marca" href="/admin">
+          <span class="admin-marca-sub">Administração</span>
           <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
-          <span class="admin-marca-sub">Administração do painel</span>
         </a>
-        <slot />
-      </main>
-    )}
-    <script>
-      const botao = document.querySelector('[data-abre-nav]');
-      botao?.addEventListener('click', () => document.body.classList.toggle('is-nav-aberta'));
-      document.querySelector('.admin-corpo')?.addEventListener('click', (evento) => {
-        if (document.body.classList.contains('is-nav-aberta') && !(evento.target as HTMLElement).closest('[data-abre-nav]')) document.body.classList.remove('is-nav-aberta');
-      });
-    </script>
+        {sessao && (
+          <div class="admin-sessao">
+            <span class="admin-sessao-nome">{sessao.nome}</span>
+            <a href="/admin/senha">Minha senha</a>
+            <a href="/" target="_blank" rel="noopener">Painel público</a>
+            <form method="post" action="/api/admin/sair"><button type="submit">Sair</button></form>
+          </div>
+        )}
+      </div>
+      {sessao && (
+        <nav class="admin-nav" aria-label="Seções da administração">
+          {NAVEGACAO.map((item) => (
+            <a href={item.href} class={ativo(item) ? 'is-ativo' : undefined} aria-current={ativo(item) ? 'page' : undefined}>{item.nome}</a>
+          ))}
+        </nav>
+      )}
+    </header>
+    <main class={`admin-main${sessao ? '' : ' is-solta'}`}>
+      <slot />
+    </main>
   </body>
 </html>
