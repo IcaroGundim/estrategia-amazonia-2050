@@ -18,6 +18,7 @@ import { carregaFonte, conteudoRoot, publicRoot } from './pipeline/fonte.mjs';
 import { derivaDashboard } from './pipeline/derivar.mjs';
 import { montaCatalogoPublico } from './pipeline/catalogo.mjs';
 import { buildMetas } from './pipeline/metas.mjs';
+import { resumeTrajetoria } from './pipeline/trajetoria.mjs';
 import { geraWorkbooks } from './pipeline/workbooks.mjs';
 
 const dataOut = join(publicRoot, 'data');
@@ -67,6 +68,8 @@ export async function derivaTudo() {
   const dashboard = await derivaDashboard(fonte);
   const catalogo = montaCatalogoPublico(fonte);
   const metas = buildMetas(catalogo, dashboard, fonte.metas);
+  // O Panorama lê só o dashboard.json; a trajetória das metas vai resumida nele.
+  dashboard.trajetoria = resumeTrajetoria(metas.metas, fonte.ufs);
   return { fonte, dashboard, catalogo, metas };
 }
 

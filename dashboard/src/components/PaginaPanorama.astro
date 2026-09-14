@@ -2,14 +2,14 @@
 // Corpo do Panorama, comum às duas línguas. As páginas de `pages/` são só a
 // casca que escolhe o idioma — assim o arranjo existe num lugar só e não há
 // como as duas versões divergirem em silêncio.
-import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+import { IDIOMA_PADRAO, rota, traduzirCom } from '../i18n/index.js';
 
 interface Props {
   lang?: string;
 }
 
 const { lang = IDIOMA_PADRAO } = Astro.props;
-const t = traduzirCom(lang);
+const t = traduzirCom(lang, Astro.locals.interface);
 ---
 
 <section class="panorama" id="inicio">
@@ -91,11 +91,23 @@ const t = traduzirCom(lang);
               <h2 data-ranking-title>{t('Síntese comparativa')}</h2>
               <small data-ranking-subtitle>{t('maior pontuação = melhor posição')}</small>
             </div>
-            <a class="text-button" href={`${lang === 'en' ? '/en/overview' : '/metodologia'}#calculo`}>{t('Critérios')} <span aria-hidden="true">↗</span></a>
+            <a class="text-button" href={`${rota('metodologia', lang)}#calculo`}>{t('Critérios')} <span aria-hidden="true">↗</span></a>
           </div>
           <ol id="ranking-list" class="ranking-list" aria-live="polite"></ol>
         </section>
       </aside>
     </div>
+
+    <section class="trajetoria card" id="trajetoria" aria-labelledby="trajetoria-titulo">
+      <div class="trajetoria-cabeca">
+        <div class="trajetoria-texto">
+          <p class="eyebrow">{t('Trajetória')}</p>
+          <h2 id="trajetoria-titulo" data-trajetoria-titulo>{t('Onde a Amazônia Legal está no caminho até 2050')}</h2>
+          <p class="trajetoria-lead">{t('Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.')}</p>
+        </div>
+      </div>
+      <ol class="trajetoria-lista" data-trajetoria-lista aria-live="polite"></ol>
+      <p class="trajetoria-rodape">{t('Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.')} <a href={lang === 'en' ? '/en/goals' : '/metas'}>{t('Ver o quadro de metas')}</a></p>
+    </section>
   </div>
 </section>

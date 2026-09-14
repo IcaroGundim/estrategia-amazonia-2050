@@ -22,6 +22,8 @@
 //               em outra (I5.4.1: % do PIB, não R$ milhões)
 //   categoriasCumpre, nota, notaAgregacao
 
+import { trajetoriaDaMeta } from './trajetoria.mjs';
+
 function ultimoDaSerie(serie) {
   const anos = Object.entries(serie || {})
     .map(([ano, valor]) => ({ ano: Number(ano), valor }))
@@ -268,7 +270,7 @@ export function buildMetas(catalogo, dashboard, config) {
       };
     }
 
-    metas.push({
+    const meta = {
       codigo: indicador.codigo,
       eixo: indicador.eixo,
       eixoNome: indicador.eixoNome,
@@ -293,7 +295,10 @@ export function buildMetas(catalogo, dashboard, config) {
       regional: agregaRegional(parametro, indicador, estados, contexto),
       agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null,
       historico: montaHistorico(parametro, indicador, estados, ufs, contexto)
-    });
+    };
+    // Depende do histórico e do valor regional, por isso vem depois.
+    meta.trajetoria = trajetoriaDaMeta(meta, parametro, ufs);
+    metas.push(meta);
   }
 
   // Os que não entram no quadro não são um resto: são a maior parte do catálogo.

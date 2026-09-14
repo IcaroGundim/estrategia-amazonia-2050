@@ -1,6 +1,7 @@
 import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
 import { idiomaAtual, localeDe, rota, t, tp } from '../i18n/index.js';
+import { campo, carregaConteudo } from './conteudo.js';
 
 /** Descrição da bandeira de um estado, que muda de preposição entre as línguas. */
 function bandeiraDe(nome) {
@@ -144,6 +145,7 @@ async function init() {
     fetch('/data/catalogo.json').then(readResponse)
   ]);
   state.data = dashboard;
+  await carregaConteudo();
   montaMetricas(dashboard.panorama);
   state.geo = geo;
   state.catalogo = catalogo;
@@ -313,6 +315,156 @@ function renderAll() {
   renderPainelPrincipal();
   renderPanelView();
   renderRanking();
+  renderTrajetoria();
+}
+
+// ---------------------------------------------------------------------------
+// Trajetória: para cada meta confrontável, a série observada em linha cheia e
+// a tendência em linha tracejada até o alvo, com o traço do prazo. A conta vem
+// pronta do build (pipeline/trajetoria.mjs); aqui só se desenha, no recorte
+// escolhido no mapa, e se escreve em uma frase o que a conta viu.
+// ---------------------------------------------------------------------------
+const TRAJ = { largura: 260, altura: 54, topo: 6, base: 44 };
+const COR_CLASSE = { noRitmo: '#3e6e57', acelerar: '#e0a83c', contrario: '#c0451f' };
+
+function numeroCurto(valor) {
+  if (!Number.isFinite(valor)) return '—';
+  if (valor === 0) return '0';
+  const magnitude = Math.abs(valor);
+  return new Intl.NumberFormat(localeDe(), { maximumFractionDigits: magnitude >= 100 ? 0 : magnitude >= 10 ? 1 : 2 }).format(valor);
+}
+
+// Uma frase por meta, montada por partes para a ordem das palavras poder mudar
+// de língua no dicionário. Os números levam a unidade só quando ela é um
+// percentual; as demais unidades do catálogo ("nº", "taxa / 100 mil") já estão
+// na linha da meta e não cabem numa frase.
+function valorDaTrajetoria(valor, unidade) {
+  const texto = numeroCurto(valor);
+  // "%" e "% do PIB" são percentuais; "% / ha" (área) não é.
+  return /^%(\s+d[oa]\s|$)/.test(String(unidade || '').trim()) ? `${texto}%` : texto;
+}
+
+function fraseDaTrajetoria(item, meta, fim) {
+  const unidade = campo(meta.codigo, 'unidade', meta.unidade);
+  const valor = valorDaTrajetoria(item.atual.valor, unidade);
+  const alvo = valorDaTrajetoria(item.alvo, unidade);
+  const ano = item.atual.ano;
+  const nota = item.nota ? ` ${escape(item.nota)}` : '';
+  if (item.classe === 'cumprida') return tp('Em {ano}, {valor}: a meta de {alvo} já está cumprida.', { ano, valor, alvo }) + nota;
+  if (item.classe === 'desligada') return tp('Em {ano}, {valor}.', { ano, valor }) + (nota || ` ${t('Trajetória desligada para esta meta.')}`);
+  if (item.classe === 'semSerie') {
+    const serie = item.pontos === 1
+      ? t('Há um só ano de dados; a projeção aparece a partir do terceiro.')
+      : tp('Há {n} anos de dados; a projeção aparece a partir do terceiro.', { n: item.pontos });
+    return `${tp('Em {ano}, {valor}.', { ano, valor })} ${serie}${nota}`;
+  }
+  const ritmo = valorDaTrajetoria(Math.abs(item.ritmo), unidade);
+  if (item.classe === 'contrario') {
+    const frase = item.ritmo > 0
+      ? tp('A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.', { ritmo, alvo, prazo: meta.prazo })
+      : tp('A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.', { ritmo, alvo, prazo: meta.prazo });
+    return `${tp('Em {ano}, {valor}.', { ano, valor })} ${frase}${nota}`;
+  }
+  const abertura = item.ritmo > 0
+    ? tp('Em {ano}, {valor}, subindo cerca de {ritmo} por ano.', { ano, valor, ritmo })
+    : tp('Em {ano}, {valor}, caindo cerca de {ritmo} por ano.', { ano, valor, ritmo });
+  let fecho;
+  if (item.classe === 'noRitmo') {
+    fecho = item.anoAlcance < meta.prazo
+      ? tp('Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.', { alvo, anoAlcance: item.anoAlcance, prazo: meta.prazo })
+      : tp('Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.', { alvo, anoAlcance: item.anoAlcance });
+  } else {
+    const vezes = number(item.aceleracao, 1);
+    fecho = item.anoAlcance > fim
+      ? tp('Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.', { alvo, fim, prazo: meta.prazo, vezes })
+      : tp('Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.', { alvo, anoAlcance: item.anoAlcance, prazo: meta.prazo, vezes });
+  }
+  return `${abertura} ${fecho}${nota}`;
+}
+
+function graficoDaTrajetoria(item, meta, fim) {
+  const serie = item.serie || [];
+  if (serie.length < 2) {
+    const so = serie[0];
+    return `<svg viewBox="0 0 ${TRAJ.largura} ${TRAJ.altura}" aria-hidden="true">
+      <line x1="0" y1="30" x2="${TRAJ.largura}" y2="30" stroke="var(--linha-2)"/>
+      ${so ? `<circle cx="20" cy="22" r="2.5" fill="var(--mata)"/><text x="30" y="26" class="traj-rotulo">${so.ano}</text>` : ''}
+    </svg>`;
+  }
+  const x0 = serie[0].ano;
+  const alcanceVisivel = Number.isFinite(item.anoAlcance) && item.anoAlcance <= fim ? item.anoAlcance : null;
+  const x1 = Math.max(meta.prazo, alcanceVisivel || 0, item.atual.ano + 2);
+  const valores = serie.map((ponto) => ponto.valor).concat(Number.isFinite(item.alvo) ? [item.alvo] : []);
+  let yMin = Math.min(...valores);
+  let yMax = Math.max(...valores);
+  if (yMin === yMax) { yMin -= 1; yMax += 1; }
+  const px = (ano) => ((ano - x0) / (x1 - x0)) * TRAJ.largura;
+  const py = (valor) => TRAJ.base - ((valor - yMin) / (yMax - yMin)) * (TRAJ.base - TRAJ.topo);
+  const observado = serie.map((ponto) => `${px(ponto.ano).toFixed(1)},${py(ponto.valor).toFixed(1)}`).join(' ');
+
+  let tendencia = '';
+  if (Number.isFinite(item.ritmo) && item.classe !== 'semSerie') {
+    const cor = COR_CLASSE[item.classe] || 'var(--tinta-4)';
+    let anoFim = alcanceVisivel || x1;
+    let valorFim = alcanceVisivel ? item.alvo : item.atual.valor + item.ritmo * (x1 - item.atual.ano);
+    // A tendência não sai da área do gráfico: corta onde encosta na borda.
+    if (valorFim > yMax || valorFim < yMin) {
+      const limite = valorFim > yMax ? yMax : yMin;
+      anoFim = item.atual.ano + (limite - item.atual.valor) / item.ritmo;
+      valorFim = limite;
+    }
+    tendencia = `<line x1="${px(item.atual.ano).toFixed(1)}" y1="${py(item.atual.valor).toFixed(1)}" x2="${px(anoFim).toFixed(1)}" y2="${py(valorFim).toFixed(1)}" stroke="${cor}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+  }
+  const alvoLinha = Number.isFinite(item.alvo) ? `<line x1="0" y1="${py(item.alvo).toFixed(1)}" x2="${TRAJ.largura}" y2="${py(item.alvo).toFixed(1)}" stroke="var(--linha-2)"/>` : '';
+  const prazoX = px(meta.prazo).toFixed(1);
+  return `<svg viewBox="0 0 ${TRAJ.largura} ${TRAJ.altura}" aria-hidden="true">
+    ${alvoLinha}
+    <polyline fill="none" stroke="var(--mata)" stroke-width="1.6" stroke-linejoin="round" points="${observado}"/>
+    ${tendencia}
+    <line x1="${prazoX}" y1="2" x2="${prazoX}" y2="48" stroke="var(--tinta-3)" stroke-width="1.5"/>
+    <text x="${prazoX}" y="53" class="traj-rotulo" text-anchor="${meta.prazo >= x1 ? 'end' : 'middle'}">${meta.prazo}</text>
+    <text x="0" y="53" class="traj-rotulo">${x0}</text>
+  </svg>`;
+}
+
+function renderTrajetoria() {
+  const dados = state.data.trajetoria;
+  const lista = document.querySelector('[data-trajetoria-lista]');
+  if (!dados || !lista) return;
+  const escopo = state.selected || 'regional';
+  const nomeEscopo = state.selected ? state.data.states.find((item) => item.uf === state.selected)?.name : null;
+  document.querySelector('[data-trajetoria-titulo]').textContent = nomeEscopo
+    ? tp('Onde {estado} está no caminho até 2050', { estado: nomeEscopo })
+    : t('Onde a Amazônia Legal está no caminho até 2050');
+
+  const fim = dados.anoLimite;
+  const ordem = { contrario: 0, acelerar: 1, noRitmo: 2, cumprida: 3, semSerie: 4, desligada: 5 };
+  const itens = dados.metas
+    .map((meta) => ({ meta, item: meta.escopos[escopo] }))
+    .sort((a, b) => (ordem[a.item?.classe] ?? 9) - (ordem[b.item?.classe] ?? 9) || a.meta.codigo.localeCompare(b.meta.codigo));
+
+  lista.innerHTML = itens.map(({ meta, item }) => {
+    const nome = escape(campo(meta.codigo, 'nome', meta.nome));
+    const unidade = escape(campo(meta.codigo, 'unidade', meta.unidade));
+    const cabeca = `<div class="trajetoria-meta"><strong>${nome}</strong><small>${escape(tp('meta {alvo} até {prazo}', { alvo: `${numeroCurto(item?.alvo ?? meta.alvo)} ${unidade}`.trim(), prazo: meta.prazo }))}</small></div>`;
+    if (!item) {
+      return `<li class="trajetoria-item is-vazio">${cabeca}<div></div><div class="trajetoria-ano is-cinza">—</div><p class="trajetoria-frase">${t('Sem valor para este estado.')}</p></li>`;
+    }
+    let ano;
+    let rotulo;
+    if (item.classe === 'cumprida') { ano = String(item.atual.ano); rotulo = t('cumprida'); }
+    else if (item.classe === 'noRitmo') { ano = String(item.anoAlcance); rotulo = t('no ritmo'); }
+    else if (item.classe === 'acelerar') { ano = item.anoAlcance > fim ? `> ${fim}` : String(item.anoAlcance); rotulo = tp('precisa {vezes}x', { vezes: number(item.aceleracao, 1) }); }
+    else if (item.classe === 'contrario') { ano = '—'; rotulo = t('não alcança'); }
+    else if (item.classe === 'desligada') { ano = '—'; rotulo = t('desligada'); }
+    else { ano = '—'; rotulo = t('sem série'); }
+    return `<li class="trajetoria-item is-${item.classe}">
+      ${cabeca}
+      ${graficoDaTrajetoria(item, meta, fim)}
+      <div class="trajetoria-ano">${ano}<small>${rotulo}</small></div>
+      <p class="trajetoria-frase">${fraseDaTrajetoria(item, meta, fim)}</p>
+    </li>`;
+  }).join('') || `<li class="trajetoria-item is-vazio"><p class="trajetoria-frase">${t('Nenhuma meta com trajetória neste recorte.')}</p></li>`;
 }
 
 // A perspectiva regional mora no próprio mapa: escolher um estado já é clicar nele,
@@ -446,7 +598,7 @@ function renderRanking() {
     const ativo = regiao ? !state.selected : state.selected === item.uf;
     const medida = `<span class="rank-measure"><b>${textoDoValor(metric, value)}</b><i><em style="width:${barra(value)}%"></em></i></span>`;
     return `<li>
-      <button type="button" class="rank-item ${regiao ? 'is-regiao ' : ''}${ativo ? 'is-selected' : ''}" data-state="${regiao ? '' : item.uf}" aria-pressed="${ativo}"${regiao ? '' : ` style="--accent:${accentOf(item.uf)}"`}>
+      <button type="button" class="rank-item ${regiao ? 'is-regiao ' : ''}${ativo ? 'is-selected' : ''}" data-state="${regiao ? '' : item.uf}" aria-pressed="${ativo}">
         <span class="rank-number"${regiao ? ' aria-hidden="true"' : ''}>${regiao ? '' : ++posicao}</span>
         ${flagImage(regiao ? BANDEIRA_REGIAO : item, '')}
         <span class="rank-name">${regiao
