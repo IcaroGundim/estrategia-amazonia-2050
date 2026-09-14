@@ -4,26 +4,26 @@
     "metodologia": {
       "title": {
         "pt": "Síntese comparativa experimental",
-        "en": null
+        "en": "Experimental comparative synthesis"
       },
       "text": {
         "pt": "A síntese padroniza oito indicadores disponíveis em uma escala relativa de 0 a 100 entre os nove estados. Ela serve para leitura exploratória e não substitui metas oficiais, auditorias ou avaliação de políticas.",
-        "en": null
+        "en": "The synthesis puts eight available indicators on a relative 0 to 100 scale across the nine states. It is meant for exploratory reading and does not replace official targets, audits or policy evaluation."
       },
       "sources": {
         "pt": "PRODES/INPE, INPE Queimadas, CNUC/MMA, IBGE (SIS, PEVS, PIA-Empresa, Censo 2022/MUNIC), Sinesp/MJ, RAIS/MTE, CNES/DATASUS, ANATEL, ANEEL SIGA, AdaptaBrasil, MCTI e STN. Períodos variam conforme a fonte.",
-        "en": null
+        "en": "PRODES/INPE, INPE Queimadas, CNUC/MMA, IBGE (SIS, PEVS, PIA-Empresa, 2022 Census/MUNIC), Sinesp/MJ, RAIS/MTE, CNES/DATASUS, ANATEL, ANEEL SIGA, AdaptaBrasil, MCTI and STN. Periods vary by source."
       },
       "dimensions": [
         {
           "name": {
             "pt": "Território e clima",
-            "en": null
+            "en": "Territory and climate"
           },
           "weight": "40%",
           "indicators": {
             "pt": "taxa PRODES 2025, focos de calor 2024 e gestão de UCs",
-            "en": null
+            "en": "PRODES 2025 rate, 2024 fire hotspots and management of protected areas"
           }
         },
         {
@@ -34,29 +34,29 @@
           "weight": "40%",
           "indicators": {
             "pt": "pobreza, frequência escolar 15–17 e cobertura da atenção primária",
-            "en": null
+            "en": "poverty, school attendance at 15 to 17 and primary care coverage"
           }
         },
         {
           "name": {
             "pt": "Segurança",
-            "en": null
+            "en": "Public safety"
           },
           "weight": "12%",
           "indicators": {
             "pt": "CVLI por 100 mil habitantes",
-            "en": null
+            "en": "violent deaths (CVLI) per 100,000 inhabitants"
           }
         },
         {
           "name": {
             "pt": "Resiliência",
-            "en": null
+            "en": "Resilience"
           },
           "weight": "8%",
           "indicators": {
             "pt": "IIVCM municipal médio",
-            "en": null
+            "en": "average municipal climate vulnerability index (IIVCM)"
           }
         }
       ]
@@ -70,7 +70,7 @@
       },
       "tituloLinha2": {
         "pt": "Amazônia 2050",
-        "en": null
+        "en": "Amazônia 2050"
       },
       "abertura": {
         "pt": "O instrumento de planejamento de longo prazo da Amazônia Legal. Define uma visão compartilhada para 2050, organizada por temas e eixos estratégicos, metas, indicadores e uma estrutura de governança para orientar investimentos e políticas públicas nos nove estados.",

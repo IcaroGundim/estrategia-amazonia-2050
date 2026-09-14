@@ -2,7 +2,7 @@
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
 
 const { variant = 1, lang = IDIOMA_PADRAO } = Astro.props;
-const t = traduzirCom(lang);
+const t = traduzirCom(lang, Astro.locals.interface);
 
 // O nome do lugar e o crédito do autor não se traduzem: são topônimo e nome
 // próprio. O que muda de língua é a descrição alternativa, a frase de abertura

@@ -1,0 +1,358 @@
+---
+// Textos do painel, todos numa tela: as lâminas da Visão Geral e a metodologia
+// (conteudo/textos.json) e os textos fixos de interface de cada página
+// (conteudo/interface.json). Um seletor escolhe a página pública; o quadro
+// mostra essa página com o que está no formulário e a lista ao lado traz só
+// os grupos de texto que aparecem nela.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
+import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, nomeDeInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
+
+type Pagina = keyof typeof NOME_DA_PAGINA;
+const PAGINAS = Object.keys(NOME_DA_PAGINA) as Pagina[];
+
+const sessao = Astro.locals.sessao!;
+const [textosLidos, interfaceLida] = await Promise.all([leJson<Arvore>('textos'), leJson<Interface>('interface')]);
+let erro: string | null = null;
+let versaoTextos = textosLidos.versao;
+let versaoInterface = interfaceLida.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+const pedida = Astro.url.searchParams.get('pagina');
+const paginaInicial: Pagina = PAGINAS.includes(pedida as Pagina) ? (pedida as Pagina) : 'metodologia';
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versaoTextos = texto(dados, 'versaoTextos') || versaoTextos;
+  versaoInterface = texto(dados, 'versaoInterface') || versaoInterface;
+  const autor = { usuario: sessao.usuario, nome: sessao.nome };
+  const mudou = (antes: unknown, depois: unknown) => JSON.stringify(antes) !== JSON.stringify(depois);
+  try {
+    // Cada arquivo só é gravado se algum campo dele mudou de fato.
+    if (mudou(textosLidos.dados, aplicaFormulario(structuredClone(textosLidos.dados), dados))) {
+      await salvaJson<Arvore>('textos', versaoTextos, (textos) => aplicaFormulario(textos, dados), 'edita os textos do painel', autor);
+    }
+    if (mudou(interfaceLida.dados, aplicaFormularioInterface(structuredClone(interfaceLida.dados), dados))) {
+      await salvaJson<Interface>('interface', versaoInterface, (dicionario) => aplicaFormularioInterface(dicionario, dados), 'edita os textos de interface', autor);
+    }
+    return Astro.redirect(`/admin/textos?salvo=1&pagina=${texto(dados, 'pagina') || paginaInicial}`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+  }
+}
+
+const todas = folhas(textosLidos.dados);
+const rotuloDe = (caminho: string) => caminho.split('.').slice(-2).map((parte) => (/^\d+$/.test(parte) ? `item ${Number(parte) + 1}` : parte)).join(' / ');
+const rotuloDeChave = (chave: string) => (chave.length > 64 ? `${chave.slice(0, 61)}...` : chave);
+const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados;
+---
+
+<Admin title="Textos" sessao={sessao}>
+  <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+  <form method="post" class="admin-textos" data-textos-form data-astro-reload>
+    <input type="hidden" name="versaoTextos" value={versaoTextos} />
+    <input type="hidden" name="versaoInterface" value={versaoInterface} />
+    <input type="hidden" name="pagina" value={paginaInicial} data-pagina-atual />
+    <button type="submit" hidden tabindex="-1" formnovalidate formtarget="previa-quadro" formaction={`/admin/textos/previa?pagina=${paginaInicial}`} data-botao-previa>Atualizar a prévia</button>
+
+    <div class="admin-textos-barra">
+      <span class="admin-seletor" role="group" aria-label="Página do painel">
+        {PAGINAS.map((pagina) => (
+          <button type="button" class={pagina === paginaInicial ? 'is-ativo' : undefined} aria-pressed={pagina === paginaInicial ? 'true' : 'false'} data-escolhe-pagina={pagina}>{NOME_DA_PAGINA[pagina]}</button>
+        ))}
+      </span>
+      <span class="admin-seletor" role="group" aria-label="Idioma">
+        <button type="button" class="is-ativo" data-previa-lang="pt-BR" aria-pressed="true">Português</button>
+        <button type="button" data-previa-lang="en" aria-pressed="false">English</button>
+      </span>
+      <span class="admin-previa-estado" data-previa-estado aria-live="polite"></span>
+      <div class="admin-busca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+        <input type="search" placeholder="Filtrar textos" autocomplete="off" aria-label="Filtrar os textos" data-filtro />
+        <small data-filtro-resumo></small>
+      </div>
+      <button type="submit" class="admin-botao">Salvar no rascunho</button>
+    </div>
+
+    <div class="admin-textos-corpo">
+      <div class="admin-textos-lista">
+        <div class="admin-grupos-nav">
+          <button type="button" class="admin-grupos-seta" data-grupo-anterior aria-label="Grupo anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+          <select data-grupo-select aria-label="Grupo de textos"></select>
+          <span class="admin-grupos-contador" data-grupo-contador></span>
+          <button type="button" class="admin-grupos-seta" data-grupo-proximo aria-label="Próximo grupo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+        </div>
+        {GRUPOS.map((grupo) => {
+          const campos = todas.filter((folha) => folha.caminho.startsWith(`${grupo.chave}.`));
+          return (
+            <section class="admin-cartao" data-grupo data-pagina="metodologia" data-ancora={grupo.ancora} data-fonte="textos" hidden={paginaInicial !== 'metodologia'}>
+              <h2>{grupo.titulo}</h2>
+              <p>{grupo.descricao}</p>
+              <div class="admin-form">
+                {campos.map(({ caminho, par }) => (
+                  <Campo nome={`t:${caminho}`} rotulo={rotuloDe(caminho)} valor={par.pt} en={par.en} comEn tipo={par.pt.length > 90 ? 'area' : 'texto'} linhas={Math.min(8, Math.ceil(par.pt.length / 110) + 1)} largo />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+        {gruposInterface.map((grupo) => (
+          <section class="admin-cartao" data-grupo data-pagina={grupo.pagina} data-fonte="interface" data-alvo={grupo.alvo} data-abre={grupo.abre} hidden={paginaInicial !== grupo.pagina}>
+            <h2>{grupo.titulo}</h2>
+            <div class="admin-form">
+              {grupo.chaves.map((chave) => {
+                const par = interfaceTextos[chave];
+                const longo = par.pt.length > 80 || (par.en || '').length > 80;
+                return (
+                  <Campo nome={nomeDeInterface(chave)} rotulo={rotuloDeChave(chave)} valor={par.pt} en={par.en} comEn tipo={longo ? 'area' : 'texto'} linhas={Math.min(6, Math.ceil(par.pt.length / 90) + 1)} largo />
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <aside class="admin-previa" aria-label="Prévia da página">
+        <div class="admin-previa-moldura" data-previa-moldura>
+          <iframe name="previa-quadro" src={`/admin/textos/previa?pagina=${paginaInicial}`} width="1280" height="820" title="Prévia da página com os textos do rascunho" data-previa-quadro></iframe>
+        </div>
+      </aside>
+    </div>
+  </form>
+</Admin>
+
+<script>
+  function inicia() {
+    const form = document.querySelector<HTMLFormElement>('[data-textos-form]');
+    const botao = document.querySelector<HTMLButtonElement>('[data-botao-previa]');
+    const quadro = document.querySelector<HTMLIFrameElement>('[data-previa-quadro]');
+    const estado = document.querySelector<HTMLElement>('[data-previa-estado]');
+    const campoPagina = document.querySelector<HTMLInputElement>('[data-pagina-atual]');
+    if (!form || !botao || !quadro || !estado || !campoPagina) return;
+
+    let lang = 'pt-BR';
+    let pagina = campoPagina.value;
+    let temporizador: number | undefined;
+    let pedido = 0;
+    const grupos = [...form.querySelectorAll<HTMLElement>('[data-grupo]')];
+
+    // ---- prévia: a própria página pública, no quadro ----
+    // Recarrega o quadro enviando o formulário para ele (botão escondido).
+    function recarrega() {
+      let hash = '';
+      try { hash = quadro.contentWindow?.location.hash || ''; } catch { hash = ''; }
+      botao.formAction = `/admin/textos/previa?pagina=${pagina}&lang=${lang}${hash}`;
+      estado.textContent = 'atualizando';
+      form.requestSubmit(botao);
+    }
+    quadro.addEventListener('load', () => {
+      estado.textContent = '';
+      // Ao recarregar o quadro, volta ao trecho do grupo aberto (as páginas
+      // com script precisam de um instante para montar o conteúdo).
+      window.setTimeout(() => mostraNoQuadro(atual), 400);
+    });
+
+    // Nas lâminas da Visão Geral dá para trocar só o texto, sem recarregar:
+    // a lâmina aberta e a rolagem ficam como estão.
+    async function trocaTextoDasLaminas() {
+      const doc = quadro.contentDocument;
+      if (!doc || !doc.querySelector('.method-section')) return recarrega();
+      const meu = ++pedido;
+      estado.textContent = 'atualizando';
+      try {
+        const resposta = await fetch(`/admin/textos/previa?pagina=metodologia&lang=${lang}`, { method: 'POST', body: new FormData(form) });
+        if (!resposta.ok) throw new Error(String(resposta.status));
+        const novo = new DOMParser().parseFromString(await resposta.text(), 'text/html');
+        if (meu !== pedido) return;
+        const atuais = [...doc.querySelectorAll('.method-section')];
+        novo.querySelectorAll('.method-section').forEach((secao, indice) => {
+          const de = secao.querySelector('.slide-copy');
+          const para = atuais[indice]?.querySelector('.slide-copy');
+          if (!de || !para) return;
+          const fontes = para.querySelector('[data-method-sources]')?.textContent;
+          para.innerHTML = de.innerHTML;
+          const alvo = para.querySelector('[data-method-sources]');
+          if (alvo && fontes) alvo.textContent = fontes;
+        });
+        estado.textContent = '';
+      } catch {
+        if (meu === pedido) estado.textContent = 'a prévia não respondeu';
+      }
+    }
+
+    let ultimaFonte = 'interface';
+    form.addEventListener('input', (evento) => {
+      const grupo = (evento.target as HTMLElement).closest<HTMLElement>('[data-grupo]');
+      if (!grupo) return;
+      ultimaFonte = grupo.dataset.fonte || 'interface';
+      window.clearTimeout(temporizador);
+      temporizador = window.setTimeout(() => (ultimaFonte === 'textos' && pagina === 'metodologia' ? trocaTextoDasLaminas() : recarrega()), ultimaFonte === 'textos' ? 350 : 600);
+    });
+
+    // Leva o quadro à lâmina pedida. Não muda location.hash: a navegação
+    // nativa por âncora rola também a página de fora para mostrar o alvo, e
+    // isso sacudia a tela inteira. Só a rota é trocada, e o script das
+    // lâminas, que escuta hashchange, faz a troca dentro do quadro.
+    function vaiParaLamina(ancora: string | undefined) {
+      const janela = quadro.contentWindow;
+      if (!ancora || !janela || pagina !== 'metodologia') return;
+      if (janela.location.hash === `#${ancora}`) return;
+      // Com a rota já trocada, o clique no índice das lâminas anda suave e
+      // não empilha entrada no histórico.
+      janela.history.replaceState(null, '', `#${ancora}`);
+      const link = janela.document.querySelector<HTMLAnchorElement>(`.methodology-index nav a[href="#${ancora}"]`);
+      if (link) link.click(); else janela.dispatchEvent(new Event('hashchange'));
+    }
+
+    // Nas outras páginas, rola o quadro até o trecho onde o grupo aparece e o
+    // realça por um instante. A rolagem é da janela do quadro, e não
+    // scrollIntoView, para não arrastar a página de fora junto.
+    let realce: number | undefined;
+    function vaiParaTrecho(grupo: HTMLElement | null) {
+      const janela = quadro.contentWindow;
+      const seletor = grupo?.dataset.alvo;
+      if (!janela || !seletor || pagina === 'metodologia') return;
+      const doc = janela.document;
+      let alvo = doc.querySelector<HTMLElement>(seletor);
+      if ((!alvo || alvo.hidden) && grupo?.dataset.abre) {
+        doc.querySelector<HTMLElement>(grupo.dataset.abre)?.click();
+        alvo = doc.querySelector<HTMLElement>(seletor);
+      }
+      if (!alvo) return;
+      const topo = alvo.getBoundingClientRect().top + janela.scrollY - 88;
+      janela.scrollTo({ top: Math.max(0, topo), behavior: 'smooth' });
+      doc.querySelectorAll('.is-realce-previa').forEach((outro) => outro.classList.remove('is-realce-previa'));
+      alvo.classList.add('is-realce-previa');
+      window.clearTimeout(realce);
+      realce = window.setTimeout(() => alvo?.classList.remove('is-realce-previa'), 1600);
+    }
+
+    function mostraNoQuadro(grupo: HTMLElement | null) {
+      if (pagina === 'metodologia') vaiParaLamina(grupo?.dataset.ancora);
+      else vaiParaTrecho(grupo);
+    }
+
+    // O campo em foco leva o quadro ao trecho certo.
+    form.addEventListener('focusin', (evento) => {
+      mostraNoQuadro((evento.target as HTMLElement).closest<HTMLElement>('[data-grupo]'));
+    });
+
+    // ---- seletor de página ----
+    function mostraPagina(nova: string) {
+      pagina = nova;
+      campoPagina.value = nova;
+      document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
+        const ativa = opcao.dataset.escolhePagina === nova;
+        opcao.classList.toggle('is-ativo', ativa);
+        opcao.setAttribute('aria-pressed', String(ativa));
+      });
+      filtra();
+      escala();
+      const url = new URL(location.href);
+      url.searchParams.set('pagina', nova);
+      url.searchParams.delete('salvo');
+      history.replaceState(null, '', url);
+      recarrega();
+    }
+    document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
+      opcao.addEventListener('click', () => { if (opcao.dataset.escolhePagina !== pagina) mostraPagina(opcao.dataset.escolhePagina || 'metodologia'); });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-previa-lang]').forEach((opcao) => {
+      opcao.addEventListener('click', () => {
+        lang = opcao.dataset.previaLang || 'pt-BR';
+        document.querySelectorAll<HTMLButtonElement>('[data-previa-lang]').forEach((outra) => {
+          const ativa = outra === opcao;
+          outra.classList.toggle('is-ativo', ativa);
+          outra.setAttribute('aria-pressed', String(ativa));
+        });
+        recarrega();
+      });
+    });
+
+    // ---- quadro desenhado em 1280px e reduzido para caber ----
+    const moldura = quadro.parentElement as HTMLElement;
+    // As lâminas têm altura fixa; as outras páginas rolam dentro do quadro.
+    function escala() {
+      const fator = moldura.clientWidth / 1280;
+      const altura = pagina === 'metodologia' ? 690 : 820;
+      quadro.height = String(altura);
+      quadro.style.transform = `scale(${fator})`;
+      moldura.style.height = `${Math.round(altura * fator)}px`;
+    }
+    escala();
+    new ResizeObserver(escala).observe(moldura);
+
+    // ---- um grupo por vez, como lâminas ----
+    // O filtro esconde os campos que não casam; a navegação anda só pelos
+    // grupos da página escolhida que ainda têm algum campo à mostra.
+    const filtro = document.querySelector<HTMLInputElement>('[data-filtro]');
+    const resumo = document.querySelector<HTMLElement>('[data-filtro-resumo]');
+    const seletorGrupo = document.querySelector<HTMLSelectElement>('[data-grupo-select]');
+    const contador = document.querySelector<HTMLElement>('[data-grupo-contador]');
+    const anterior = document.querySelector<HTMLButtonElement>('[data-grupo-anterior]');
+    const proximo = document.querySelector<HTMLButtonElement>('[data-grupo-proximo]');
+    const semAcento = (valor: string) => valor.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    let atual: HTMLElement | null = null;
+    let candidatos: HTMLElement[] = [];
+
+    function mostraGrupo(grupo: HTMLElement | null) {
+      if (grupo && grupo !== atual) {
+        grupo.classList.remove('is-entrando');
+        void grupo.offsetWidth;
+        grupo.classList.add('is-entrando');
+      }
+      atual = grupo;
+      grupos.forEach((item) => { item.hidden = item !== atual; });
+      const indice = atual ? candidatos.indexOf(atual) : -1;
+      if (seletorGrupo) seletorGrupo.value = String(indice);
+      if (contador) contador.textContent = candidatos.length ? `${indice + 1} / ${candidatos.length}` : '0 / 0';
+      if (anterior) anterior.disabled = indice <= 0;
+      if (proximo) proximo.disabled = indice < 0 || indice >= candidatos.length - 1;
+      mostraNoQuadro(atual);
+      // Se a barra de navegação dos grupos ficou acima da tela, volta até ela.
+      const nav = document.querySelector<HTMLElement>('.admin-grupos-nav');
+      if (nav && nav.getBoundingClientRect().top < 0) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function filtra() {
+      const termo = semAcento(filtro?.value.trim() || '');
+      let visiveis = 0;
+      let total = 0;
+      candidatos = [];
+      grupos.forEach((grupo) => {
+        if (grupo.dataset.pagina !== pagina) return;
+        let algum = false;
+        grupo.querySelectorAll<HTMLElement>('.admin-campo').forEach((campo) => {
+          total += 1;
+          const conteudo = semAcento([campo.querySelector('span')?.textContent || '', ...[...campo.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')].map((controle) => controle.value)].join(' '));
+          const mostra = !termo || conteudo.includes(termo);
+          campo.hidden = !mostra;
+          if (mostra) { algum = true; visiveis += 1; }
+        });
+        if (algum) candidatos.push(grupo);
+      });
+      if (resumo) resumo.textContent = termo ? `${visiveis} de ${total}` : '';
+      if (seletorGrupo) {
+        seletorGrupo.innerHTML = '';
+        candidatos.forEach((grupo, indice) => {
+          const opcao = document.createElement('option');
+          opcao.value = String(indice);
+          opcao.textContent = grupo.querySelector('h2')?.textContent || '';
+          seletorGrupo.append(opcao);
+        });
+      }
+      mostraGrupo(atual && candidatos.includes(atual) ? atual : candidatos[0] || null);
+    }
+    filtro?.addEventListener('input', filtra);
+    seletorGrupo?.addEventListener('change', () => mostraGrupo(candidatos[Number(seletorGrupo.value)] || null));
+    anterior?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : 0; if (i > 0) mostraGrupo(candidatos[i - 1]); });
+    proximo?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : -1; if (i < candidatos.length - 1) mostraGrupo(candidatos[i + 1]); });
+    filtra();
+  }
+  document.addEventListener('astro:page-load', inicia);
+</script>

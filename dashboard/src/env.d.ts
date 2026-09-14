@@ -3,6 +3,8 @@
 declare namespace App {
   interface Locals {
     sessao?: import('./lib/admin/sessao').Sessao;
+    /** Textos de interface do rascunho, definidos só pela prévia da administração. */
+    interface?: Record<string, { pt: string; en?: string | null }>;
   }
 }
 

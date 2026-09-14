@@ -6,14 +6,16 @@
 // no dicionário.
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
 import SlidePhoto from './SlidePhoto.astro';
-import textos from '../../conteudo/textos.json';
+import textosPublicados from '../../conteudo/textos.json';
 
 interface Props {
   lang?: string;
+  /** Outra versão dos textos, no mesmo formato do JSON: a prévia da administração passa o rascunho por aqui. */
+  textos?: typeof textosPublicados;
 }
 
-const { lang = IDIOMA_PADRAO } = Astro.props;
-const t = traduzirCom(lang);
+const { lang = IDIOMA_PADRAO, textos = textosPublicados } = Astro.props;
+const t = traduzirCom(lang, Astro.locals.interface);
 const tx = (par: { pt: string; en?: string | null } | string) =>
   (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
 

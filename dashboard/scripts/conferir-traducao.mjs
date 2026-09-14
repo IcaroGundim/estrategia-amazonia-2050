@@ -1,8 +1,8 @@
 // Aponta o que ficou sem inglês.
 //
-// O dicionário usa o português como chave, o que tem um preço: mudar uma frase
-// no código a desliga da tradução em silêncio, e o leitor de inglês vê
-// português sem que nada quebre. Este script é o alarme.
+// O dicionário (conteudo/interface.json) usa o português como chave, o que tem
+// um preço: mudar uma frase no código a desliga da tradução em silêncio, e o
+// leitor de inglês vê português sem que nada quebre. Este script é o alarme.
 //
 // Ele faz duas varreduras:
 //
@@ -13,13 +13,16 @@
 //              nada, mas são peso morto e sinal de refatoração inacabada.
 //
 //   npm run check:i18n
+//   npm run check:i18n -- --apagar     (tira as sobras do dicionário)
 
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const raiz = fileURLToPath(new URL('../src', import.meta.url));
-const { en } = await import('../src/i18n/en.js');
+const caminhoDicionario = fileURLToPath(new URL('../conteudo/interface.json', import.meta.url));
+const dicionario = JSON.parse(readFileSync(caminhoDicionario, 'utf8'));
+const en = dicionario.textos;
 
 function arquivos(dir) {
   return readdirSync(dir).flatMap((nome) => {
@@ -78,15 +81,21 @@ const orfas = [...usadas.keys()].filter((texto) => !(texto in en)).sort();
 const sobras = Object.keys(en)
   .filter((texto) => !tudo.includes(texto) && !dados.includes(JSON.stringify(texto).slice(1, -1)))
   .sort();
+const semIngles = Object.entries(en).filter(([, par]) => !par.en).map(([texto]) => texto).sort();
 
 const corte = (texto) => (texto.length > 72 ? `${texto.slice(0, 69)}…` : texto);
 
 if (orfas.length) {
-  console.log(`\nSEM TRADUÇÃO (${orfas.length}) — o inglês mostra o português:\n`);
+  console.log(`\nFORA DO DICIONÁRIO (${orfas.length}) — o inglês mostra o português:\n`);
   for (const texto of orfas) {
     console.log(`  ${corte(texto)}`);
     console.log(`      ${[...new Set(usadas.get(texto))].join(', ')}`);
   }
+}
+
+if (semIngles.length) {
+  console.log(`\nSEM INGLÊS (${semIngles.length}) — no dicionário, mas com o inglês vazio:\n`);
+  for (const texto of semIngles) console.log(`  ${corte(texto)}`);
 }
 
 if (sobras.length) {
@@ -94,27 +103,19 @@ if (sobras.length) {
   for (const texto of sobras) console.log(`  ${corte(texto)}`);
 }
 
-if (!orfas.length && !sobras.length) {
+if (!orfas.length && !sobras.length && !semIngles.length) {
   console.log(`Dicionário em dia: ${usadas.size} textos, todos traduzidos e todos em uso.`);
 } else {
-  console.log(`\n${usadas.size} textos no código · ${Object.keys(en).length} no dicionário · ${orfas.length} sem tradução · ${sobras.length} sem uso`);
+  console.log(`\n${usadas.size} textos no código · ${Object.keys(en).length} no dicionário · ${orfas.length} fora do dicionário · ${semIngles.length} sem inglês · ${sobras.length} sem uso`);
 }
 
-// `--apagar` remove as sobras do dicionário. Cada entrada ocupa uma linha
-// (`  'pt': 'en',`) ou duas (valor na linha seguinte), sem comentário no meio;
-// o que não casar com esse desenho fica e é avisado, para não estragar o arquivo.
+// `--apagar` remove as sobras do dicionário e dos grupos da tela de edição.
 if (sobras.length && process.argv.includes('--apagar')) {
-  const caminho = fileURLToPath(new URL('../src/i18n/en.js', import.meta.url));
-  let fonte = readFileSync(caminho, 'utf8');
-  const escapa = (texto) => texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/'/g, "\\\\'");
-  let apagadas = 0;
-  for (const texto of sobras) {
-    const padrao = new RegExp(`^  '${escapa(texto)}':\\s*\\n?\\s*'(?:[^'\\\\]|\\\\.)*',?\\n`, 'm');
-    if (padrao.test(fonte)) { fonte = fonte.replace(padrao, ''); apagadas += 1; } else console.log(`  não apaguei (desenho diferente): ${corte(texto)}`);
-  }
-  writeFileSync(caminho, fonte);
-  console.log(`\n${apagadas} entrada(s) apagada(s) de src/i18n/en.js.`);
+  for (const texto of sobras) delete dicionario.textos[texto];
+  for (const grupo of dicionario.grupos || []) grupo.chaves = grupo.chaves.filter((chave) => !sobras.includes(chave));
+  writeFileSync(caminhoDicionario, `${JSON.stringify(dicionario, null, 2)}\n`);
+  console.log(`\n${sobras.length} entrada(s) apagada(s) de conteudo/interface.json.`);
 }
 
-// Sem tradução é erro; sobra é só aviso.
+// Fora do dicionário é erro; sem inglês e sobra são só aviso.
 process.exitCode = orfas.length ? 1 : 0;

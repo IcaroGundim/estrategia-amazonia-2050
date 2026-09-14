@@ -1,0 +1,84 @@
+---
+// Prévia fiel de uma página pública com os textos do rascunho. É a mesma
+// página (layout, estilos, scripts), só que alimentada por outra versão dos
+// textos: no GET, o rascunho gravado; no POST, o que está no formulário da
+// tela de edição, sem gravar nada. As telas de Textos mostram isto num quadro.
+//
+//   ?pagina=metodologia | index | metas   qual página (padrão: a Visão Geral)
+//   ?lang=pt-BR | en                       em que língua
+//
+// Os textos de interface (conteudo/interface.json) chegam aos componentes por
+// Astro.locals.interface e aos scripts de cliente por window.__interfaceRascunho.
+export const prerender = false;
+
+import Base from '../../../layouts/Base.astro';
+import PaginaVisaoGeral from '../../../components/PaginaVisaoGeral.astro';
+import PaginaPanorama from '../../../components/PaginaPanorama.astro';
+import PaginaMetas from '../../../components/PaginaMetas.astro';
+import { leJson } from '../../../lib/admin/edicao';
+import { aplicaFormulario, aplicaFormularioInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
+import textosPublicados from '../../../../conteudo/textos.json';
+import '../../../styles/overview-slides.css';
+import '../../../styles/overview-compositions.css';
+
+const lang = Astro.url.searchParams.get('lang') === 'en' ? 'en' : 'pt-BR';
+const pedida = Astro.url.searchParams.get('pagina');
+const pagina = pedida === 'index' || pedida === 'metas' ? pedida : 'metodologia';
+
+const [textosLidos, interfaceLida] = await Promise.all([leJson<Arvore>('textos'), leJson<Interface>('interface')]);
+let textos = textosLidos.dados;
+let interfaceTextos = interfaceLida.dados;
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  textos = aplicaFormulario(textos, dados, { estrito: false });
+  interfaceTextos = aplicaFormularioInterface(interfaceTextos, dados, { estrito: false });
+}
+Astro.locals.interface = interfaceTextos.textos;
+
+const PAGINAS = {
+  metodologia: { mainClass: 'methodology-page', dados: ['dashboard'] },
+  index: { mainClass: undefined, dados: ['dashboard', 'geo', 'catalogo'] },
+  metas: { mainClass: 'goals-page', dados: ['metas'] }
+} as const;
+---
+
+<Base
+  title="Prévia dos textos"
+  description="Prévia do painel com os textos do rascunho."
+  mainClass={PAGINAS[pagina].mainClass}
+  pagina={pagina}
+  lang={lang}
+  dados={[...PAGINAS[pagina].dados]}
+>
+  <script is:inline set:html={`window.__interfaceRascunho = ${JSON.stringify(interfaceTextos.textos).replace(/</g, '\\u003c')};`} />
+
+  {pagina === 'metodologia' && <PaginaVisaoGeral lang={lang} textos={textos as typeof textosPublicados} />}
+  {pagina === 'index' && <PaginaPanorama lang={lang} />}
+  {pagina === 'metas' && <PaginaMetas lang={lang} />}
+
+  <script>
+    // Cada módulo só arranca se a âncora da sua página existir; importar os
+    // três é o que permite a esta rota servir qualquer uma delas.
+    import '../../../scripts/metodologia.js';
+    import '../../../scripts/app.js';
+    import '../../../scripts/metas.js';
+  </script>
+
+  <style is:global>
+    /* Realce do trecho que a tela de Textos acabou de abrir. */
+    .is-realce-previa { outline: 3px solid var(--urucum); outline-offset: 4px; border-radius: 12px; transition: outline-color .5s; }
+  </style>
+
+  <script is:inline>
+    // Dentro do quadro da administração a página não deve sair do lugar: os
+    // links da barra superior (outra página, outra língua) ficam só de amostra.
+    // Âncoras da própria página continuam valendo, é assim que as lâminas andam.
+    document.addEventListener('click', (evento) => {
+      const link = evento.target.closest('a[href]');
+      if (!link) return;
+      const destino = link.getAttribute('href') || '';
+      if (destino.startsWith('#')) return;
+      evento.preventDefault();
+    }, true);
+  </script>
+</Base>

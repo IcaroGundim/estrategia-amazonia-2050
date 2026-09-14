@@ -11,10 +11,17 @@
 // O preço é que mudar uma frase no código a desliga da tradução em silêncio.
 // `scripts/conferir-traducao.mjs` existe para isso: ele varre os fontes e
 // aponta o que ficou sem par.
+//
+// Os pares vivem em `conteudo/interface.json` — `{ chave: { pt, en } }` —,
+// editável pela administração: o `pt` é o que o painel mostra em português
+// (normalmente igual à chave), o `en` é a tradução. A prévia da administração
+// renderiza as páginas com o rascunho desse arquivo: no servidor ele chega
+// pelo segundo argumento de `traduzirCom`, no cliente por
+// `window.__interfaceRascunho`, que só a página de prévia define.
 
-import { en } from './en.js';
+import interfaceJson from '../../conteudo/interface.json';
 
-const DICIONARIOS = { en };
+export const INTERFACE_PUBLICADA = interfaceJson.textos;
 
 /** Idioma padrão; é o que responde na raiz do site. */
 export const IDIOMA_PADRAO = 'pt-BR';
@@ -53,10 +60,13 @@ export const IDIOMAS = [
  * Tradutor preso a um idioma. Usado no frontmatter das páginas, onde não há
  * `document` para consultar.
  */
-export function traduzirCom(idioma) {
-  const dicionario = DICIONARIOS[idioma];
-  if (!dicionario) return (texto) => texto;
-  return (texto) => dicionario[texto] ?? texto;
+export function traduzirCom(idioma, textos = INTERFACE_PUBLICADA) {
+  const ingles = idioma === 'en';
+  return (texto) => {
+    const par = textos[texto];
+    if (!par) return texto;
+    return (ingles && par.en) || par.pt || texto;
+  };
 }
 
 /**
@@ -70,7 +80,8 @@ export function idiomaAtual() {
 
 /** Tradutor para os módulos de cliente, que descobrem o idioma sozinhos. */
 export function t(texto) {
-  return traduzirCom(idiomaAtual())(texto);
+  const rascunho = typeof window !== 'undefined' ? window.__interfaceRascunho : undefined;
+  return traduzirCom(idiomaAtual(), rascunho || INTERFACE_PUBLICADA)(texto);
 }
 
 /**
@@ -116,11 +127,15 @@ export function escalaDe(idioma = idiomaAtual()) {
 // porque quem lê em inglês também lê a barra de endereço. O par vive aqui, num
 // lugar só, porque o seletor de idioma precisa saber para onde levar e o
 // `hreflang` precisa saber o que anunciar.
+//
+// A raiz é a Visão Geral: quem chega ao painel lê primeiro o que é a
+// Estratégia. As chaves ficaram com os nomes antigos (`index` é o Panorama)
+// porque são identificadores no código, não endereços.
 // ---------------------------------------------------------------------------
 
 export const ROTAS = [
-  { chave: 'index', 'pt-BR': '/', en: '/en' },
-  { chave: 'metodologia', 'pt-BR': '/metodologia', en: '/en/overview' },
+  { chave: 'metodologia', 'pt-BR': '/', en: '/en' },
+  { chave: 'index', 'pt-BR': '/panorama', en: '/en/panorama' },
   { chave: 'metas', 'pt-BR': '/metas', en: '/en/goals' }
 ];
 

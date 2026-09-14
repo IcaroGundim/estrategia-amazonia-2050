@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { lang = IDIOMA_PADRAO } = Astro.props;
-const t = traduzirCom(lang);
+const t = traduzirCom(lang, Astro.locals.interface);
 
 // Os cinco workbooks continuam sendo o download bruto da matriz. Eram o atalho
 // da topbar da rota /indicadores, que deixou de existir.

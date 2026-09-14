@@ -14,6 +14,7 @@ export const ARQUIVOS = {
   metas: 'conteudo/metas.json',
   panorama: 'conteudo/panorama.json',
   textos: 'conteudo/textos.json',
+  interface: 'conteudo/interface.json',
   painel: 'conteudo/painel.json',
   fichas: 'conteudo/fichas.json',
   usuarios: 'conteudo/usuarios.json',

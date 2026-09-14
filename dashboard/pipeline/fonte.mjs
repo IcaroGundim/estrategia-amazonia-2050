@@ -152,24 +152,35 @@ function exige(condicao, mensagem) {
 }
 
 export async function carregaFonte() {
-  const [catalogo, metas, panorama, textos, painel, fichas, valoresTexto] = await Promise.all([
+  const [catalogo, metas, panorama, textos, interfaceTextos, painel, fichas, valoresTexto] = await Promise.all([
     leJson('catalogo.json'),
     leJson('metas.json'),
     leJson('panorama.json'),
     leJson('textos.json'),
+    leJson('interface.json'),
     leJson('painel.json'),
     leJson('fichas.json'),
     readFile(join(conteudoRoot, 'valores.csv'), 'utf8')
   ]);
   const linhas = parseCsv(valoresTexto);
   const ufs = Object.keys(panorama.estados);
-  const fonte = { catalogo, metas, panorama, textos, painel, fichas, linhas, ufs, valores: indexaValores(linhas) };
+  const fonte = { catalogo, metas, panorama, textos, interface: interfaceTextos, painel, fichas, linhas, ufs, valores: indexaValores(linhas) };
   validaFonte(fonte);
   return fonte;
 }
 
-export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, valores }) {
+export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, valores, interface: interfaceTextos }) {
   exige(Array.isArray(catalogo.eixos) && catalogo.eixos.length, 'catalogo.json sem eixos');
+  if (interfaceTextos) {
+    exige(interfaceTextos.textos && typeof interfaceTextos.textos === 'object', 'interface.json sem textos');
+    for (const [chave, par] of Object.entries(interfaceTextos.textos)) {
+      exige(par && typeof par.pt === 'string' && par.pt.trim(), `interface.json: "${chave}" sem texto em português`);
+    }
+    for (const grupo of interfaceTextos.grupos || []) {
+      exige(grupo.titulo && Array.isArray(grupo.chaves), `interface.json: grupo sem título ou chaves`);
+      for (const chave of grupo.chaves) exige(chave in interfaceTextos.textos, `interface.json: o grupo "${grupo.titulo}" cita um texto que não existe: ${chave}`);
+    }
+  }
   const codigos = new Set();
   for (const eixo of catalogo.eixos) {
     exige(Number.isInteger(eixo.numero) && eixo.nome, `eixo sem número ou nome: ${JSON.stringify(eixo).slice(0, 80)}`);
@@ -207,6 +218,11 @@ export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, va
   for (const parametro of metas.parametros) {
     exige(codigos.has(parametro.codigo), `metas.json parametriza código fora do catálogo: ${parametro.codigo}`);
     exige(['maior', 'menor', 'categoria'].includes(parametro.direcao), `${parametro.codigo}: direção inválida`);
+    if (parametro.trajetoria) {
+      const traj = parametro.trajetoria;
+      exige(traj.janela === undefined || (Number.isInteger(traj.janela) && traj.janela >= 3), `${parametro.codigo}: a janela da trajetória precisa ser um inteiro de 3 ou mais`);
+      exige(traj.metodo === undefined || ['linear', 'composto'].includes(traj.metodo), `${parametro.codigo}: método da trajetória precisa ser linear ou composto`);
+    }
   }
   for (const codigo of Object.keys(metas.exclusoes)) exige(codigos.has(codigo), `metas.json exclui código fora do catálogo: ${codigo}`);
   exige(painel.atualizadoEm, 'painel.json sem atualizadoEm');

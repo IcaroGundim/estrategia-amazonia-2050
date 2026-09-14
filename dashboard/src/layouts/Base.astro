@@ -30,7 +30,7 @@ const {
   dados = []
 } = Astro.props;
 
-const t = traduzirCom(lang);
+const t = traduzirCom(lang, Astro.locals.interface);
 
 // `Astro.site` vem de astro.config.mjs. A URL absoluta é obrigatória no Open Graph:
 // antes ela era injetada por uma substituição de texto no build-static.mjs.
@@ -135,7 +135,7 @@ const acao = ACOES[pagina];
 
     <header class="topbar">
       <div class="topbar-inner">
-        <a href={rota('index', lang)} class="brand" aria-label={t('Estratégia 2050 do Consórcio da Amazônia Legal, início')}>
+        <a href={rota('metodologia', lang)} class="brand" aria-label={t('Estratégia 2050 do Consórcio da Amazônia Legal, início')}>
           <img class="brand-logo" src="/logo-consorcio-clara.avif" alt="" />
           {/* Marca da Estratégia em texto, não em imagem: sai da mesma família do
               painel e o rótulo se traduz. "Amazônia" e o ano são nome próprio. */}

@@ -1,0 +1,1867 @@
+{
+  "_leia": "Textos de interface do painel (botões, menus, rótulos, legendas). A chave é o texto original em português, tal como está no código; pt é o que o painel exibe em português e en em inglês. Editável em /admin/textos. Os grupos organizam a tela de edição; \"alvo\" é o trecho da página que a prévia mostra ao abrir o grupo, e \"abre\" o que clicar antes quando o alvo só aparece depois de um clique.",
+  "grupos": [
+    {
+      "titulo": "Barra superior, navegação e rodapé",
+      "pagina": "index",
+      "chaves": [
+        "Estratégia 2050",
+        "Estratégia Regional",
+        "Estratégia 2050 — Amazônia Legal",
+        "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal",
+        "Estratégia 2050 do Consórcio da Amazônia Legal, início",
+        "Pular para o conteúdo",
+        "Navegação principal",
+        "Seções do painel",
+        "Menu",
+        "Fechar",
+        "Abrir menu",
+        "Ver como no computador",
+        "Ver versão para celular",
+        "Panorama",
+        "Visão Geral",
+        "Metas e indicadores",
+        "Como ler os dados",
+        "Sobre a Estratégia",
+        "Baixar nota técnica",
+        "English is a courtesy translation. The official wording is the Portuguese one."
+      ],
+      "alvo": ".topbar"
+    },
+    {
+      "titulo": "Panorama: título, seletor e mapa",
+      "pagina": "index",
+      "chaves": [
+        "Painel de metas e indicadores dos nove estados da Amazônia Legal.",
+        "Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal.",
+        "Panorama - ",
+        "Amazônia Legal.",
+        "Explore os indicadores oficiais e compare os nove estados",
+        "Indicador exibido",
+        "Ano exibido",
+        "Carregando indicador…",
+        "Amazônia Legal, visão regional",
+        "Amazônia Legal — visão regional",
+        "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.",
+        "Escala de desempenho relativo",
+        "menor desempenho",
+        "maior desempenho",
+        "Resumo regional",
+        "População observada",
+        "projeção IBGE para 2025",
+        "Território",
+        "área total dos nove estados",
+        "Municípios",
+        "na Amazônia Legal · base AdaptaBrasil",
+        "Unidades de conservação",
+        "federais e estaduais · CNUC/MMA 2026",
+        "Detalhes e comparação estadual",
+        "Conteúdo da coluna lateral",
+        "Visão geral",
+        "Comparação estadual",
+        "Visão geral da região ou do estado selecionado",
+        "Carregando painel…",
+        "Síntese comparativa",
+        "maior pontuação = melhor posição",
+        "Critérios"
+      ],
+      "alvo": ".map-card"
+    },
+    {
+      "titulo": "Metas e indicadores: cabeçalho da página",
+      "pagina": "metas",
+      "chaves": [
+        "Metas — Estratégia 2050",
+        "Cumprimento das metas da Estratégia Amazônia 2050 e catálogo completo dos indicadores da matriz de resultados.",
+        "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
+        "Estado exibido na progressão das metas",
+        "Busca e filtros",
+        "Todos os indicadores",
+        "Buscar meta, indicador ou código",
+        "Eixo",
+        "Coleta",
+        "Baixar",
+        "Seleção atual em CSV",
+        "Matriz completa em XLSX",
+        "Metas e indicadores da Estratégia",
+        "Metas e indicadores por eixo",
+        "Todos os eixos",
+        "Todos",
+        "Todas"
+      ],
+      "alvo": ".goals-toolbar"
+    },
+    {
+      "titulo": "Quadro de metas: lista, gráfico e detalhe",
+      "pagina": "metas",
+      "chaves": [
+        "Amazônia Legal (região)",
+        "Amazônia Legal e estados",
+        "Valores por estado",
+        "Ano",
+        "Selecionar ano",
+        "Não há valores anuais disponíveis para este indicador.",
+        "Não há classificações estaduais disponíveis para {ano}.",
+        "Não há valores estaduais disponíveis para {ano}.",
+        "{estado}: classificação {nota}",
+        "Classificação CAPAG dos estados em {ano}",
+        "Escala CAPAG, de D a A mais",
+        "meta mínima: B",
+        "Valor da Amazônia Legal e dos estados em {ano}",
+        "marcador da meta",
+        "Valor atual",
+        "Meta",
+        "Jornada",
+        "jornada",
+        "sem escala",
+        "Meta pactuada",
+        "Meta não informada.",
+        "Critério do patamar",
+        "Referência",
+        "Não informada",
+        "Critério",
+        "Meta declarada",
+        "Meta inferida",
+        "Meta derivada da baseline",
+        "Critério não informado",
+        "Leitura regional:",
+        "meta {patamar}{prazo}",
+        " até {prazo}",
+        "nos 9 estados",
+        "A ou B nos {total} estados",
+        "{cumprem} de {total} estados",
+        "{cumprem} de {total}",
+        "Sem dado",
+        "Sem escala",
+        "sem dado",
+        "Resultado",
+        "Ficha técnica",
+        "Faces deste indicador",
+        "Fechar detalhes do indicador",
+        "Carregando ficha técnica…",
+        "Atualize a página para tentar novamente.",
+        "Metas com patamar mensurável",
+        "Demais indicadores do eixo",
+        "Indicadores do eixo",
+        "Nenhum indicador corresponde aos filtros selecionados.",
+        "Eixo {n}",
+        "{n} eixo",
+        "{n} eixos",
+        "{n} indicador",
+        "{n} indicadores",
+        "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável",
+        "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável",
+        "Não foi possível exportar",
+        "Preparando…"
+      ],
+      "alvo": ".goals-list-card"
+    },
+    {
+      "titulo": "Ficha técnica",
+      "pagina": "metas",
+      "chaves": [
+        "Resumo do indicador",
+        "Dados complementares da ficha",
+        "Cobertura nos estados",
+        "Valor em {estado}",
+        "sem valor coletado",
+        "{n} de 9",
+        "estados",
+        "ref. {ano}",
+        "Situação da coleta",
+        "Prazo",
+        "Frequência",
+        "Fontes e referências",
+        "Abrir referência{n}",
+        "Método de cálculo",
+        "Como o indicador é medido",
+        "Dados complementares",
+        "Linha de ação",
+        "Unidade",
+        "Pontuação",
+        "Definição não informada.",
+        "Fórmula não informada na ficha técnica.",
+        "Ficha técnica não localizada no documento.",
+        "Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.",
+        "Não foi possível carregar o catálogo.",
+        "Não foi possível carregar a nota metodológica.",
+        "As fontes não puderam ser carregadas."
+      ],
+      "alvo": "#goals-detail",
+      "abre": "#goals-list button[data-codigo]"
+    },
+    {
+      "titulo": "Ficha técnica: valores enumerados",
+      "pagina": "metas",
+      "chaves": [
+        "Anual",
+        "anual",
+        "Mensal",
+        "A cada ciclo oficial de atualização das séries do AdaptaBrasil/MCTI",
+        "elaboração inicial - 2027 / revisão contínua até 2050",
+        "Pessoas",
+        "pessoas",
+        "Programas",
+        "Por morte",
+        "0 a 100",
+        "0 a 100%",
+        "0 a 10",
+        "0 a 10.000",
+        "0 a 4",
+        "0 100",
+        "100 mil pessoas",
+        "planos",
+        "reais",
+        "Reais",
+        "bancos de dados integrados",
+        "E até A",
+        "Modelos",
+        "quanto menor melhor",
+        "Positiva"
+      ],
+      "alvo": "#goals-detail",
+      "abre": "#goals-list button[data-codigo]"
+    },
+    {
+      "titulo": "Unidades do catálogo",
+      "pagina": "metas",
+      "chaves": [
+        "% / Sim-Não",
+        "nº (0-9)",
+        "nº / Sim-Não",
+        "pontos (0-100)",
+        "% / ha",
+        "% / dias",
+        "nº",
+        "Sim-Não / ha",
+        "nº / %",
+        "nº de programas",
+        "taxa / 100 mil",
+        "nº de municípios",
+        "nº de cadeias",
+        "nº de UFs",
+        "nº de beneficiários",
+        "nº / R$",
+        "nº de vínculos",
+        "R$ (mil)",
+        "% de municípios",
+        "R$ privado / R$ público",
+        "% / bases",
+        "% do PIB",
+        "grau A-C",
+        "modelos"
+      ],
+      "alvo": ".goals-list-card"
+    },
+    {
+      "titulo": "Motivos de um indicador ficar fora do quadro",
+      "pagina": "metas",
+      "chaves": [
+        "O indicador ainda não tem valores coletados para os nove estados.",
+        "A meta não define um patamar numérico comparável aos valores coletados.",
+        "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
+        "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
+        "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
+        "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
+        "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
+        "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050."
+      ],
+      "alvo": "#goals-detail",
+      "abre": "#goals-list button[data-codigo]"
+    },
+    {
+      "titulo": "Unidades das metas",
+      "pagina": "metas",
+      "chaves": [
+        "pontos percentuais",
+        "hectares",
+        "ocorrências",
+        "por 100 mil habitantes",
+        "pontos"
+      ],
+      "alvo": ".goals-list-card"
+    },
+    {
+      "titulo": "Situação da coleta",
+      "pagina": "metas",
+      "chaves": [
+        "Coletado",
+        "Parcial",
+        "Pendente",
+        "Não coletado"
+      ],
+      "alvo": ".goals-toolbar"
+    },
+    {
+      "titulo": "Visão Geral: moldura das lâminas",
+      "pagina": "metodologia",
+      "chaves": [
+        "Visão Geral — Estratégia 2050",
+        "carrossel",
+        "Visão Geral da Estratégia Amazônia 2050",
+        "Slides; use as setas para navegar",
+        "Navegação dos slides",
+        "Slide anterior",
+        "Próximo slide",
+        "Anterior",
+        "Próximo",
+        "Amazônia 2050",
+        "estados consorciados",
+        "Visão 2050",
+        "Transição energética",
+        "Implementação",
+        "Este painel",
+        "Carregando fontes…",
+        "Ver o cumprimento das metas",
+        "Explorar metas e indicadores",
+        "A Estratégia",
+        "Temas estratégicos",
+        "Governança"
+      ]
+    },
+    {
+      "titulo": "Visão Geral: fotografias das lâminas",
+      "pagina": "metodologia",
+      "chaves": [
+        "Floresta amazônica · Amazonas",
+        "Jalapão · Tocantins",
+        "Ver-o-Peso · Belém, Pará",
+        "Teatro Amazonas · Manaus",
+        "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.",
+        "Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.",
+        "Paisagem do Parque Estadual do Jalapão, no Tocantins.",
+        "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.",
+        "Fachada e cúpula do Teatro Amazonas, em Manaus."
+      ]
+    },
+    {
+      "titulo": "Panorama: indicadores do mapa",
+      "pagina": "index",
+      "chaves": [
+        "PRODES/INPE",
+        "Focos de calor",
+        "Pobreza",
+        "Sinesp/MJ",
+        "Vulnerabilidade climática",
+        "Conectividade digital (IBC-AMZ)",
+        "ANATEL"
+      ],
+      "alvo": "#map-indicator-card"
+    },
+    {
+      "titulo": "Panorama: como o valor regional é montado",
+      "pagina": "index",
+      "chaves": [
+        "total de CVLI sobre a população regional",
+        "média ponderada pela população",
+        "média simples dos nove estados",
+        "soma dos nove estados",
+        "unidades com plano e conselho sobre o total de unidades",
+        "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
+        "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece."
+      ],
+      "alvo": "#state-panel"
+    },
+    {
+      "titulo": "Panorama: painel lateral",
+      "pagina": "index",
+      "chaves": [
+        "Perspectiva regional",
+        "Amazônia Legal",
+        "Bandeira da Amazônia Legal",
+        "Bandeira do {estado}",
+        "Resumo da região",
+        "População",
+        "projeção IBGE 2025",
+        "Área territorial",
+        "base cartográfica",
+        "UCs cadastradas",
+        "federais e estaduais",
+        "{estados} estados · {municipios} municípios",
+        "{valor} pessoas",
+        "Indicador selecionado na região",
+        "ano de referência",
+        "sem valor regional",
+        "Não se aplica",
+        "{indicador} · por {metodo}",
+        "{indicador} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.",
+        "Série histórica regional",
+        "Trajetória da região",
+        "Amplitude entre os estados",
+        "Amplitude entre os nove",
+        "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.",
+        ", em {ano}",
+        ", entre {menor} e {maior}",
+        "Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.",
+        "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.",
+        "Não foi possível carregar os dados do painel."
+      ],
+      "alvo": ".dashboard-sidebar"
+    },
+    {
+      "titulo": "Panorama: unidades e rótulos do cartão",
+      "pagina": "index",
+      "chaves": [
+        "mil km²",
+        "100 mil",
+        "pts",
+        "R$ {valor} bi",
+        "Indicadores oficiais",
+        "Ano em curso",
+        "Série histórica",
+        "Leitura",
+        "Fonte",
+        "Entenda o cálculo",
+        "Série histórica de {estado}",
+        "Conjunto dos 9 Estados",
+        "Mapa comparativo da Amazônia Legal para {indicador}",
+        "Detalhamento do estado",
+        "Resumo do estado",
+        "Indicador selecionado",
+        "Trajetória do estado",
+        "{posicao} de 9 · ciclo 2025–2026",
+        "{posicao} entre os nove estados",
+        "Capital {cidade}",
+        "estimativa 2025",
+        "UCs estaduais",
+        "unidades cadastradas",
+        "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.",
+        "Floresta em pé, qualidade de vida.",
+        "Conectar prioridades. Valorizar o território.",
+        "Cooperação que atravessa fronteiras.",
+        "Evidências para orientar o futuro.",
+        "recorte de exibição"
+      ],
+      "alvo": "#map-indicator-card"
+    },
+    {
+      "titulo": "Panorama: trajetória até 2050",
+      "pagina": "index",
+      "chaves": [
+        "Trajetória",
+        "Onde a Amazônia Legal está no caminho até 2050",
+        "Onde {estado} está no caminho até 2050",
+        "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.",
+        "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
+        "Ver o quadro de metas",
+        "Nenhuma meta com trajetória neste recorte.",
+        "meta {alvo} até {prazo}",
+        "Trajetória desligada para esta meta.",
+        "Sem valor para este estado.",
+        "cumprida",
+        "no ritmo",
+        "precisa {vezes}x",
+        "não alcança",
+        "desligada",
+        "sem série",
+        "Em {ano}, {valor}.",
+        "Em {ano}, {valor}: a meta de {alvo} já está cumprida.",
+        "Há um só ano de dados; a projeção aparece a partir do terceiro.",
+        "Há {n} anos de dados; a projeção aparece a partir do terceiro.",
+        "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
+        "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
+        "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.",
+        "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.",
+        "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.",
+        "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.",
+        "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
+        "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo."
+      ],
+      "alvo": ".trajetoria"
+    }
+  ],
+  "textos": {
+    "Estratégia 2050": {
+      "pt": "Estratégia 2050",
+      "en": "Amazônia 2050"
+    },
+    "Estratégia Regional": {
+      "pt": "Estratégia Regional",
+      "en": "Regional Strategy"
+    },
+    "Estratégia 2050 — Amazônia Legal": {
+      "pt": "Estratégia 2050 — Amazônia Legal",
+      "en": "Amazônia 2050 — the Legal Amazon"
+    },
+    "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal": {
+      "pt": "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal",
+      "en": "Amazônia 2050 Strategy · Interstate Consortium for the Legal Amazon"
+    },
+    "Estratégia 2050 do Consórcio da Amazônia Legal, início": {
+      "pt": "Estratégia 2050 do Consórcio da Amazônia Legal, início",
+      "en": "Amazônia 2050, Interstate Consortium for the Legal Amazon — home"
+    },
+    "Pular para o conteúdo": {
+      "pt": "Pular para o conteúdo",
+      "en": "Skip to content"
+    },
+    "Navegação principal": {
+      "pt": "Navegação principal",
+      "en": "Main navigation"
+    },
+    "Seções do painel": {
+      "pt": "Seções do painel",
+      "en": "Dashboard sections"
+    },
+    "Menu": {
+      "pt": "Menu",
+      "en": "Menu"
+    },
+    "Fechar": {
+      "pt": "Fechar",
+      "en": "Close"
+    },
+    "Abrir menu": {
+      "pt": "Abrir menu",
+      "en": "Open menu"
+    },
+    "Ver como no computador": {
+      "pt": "Ver como no computador",
+      "en": "Desktop view"
+    },
+    "Ver versão para celular": {
+      "pt": "Ver versão para celular",
+      "en": "Mobile view"
+    },
+    "Panorama": {
+      "pt": "Panorama",
+      "en": "Explore"
+    },
+    "Visão Geral": {
+      "pt": "Visão Geral",
+      "en": "The Strategy"
+    },
+    "Metas e indicadores": {
+      "pt": "Metas e indicadores",
+      "en": "Goals & indicators"
+    },
+    "Como ler os dados": {
+      "pt": "Como ler os dados",
+      "en": "How to read the data"
+    },
+    "Sobre a Estratégia": {
+      "pt": "Sobre a Estratégia",
+      "en": "About the Strategy"
+    },
+    "Baixar nota técnica": {
+      "pt": "Baixar nota técnica",
+      "en": "Technical note (Portuguese)"
+    },
+    "English is a courtesy translation. The official wording is the Portuguese one.": {
+      "pt": "English is a courtesy translation. The official wording is the Portuguese one.",
+      "en": "English is a courtesy translation. The official wording is the Portuguese one."
+    },
+    "Painel de metas e indicadores dos nove estados da Amazônia Legal.": {
+      "pt": "Painel de metas e indicadores dos nove estados da Amazônia Legal.",
+      "en": "Goals and indicators for the nine states of the Legal Amazon."
+    },
+    "Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal.": {
+      "pt": "Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal.",
+      "en": "Nine states, 59 indicators and the evidence to follow the Legal Amazon."
+    },
+    "Panorama - ": {
+      "pt": "Panorama - ",
+      "en": "At a glance - "
+    },
+    "Amazônia Legal.": {
+      "pt": "Amazônia Legal.",
+      "en": "the Legal Amazon."
+    },
+    "Explore os indicadores oficiais e compare os nove estados": {
+      "pt": "Explore os indicadores oficiais e compare os nove estados",
+      "en": "Explore the official indicators and compare the nine states"
+    },
+    "Indicador exibido": {
+      "pt": "Indicador exibido",
+      "en": "Indicator shown"
+    },
+    "Ano exibido": {
+      "pt": "Ano exibido",
+      "en": "Year shown"
+    },
+    "Carregando indicador…": {
+      "pt": "Carregando indicador…",
+      "en": "Loading the indicator…"
+    },
+    "Amazônia Legal, visão regional": {
+      "pt": "Amazônia Legal, visão regional",
+      "en": "The Legal Amazon, regional view"
+    },
+    "Amazônia Legal — visão regional": {
+      "pt": "Amazônia Legal — visão regional",
+      "en": "The Legal Amazon — regional view"
+    },
+    "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.": {
+      "pt": "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.",
+      "en": "Map of the states of the Legal Amazon. Select a state to update the side panel."
+    },
+    "Escala de desempenho relativo": {
+      "pt": "Escala de desempenho relativo",
+      "en": "Relative performance scale"
+    },
+    "menor desempenho": {
+      "pt": "menor desempenho",
+      "en": "lower performance"
+    },
+    "maior desempenho": {
+      "pt": "maior desempenho",
+      "en": "higher performance"
+    },
+    "Resumo regional": {
+      "pt": "Resumo regional",
+      "en": "Regional summary"
+    },
+    "População observada": {
+      "pt": "População observada",
+      "en": "Population"
+    },
+    "projeção IBGE para 2025": {
+      "pt": "projeção IBGE para 2025",
+      "en": "IBGE projection for 2025"
+    },
+    "Território": {
+      "pt": "Território",
+      "en": "Territory"
+    },
+    "área total dos nove estados": {
+      "pt": "área total dos nove estados",
+      "en": "combined area of the nine states"
+    },
+    "Municípios": {
+      "pt": "Municípios",
+      "en": "Municipalities"
+    },
+    "na Amazônia Legal · base AdaptaBrasil": {
+      "pt": "na Amazônia Legal · base AdaptaBrasil",
+      "en": "in the Legal Amazon · AdaptaBrasil"
+    },
+    "Unidades de conservação": {
+      "pt": "Unidades de conservação",
+      "en": "Protected areas"
+    },
+    "federais e estaduais · CNUC/MMA 2026": {
+      "pt": "federais e estaduais · CNUC/MMA 2026",
+      "en": "federal and state · CNUC/MMA 2026"
+    },
+    "Detalhes e comparação estadual": {
+      "pt": "Detalhes e comparação estadual",
+      "en": "State detail and comparison"
+    },
+    "Conteúdo da coluna lateral": {
+      "pt": "Conteúdo da coluna lateral",
+      "en": "Side column content"
+    },
+    "Visão geral": {
+      "pt": "Visão geral",
+      "en": "Overview"
+    },
+    "Comparação estadual": {
+      "pt": "Comparação estadual",
+      "en": "State comparison"
+    },
+    "Visão geral da região ou do estado selecionado": {
+      "pt": "Visão geral da região ou do estado selecionado",
+      "en": "Overview of the region or of the selected state"
+    },
+    "Carregando painel…": {
+      "pt": "Carregando painel…",
+      "en": "Loading panel…"
+    },
+    "Síntese comparativa": {
+      "pt": "Síntese comparativa",
+      "en": "Comparative index"
+    },
+    "maior pontuação = melhor posição": {
+      "pt": "maior pontuação = melhor posição",
+      "en": "higher score = better rank"
+    },
+    "Critérios": {
+      "pt": "Critérios",
+      "en": "Criteria"
+    },
+    "Metas — Estratégia 2050": {
+      "pt": "Metas — Estratégia 2050",
+      "en": "Goals — Amazônia 2050"
+    },
+    "Cumprimento das metas da Estratégia Amazônia 2050 e catálogo completo dos indicadores da matriz de resultados.": {
+      "pt": "Cumprimento das metas da Estratégia Amazônia 2050 e catálogo completo dos indicadores da matriz de resultados.",
+      "en": "Progress against the Amazônia 2050 Strategy targets, with the full catalogue of the results matrix."
+    },
+    "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.": {
+      "pt": "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
+      "en": "Where the Legal Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
+    },
+    "Estado exibido na progressão das metas": {
+      "pt": "Estado exibido na progressão das metas",
+      "en": "State shown in the goal progress"
+    },
+    "Busca e filtros": {
+      "pt": "Busca e filtros",
+      "en": "Search and filters"
+    },
+    "Todos os indicadores": {
+      "pt": "Todos os indicadores",
+      "en": "All indicators"
+    },
+    "Buscar meta, indicador ou código": {
+      "pt": "Buscar meta, indicador ou código",
+      "en": "Search goals, indicators or codes"
+    },
+    "Eixo": {
+      "pt": "Eixo",
+      "en": "Pillar"
+    },
+    "Coleta": {
+      "pt": "Coleta",
+      "en": "Status"
+    },
+    "Baixar": {
+      "pt": "Baixar",
+      "en": "Download"
+    },
+    "Seleção atual em CSV": {
+      "pt": "Seleção atual em CSV",
+      "en": "Current selection as CSV"
+    },
+    "Matriz completa em XLSX": {
+      "pt": "Matriz completa em XLSX",
+      "en": "Full matrix as XLSX"
+    },
+    "Metas e indicadores da Estratégia": {
+      "pt": "Metas e indicadores da Estratégia",
+      "en": "Goals and indicators of the Strategy"
+    },
+    "Metas e indicadores por eixo": {
+      "pt": "Metas e indicadores por eixo",
+      "en": "Goals and indicators by pillar"
+    },
+    "Todos os eixos": {
+      "pt": "Todos os eixos",
+      "en": "All pillars"
+    },
+    "Todos": {
+      "pt": "Todos",
+      "en": "All"
+    },
+    "Todas": {
+      "pt": "Todas",
+      "en": "All"
+    },
+    "Amazônia Legal (região)": {
+      "pt": "Amazônia Legal (região)",
+      "en": "The Legal Amazon (region)"
+    },
+    "Amazônia Legal e estados": {
+      "pt": "Amazônia Legal e estados",
+      "en": "The Legal Amazon and its states"
+    },
+    "Valores por estado": {
+      "pt": "Valores por estado",
+      "en": "Figures by state"
+    },
+    "Ano": {
+      "pt": "Ano",
+      "en": "Year"
+    },
+    "Selecionar ano": {
+      "pt": "Selecionar ano",
+      "en": "Select year"
+    },
+    "Não há valores anuais disponíveis para este indicador.": {
+      "pt": "Não há valores anuais disponíveis para este indicador.",
+      "en": "No annual figures are available for this indicator."
+    },
+    "Não há classificações estaduais disponíveis para {ano}.": {
+      "pt": "Não há classificações estaduais disponíveis para {ano}.",
+      "en": "No state ratings are available for {ano}."
+    },
+    "Não há valores estaduais disponíveis para {ano}.": {
+      "pt": "Não há valores estaduais disponíveis para {ano}.",
+      "en": "No state figures are available for {ano}."
+    },
+    "{estado}: classificação {nota}": {
+      "pt": "{estado}: classificação {nota}",
+      "en": "{estado}: rated {nota}"
+    },
+    "Classificação CAPAG dos estados em {ano}": {
+      "pt": "Classificação CAPAG dos estados em {ano}",
+      "en": "CAPAG rating of the states in {ano}"
+    },
+    "Escala CAPAG, de D a A mais": {
+      "pt": "Escala CAPAG, de D a A mais",
+      "en": "CAPAG scale, from D to A plus"
+    },
+    "meta mínima: B": {
+      "pt": "meta mínima: B",
+      "en": "minimum target: B"
+    },
+    "Valor da Amazônia Legal e dos estados em {ano}": {
+      "pt": "Valor da Amazônia Legal e dos estados em {ano}",
+      "en": "Figures for the Legal Amazon and its states in {ano}"
+    },
+    "marcador da meta": {
+      "pt": "marcador da meta",
+      "en": "target marker"
+    },
+    "Valor atual": {
+      "pt": "Valor atual",
+      "en": "Current figure"
+    },
+    "Meta": {
+      "pt": "Meta",
+      "en": "Target"
+    },
+    "Jornada": {
+      "pt": "Jornada",
+      "en": "Progress"
+    },
+    "jornada": {
+      "pt": "jornada",
+      "en": "of the way"
+    },
+    "sem escala": {
+      "pt": "sem escala",
+      "en": "no scale"
+    },
+    "Meta pactuada": {
+      "pt": "Meta pactuada",
+      "en": "Agreed target"
+    },
+    "Meta não informada.": {
+      "pt": "Meta não informada.",
+      "en": "No target recorded."
+    },
+    "Critério do patamar": {
+      "pt": "Critério do patamar",
+      "en": "How the target was set"
+    },
+    "Referência": {
+      "pt": "Referência",
+      "en": "Reference year"
+    },
+    "Não informada": {
+      "pt": "Não informada",
+      "en": "Not recorded"
+    },
+    "Critério": {
+      "pt": "Critério",
+      "en": "Criterion"
+    },
+    "Meta declarada": {
+      "pt": "Meta declarada",
+      "en": "Target stated in the matrix"
+    },
+    "Meta inferida": {
+      "pt": "Meta inferida",
+      "en": "Target inferred here"
+    },
+    "Meta derivada da baseline": {
+      "pt": "Meta derivada da baseline",
+      "en": "Target derived from the baseline"
+    },
+    "Critério não informado": {
+      "pt": "Critério não informado",
+      "en": "Criterion not recorded"
+    },
+    "Leitura regional:": {
+      "pt": "Leitura regional:",
+      "en": "Regional figure:"
+    },
+    "meta {patamar}{prazo}": {
+      "pt": "meta {patamar}{prazo}",
+      "en": "target {patamar}{prazo}"
+    },
+    " até {prazo}": {
+      "pt": " até {prazo}",
+      "en": " by {prazo}"
+    },
+    "nos 9 estados": {
+      "pt": "nos 9 estados",
+      "en": "across the 9 states"
+    },
+    "A ou B nos {total} estados": {
+      "pt": "A ou B nos {total} estados",
+      "en": "A or B in all {total} states"
+    },
+    "{cumprem} de {total} estados": {
+      "pt": "{cumprem} de {total} estados",
+      "en": "{cumprem} of {total} states"
+    },
+    "{cumprem} de {total}": {
+      "pt": "{cumprem} de {total}",
+      "en": "{cumprem} of {total}"
+    },
+    "Sem dado": {
+      "pt": "Sem dado",
+      "en": "No data"
+    },
+    "Sem escala": {
+      "pt": "Sem escala",
+      "en": "No scale"
+    },
+    "sem dado": {
+      "pt": "sem dado",
+      "en": "no data"
+    },
+    "Resultado": {
+      "pt": "Resultado",
+      "en": "Result"
+    },
+    "Ficha técnica": {
+      "pt": "Ficha técnica",
+      "en": "Technical sheet"
+    },
+    "Faces deste indicador": {
+      "pt": "Faces deste indicador",
+      "en": "Views of this indicator"
+    },
+    "Fechar detalhes do indicador": {
+      "pt": "Fechar detalhes do indicador",
+      "en": "Close indicator detail"
+    },
+    "Carregando ficha técnica…": {
+      "pt": "Carregando ficha técnica…",
+      "en": "Loading technical sheet…"
+    },
+    "Atualize a página para tentar novamente.": {
+      "pt": "Atualize a página para tentar novamente.",
+      "en": "Reload the page to try again."
+    },
+    "Metas com patamar mensurável": {
+      "pt": "Metas com patamar mensurável",
+      "en": "Goals with a measurable target"
+    },
+    "Demais indicadores do eixo": {
+      "pt": "Demais indicadores do eixo",
+      "en": "Other indicators in this pillar"
+    },
+    "Indicadores do eixo": {
+      "pt": "Indicadores do eixo",
+      "en": "Indicators in this pillar"
+    },
+    "Nenhum indicador corresponde aos filtros selecionados.": {
+      "pt": "Nenhum indicador corresponde aos filtros selecionados.",
+      "en": "No indicator matches the filters selected."
+    },
+    "Eixo {n}": {
+      "pt": "Eixo {n}",
+      "en": "Pillar {n}"
+    },
+    "{n} eixo": {
+      "pt": "{n} eixo",
+      "en": "{n} pillar"
+    },
+    "{n} eixos": {
+      "pt": "{n} eixos",
+      "en": "{n} pillars"
+    },
+    "{n} indicador": {
+      "pt": "{n} indicador",
+      "en": "{n} indicator"
+    },
+    "{n} indicadores": {
+      "pt": "{n} indicadores",
+      "en": "{n} indicators"
+    },
+    "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável": {
+      "pt": "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável",
+      "en": "<span>{total}</span> indicator · <span>{comMeta}</span> with a measurable target"
+    },
+    "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável": {
+      "pt": "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável",
+      "en": "<span>{total}</span> indicators · <span>{comMeta}</span> with a measurable target"
+    },
+    "Não foi possível exportar": {
+      "pt": "Não foi possível exportar",
+      "en": "Export failed"
+    },
+    "Preparando…": {
+      "pt": "Preparando…",
+      "en": "Preparing…"
+    },
+    "Resumo do indicador": {
+      "pt": "Resumo do indicador",
+      "en": "Indicator summary"
+    },
+    "Dados complementares da ficha": {
+      "pt": "Dados complementares da ficha",
+      "en": "Further detail from the sheet"
+    },
+    "Cobertura nos estados": {
+      "pt": "Cobertura nos estados",
+      "en": "Coverage across the states"
+    },
+    "Valor em {estado}": {
+      "pt": "Valor em {estado}",
+      "en": "Figure for {estado}"
+    },
+    "sem valor coletado": {
+      "pt": "sem valor coletado",
+      "en": "no figure collected"
+    },
+    "{n} de 9": {
+      "pt": "{n} de 9",
+      "en": "{n} of 9"
+    },
+    "estados": {
+      "pt": "estados",
+      "en": "states"
+    },
+    "ref. {ano}": {
+      "pt": "ref. {ano}",
+      "en": "ref. {ano}"
+    },
+    "Situação da coleta": {
+      "pt": "Situação da coleta",
+      "en": "Collection status"
+    },
+    "Prazo": {
+      "pt": "Prazo",
+      "en": "Target year"
+    },
+    "Frequência": {
+      "pt": "Frequência",
+      "en": "Frequency"
+    },
+    "Fontes e referências": {
+      "pt": "Fontes e referências",
+      "en": "Sources and references"
+    },
+    "Abrir referência{n}": {
+      "pt": "Abrir referência{n}",
+      "en": "Open reference{n}"
+    },
+    "Método de cálculo": {
+      "pt": "Método de cálculo",
+      "en": "How it is calculated"
+    },
+    "Como o indicador é medido": {
+      "pt": "Como o indicador é medido",
+      "en": "What the indicator measures"
+    },
+    "Dados complementares": {
+      "pt": "Dados complementares",
+      "en": "Further detail"
+    },
+    "Linha de ação": {
+      "pt": "Linha de ação",
+      "en": "Action line"
+    },
+    "Unidade": {
+      "pt": "Unidade",
+      "en": "Unit"
+    },
+    "Pontuação": {
+      "pt": "Pontuação",
+      "en": "Score"
+    },
+    "Definição não informada.": {
+      "pt": "Definição não informada.",
+      "en": "No definition recorded."
+    },
+    "Fórmula não informada na ficha técnica.": {
+      "pt": "Fórmula não informada na ficha técnica.",
+      "en": "No formula recorded in the technical sheet."
+    },
+    "Ficha técnica não localizada no documento.": {
+      "pt": "Ficha técnica não localizada no documento.",
+      "en": "Technical sheet not found in the source document."
+    },
+    "Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.": {
+      "pt": "Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.",
+      "en": "This indicator appears in the consolidated matrix; what follows is only what the catalogue carries."
+    },
+    "Não foi possível carregar o catálogo.": {
+      "pt": "Não foi possível carregar o catálogo.",
+      "en": "The catalogue could not be loaded."
+    },
+    "Não foi possível carregar a nota metodológica.": {
+      "pt": "Não foi possível carregar a nota metodológica.",
+      "en": "The methodological note could not be loaded."
+    },
+    "As fontes não puderam ser carregadas.": {
+      "pt": "As fontes não puderam ser carregadas.",
+      "en": "The sources could not be loaded."
+    },
+    "Anual": {
+      "pt": "Anual",
+      "en": "Annual"
+    },
+    "anual": {
+      "pt": "anual",
+      "en": "annual"
+    },
+    "Mensal": {
+      "pt": "Mensal",
+      "en": "Monthly"
+    },
+    "A cada ciclo oficial de atualização das séries do AdaptaBrasil/MCTI": {
+      "pt": "A cada ciclo oficial de atualização das séries do AdaptaBrasil/MCTI",
+      "en": "With each official update of the AdaptaBrasil/MCTI series"
+    },
+    "elaboração inicial - 2027 / revisão contínua até 2050": {
+      "pt": "elaboração inicial - 2027 / revisão contínua até 2050",
+      "en": "first version by 2027 / revised continuously through 2050"
+    },
+    "Pessoas": {
+      "pt": "Pessoas",
+      "en": "People"
+    },
+    "pessoas": {
+      "pt": "pessoas",
+      "en": "people"
+    },
+    "Programas": {
+      "pt": "Programas",
+      "en": "Programmes"
+    },
+    "Por morte": {
+      "pt": "Por morte",
+      "en": "Per death"
+    },
+    "0 a 100": {
+      "pt": "0 a 100",
+      "en": "0 to 100"
+    },
+    "0 a 100%": {
+      "pt": "0 a 100%",
+      "en": "0 to 100%"
+    },
+    "0 a 10": {
+      "pt": "0 a 10",
+      "en": "0 to 10"
+    },
+    "0 a 10.000": {
+      "pt": "0 a 10.000",
+      "en": "0 to 10,000"
+    },
+    "0 a 4": {
+      "pt": "0 a 4",
+      "en": "0 to 4"
+    },
+    "0 100": {
+      "pt": "0 100",
+      "en": "0 to 100"
+    },
+    "100 mil pessoas": {
+      "pt": "100 mil pessoas",
+      "en": "100,000 people"
+    },
+    "planos": {
+      "pt": "planos",
+      "en": "plans"
+    },
+    "reais": {
+      "pt": "reais",
+      "en": "reais"
+    },
+    "Reais": {
+      "pt": "Reais",
+      "en": "Reais"
+    },
+    "bancos de dados integrados": {
+      "pt": "bancos de dados integrados",
+      "en": "integrated databases"
+    },
+    "E até A": {
+      "pt": "E até A",
+      "en": "E to A"
+    },
+    "Modelos": {
+      "pt": "Modelos",
+      "en": "Models"
+    },
+    "quanto menor melhor": {
+      "pt": "quanto menor melhor",
+      "en": "lower is better"
+    },
+    "Positiva": {
+      "pt": "Positiva",
+      "en": "Positive"
+    },
+    "% / Sim-Não": {
+      "pt": "% / Sim-Não",
+      "en": "% / yes-no"
+    },
+    "nº (0-9)": {
+      "pt": "nº (0-9)",
+      "en": "number (0–9)"
+    },
+    "nº / Sim-Não": {
+      "pt": "nº / Sim-Não",
+      "en": "number / yes-no"
+    },
+    "pontos (0-100)": {
+      "pt": "pontos (0-100)",
+      "en": "points (0–100)"
+    },
+    "% / ha": {
+      "pt": "% / ha",
+      "en": "% / hectares"
+    },
+    "% / dias": {
+      "pt": "% / dias",
+      "en": "% / days"
+    },
+    "nº": {
+      "pt": "nº",
+      "en": "number"
+    },
+    "Sim-Não / ha": {
+      "pt": "Sim-Não / ha",
+      "en": "yes-no / hectares"
+    },
+    "nº / %": {
+      "pt": "nº / %",
+      "en": "number / %"
+    },
+    "nº de programas": {
+      "pt": "nº de programas",
+      "en": "programmes"
+    },
+    "taxa / 100 mil": {
+      "pt": "taxa / 100 mil",
+      "en": "rate per 100,000"
+    },
+    "nº de municípios": {
+      "pt": "nº de municípios",
+      "en": "municipalities"
+    },
+    "nº de cadeias": {
+      "pt": "nº de cadeias",
+      "en": "value chains"
+    },
+    "nº de UFs": {
+      "pt": "nº de UFs",
+      "en": "states"
+    },
+    "nº de beneficiários": {
+      "pt": "nº de beneficiários",
+      "en": "beneficiaries"
+    },
+    "nº / R$": {
+      "pt": "nº / R$",
+      "en": "number / R$"
+    },
+    "nº de vínculos": {
+      "pt": "nº de vínculos",
+      "en": "formal jobs"
+    },
+    "R$ (mil)": {
+      "pt": "R$ (mil)",
+      "en": "R$ (thousands)"
+    },
+    "% de municípios": {
+      "pt": "% de municípios",
+      "en": "% of municipalities"
+    },
+    "R$ privado / R$ público": {
+      "pt": "R$ privado / R$ público",
+      "en": "private R$ / public R$"
+    },
+    "% / bases": {
+      "pt": "% / bases",
+      "en": "% / databases"
+    },
+    "% do PIB": {
+      "pt": "% do PIB",
+      "en": "% of GDP"
+    },
+    "grau A-C": {
+      "pt": "grau A-C",
+      "en": "grade A–C"
+    },
+    "modelos": {
+      "pt": "modelos",
+      "en": "models"
+    },
+    "O indicador ainda não tem valores coletados para os nove estados.": {
+      "pt": "O indicador ainda não tem valores coletados para os nove estados.",
+      "en": "This indicator has no figures collected for the nine states yet."
+    },
+    "A meta não define um patamar numérico comparável aos valores coletados.": {
+      "pt": "A meta não define um patamar numérico comparável aos valores coletados.",
+      "en": "The target sets no numerical threshold that the collected figures can be measured against."
+    },
+    "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.": {
+      "pt": "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
+      "en": "The target is a 50% regional reduction, but the catalogue records no baseline. Without a starting point there is no way to say whether a state is on track."
+    },
+    "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.": {
+      "pt": "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
+      "en": "The target is 100% population coverage, but what was collected is the number of primary care teams, not the coverage rate."
+    },
+    "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.": {
+      "pt": "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
+      "en": "The target is telehealth in at least 50% of municipalities; what was collected is the raw count of municipalities served, and the catalogue carries no municipal total per state."
+    },
+    "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.": {
+      "pt": "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
+      "en": "The R$ 100 million increase does not say which baseline it refers to, nor whether it is per state or regional."
+    },
+    "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.": {
+      "pt": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
+      "en": "The technical sheet defines value-chain development in qualitative terms, with no numerical threshold."
+    },
+    "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.": {
+      "pt": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
+      "en": "The target is 10% growth a year in nominal terms. Judging it on a single year of change would say more about inflation and the comparison base than about the 2050 goal."
+    },
+    "pontos percentuais": {
+      "pt": "pontos percentuais",
+      "en": "percentage points"
+    },
+    "hectares": {
+      "pt": "hectares",
+      "en": "hectares"
+    },
+    "ocorrências": {
+      "pt": "ocorrências",
+      "en": "cases"
+    },
+    "por 100 mil habitantes": {
+      "pt": "por 100 mil habitantes",
+      "en": "per 100,000 inhabitants"
+    },
+    "pontos": {
+      "pt": "pontos",
+      "en": "points"
+    },
+    "Coletado": {
+      "pt": "Coletado",
+      "en": "Collected"
+    },
+    "Parcial": {
+      "pt": "Parcial",
+      "en": "Partial"
+    },
+    "Pendente": {
+      "pt": "Pendente",
+      "en": "Pending"
+    },
+    "Não coletado": {
+      "pt": "Não coletado",
+      "en": "Not collected"
+    },
+    "Visão Geral — Estratégia 2050": {
+      "pt": "Visão Geral — Estratégia 2050",
+      "en": "The Strategy — Amazônia 2050"
+    },
+    "carrossel": {
+      "pt": "carrossel",
+      "en": "carousel"
+    },
+    "Visão Geral da Estratégia Amazônia 2050": {
+      "pt": "Visão Geral da Estratégia Amazônia 2050",
+      "en": "Overview of the Amazônia 2050 Strategy"
+    },
+    "Slides; use as setas para navegar": {
+      "pt": "Slides; use as setas para navegar",
+      "en": "Slides; use the arrow keys to move between them"
+    },
+    "Navegação dos slides": {
+      "pt": "Navegação dos slides",
+      "en": "Slide navigation"
+    },
+    "Slide anterior": {
+      "pt": "Slide anterior",
+      "en": "Previous slide"
+    },
+    "Próximo slide": {
+      "pt": "Próximo slide",
+      "en": "Next slide"
+    },
+    "Anterior": {
+      "pt": "Anterior",
+      "en": "Previous"
+    },
+    "Próximo": {
+      "pt": "Próximo",
+      "en": "Next"
+    },
+    "Amazônia 2050": {
+      "pt": "Amazônia 2050",
+      "en": "Amazônia 2050"
+    },
+    "estados consorciados": {
+      "pt": "estados consorciados",
+      "en": "member states"
+    },
+    "Visão 2050": {
+      "pt": "Visão 2050",
+      "en": "Vision 2050"
+    },
+    "Transição energética": {
+      "pt": "Transição energética",
+      "en": "Energy transition"
+    },
+    "Implementação": {
+      "pt": "Implementação",
+      "en": "Implementation"
+    },
+    "Este painel": {
+      "pt": "Este painel",
+      "en": "This dashboard"
+    },
+    "Carregando fontes…": {
+      "pt": "Carregando fontes…",
+      "en": "Loading sources…"
+    },
+    "Ver o cumprimento das metas": {
+      "pt": "Ver o cumprimento das metas",
+      "en": "See progress against the targets"
+    },
+    "Explorar metas e indicadores": {
+      "pt": "Explorar metas e indicadores",
+      "en": "Explore goals and indicators"
+    },
+    "A Estratégia": {
+      "pt": "A Estratégia",
+      "en": "The Strategy"
+    },
+    "Temas estratégicos": {
+      "pt": "Temas estratégicos",
+      "en": "Strategic themes"
+    },
+    "Governança": {
+      "pt": "Governança",
+      "en": "Governance"
+    },
+    "Floresta amazônica · Amazonas": {
+      "pt": "Floresta amazônica · Amazonas",
+      "en": "Amazon rainforest · Amazonas"
+    },
+    "Jalapão · Tocantins": {
+      "pt": "Jalapão · Tocantins",
+      "en": "Jalapão · Tocantins"
+    },
+    "Ver-o-Peso · Belém, Pará": {
+      "pt": "Ver-o-Peso · Belém, Pará",
+      "en": "Ver-o-Peso · Belém, Pará"
+    },
+    "Teatro Amazonas · Manaus": {
+      "pt": "Teatro Amazonas · Manaus",
+      "en": "Teatro Amazonas · Manaus"
+    },
+    "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.": {
+      "pt": "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.",
+      "en": "Cover of the Amazônia 2050 Regional Strategy: a macaw in flight against dark forest, with the publication title, the Consortium’s logo and the flags of the nine member states."
+    },
+    "Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.": {
+      "pt": "Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.",
+      "en": "Aerial view of forest and a river near Manaus, in Amazonas."
+    },
+    "Paisagem do Parque Estadual do Jalapão, no Tocantins.": {
+      "pt": "Paisagem do Parque Estadual do Jalapão, no Tocantins.",
+      "en": "Landscape of the Jalapão State Park, in Tocantins."
+    },
+    "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.": {
+      "pt": "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.",
+      "en": "The turreted iron market hall at Ver-o-Peso, with fishing boats moored in front of it, in Belém."
+    },
+    "Fachada e cúpula do Teatro Amazonas, em Manaus.": {
+      "pt": "Fachada e cúpula do Teatro Amazonas, em Manaus.",
+      "en": "The façade and dome of the Teatro Amazonas, in Manaus."
+    },
+    "PRODES/INPE": {
+      "pt": "PRODES/INPE",
+      "en": "PRODES/INPE"
+    },
+    "Focos de calor": {
+      "pt": "Focos de calor",
+      "en": "Fire hotspots"
+    },
+    "Pobreza": {
+      "pt": "Pobreza",
+      "en": "Poverty"
+    },
+    "Sinesp/MJ": {
+      "pt": "Sinesp/MJ",
+      "en": "Sinesp/MJ"
+    },
+    "Vulnerabilidade climática": {
+      "pt": "Vulnerabilidade climática",
+      "en": "Climate vulnerability"
+    },
+    "Conectividade digital (IBC-AMZ)": {
+      "pt": "Conectividade digital (IBC-AMZ)",
+      "en": "Digital connectivity (IBC-AMZ)"
+    },
+    "ANATEL": {
+      "pt": "ANATEL",
+      "en": "ANATEL"
+    },
+    "total de CVLI sobre a população regional": {
+      "pt": "total de CVLI sobre a população regional",
+      "en": "total violent deaths over the regional population"
+    },
+    "média ponderada pela população": {
+      "pt": "média ponderada pela população",
+      "en": "population-weighted average"
+    },
+    "média simples dos nove estados": {
+      "pt": "média simples dos nove estados",
+      "en": "simple average of the nine states"
+    },
+    "soma dos nove estados": {
+      "pt": "soma dos nove estados",
+      "en": "sum of the nine states"
+    },
+    "unidades com plano e conselho sobre o total de unidades": {
+      "pt": "unidades com plano e conselho sobre o total de unidades",
+      "en": "areas with a plan and a council over all protected areas"
+    },
+    "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.": {
+      "pt": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
+      "en": "Simple average of the nine states. A correct regional reading would weight by each state’s installed capacity, which the consolidated base does not carry."
+    },
+    "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.": {
+      "pt": "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece.",
+      "en": "Simple average of the nine states. Weighting by GDP would require GDP for the same reference year in every state, which the series does not offer."
+    },
+    "Perspectiva regional": {
+      "pt": "Perspectiva regional",
+      "en": "Regional view"
+    },
+    "Amazônia Legal": {
+      "pt": "Amazônia Legal",
+      "en": "The Legal Amazon"
+    },
+    "Bandeira da Amazônia Legal": {
+      "pt": "Bandeira da Amazônia Legal",
+      "en": "Flag of the Legal Amazon"
+    },
+    "Bandeira do {estado}": {
+      "pt": "Bandeira do {estado}",
+      "en": "Flag of {estado}"
+    },
+    "Resumo da região": {
+      "pt": "Resumo da região",
+      "en": "Regional summary"
+    },
+    "População": {
+      "pt": "População",
+      "en": "Population"
+    },
+    "projeção IBGE 2025": {
+      "pt": "projeção IBGE 2025",
+      "en": "IBGE projection, 2025"
+    },
+    "Área territorial": {
+      "pt": "Área territorial",
+      "en": "Land area"
+    },
+    "base cartográfica": {
+      "pt": "base cartográfica",
+      "en": "cartographic base"
+    },
+    "UCs cadastradas": {
+      "pt": "UCs cadastradas",
+      "en": "Protected areas"
+    },
+    "federais e estaduais": {
+      "pt": "federais e estaduais",
+      "en": "federal and state"
+    },
+    "{estados} estados · {municipios} municípios": {
+      "pt": "{estados} estados · {municipios} municípios",
+      "en": "{estados} states · {municipios} municipalities"
+    },
+    "{valor} pessoas": {
+      "pt": "{valor} pessoas",
+      "en": "{valor} people"
+    },
+    "Indicador selecionado na região": {
+      "pt": "Indicador selecionado na região",
+      "en": "Selected indicator for the region"
+    },
+    "ano de referência": {
+      "pt": "ano de referência",
+      "en": "reference year"
+    },
+    "sem valor regional": {
+      "pt": "sem valor regional",
+      "en": "no regional figure"
+    },
+    "Não se aplica": {
+      "pt": "Não se aplica",
+      "en": "Not applicable"
+    },
+    "{indicador} · por {metodo}": {
+      "pt": "{indicador} · por {metodo}",
+      "en": "{indicador} · by {metodo}"
+    },
+    "{indicador} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.": {
+      "pt": "{indicador} é uma escala relativa entre os nove estados, então a média regional seria sempre próxima de 50 e não descreveria a região.",
+      "en": "{indicador} is a relative scale across the nine states, so a regional average would always sit near 50 and would say nothing about the region."
+    },
+    "Série histórica regional": {
+      "pt": "Série histórica regional",
+      "en": "Regional time series"
+    },
+    "Trajetória da região": {
+      "pt": "Trajetória da região",
+      "en": "How the region has moved"
+    },
+    "Amplitude entre os estados": {
+      "pt": "Amplitude entre os estados",
+      "en": "Range across the states"
+    },
+    "Amplitude entre os nove": {
+      "pt": "Amplitude entre os nove",
+      "en": "Range across the nine states"
+    },
+    "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.": {
+      "pt": "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.",
+      "en": "The <strong>Legal Amazon</strong> records <strong>{valor}</strong> for {indicador}{ano}{faixa}."
+    },
+    ", em {ano}": {
+      "pt": ", em {ano}",
+      "en": ", in {ano}"
+    },
+    ", entre {menor} e {maior}": {
+      "pt": ", entre {menor} e {maior}",
+      "en": ", ranging from {menor} to {maior}"
+    },
+    "Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.": {
+      "pt": "Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.",
+      "en": "Pick an official indicator in the selector above the map to see the figure for the Legal Amazon as a whole."
+    },
+    "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.": {
+      "pt": "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.",
+      "en": "Year in progress: the series has not closed yet, so this figure is not comparable with earlier years."
+    },
+    "Não foi possível carregar os dados do painel.": {
+      "pt": "Não foi possível carregar os dados do painel.",
+      "en": "The dashboard data could not be loaded."
+    },
+    "mil km²": {
+      "pt": "mil km²",
+      "en": "thousand km²"
+    },
+    "100 mil": {
+      "pt": "100 mil",
+      "en": "100,000"
+    },
+    "pts": {
+      "pt": "pts",
+      "en": "pts"
+    },
+    "R$ {valor} bi": {
+      "pt": "R$ {valor} bi",
+      "en": "R$ {valor}bn"
+    },
+    "Indicadores oficiais": {
+      "pt": "Indicadores oficiais",
+      "en": "Official indicators"
+    },
+    "Ano em curso": {
+      "pt": "Ano em curso",
+      "en": "Year in progress"
+    },
+    "Série histórica": {
+      "pt": "Série histórica",
+      "en": "Time series"
+    },
+    "Leitura": {
+      "pt": "Leitura",
+      "en": "How to read it"
+    },
+    "Fonte": {
+      "pt": "Fonte",
+      "en": "Source"
+    },
+    "Entenda o cálculo": {
+      "pt": "Entenda o cálculo",
+      "en": "See the method"
+    },
+    "Série histórica de {estado}": {
+      "pt": "Série histórica de {estado}",
+      "en": "Time series for {estado}"
+    },
+    "Conjunto dos 9 Estados": {
+      "pt": "Conjunto dos 9 Estados",
+      "en": "All nine states"
+    },
+    "Mapa comparativo da Amazônia Legal para {indicador}": {
+      "pt": "Mapa comparativo da Amazônia Legal para {indicador}",
+      "en": "Comparative map of the Legal Amazon for {indicador}"
+    },
+    "Detalhamento do estado": {
+      "pt": "Detalhamento do estado",
+      "en": "State detail"
+    },
+    "Resumo do estado": {
+      "pt": "Resumo do estado",
+      "en": "State summary"
+    },
+    "Indicador selecionado": {
+      "pt": "Indicador selecionado",
+      "en": "Selected indicator"
+    },
+    "Trajetória do estado": {
+      "pt": "Trajetória do estado",
+      "en": "How the state has moved"
+    },
+    "{posicao} de 9 · ciclo 2025–2026": {
+      "pt": "{posicao} de 9 · ciclo 2025–2026",
+      "en": "{posicao} of 9 · 2025–2026 cycle"
+    },
+    "{posicao} entre os nove estados": {
+      "pt": "{posicao} entre os nove estados",
+      "en": "{posicao} of the nine states"
+    },
+    "Capital {cidade}": {
+      "pt": "Capital {cidade}",
+      "en": "Capital: {cidade}"
+    },
+    "estimativa 2025": {
+      "pt": "estimativa 2025",
+      "en": "2025 estimate"
+    },
+    "UCs estaduais": {
+      "pt": "UCs estaduais",
+      "en": "State protected areas"
+    },
+    "unidades cadastradas": {
+      "pt": "unidades cadastradas",
+      "en": "registered areas"
+    },
+    "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.": {
+      "pt": "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.",
+      "en": "<strong>{estado}</strong> ranks {posicao} of the nine states on the indicator shown."
+    },
+    "Floresta em pé, qualidade de vida.": {
+      "pt": "Floresta em pé, qualidade de vida.",
+      "en": "Forest left standing, lives made better."
+    },
+    "Conectar prioridades. Valorizar o território.": {
+      "pt": "Conectar prioridades. Valorizar o território.",
+      "en": "Connect the priorities. Value the territory."
+    },
+    "Cooperação que atravessa fronteiras.": {
+      "pt": "Cooperação que atravessa fronteiras.",
+      "en": "Cooperation that crosses borders."
+    },
+    "Evidências para orientar o futuro.": {
+      "pt": "Evidências para orientar o futuro.",
+      "en": "Evidence to steer what comes next."
+    },
+    "recorte de exibição": {
+      "pt": "recorte de exibição",
+      "en": "cropped for display"
+    },
+    "Trajetória": {
+      "pt": "Trajetória",
+      "en": "Trajectory"
+    },
+    "Onde a Amazônia Legal está no caminho até 2050": {
+      "pt": "Onde a Amazônia Legal está no caminho até 2050",
+      "en": "Where the Legal Amazon stands on the way to 2050"
+    },
+    "Onde {estado} está no caminho até 2050": {
+      "pt": "Onde {estado} está no caminho até 2050",
+      "en": "Where {estado} stands on the way to 2050"
+    },
+    "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.": {
+      "pt": "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.",
+      "en": "The pace of recent years for each target, set against its agreed deadline. A mechanical projection from the series, not a forecast."
+    },
+    "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.": {
+      "pt": "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
+      "en": "Pace = average change per year over the most recent points of the series. Targets without enough yearly data get no projection."
+    },
+    "Ver o quadro de metas": {
+      "pt": "Ver o quadro de metas",
+      "en": "See the goals board"
+    },
+    "no ritmo": {
+      "pt": "no ritmo",
+      "en": "on track"
+    },
+    "precisa {vezes}x": {
+      "pt": "precisa {vezes}x",
+      "en": "needs {vezes}x"
+    },
+    "Nenhuma meta com trajetória neste recorte.": {
+      "pt": "Nenhuma meta com trajetória neste recorte.",
+      "en": "No target with a trajectory in this view."
+    },
+    "meta {alvo} até {prazo}": {
+      "pt": "meta {alvo} até {prazo}",
+      "en": "target {alvo} by {prazo}"
+    },
+    "Trajetória desligada para esta meta.": {
+      "pt": "Trajetória desligada para esta meta.",
+      "en": "Trajectory switched off for this target."
+    },
+    "Sem valor para este estado.": {
+      "pt": "Sem valor para este estado.",
+      "en": "No value for this state."
+    },
+    "cumprida": {
+      "pt": "cumprida",
+      "en": "met"
+    },
+    "não alcança": {
+      "pt": "não alcança",
+      "en": "not reached"
+    },
+    "desligada": {
+      "pt": "desligada",
+      "en": "switched off"
+    },
+    "sem série": {
+      "pt": "sem série",
+      "en": "no series"
+    },
+    "Em {ano}, {valor}.": {
+      "pt": "Em {ano}, {valor}.",
+      "en": "In {ano}, {valor}."
+    },
+    "Em {ano}, {valor}: a meta de {alvo} já está cumprida.": {
+      "pt": "Em {ano}, {valor}: a meta de {alvo} já está cumprida.",
+      "en": "In {ano}, {valor}: the target of {alvo} is already met."
+    },
+    "Há um só ano de dados; a projeção aparece a partir do terceiro.": {
+      "pt": "Há um só ano de dados; a projeção aparece a partir do terceiro.",
+      "en": "There is only one year of data; the projection appears from the third."
+    },
+    "Há {n} anos de dados; a projeção aparece a partir do terceiro.": {
+      "pt": "Há {n} anos de dados; a projeção aparece a partir do terceiro.",
+      "en": "There are {n} years of data; the projection appears from the third."
+    },
+    "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.": {
+      "pt": "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
+      "en": "The series has been rising by about {ritmo} a year, moving away from the target of {alvo} for {prazo}."
+    },
+    "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.": {
+      "pt": "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
+      "en": "The series has been falling by about {ritmo} a year, moving away from the target of {alvo} for {prazo}."
+    },
+    "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.": {
+      "pt": "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.",
+      "en": "In {ano}, {valor}, rising by about {ritmo} a year."
+    },
+    "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.": {
+      "pt": "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.",
+      "en": "In {ano}, {valor}, falling by about {ritmo} a year."
+    },
+    "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.": {
+      "pt": "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.",
+      "en": "If the pace holds, the target of {alvo} is reached in {anoAlcance}, ahead of the {prazo} deadline."
+    },
+    "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.": {
+      "pt": "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.",
+      "en": "If the pace holds, the target of {alvo} is reached in {anoAlcance}, on time."
+    },
+    "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.": {
+      "pt": "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
+      "en": "At this pace the target of {alvo} is not reached by {fim}; meeting the {prazo} deadline would take {vezes} times this pace."
+    },
+    "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.": {
+      "pt": "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
+      "en": "At this pace the target of {alvo} is only reached in {anoAlcance}; meeting the {prazo} deadline would take {vezes} times this pace."
+    }
+  }
+}
