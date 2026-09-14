@@ -82,7 +82,14 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
       <div class="admin-textos-lista">
         <div class="admin-grupos-nav">
           <button type="button" class="admin-grupos-seta" data-grupo-anterior aria-label="Grupo anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
-          <select data-grupo-select aria-label="Grupo de textos"></select>
+          <div class="admin-grupos-menu" data-grupo-menu>
+            <button type="button" class="admin-grupos-gatilho" aria-haspopup="listbox" aria-expanded="false" aria-label="Grupo de textos" data-grupo-gatilho>
+              <span class="admin-grupos-num" data-grupo-num></span>
+              <span class="admin-grupos-rotulo" data-grupo-rotulo></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <ul class="admin-grupos-lista" role="listbox" aria-label="Grupos de textos" tabindex="-1" hidden data-grupo-lista></ul>
+          </div>
           <span class="admin-grupos-contador" data-grupo-contador></span>
           <button type="button" class="admin-grupos-seta" data-grupo-proximo aria-label="Próximo grupo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
         </div>
@@ -292,7 +299,11 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
     // grupos da página escolhida que ainda têm algum campo à mostra.
     const filtro = document.querySelector<HTMLInputElement>('[data-filtro]');
     const resumo = document.querySelector<HTMLElement>('[data-filtro-resumo]');
-    const seletorGrupo = document.querySelector<HTMLSelectElement>('[data-grupo-select]');
+    const menu = document.querySelector<HTMLElement>('[data-grupo-menu]');
+    const gatilho = document.querySelector<HTMLButtonElement>('[data-grupo-gatilho]');
+    const listaMenu = document.querySelector<HTMLUListElement>('[data-grupo-lista]');
+    const numGatilho = document.querySelector<HTMLElement>('[data-grupo-num]');
+    const rotuloGatilho = document.querySelector<HTMLElement>('[data-grupo-rotulo]');
     const contador = document.querySelector<HTMLElement>('[data-grupo-contador]');
     const anterior = document.querySelector<HTMLButtonElement>('[data-grupo-anterior]');
     const proximo = document.querySelector<HTMLButtonElement>('[data-grupo-proximo]');
@@ -309,7 +320,12 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
       atual = grupo;
       grupos.forEach((item) => { item.hidden = item !== atual; });
       const indice = atual ? candidatos.indexOf(atual) : -1;
-      if (seletorGrupo) seletorGrupo.value = String(indice);
+      const descrito = atual ? descreve(atual) : null;
+      if (numGatilho) { numGatilho.textContent = descrito?.num || ''; numGatilho.hidden = !descrito?.num; }
+      if (rotuloGatilho) rotuloGatilho.textContent = descrito?.nome || 'Nenhum grupo';
+      listaMenu?.querySelectorAll<HTMLElement>('[role="option"]').forEach((opcao) => {
+        opcao.setAttribute('aria-selected', String(Number(opcao.dataset.indice) === indice));
+      });
       if (contador) contador.textContent = candidatos.length ? `${indice + 1} / ${candidatos.length}` : '0 / 0';
       if (anterior) anterior.disabled = indice <= 0;
       if (proximo) proximo.disabled = indice < 0 || indice >= candidatos.length - 1;
@@ -337,19 +353,97 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
         if (algum) candidatos.push(grupo);
       });
       if (resumo) resumo.textContent = termo ? `${visiveis} de ${total}` : '';
-      if (seletorGrupo) {
-        seletorGrupo.innerHTML = '';
-        candidatos.forEach((grupo, indice) => {
-          const opcao = document.createElement('option');
-          opcao.value = String(indice);
-          opcao.textContent = grupo.querySelector('h2')?.textContent || '';
-          seletorGrupo.append(opcao);
-        });
-      }
+      montaMenu();
       mostraGrupo(atual && candidatos.includes(atual) ? atual : candidatos[0] || null);
     }
+
+    // ---- menu dos grupos ----
+    // "Lâmina 3: Temas" vira número + nome; nos textos de interface sai o prefixo
+    // com o nome da própria página ("Panorama: ..."), que ali só repete.
+    const NOME_DA_PAGINA: Record<string, string> = { index: 'Panorama', metas: 'Metas e indicadores', metodologia: 'Visão Geral' };
+    const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);
+    function descreve(grupo: HTMLElement) {
+      const titulo = grupo.querySelector('h2')?.textContent?.trim() || '';
+      const lamina = titulo.match(/^Lâmina (\d+):\s*(.*)$/);
+      if (lamina) return { secao: 'Lâminas', num: lamina[1], nome: maiuscula(lamina[2]) };
+      const prefixo = `${NOME_DA_PAGINA[pagina] || ''}: `;
+      const nome = titulo.startsWith(prefixo) ? maiuscula(titulo.slice(prefixo.length)) : titulo;
+      return { secao: 'Textos de interface', num: '', nome };
+    }
+
+    function montaMenu() {
+      if (!listaMenu) return;
+      listaMenu.innerHTML = '';
+      const secoes = new Set(candidatos.map((grupo) => descreve(grupo).secao));
+      let ultima = '';
+      candidatos.forEach((grupo, indice) => {
+        const { secao, num, nome } = descreve(grupo);
+        if (secoes.size > 1 && secao !== ultima) {
+          const titulo = document.createElement('li');
+          titulo.className = 'admin-grupos-secao';
+          titulo.setAttribute('role', 'presentation');
+          titulo.textContent = secao;
+          listaMenu.append(titulo);
+          ultima = secao;
+        }
+        const campos = [...grupo.querySelectorAll<HTMLElement>('.admin-campo')].filter((campo) => !campo.hidden).length;
+        const opcao = document.createElement('li');
+        opcao.setAttribute('role', 'option');
+        opcao.tabIndex = -1;
+        opcao.dataset.indice = String(indice);
+        const marca = document.createElement('span');
+        marca.className = 'admin-grupos-num';
+        marca.textContent = num;
+        if (!num) marca.classList.add('is-vazio');
+        const texto = document.createElement('span');
+        texto.className = 'admin-grupos-nome';
+        texto.textContent = nome;
+        const conta = document.createElement('small');
+        conta.textContent = `${campos} ${campos === 1 ? 'campo' : 'campos'}`;
+        opcao.append(marca, texto, conta);
+        listaMenu.append(opcao);
+      });
+    }
+
+    const opcoes = () => [...(listaMenu?.querySelectorAll<HTMLElement>('[role="option"]') || [])];
+    function abreMenu() {
+      if (!listaMenu || !gatilho || !candidatos.length) return;
+      listaMenu.hidden = false;
+      gatilho.setAttribute('aria-expanded', 'true');
+      (opcoes().find((opcao) => opcao.getAttribute('aria-selected') === 'true') || opcoes()[0])?.focus();
+    }
+    function fechaMenu(devolveFoco = true) {
+      if (!listaMenu || !gatilho || listaMenu.hidden) return;
+      listaMenu.hidden = true;
+      gatilho.setAttribute('aria-expanded', 'false');
+      if (devolveFoco) gatilho.focus();
+    }
+    function escolhe(opcao: HTMLElement | null) {
+      if (!opcao) return;
+      fechaMenu();
+      mostraGrupo(candidatos[Number(opcao.dataset.indice)] || null);
+    }
+    gatilho?.addEventListener('click', () => (listaMenu?.hidden ? abreMenu() : fechaMenu()));
+    gatilho?.addEventListener('keydown', (evento) => {
+      if (evento.key === 'ArrowDown' || evento.key === 'ArrowUp') { evento.preventDefault(); abreMenu(); }
+    });
+    listaMenu?.addEventListener('click', (evento) => escolhe((evento.target as HTMLElement).closest<HTMLElement>('[role="option"]')));
+    listaMenu?.addEventListener('keydown', (evento) => {
+      const lista = opcoes();
+      const posicao = lista.indexOf(document.activeElement as HTMLElement);
+      if (evento.key === 'ArrowDown') { evento.preventDefault(); lista[Math.min(lista.length - 1, posicao + 1)]?.focus(); }
+      else if (evento.key === 'ArrowUp') { evento.preventDefault(); lista[Math.max(0, posicao - 1)]?.focus(); }
+      else if (evento.key === 'Home') { evento.preventDefault(); lista[0]?.focus(); }
+      else if (evento.key === 'End') { evento.preventDefault(); lista.at(-1)?.focus(); }
+      else if (evento.key === 'Enter' || evento.key === ' ') { evento.preventDefault(); escolhe(lista[posicao] || null); }
+      else if (evento.key === 'Escape') { evento.preventDefault(); fechaMenu(); }
+      else if (evento.key === 'Tab') fechaMenu(false);
+    });
+    document.addEventListener('click', (evento) => {
+      if (menu && !menu.contains(evento.target as Node)) fechaMenu(false);
+    });
+
     filtro?.addEventListener('input', filtra);
-    seletorGrupo?.addEventListener('change', () => mostraGrupo(candidatos[Number(seletorGrupo.value)] || null));
     anterior?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : 0; if (i > 0) mostraGrupo(candidatos[i - 1]); });
     proximo?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : -1; if (i < candidatos.length - 1) mostraGrupo(candidatos[i + 1]); });
     filtra();

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — seletor de grupos em Textos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --mata: #0e2b22; --mata-700: #1c4437; --mata-100: #c6d2c7; --urucum: #c0451f; --areia: #f5f0e8; --papel: #fff; --filete: #d9d0c3; --tinta: #1a1613; --tinta-3: #5c544c; --tinta-4: #8a8078; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px; background: #efeae2; color: var(--tinta); font: 400 14.5px/1.5 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 32px; max-width: 76ch; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 1180px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } body { padding: 20px; } }
+  .card { background: var(--papel); border: 1px solid var(--filete); border-radius: 14px; padding: 26px 28px 30px; min-height: 470px; }
+  .card h2 { font: 800 20px var(--display); margin: 0 0 4px; }
+  .card h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .card > p { margin: 0 0 22px; color: var(--tinta-3); font-size: 13.5px; max-width: 54ch; }
+
+  /* barra comum: setas + controle + contador */
+  .nav { display: flex; align-items: center; gap: 8px; position: relative; }
+  .seta { flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--filete); border-radius: 9px; background: var(--papel); color: var(--tinta); cursor: pointer; }
+  .seta svg { width: 18px; height: 18px; }
+  .seta:hover { background: var(--areia); }
+  .cont { font-size: 12.5px; color: var(--tinta-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .num { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 5px; background: var(--areia); color: var(--mata-700); font: 700 11.5px var(--display); }
+
+  /* 1 — Menu próprio */
+  .gatilho { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 12px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel); color: var(--tinta); font: 600 14px var(--text); text-align: left; cursor: pointer; }
+  .gatilho:hover, .gatilho[aria-expanded="true"] { border-color: var(--mata-700); }
+  .gatilho .rot { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gatilho .chev { width: 16px; height: 16px; color: var(--tinta-4); transition: transform .15s; }
+  .gatilho[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .menu { position: absolute; top: calc(100% + 6px); left: 48px; right: 48px; z-index: 5; margin: 0; padding: 6px; list-style: none; background: var(--papel); border: 1px solid var(--filete); border-radius: 12px; box-shadow: 0 12px 32px rgba(26, 22, 19, .12); }
+  .menu[hidden] { display: none; }
+  .menu .sec { padding: 10px 10px 4px; font: 600 9.5px var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-4); }
+  .menu .sec:first-child { padding-top: 4px; }
+  .menu button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 0; border-radius: 8px; background: none; color: var(--tinta); font: 500 14px var(--text); text-align: left; cursor: pointer; }
+  .menu button:hover { background: var(--areia); }
+  .menu button.is-ativo { background: var(--mata); color: #fff; }
+  .menu button.is-ativo .num { background: rgba(255,255,255,.14); color: #fff; }
+  .menu small { margin-left: auto; color: var(--tinta-4); font-size: 12px; }
+  .menu button.is-ativo small { color: rgba(255,255,255,.7); }
+
+  /* 2 — Lista lateral fixa */
+  .lista { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 20px; }
+  .lista nav { display: flex; flex-direction: column; border-right: 1px solid var(--filete); padding-right: 14px; }
+  .lista .sec { padding: 0 8px 6px; font: 600 9.5px var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-4); }
+  .lista .sec + .sec, .lista button + .sec { margin-top: 14px; }
+  .lista button { position: relative; display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border: 0; border-radius: 7px; background: none; color: var(--tinta-3); font: 500 13.5px var(--text); text-align: left; cursor: pointer; }
+  .lista button:hover { color: var(--tinta); background: var(--areia); }
+  .lista button.is-ativo { color: var(--tinta); font-weight: 600; background: var(--areia); }
+  .lista button b { color: var(--tinta-4); font: 700 12px var(--display); min-width: 12px; }
+  .lista button.is-ativo b { color: var(--urucum); }
+  @media (max-width: 600px) { .lista { grid-template-columns: 1fr; } .lista nav { border-right: 0; padding-right: 0; } }
+
+  /* 3 — Faixa numerada */
+  .faixa { display: flex; flex-wrap: wrap; gap: 6px; }
+  .faixa button { min-width: 40px; height: 40px; padding: 0 12px; border: 1px solid var(--filete); border-radius: 9px; background: var(--papel); color: var(--tinta-3); font: 700 14px var(--display); cursor: pointer; }
+  .faixa button:hover { border-color: var(--mata-700); color: var(--tinta); }
+  .faixa button.is-ativo { background: var(--mata); border-color: var(--mata); color: #fff; }
+  .faixa .sep { width: 1px; margin: 6px 4px; background: var(--filete); }
+  .faixa-rot { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--filete); }
+  .faixa-rot strong { font: 800 18px var(--display); }
+
+  /* 4 — Nativo refinado */
+  .nativo { flex: 1; min-width: 0; height: 40px; padding: 0 36px 0 12px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 16px; color: var(--tinta); font: 600 14px var(--text); appearance: none; cursor: pointer; }
+  .nativo:hover { border-color: var(--mata-700); }
+
+  /* conteúdo simulado abaixo */
+  .campos { margin-top: 18px; display: grid; gap: 12px; }
+  .campos h3 { margin: 0; font: 800 19px var(--display); }
+  .campos .lin { height: 40px; border: 1px solid var(--mata-100); border-radius: 9px; }
+  .campos .lin.curta { width: 60%; }
+  .rotulo { font: 600 10px var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-3); }
+</style>
+</head>
+<body>
+<h1>Seletor de grupos em Textos — quatro opções</h1>
+<p class="sub">Todas mantêm as setas e o contador, e todas corrigem a ambiguidade atual: hoje há duas "Lâmina 5" na lista. Aqui a segunda vira "Lâmina 6: Fontes e metodologia da síntese" e a moldura e as fotos ficam num bloco à parte, sem número. Clique para experimentar.</p>
+
+<div class="grid">
+  <section class="card">
+    <h2><small>1</small>Menu próprio</h2>
+    <p>Mesmo lugar e tamanho do seletor atual, mas a lista abre como um cartão do painel: número à esquerda, quantidade de campos à direita, lâminas separadas da moldura. É a troca mais direta.</p>
+    <div class="nav" data-op="1">
+      <button class="seta" data-ant aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+      <button class="gatilho" aria-expanded="false"><span class="num" data-num></span><span class="rot" data-rot></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <span class="cont" data-cont></span>
+      <button class="seta" data-prox aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+      <ul class="menu" hidden></ul>
+    </div>
+    <div class="campos"><h3 data-titulo></h3><span class="rotulo">estrategia / titulolinha1</span><div class="lin"></div><div class="lin curta"></div></div>
+  </section>
+
+  <section class="card">
+    <h2><small>2</small>Lista lateral</h2>
+    <p>Sem dropdown: todos os grupos ficam visíveis numa coluna à esquerda dos campos, como um sumário. Nada fica escondido, mas ocupa largura, e a coluna de edição fica mais estreita ao lado da prévia.</p>
+    <div class="lista" data-op="2">
+      <nav></nav>
+      <div class="campos" style="margin-top:0"><h3 data-titulo></h3><span class="rotulo">estrategia / titulolinha1</span><div class="lin"></div><div class="lin curta"></div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><small>3</small>Faixa numerada</h2>
+    <p>Botões numerados, como a paginação das lâminas; M e F para moldura e fotografias. O nome do grupo escolhido aparece logo abaixo. Rápido de percorrer, mas o número sozinho não diz o que é antes do clique (o nome aparece no hover).</p>
+    <div data-op="3">
+      <div class="faixa"></div>
+      <div class="faixa-rot"><strong data-titulo></strong><span class="cont" data-cont></span></div>
+    </div>
+    <div class="campos"><span class="rotulo">estrategia / titulolinha1</span><div class="lin"></div><div class="lin curta"></div></div>
+  </section>
+
+  <section class="card">
+    <h2><small>4</small>Nativo refinado</h2>
+    <p>Continua sendo o seletor do navegador, com a lista em grupos ("Lâminas" e "Moldura") e altura e seta alinhadas às setas. A lista aberta segue com a aparência do sistema: é a mudança menor.</p>
+    <div class="nav" data-op="4">
+      <button class="seta" data-ant aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+      <select class="nativo"></select>
+      <span class="cont" data-cont></span>
+      <button class="seta" data-prox aria-label="Próximo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+    </div>
+    <div class="campos"><h3 data-titulo></h3><span class="rotulo">estrategia / titulolinha1</span><div class="lin"></div><div class="lin curta"></div></div>
+  </section>
+</div>
+
+<script>
+  const GRUPOS = [
+    { sec: 'Lâminas', num: '1', nome: 'A Estratégia', campos: 9 },
+    { sec: 'Lâminas', num: '2', nome: 'Visão 2050', campos: 11 },
+    { sec: 'Lâminas', num: '3', nome: 'Temas estratégicos', campos: 15 },
+    { sec: 'Lâminas', num: '4', nome: 'Governança', campos: 18 },
+    { sec: 'Lâminas', num: '5', nome: 'Este painel', campos: 7 },
+    { sec: 'Lâminas', num: '6', nome: 'Fontes e metodologia da síntese', campos: 6 },
+    { sec: 'Moldura', num: 'M', nome: 'Moldura das lâminas', campos: 12 },
+    { sec: 'Moldura', num: 'F', nome: 'Fotografias das lâminas', campos: 10 }
+  ];
+  const titulo = (g) => g.sec === 'Lâminas' ? `Lâmina ${g.num}: ${g.nome}` : g.nome;
+
+  document.querySelectorAll('[data-op]').forEach((raiz) => {
+    const op = raiz.dataset.op;
+    const card = raiz.closest('.card');
+    let i = 0;
+    const set = (n) => { i = Math.max(0, Math.min(GRUPOS.length - 1, n)); render(); };
+
+    function render() {
+      const g = GRUPOS[i];
+      card.querySelectorAll('[data-titulo]').forEach((el) => el.textContent = titulo(g));
+      card.querySelectorAll('[data-cont]').forEach((el) => el.textContent = `${i + 1} / ${GRUPOS.length}`);
+      const ant = raiz.querySelector('[data-ant]'), prox = raiz.querySelector('[data-prox]');
+      if (ant) ant.disabled = i === 0;
+      if (prox) prox.disabled = i === GRUPOS.length - 1;
+      if (op === '1') {
+        raiz.querySelector('[data-num]').textContent = g.num;
+        raiz.querySelector('[data-rot]').textContent = g.sec === 'Lâminas' ? g.nome : g.nome;
+        const menu = raiz.querySelector('.menu');
+        let html = '', ult = '';
+        GRUPOS.forEach((x, k) => {
+          if (x.sec !== ult) { html += `<li class="sec">${x.sec}</li>`; ult = x.sec; }
+          html += `<li><button data-k="${k}" class="${k === i ? 'is-ativo' : ''}"><span class="num">${x.num}</span>${x.nome}<small>${x.campos} campos</small></button></li>`;
+        });
+        menu.innerHTML = html;
+      }
+      if (op === '2') {
+        let html = '', ult = '';
+        GRUPOS.forEach((x, k) => {
+          if (x.sec !== ult) { html += `<span class="sec">${x.sec}</span>`; ult = x.sec; }
+          html += `<button data-k="${k}" class="${k === i ? 'is-ativo' : ''}"><b>${x.num}</b>${x.nome}</button>`;
+        });
+        raiz.querySelector('nav').innerHTML = html;
+      }
+      if (op === '3') {
+        let html = '';
+        GRUPOS.forEach((x, k) => {
+          if (k > 0 && x.sec !== GRUPOS[k - 1].sec) html += '<span class="sep"></span>';
+          html += `<button data-k="${k}" title="${titulo(x)}" class="${k === i ? 'is-ativo' : ''}">${x.num}</button>`;
+        });
+        raiz.querySelector('.faixa').innerHTML = html;
+      }
+      if (op === '4') {
+        const sel = raiz.querySelector('select');
+        if (!sel.options.length) {
+          ['Lâminas', 'Moldura'].forEach((sec) => {
+            const og = document.createElement('optgroup'); og.label = sec;
+            GRUPOS.forEach((x, k) => { if (x.sec === sec) og.append(new Option(titulo(x), k)); });
+            sel.append(og);
+          });
+          sel.addEventListener('change', () => set(Number(sel.value)));
+        }
+        sel.value = i;
+      }
+    }
+
+    raiz.addEventListener('click', (e) => {
+      const k = e.target.closest('[data-k]');
+      if (k) { set(Number(k.dataset.k)); const m = raiz.querySelector('.menu'); if (m) { m.hidden = true; raiz.querySelector('.gatilho').setAttribute('aria-expanded', 'false'); } return; }
+      if (e.target.closest('[data-ant]')) set(i - 1);
+      if (e.target.closest('[data-prox]')) set(i + 1);
+      const gat = e.target.closest('.gatilho');
+      if (gat) { const m = raiz.querySelector('.menu'); m.hidden = !m.hidden; gat.setAttribute('aria-expanded', String(!m.hidden)); }
+    });
+    render();
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-op="1"]')) { const m = document.querySelector('[data-op="1"] .menu'); m.hidden = true; document.querySelector('.gatilho').setAttribute('aria-expanded', 'false'); }
+  });
+</script>
+</body>
+</html>

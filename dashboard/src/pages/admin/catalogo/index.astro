@@ -19,8 +19,7 @@ const nivel = (status: string) => {
   const texto = String(status || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   if (texto.startsWith('coletado')) return 'coletado';
   if (texto.startsWith('parcial')) return 'parcial';
-  if (texto.startsWith('pendente')) return 'pendente';
-  return 'manual';
+  return 'pendente';
 };
 ---
 
@@ -41,7 +40,7 @@ const nivel = (status: string) => {
         {eixo.indicadores.map((indicador) => (
           <li>
             <div><a href={`/admin/catalogo/${encodeURIComponent(indicador.codigo)}`}><b>{indicador.codigo}</b> {indicador.nome}</a><br /><small>{indicador.unidade}{indicador.anoRef ? `, ref. ${indicador.anoRef}` : ''}</small></div>
-            <span class={`admin-etiqueta is-${nivel(indicador.status)}`}>{nivel(indicador.status) === 'manual' ? 'não coletado' : nivel(indicador.status)}</span>
+            <span class={`admin-etiqueta is-${nivel(indicador.status)}`}>{nivel(indicador.status)}</span>
           </li>
         ))}
       </ul>

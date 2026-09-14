@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Leituras da caixa da Trajetória</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-100: #c6d2c7; --urucum: #c0451f; --ocre: #e0a83c; --ocre-texto: #8a6416; --areia: #f5f0e8; --papel: #fff; --linha: #ddd3c6; --linha-2: #ede6dc; --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px; background: #f2ede6; color: var(--tinta); font: 400 14.5px/1.55 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 32px; max-width: 76ch; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 1100px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } body { padding: 20px; } }
+  .card { background: var(--papel); border-radius: 16px; padding: 26px 28px 30px; border: 1px solid var(--linha); }
+  .card h2 { font: 800 20px var(--display); margin: 0 0 4px; }
+  .card h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .card > p { margin: 0 0 20px; color: var(--tinta-3); font-size: 13.5px; max-width: 54ch; }
+  /* simula a coluna da caixa (~420px) */
+  .coluna { max-width: 420px; padding: 14px 16px 16px; border: 1px dashed var(--linha); border-radius: 10px; }
+  .dt { margin: 0 0 8px; color: var(--tinta); font: 600 12.5px/1.45 var(--text); }
+  .formula { display: block; width: fit-content; margin: 4px 0 0; padding: 4px 9px; border-radius: 6px; background: var(--areia); color: var(--tinta); font: 500 12.5px/1.4 var(--display); }
+
+  /* 1 — Como na lista */
+  .l1 { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .l1 li { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--linha-2); }
+  .l1 li:first-child { border-top: 0; padding-top: 0; }
+  .l1 .sel { font: 800 17px/1 var(--display); letter-spacing: -.03em; color: var(--mata); }
+  .l1 .sel small { display: block; margin-top: 3px; font: 400 11px/1.2 var(--text); letter-spacing: 0; color: var(--tinta-4); }
+  .l1 .is-acelerar .sel { color: var(--ocre-texto); }
+  .l1 .is-contrario .sel, .l1 .is-contrario .sel small { color: var(--urucum); }
+  .l1 .is-semSerie .sel { color: var(--tinta-4); }
+  .l1 p { margin: 0; color: var(--tinta-2); font-size: 12.5px; line-height: 1.45; }
+
+  /* 2 — Régua do prazo */
+  .regua { position: relative; margin: 4px 0 10px; }
+  .regua svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .regua text { font: 500 10.5px var(--text); fill: var(--tinta-3); }
+  .regua .forte { font-weight: 600; fill: var(--tinta); }
+  .l2 { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; font-size: 12.5px; line-height: 1.45; color: var(--tinta-2); }
+  .ponto { display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; vertical-align: 1px; }
+
+  /* 3 — Selos com critério */
+  .l3 { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+  .l3 li { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 10px; align-items: start; }
+  .selo { display: inline-flex; align-items: center; justify-content: center; height: 22px; padding: 0 8px; border-radius: 999px; font: 600 11px var(--text); white-space: nowrap; }
+  .s-ok { background: #e6efe9; color: var(--mata-700); }
+  .s-acel { background: #faf0d9; color: var(--ocre-texto); }
+  .s-contra { background: #f9e7e0; color: #9c3718; }
+  .s-cump { background: var(--mata-700); color: #fff; }
+  .s-sem { background: var(--linha-2); color: var(--tinta-3); }
+  .l3 p { margin: 0; padding-top: 2px; color: var(--tinta-2); font-size: 12.5px; line-height: 1.45; }
+
+  /* 4 — Pergunta a pergunta */
+  .l4 { margin: 0; padding: 0; list-style: none; font-size: 12.5px; line-height: 1.45; color: var(--tinta-2); }
+  .l4 > li { position: relative; padding: 0 0 10px 18px; }
+  .l4 > li::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: -4px; width: 1px; background: var(--linha); }
+  .l4 > li:last-child::before { display: none; }
+  .l4 > li::after { content: ""; position: absolute; left: 1px; top: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--papel); border: 1px solid var(--tinta-4); }
+  .l4 .q { color: var(--tinta); font-weight: 600; }
+  .l4 .r { display: block; margin-top: 2px; }
+  .l4 b { font-weight: 600; }
+  .c-ok { color: var(--mata-500); } .c-acel { color: var(--ocre-texto); } .c-contra { color: var(--urucum); } .c-sem { color: var(--tinta-4); } .c-cump { color: var(--mata); }
+</style>
+</head>
+<body>
+<h1>Leituras — quatro formas</h1>
+<p class="sub">Cada card simula a coluna da direita da caixa aberta (a linha tracejada marca a largura). O conteúdo é o mesmo em todas: os cinco rótulos e o critério de cada um, com o N explicado.</p>
+
+<div class="grid">
+  <section class="card">
+    <h2><small>1</small>Como na lista</h2>
+    <p>Cada leitura aparece exatamente como na coluna da trajetória (o ano grande com o rótulo embaixo, na mesma cor), e o critério ao lado. Quem lê reconhece de imediato o que está vendo na lista.</p>
+    <div class="coluna">
+      <p class="dt">Leituras</p>
+      <ul class="l1">
+        <li class="is-noRitmo"><span class="sel">2030<small>no ritmo</small></span><p>O ano de alcance é igual ou anterior ao prazo da meta.</p></li>
+        <li class="is-acelerar"><span class="sel">2041<small>precisa 1,8x</small></span><p>O ano de alcance fica depois do prazo. O número diz quantas vezes o ritmo atual seria preciso para cumprir o prazo:<span class="formula">(meta − último valor) ÷ (prazo − último ano) ÷ β</span></p></li>
+        <li class="is-contrario"><span class="sel">—<small>não alcança</small></span><p>A inclinação é nula ou vai no sentido contrário ao da meta.</p></li>
+        <li class="is-cumprida"><span class="sel">2024<small>cumprida</small></span><p>O último valor já atende à meta.</p></li>
+        <li class="is-semSerie"><span class="sel">—<small>sem série</small></span><p>Menos de três anos com dado.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><small>2</small>Régua do prazo</h2>
+    <p>Um pequeno esquema mostra onde cai o ano de alcance em relação ao prazo, e a lista embaixo fica curta. Explica as três leituras principais de uma vez; cumprida e sem série vêm como notas.</p>
+    <div class="coluna">
+      <p class="dt">Leituras</p>
+      <div class="regua">
+        <svg viewBox="0 0 388 70" aria-hidden="true">
+          <line x1="0" y1="34" x2="388" y2="34" stroke="#ddd3c6" stroke-width="1.5"/>
+          <circle cx="14" cy="34" r="4" fill="#0e2b22"/>
+          <text x="14" y="58" text-anchor="middle">hoje</text>
+          <line x1="218" y1="16" x2="218" y2="50" stroke="#1a1613" stroke-width="1.5"/>
+          <text x="218" y="64" text-anchor="middle" class="forte">prazo</text>
+          <circle cx="150" cy="34" r="5" fill="#3e6e57"/>
+          <text x="150" y="20" text-anchor="middle" fill="#3e6e57" style="fill:#3e6e57">no ritmo</text>
+          <circle cx="318" cy="34" r="5" fill="#e0a83c"/>
+          <text x="318" y="20" text-anchor="middle" style="fill:#8a6416">precisa Nx</text>
+          <path d="M378 34 l-8 -5 v10 z" fill="#c0451f"/>
+          <text x="384" y="58" text-anchor="end" style="fill:#c0451f">não alcança</text>
+        </svg>
+      </div>
+      <ul class="l2">
+        <li><span class="ponto" style="background:#3e6e57"></span><b>no ritmo</b>: alcança até o prazo.</li>
+        <li><span class="ponto" style="background:#e0a83c"></span><b>precisa Nx</b>: alcança depois; N = ritmo necessário ÷ ritmo atual.</li>
+        <li><span class="ponto" style="background:#c0451f"></span><b>não alcança</b>: a série não caminha para a meta.</li>
+        <li><span class="ponto" style="background:#0e2b22"></span><b>cumprida</b>: o último valor já atende à meta.</li>
+        <li><span class="ponto" style="background:#8a8078"></span><b>sem série</b>: menos de três anos com dado.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><small>3</small>Selos com critério</h2>
+    <p>Cada rótulo vira um selo colorido, alinhado numa coluna, e o critério fica ao lado em frase curta. Mais limpo e fácil de escanear; a fórmula do N sai da frase e vai para um destaque próprio.</p>
+    <div class="coluna">
+      <p class="dt">Leituras</p>
+      <ul class="l3">
+        <li><span class="selo s-ok">no ritmo</span><p>Alcança a meta até o prazo.</p></li>
+        <li><span class="selo s-acel">precisa Nx</span><p>Só alcança depois do prazo. N é quantas vezes o ritmo atual seria preciso:<span class="formula">N = ritmo necessário ÷ β</span></p></li>
+        <li><span class="selo s-contra">não alcança</span><p>A série está parada ou se afasta da meta.</p></li>
+        <li><span class="selo s-cump">cumprida</span><p>O último valor já atende à meta.</p></li>
+        <li><span class="selo s-sem">sem série</span><p>Menos de três anos com dado.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><small>4</small>Pergunta a pergunta</h2>
+    <p>A classificação vira a sequência de perguntas que o código faz, na ordem. Mostra por que cada meta caiu onde caiu, mas é a mais longa de ler.</p>
+    <div class="coluna">
+      <p class="dt">Leituras</p>
+      <ol class="l4">
+        <li><span class="q">O último valor já atende à meta?</span><span class="r">Sim: <b class="c-cump">cumprida</b>.</span></li>
+        <li><span class="q">Há ao menos três anos com dado?</span><span class="r">Não: <b class="c-sem">sem série</b>.</span></li>
+        <li><span class="q">A série caminha em direção à meta?</span><span class="r">Não: <b class="c-contra">não alcança</b>.</span></li>
+        <li><span class="q">Chega à meta até o prazo?</span><span class="r">Sim: <b class="c-ok">no ritmo</b>. Não: <b class="c-acel">precisa Nx</b>, em que N = ritmo necessário ÷ ritmo atual.</span></li>
+      </ol>
+    </div>
+  </section>
+</div>
+</body>
+</html>

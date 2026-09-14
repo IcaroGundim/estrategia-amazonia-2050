@@ -37,11 +37,15 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
     <article class="methodology-article" tabindex="0" aria-label={t('Slides; use as setas para navegar')}>
       <section id="a-estrategia" class="methodology-intro method-section">
         <div class="slide-copy">
-          <a class="method-pdf-link" href={estrategia.botaoPdf.href} target="_blank" rel="noopener">
-            <strong>{tx(estrategia.botaoPdf.rotulo)} ↗</strong>
-          </a>
-          <h1><span>{tx(estrategia.tituloLinha1)}</span><em>{tx(estrategia.tituloLinha2)}</em></h1>
-          <p class="methodology-lead">{tx(estrategia.abertura)}</p>
+          {/* Título e abertura andam juntos: no tablet eles ocupam um quadrante do
+              card ao lado da capa (ver overview-compositions.css). */}
+          <div class="slide-abertura">
+            <h1><span>{tx(estrategia.tituloLinha1)}</span><em>{tx(estrategia.tituloLinha2)}</em></h1>
+            <a class="method-pdf-link" href={estrategia.botaoPdf.href} target="_blank" rel="noopener">
+              <strong>{tx(estrategia.botaoPdf.rotulo)} ↗</strong>
+            </a>
+            <p class="methodology-lead">{tx(estrategia.abertura)}</p>
+          </div>
 
           <div class="method-facts">
             {estrategia.numeros.map(({ valor, rotulo }) => (

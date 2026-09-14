@@ -286,6 +286,37 @@
   .overview-buttons { grid-column: 2; grid-row: 2; }
   .overview-buttons button { width: 34px; min-width: 34px; min-height: 34px; padding: 0; }
 }
+/* Tablet em pé: a capa é um retrato, e na coluna estreita ao lado do texto ela
+   ficava com cerca de 250px de largura no meio de uma coluna preta de mais de
+   1000px de altura. Aqui as informações se organizam em quatro quadrantes, sem
+   fios entre eles: título e abertura em cima à esquerda, a capa ao lado, os
+   números com o histórico embaixo à esquerda e os marcos embaixo à direita.
+   O `.slide-copy` sai da frente com
+   `display: contents` para que os três blocos dele entrem na grade da lâmina
+   como irmãos da capa. Entre 621 e 700px isto também substitui a faixa de 140px
+   embaixo, onde a capa nem aparecia sem rolar. */
+@media (min-width: 621px) and (max-width: 920px) {
+  .methodology-page #a-estrategia {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* O carrossel estica a lâmina até a altura da mais alta; com a segunda
+       linha em `1fr`, a sobra fica embaixo dos quadrantes de texto, e não
+       entre a capa e o que vem depois dela. */
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "abertura capa" "fatos marcos";
+  }
+  /* `.methodology-page` à frente vence o `display: flex` da regra até 920px, mais abaixo. */
+  .methodology-page #a-estrategia > .slide-copy { display: contents; }
+  /* O canto de cima à direita já sai arredondado pela borda do card; o de baixo
+     à esquerda é o único que fica dentro do branco e ganha o mesmo raio (15px),
+     em vez da quina reta. */
+  #a-estrategia > .slide-photo { grid-area: capa; height: auto; min-height: clamp(340px, 52vw, 460px); border-bottom-left-radius: 15px; }
+  #a-estrategia .slide-abertura { grid-area: abertura; align-self: center; padding: 28px clamp(22px, 3.4vw, 32px); }
+  #a-estrategia .slide-abertura h1 { font-size: clamp(28px, 4.2vw, 38px); }
+  #a-estrategia .method-facts { grid-area: fatos; align-content: start; gap: 12px; margin: 0; padding: 26px clamp(22px, 3.4vw, 32px); border: 0; background: none; }
+  /* Em meio card, os 30px do desktop faziam o "2050" encostar no fio ao lado. */
+  #a-estrategia .method-facts strong { font-size: clamp(24px, 3.4vw, 30px); }
+  #a-estrategia .method-timeline { grid-area: marcos; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 14px; margin: 0; padding: 26px clamp(22px, 3.4vw, 32px); }
+}
 @media print {
   .methodology-page .method-section { display: block !important; height: auto; }
   .slide-copy { width: 100%; height: auto; overflow: visible; }
@@ -322,7 +353,9 @@
   /* O índice sobe para o topo e acompanha a rolagem: no fim de um texto de cinco
      seções ele estaria onde ninguém mais precisa dele. O contador e as setas
      saem — aqui a rolagem da própria página é a navegação. */
-  [data-modo="documento"] .overview-controls { order: -1; position: sticky; top: 68px; z-index: 6; display: block; margin-inline: -14px; padding: 0; border-top: 0; border-bottom: 1px solid var(--linha); background: var(--areia); }
+  /* `margin-bottom` é a folga entre a faixa de abas e o primeiro cartão, a mesma
+     que separa um cartão do outro. */
+  [data-modo="documento"] .overview-controls { order: -1; position: sticky; top: 68px; z-index: 6; display: block; margin-inline: -14px; margin-bottom: 14px; padding: 0; border-top: 0; border-bottom: 1px solid var(--linha); background: var(--areia); }
   [data-modo="documento"] .overview-status, [data-modo="documento"] .overview-buttons { display: none; }
   [data-modo="documento"] .methodology-index { padding: 0 14px; overflow-x: auto; scrollbar-width: none; }
   [data-modo="documento"] .methodology-index::-webkit-scrollbar { display: none; }

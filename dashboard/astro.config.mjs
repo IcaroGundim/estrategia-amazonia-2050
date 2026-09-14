@@ -9,7 +9,7 @@ export default defineConfig({
   adapter: vercel(),
   // Usado para gerar a URL absoluta da imagem de Open Graph no layout.
   // Trocar aqui se o domínio de produção mudar.
-  site: 'https://estrategia-amazonia-2050.vercel.app',
+  site: 'https://estrategia2050.vercel.app',
   // Saída em pastas (`metas/index.html`): é o que a Vercel serve em `/metas`
   // sem depender de `cleanUrls`, que ela ignora quando o adapter gera a própria
   // configuração de rotas. `never` faz o adapter redirecionar `/metas/` → `/metas`.

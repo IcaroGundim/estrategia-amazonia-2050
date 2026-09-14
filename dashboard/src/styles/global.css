@@ -356,7 +356,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 
 .ind-status.is-partial { color: #76550e; }
 .ind-status.is-pending { color: #8e3213; }
-.ind-status.is-manual { color: var(--tinta-3); }
 .ind-rows { display: flex; flex-direction: column; gap: 6px; }
 .ind-row { display: grid; grid-template-columns: 25px 1fr auto; align-items: center; gap: 8px; font-size: 10px; font-variant-numeric: tabular-nums; }
 .ind-row-name { color: var(--tinta-4); }
@@ -1278,6 +1277,47 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .trajetoria-texto { max-width: 62ch; }
 .trajetoria h2 { margin: 0 0 8px; color: var(--mata); font: 800 clamp(22px, 1.6vw, 28px)/1.1 var(--display); letter-spacing: -0.03em; }
 .trajetoria-lead { margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.55; }
+/* Metodologia: caixa fechada no canto; no hover ou foco ela se alarga e desce
+   por cima da lista. O invólucro guarda o tamanho fechado para nada se mexer. */
+.traj-metodo { position: relative; align-self: flex-start; width: 270px; height: 42px; }
+.traj-metodo-caixa { position: absolute; top: 0; right: 0; z-index: 6; width: 270px; overflow: hidden; border: 1px solid var(--linha); border-radius: 10px; background: var(--papel); transition: width .25s cubic-bezier(.4, 0, .2, 1), border-color .2s, box-shadow .25s; }
+.traj-metodo-botao { display: flex; align-items: center; gap: 10px; width: 100%; height: 40px; padding: 0 14px; border: 0; background: none; color: var(--tinta); font: 600 13px var(--text); text-align: left; white-space: nowrap; cursor: help; }
+.traj-metodo-botao:focus-visible { outline: none; }
+/* O "i" chama o olho acendendo em verde e voltando a vazado; para quando a caixa abre. */
+.traj-metodo-i { display: inline-grid; place-items: center; flex: none; width: 18px; height: 18px; border: 1.5px solid var(--mata-700); border-radius: 50%; color: var(--mata-700); font: 700 11px/1 var(--display); box-sizing: border-box; animation: traj-i-preenche 3.2s ease-in-out infinite; }
+@keyframes traj-i-preenche { 0%, 30%, 100% { background: transparent; color: var(--mata-700); } 50%, 70% { background: var(--mata-700); color: #fff; } }
+.traj-metodo:hover .traj-metodo-i, .traj-metodo:focus-within .traj-metodo-i { animation: none; }
+.traj-metodo-corpo { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s cubic-bezier(.4, 0, .2, 1); }
+.traj-metodo-corpo > div { min-height: 0; overflow: hidden; padding: 0 16px; opacity: 0; transition: opacity .2s, padding .25s; }
+.traj-metodo:hover .traj-metodo-caixa, .traj-metodo:focus-within .traj-metodo-caixa { width: min(900px, calc(100vw - 48px)); border-color: var(--mata-300); box-shadow: 0 14px 34px rgba(26, 22, 19, .12); }
+.traj-metodo:hover .traj-metodo-corpo, .traj-metodo:focus-within .traj-metodo-corpo { grid-template-rows: 1fr; }
+.traj-metodo:hover .traj-metodo-corpo > div, .traj-metodo:focus-within .traj-metodo-corpo > div { padding: 2px 16px 16px; opacity: 1; transition-delay: .08s; }
+.traj-metodo-colunas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; padding-top: 12px; border-top: 1px solid var(--linha-2); }
+.traj-metodo dl { display: grid; align-content: start; gap: 2px; margin: 0; }
+.traj-metodo dd + dt { margin-top: 10px; }
+.traj-metodo dt { color: var(--tinta); font: 600 12.5px/1.45 var(--text); }
+.traj-metodo dd { margin: 0; color: var(--tinta-2); font-size: 12.5px; line-height: 1.45; }
+.traj-metodo ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.traj-metodo li b { color: var(--mata); font-weight: 600; }
+.traj-regua { display: block; width: 100%; max-width: 388px; height: auto; margin: 4px 0 10px; overflow: visible; }
+.traj-regua text { font: 500 10.5px var(--text); fill: var(--tinta-3); }
+.traj-regua .is-ok { fill: #3e6e57; } .traj-regua .is-acel { fill: #8a6416; } .traj-regua .is-contra { fill: #c0451f; }
+.traj-regua .is-forte { font-weight: 600; fill: var(--tinta); }
+.traj-leituras li { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 8px; align-items: start; }
+.traj-leituras i { width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; }
+.traj-formula { display: block; width: fit-content; margin: 6px 0; padding: 5px 10px; border-radius: 6px; background: var(--areia); color: var(--tinta); font: 500 13px/1.4 var(--display); font-variant-numeric: tabular-nums; }
+.traj-formula sub { font-size: .72em; }
+.traj-modelo-nome { display: block; margin-bottom: 3px; color: var(--mata); font: 700 14px/1.3 var(--display); }
+.traj-metodo p { margin: 12px 0 0; color: var(--tinta-3); font-size: 12px; line-height: 1.45; }
+@media (prefers-reduced-motion: reduce) { .traj-metodo-caixa, .traj-metodo-corpo, .traj-metodo-corpo > div { transition: none; } .traj-metodo-i { animation: none; } }
+@media (max-width: 760px) {
+  .traj-metodo-colunas { grid-template-columns: minmax(0, 1fr); }
+  .traj-metodo dl + dl { margin-top: 10px; }
+}
+@media (max-width: 620px) {
+  .traj-metodo, .traj-metodo-caixa { width: 100%; }
+  .traj-metodo:hover .traj-metodo-caixa, .traj-metodo:focus-within .traj-metodo-caixa { width: 100%; }
+}
 .trajetoria-lista { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--linha); }
 .trajetoria-item { display: grid; grid-template-columns: minmax(200px, 1fr) 260px 108px minmax(240px, 1.3fr); align-items: center; gap: 12px 24px; padding: 13px 0; border-bottom: 1px solid var(--linha-2); }
 .trajetoria-meta { min-width: 0; display: grid; gap: 2px; }

@@ -454,7 +454,7 @@ function renderTrajetoria() {
     let rotulo;
     if (item.classe === 'cumprida') { ano = String(item.atual.ano); rotulo = t('cumprida'); }
     else if (item.classe === 'noRitmo') { ano = String(item.anoAlcance); rotulo = t('no ritmo'); }
-    else if (item.classe === 'acelerar') { ano = item.anoAlcance > fim ? `> ${fim}` : String(item.anoAlcance); rotulo = tp('precisa {vezes}x', { vezes: number(item.aceleracao, 1) }); }
+    else if (item.classe === 'acelerar') { ano = item.anoAlcance > fim ? `> ${fim}` : String(item.anoAlcance); rotulo = t('abaixo do ritmo'); }
     else if (item.classe === 'contrario') { ano = '—'; rotulo = t('não alcança'); }
     else if (item.classe === 'desligada') { ano = '—'; rotulo = t('desligada'); }
     else { ano = '—'; rotulo = t('sem série'); }

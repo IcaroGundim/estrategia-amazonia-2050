@@ -19,8 +19,6 @@
 .admin-lateral { position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; padding: 26px 22px 22px; background: var(--mata); color: var(--areia, #f5f0e8); box-sizing: border-box; }
 .admin-marca { display: flex; flex-direction: column; gap: 4px; padding: 0 4px 30px; color: inherit; text-decoration: none; }
 .admin-marca.is-escura { color: var(--mata); padding: 0; align-items: center; text-align: center; }
-.admin-marca-sub { font: 600 10px var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-100); }
-.admin-marca.is-escura .admin-marca-sub { color: var(--tinta-4); }
 .admin-marca-nome { font: 800 19px/1.1 var(--display); letter-spacing: -0.01em; }
 .admin-marca-nome b { color: var(--ocre); }
 .admin-lateral nav { display: flex; flex-direction: column; gap: 22px; flex: 1; }
@@ -53,7 +51,9 @@
 .admin-cartao p b { color: var(--tinta); font-weight: 600; }
 .admin-cartao code { font-size: 12.5px; padding: 1px 5px; border: 1px solid var(--adm-filete); border-radius: 3px; background: var(--papel); }
 .admin-cartao a { color: var(--mata-700); }
-.admin-chapeu { margin: 0 0 12px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+/* `.admin-cartao` à frente: sem ele, `.admin-cartao p` vence e o chapéu sai
+   cinza, no corpo do texto e colado no título. */
+.admin-chapeu, .admin-cartao .admin-chapeu { margin: 0 0 12px; color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .admin-chapeu a { color: var(--tinta-4); text-decoration: none; }
 .admin-chapeu a:hover { color: var(--urucum); }
 /* A tela toda é um artigo: o cabeçalho tem um filete forte embaixo, como as
@@ -61,10 +61,10 @@
 .admin-main > .admin-cartao:first-child:has(> h1):not(.admin-login) { padding: 4px 4px 22px; border: 0; border-radius: 0; background: transparent; }
 
 /* ---------- avisos ---------- */
-.admin-erro, .admin-ok, .admin-aviso { margin: 0 0 16px; padding: 11px 16px; border: 1px solid; border-left-width: 4px; border-radius: 10px; font-size: 13.5px; line-height: 1.5; max-width: 80ch; }
-.admin-erro { border-color: #eac3b3; border-left-color: var(--urucum); background: #fbf1ec; color: #8f3315; }
-.admin-ok { border-color: #c6dccb; border-left-color: var(--mata-500); background: #eef5f0; color: var(--mata-700); }
-.admin-aviso { border-color: #ecd9a8; border-left-color: var(--ocre); background: #fbf4e2; color: #6f5212; }
+.admin-erro, .admin-ok, .admin-aviso { margin: 0 0 16px; padding: 11px 16px; border: 1px solid; border-radius: 10px; font-size: 13.5px; line-height: 1.5; max-width: 80ch; }
+.admin-erro { border-color: #eac3b3; background: #fbf1ec; color: #8f3315; }
+.admin-ok { border-color: #c6dccb; background: #eef5f0; color: var(--mata-700); }
+.admin-aviso { border-color: #ecd9a8; background: #fbf4e2; color: #6f5212; }
 .admin-ok code { font-size: 14px; letter-spacing: .04em; }
 .admin-main > .admin-erro, .admin-main > .admin-ok, .admin-main > .admin-aviso { margin: 18px 0 0; }
 
@@ -116,8 +116,11 @@
 .admin-etiqueta.is-manual { color: var(--tinta-4); }
 
 /* ---------- formulários ---------- */
-.admin-login { width: min(420px, 100%); padding: 0; }
+.admin-login { width: min(440px, 100%); padding: 34px 36px 36px; box-sizing: border-box; }
 .admin-login h1 { font-size: 30px; }
+.admin-login .admin-form { gap: 16px; margin-top: 26px; }
+.admin-login .admin-botao { margin-top: 8px; font-size: 13px; }
+@media (max-width: 480px) { .admin-login { padding: 26px 22px 24px; } }
 .admin-form { display: grid; gap: 18px; margin-top: 22px; }
 .admin-campo { display: grid; gap: 7px; }
 .admin-campo > span { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tinta-3); }
@@ -213,7 +216,31 @@
 .admin-textos-lista > .admin-cartao.is-entrando { animation: admin-entra .28s ease; }
 @keyframes admin-entra { from { opacity: 0; } to { opacity: 1; } }
 .admin-grupos-nav { display: flex; align-items: center; gap: 8px; }
-.admin-grupos-nav select { flex: 1; min-width: 0; min-height: 36px; padding: 0 32px 0 12px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1613' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 14px; color: var(--tinta); font: 600 14px var(--text); appearance: none; }
+/* Menu dos grupos: botão no lugar do select nativo; a lista abre como um cartão,
+   com o número da lâmina, o nome e quantos campos o grupo tem. */
+.admin-grupos-menu { position: relative; flex: 1; min-width: 0; }
+.admin-grupos-gatilho { display: flex; align-items: center; gap: 10px; width: 100%; height: 36px; padding: 0 10px 0 8px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel); color: var(--tinta); font: 600 14px var(--text); text-align: left; cursor: pointer; }
+.admin-grupos-gatilho:hover, .admin-grupos-gatilho[aria-expanded="true"] { border-color: var(--mata-700); }
+.admin-grupos-gatilho:focus-visible { outline: none; border-color: var(--urucum); box-shadow: 0 0 0 3px rgba(192, 69, 31, 0.1); }
+.admin-grupos-gatilho svg { flex: none; width: 16px; height: 16px; margin-left: auto; color: var(--tinta-4); transition: transform .15s; }
+.admin-grupos-gatilho[aria-expanded="true"] svg { transform: rotate(180deg); }
+.admin-grupos-rotulo { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-grupos-num { display: inline-grid; place-items: center; flex: none; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 5px; background: var(--adm-fundo); color: var(--mata-700); font: 700 11.5px var(--display); box-sizing: border-box; }
+.admin-grupos-num[hidden] { display: none; }
+.admin-grupos-num.is-vazio { background: transparent; }
+.admin-grupos-num.is-vazio::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--mata-100); }
+.admin-grupos-lista { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 10; max-height: min(420px, 60vh); overflow-y: auto; margin: 0; padding: 6px; list-style: none; border: 1px solid var(--adm-filete); border-radius: 12px; background: var(--papel); box-shadow: 0 12px 32px rgba(26, 22, 19, .12); }
+.admin-grupos-lista[hidden] { display: none; }
+.admin-grupos-secao { padding: 10px 10px 4px; font: 600 9.5px var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-4); }
+.admin-grupos-secao:first-child { padding-top: 4px; }
+.admin-grupos-lista [role="option"] { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--tinta); font: 500 14px var(--text); cursor: pointer; }
+.admin-grupos-lista [role="option"]:hover, .admin-grupos-lista [role="option"]:focus-visible { outline: none; background: var(--adm-fundo); }
+.admin-grupos-lista [role="option"][aria-selected="true"] { background: var(--mata); color: #fff; }
+.admin-grupos-lista [role="option"][aria-selected="true"] .admin-grupos-num { background: rgba(255, 255, 255, .14); color: #fff; }
+.admin-grupos-lista [role="option"][aria-selected="true"] .admin-grupos-num.is-vazio { background: transparent; }
+.admin-grupos-nome { min-width: 0; flex: 1; }
+.admin-grupos-lista small { flex: none; color: var(--tinta-4); font-size: 12px; }
+.admin-grupos-lista [role="option"][aria-selected="true"] small { color: rgba(255, 255, 255, .7); }
 .admin-grupos-contador { font-size: 12.5px; color: var(--tinta-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .admin-grupos-seta { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--adm-filete); border-radius: 9px; background: var(--papel); color: var(--tinta); cursor: pointer; }
 .admin-grupos-seta svg { width: 18px; height: 18px; }

@@ -282,7 +282,7 @@ export function buildMetas(catalogo, dashboard, config) {
       anoRef: indicador.anoRef,
       fonte: indicador.fonte,
       // Viaja junto porque a lista única filtra os 59 por situação de coleta, e
-      // uma meta sem `status` cairia sempre na faixa de "não coletado".
+      // uma meta sem `status` cairia sempre na faixa de "pendente".
       status: indicador.status,
       direcao: parametro.direcao,
       tipo: parametro.tipo,

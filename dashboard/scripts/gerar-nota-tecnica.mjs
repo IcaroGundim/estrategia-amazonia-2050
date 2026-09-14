@@ -109,14 +109,12 @@ function situacao(indicador) {
   const texto = semAcento(indicador.status);
   if (texto.startsWith('coletado')) return 'coletado';
   if (texto.startsWith('parcial')) return 'parcial';
-  if (texto.startsWith('pendente')) return 'pendente';
-  return 'manual';
+  return 'pendente';
 }
 const SITUACOES = {
   coletado: { rotulo: 'Coletado', descricao: 'há valores para os estados, obtidos de fonte pública. Em alguns casos o valor é uma medida aproximada (proxy), indicada nas notas da tabela do eixo.' },
   parcial: { rotulo: 'Parcial', descricao: 'parte do indicador foi coletada; o restante depende de uma fonte sem acesso aberto.' },
-  pendente: { rotulo: 'Pendente', descricao: 'a fonte está identificada, mas não oferece acesso aberto aos dados, ou o critério de medida ainda não foi definido.' },
-  manual: { rotulo: 'Não coletado', descricao: 'depende de informação produzida pelos próprios estados, que não está reunida numa base pública.' }
+  pendente: { rotulo: 'Pendente', descricao: 'ainda não há valores: a fonte não oferece acesso aberto aos dados, o critério de medida não foi definido ou a informação depende dos próprios estados e não está reunida numa base pública.' }
 };
 
 const ehProxy = (indicador) => /proxy/i.test(`${indicador.status} ${indicador.fonte}`);
@@ -241,8 +239,7 @@ const TIPO_META = {
 const MARCAS = {
   coletado: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M4.8 8.5l2.2 2.2 4.2-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   parcial: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.8a6.2 6.2 0 0 0 0 12.4z" fill="currentColor"/></svg>',
-  pendente: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.6V8l2.2 1.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
-  manual: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+  pendente: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.6V8l2.2 1.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
 };
 const selo = (classe) => `<span class="selo is-${classe}">${MARCAS[classe]}${SITUACOES[classe].rotulo}</span>`;
 
@@ -328,7 +325,7 @@ function secaoObjetivo() {
 }
 
 function secaoSituacao() {
-  const ordem = ['coletado', 'parcial', 'pendente', 'manual'];
+  const ordem = ['coletado', 'parcial', 'pendente'];
   const linhas = catalogo.eixos.map((eixo) => {
     const itens = INDICADORES.filter((indicador) => indicador.eixo === eixo.numero);
     const por = contagem(itens, situacao);
@@ -805,7 +802,6 @@ h3 .eixo-num { width: 6.2mm; height: 6.2mm; font-size: 8.5pt; vertical-align: .5
 .selo.is-coletado { color: var(--mata-700); }
 .selo.is-parcial { color: #76550e; }
 .selo.is-pendente { color: #8e3213; }
-.selo.is-manual { color: var(--tinta-3); }
 .tabela sup { font-size: 6pt; font-weight: 600; color: var(--mata-700); margin-left: .6mm; }
 .etiquetas { display: flex; flex-wrap: wrap; gap: 1mm; margin-top: 1.2mm; }
 .etiqueta { display: inline-block; padding: .3mm 1.4mm; border-radius: .8mm; font: 600 6pt/1.4 var(--text); letter-spacing: .04em; text-transform: uppercase; }

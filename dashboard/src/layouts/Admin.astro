@@ -59,7 +59,6 @@ const ativo = (item: { href: string; prefixos?: string[] }) =>
       <div class="admin-app">
         <aside class="admin-lateral" aria-label="Seções da administração" transition:persist="lateral">
           <a class="admin-marca" href="/admin">
-            <span class="admin-marca-sub">Administração</span>
             <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
           </a>
           <nav>
@@ -94,7 +93,6 @@ const ativo = (item: { href: string; prefixos?: string[] }) =>
     ) : (
       <main class="admin-main is-solta">
         <a class="admin-marca is-escura" href="/">
-          <span class="admin-marca-sub">Administração</span>
           <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
         </a>
         <slot />

@@ -36,11 +36,6 @@ export const STATUS = {
     label: 'Pendente',
     cls: 'is-pending',
     mark: '<svg class="ic solid" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path class="cut" d="M8 4.5V8l2.2 1.8"/></svg>'
-  },
-  manual: {
-    label: 'Não coletado',
-    cls: 'is-manual',
-    mark: '<svg class="ic solid" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path class="cut" d="M5 8h6"/></svg>'
   }
 };
 
@@ -136,8 +131,9 @@ export function statusOf(indicador) {
   const text = normalise(indicador.status);
   if (text.startsWith('coletado')) return 'coletado';
   if (text.startsWith('parcial')) return 'parcial';
-  if (text.startsWith('pendente')) return 'pendente';
-  return 'manual';
+  // Tudo o que ainda não tem valores é pendente, inclusive a "coleta manual",
+  // que depende de informação dos próprios estados.
+  return 'pendente';
 }
 
 export function selo(indicador) {

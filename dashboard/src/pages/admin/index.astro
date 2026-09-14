@@ -1,12 +1,13 @@
 ---
 // Início da administração: o estado do rascunho, as ações de prévia e
 // publicação, a linha do tempo do que ainda não foi publicado e os atalhos.
+// Os números do painel (data, indicadores, valores, contas) saíram daqui: cada
+// um tem a sua tela.
 export const prerender = false;
 
 import Admin from '../../layouts/Admin.astro';
 import Mensagens from '../../components/admin/Mensagens.astro';
 import { deposito, type Estado } from '../../lib/admin/deposito';
-import { leJson, leValores } from '../../lib/admin/edicao';
 import { PASTA_PROPOSTAS } from '../../lib/admin/propostas';
 
 const sessao = Astro.locals.sessao!;
@@ -14,27 +15,9 @@ const msg = Astro.url.searchParams.get('msg');
 let erro = Astro.url.searchParams.get('erro');
 
 let estado: Estado | null = null;
-let totalIndicadores = 0;
-let comValores = 0;
-let atualizadoEm = '';
-let totalValores = 0;
 let propostasPendentes = 0;
-let contas = 0;
 try {
-  const [catalogo, painel, valores, usuarios, propostas] = await Promise.all([
-    leJson<{ eixos: { indicadores: { codigo: string }[] }[] }>('catalogo'),
-    leJson<{ atualizadoEm: string }>('painel'),
-    leValores(),
-    leJson<{ usuarios: { ativo: boolean }[] }>('usuarios'),
-    deposito().lista(PASTA_PROPOSTAS)
-  ]);
-  const codigos = new Set(valores.dados.map((linha) => linha.codigo));
-  const indicadores = catalogo.dados.eixos.flatMap((eixo) => eixo.indicadores);
-  totalIndicadores = indicadores.length;
-  comValores = indicadores.filter((item) => codigos.has(item.codigo)).length;
-  atualizadoEm = painel.dados.atualizadoEm;
-  totalValores = valores.dados.length;
-  contas = usuarios.dados.usuarios.filter((conta) => conta.ativo).length;
+  const propostas = await deposito().lista(PASTA_PROPOSTAS);
   propostasPendentes = propostas.filter((nome) => nome.endsWith('.json')).length;
   estado = await deposito().estado();
 } catch (falha) {
@@ -102,16 +85,6 @@ const ATALHOS = [
         </ul>
       )}
     </section>
-  )}
-
-  {estado && (
-    <div class="admin-grade">
-      <div class="admin-numero is-destaque"><strong>{atualizadoEm}</strong><span>data de atualização exibida no painel</span></div>
-      <div class="admin-numero"><strong>{totalIndicadores}</strong><span>indicadores no catálogo, {comValores} com valores</span></div>
-      <div class="admin-numero"><strong>{totalValores.toLocaleString('pt-BR')}</strong><span>valores registrados (código × estado × ano)</span></div>
-      <div class="admin-numero"><strong>{propostasPendentes}</strong><span>propostas da coleta esperando decisão</span></div>
-      <div class="admin-numero"><strong>{contas}</strong><span>contas ativas na administração</span></div>
-    </div>
   )}
 
   <section class="admin-cartao">

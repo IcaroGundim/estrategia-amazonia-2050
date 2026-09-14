@@ -287,8 +287,7 @@
       "chaves": [
         "Coletado",
         "Parcial",
-        "Pendente",
-        "Não coletado"
+        "Pendente"
       ],
       "alvo": ".goals-toolbar"
     },
@@ -444,13 +443,40 @@
         "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.",
         "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
         "Ver o quadro de metas",
+        "Como a trajetória é calculada",
+        "Modelo",
+        "Extrapolação de tendência linear",
+        "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:",
+        "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
+        "Janela",
+        "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.",
+        "Ritmo",
+        "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.",
+        "Ano de alcance",
+        "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:",
+        "último ano + (meta − último valor) ÷ β",
+        "arredondado para cima.",
+        "Método composto",
+        "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.",
+        "Leituras",
+        "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.",
+        "último ano",
+        "prazo",
+        "abaixo do ritmo",
+        "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:",
+        "(meta − último valor) ÷ (prazo − último ano) ÷ β",
+        "o ano de alcance é igual ou anterior ao prazo da meta.",
+        "a inclinação é nula ou tem sentido contrário ao da meta.",
+        "o último valor já atende à meta.",
+        "menos de três anos com dado.",
+        "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.",
+        "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.",
         "Nenhuma meta com trajetória neste recorte.",
         "meta {alvo} até {prazo}",
         "Trajetória desligada para esta meta.",
         "Sem valor para este estado.",
         "cumprida",
         "no ritmo",
-        "precisa {vezes}x",
         "não alcança",
         "desligada",
         "sem série",
@@ -1339,10 +1365,6 @@
       "pt": "Pendente",
       "en": "Pending"
     },
-    "Não coletado": {
-      "pt": "Não coletado",
-      "en": "Not collected"
-    },
     "Visão Geral — Estratégia 2050": {
       "pt": "Visão Geral — Estratégia 2050",
       "en": "The Strategy — Amazônia 2050"
@@ -1775,13 +1797,121 @@
       "pt": "Ver o quadro de metas",
       "en": "See the goals board"
     },
+    "Como a trajetória é calculada": {
+      "pt": "Como a trajetória é calculada",
+      "en": "How the trajectory is calculated"
+    },
+    "Modelo": {
+      "pt": "Modelo",
+      "en": "Model"
+    },
+    "Extrapolação de tendência linear": {
+      "pt": "Extrapolação de tendência linear",
+      "en": "Linear trend extrapolation"
+    },
+    "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:": {
+      "pt": "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:",
+      "en": "Linear regression by ordinary least squares (OLS), with time as the only explanatory variable:"
+    },
+    "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.": {
+      "pt": "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
+      "en": "where y is the value of the indicator in year t, for the Legal Amazon or the selected state."
+    },
+    "Janela": {
+      "pt": "Janela",
+      "en": "Window"
+    },
+    "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.": {
+      "pt": "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.",
+      "en": "Only the most recent years with available data are used: usually the last five, with a minimum of three. Years without a value are left out."
+    },
+    "Ritmo": {
+      "pt": "Ritmo",
+      "en": "Pace"
+    },
+    "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.": {
+      "pt": "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.",
+      "en": "It is the estimated slope β, in the indicator’s unit per year. The intercept α is not used."
+    },
+    "Ano de alcance": {
+      "pt": "Ano de alcance",
+      "en": "Year reached"
+    },
+    "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:": {
+      "pt": "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:",
+      "en": "The pace is applied from the latest observed value, not from the value fitted by the line:"
+    },
+    "último ano + (meta − último valor) ÷ β": {
+      "pt": "último ano + (meta − último valor) ÷ β",
+      "en": "latest year + (target − latest value) ÷ β"
+    },
+    "arredondado para cima.": {
+      "pt": "arredondado para cima.",
+      "en": "rounded up."
+    },
+    "Método composto": {
+      "pt": "Método composto",
+      "en": "Compound method"
+    },
+    "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.": {
+      "pt": "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.",
+      "en": "For targets configured this way, the pace is the compound growth rate between the first and last year of the window, and the year reached follows that rate."
+    },
+    "Leituras": {
+      "pt": "Leituras",
+      "en": "Readings"
+    },
+    "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.": {
+      "pt": "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.",
+      "en": "Diagram: on pace before the deadline, below pace after the deadline, not reached never getting to the target."
+    },
+    "último ano": {
+      "pt": "último ano",
+      "en": "latest year"
+    },
+    "prazo": {
+      "pt": "prazo",
+      "en": "deadline"
+    },
+    "abaixo do ritmo": {
+      "pt": "abaixo do ritmo",
+      "en": "below pace"
+    },
+    "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:": {
+      "pt": "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:",
+      "en": "the year reached is after the deadline. Each target’s sentence states how many times the current pace would be needed to meet it:"
+    },
+    "(meta − último valor) ÷ (prazo − último ano) ÷ β": {
+      "pt": "(meta − último valor) ÷ (prazo − último ano) ÷ β",
+      "en": "(target − latest value) ÷ (deadline − latest year) ÷ β"
+    },
+    "o ano de alcance é igual ou anterior ao prazo da meta.": {
+      "pt": "o ano de alcance é igual ou anterior ao prazo da meta.",
+      "en": "the year reached is on or before the target deadline."
+    },
+    "a inclinação é nula ou tem sentido contrário ao da meta.": {
+      "pt": "a inclinação é nula ou tem sentido contrário ao da meta.",
+      "en": "the slope is zero or points away from the target."
+    },
+    "o último valor já atende à meta.": {
+      "pt": "o último valor já atende à meta.",
+      "en": "the latest value already meets the target."
+    },
+    "menos de três anos com dado.": {
+      "pt": "menos de três anos com dado.",
+      "en": "fewer than three years with data."
+    },
+    "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.": {
+      "pt": "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.",
+      "en": "This projection is based solely on the historical series and does not account for public policy, budget or climate factors; it therefore does not constitute a forecast."
+    },
+    "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.": {
+      "pt": "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.",
+      "en": "The fit does not compute standard errors, confidence intervals or significance tests."
+    },
     "no ritmo": {
       "pt": "no ritmo",
       "en": "on track"
-    },
-    "precisa {vezes}x": {
-      "pt": "precisa {vezes}x",
-      "en": "needs {vezes}x"
     },
     "Nenhuma meta com trajetória neste recorte.": {
       "pt": "Nenhuma meta com trajetória neste recorte.",

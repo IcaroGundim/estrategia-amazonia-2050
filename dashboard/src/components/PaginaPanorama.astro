@@ -105,6 +105,73 @@ const t = traduzirCom(lang, Astro.locals.interface);
           <h2 id="trajetoria-titulo" data-trajetoria-titulo>{t('Onde a Amazônia Legal está no caminho até 2050')}</h2>
           <p class="trajetoria-lead">{t('Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.')}</p>
         </div>
+        {/* A caixa ocupa sempre o tamanho fechado no cabeçalho; aberta, cresce por
+            cima da lista em vez de empurrá-la. Abre com o mouse e também com foco
+            (teclado ou toque), já que no celular não há hover. */}
+        <div class="traj-metodo">
+          <div class="traj-metodo-caixa">
+            <button type="button" class="traj-metodo-botao" aria-describedby="traj-metodo-corpo">
+              <span class="traj-metodo-i" aria-hidden="true">i</span>
+              {t('Como a trajetória é calculada')}
+            </button>
+            <div class="traj-metodo-corpo" id="traj-metodo-corpo">
+              <div>
+                {/* Espelha pipeline/trajetoria.mjs: se a conta mudar lá, este texto muda junto. */}
+                <div class="traj-metodo-colunas">
+                  <dl>
+                    <dt>{t('Modelo')}</dt>
+                    <dd>
+                      <strong class="traj-modelo-nome">{t('Extrapolação de tendência linear')}</strong>
+                      {t('Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:')}
+                      <span class="traj-formula">y<sub>t</sub> = α + β · t + ε<sub>t</sub></span>
+                      {t('em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.')}
+                    </dd>
+                    <dt>{t('Janela')}</dt>
+                    <dd>{t('Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.')}</dd>
+                    <dt>{t('Ritmo')}</dt>
+                    <dd>{t('É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.')}</dd>
+                    <dt>{t('Ano de alcance')}</dt>
+                    <dd>
+                      {t('O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:')}
+                      <span class="traj-formula">{t('último ano + (meta − último valor) ÷ β')}</span>
+                      {t('arredondado para cima.')}
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>{t('Método composto')}</dt>
+                    <dd>{t('Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.')}</dd>
+                    <dt>{t('Leituras')}</dt>
+                    <dd>
+                      {/* Régua: onde cai o ano de alcance em relação ao prazo. As cores
+                          são as da tendência tracejada na lista (COR_CLASSE em app.js). */}
+                      <svg class="traj-regua" viewBox="0 0 388 70" role="img" aria-label={t('Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.')}>
+                        <line x1="0" y1="34" x2="388" y2="34" stroke="var(--linha)" stroke-width="1.5" />
+                        <circle cx="10" cy="34" r="4" fill="var(--mata)" />
+                        <text x="4" y="58">{t('último ano')}</text>
+                        <line x1="206" y1="16" x2="206" y2="50" stroke="var(--tinta)" stroke-width="1.5" />
+                        <text x="206" y="64" text-anchor="middle" class="is-forte">{t('prazo')}</text>
+                        <circle cx="140" cy="34" r="5" fill="#3e6e57" />
+                        <text x="140" y="20" text-anchor="middle" class="is-ok">{t('no ritmo')}</text>
+                        <circle cx="290" cy="34" r="5" fill="#e0a83c" />
+                        <text x="290" y="20" text-anchor="middle" class="is-acel">{t('abaixo do ritmo')}</text>
+                        <path d="M388 34 l-9 -5.5 v11 z" fill="#c0451f" />
+                        <text x="388" y="58" text-anchor="end" class="is-contra">{t('não alcança')}</text>
+                      </svg>
+                      <ul class="traj-leituras">
+                        <li><i style="background:#3e6e57"></i><span><b>{t('no ritmo')}</b> {t('o ano de alcance é igual ou anterior ao prazo da meta.')}</span></li>
+                        <li><i style="background:#e0a83c"></i><span><b>{t('abaixo do ritmo')}</b> {t('o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:')}<span class="traj-formula">{t('(meta − último valor) ÷ (prazo − último ano) ÷ β')}</span></span></li>
+                        <li><i style="background:#c0451f"></i><span><b>{t('não alcança')}</b> {t('a inclinação é nula ou tem sentido contrário ao da meta.')}</span></li>
+                        <li><i style="background:var(--mata)"></i><span><b>{t('cumprida')}</b> {t('o último valor já atende à meta.')}</span></li>
+                        <li><i style="background:var(--tinta-4)"></i><span><b>{t('sem série')}</b> {t('menos de três anos com dado.')}</span></li>
+                      </ul>
+                    </dd>
+                  </dl>
+                </div>
+                <p>{t('Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.')} {t('O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <ol class="trajetoria-lista" data-trajetoria-lista aria-live="polite"></ol>
       <p class="trajetoria-rodape">{t('Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.')} <a href={lang === 'en' ? '/en/goals' : '/metas'}>{t('Ver o quadro de metas')}</a></p>
