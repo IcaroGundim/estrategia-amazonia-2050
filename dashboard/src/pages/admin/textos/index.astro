@@ -10,7 +10,7 @@ import Admin from '../../../layouts/Admin.astro';
 import Campo from '../../../components/admin/Campo.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
 import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
-import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, nomeDeInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
+import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, nomeDeInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
 
 type Pagina = keyof typeof NOME_DA_PAGINA;
 const PAGINAS = Object.keys(NOME_DA_PAGINA) as Pagina[];
@@ -114,8 +114,10 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
               {grupo.chaves.map((chave) => {
                 const par = interfaceTextos[chave];
                 const longo = par.pt.length > 80 || (par.en || '').length > 80;
+                const lacunas = lacunasDe(chave);
+                const ajuda = lacunas.length ? `${lacunas.join(', ')} ${lacunas.length === 1 ? 'é trocado' : 'são trocados'} pelo valor na página. Mantenha nos dois idiomas; a posição na frase pode mudar.` : undefined;
                 return (
-                  <Campo nome={nomeDeInterface(chave)} rotulo={rotuloDeChave(chave)} valor={par.pt} en={par.en} comEn tipo={longo ? 'area' : 'texto'} linhas={Math.min(6, Math.ceil(par.pt.length / 90) + 1)} largo />
+                  <Campo nome={nomeDeInterface(chave)} rotulo={rotuloDeChave(chave)} valor={par.pt} en={par.en} comEn tipo={longo ? 'area' : 'texto'} linhas={Math.min(6, Math.ceil(par.pt.length / 90) + 1)} ajuda={ajuda} largo />
                 );
               })}
             </div>

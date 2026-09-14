@@ -286,7 +286,8 @@ function renderContagem(lista) {
   const alvo = document.querySelector('[data-lista-resumo]');
   if (!alvo) return;
   const comMeta = lista.filter((item) => item.temMeta).length;
-  alvo.innerHTML = tp(lista.length === 1 ? '<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável' : '<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável', { total: lista.length, comMeta });
+  // O destaque dos números fica aqui, e não no texto editável da administração.
+  alvo.innerHTML = tp(lista.length === 1 ? '{total} indicador · {comMeta} com meta mensurável' : '{total} indicadores · {comMeta} com meta mensurável', { total: `<span>${lista.length}</span>`, comMeta: `<span>${comMeta}</span>` });
 }
 
 // Divulgação simples, e não `role="menu"`: o conteúdo são um botão e cinco

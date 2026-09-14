@@ -890,8 +890,9 @@ function renderPainelRegional() {
   ].filter(Boolean);
 
   const leitura = agregacao
-    ? tp('A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.', {
-      valor: textoDoValor(metric, valor),
+    ? tp('{regiao} registra {valor} em {indicador}{ano}{faixa}.', {
+      regiao: `<strong>${escape(t('A Amazônia Legal'))}</strong>`,
+      valor: `<strong>${textoDoValor(metric, valor)}</strong>`,
       indicador: escape(t(metric.label)),
       ano: metric.serie && state.ano ? tp(', em {ano}', { ano: state.ano }) : '',
       faixa: amplitude ? tp(', entre {menor} e {maior}', { menor: escape(amplitude.menor.uf), maior: escape(amplitude.maior.uf) }) : ''
@@ -977,7 +978,7 @@ function renderPainelEstado() {
       ${grafico}
 
       <div class="state-reading">
-        <p>${tp('<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.', { estado: escape(item.name), posicao: ordinal(metricRank, 'f') })}</p>
+        <p>${tp('{estado} está na {posicao} posição entre os nove estados para o indicador exibido.', { estado: `<strong>${escape(item.name)}</strong>`, posicao: ordinal(metricRank, 'f') })}</p>
         ${state.sparkRef && agregacao.notaSerie ? `<p class="state-reading-nota">${escape(t(agregacao.notaSerie))}</p>` : ''}
       </div>
     </div>`;

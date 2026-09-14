@@ -45,8 +45,13 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
 .brand-product { display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, 0.2); color: var(--areia); white-space: nowrap; }
 .brand-product-nome { display: grid; gap: 4px; }
 .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-100); }
-.brand-product-nome strong { font: 800 21px/1 var(--display); letter-spacing: -0.02em; }
-.brand-product-ano { font: 800 46px/0.78 var(--display); letter-spacing: -0.045em; color: var(--ocre); }
+.brand-product-nome strong { display: block; line-height: 0; }
+/* "Amazônia" cursiva: 188 × 40 no desenho; a altura dá o tamanho e a largura acompanha.
+   O "A" ocupa 25 das 40 unidades (o resto é a descendente do "z"); com 45px ele fica
+   um pouco abaixo dos 32px dos algarismos do "2050" ao lado. */
+.brand-product-cursiva { display: block; height: 45px; width: auto; aspect-ratio: 188 / 40; }
+.brand-product-ano { position: relative; top: 2px; font: 800 46px/0.78 var(--display); letter-spacing: -0.045em; color: var(--ocre); }
+/* `top`, e não `transform`: a animação de entrada do ano já usa transform. */
 /* Entrada única: ao abrir o painel, o nome aparece e o ano sobe 10px com a
    entreletra se fechando; depois a marca fica parada. Os `@keyframes` só têm
    `from`: o fim é o próprio estilo do elemento, o que vale também para o
@@ -61,14 +66,39 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
    sobrevive à troca (ver `shared.js`), e tira a animação dali em diante. Só
    uma carga nova da página — F5, endereço digitado, troca de língua — reabre
    o painel e reencena. */
-html:not([data-navegado]) .brand-product-nome { animation: marca-surge 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s both; }
-html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.45s both; }
+/* "Amazônia" se forma como o curso de um rio, e o ano chega quando a água chega.
+   Parada (sem animação, já navegado ou com movimento reduzido), a cursiva aparece
+   inteira e a máscara não se aplica. Durante a entrada, o trecho ainda não
+   percorrido fica escondido: só a parte já construída aparece.
+
+   Durante a entrada, o rio é revelado por uma máscara: um traço grosso ao longo do
+   contorno externo da letra. O contorno sai da ponta final do "a", vai por uma borda
+   até a ponta do "A" (52,49% do caminho, medido com pathLength 1000) e volta pela
+   outra. Os dois trechos crescem a partir da ponta do "A" em sentidos opostos e
+   chegam juntos ao fim, então a letra se forma inteira, da esquerda para a direita.
+   O desfoque na máscara dá à frente da água uma borda macia. No fim o traço engrossa
+   para cobrir qualquer curva que a largura normal deixasse de fora. */
+.brand-agua { stroke-width: 40; }
+html:not([data-navegado]) .brand-product-nome small { animation: marca-surge 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both; }
+/* A máscara vale só enquanto a água corre (0,35 s + 2,3 s); pronta, a letra fica sem ela,
+   igual à estática, sem a borda macia sobre a ponta do "a". */
+html:not([data-navegado]) .brand-rio { animation: marca-solta 2.65s step-end both; }
+@keyframes marca-solta { 0% { mask: url(#marca-agua); } 100% { mask: none; } }
+html:not([data-navegado]) .brand-agua { animation: marca-agua 2.3s cubic-bezier(0.55, 0.05, 0.3, 1) 0.35s both; }
+html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both; }
 @keyframes marca-surge { from { opacity: 0; transform: translateX(-6px); } }
-@keyframes marca-entrada { from { opacity: 0; transform: translateY(10px); letter-spacing: 0.06em; margin-right: -0.42em; } }
-/* Mesmo prefixo do seletor acima: sem ele esta regra perde na especificidade. */
+@keyframes marca-agua {
+  0% { stroke-dasharray: 0 524.9 0 1000; stroke-width: 11; }
+  94% { stroke-dasharray: 0 0 1000 1000; stroke-width: 11; }
+  100% { stroke-dasharray: 0 0 1000 1000; stroke-width: 40; }
+}
+@keyframes marca-entrada { from { opacity: 0; filter: blur(5px); transform: translateY(10px); letter-spacing: 0.06em; margin-right: -0.42em; } }
+/* Mesmo prefixo dos seletores acima: sem ele estas regras perdem na especificidade. */
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-navegado]) .brand-product-nome,
-  html:not([data-navegado]) .brand-product-ano { animation: none; }
+  html:not([data-navegado]) .brand-product-nome small,
+  html:not([data-navegado]) .brand-product-ano,
+  html:not([data-navegado]) .brand-agua,
+  html:not([data-navegado]) .brand-rio { animation: none; }
 }
 .topnav { display: flex; align-self: stretch; align-items: center; gap: 25px; margin-left: 18px; }
 .topnav a, .topnav button { position: relative; padding: 10px 0; border: 0; background: none; color: rgba(245, 240, 232, 0.7); font-size: 13px; }
@@ -1021,7 +1051,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .brand-logo { width: 145px; height: 50px; }
   .brand-product { gap: 10px; padding-left: 14px; }
   .brand-product-nome small { font-size: 9px; }
-  .brand-product-nome strong { font-size: 18px; }
+  .brand-product-cursiva { height: 38px; }
   .brand-product-ano { font-size: 39px; }
   html[data-vista="fluxo"] .vista-toggle { display: inline-flex; align-items: center; }
   /* O botão de vista ocupa o lugar que era do atalho de ação: os dois na mesma

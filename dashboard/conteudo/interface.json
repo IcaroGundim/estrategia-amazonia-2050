@@ -149,8 +149,8 @@
         "{n} eixos",
         "{n} indicador",
         "{n} indicadores",
-        "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável",
-        "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável",
+        "{total} indicador · {comMeta} com meta mensurável",
+        "{total} indicadores · {comMeta} com meta mensurável",
         "Não foi possível exportar",
         "Preparando…"
       ],
@@ -388,7 +388,8 @@
         "Trajetória da região",
         "Amplitude entre os estados",
         "Amplitude entre os nove",
-        "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.",
+        "A Amazônia Legal",
+        "{regiao} registra {valor} em {indicador}{ano}{faixa}.",
         ", em {ano}",
         ", entre {menor} e {maior}",
         "Escolha um indicador oficial no seletor acima do mapa para ver o valor da Amazônia Legal como um todo.",
@@ -424,7 +425,7 @@
         "estimativa 2025",
         "UCs estaduais",
         "unidades cadastradas",
-        "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.",
+        "{estado} está na {posicao} posição entre os nove estados para o indicador exibido.",
         "Floresta em pé, qualidade de vida.",
         "Conectar prioridades. Valorizar o território.",
         "Cooperação que atravessa fronteiras.",
@@ -989,13 +990,13 @@
       "pt": "{n} indicadores",
       "en": "{n} indicators"
     },
-    "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável": {
-      "pt": "<span>{total}</span> indicador · <span>{comMeta}</span> com meta mensurável",
-      "en": "<span>{total}</span> indicator · <span>{comMeta}</span> with a measurable target"
+    "{total} indicador · {comMeta} com meta mensurável": {
+      "pt": "{total} indicador · {comMeta} com meta mensurável",
+      "en": "{total} indicator · {comMeta} with a measurable target"
     },
-    "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável": {
-      "pt": "<span>{total}</span> indicadores · <span>{comMeta}</span> com meta mensurável",
-      "en": "<span>{total}</span> indicators · <span>{comMeta}</span> with a measurable target"
+    "{total} indicadores · {comMeta} com meta mensurável": {
+      "pt": "{total} indicadores · {comMeta} com meta mensurável",
+      "en": "{total} indicators · {comMeta} with a measurable target"
     },
     "Não foi possível exportar": {
       "pt": "Não foi possível exportar",
@@ -1633,9 +1634,13 @@
       "pt": "Amplitude entre os nove",
       "en": "Range across the nine states"
     },
-    "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.": {
-      "pt": "A <strong>Amazônia Legal</strong> registra <strong>{valor}</strong> em {indicador}{ano}{faixa}.",
-      "en": "The <strong>Legal Amazon</strong> records <strong>{valor}</strong> for {indicador}{ano}{faixa}."
+    "A Amazônia Legal": {
+      "pt": "A Amazônia Legal",
+      "en": "The Legal Amazon"
+    },
+    "{regiao} registra {valor} em {indicador}{ano}{faixa}.": {
+      "pt": "{regiao} registra {valor} em {indicador}{ano}{faixa}.",
+      "en": "{regiao} records {valor} for {indicador}{ano}{faixa}."
     },
     ", em {ano}": {
       "pt": ", em {ano}",
@@ -1749,9 +1754,9 @@
       "pt": "unidades cadastradas",
       "en": "registered areas"
     },
-    "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.": {
-      "pt": "<strong>{estado}</strong> está na {posicao} posição entre os nove estados para o indicador exibido.",
-      "en": "<strong>{estado}</strong> ranks {posicao} of the nine states on the indicator shown."
+    "{estado} está na {posicao} posição entre os nove estados para o indicador exibido.": {
+      "pt": "{estado} está na {posicao} posição entre os nove estados para o indicador exibido.",
+      "en": "{estado} ranks {posicao} of the nine states on the indicator shown."
     },
     "Floresta em pé, qualidade de vida.": {
       "pt": "Floresta em pé, qualidade de vida.",

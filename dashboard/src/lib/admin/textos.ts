@@ -69,13 +69,25 @@ export const nomeDeInterface = (chave: string) => `i:${encodeURIComponent(chave)
  * `i:<chave>__en` do formulário. Mesma regra dos textos das lâminas: ao
  * salvar, português vazio é erro; na prévia, passa.
  */
+/** Lacunas de uma frase, como `{total}`: o painel as troca pelo valor na hora de exibir. */
+export const lacunasDe = (frase: string) => [...new Set(frase.match(/\{\w+\}/g) || [])];
+
 export function aplicaFormularioInterface(dicionario: Interface, dados: FormData, { estrito = true } = {}): Interface {
   for (const [chave, par] of Object.entries(dicionario.textos)) {
     const nome = nomeDeInterface(chave);
     if (!dados.has(nome)) continue;
     const pt = texto(dados, nome);
-    if (!pt && estrito) throw new ErroDeEdicao(`O texto em português de "${chave}" não pode ficar vazio.`);
-    dicionario.textos[chave] = { pt, en: textoOuNulo(dados, `${nome}__en`) ?? par.en ?? null };
+    const en = textoOuNulo(dados, `${nome}__en`) ?? par.en ?? null;
+    if (estrito) {
+      if (!pt) throw new ErroDeEdicao(`O texto em português de "${chave}" não pode ficar vazio.`);
+      // Uma lacuna apagada some da frase publicada (o número não aparece).
+      const lacunas = lacunasDe(chave);
+      const faltaPt = lacunas.filter((lacuna) => !pt.includes(lacuna));
+      const faltaEn = en ? lacunas.filter((lacuna) => !en.includes(lacuna)) : [];
+      if (faltaPt.length) throw new ErroDeEdicao(`O texto em português de "${chave}" perdeu ${faltaPt.join(', ')}. Os trechos entre chaves precisam continuar na frase.`);
+      if (faltaEn.length) throw new ErroDeEdicao(`O texto em inglês de "${chave}" perdeu ${faltaEn.join(', ')}. Os trechos entre chaves precisam continuar na frase.`);
+    }
+    dicionario.textos[chave] = { pt, en };
   }
   return dicionario;
 }
