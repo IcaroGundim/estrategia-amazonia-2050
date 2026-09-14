@@ -1,19 +1,22 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PaginaPanorama from '../../components/PaginaPanorama.astro';
+import PaginaVisaoGeral from '../../components/PaginaVisaoGeral.astro';
+import '../../styles/overview-slides.css';
+import '../../styles/overview-compositions.css';
 ---
 
 <Base
-  title="Amazônia 2050 — the Legal Amazon"
-  description="Goals and indicators for the nine states of the Legal Amazon."
-  ogDescription="Nine states, 59 indicators and the evidence to follow the Legal Amazon."
-  pagina="index"
+  title="The Strategy — Amazônia 2050"
+  description="An overview of the Amazônia 2050 Regional Strategy: what it is, what it commits to, and how this dashboard reads the data."
+  ogDescription="What the Amazônia 2050 Strategy is, its themes, its governance, and how this dashboard reads the data."
+  mainClass="methodology-page"
+  pagina="metodologia"
   lang="en"
-  dados={['dashboard', 'geo', 'catalogo']}
+  dados={['dashboard']}
 >
-  <PaginaPanorama lang="en" />
+  <PaginaVisaoGeral lang="en" />
 
   <script>
-    import '../../scripts/app.js';
+    import '../../scripts/metodologia.js';
   </script>
 </Base>

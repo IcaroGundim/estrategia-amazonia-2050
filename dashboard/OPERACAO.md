@@ -77,9 +77,20 @@ o painel sozinhos: cada execução vira uma **proposta**, listada em
 - **Metas confrontáveis**: para cada indicador, se a meta é avaliada (com alvo,
   direção e forma de calcular o valor regional), se fica fora do quadro com um
   motivo próprio, ou fora com o motivo padrão.
-- **Textos do painel**: as cinco lâminas da Visão Geral e a explicação da
-  síntese, em português e inglês. Um inglês vazio faz a versão em inglês
-  mostrar o português naquele ponto.
+- **Textos**: todo texto do painel, em português e inglês. Escolha a
+  página no seletor (Visão Geral, Panorama, Metas e indicadores): o quadro
+  mostra essa página como ela vai ficar e a lista traz só os textos que
+  aparecem nela, das lâminas da Visão Geral à barra superior, legendas do
+  mapa e fichas. O quadro se refaz enquanto você digita, antes de salvar;
+  nas lâminas, ele pula para a lâmina do campo em edição. Um inglês vazio
+  faz a versão em inglês mostrar o português naquele ponto. Use o filtro
+  para achar um texto pelo que se lê na tela.
+- **Trajetória** (na mesma tela da meta): o Panorama mostra, para cada meta
+  confrontável, o ritmo dos últimos anos e o ano em que o alvo seria alcançado
+  se o ritmo se mantivesse. É uma projeção mecânica a partir da série, sem
+  previsão. Dá para escolher quantos anos entram no ritmo (padrão 5, mínimo
+  3), o método (linear ou composto) e desligar a trajetória numa meta cuja
+  série tem quebra, com uma nota explicando.
 - **Ficha técnica**: a partir do indicador no catálogo, o detalhe que abre na
   página de Metas (definição, fórmula, fontes, frequência).
 - **Data e constantes**: a data "atualizado em" que o painel exibe.

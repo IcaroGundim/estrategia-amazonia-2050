@@ -21,7 +21,8 @@ src/
   scripts/fichas.js      ficha técnica: selo de coleta, fórmula, carga sob demanda
   scripts/conteudo.js    sobrepõe o conteúdo dos indicadores na língua da página
   i18n/index.js          t(), tp(), rotas, locale de número e ordinal
-  i18n/en.js             dicionário de interface, com o português como chave
+  i18n/index.js          tradutor; o dicionário vive em conteudo/interface.json
+  pipeline/trajetoria.mjs ritmo e ano estimado de alcance de cada meta (Panorama)
   styles/global.css      desenho de computador, importado pelo layout
   styles/mobile.css      camada de celular e tablet, importada depois dela
 public/                  copiado literalmente para dist/ (data, flags, downloads, og)
@@ -65,7 +66,7 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 - Rota `/metas` com a matriz inteira numa lista só, agrupada por eixo e em duas faixas: as 12 metas com patamar mensurável, cada uma com a jornada até o alvo, e os 47 indicadores restantes, com o selo de coleta e o motivo de não terem jornada. A parametrização vive em `metas.mjs`, que declara as duas listas. Abrir qualquer linha revela um painel com duas abas — **Resultado** (valor, alvo, jornada e o gráfico por estado com marcador da meta) e **Ficha técnica** (método de cálculo em KaTeX, como o indicador é medido, frequência, pontuação, fontes e referências). Na aba da ficha o painel toma a largura toda, porque as fórmulas não cabem na coluna lateral.
 - A mesma rota traz a busca, os filtros por eixo e por disponibilidade, a exportação CSV e o download dos cinco workbooks XLSX (Eixos 1 a 5). O recorte por estado é a fileira de bandeiras do cabeçalho, e vale ao mesmo tempo para a jornada, para o gráfico e para o valor da ficha.
 - `/indicadores` era uma segunda rota sobre a mesma matriz e foi absorvida por `/metas` — as metas são um subconjunto dos indicadores, e cada uma reaparecia lá com nome, eixo, meta pactuada e fonte escritos de novo. O endereço continua respondendo: 301 pelo `vercel.json` em produção, `public/indicadores.html` nas hospedagens estáticas. O `#` do código sobrevive ao salto, então `/indicadores#I1.3.2` abre aquele indicador.
-- Rota `/metodologia` com a fórmula de normalização, pesos, política para dados ausentes, fontes e limites de interpretação.
+- Visão Geral na raiz (`/`) com a fórmula de normalização, pesos, política para dados ausentes, fontes e limites de interpretação.
 - Ficha estadual lateral orientada pela identidade visual, com dados territoriais, indicador ativo, dimensões e leitura contextual; o card lateral tem três subabas — Estado selecionado, Comparação estadual e **Perfil completo** (radar comparando o estado à média da Amazônia Legal e 14 indicadores com ranking, incluindo os do Eixo 3 (PEVS, PIA), Eixo 4 (IBC-AMZ, PER, ISGR) e Eixo 5 (P&D)).
 - Catálogo completo dos 59 indicadores da matriz de resultados da Estratégia Amazônia 2050 — Eixo 1 (Território, Ambiente e Clima), Eixo 2 (Pessoas e Bem-estar), Eixo 3 (Desenvolvimento econômico sustentável, incluindo as fichas F3.2 e F3.5), Eixo 4 (Infraestrutura e integração regional sustentável) e Eixo 5 (Governança e parcerias) — em `/metas`, agrupados por eixo: meta 2050, status de coleta, valores por estado e série histórica quando existem, ou nota de fonte/prazo quando o dado ainda não foi coletado. O Eixo 3 não tem nenhuma meta com patamar mensurável e só existe no painel por causa dessa lista.
 - Seis novos indicadores dos Eixos 3 a 5 disponíveis no mapa e no ranking do panorama: IBC-AMZ ponderado (ANATEL), renovabilidade da matriz elétrica (ANEEL/SIGA), saneamento e gestão de riscos (IBGE), produção da sociobioeconomia (PEVS), transformação industrial (PIA) e P&D estadual % do PIB (MCTI).
@@ -347,7 +348,7 @@ Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são ex
 | `fichas.json` | Fichas técnicas extraídas do `.docx` (`scripts/extract-fichas.ps1`), com equações e notas de fórmula em inglês em `en`. |
 | `usuarios.json` | Contas da administração: usuário, nome, hash bcrypt, ativo, senha temporária. |
 
-O inglês do conteúdo dos indicadores (nome, meta, descrição, fonte de cada indicador; nome dos eixos; linhas de ação) vive nos campos `en` de `catalogo.json`; o build monta `public/data/i18n/en.json` a partir deles, no formato que `src/scripts/conteudo.js` sobrepõe ao português. O dicionário `src/i18n/en.js` fica só com a interface.
+O inglês do conteúdo dos indicadores (nome, meta, descrição, fonte de cada indicador; nome dos eixos; linhas de ação) vive nos campos `en` de `catalogo.json`; o build monta `public/data/i18n/en.json` a partir deles, no formato que `src/scripts/conteudo.js` sobrepõe ao português. Os textos de interface (botões, menus, rótulos, legendas) ficam em `conteudo/interface.json`, `{ chave: { pt, en } }` com o português original do código como chave, editável em `/admin/textos`; `src/i18n/index.js` só traduz.
 
 O que o build escreve a partir disso está no `.gitignore` e não se edita à mão: `public/data/dashboard.json`, `catalogo.json`, `metas.json`, `fichas.json`, `i18n/en.json` e `public/downloads/*.xlsx`. Continuam versionados, porque são fonte e não saída: `public/data/geo.json`, os JSONs de detalhe por tema (`ideb.json`, `focos-calor.json`, …), `public/data/csv/`, `public/flags/` e os `.md`/`.pdf` de `public/downloads/`.
 
@@ -396,9 +397,11 @@ O painel responde em português e em inglês, em endereços diferentes:
 
 | Português | Inglês |
 |---|---|
-| `/` | `/en` |
-| `/metodologia` | `/en/overview` |
+| `/` (Visão Geral) | `/en` |
+| `/panorama` | `/en/panorama` |
 | `/metas` | `/en/goals` |
+
+Os endereços antigos `/metodologia` e `/en/overview` redirecionam para a raiz.
 
 O inglês tem caminho próprio — `/en/goals` e não `/en/metas` — porque quem lê em
 inglês também lê a barra de endereço. O par vive em `src/i18n/index.js`, num lugar

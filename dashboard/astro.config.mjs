@@ -22,6 +22,10 @@ export default defineConfig({
   // em `public/indicadores/index.html`. Os endereços antigos `/api/*` viram
   // redirecionamentos para os JSONs, que o adapter grava como rotas na Vercel.
   redirects: {
+    // A Visão Geral passou a ser a raiz e o Panorama foi para /panorama;
+    // os endereços antigos continuam chegando ao lugar certo.
+    '/metodologia': '/',
+    '/en/overview': '/en',
     '/api/dashboard': '/data/dashboard.json',
     '/api/geo': '/data/geo.json',
     '/api/catalogo': '/data/catalogo.json',

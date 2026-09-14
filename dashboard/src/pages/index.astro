@@ -1,19 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
-import PaginaPanorama from '../components/PaginaPanorama.astro';
+import PaginaVisaoGeral from '../components/PaginaVisaoGeral.astro';
+import '../styles/overview-slides.css';
+import '../styles/overview-compositions.css';
 ---
 
 <Base
-  title="Estratégia 2050 — Amazônia Legal"
-  description="Painel de metas e indicadores dos nove estados da Amazônia Legal."
-  ogDescription="Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal."
-  pagina="index"
+  title="Visão Geral — Estratégia 2050"
+  description="Visão geral da Estratégia Regional Amazônia 2050: o que é, o que pactua e como este painel lê os dados."
+  ogDescription="O que é a Estratégia Amazônia 2050, seus temas, sua governança e como este painel lê os dados."
+  mainClass="methodology-page"
+  pagina="metodologia"
   lang="pt-BR"
-  dados={['dashboard', 'geo', 'catalogo']}
+  dados={['dashboard']}
 >
-  <PaginaPanorama lang="pt-BR" />
+  <PaginaVisaoGeral lang="pt-BR" />
 
   <script>
-    import '../scripts/app.js';
+    import '../scripts/metodologia.js';
   </script>
 </Base>

@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaPanorama from '../components/PaginaPanorama.astro';
+---
+
+<Base
+  title="Estratégia 2050 — Amazônia Legal"
+  description="Painel de metas e indicadores dos nove estados da Amazônia Legal."
+  ogDescription="Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal."
+  pagina="index"
+  lang="pt-BR"
+  dados={['dashboard', 'geo', 'catalogo']}
+>
+  <PaginaPanorama lang="pt-BR" />
+
+  <script>
+    import '../scripts/app.js';
+  </script>
+</Base>
