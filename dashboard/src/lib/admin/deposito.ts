@@ -159,7 +159,6 @@ interface ConfigGitHub {
 class DepositoGitHub implements Deposito {
   modo = 'github' as const;
   private config: ConfigGitHub;
-  private rascunhoGarantida = false;
 
   constructor(config: ConfigGitHub) {
     this.config = config;
@@ -200,25 +199,57 @@ class DepositoGitHub implements Deposito {
   // A branch de rascunho nasce da main na primeira vez que alguém a usa. Duas
   // leituras em paralelo passam pela mesma promessa, e um "já existe" da API
   // (422) vale como sucesso: outra instância da função pode ter chegado antes.
+  //
+  // Depois de criada, ela precisa acompanhar o que chega à main por fora da
+  // administração (um push do código, por exemplo). Sem isso as telas leem
+  // arquivos antigos, ou que nem existiam quando a branch nasceu, e quebram.
+  // A conferência se repete a cada minuto numa função que fica quente.
   private garantia: Promise<string> | null = null;
+  private garantidaEm = 0;
+  private static readonly VALIDADE_MS = 60_000;
 
   private garanteRascunho(): Promise<string> {
+    if (this.garantia && Date.now() - this.garantidaEm > DepositoGitHub.VALIDADE_MS) {
+      this.garantia = null;
+    }
     if (!this.garantia) {
+      this.garantidaEm = Date.now();
       this.garantia = (async () => {
         const existente = await this.shaDaBranch(this.config.rascunho);
-        if (existente) { this.rascunhoGarantida = true; return existente; }
+        // Acompanhar a main é melhoria, não pré-requisito: se falhar, lê o rascunho como está.
+        if (existente) return this.acompanhaMain(existente).catch(() => existente);
         const main = await this.shaDaBranch(this.config.main);
         if (!main) throw new ErroDeDeposito(`a branch ${this.config.main} não existe no repositório`);
         const { status } = await this.api('/git/refs', { metodo: 'POST', aceita: [201, 422], corpo: { ref: `refs/heads/${this.config.rascunho}`, sha: main } });
-        this.rascunhoGarantida = true;
         return status === 422 ? (await this.shaDaBranch(this.config.rascunho)) || main : main;
       })().catch((erro) => { this.garantia = null; throw erro; });
     }
     return this.garantia;
   }
 
+  // Traz para o rascunho o que a main tem e ele não. Sem edições pendentes, só
+  // avança o ponteiro; com edições, mescla a main no rascunho. Se a mescla
+  // conflitar (409), deixa como está: as edições valem mais que a atualização,
+  // e o conflito aparece ao publicar.
+  private async acompanhaMain(rascunho: string): Promise<string> {
+    const { dados } = await this.api<{ ahead_by: number; behind_by: number }>(`/compare/${this.config.main}...${this.config.rascunho}`);
+    if (!dados.behind_by) return rascunho;
+    if (!dados.ahead_by) {
+      const main = await this.shaDaBranch(this.config.main);
+      if (!main) return rascunho;
+      const { status } = await this.api(`/git/refs/heads/${this.config.rascunho}`, { metodo: 'PATCH', aceita: [200, 422], corpo: { sha: main, force: false } });
+      return status === 200 ? main : (await this.shaDaBranch(this.config.rascunho)) || rascunho;
+    }
+    const { status, dados: mescla } = await this.api<{ sha: string } | null>('/merges', {
+      metodo: 'POST',
+      aceita: [201, 204, 409],
+      corpo: { base: this.config.rascunho, head: this.config.main, commit_message: 'admin: traz para o rascunho o que chegou à main' }
+    });
+    return status === 201 && mescla ? mescla.sha : rascunho;
+  }
+
   async le(caminho: string): Promise<Versao> {
-    if (!this.rascunhoGarantida) await this.garanteRascunho();
+    await this.garanteRascunho();
     return this.leNaBranch(caminho, this.config.rascunho);
   }
 
@@ -233,7 +264,7 @@ class DepositoGitHub implements Deposito {
   }
 
   async lista(pasta: string): Promise<string[]> {
-    if (!this.rascunhoGarantida) await this.garanteRascunho();
+    await this.garanteRascunho();
     const { status, dados } = await this.api<{ type: string; name: string }[]>(`/contents/${this.noRepo(pasta.replace(/\/$/, ''))}?ref=${this.config.rascunho}`, { aceita: [200, 404] });
     if (status !== 200 || !Array.isArray(dados)) return [];
     return dados.filter((item) => item.type === 'file').map((item) => item.name).sort();
@@ -244,7 +275,7 @@ class DepositoGitHub implements Deposito {
   }
 
   async grava(arquivos: { caminho: string; texto: string | null }[], mensagem: string, autor: Autor, opcoes: OpcoesDeGravacao = {}): Promise<string> {
-    if (!this.rascunhoGarantida) await this.garanteRascunho();
+    await this.garanteRascunho();
     const branch = opcoes.principal ? this.config.main : this.config.rascunho;
     const texto = `admin(${autor.usuario}): ${mensagem}`;
     if (arquivos.length === 1 && arquivos[0].texto !== null) {
