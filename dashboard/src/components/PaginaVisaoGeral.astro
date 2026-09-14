@@ -20,6 +20,9 @@ const tx = (par: { pt: string; en?: string | null } | string) =>
   (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
 
 const { estrategia, visao2050, temas, governanca, estePainel } = textos.visaoGeral;
+// As fontes consolidadas vêm do mesmo arquivo (panorama.metodologia), e por
+// isso a prévia da administração as mostra como qualquer outro texto.
+const fontes = textos.panorama.metodologia.sources;
 
 const INDICE = [
   { href: '#a-estrategia', rotulo: 'A Estratégia' },
@@ -131,7 +134,7 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 
           <div class="method-source-block">
             <span>{tx(estePainel.fontesRotulo)}</span>
-            <p data-method-sources>{t('Carregando fontes…')}</p>
+            <p data-method-sources>{tx(fontes)}</p>
           </div>
 
           <div class="method-actions">

@@ -1,5 +1,5 @@
 {
-  "_leia": "Textos do painel que não são dados. Cada texto é um par { pt, en }; quando en está vazio, a página em inglês mostra o português. visaoGeral: as cinco lâminas. panorama.metodologia: a síntese comparativa, exibida em dashboard.json.",
+  "_leia": "Textos do painel que não são dados. Cada texto é um par { pt, en }; quando en está vazio, a página em inglês mostra o português. visaoGeral: as cinco lâminas. panorama.metodologia: a síntese comparativa; sources aparece na lâmina 5 (fontes consolidadas) e o restante vai para dashboard.json e para a nota técnica em PDF.",
   "panorama": {
     "metodologia": {
       "title": {

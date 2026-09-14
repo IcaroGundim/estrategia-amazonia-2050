@@ -169,7 +169,7 @@
 .admin-tabela select { min-height: 34px; padding: 0 8px; border: 1px solid var(--mata-100); border-radius: 6px; background: var(--papel); font: 400 13px var(--text); }
 .admin-numero-curto { width: 80px; min-height: 34px; padding: 0 8px; border: 1px solid var(--mata-100); border-radius: 6px; background: var(--papel); font: 400 13px var(--text); text-align: right; }
 
-.admin-tabela.is-grade th[scope="row"] { min-width: 150px; font-weight: 500; position: sticky; left: 0; background: #f7f3ec; }
+.admin-tabela.is-grade th[scope="row"] { min-width: 56px; font-weight: 500; position: sticky; left: 0; background: #f7f3ec; }
 .admin-tabela.is-grade th[scope="row"] small { color: var(--tinta-4); font-weight: 400; }
 .admin-tabela.is-grade td { padding: 3px 4px; }
 .admin-tabela.is-grade input { width: 108px; min-height: 34px; padding: 0 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--tinta); font: 400 13.5px var(--text); text-align: right; }
@@ -212,7 +212,9 @@
 .admin-previa-estado { font-size: 12.5px; color: var(--tinta-3); }
 .admin-textos-corpo { display: grid; grid-template-columns: minmax(360px, 1fr) minmax(600px, 2fr); gap: 16px; align-items: start; }
 .admin-textos-lista { min-width: 0; display: grid; gap: 16px; }
-.admin-textos-lista > .admin-cartao { margin-top: 0; }
+.admin-textos-lista > .admin-cartao { margin-top: 0; min-width: 0; }
+/* Os controles têm largura intrínseca; sem isto o cartão cresce além da coluna e some sob a prévia. */
+.admin-textos-lista .admin-campo-controles > * { min-width: 0; }
 .admin-textos-lista > .admin-cartao.is-entrando { animation: admin-entra .28s ease; }
 @keyframes admin-entra { from { opacity: 0; } to { opacity: 1; } }
 .admin-grupos-nav { display: flex; align-items: center; gap: 8px; }
@@ -254,3 +256,46 @@
   .admin-textos-corpo { grid-template-columns: 1fr; }
   .admin-textos-corpo .admin-previa { order: -1; position: static; }
 }
+
+/* ---------- valores: barra, importação em faixa e cards por eixo ---------- */
+.admin-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0 14px; }
+.admin-barra .admin-busca { flex: 1 1 260px; max-width: 420px; margin: 0; }
+.admin-barra .admin-busca input { min-height: 40px; }
+.admin-barra .admin-busca small { position: absolute; right: 0; top: 100%; margin-top: 2px; }
+.admin-barra-contagem { margin-left: auto; color: var(--tinta-4); font-size: 12.5px; white-space: nowrap; }
+.admin-link { padding: 0; border: 0; background: none; color: var(--mata-700); font: inherit; text-decoration: underline; cursor: pointer; }
+.admin-link:hover { color: var(--urucum); }
+.admin-importar { padding: 0 16px; border: 1px dashed var(--mata-300); border-radius: 12px; background: rgba(255, 255, 255, .55); transition: border-color .15s, background .15s; }
+.admin-importar.is-aberta { background: var(--papel); border-style: solid; border-color: var(--adm-filete); }
+.admin-importar.is-arrastando { border-color: var(--urucum); background: #fbf1ec; }
+.admin-importar-faixa { display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 8px 0; }
+.admin-importar-faixa svg { flex: none; width: 22px; height: 22px; color: var(--mata-500); }
+.admin-importar-faixa p { flex: 1; margin: 0; color: var(--tinta-3); font-size: 13.5px; }
+.admin-importar-faixa p b { color: var(--tinta); font-weight: 600; }
+.admin-importar-faixa p a { color: var(--mata-700); }
+.admin-importar-faixa label { cursor: pointer; }
+.admin-importar-json { display: flex; gap: 10px; align-items: flex-start; padding: 0 0 14px; }
+.admin-importar-json textarea { flex: 1; min-height: 88px; padding: 10px 13px; border: 1px solid var(--mata-100); border-radius: 9px; font: 400 13px/1.5 ui-monospace, Menlo, Consolas, monospace; color: var(--tinta); box-sizing: border-box; resize: vertical; }
+.admin-importar-json textarea:focus-visible { outline: none; border-color: var(--urucum); box-shadow: 0 0 0 3px rgba(192, 69, 31, .1); }
+.admin-importar-resultado { padding: 0 0 16px; border-top: 1px solid var(--adm-filete); }
+.admin-importar-json[hidden], .admin-importar-resultado[hidden] { display: none; }
+.admin-importar-resultado .admin-acoes.is-topo { margin-top: 14px; }
+.admin-importar-resultado [data-resumo] { color: var(--tinta-3); font-size: 13.5px; }
+.admin-importar-resultado .admin-erro { margin: 12px 0 0; }
+.admin-importar-arquivo { font-weight: 600; font-size: 13.5px; }
+.admin-importar-arquivo:empty { display: none; }
+.admin-eixo { margin-top: 24px; }
+.admin-eixo.is-vazio-na-busca { display: none; }
+.admin-eixo h2 { margin: 0 0 10px; font: 800 17px/1.2 var(--display); color: var(--tinta); }
+.admin-eixo h2 small { margin-left: 8px; color: var(--tinta-4); font: 400 12px var(--text); }
+.admin-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 12px; }
+.admin-card { display: flex; flex-direction: column; gap: 6px; min-height: 96px; padding: 14px 16px; border: 1px solid var(--adm-filete); border-radius: 12px; background: var(--papel); color: var(--tinta); text-decoration: none; box-sizing: border-box; transition: border-color .15s; }
+.admin-card:hover { border-color: var(--mata-300); }
+.admin-card:focus-visible { outline: none; border-color: var(--urucum); box-shadow: 0 0 0 3px rgba(192, 69, 31, .1); }
+.admin-card[hidden] { display: none; }
+.admin-card.is-vazio { background: transparent; border-style: dashed; }
+.admin-card.is-vazio .admin-card-nome { color: var(--tinta-3); }
+/* O código fica no card só para a busca; a tela não o mostra. */
+.admin-card-codigo[hidden] { display: none; }
+.admin-card-nome { font: 500 13.5px/1.35 var(--text); }
+.admin-card-meta { margin-top: auto; color: var(--tinta-4); font-size: 11.5px; }

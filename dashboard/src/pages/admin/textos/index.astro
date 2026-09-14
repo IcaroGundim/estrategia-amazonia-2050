@@ -10,7 +10,7 @@ import Admin from '../../../layouts/Admin.astro';
 import Campo from '../../../components/admin/Campo.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
 import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
-import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, nomeDeInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
+import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, nomeDeInterface, pertenceAoGrupo, type Arvore, type Interface } from '../../../lib/admin/textos';
 
 type Pagina = keyof typeof NOME_DA_PAGINA;
 const PAGINAS = Object.keys(NOME_DA_PAGINA) as Pagina[];
@@ -23,6 +23,11 @@ let versaoInterface = interfaceLida.versao;
 const salvo = Astro.url.searchParams.get('salvo');
 const pedida = Astro.url.searchParams.get('pagina');
 const paginaInicial: Pagina = PAGINAS.includes(pedida as Pagina) ? (pedida as Pagina) : 'metodologia';
+
+// O que o formulário mostra: o rascunho gravado ou, se a gravação falhou, o
+// que a pessoa tinha digitado, para não perder a edição junto com o erro.
+let textosNaTela = textosLidos.dados;
+let interfaceNaTela = interfaceLida.dados;
 
 if (Astro.request.method === 'POST') {
   const dados = await Astro.request.formData();
@@ -41,19 +46,21 @@ if (Astro.request.method === 'POST') {
     return Astro.redirect(`/admin/textos?salvo=1&pagina=${texto(dados, 'pagina') || paginaInicial}`, 303);
   } catch (falha) {
     erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    textosNaTela = aplicaFormulario(structuredClone(textosLidos.dados), dados, { estrito: false });
+    interfaceNaTela = aplicaFormularioInterface(structuredClone(interfaceLida.dados), dados, { estrito: false });
   }
 }
 
-const todas = folhas(textosLidos.dados);
+const todas = folhas(textosNaTela);
 const rotuloDe = (caminho: string) => caminho.split('.').slice(-2).map((parte) => (/^\d+$/.test(parte) ? `item ${Number(parte) + 1}` : parte)).join(' / ');
 const rotuloDeChave = (chave: string) => (chave.length > 64 ? `${chave.slice(0, 61)}...` : chave);
-const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados;
+const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
 ---
 
 <Admin title="Textos" sessao={sessao}>
   <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
 
-  <form method="post" class="admin-textos" data-textos-form data-astro-reload>
+  <form method="post" class="admin-textos" data-textos-form data-com-erro={erro ? '' : undefined} data-astro-reload>
     <input type="hidden" name="versaoTextos" value={versaoTextos} />
     <input type="hidden" name="versaoInterface" value={versaoInterface} />
     <input type="hidden" name="pagina" value={paginaInicial} data-pagina-atual />
@@ -94,9 +101,9 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
           <button type="button" class="admin-grupos-seta" data-grupo-proximo aria-label="Próximo grupo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
         </div>
         {GRUPOS.map((grupo) => {
-          const campos = todas.filter((folha) => folha.caminho.startsWith(`${grupo.chave}.`));
+          const campos = todas.filter((folha) => pertenceAoGrupo(grupo, folha.caminho));
           return (
-            <section class="admin-cartao" data-grupo data-pagina="metodologia" data-ancora={grupo.ancora} data-fonte="textos" hidden={paginaInicial !== 'metodologia'}>
+            <section class="admin-cartao" data-grupo data-pagina="metodologia" data-secao={grupo.secao} data-ancora={grupo.ancora} data-fonte="textos" hidden={paginaInicial !== 'metodologia'}>
               <h2>{grupo.titulo}</h2>
               <p>{grupo.descricao}</p>
               <div class="admin-form">
@@ -108,7 +115,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
           );
         })}
         {gruposInterface.map((grupo) => (
-          <section class="admin-cartao" data-grupo data-pagina={grupo.pagina} data-fonte="interface" data-alvo={grupo.alvo} data-abre={grupo.abre} hidden={paginaInicial !== grupo.pagina}>
+          <section class="admin-cartao" data-grupo data-pagina={grupo.pagina} data-secao="Textos de interface" data-fonte="interface" data-alvo={grupo.alvo} data-abre={grupo.abre} hidden={paginaInicial !== grupo.pagina}>
             <h2>{grupo.titulo}</h2>
             <div class="admin-form">
               {grupo.chaves.map((chave) => {
@@ -166,7 +173,8 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
     });
 
     // Nas lâminas da Visão Geral dá para trocar só o texto, sem recarregar:
-    // a lâmina aberta e a rolagem ficam como estão.
+    // a lâmina aberta e a rolagem ficam como estão. Os textos da nota técnica
+    // não aparecem em página nenhuma, então nem vale a ida ao servidor.
     async function trocaTextoDasLaminas() {
       const doc = quadro.contentDocument;
       if (!doc || !doc.querySelector('.method-section')) return recarrega();
@@ -181,11 +189,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
         novo.querySelectorAll('.method-section').forEach((secao, indice) => {
           const de = secao.querySelector('.slide-copy');
           const para = atuais[indice]?.querySelector('.slide-copy');
-          if (!de || !para) return;
-          const fontes = para.querySelector('[data-method-sources]')?.textContent;
-          para.innerHTML = de.innerHTML;
-          const alvo = para.querySelector('[data-method-sources]');
-          if (alvo && fontes) alvo.textContent = fontes;
+          if (de && para) para.innerHTML = de.innerHTML;
         });
         estado.textContent = '';
       } catch {
@@ -198,6 +202,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
       const grupo = (evento.target as HTMLElement).closest<HTMLElement>('[data-grupo]');
       if (!grupo) return;
       ultimaFonte = grupo.dataset.fonte || 'interface';
+      if (grupo.dataset.secao === 'Nota técnica') return;
       window.clearTimeout(temporizador);
       temporizador = window.setTimeout(() => (ultimaFonte === 'textos' && pagina === 'metodologia' ? trocaTextoDasLaminas() : recarrega()), ultimaFonte === 'textos' ? 350 : 600);
     });
@@ -360,17 +365,19 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
     }
 
     // ---- menu dos grupos ----
-    // "Lâmina 3: Temas" vira número + nome; nos textos de interface sai o prefixo
-    // com o nome da própria página ("Panorama: ..."), que ali só repete.
+    // "Lâmina 3: Temas" vira número + nome; nos demais sai o prefixo com o nome
+    // da seção ou da própria página ("Nota técnica: ...", "Panorama: ..."), que
+    // ali só repete. A seção vem do cartão (data-secao).
     const NOME_DA_PAGINA: Record<string, string> = { index: 'Panorama', metas: 'Metas e indicadores', metodologia: 'Visão Geral' };
     const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);
     function descreve(grupo: HTMLElement) {
       const titulo = grupo.querySelector('h2')?.textContent?.trim() || '';
+      const secao = grupo.dataset.secao || 'Textos de interface';
       const lamina = titulo.match(/^Lâmina (\d+):\s*(.*)$/);
-      if (lamina) return { secao: 'Lâminas', num: lamina[1], nome: maiuscula(lamina[2]) };
-      const prefixo = `${NOME_DA_PAGINA[pagina] || ''}: `;
-      const nome = titulo.startsWith(prefixo) ? maiuscula(titulo.slice(prefixo.length)) : titulo;
-      return { secao: 'Textos de interface', num: '', nome };
+      if (lamina) return { secao, num: lamina[1], nome: maiuscula(lamina[2]) };
+      const prefixo = [secao, NOME_DA_PAGINA[pagina] || ''].map((parte) => `${parte}: `).find((parte) => titulo.startsWith(parte));
+      const nome = prefixo ? maiuscula(titulo.slice(prefixo.length)) : titulo;
+      return { secao, num: '', nome };
     }
 
     function montaMenu() {
@@ -449,6 +456,9 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceLida.dados
     anterior?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : 0; if (i > 0) mostraGrupo(candidatos[i - 1]); });
     proximo?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : -1; if (i < candidatos.length - 1) mostraGrupo(candidatos[i + 1]); });
     filtra();
+    // Depois de um erro ao salvar, o formulário guarda o que foi digitado; o
+    // quadro, que abre com o rascunho gravado, é refeito para acompanhar.
+    if ('comErro' in form.dataset) recarrega();
   }
   document.addEventListener('astro:page-load', inicia);
 </script>

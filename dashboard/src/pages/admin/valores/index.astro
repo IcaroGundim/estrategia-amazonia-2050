@@ -1,7 +1,8 @@
 ---
-// Valores: a lista de códigos que têm ou podem ter números (catálogo e
-// Panorama), e a importação em lote por planilha ou por JSON, com prévia das
-// diferenças antes de gravar.
+// Valores: os códigos que têm ou podem ter números (catálogo e Panorama), em
+// cards por eixo, e a importação em lote por planilha ou JSON. A importação é
+// uma faixa de uma linha: ao escolher (ou soltar) o arquivo, a conferência das
+// diferenças acontece sozinha e só então aparece o botão de gravar.
 export const prerender = false;
 
 import Admin from '../../../layouts/Admin.astro';
@@ -21,64 +22,81 @@ for (const linha of linhas) {
   contagem.set(linha.codigo, atual);
 }
 const grupos = [...new Set(codigos.map((item) => item.grupo))];
+const comValores = codigos.filter((item) => contagem.has(item.codigo)).length;
 const salvo = Astro.url.searchParams.get('salvo');
+const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const dataCurta = (iso: string) => {
+  const [ano, mes, dia] = iso.split('-');
+  return mes && dia ? `${Number(dia)} ${MESES[Number(mes) - 1]} ${ano}` : iso;
+};
 ---
 
 <Admin title="Valores" sessao={sessao}>
   <Mensagens salvo={salvo} />
-  <section class="admin-cartao">
-    <p class="admin-chapeu"><a href="/admin">Início</a> / Valores</p>
-    <h1>Valores por indicador</h1>
-    <p>Cada código tem uma grade estados × anos, onde dá para digitar ou colar um bloco copiado do Excel. Para muitos indicadores de uma vez, use a importação abaixo.</p>
-    <Busca placeholder="Buscar código ou indicador" />
-  </section>
 
-  <section class="admin-cartao" id="importar">
-    <h2>Importar em lote</h2>
-    <p>O formato é o da aba <b>Modelo_importacao</b> dos arquivos de download: uma linha por célula, com as colunas <code>codigo, campo, uf, ano, valor, nota</code>. <a href="/downloads/modelo-importacao.xlsx">Baixe o modelo preenchido</a>, edite ou acrescente linhas no Excel e envie o arquivo. Também aceita a mesma lista em JSON.</p>
-    <div class="admin-form" data-importacao data-versao="">
-      <div class="admin-form-linha">
-        <label class="admin-campo"><span>Planilha (.xlsx ou .csv)</span><div class="admin-campo-controles"><input type="file" name="arquivo" accept=".xlsx,.xls,.csv" data-arquivo /></div></label>
-        <label class="admin-campo is-largo"><span>ou JSON</span><div class="admin-campo-controles"><textarea rows="4" data-json placeholder='[{"codigo":"I1.1.2","uf":"AC","ano":"","valor":75}]'></textarea></div></label>
-      </div>
-      <div class="admin-acoes">
-        <button type="button" class="admin-botao is-secundario" data-conferir>Conferir diferenças</button>
-        <button type="button" class="admin-botao" data-aplicar disabled>Gravar no rascunho</button>
+  <div class="admin-barra">
+    <Busca placeholder="Buscar código ou indicador" filtros={[{ valor: '', rotulo: 'Todos' }, { valor: 'com', rotulo: 'Com valores' }, { valor: 'sem', rotulo: 'Sem valores' }]} />
+    <span class="admin-barra-contagem">{codigos.length} indicadores · {comValores} com valores</span>
+  </div>
+
+  <section class="admin-importar" id="importar" data-importacao aria-label="Importar em lote">
+    <div class="admin-importar-faixa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+      <p><b>Importar em lote:</b> solte aqui uma planilha ou JSON no formato do <a href="/downloads/modelo-importacao.xlsx">modelo</a>, ou <button type="button" class="admin-link" data-abre-json>cole o JSON</button>.</p>
+      <label class="admin-botao is-secundario is-mini">Escolher arquivo<input type="file" accept=".xlsx,.xls,.csv,.json" data-arquivo hidden /></label>
+    </div>
+    <div class="admin-importar-json" data-json-caixa hidden>
+      <textarea rows="4" data-json placeholder='[{"codigo":"I1.1.2","uf":"AC","ano":"","valor":75}]' aria-label="JSON com as linhas"></textarea>
+      <button type="button" class="admin-botao is-secundario is-mini" data-conferir>Conferir</button>
+    </div>
+    <div class="admin-importar-resultado" data-resultado hidden>
+      <div class="admin-acoes is-topo">
+        <span class="admin-importar-arquivo" data-nome></span>
         <span data-resumo></span>
+        <button type="button" class="admin-botao is-mini" data-aplicar disabled>Gravar no rascunho</button>
+        <button type="button" class="admin-botao is-secundario is-mini" data-descartar>Descartar</button>
       </div>
       <p class="admin-erro" data-erro hidden></p>
       <div data-previa></div>
     </div>
   </section>
 
-  {grupos.map((grupo) => (
-    <section class="admin-cartao">
-      <h2>{grupo}</h2>
-      <ul class="admin-lista is-compacta">
-        {codigos.filter((item) => item.grupo === grupo).map((item) => {
-          const conta = contagem.get(item.codigo);
-          return (
-            <li>
-              <div><a href={`/admin/valores/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.unidade ? `${item.unidade}, ` : ''}{conta ? `${conta.linhas} valor(es), última alteração ${conta.ultimo}` : 'sem valores'}</small></div>
-              {!conta && <span class="admin-etiqueta is-manual">sem valores</span>}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  ))}
+  {grupos.map((grupo) => {
+    const itens = codigos.filter((item) => item.grupo === grupo);
+    return (
+      <section class="admin-eixo">
+        <h2>{grupo} <small>{itens.length} {itens.length === 1 ? 'indicador' : 'indicadores'}</small></h2>
+        <div class="admin-cards">
+          {itens.map((item) => {
+            const conta = contagem.get(item.codigo);
+            return (
+              <a class={`admin-card${conta ? '' : ' is-vazio'}`} href={`/admin/valores/${encodeURIComponent(item.codigo)}`} data-estado={conta ? 'com' : 'sem'}>
+                <span class="admin-card-codigo" hidden>{item.codigo}</span>
+                <span class="admin-card-nome">{item.nome}</span>
+                <span class="admin-card-meta">{[item.unidade, conta ? `${conta.linhas} ${conta.linhas === 1 ? 'valor' : 'valores'}` : 'sem valores', conta?.ultimo ? `alterado ${dataCurta(conta.ultimo)}` : ''].filter(Boolean).join(' · ')}</span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    );
+  })}
 </Admin>
 
 <script>
   import * as XLSX from 'xlsx';
   function inicia() {
-
-
-    const raiz = document.querySelector<HTMLElement>('[data-importacao]')!;
+    const raiz = document.querySelector<HTMLElement>('[data-importacao]');
+    if (!raiz) return;
     const arquivo = raiz.querySelector<HTMLInputElement>('[data-arquivo]')!;
+    const abreJson = raiz.querySelector<HTMLButtonElement>('[data-abre-json]')!;
+    const jsonCaixa = raiz.querySelector<HTMLElement>('[data-json-caixa]')!;
     const jsonCampo = raiz.querySelector<HTMLTextAreaElement>('[data-json]')!;
     const conferir = raiz.querySelector<HTMLButtonElement>('[data-conferir]')!;
+    const resultado = raiz.querySelector<HTMLElement>('[data-resultado]')!;
+    const nome = raiz.querySelector<HTMLElement>('[data-nome]')!;
     const aplicar = raiz.querySelector<HTMLButtonElement>('[data-aplicar]')!;
+    const descartar = raiz.querySelector<HTMLButtonElement>('[data-descartar]')!;
     const resumo = raiz.querySelector<HTMLElement>('[data-resumo]')!;
     const erro = raiz.querySelector<HTMLElement>('[data-erro]')!;
     const previa = raiz.querySelector<HTMLElement>('[data-previa]')!;
@@ -95,8 +113,8 @@ const salvo = Astro.url.searchParams.get('salvo');
       const dados = new Uint8Array(await ficheiro.arrayBuffer());
       const livro = XLSX.read(dados, { type: 'array' });
       const nomes = livro.SheetNames;
-      const escolhida = nomes.includes('Modelo_importacao') ? 'Modelo_importacao' : nomes.find((nome) => {
-        const linhas = XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[nome], { defval: '' });
+      const escolhida = nomes.includes('Modelo_importacao') ? 'Modelo_importacao' : nomes.find((aba) => {
+        const linhas = XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[aba], { defval: '' });
         return linhas.length && 'codigo' in linhas[0];
       });
       if (!escolhida) throw new Error('Não achei uma aba com a coluna "codigo".');
@@ -104,22 +122,44 @@ const salvo = Astro.url.searchParams.get('salvo');
         .map((linha) => ({ codigo: linha.codigo, campo: linha.campo, uf: linha.uf, ano: linha.ano, valor: linha.valor, nota: linha.nota }));
     }
 
-    async function montaLote(): Promise<unknown[]> {
-      if (arquivo.files && arquivo.files[0]) { origem = 'xlsx'; return lePlanilha(arquivo.files[0]); }
+    const leJson = (texto: string) => {
+      const lido = JSON.parse(texto);
+      return Array.isArray(lido) ? lido : lido.linhas;
+    };
+
+    async function montaLote(ficheiro: File | null): Promise<unknown[]> {
+      if (ficheiro) {
+        if (/\.json$/i.test(ficheiro.name)) { origem = 'json'; return leJson(await ficheiro.text()); }
+        origem = 'xlsx';
+        return lePlanilha(ficheiro);
+      }
       const texto = jsonCampo.value.trim();
       if (!texto) throw new Error('Escolha uma planilha ou cole o JSON.');
       origem = 'json';
-      const lido = JSON.parse(texto);
-      return Array.isArray(lido) ? lido : lido.linhas;
+      return leJson(texto);
     }
 
-    conferir.addEventListener('click', async () => {
-      mostraErro('');
+    function limpa() {
+      arquivo.value = '';
+      lote = [];
+      versao = '';
+      resultado.hidden = true;
       previa.innerHTML = '';
+      resumo.textContent = '';
+      nome.textContent = '';
       aplicar.disabled = true;
-      resumo.textContent = 'Conferindo';
+      mostraErro('');
+      raiz.classList.remove('is-aberta');
+    }
+
+    async function confere(ficheiro: File | null) {
+      limpa();
+      resultado.hidden = false;
+      raiz.classList.add('is-aberta');
+      nome.textContent = ficheiro ? ficheiro.name : 'JSON colado';
+      resumo.textContent = 'Conferindo…';
       try {
-        lote = await montaLote();
+        lote = await montaLote(ficheiro);
         const resposta = await fetch('/api/admin/valores/diferencas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote }) });
         const corpo = await resposta.json();
         if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a prévia.');
@@ -134,6 +174,21 @@ const salvo = Astro.url.searchParams.get('salvo');
         resumo.textContent = '';
         mostraErro((falha as Error).message);
       }
+    }
+
+    arquivo.addEventListener('change', () => { if (arquivo.files?.[0]) confere(arquivo.files[0]); });
+    conferir.addEventListener('click', () => confere(null));
+    abreJson.addEventListener('click', () => { jsonCaixa.hidden = !jsonCaixa.hidden; if (!jsonCaixa.hidden) jsonCampo.focus(); });
+    descartar.addEventListener('click', () => { limpa(); jsonCampo.value = ''; jsonCaixa.hidden = true; });
+
+    // Soltar o arquivo em qualquer ponto da faixa.
+    raiz.addEventListener('dragover', (evento) => { evento.preventDefault(); raiz.classList.add('is-arrastando'); });
+    raiz.addEventListener('dragleave', () => raiz.classList.remove('is-arrastando'));
+    raiz.addEventListener('drop', (evento) => {
+      evento.preventDefault();
+      raiz.classList.remove('is-arrastando');
+      const solto = evento.dataTransfer?.files?.[0];
+      if (solto) confere(solto);
     });
 
     aplicar.addEventListener('click', async () => {

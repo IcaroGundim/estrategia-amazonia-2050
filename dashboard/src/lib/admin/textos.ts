@@ -43,15 +43,25 @@ export function aplicaFormulario<T extends Arvore>(textos: T, dados: FormData, {
   return textos;
 }
 
-/** Os blocos da tela, na ordem das lâminas; `ancora` é a seção da Visão Geral que a prévia mostra. */
-export const GRUPOS: { chave: string; titulo: string; descricao: string; ancora?: string }[] = [
-  { chave: 'visaoGeral.estrategia', titulo: 'Lâmina 1: A Estratégia', descricao: 'Título, abertura, os três números e o fechamento.', ancora: 'a-estrategia' },
-  { chave: 'visaoGeral.visao2050', titulo: 'Lâmina 2: Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.', ancora: 'visao-2050' },
-  { chave: 'visaoGeral.temas', titulo: 'Lâmina 3: Temas estratégicos', descricao: 'Os seis temas.', ancora: 'temas-estrategicos' },
-  { chave: 'visaoGeral.governanca', titulo: 'Lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.', ancora: 'governanca' },
-  { chave: 'visaoGeral.estePainel', titulo: 'Lâmina 5: Este painel', descricao: 'Como os dados são lidos.', ancora: 'calculo' },
-  { chave: 'panorama.metodologia', titulo: 'Lâmina 5: fontes e metodologia da síntese', descricao: 'As fontes consolidadas aparecem na lâmina 5. Título, texto e dimensões da síntese vão para o arquivo de dados do painel (dashboard.json), mas hoje nenhuma página os exibe.', ancora: 'calculo' }
+/**
+ * Os blocos da tela de edição. `caminhos` são os prefixos (ou caminhos exatos)
+ * da árvore que entram no bloco; `ancora` é a lâmina da Visão Geral que a
+ * prévia abre. O bloco da nota técnica não tem âncora: nenhuma página do
+ * painel mostra esses textos, só o PDF gerado à parte.
+ */
+export interface Grupo { caminhos: string[]; secao: 'Lâminas' | 'Nota técnica'; titulo: string; descricao: string; ancora?: string }
+export const GRUPOS: Grupo[] = [
+  { caminhos: ['visaoGeral.estrategia'], secao: 'Lâminas', titulo: 'Lâmina 1: A Estratégia', descricao: 'Título, abertura, os três números e o fechamento.', ancora: 'a-estrategia' },
+  { caminhos: ['visaoGeral.visao2050'], secao: 'Lâminas', titulo: 'Lâmina 2: Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.', ancora: 'visao-2050' },
+  { caminhos: ['visaoGeral.temas'], secao: 'Lâminas', titulo: 'Lâmina 3: Temas estratégicos', descricao: 'Os seis temas.', ancora: 'temas-estrategicos' },
+  { caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.', ancora: 'governanca' },
+  { caminhos: ['visaoGeral.estePainel', 'panorama.metodologia.sources'], secao: 'Lâminas', titulo: 'Lâmina 5: Este painel', descricao: 'Como os dados são lidos e a lista de fontes consolidadas.', ancora: 'calculo' },
+  { caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto e dimensões da síntese comparativa. Vão para a nota técnica em PDF ("Baixar nota técnica"), que é gerada à parte; nenhuma página do painel os mostra, então a prévia não muda.' }
 ];
+
+/** Se a folha em `caminho` pertence ao grupo. */
+export const pertenceAoGrupo = (grupo: Grupo, caminho: string) =>
+  grupo.caminhos.some((prefixo) => caminho === prefixo || caminho.startsWith(`${prefixo}.`));
 
 // ---------- textos de interface (conteudo/interface.json) ----------
 
@@ -94,7 +104,7 @@ export function aplicaFormularioInterface(dicionario: Interface, dados: FormData
 
 /** Nome da página pública, para a barra da prévia. */
 export const NOME_DA_PAGINA: Record<Interface['grupos'][number]['pagina'], string> = {
+  metodologia: 'Visão Geral',
   index: 'Panorama',
-  metas: 'Metas e indicadores',
-  metodologia: 'Visão Geral'
+  metas: 'Metas e indicadores'
 };

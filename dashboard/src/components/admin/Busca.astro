@@ -1,10 +1,13 @@
 ---
-// Busca instantânea nas listas longas: filtra os <li> das listas seguintes pelo
-// texto e esconde os cartões que ficarem vazios.
+// Busca instantânea nas listas longas: filtra os itens das listas (`.admin-lista li`)
+// ou dos cards (`.admin-cards > *`) pelo texto e esconde as seções que ficarem
+// vazias. Com `filtros`, um seletor ao lado restringe aos itens cujo
+// `data-estado` bate com a opção escolhida (a opção de valor vazio é "todos").
 interface Props {
   placeholder?: string;
+  filtros?: { valor: string; rotulo: string }[];
 }
-const { placeholder = 'Buscar por código ou nome' } = Astro.props;
+const { placeholder = 'Buscar por código ou nome', filtros = [] } = Astro.props;
 ---
 
 <div class="admin-busca" data-busca>
@@ -12,6 +15,13 @@ const { placeholder = 'Buscar por código ou nome' } = Astro.props;
   <input type="search" placeholder={placeholder} autocomplete="off" aria-label="Buscar na lista" />
   <small data-busca-resumo></small>
 </div>
+{filtros.length > 0 && (
+  <span class="admin-seletor" role="group" aria-label="Filtrar" data-busca-filtros>
+    {filtros.map((filtro, indice) => (
+      <button type="button" class={indice === 0 ? 'is-ativo' : undefined} aria-pressed={indice === 0 ? 'true' : 'false'} data-filtro={filtro.valor}>{filtro.rotulo}</button>
+    ))}
+  </span>
+)}
 
 <script>
   function inicia() {
@@ -20,20 +30,31 @@ const { placeholder = 'Buscar por código ou nome' } = Astro.props;
     document.querySelectorAll<HTMLElement>('[data-busca]').forEach((caixa) => {
       const entrada = caixa.querySelector('input')!;
       const resumo = caixa.querySelector<HTMLElement>('[data-busca-resumo]')!;
-      const cartoes = [...document.querySelectorAll<HTMLElement>('.admin-cartao')].filter((cartao) => cartao.querySelector('.admin-lista'));
-      const itens = cartoes.flatMap((cartao) => [...cartao.querySelectorAll<HTMLElement>('.admin-lista li')]);
+      const filtros = caixa.nextElementSibling?.matches('[data-busca-filtros]') ? [...caixa.nextElementSibling.querySelectorAll<HTMLButtonElement>('[data-filtro]')] : [];
+      const secoes = [...document.querySelectorAll<HTMLElement>('.admin-cartao, .admin-eixo')].filter((secao) => secao.querySelector('.admin-lista, .admin-cards'));
+      const itens = secoes.flatMap((secao) => [...secao.querySelectorAll<HTMLElement>('.admin-lista li, .admin-cards > *')]);
+      let estado = '';
       const filtra = () => {
         const termo = semAcento(entrada.value.trim());
         let visiveis = 0;
         for (const item of itens) {
-          const bate = !termo || semAcento(item.textContent || '').includes(termo);
+          const bate = (!termo || semAcento(item.textContent || '').includes(termo)) && (!estado || item.dataset.estado === estado);
           item.hidden = !bate;
           if (bate) visiveis += 1;
         }
-        for (const cartao of cartoes) cartao.classList.toggle('is-vazio-na-busca', Boolean(termo) && ![...cartao.querySelectorAll<HTMLElement>('.admin-lista li')].some((item) => !item.hidden));
-        resumo.textContent = termo ? `${visiveis} de ${itens.length}` : '';
+        for (const secao of secoes) secao.classList.toggle('is-vazio-na-busca', Boolean(termo || estado) && ![...secao.querySelectorAll<HTMLElement>('.admin-lista li, .admin-cards > *')].some((item) => !item.hidden));
+        resumo.textContent = termo || estado ? `${visiveis} de ${itens.length}` : '';
       };
       entrada.addEventListener('input', filtra);
+      filtros.forEach((botao) => botao.addEventListener('click', () => {
+        estado = botao.dataset.filtro || '';
+        filtros.forEach((outro) => {
+          const ativo = outro === botao;
+          outro.classList.toggle('is-ativo', ativo);
+          outro.setAttribute('aria-pressed', String(ativo));
+        });
+        filtra();
+      }));
     });
   }
   document.addEventListener('astro:page-load', inicia);

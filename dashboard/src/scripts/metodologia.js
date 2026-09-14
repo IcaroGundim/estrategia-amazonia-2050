@@ -1,5 +1,4 @@
 import { aoEntrarNaPagina, bindMenu, bindVista, sinalDaPagina } from './shared.js';
-import { idiomaAtual, t } from '../i18n/index.js';
 
 // ---------------------------------------------------------------------------
 // A Visão Geral tem duas mecânicas para o mesmo conteúdo e o mesmo HTML.
@@ -201,19 +200,13 @@ function bindSectionNavigation() {
   }, { once: true });
 }
 
-async function init() {
+function init() {
   bindMenu();
   bindVista();
   bindSectionNavigation();
-  const response = await fetch('/data/dashboard.json');
-  if (!response.ok) throw new Error(t('Não foi possível carregar a nota metodológica.'));
-  const data = await response.json();
-  const fontes = idiomaAtual() === 'en' ? (data.methodology.en?.sources || data.methodology.sources) : data.methodology.sources;
-  document.querySelector('[data-method-sources]').textContent = fontes;
 }
 
-const ANCORA = '[data-method-sources]';
+// As fontes consolidadas já vêm no HTML (conteudo/textos.json); nada é buscado.
+const ANCORA = '.methodology-article';
 
-aoEntrarNaPagina(ANCORA, () => init().catch((error) => {
-  document.querySelector('[data-method-sources]').textContent = t('As fontes não puderam ser carregadas.');
-}));
+aoEntrarNaPagina(ANCORA, init);

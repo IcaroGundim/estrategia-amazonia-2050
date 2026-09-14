@@ -84,7 +84,7 @@ const colunas = [
           <tbody>
             {ufs.map((uf) => (
               <tr data-uf={uf}>
-                <th scope="row"><b>{uf}</b> <small>{nomeDaUf(uf)}</small></th>
+                <th scope="row" title={nomeDaUf(uf)}><b>{uf}</b></th>
                 {colunas.map((coluna) => {
                   const chave = `${coluna.campo}|${uf}|${coluna.ano}`;
                   return <td><input type="text" name={`c:${chave}`} value={grade.celulas[chave] ?? ''} title={grade.notas[chave] || ''} autocomplete="off" /></td>;

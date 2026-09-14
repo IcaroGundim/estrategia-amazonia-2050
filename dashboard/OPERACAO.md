@@ -29,9 +29,11 @@ fez e quando. Publicar leva todas elas de uma vez.
 
 ## 3. Atualizar valores
 
-Em **Valores por indicador** cada código tem uma grade: estados nas linhas,
-colunas "Atual" (o valor sem ano, que aparece nas listas), os anos da série e
-os campos auxiliares (números de apoio, como totais).
+Em **Valores** cada indicador é um card, agrupado por eixo; os sem valores
+têm contorno tracejado. A busca e o filtro (Todos, Com valores, Sem valores)
+ficam no topo. Ao abrir um card aparece a grade: estados nas linhas, colunas
+"Atual" (o valor sem ano, que aparece nas listas), os anos da série e os
+campos auxiliares (números de apoio, como totais).
 
 - **Digitar**: clique na célula, escreva o número (ponto ou vírgula como
   decimal) e clique em **Salvar no rascunho**.
@@ -42,17 +44,19 @@ os campos auxiliares (números de apoio, como totais).
   coluna aparece vazia para preencher.
 - **Apagar**: deixe a célula vazia e salve.
 
-Para muitos indicadores de uma vez, use **Importar em lote**, no topo da tela
-de valores:
+Para muitos indicadores de uma vez, use a faixa **Importar em lote**, logo
+abaixo da busca:
 
-1. Clique em **Baixe o modelo preenchido**. É uma planilha com uma linha por
-   célula: `codigo, campo, uf, ano, valor, nota`.
+1. Clique em **modelo** para baixar a planilha preenchida. Ela tem uma linha
+   por célula: `codigo, campo, uf, ano, valor, nota`.
 2. Edite ou acrescente linhas no Excel (deixe `ano` vazio para o valor atual e
    `campo` vazio para o valor principal). Salve.
-3. Escolha o arquivo em "Planilha" e clique em **Conferir diferenças**. A tela
-   mostra o que é novo, o que muda e o que já está igual, e avisa quando um
-   valor varia mais de 50% em relação ao ano anterior (só um aviso).
-4. Se estiver certo, **Gravar no rascunho**.
+3. Solte o arquivo na faixa ou clique em **Escolher arquivo**. A conferência
+   acontece sozinha: a tela mostra o que é novo, o que muda e o que já está
+   igual, e avisa quando um valor varia mais de 50% em relação ao ano anterior
+   (só um aviso). A mesma lista em JSON entra por **cole o JSON** e depois
+   **Conferir**.
+4. Se estiver certo, **Gravar no rascunho**; **Descartar** limpa a faixa.
 
 Os códigos das métricas do mapa (por exemplo `prodesKm2`, `focos`, `POP`,
 `AREA`) estão na mesma tela, no grupo "Panorama".
@@ -84,7 +88,10 @@ o painel sozinhos: cada execução vira uma **proposta**, listada em
   mapa e fichas. O quadro se refaz enquanto você digita, antes de salvar;
   nas lâminas, ele pula para a lâmina do campo em edição. Um inglês vazio
   faz a versão em inglês mostrar o português naquele ponto. Use o filtro
-  para achar um texto pelo que se lê na tela.
+  para achar um texto pelo que se lê na tela. Na Visão Geral há também o grupo
+  **Nota técnica**: são os textos da síntese comparativa que vão para o PDF
+  de "Baixar nota técnica", gerado à parte; nenhuma página os mostra, e por
+  isso o quadro não muda ao editá-los.
 - **Trajetória** (na mesma tela da meta): o Panorama mostra, para cada meta
   confrontável, o ritmo dos últimos anos e o ano em que o alvo seria alcançado
   se o ritmo se mantivesse. É uma projeção mecânica a partir da série, sem

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Valores em cards, quatro opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7; --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff; --tinta: #1a1613; --tinta-3: #5c544c; --tinta-4: #8a8078; --fundo: #efeae2; --filete: #d9d0c3; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  body { margin: 0; padding: 40px; background: #e2dacf; color: var(--tinta); font: 400 14px/1.5 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 26px; max-width: 80ch; }
+  .opcao { max-width: 1240px; margin: 0 0 40px; }
+  .opcao > h2 { font: 800 21px var(--display); margin: 0 0 4px; }
+  .opcao > h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .opcao > p { margin: 0 0 14px; color: var(--tinta-3); max-width: 90ch; }
+  .tela { background: var(--fundo); border-radius: 14px; padding: 22px 28px 28px; border: 1px solid var(--filete); }
+  .topo { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; font: 600 10px var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-4); }
+  .topo span:last-child { margin-left: auto; color: var(--mata-700); text-transform: none; letter-spacing: 0; font: 500 12.5px var(--text); }
+
+  /* barra de ferramentas comum */
+  .barra { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .busca { position: relative; flex: 1 1 260px; max-width: 420px; }
+  .busca input { width: 100%; min-height: 40px; padding: 0 14px 0 36px; border: 1px solid var(--mata-100); border-radius: 9px; background: var(--papel); font: 400 14px var(--text); box-sizing: border-box; }
+  .busca svg { position: absolute; left: 12px; top: 12px; width: 16px; height: 16px; color: var(--tinta-4); }
+  .chips { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--filete); border-radius: 9px; background: var(--papel); }
+  .chips b { min-height: 30px; padding: 0 12px; border-radius: 6px; display: inline-flex; align-items: center; font: 500 13px var(--text); color: var(--tinta-3); }
+  .chips b.on { background: var(--mata); color: #fff; }
+  .btn { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--urucum); border-radius: 9px; background: var(--urucum); color: var(--areia); font: 600 12px var(--text); letter-spacing: .02em; }
+  .btn.sec { background: transparent; color: var(--mata); border-color: var(--mata-300); }
+  .btn svg { width: 15px; height: 15px; }
+  .contagem { color: var(--tinta-4); font-size: 12.5px; margin-left: auto; }
+
+  /* cards */
+  .eixo { margin: 22px 0 10px; display: flex; align-items: baseline; gap: 10px; }
+  .eixo h3 { margin: 0; font: 800 17px var(--display); }
+  .eixo small { color: var(--tinta-4); font-size: 12px; }
+  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 12px; }
+  .card { position: relative; padding: 14px 16px 14px; border: 1px solid var(--filete); border-radius: 12px; background: var(--papel); display: flex; flex-direction: column; gap: 6px; min-height: 96px; box-sizing: border-box; }
+  .card .cod { font: 700 12px var(--display); color: var(--mata-700); letter-spacing: .02em; }
+  .card .nome { font: 500 13.5px/1.35 var(--text); color: var(--tinta); }
+  .card .meta { margin-top: auto; color: var(--tinta-4); font-size: 11.5px; }
+  .card .etq { position: absolute; top: 12px; right: 12px; font: 600 9.5px var(--text); letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-4); }
+  .card.vazio { background: transparent; border-style: dashed; }
+  .card.vazio .nome { color: var(--tinta-3); }
+
+  /* B: faixa de estado */
+  .b .card { border-left: 3px solid var(--mata-500); }
+  .b .card.vazio { border-left-color: var(--filete); border-style: solid; background: var(--papel); }
+  .b .card .num { font: 800 22px/1 var(--display); color: var(--mata); }
+  .b .card .num small { font: 500 11px var(--text); color: var(--tinta-4); margin-left: 4px; }
+  .b .card.vazio .num { color: var(--tinta-4); font-size: 13px; font-weight: 600; }
+
+  /* C: abas por eixo */
+  .abas { display: flex; gap: 22px; border-bottom: 1px solid var(--filete); margin-bottom: 16px; }
+  .abas b { padding: 10px 2px 12px; font: 500 13.5px var(--text); color: var(--tinta-3); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .abas b.on { color: var(--tinta); font-weight: 600; border-color: var(--urucum); }
+  .abas b small { color: var(--tinta-4); margin-left: 6px; font-size: 11.5px; }
+
+  /* D: cards largos com barra de cobertura */
+  .d .grade { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+  .d .card { flex-direction: row; align-items: center; gap: 14px; min-height: 0; padding: 12px 16px; }
+  .d .card .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .d .cobertura { display: grid; grid-template-columns: repeat(9, 7px); gap: 3px; }
+  .d .cobertura i { height: 14px; border-radius: 2px; background: var(--mata-300); }
+  .d .cobertura i.x { background: var(--filete); }
+  .d .card .etq { position: static; }
+
+  /* importação */
+  .importar { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px dashed var(--mata-300); border-radius: 12px; background: rgba(255,255,255,.55); font-size: 13.5px; color: var(--tinta-3); margin-bottom: 4px; }
+  .importar b { color: var(--tinta); font-weight: 600; }
+  .importar a { color: var(--mata-700); }
+  .importar .btn { margin-left: auto; }
+  .importar svg { width: 22px; height: 22px; color: var(--mata-500); flex: none; }
+  .painel { padding: 16px 18px; border: 1px solid var(--filete); border-radius: 12px; background: var(--papel); margin-bottom: 16px; }
+  .painel h4 { margin: 0 0 8px; font: 800 15px var(--display); }
+  .painel p { margin: 0 0 10px; color: var(--tinta-3); font-size: 13px; }
+  .drop { display: grid; place-items: center; gap: 4px; padding: 20px; border: 1px dashed var(--mata-300); border-radius: 10px; text-align: center; color: var(--tinta-3); font-size: 13px; }
+  .drop b { color: var(--tinta); }
+  .drop svg { width: 24px; height: 24px; color: var(--mata-500); }
+  .passos { display: flex; gap: 20px; margin-top: 12px; font-size: 12.5px; color: var(--tinta-4); }
+  .passos b { display: inline-grid; place-items: center; width: 18px; height: 18px; margin-right: 6px; border-radius: 50%; background: var(--mata); color: #fff; font: 700 10px var(--display); }
+  .nota { margin-top: 10px; font-size: 12px; color: var(--tinta-4); }
+  .rec { display: inline-block; margin-left: 10px; padding: 2px 8px; border-radius: 4px; background: var(--ocre); color: var(--tinta); font: 700 11px var(--text); letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
+</style>
+</head>
+<body>
+<h1>Valores por indicador em cards</h1>
+<p class="sub">Quatro maneiras de tirar o cabeçalho, transformar a lista em cards e reduzir a importação a um gesto só. Em todas, a importação deixa de ser um formulário com dois campos e dois botões: a pessoa solta ou escolhe um arquivo (planilha ou JSON) e a conferência das diferenças acontece sozinha; "Gravar no rascunho" só aparece depois, junto do resumo. Colar JSON vira um atalho pequeno. As explicações do formato saem da tela e vão para o link do modelo e para a Ajuda.</p>
+
+<!-- ===================== A ===================== -->
+<section class="opcao a">
+  <h2><small>A</small>Barra única, importação em linha <span class="rec">recomendada</span></h2>
+  <p>A busca e o botão de importar ficam numa barra só, no lugar do cabeçalho. A importação é uma faixa discreta de uma linha; ao soltar o arquivo, ela cresce e mostra o resumo. Cards de altura igual, com o código em destaque, o nome e uma linha de situação; os sem valores ficam com contorno tracejado.</p>
+  <div class="tela">
+    <div class="topo"><span>Valores</span><span>Ícaro Gundim · Minha senha · Sair</span></div>
+    <div class="barra">
+      <div class="busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input placeholder="Buscar código ou indicador" /></div>
+      <span class="chips"><b class="on">Todos</b><b>Com valores</b><b>Sem valores</b></span>
+      <span class="contagem">59 indicadores · 41 com valores</span>
+    </div>
+    <div class="importar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span><b>Importar em lote:</b> solte aqui uma planilha ou JSON no formato do <a href="#">modelo</a>, ou <a href="#">cole o JSON</a>.</span><span class="btn sec">Escolher arquivo</span></div>
+    <div class="eixo"><h3>Eixo 1 · Território, Ambiente e Clima</h3><small>14 indicadores</small></div>
+    <div class="grade">
+      <div class="card vazio"><span class="cod">I1.1.1</span><span class="nome">ZEE vigente e atualizado</span><span class="meta">% / Sim-Não · sem valores</span></div>
+      <div class="card"><span class="cod">I1.1.2</span><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="meta">% · 45 valores · alterado 13 set 2026</span></div>
+      <div class="card vazio"><span class="cod">I1.1.3</span><span class="nome">Cooperação técnica PNGATI/PNGTAQ</span><span class="meta">nº (0-9) · sem valores</span></div>
+      <div class="card vazio"><span class="cod">I1.2.1</span><span class="nome">Planos Estaduais de Adaptação aprovados e em execução</span><span class="meta">% / Sim-Não · sem valores</span></div>
+      <div class="card"><span class="cod">I1.3.1</span><span class="nome">Vulnerabilidade climática municipal (IIVCM)</span><span class="meta">pontos (0-100) · 27 valores · alterado 13 set 2026</span></div>
+      <div class="card"><span class="cod">I1.3.2</span><span class="nome">Desmatamento ilegal</span><span class="meta">% / ha · 72 valores · alterado 13 set 2026</span></div>
+      <div class="card vazio"><span class="cod">I1.3.3</span><span class="nome">Monitoramento por sensoriamento remoto</span><span class="meta">% / dias · sem valores</span></div>
+      <div class="card"><span class="cod">I1.3.4</span><span class="nome">Focos de calor</span><span class="meta">nº · 99 valores · alterado 13 set 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== B ===================== -->
+<section class="opcao b">
+  <h2><small>B</small>Cards com número em destaque</h2>
+  <p>Mesma barra da opção A, mas cada card traz a contagem de valores em número grande e uma faixa lateral verde quando há dados. Lê-se de longe quais indicadores estão vazios. A importação abre num painel próprio, com a área de soltar arquivo e os três passos escritos.</p>
+  <div class="tela">
+    <div class="topo"><span>Valores</span><span>Ícaro Gundim · Minha senha · Sair</span></div>
+    <div class="barra">
+      <div class="busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input placeholder="Buscar código ou indicador" /></div>
+      <span class="contagem">59 indicadores · 41 com valores</span>
+      <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Importar em lote</span>
+    </div>
+    <div class="painel">
+      <h4>Importar em lote</h4>
+      <div class="drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span><b>Solte a planilha ou o JSON aqui</b>, ou clique para escolher</span><span>.xlsx, .csv ou .json · <a href="#">baixar o modelo preenchido</a> · <a href="#">colar JSON</a></span></div>
+      <div class="passos"><span><b>1</b>Escolha o arquivo</span><span><b>2</b>Confira as diferenças</span><span><b>3</b>Grave no rascunho</span></div>
+    </div>
+    <div class="eixo"><h3>Eixo 1 · Território, Ambiente e Clima</h3><small>14 indicadores</small></div>
+    <div class="grade">
+      <div class="card vazio"><span class="cod">I1.1.1</span><span class="nome">ZEE vigente e atualizado</span><span class="num">sem valores</span><span class="meta">% / Sim-Não</span></div>
+      <div class="card"><span class="cod">I1.1.2</span><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="num">45<small>valores</small></span><span class="meta">% · alterado 13 set 2026</span></div>
+      <div class="card vazio"><span class="cod">I1.1.3</span><span class="nome">Cooperação técnica PNGATI/PNGTAQ</span><span class="num">sem valores</span><span class="meta">nº (0-9)</span></div>
+      <div class="card"><span class="cod">I1.3.1</span><span class="nome">Vulnerabilidade climática municipal (IIVCM)</span><span class="num">27<small>valores</small></span><span class="meta">pontos (0-100) · alterado 13 set 2026</span></div>
+      <div class="card"><span class="cod">I1.3.2</span><span class="nome">Desmatamento ilegal</span><span class="num">72<small>valores</small></span><span class="meta">% / ha · alterado 13 set 2026</span></div>
+      <div class="card"><span class="cod">I1.3.4</span><span class="nome">Focos de calor</span><span class="num">99<small>valores</small></span><span class="meta">nº · alterado 13 set 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== C ===================== -->
+<section class="opcao c">
+  <h2><small>C</small>Abas por eixo</h2>
+  <p>Os cinco eixos viram abas, então a tela mostra um eixo por vez e cabe sem rolagem longa. A busca atravessa todos os eixos (a aba muda sozinha para o primeiro resultado). A importação fica num botão discreto à direita, que abre o mesmo painel da opção B.</p>
+  <div class="tela">
+    <div class="topo"><span>Valores</span><span>Ícaro Gundim · Minha senha · Sair</span></div>
+    <div class="barra">
+      <div class="busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input placeholder="Buscar código ou indicador" /></div>
+      <span class="contagem"></span>
+      <span class="btn sec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Importar em lote</span>
+    </div>
+    <div class="abas"><b class="on">Eixo 1<small>14</small></b><b>Eixo 2<small>11</small></b><b>Eixo 3<small>12</small></b><b>Eixo 4<small>10</small></b><b>Eixo 5<small>12</small></b></div>
+    <div class="eixo"><h3>Território, Ambiente e Clima</h3><small>9 com valores · 5 sem</small></div>
+    <div class="grade">
+      <div class="card vazio"><span class="cod">I1.1.1</span><span class="nome">ZEE vigente e atualizado</span><span class="meta">% / Sim-Não · sem valores</span></div>
+      <div class="card"><span class="cod">I1.1.2</span><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="meta">% · 45 valores · alterado 13 set 2026</span></div>
+      <div class="card vazio"><span class="cod">I1.1.3</span><span class="nome">Cooperação técnica PNGATI/PNGTAQ</span><span class="meta">nº (0-9) · sem valores</span></div>
+      <div class="card vazio"><span class="cod">I1.2.1</span><span class="nome">Planos Estaduais de Adaptação aprovados e em execução</span><span class="meta">% / Sim-Não · sem valores</span></div>
+      <div class="card"><span class="cod">I1.3.1</span><span class="nome">Vulnerabilidade climática municipal (IIVCM)</span><span class="meta">pontos (0-100) · 27 valores · alterado 13 set 2026</span></div>
+      <div class="card"><span class="cod">I1.3.2</span><span class="nome">Desmatamento ilegal</span><span class="meta">% / ha · 72 valores · alterado 13 set 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== D ===================== -->
+<section class="opcao d">
+  <h2><small>D</small>Cards largos com cobertura por estado</h2>
+  <p>Cards em duas ou três colunas, mais baixos, com nove marcas à direita: uma por estado, preenchida quando há valor. Dá para ver de relance onde falta dado, sem abrir a grade. Barra e importação iguais à opção A.</p>
+  <div class="tela">
+    <div class="topo"><span>Valores</span><span>Ícaro Gundim · Minha senha · Sair</span></div>
+    <div class="barra">
+      <div class="busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input placeholder="Buscar código ou indicador" /></div>
+      <span class="chips"><b class="on">Todos</b><b>Com valores</b><b>Sem valores</b></span>
+      <span class="contagem">59 indicadores · 41 com valores</span>
+    </div>
+    <div class="importar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span><b>Importar em lote:</b> solte aqui uma planilha ou JSON no formato do <a href="#">modelo</a>, ou <a href="#">cole o JSON</a>.</span><span class="btn sec">Escolher arquivo</span></div>
+    <div class="eixo"><h3>Eixo 1 · Território, Ambiente e Clima</h3><small>14 indicadores</small></div>
+    <div class="grade">
+      <div class="card"><div class="txt"><span class="cod">I1.1.1</span><span class="nome">ZEE vigente e atualizado</span><span class="meta">% / Sim-Não · sem valores</span></div><span class="cobertura"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></span></div>
+      <div class="card"><div class="txt"><span class="cod">I1.1.2</span><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="meta">% · 45 valores · 13 set 2026</span></div><span class="cobertura"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+      <div class="card"><div class="txt"><span class="cod">I1.3.1</span><span class="nome">Vulnerabilidade climática municipal (IIVCM)</span><span class="meta">pontos (0-100) · 27 valores · 13 set 2026</span></div><span class="cobertura"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+      <div class="card"><div class="txt"><span class="cod">I1.3.2</span><span class="nome">Desmatamento ilegal</span><span class="meta">% / ha · 72 valores · 13 set 2026</span></div><span class="cobertura"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="x"></i></span></div>
+      <div class="card"><div class="txt"><span class="cod">I1.3.3</span><span class="nome">Monitoramento por sensoriamento remoto</span><span class="meta">% / dias · sem valores</span></div><span class="cobertura"><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i><i class="x"></i></span></div>
+      <div class="card"><div class="txt"><span class="cod">I1.3.4</span><span class="nome">Focos de calor</span><span class="meta">nº · 99 valores · 13 set 2026</span></div><span class="cobertura"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+    </div>
+  </div>
+  <p class="nota">Em D, a cobertura por estado precisa de uma consulta a mais na página (quais UFs têm valor por código), o que já está disponível na tabela de valores.</p>
+</section>
+</body>
+</html>

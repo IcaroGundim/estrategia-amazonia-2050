@@ -183,9 +183,7 @@
         "Fórmula não informada na ficha técnica.",
         "Ficha técnica não localizada no documento.",
         "Este indicador consta na matriz consolidada; são exibidas abaixo apenas as informações disponíveis no catálogo.",
-        "Não foi possível carregar o catálogo.",
-        "Não foi possível carregar a nota metodológica.",
-        "As fontes não puderam ser carregadas."
+        "Não foi possível carregar o catálogo."
       ],
       "alvo": "#goals-detail",
       "abre": "#goals-list button[data-codigo]"
@@ -310,7 +308,6 @@
         "Transição energética",
         "Implementação",
         "Este painel",
-        "Carregando fontes…",
         "Ver o cumprimento das metas",
         "Explorar metas e indicadores",
         "A Estratégia",
@@ -587,8 +584,8 @@
       "en": "Nine states, 59 indicators and the evidence to follow the Legal Amazon."
     },
     "Panorama - ": {
-      "pt": "Panorama - ",
-      "en": "At a glance - "
+      "pt": "Panorama -",
+      "en": "At a glance -"
     },
     "Amazônia Legal.": {
       "pt": "Amazônia Legal.",
@@ -899,8 +896,8 @@
       "en": "target {patamar}{prazo}"
     },
     " até {prazo}": {
-      "pt": " até {prazo}",
-      "en": " by {prazo}"
+      "pt": "até {prazo}",
+      "en": "by {prazo}"
     },
     "nos 9 estados": {
       "pt": "nos 9 estados",
@@ -1101,14 +1098,6 @@
     "Não foi possível carregar o catálogo.": {
       "pt": "Não foi possível carregar o catálogo.",
       "en": "The catalogue could not be loaded."
-    },
-    "Não foi possível carregar a nota metodológica.": {
-      "pt": "Não foi possível carregar a nota metodológica.",
-      "en": "The methodological note could not be loaded."
-    },
-    "As fontes não puderam ser carregadas.": {
-      "pt": "As fontes não puderam ser carregadas.",
-      "en": "The sources could not be loaded."
     },
     "Anual": {
       "pt": "Anual",
@@ -1425,10 +1414,6 @@
     "Este painel": {
       "pt": "Este painel",
       "en": "This dashboard"
-    },
-    "Carregando fontes…": {
-      "pt": "Carregando fontes…",
-      "en": "Loading sources…"
     },
     "Ver o cumprimento das metas": {
       "pt": "Ver o cumprimento das metas",
