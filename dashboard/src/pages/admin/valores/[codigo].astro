@@ -104,69 +104,73 @@ const colunas = [
 </Admin>
 
 <script>
-  const form = document.querySelector<HTMLFormElement>('[data-grade]')!;
-  const tabela = form.querySelector<HTMLTableElement>('[data-tabela]')!;
+  function inicia() {
 
-  // Colar: espalha o bloco (tabs = colunas, quebras de linha = linhas) a partir
-  // da célula onde se colou, pulando a coluna dos estados.
-  tabela.addEventListener('paste', (evento) => {
-    const alvo = evento.target as HTMLInputElement;
-    if (!(alvo instanceof HTMLInputElement)) return;
-    const texto = evento.clipboardData?.getData('text/plain') ?? '';
-    if (!texto.includes('\t') && !texto.includes('\n')) return;
-    evento.preventDefault();
-    const linhas = texto.replace(/\r/g, '').split('\n').filter((linha, indice, lista) => linha !== '' || indice < lista.length - 1);
-    const celulaInicial = alvo.closest('td')!;
-    const linhaInicial = celulaInicial.parentElement as HTMLTableRowElement;
-    const colunaInicial = [...linhaInicial.children].indexOf(celulaInicial);
-    let linhaAtual: HTMLTableRowElement | null = linhaInicial;
-    for (const linha of linhas) {
-      if (!linhaAtual) break;
-      const valores = linha.split('\t');
-      valores.forEach((valor, deslocamento) => {
-        const celula = linhaAtual!.children[colunaInicial + deslocamento];
-        const entrada = celula?.querySelector('input');
-        if (entrada) { entrada.value = valor.trim(); entrada.classList.add('is-alterada'); }
-      });
-      linhaAtual = linhaAtual.nextElementSibling as HTMLTableRowElement | null;
+    const form = document.querySelector<HTMLFormElement>('[data-grade]')!;
+    const tabela = form.querySelector<HTMLTableElement>('[data-tabela]')!;
+
+    // Colar: espalha o bloco (tabs = colunas, quebras de linha = linhas) a partir
+    // da célula onde se colou, pulando a coluna dos estados.
+    tabela.addEventListener('paste', (evento) => {
+      const alvo = evento.target as HTMLInputElement;
+      if (!(alvo instanceof HTMLInputElement)) return;
+      const texto = evento.clipboardData?.getData('text/plain') ?? '';
+      if (!texto.includes('\t') && !texto.includes('\n')) return;
+      evento.preventDefault();
+      const linhas = texto.replace(/\r/g, '').split('\n').filter((linha, indice, lista) => linha !== '' || indice < lista.length - 1);
+      const celulaInicial = alvo.closest('td')!;
+      const linhaInicial = celulaInicial.parentElement as HTMLTableRowElement;
+      const colunaInicial = [...linhaInicial.children].indexOf(celulaInicial);
+      let linhaAtual: HTMLTableRowElement | null = linhaInicial;
+      for (const linha of linhas) {
+        if (!linhaAtual) break;
+        const valores = linha.split('\t');
+        valores.forEach((valor, deslocamento) => {
+          const celula = linhaAtual!.children[colunaInicial + deslocamento];
+          const entrada = celula?.querySelector('input');
+          if (entrada) { entrada.value = valor.trim(); entrada.classList.add('is-alterada'); }
+        });
+        linhaAtual = linhaAtual.nextElementSibling as HTMLTableRowElement | null;
+      }
+    });
+
+    tabela.addEventListener('input', (evento) => {
+      (evento.target as HTMLElement).classList.add('is-alterada');
+    });
+
+    function adicionaColuna(campo: string, ano: string, rotulo: string) {
+      const existe = [...tabela.tHead!.rows[0].cells].some((th) => th.dataset.campo === campo && th.dataset.ano === ano);
+      if (existe) return;
+      const th = document.createElement('th');
+      th.textContent = rotulo;
+      th.dataset.campo = campo;
+      th.dataset.ano = ano;
+      tabela.tHead!.rows[0].appendChild(th);
+      for (const linha of tabela.tBodies[0].rows) {
+        const td = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = `c:${campo}|${linha.dataset.uf}|${ano}`;
+        input.autocomplete = 'off';
+        td.appendChild(input);
+        linha.appendChild(td);
+      }
     }
-  });
 
-  tabela.addEventListener('input', (evento) => {
-    (evento.target as HTMLElement).classList.add('is-alterada');
-  });
-
-  function adicionaColuna(campo: string, ano: string, rotulo: string) {
-    const existe = [...tabela.tHead!.rows[0].cells].some((th) => th.dataset.campo === campo && th.dataset.ano === ano);
-    if (existe) return;
-    const th = document.createElement('th');
-    th.textContent = rotulo;
-    th.dataset.campo = campo;
-    th.dataset.ano = ano;
-    tabela.tHead!.rows[0].appendChild(th);
-    for (const linha of tabela.tBodies[0].rows) {
-      const td = document.createElement('td');
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = `c:${campo}|${linha.dataset.uf}|${ano}`;
-      input.autocomplete = 'off';
-      td.appendChild(input);
-      linha.appendChild(td);
-    }
+    form.querySelector('[data-add-ano]')!.addEventListener('click', () => {
+      const campo = form.querySelector<HTMLInputElement>('[data-novo-ano]')!;
+      const ano = campo.value.trim();
+      if (!/^\d{4}$/.test(ano)) { alert('Informe o ano com quatro dígitos.'); return; }
+      adicionaColuna('', ano, ano);
+      campo.value = '';
+    });
+    form.querySelector('[data-add-campo]')!.addEventListener('click', () => {
+      const campo = form.querySelector<HTMLInputElement>('[data-novo-campo]')!;
+      const nome = campo.value.trim();
+      if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(nome)) { alert('O nome do campo usa letras e números, sem espaços (ex.: total, comPlano).'); return; }
+      adicionaColuna(nome, '', nome);
+      campo.value = '';
+    });
   }
-
-  form.querySelector('[data-add-ano]')!.addEventListener('click', () => {
-    const campo = form.querySelector<HTMLInputElement>('[data-novo-ano]')!;
-    const ano = campo.value.trim();
-    if (!/^\d{4}$/.test(ano)) { alert('Informe o ano com quatro dígitos.'); return; }
-    adicionaColuna('', ano, ano);
-    campo.value = '';
-  });
-  form.querySelector('[data-add-campo]')!.addEventListener('click', () => {
-    const campo = form.querySelector<HTMLInputElement>('[data-novo-campo]')!;
-    const nome = campo.value.trim();
-    if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(nome)) { alert('O nome do campo usa letras e números, sem espaços (ex.: total, comPlano).'); return; }
-    adicionaColuna(nome, '', nome);
-    campo.value = '';
-  });
+  document.addEventListener('astro:page-load', inicia);
 </script>

@@ -71,80 +71,84 @@ const salvo = Astro.url.searchParams.get('salvo');
 
 <script>
   import * as XLSX from 'xlsx';
+  function inicia() {
 
-  const raiz = document.querySelector<HTMLElement>('[data-importacao]')!;
-  const arquivo = raiz.querySelector<HTMLInputElement>('[data-arquivo]')!;
-  const jsonCampo = raiz.querySelector<HTMLTextAreaElement>('[data-json]')!;
-  const conferir = raiz.querySelector<HTMLButtonElement>('[data-conferir]')!;
-  const aplicar = raiz.querySelector<HTMLButtonElement>('[data-aplicar]')!;
-  const resumo = raiz.querySelector<HTMLElement>('[data-resumo]')!;
-  const erro = raiz.querySelector<HTMLElement>('[data-erro]')!;
-  const previa = raiz.querySelector<HTMLElement>('[data-previa]')!;
-  let lote: unknown[] = [];
-  let versao = '';
-  let origem = 'json';
 
-  const mostraErro = (texto: string) => { erro.textContent = texto; erro.hidden = !texto; };
-  const escapa = (texto: unknown) => String(texto ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    const raiz = document.querySelector<HTMLElement>('[data-importacao]')!;
+    const arquivo = raiz.querySelector<HTMLInputElement>('[data-arquivo]')!;
+    const jsonCampo = raiz.querySelector<HTMLTextAreaElement>('[data-json]')!;
+    const conferir = raiz.querySelector<HTMLButtonElement>('[data-conferir]')!;
+    const aplicar = raiz.querySelector<HTMLButtonElement>('[data-aplicar]')!;
+    const resumo = raiz.querySelector<HTMLElement>('[data-resumo]')!;
+    const erro = raiz.querySelector<HTMLElement>('[data-erro]')!;
+    const previa = raiz.querySelector<HTMLElement>('[data-previa]')!;
+    let lote: unknown[] = [];
+    let versao = '';
+    let origem = 'json';
 
-  // Lê a planilha no navegador: a aba Modelo_importacao se existir, senão a
-  // primeira que tiver a coluna "codigo".
-  async function lePlanilha(ficheiro: File): Promise<unknown[]> {
-    const dados = new Uint8Array(await ficheiro.arrayBuffer());
-    const livro = XLSX.read(dados, { type: 'array' });
-    const nomes = livro.SheetNames;
-    const escolhida = nomes.includes('Modelo_importacao') ? 'Modelo_importacao' : nomes.find((nome) => {
-      const linhas = XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[nome], { defval: '' });
-      return linhas.length && 'codigo' in linhas[0];
+    const mostraErro = (texto: string) => { erro.textContent = texto; erro.hidden = !texto; };
+    const escapa = (texto: unknown) => String(texto ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    // Lê a planilha no navegador: a aba Modelo_importacao se existir, senão a
+    // primeira que tiver a coluna "codigo".
+    async function lePlanilha(ficheiro: File): Promise<unknown[]> {
+      const dados = new Uint8Array(await ficheiro.arrayBuffer());
+      const livro = XLSX.read(dados, { type: 'array' });
+      const nomes = livro.SheetNames;
+      const escolhida = nomes.includes('Modelo_importacao') ? 'Modelo_importacao' : nomes.find((nome) => {
+        const linhas = XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[nome], { defval: '' });
+        return linhas.length && 'codigo' in linhas[0];
+      });
+      if (!escolhida) throw new Error('Não achei uma aba com a coluna "codigo".');
+      return XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[escolhida], { defval: '' })
+        .map((linha) => ({ codigo: linha.codigo, campo: linha.campo, uf: linha.uf, ano: linha.ano, valor: linha.valor, nota: linha.nota }));
+    }
+
+    async function montaLote(): Promise<unknown[]> {
+      if (arquivo.files && arquivo.files[0]) { origem = 'xlsx'; return lePlanilha(arquivo.files[0]); }
+      const texto = jsonCampo.value.trim();
+      if (!texto) throw new Error('Escolha uma planilha ou cole o JSON.');
+      origem = 'json';
+      const lido = JSON.parse(texto);
+      return Array.isArray(lido) ? lido : lido.linhas;
+    }
+
+    conferir.addEventListener('click', async () => {
+      mostraErro('');
+      previa.innerHTML = '';
+      aplicar.disabled = true;
+      resumo.textContent = 'Conferindo';
+      try {
+        lote = await montaLote();
+        const resposta = await fetch('/api/admin/valores/diferencas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote }) });
+        const corpo = await resposta.json();
+        if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a prévia.');
+        versao = corpo.versao;
+        const { novas, alteradas, iguais, avisos } = corpo.resumo;
+        resumo.textContent = `${novas} nova(s), ${alteradas} alterada(s), ${iguais} igual(is)${avisos ? `, ${avisos} aviso(s)` : ''}${corpo.problemas.length ? `, ${corpo.problemas.length} com problema` : ''}.`;
+        const linhasTabela = corpo.diferencas.filter((d: any) => d.situacao !== 'igual').map((d: any) => `<tr class="is-${d.situacao}"><td>${escapa(d.codigo)}</td><td>${escapa(d.campo)}</td><td>${escapa(d.uf)}</td><td>${escapa(d.ano)}</td><td>${d.antes === null ? '' : escapa(d.antes)}</td><td><b>${escapa(d.depois)}</b></td><td>${d.situacao}${d.aviso ? `, ${escapa(d.aviso)}` : ''}</td></tr>`).join('');
+        const problemas = corpo.problemas.map((p: string) => `<li>${escapa(p)}</li>`).join('');
+        previa.innerHTML = `${problemas ? `<p class="admin-aviso">Linhas ignoradas:</p><ul class="admin-problemas">${problemas}</ul>` : ''}${linhasTabela ? `<div class="admin-tabela-rolagem"><table class="admin-tabela"><thead><tr><th>código</th><th>campo</th><th>UF</th><th>ano</th><th>antes</th><th>depois</th><th>situação</th></tr></thead><tbody>${linhasTabela}</tbody></table></div>` : '<p>Nenhuma célula muda.</p>'}`;
+        aplicar.disabled = !(novas + alteradas) || corpo.problemas.length > 0;
+      } catch (falha) {
+        resumo.textContent = '';
+        mostraErro((falha as Error).message);
+      }
     });
-    if (!escolhida) throw new Error('Não achei uma aba com a coluna "codigo".');
-    return XLSX.utils.sheet_to_json<Record<string, unknown>>(livro.Sheets[escolhida], { defval: '' })
-      .map((linha) => ({ codigo: linha.codigo, campo: linha.campo, uf: linha.uf, ano: linha.ano, valor: linha.valor, nota: linha.nota }));
+
+    aplicar.addEventListener('click', async () => {
+      mostraErro('');
+      aplicar.disabled = true;
+      try {
+        const resposta = await fetch('/api/admin/valores/aplicar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote, versao, origem }) });
+        const corpo = await resposta.json();
+        if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a gravação.');
+        location.href = `/admin/valores?salvo=${encodeURIComponent(`${corpo.alteradas} célula(s) gravada(s) no rascunho.`)}`;
+      } catch (falha) {
+        mostraErro((falha as Error).message);
+        aplicar.disabled = false;
+      }
+    });
   }
-
-  async function montaLote(): Promise<unknown[]> {
-    if (arquivo.files && arquivo.files[0]) { origem = 'xlsx'; return lePlanilha(arquivo.files[0]); }
-    const texto = jsonCampo.value.trim();
-    if (!texto) throw new Error('Escolha uma planilha ou cole o JSON.');
-    origem = 'json';
-    const lido = JSON.parse(texto);
-    return Array.isArray(lido) ? lido : lido.linhas;
-  }
-
-  conferir.addEventListener('click', async () => {
-    mostraErro('');
-    previa.innerHTML = '';
-    aplicar.disabled = true;
-    resumo.textContent = 'Conferindo';
-    try {
-      lote = await montaLote();
-      const resposta = await fetch('/api/admin/valores/diferencas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote }) });
-      const corpo = await resposta.json();
-      if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a prévia.');
-      versao = corpo.versao;
-      const { novas, alteradas, iguais, avisos } = corpo.resumo;
-      resumo.textContent = `${novas} nova(s), ${alteradas} alterada(s), ${iguais} igual(is)${avisos ? `, ${avisos} aviso(s)` : ''}${corpo.problemas.length ? `, ${corpo.problemas.length} com problema` : ''}.`;
-      const linhasTabela = corpo.diferencas.filter((d: any) => d.situacao !== 'igual').map((d: any) => `<tr class="is-${d.situacao}"><td>${escapa(d.codigo)}</td><td>${escapa(d.campo)}</td><td>${escapa(d.uf)}</td><td>${escapa(d.ano)}</td><td>${d.antes === null ? '' : escapa(d.antes)}</td><td><b>${escapa(d.depois)}</b></td><td>${d.situacao}${d.aviso ? `, ${escapa(d.aviso)}` : ''}</td></tr>`).join('');
-      const problemas = corpo.problemas.map((p: string) => `<li>${escapa(p)}</li>`).join('');
-      previa.innerHTML = `${problemas ? `<p class="admin-aviso">Linhas ignoradas:</p><ul class="admin-problemas">${problemas}</ul>` : ''}${linhasTabela ? `<div class="admin-tabela-rolagem"><table class="admin-tabela"><thead><tr><th>código</th><th>campo</th><th>UF</th><th>ano</th><th>antes</th><th>depois</th><th>situação</th></tr></thead><tbody>${linhasTabela}</tbody></table></div>` : '<p>Nenhuma célula muda.</p>'}`;
-      aplicar.disabled = !(novas + alteradas) || corpo.problemas.length > 0;
-    } catch (falha) {
-      resumo.textContent = '';
-      mostraErro((falha as Error).message);
-    }
-  });
-
-  aplicar.addEventListener('click', async () => {
-    mostraErro('');
-    aplicar.disabled = true;
-    try {
-      const resposta = await fetch('/api/admin/valores/aplicar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ linhas: lote, versao, origem }) });
-      const corpo = await resposta.json();
-      if (!resposta.ok) throw new Error(corpo.erro || 'Falhou a gravação.');
-      location.href = `/admin/valores?salvo=${encodeURIComponent(`${corpo.alteradas} célula(s) gravada(s) no rascunho.`)}`;
-    } catch (falha) {
-      mostraErro((falha as Error).message);
-      aplicar.disabled = false;
-    }
-  });
+  document.addEventListener('astro:page-load', inicia);
 </script>

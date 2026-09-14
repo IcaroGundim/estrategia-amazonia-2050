@@ -100,8 +100,12 @@ const ordenadas = [...comparacao.diferencas].sort((a, b) => (a.situacao === 'igu
 </Admin>
 
 <script>
-  const marcar = document.querySelector<HTMLInputElement>('[data-marcar-todas]');
-  marcar?.addEventListener('change', () => {
-    document.querySelectorAll<HTMLInputElement>('input[name="celula"]').forEach((caixa) => { caixa.checked = marcar.checked; });
-  });
+  function inicia() {
+
+    const marcar = document.querySelector<HTMLInputElement>('[data-marcar-todas]');
+    marcar?.addEventListener('change', () => {
+      document.querySelectorAll<HTMLInputElement>('input[name="celula"]').forEach((caixa) => { caixa.checked = marcar.checked; });
+    });
+  }
+  document.addEventListener('astro:page-load', inicia);
 </script>

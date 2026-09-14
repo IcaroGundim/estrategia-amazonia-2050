@@ -129,7 +129,7 @@ class DepositoLocal implements Deposito {
       pendentes,
       previewUrl: null,
       podePublicar: true,
-      aviso: 'Modo local: as edições vão direto para a pasta conteudo/ desta máquina. "Publicar" só regenera os dados do servidor de desenvolvimento; o commit e o push ficam por sua conta.'
+      aviso: 'Sem GitHub configurado, as edições vão para a pasta desta máquina e "Publicar" só regenera os dados do servidor local; o commit e o push ficam por sua conta.'
     };
   }
 

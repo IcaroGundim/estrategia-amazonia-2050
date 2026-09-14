@@ -60,7 +60,7 @@ const ATALHOS = [
   { href: '/admin/propostas', icone: 'propostas', nome: 'Propostas da coleta', detalhe: propostasPendentes ? `${propostasPendentes} proposta(s) esperando decisão.` : 'Aceitar ou rejeitar o que os scripts de coleta trouxeram.', destaque: propostasPendentes > 0 },
   { href: '/admin/catalogo', icone: 'catalogo', nome: 'Catálogo de indicadores', detalhe: 'Nome, meta, descrição, fonte, prazo e situação da coleta.' },
   { href: '/admin/metas', icone: 'metas', nome: 'Metas confrontáveis', detalhe: 'Alvo, direção, valor regional e motivos de exclusão.' },
-  { href: '/admin/textos', icone: 'textos', nome: 'Textos do painel', detalhe: 'As cinco lâminas da Visão Geral e a metodologia, em pt e en.' },
+  { href: '/admin/textos', icone: 'textos', nome: 'Textos do painel', detalhe: 'Todo texto de cada página, em pt e en, com a página ao lado.' },
   { href: '/admin/painel', icone: 'painel', nome: 'Data e constantes', detalhe: 'A data "atualizado em" e o número de municípios.' },
   { href: '/admin/panorama', icone: 'panorama', nome: 'Configuração do Panorama', detalhe: 'Métricas do mapa, ordem do seletor, pesos e dimensões.' },
   { href: '/admin/contas', icone: 'contas', nome: 'Contas', detalhe: 'Criar, desativar e redefinir senhas.' },
@@ -75,7 +75,7 @@ const ATALHOS = [
     <p>Tudo o que você salva vai para o rascunho. Ele só chega ao site quando alguém publica; antes disso dá para conferir na prévia.</p>
   </section>
 
-  <Mensagens erro={erro} salvo={msg} aviso={estado?.aviso} />
+  <Mensagens erro={erro} salvo={msg} />
 
   {estado && (
     <section class="admin-cartao">
@@ -83,7 +83,7 @@ const ATALHOS = [
         <div>
           <p class="admin-chapeu">Rascunho</p>
           <h2>{estado.pendentes.length ? `${estado.pendentes.length} alteração(ões) esperando publicação` : 'Nada pendente: o site está igual ao rascunho'}</h2>
-          <p>{estado.head ? `Última gravação por ${estado.head.autor}, ${quando(estado.head.data)}.` : `Depósito: ${estado.branch}.`}</p>
+          <p>{estado.head ? `Última gravação por ${estado.head.autor}, ${quando(estado.head.data)}.` : `Depósito: ${estado.branch}.`}{estado.aviso ? ` ${estado.aviso}` : ''}</p>
         </div>
         <div class="admin-acoes" style="margin: 0">
           <form method="post" action="/api/admin/previa"><button type="submit" class="admin-botao is-secundario">Atualizar prévia</button></form>

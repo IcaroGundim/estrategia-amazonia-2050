@@ -12,7 +12,8 @@ import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto, textoOuNulo } fro
 interface Regra { tipo: 'reducaoSobreMedia'; desde: number; fator: number }
 interface Parametro {
   codigo: string; alvo?: number | Regra | null; direcao: 'maior' | 'menor' | 'categoria'; tipo: 'declarada' | 'inferida' | 'derivada';
-  agregacao?: string; valorDe?: 'ultimoDaSerie' | { panorama: string }; baselineAno?: number; unidade?: string;
+  agregacao?: string; valorDe?: 'ultimoDaSerie' | { panorama: string   trajetoria?: { janela?: number; metodo?: 'linear' | 'composto'; desligada?: boolean; nota?: string };
+}; baselineAno?: number; unidade?: string;
   categoriasCumpre?: string[]; nota?: string; notaAgregacao?: string;
 }
 interface Metas { parametros: Parametro[]; exclusoes: Record<string, string> }
@@ -82,6 +83,17 @@ if (Astro.request.method === 'POST') {
       if (nota) novoParametro.nota = nota;
       const notaAgregacao = textoOuNulo(dados, 'notaAgregacao');
       if (notaAgregacao) novoParametro.notaAgregacao = notaAgregacao;
+      const trajetoria: NonNullable<Parametro['trajetoria']> = {};
+      const janela = numeroOuNulo(dados, 'trajJanela');
+      if (janela !== null) {
+        if (!Number.isInteger(janela) || janela < 3) throw new ErroDeEdicao('A janela da trajetória precisa ser um número inteiro de 3 ou mais pontos.');
+        trajetoria.janela = janela;
+      }
+      if (texto(dados, 'trajMetodo') === 'composto') trajetoria.metodo = 'composto';
+      if (texto(dados, 'trajDesligada') === 'sim') trajetoria.desligada = true;
+      const trajNota = textoOuNulo(dados, 'trajNota');
+      if (trajNota) trajetoria.nota = trajNota;
+      if (Object.keys(trajetoria).length) novoParametro.trajetoria = trajetoria;
     }
     const novoMotivo = situacao === 'excluida' ? texto(dados, 'motivo') : '';
     if (situacao === 'excluida' && !novoMotivo) throw new ErroDeEdicao('Escreva o motivo de a meta ficar fora do quadro.');
@@ -167,6 +179,18 @@ const opcoesValorDe = [
         </div>
         <Campo nome="nota" rotulo="Nota da parametrização" tipo="area" valor={parametro?.nota ?? ''} ajuda="Aparece na página de Metas explicando a escolha" largo />
         <Campo nome="notaAgregacao" rotulo="Nota do valor regional" tipo="area" valor={parametro?.notaAgregacao ?? ''} linhas={2} largo />
+        <div class="admin-form-linha">
+          <Campo nome="trajJanela" rotulo="Trajetória: pontos no ritmo" tipo="numero" valor={parametro?.trajetoria?.janela ?? ''} ajuda="Quantos anos mais recentes entram no ritmo. Vazio = 5, mínimo 3." />
+          <Campo nome="trajMetodo" rotulo="Trajetória: método" tipo="select" valor={parametro?.trajetoria?.metodo || 'linear'} opcoes={[
+            { valor: 'linear', rotulo: 'Linear (variação constante por ano)' },
+            { valor: 'composto', rotulo: 'Composto (variação percentual por ano)' }
+          ]} />
+          <Campo nome="trajDesligada" rotulo="Trajetória no Panorama" tipo="select" valor={parametro?.trajetoria?.desligada ? 'sim' : 'nao'} opcoes={[
+            { valor: 'nao', rotulo: 'Calcular' },
+            { valor: 'sim', rotulo: 'Desligar (série com quebra ou sem sentido)' }
+          ]} />
+        </div>
+        <Campo nome="trajNota" rotulo="Nota da trajetória" tipo="area" valor={parametro?.trajetoria?.nota ?? ''} linhas={2} ajuda="Aparece ao lado da meta na trajetória do Panorama" largo />
       </fieldset>
 
       <fieldset class="admin-bloco" data-quando="excluida">
@@ -183,12 +207,16 @@ const opcoesValorDe = [
 </Admin>
 
 <script>
-  // Mostra só o bloco da situação escolhida.
-  const form = document.querySelector('[data-form-meta]');
-  const situacao = form?.querySelector('select[name="situacao"]') as HTMLSelectElement | null;
-  const atualiza = () => {
-    form?.querySelectorAll<HTMLElement>('[data-quando]').forEach((bloco) => { bloco.hidden = bloco.dataset.quando !== situacao?.value; });
-  };
-  situacao?.addEventListener('change', atualiza);
-  atualiza();
+  function inicia() {
+
+    // Mostra só o bloco da situação escolhida.
+    const form = document.querySelector('[data-form-meta]');
+    const situacao = form?.querySelector('select[name="situacao"]') as HTMLSelectElement | null;
+    const atualiza = () => {
+      form?.querySelectorAll<HTMLElement>('[data-quando]').forEach((bloco) => { bloco.hidden = bloco.dataset.quando !== situacao?.value; });
+    };
+    situacao?.addEventListener('change', atualiza);
+    atualiza();
+  }
+  document.addEventListener('astro:page-load', inicia);
 </script>

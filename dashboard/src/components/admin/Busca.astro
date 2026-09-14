@@ -14,23 +14,27 @@ const { placeholder = 'Buscar por código ou nome' } = Astro.props;
 </div>
 
 <script>
-  const semAcento = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  document.querySelectorAll<HTMLElement>('[data-busca]').forEach((caixa) => {
-    const entrada = caixa.querySelector('input')!;
-    const resumo = caixa.querySelector<HTMLElement>('[data-busca-resumo]')!;
-    const cartoes = [...document.querySelectorAll<HTMLElement>('.admin-cartao')].filter((cartao) => cartao.querySelector('.admin-lista'));
-    const itens = cartoes.flatMap((cartao) => [...cartao.querySelectorAll<HTMLElement>('.admin-lista li')]);
-    const filtra = () => {
-      const termo = semAcento(entrada.value.trim());
-      let visiveis = 0;
-      for (const item of itens) {
-        const bate = !termo || semAcento(item.textContent || '').includes(termo);
-        item.hidden = !bate;
-        if (bate) visiveis += 1;
-      }
-      for (const cartao of cartoes) cartao.classList.toggle('is-vazio-na-busca', Boolean(termo) && ![...cartao.querySelectorAll<HTMLElement>('.admin-lista li')].some((item) => !item.hidden));
-      resumo.textContent = termo ? `${visiveis} de ${itens.length}` : '';
-    };
-    entrada.addEventListener('input', filtra);
-  });
+  function inicia() {
+
+    const semAcento = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    document.querySelectorAll<HTMLElement>('[data-busca]').forEach((caixa) => {
+      const entrada = caixa.querySelector('input')!;
+      const resumo = caixa.querySelector<HTMLElement>('[data-busca-resumo]')!;
+      const cartoes = [...document.querySelectorAll<HTMLElement>('.admin-cartao')].filter((cartao) => cartao.querySelector('.admin-lista'));
+      const itens = cartoes.flatMap((cartao) => [...cartao.querySelectorAll<HTMLElement>('.admin-lista li')]);
+      const filtra = () => {
+        const termo = semAcento(entrada.value.trim());
+        let visiveis = 0;
+        for (const item of itens) {
+          const bate = !termo || semAcento(item.textContent || '').includes(termo);
+          item.hidden = !bate;
+          if (bate) visiveis += 1;
+        }
+        for (const cartao of cartoes) cartao.classList.toggle('is-vazio-na-busca', Boolean(termo) && ![...cartao.querySelectorAll<HTMLElement>('.admin-lista li')].some((item) => !item.hidden));
+        resumo.textContent = termo ? `${visiveis} de ${itens.length}` : '';
+      };
+      entrada.addEventListener('input', filtra);
+    });
+  }
+  document.addEventListener('astro:page-load', inicia);
 </script>
