@@ -164,10 +164,11 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
       estado.classList.toggle('is-ocupado', ocupado);
     }
     // Recarrega o quadro enviando o formulário para ele (botão escondido).
+    // O endereço vai sem `#lâmina`: carregar o quadro numa âncora faz o
+    // navegador rolar também a página de fora até o quadro. A lâmina aberta é
+    // reposta depois do carregamento, em `mostraNoQuadro`, que não rola nada.
     function recarrega() {
-      let hash = '';
-      try { hash = quadro.contentWindow?.location.hash || ''; } catch { hash = ''; }
-      botao.formAction = `/admin/textos/previa?pagina=${pagina}&lang=${lang}${hash}`;
+      botao.formAction = `/admin/textos/previa?pagina=${pagina}&lang=${lang}`;
       mostraEstado('atualizando', true);
       form.requestSubmit(botao);
     }
