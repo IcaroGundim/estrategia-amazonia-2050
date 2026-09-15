@@ -198,20 +198,53 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
           const para = atuais[indice]?.querySelector('.slide-copy');
           if (de && para) para.innerHTML = de.innerHTML;
         });
+        valorNoQuadro.clear();
+        for (const campo of form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-fonte="textos"] input, [data-fonte="textos"] textarea')) valorNoQuadro.set(campo.name, campo.value.trim());
         mostraEstado('');
       } catch {
         if (meu === pedido) mostraEstado('a prévia não respondeu');
       }
     }
 
+    // Nas lâminas, a tecla aparece no quadro na hora, sem servidor: o texto que
+    // o campo tinha antes é procurado na lâmina do grupo e trocado pelo novo.
+    // O servidor confirma logo depois (inglês vazio caindo no português, etc.).
+    const valorNoQuadro = new Map<string, string>();
+    function trocaNaHora(campo: HTMLInputElement | HTMLTextAreaElement, grupo: HTMLElement) {
+      const doc = quadro.contentDocument;
+      const ancora = grupo.dataset.ancora;
+      if (!doc || !ancora) return false;
+      const emIngles = campo.name.endsWith('__en');
+      if (emIngles !== (lang === 'en')) return false;
+      const antes = (valorNoQuadro.get(campo.name) ?? campo.defaultValue).trim();
+      const depois = campo.value.trim();
+      if (!antes || !depois) return false;
+      const secao = doc.querySelector(`#${ancora} .slide-copy`);
+      if (!secao) return false;
+      const passeio = doc.createTreeWalker(secao, NodeFilter.SHOW_TEXT);
+      let no: Text | null;
+      while ((no = passeio.nextNode() as Text | null)) {
+        if (no.nodeValue?.trim() === antes) {
+          no.nodeValue = no.nodeValue.replace(antes, depois);
+          valorNoQuadro.set(campo.name, depois);
+          return true;
+        }
+      }
+      return false;
+    }
+
     let ultimaFonte = 'interface';
     form.addEventListener('input', (evento) => {
-      const grupo = (evento.target as HTMLElement).closest<HTMLElement>('[data-grupo]');
+      const campo = evento.target as HTMLInputElement | HTMLTextAreaElement;
+      const grupo = campo.closest<HTMLElement>('[data-grupo]');
       if (!grupo) return;
       ultimaFonte = grupo.dataset.fonte || 'interface';
       if (grupo.dataset.secao === 'Nota técnica') return;
+      const laminas = ultimaFonte === 'textos' && pagina === 'metodologia';
+      const jaTrocou = laminas && trocaNaHora(campo, grupo);
       window.clearTimeout(temporizador);
-      temporizador = window.setTimeout(() => (ultimaFonte === 'textos' && pagina === 'metodologia' ? trocaTextoDasLaminas() : recarrega()), ultimaFonte === 'textos' ? 250 : 400);
+      // Com a troca feita na hora, a confirmação pelo servidor pode esperar mais.
+      temporizador = window.setTimeout(() => (laminas ? trocaTextoDasLaminas() : recarrega()), jaTrocou ? 900 : (laminas ? 250 : 400));
     });
 
     // Leva o quadro à lâmina pedida. Não muda location.hash: a navegação
