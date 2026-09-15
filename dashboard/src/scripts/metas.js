@@ -601,8 +601,6 @@ function animaBarras() {
     for (const barra of barras) {
       const destino = barra.dataset.destino;
       barra.style.width = destino + '%';
-      const rotulo = barra.parentElement.querySelector('.goals-row-val');
-      if (rotulo) rotulo.style.left = (rotulo.dataset.fixo === 'sim' ? 0 : destino) + '%';
     }
   });
 }
@@ -627,11 +625,11 @@ function linhaDeMeta(meta, anterior) {
   }
 
   const partida = anterior.has(meta.codigo) ? anterior.get(meta.codigo) : p;
-  const rotulo = semEscala
-    ? `<em class="goals-row-val sem fora" data-fixo="sim" style="left:0%">${escape(valorHoje)} · ${t('sem escala')}</em>`
-    : (p >= 22
-      ? `<em class="goals-row-val dentro" style="left:${partida}%">${escape(valorHoje)}</em>`
-      : `<em class="goals-row-val fora" style="left:${partida}%">${escape(valorHoje)}</em>`);
+  // O valor de hoje sai da barra e vira uma linha de texto abaixo dela; sem
+  // escala, a barra fica vazia e a linha diz o porquê.
+  const atual = semEscala
+    ? `<span class="goals-card-atual"><b>${escape(valorHoje)}</b> · ${t('sem escala')}</span>`
+    : `<span class="goals-card-atual">${t('atual')} <b>${escape(valorHoje)}</b></span>`;
 
   const classe = item?.cumpre || (contaEstados && cumprem === total)
     ? 'is-met'
@@ -643,11 +641,15 @@ function linhaDeMeta(meta, anterior) {
 
   const ativa = state.detalhesAbertos && meta.codigo === state.codigo ? ' is-active' : '';
   const expandida = state.detalhesAbertos && meta.codigo === state.codigo;
+  // Card: a jornada é o número grande à esquerda; nome, patamar, barra fina e
+  // valor atual ficam ao lado.
   return `<button type="button" data-codigo="${meta.codigo}" class="goals-row ${classe}${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
-    <span class="goals-row-name">${escape(nomeDe(meta))}<small>${tp('meta {patamar}{prazo}', { patamar, prazo: meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : '' })}</small></span>
-    <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" data-meta-barra="${meta.codigo}" data-destino="${p}" style="width:${partida}%"></i>${rotulo}</span>
     <span class="goals-row-ler"><b>${leitura}</b><small>${t('jornada')}</small></span>
-    <span class="goals-row-open" aria-hidden="true">›</span>
+    <span class="goals-card-body">
+      <span class="goals-row-name">${escape(nomeDe(meta))}<small>${tp('meta {patamar}{prazo}', { patamar, prazo: meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : '' })}</small></span>
+      <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" data-meta-barra="${meta.codigo}" data-destino="${p}" style="width:${partida}%"></i></span>
+      ${atual}
+    </span>
   </button>`;
 }
 
@@ -659,7 +661,6 @@ function linhaDeCatalogo(item) {
   return `<button type="button" data-codigo="${item.codigo}" class="goals-row is-catalog${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
     <span class="goals-row-name">${escape(nomeDe(item))}<small>${escape(motivoDe(item))}</small></span>
     <span class="goals-row-ler">${selo(item)}</span>
-    <span class="goals-row-open" aria-hidden="true">›</span>
   </button>`;
 }
 
@@ -689,11 +690,11 @@ function renderList() {
     // logo acima, e escrever "4" e "19" ao lado dele seria dizer 23 três vezes.
     const faixaMetas = metas.length
       ? `<p class="goals-faixa">${t('Metas com patamar mensurável')}</p>
-         ${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}`
+         <div class="goals-cards">${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}</div>`
       : '';
     const faixaCatalogo = catalogo.length
       ? `<p class="goals-faixa">${metas.length ? t('Demais indicadores do eixo') : t('Indicadores do eixo')}</p>
-         ${catalogo.map(linhaDeCatalogo).join('')}`
+         <div class="goals-cards">${catalogo.map(linhaDeCatalogo).join('')}</div>`
       : '';
     return `<section class="goals-eixo">
       <header class="goals-eixo-head">

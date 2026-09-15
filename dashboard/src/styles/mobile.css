@@ -157,9 +157,9 @@
   .goals-eixo-head > span { font-size: 11.5px; }
   .goals-row-name { font-size: 14.5px; }
   .goals-row-name small { font-size: 11.5px; }
-  .goals-row-ler b { font-size: 16px; }
+  .goals-row-ler b { font-size: 28px; }
   .goals-row-ler small { font-size: 11px; }
-  .goals-row-val { font-size: 11px; }
+  .goals-card-atual { font-size: 11px; }
   .goals-legend, .goals-map-hint { font-size: 11.5px; }
   .goals-detail-head h2 { font-size: 19px; }
   .goals-detail-summary dt, .goals-detail-facts dt { font-size: 10.5px; }
@@ -297,29 +297,20 @@
   .goals-eixo-head { padding: 0 2px 8px; }
   .goals-faixa { padding: 0 2px; }
 
-  .goals-row {
-    padding: 14px 14px 15px;
-    border-radius: 13px;
-    background: var(--papel);
-    box-shadow: 0 1px 3px rgba(43, 31, 23, 0.07);
-  }
-  .goals-row + .goals-row { margin-top: 8px; border-top: 0; }
-  .goals-row.is-active { padding-left: 14px; box-shadow: 0 2px 10px rgba(43, 31, 23, 0.12); }
-  .goals-row.is-active::before { top: 14px; bottom: 14px; left: 0; border-radius: 0 2px 2px 0; }
-  /* Uma faixa nunca começa colada na linha anterior: ela é um título, e a
+  .goals-cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .goals-row { padding: 14px 14px 15px; border-radius: 13px; box-shadow: 0 1px 3px rgba(43, 31, 23, 0.07); }
+  .goals-row.is-active { box-shadow: inset 0 0 0 1px var(--urucum), 0 2px 10px rgba(43, 31, 23, 0.12); }
+  /* Uma faixa nunca começa colada nos cards anteriores: ela é um título, e a
      margem que a separa é o que a faz ler como um. */
-  .goals-row + .goals-faixa { margin-top: 18px; }
+  .goals-cards + .goals-faixa { margin-top: 18px; }
 
   .indicator-empty { border-radius: 13px; background: var(--papel); }
 
   /* O selo de coleta é `nowrap` e come 130px dos 347 do cartão: ao lado dele o
      nome do indicador quebrava em três linhas e o motivo era cortado por
      reticências na segunda. Descido para uma linha própria, os dois textos ficam
-     com a largura toda e o cartão ainda encolhe. */
-  .goals-row.is-catalog { grid-template-columns: minmax(0, 1fr) 14px; }
-  .goals-row.is-catalog .goals-row-name { grid-column: 1 / -1; grid-row: 1; }
-  .goals-row.is-catalog .goals-row-ler { grid-column: 1; grid-row: 2; justify-content: flex-start; }
-  .goals-row.is-catalog .goals-row-open { grid-column: 2; grid-row: 2; align-self: center; }
+     com a largura toda. */
+  .goals-row.is-catalog { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -465,21 +456,6 @@
    8. Celular: acabamentos das listas
    --------------------------------------------------------------------------- */
 @media (max-width: 620px) {
-  /* O "›" da fonte de títulos desenha um sinal miúdo, quase uma vírgula, no
-     tamanho em que aparece. Desenhado com duas bordas ele vira uma seta legível
-     e continua herdando a cor — inclusive o urucum da linha ativa. */
-  .goals-row-open { font-size: 0; }
-  .goals-row-open::after {
-    content: "";
-    display: block;
-    width: 8px;
-    height: 8px;
-    margin-inline: auto;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(-45deg);
-  }
-
   /* O motivo de um indicador não ter jornada é uma frase inteira, e num acervo
      de 59 ela custaria uma tela a cada três linhas. Duas linhas dizem o bastante
      — o painel de detalhe traz a frase completa. */

@@ -113,6 +113,7 @@
         "Meta",
         "Jornada",
         "jornada",
+        "atual",
         "sem escala",
         "Meta pactuada",
         "Meta não informada.",
@@ -1982,6 +1983,10 @@
     "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.": {
       "pt": "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
       "en": "At this pace the target of {alvo} is only reached in {anoAlcance}; meeting the {prazo} deadline would take {vezes} times this pace."
+    },
+    "atual": {
+      "pt": "atual",
+      "en": "current"
     }
   }
 }
