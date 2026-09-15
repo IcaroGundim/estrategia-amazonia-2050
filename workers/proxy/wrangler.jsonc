@@ -1,0 +1,9 @@
+{
+  "main": "index.ts",
+  // Define o endereço: estrategia2050.<SUBDOMINIO>.workers.dev
+  "name": "estrategia2050",
+  "compatibility_date": "2026-09-10",
+  // Sem nodejs_compat: só fetch/Request/Response/URL, do próprio runtime.
+  "vars": { "ORIGEM": "https://estrategia2050.vercel.app" },
+  "observability": { "enabled": true }
+}

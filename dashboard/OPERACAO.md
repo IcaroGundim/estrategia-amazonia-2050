@@ -10,6 +10,10 @@ do painel seguido de `/admin` (por exemplo, `https://SEU-PAINEL/admin`).
 - Na primeira vez, troque a senha temporária em **Minha senha** (canto superior
   direito). Ao menos 10 caracteres.
 - A sessão dura 12 horas. Para sair, use **Sair**.
+- Se o endereço principal não abrir na rede do órgão (a página fica carregando
+  ou aparece um bloqueio do firewall), use o segundo endereço:
+  `https://estrategia2050.seplan.workers.dev`. É o mesmo painel por outra
+  porta; o login precisa ser feito de novo nele.
 - Esqueceu a senha? Peça a alguém com conta para gerar uma nova em **Contas**.
 
 ## 2. Rascunho, prévia e publicação

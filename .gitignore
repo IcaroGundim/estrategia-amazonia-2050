@@ -57,3 +57,6 @@ INDICADORES_SEM_DADOS.log
 
 # Backups locais da fonte e dos dados (pasta backups/, com zip)
 /backups/
+
+# Cache local do wrangler (workers/proxy)
+.wrangler/

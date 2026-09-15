@@ -1,0 +1,13 @@
+{
+  "name": "estrategia2050-proxy",
+  "private": true,
+  "description": "Segunda porta do painel na Cloudflare: Worker que repassa para a Vercel.",
+  "scripts": {
+    "dev": "wrangler dev --config wrangler.jsonc",
+    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "login": "wrangler login"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
