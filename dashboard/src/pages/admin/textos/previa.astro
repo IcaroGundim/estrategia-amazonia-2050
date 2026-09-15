@@ -25,7 +25,10 @@ const lang = Astro.url.searchParams.get('lang') === 'en' ? 'en' : 'pt-BR';
 const pedida = Astro.url.searchParams.get('pagina');
 const pagina = pedida === 'index' || pedida === 'metas' ? pedida : 'metodologia';
 
-const [textosLidos, interfaceLida] = await Promise.all([leJson<Arvore>('textos'), leJson<Interface>('interface')]);
+// O formulário já traz cada campo; a leitura serve só de esqueleto, então uma
+// versão de até um minuto atrás basta e poupa duas idas ao GitHub por tecla.
+const LEITURA = { validadeMs: 60_000 };
+const [textosLidos, interfaceLida] = await Promise.all([leJson<Arvore>('textos', LEITURA), leJson<Interface>('interface', LEITURA)]);
 let textos = textosLidos.dados;
 let interfaceTextos = interfaceLida.dados;
 if (Astro.request.method === 'POST') {

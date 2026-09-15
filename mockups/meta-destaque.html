@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Destaque da meta no card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7; --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff; --linha: #ddd3c6; --linha-2: #ede6dc; --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  body { margin: 0; padding: 40px; background: #e8e0d6; color: var(--tinta); font: 400 14px/1.5 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 26px; max-width: 86ch; }
+  .opcao { max-width: 1180px; margin: 0 0 40px; }
+  .opcao > h2 { font: 800 21px var(--display); margin: 0 0 4px; }
+  .opcao > h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .opcao > p { margin: 0 0 14px; color: var(--tinta-3); max-width: 92ch; }
+  .rec { display: inline-block; margin-left: 10px; padding: 2px 8px; border-radius: 4px; background: var(--ocre); color: var(--tinta); font: 700 11px var(--text); letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
+  .tela { background: var(--areia); padding: 22px; border-radius: 14px; }
+  .lista { background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 18px 22px; }
+  .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* card atual */
+  .card { position: relative; padding: 12px 14px; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 2px 12px; align-items: start; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); }
+  .card.ativo { border-color: var(--urucum); box-shadow: inset 0 0 0 1px var(--urucum); }
+  .ler { grid-row: 1 / 3; }
+  .ler b { display: block; color: var(--mata); font: 800 26px/1 var(--display); letter-spacing: -.01em; }
+  .ler small { display: block; margin-top: 3px; color: var(--tinta-4); font-size: 10px; }
+  .ler.vazio b { color: var(--tinta-4); }
+  .topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .nome { flex: 1; color: var(--tinta); font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .direita { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 12px; line-height: 1.3; white-space: nowrap; text-align: right; }
+  .atual { color: var(--tinta-4); }
+  .atual b { color: var(--tinta); font-weight: 700; }
+  .barra { position: relative; height: 10px; margin-top: 8px; border-radius: 4px; background: var(--linha-2); overflow: hidden; }
+  .barra .resta { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 5px, rgba(192,69,31,.12) 5px 10px); }
+  .barra .feito { position: absolute; inset: 0 auto 0 0; border-radius: 4px 2px 2px 4px; background: var(--mata-500); }
+
+  /* A: etiqueta */
+  .a .meta { display: inline-flex; align-items: baseline; gap: 5px; padding: 3px 9px; border-radius: 999px; background: var(--areia); border: 1px solid var(--linha); color: var(--tinta-3); font-size: 11px; }
+  .a .meta b { color: var(--mata); font: 800 14px/1 var(--display); }
+
+  /* B: chapéu em urucum */
+  .b .meta { color: var(--urucum); font: 600 10px var(--text); letter-spacing: .12em; text-transform: uppercase; }
+  .b .meta b { display: block; margin-top: 1px; color: var(--mata); font: 800 17px/1.1 var(--display); letter-spacing: 0; text-transform: none; }
+  .b .meta b small { color: var(--tinta-3); font: 500 11px var(--text); margin-left: 4px; }
+
+  /* C: dois números lado a lado */
+  .c .direita { flex-direction: row; gap: 16px; align-items: flex-start; }
+  .c .stat { display: flex; flex-direction: column; align-items: flex-end; }
+  .c .stat span { color: var(--tinta-4); font: 600 9px var(--text); letter-spacing: .12em; text-transform: uppercase; }
+  .c .stat b { color: var(--mata); font: 800 16px/1.15 var(--display); }
+  .c .stat.atual b { color: var(--tinta-2); font-weight: 700; }
+  .c .stat small { color: var(--tinta-4); font-size: 10px; }
+
+  /* D: meta na própria barra */
+  .d .barra { overflow: visible; margin-top: 22px; }
+  .d .marca { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--mata); }
+  .d .marca i { position: absolute; right: 0; bottom: 100%; margin-bottom: 4px; white-space: nowrap; color: var(--mata); font: 800 12px/1 var(--display); }
+  .d .marca i small { color: var(--tinta-4); font: 500 10px var(--text); margin-left: 3px; }
+  .d .direita { align-self: flex-start; }
+  .d .meta-texto { color: var(--tinta-4); font-size: 11px; }
+  .nota { margin-top: 10px; font-size: 12px; color: var(--tinta-4); }
+  @media (max-width: 980px) { .grade { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Destaque da meta no card</h1>
+<p class="sub">Quatro maneiras de destacar o patamar da meta no card, no lugar do número em negrito à direita. Em todas, a jornada continua o número grande à esquerda, o nome fica sozinho na linha de cima e a barra ocupa a largura embaixo. Cada opção mostra também o caso sem escala.</p>
+
+<section class="opcao a">
+  <h2><small>A</small>Etiqueta</h2>
+  <p>A meta vira uma etiqueta arredondada em areia, com o patamar em negrito e o prazo miúdo; o valor atual fica logo abaixo dela. É o mesmo desenho dos filtros da barra superior, então já pertence à página.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="meta">meta <b>40%</b> até 2035</span><span class="atual">atual <b>21,11%</b></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="meta">meta <b>≤ 0 ha</b> até 2030</span><span class="atual"><b>6.518 ha</b> · sem escala</span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+
+<section class="opcao b">
+  <h2><small>B</small>Chapéu em urucum <span class="rec">recomendada</span></h2>
+  <p>"META" em caixa alta miúda e urucum, como os chapéus do painel de detalhe ("VALOR ATUAL", "META", "JORNADA"), e o patamar embaixo em número grande verde-mata, com o prazo ao lado. Repete a hierarquia que o painel ao lado já usa, então o card e o detalhe passam a falar a mesma língua.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="meta">Meta<b>40%<small>até 2035</small></b></span><span class="atual">atual <b>21,11%</b></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="meta">Meta<b>≤ 0 ha<small>até 2030</small></b></span><span class="atual"><b>6.518 ha</b> · sem escala</span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+
+<section class="opcao c">
+  <h2><small>C</small>Dois números lado a lado</h2>
+  <p>Meta e valor atual viram dois pequenos indicadores com chapéu, lado a lado à direita do nome, como uma versão miúda do resumo do painel de detalhe. A meta é a mais escura; o atual fica um tom abaixo. Dá para comparar os dois números num olhar só.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="stat atual"><span>Atual</span><b>21,11%</b></span><span class="stat"><span>Meta</span><b>40%</b><small>até 2035</small></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="stat atual"><span>Atual</span><b>6.518 ha</b><small>sem escala</small></span><span class="stat"><span>Meta</span><b>≤ 0 ha</b><small>até 2030</small></span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+
+<section class="opcao d">
+  <h2><small>D</small>Meta escrita na barra</h2>
+  <p>O patamar sai do canto e vai para o fim da barra, sobre um marcador vertical, o mesmo desenho do gráfico por estado no painel de detalhe. À direita do nome fica só o valor atual. A barra passa a dizer, sozinha, de onde se parte e aonde se quer chegar.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="atual">atual <b>21,11%</b></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i><span class="marca" style="left:calc(100% - 2px)"><i>40%<small>até 2035</small></i></span></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="atual"><b>6.518 ha</b> · sem escala</span></span></div><div class="barra"><i class="resta"></i><span class="marca" style="left:calc(100% - 2px)"><i>≤ 0 ha<small>até 2030</small></i></span></div></div></div>
+  </div></div></div>
+  <p class="nota">Em D a barra da jornada sempre termina na meta (a jornada é a fração do caminho), então o marcador fica sempre na ponta direita e o rótulo precisa de espaço acima da barra.</p>
+</section>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Mockup — Opção C, fundo cheio na meta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --mata: #0e2b22; --mata-700: #1c4437; --mata-500: #3e6e57; --mata-300: #7fa08c; --mata-100: #c6d2c7; --urucum: #c0451f; --ocre: #e0a83c; --areia: #f5f0e8; --papel: #fff; --linha: #ddd3c6; --linha-2: #ede6dc; --tinta: #1a1613; --tinta-2: #3a342e; --tinta-3: #5c544c; --tinta-4: #8a8078; --display: "Bricolage Grotesque", system-ui, sans-serif; --text: "Libre Franklin", system-ui, sans-serif; }
+  body { margin: 0; padding: 40px; background: #e8e0d6; color: var(--tinta); font: 400 14px/1.5 var(--text); }
+  h1 { font: 800 28px var(--display); margin: 0 0 6px; }
+  .sub { color: var(--tinta-3); margin: 0 0 26px; max-width: 86ch; }
+  .opcao { max-width: 1180px; margin: 0 0 36px; }
+  .opcao > h2 { font: 800 21px var(--display); margin: 0 0 4px; }
+  .opcao > h2 small { display: inline-block; margin-right: 10px; padding: 2px 8px; border-radius: 4px; background: var(--urucum); color: #fff; font: 700 12px var(--display); vertical-align: middle; }
+  .opcao > p { margin: 0 0 14px; color: var(--tinta-3); max-width: 92ch; }
+  .rec { display: inline-block; margin-left: 10px; padding: 2px 8px; border-radius: 4px; background: var(--ocre); color: var(--tinta); font: 700 11px var(--text); letter-spacing: .04em; text-transform: uppercase; vertical-align: middle; }
+  .tela { background: var(--areia); padding: 22px; border-radius: 14px; }
+  .lista { background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 18px 22px; }
+  .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 980px) { .grade { grid-template-columns: 1fr; } }
+
+  .card { position: relative; padding: 12px 14px; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 2px 12px; align-items: start; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); }
+  .card.ativo { border-color: var(--urucum); box-shadow: inset 0 0 0 1px var(--urucum); }
+  .ler { grid-row: 1 / 3; }
+  .ler b { display: block; color: var(--mata); font: 800 26px/1 var(--display); letter-spacing: -.01em; }
+  .ler small { display: block; margin-top: 3px; color: var(--tinta-4); font-size: 10px; }
+  .ler.vazio b { color: var(--tinta-4); }
+  .topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .nome { flex: 1; color: var(--tinta); font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .direita { flex: none; display: flex; gap: 6px; align-items: stretch; white-space: nowrap; }
+  .stat { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; padding: 4px 9px; border-radius: 7px; }
+  .stat span { color: var(--tinta-4); font: 600 9px var(--text); letter-spacing: .12em; text-transform: uppercase; }
+  .stat b { color: var(--tinta-2); font: 700 16px/1.15 var(--display); }
+  .stat small { color: var(--tinta-4); font-size: 10px; }
+  .stat.meta b { font-weight: 800; }
+  .barra { position: relative; height: 10px; margin-top: 8px; border-radius: 4px; background: var(--linha-2); overflow: hidden; }
+  .barra .resta { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 5px, rgba(192,69,31,.12) 5px 10px); }
+  .barra .feito { position: absolute; inset: 0 auto 0 0; border-radius: 4px 2px 2px 4px; background: var(--mata-500); }
+
+  /* 4: verde-mata cheio (a escolhida até aqui) */
+  .c4 .stat.meta { background: var(--mata); }
+  .c4 .stat.meta span { color: var(--mata-300); }
+  .c4 .stat.meta b { color: var(--areia); }
+  .c4 .stat.meta small { color: var(--mata-100); }
+  /* 5: urucum cheio */
+  .c5 .stat.meta { background: var(--urucum); }
+  .c5 .stat.meta span { color: rgba(245,240,232,.72); }
+  .c5 .stat.meta b { color: var(--areia); }
+  .c5 .stat.meta small { color: rgba(245,240,232,.8); }
+  /* 6: ocre cheio, texto escuro */
+  .c6 .stat.meta { background: var(--ocre); }
+  .c6 .stat.meta span { color: rgba(26,22,19,.6); }
+  .c6 .stat.meta b { color: var(--tinta); }
+  .c6 .stat.meta small { color: rgba(26,22,19,.7); }
+  /* 7: verde médio, entre o cheio e o claro */
+  .c7 .stat.meta { background: var(--mata-500); }
+  .c7 .stat.meta span { color: rgba(245,240,232,.75); }
+  .c7 .stat.meta b { color: #fff; }
+  .c7 .stat.meta small { color: var(--mata-100); }
+</style>
+</head>
+<body>
+<h1>Opção C, fundo cheio na meta</h1>
+<p class="sub">A opção 4 (verde-mata cheio) ao lado de três outros fundos cheios, para comparar. O bloco da meta é o único com cor; o valor atual segue sem fundo.</p>
+
+<section class="opcao c4">
+  <h2><small>4</small>Verde-mata cheio <span class="rec">escolhida</span></h2>
+  <p>A cor da barra superior, com o número em areia. A referência para comparar.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="stat"><span>Atual</span><b>21,11%</b></span><span class="stat meta"><span>Meta</span><b>40%</b><small>até 2035</small></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="stat"><span>Atual</span><b>6.518 ha</b><small>sem escala</small></span><span class="stat meta"><span>Meta</span><b>≤ 0 ha</b><small>até 2030</small></span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+<section class="opcao c5">
+  <h2><small>5</small>Urucum cheio</h2>
+  <p>A cor de destaque da página (chapéus, card ativo, filtros). Faz a meta gritar mais, e pode competir com o contorno urucum do card aberto.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="stat"><span>Atual</span><b>21,11%</b></span><span class="stat meta"><span>Meta</span><b>40%</b><small>até 2035</small></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="stat"><span>Atual</span><b>6.518 ha</b><small>sem escala</small></span><span class="stat meta"><span>Meta</span><b>≤ 0 ha</b><small>até 2030</small></span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+<section class="opcao c6">
+  <h2><small>6</small>Ocre cheio</h2>
+  <p>O ocre do "2050" da marca, com texto escuro. Quente e visível, diferente de tudo o mais no card, que é verde e cinza.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="stat"><span>Atual</span><b>21,11%</b></span><span class="stat meta"><span>Meta</span><b>40%</b><small>até 2035</small></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="stat"><span>Atual</span><b>6.518 ha</b><small>sem escala</small></span><span class="stat meta"><span>Meta</span><b>≤ 0 ha</b><small>até 2030</small></span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+<section class="opcao c7">
+  <h2><small>7</small>Verde médio</h2>
+  <p>O mesmo verde da barra de progresso preenchida. Um degrau mais leve que o verde-mata, mantendo a ligação com a barra.</p>
+  <div class="tela"><div class="lista"><div class="grade">
+    <div class="card ativo"><div class="ler"><b>53%</b><small>jornada</small></div><div><div class="topo"><span class="nome">UCs estaduais com plano de manejo e conselho gestor</span><span class="direita"><span class="stat"><span>Atual</span><b>21,11%</b></span><span class="stat meta"><span>Meta</span><b>40%</b><small>até 2035</small></span></span></div><div class="barra"><i class="resta"></i><i class="feito" style="width:53%"></i></div></div></div>
+    <div class="card"><div class="ler vazio"><b>—</b><small>jornada</small></div><div><div class="topo"><span class="nome">Desmatamento ilegal</span><span class="direita"><span class="stat"><span>Atual</span><b>6.518 ha</b><small>sem escala</small></span><span class="stat meta"><span>Meta</span><b>≤ 0 ha</b><small>até 2030</small></span></span></div><div class="barra"><i class="resta"></i></div></div></div>
+  </div></div></div>
+</section>
+</body>
+</html>

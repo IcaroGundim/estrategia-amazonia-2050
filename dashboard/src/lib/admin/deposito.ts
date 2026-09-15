@@ -48,7 +48,8 @@ export interface Estado {
 
 export interface Deposito {
   modo: 'github' | 'local';
-  le(caminho: string): Promise<Versao>;
+  /** `validadeMs`: aceita uma leitura recente guardada em memória, em vez de ir ao repositório. */
+  le(caminho: string, opcoes?: OpcoesDeLeitura): Promise<Versao>;
   leVersao(caminho: string, versao: string): Promise<string | null>;
   /** Nomes dos arquivos de uma pasta (só o nome). Pasta inexistente = lista vazia. */
   lista(pasta: string): Promise<string[]>;
@@ -60,6 +61,10 @@ export interface Deposito {
 }
 
 export class ErroDeDeposito extends Error {}
+
+export interface OpcoesDeLeitura {
+  validadeMs?: number;
+}
 
 /** `principal`: commita direto na branch principal, fora do rascunho (contas). */
 export interface OpcoesDeGravacao {
@@ -248,9 +253,19 @@ class DepositoGitHub implements Deposito {
     return status === 201 && mescla ? mescla.sha : rascunho;
   }
 
-  async le(caminho: string): Promise<Versao> {
+  // A prévia dos textos lê os mesmos dois arquivos a cada tecla, e cada leitura
+  // é uma ida à API do GitHub. Quem aceita uma versão de até alguns segundos
+  // atrás (a prévia, cujo formulário já traz cada campo) pega da memória da
+  // função; as telas de edição continuam lendo fresco. Gravar limpa a memória.
+  private lidos = new Map<string, { versao: Versao; em: number }>();
+
+  async le(caminho: string, opcoes: OpcoesDeLeitura = {}): Promise<Versao> {
+    const guardado = this.lidos.get(caminho);
+    if (opcoes.validadeMs && guardado && Date.now() - guardado.em < opcoes.validadeMs) return guardado.versao;
     await this.garanteRascunho();
-    return this.leNaBranch(caminho, this.config.rascunho);
+    const versao = await this.leNaBranch(caminho, this.config.rascunho);
+    this.lidos.set(caminho, { versao, em: Date.now() });
+    return versao;
   }
 
   private async leNaBranch(caminho: string, branch: string): Promise<Versao> {
@@ -275,6 +290,7 @@ class DepositoGitHub implements Deposito {
   }
 
   async grava(arquivos: { caminho: string; texto: string | null }[], mensagem: string, autor: Autor, opcoes: OpcoesDeGravacao = {}): Promise<string> {
+    this.lidos.clear();
     await this.garanteRascunho();
     const branch = opcoes.principal ? this.config.main : this.config.rascunho;
     const texto = `admin(${autor.usuario}): ${mensagem}`;

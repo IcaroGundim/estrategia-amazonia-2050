@@ -157,16 +157,22 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     const grupos = [...form.querySelectorAll<HTMLElement>('[data-grupo]')];
 
     // ---- prévia: a própria página pública, no quadro ----
+    // O aviso ao lado da barra: enquanto o quadro se refaz, um anel gira antes
+    // do texto; erro fica parado.
+    function mostraEstado(texto: string, ocupado = false) {
+      estado.textContent = texto;
+      estado.classList.toggle('is-ocupado', ocupado);
+    }
     // Recarrega o quadro enviando o formulário para ele (botão escondido).
     function recarrega() {
       let hash = '';
       try { hash = quadro.contentWindow?.location.hash || ''; } catch { hash = ''; }
       botao.formAction = `/admin/textos/previa?pagina=${pagina}&lang=${lang}${hash}`;
-      estado.textContent = 'atualizando';
+      mostraEstado('atualizando', true);
       form.requestSubmit(botao);
     }
     quadro.addEventListener('load', () => {
-      estado.textContent = '';
+      mostraEstado('');
       // Ao recarregar o quadro, volta ao trecho do grupo aberto (as páginas
       // com script precisam de um instante para montar o conteúdo).
       window.setTimeout(() => mostraNoQuadro(atual), 400);
@@ -179,7 +185,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
       const doc = quadro.contentDocument;
       if (!doc || !doc.querySelector('.method-section')) return recarrega();
       const meu = ++pedido;
-      estado.textContent = 'atualizando';
+      mostraEstado('atualizando', true);
       try {
         const resposta = await fetch(`/admin/textos/previa?pagina=metodologia&lang=${lang}`, { method: 'POST', body: new FormData(form) });
         if (!resposta.ok) throw new Error(String(resposta.status));
@@ -191,9 +197,9 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
           const para = atuais[indice]?.querySelector('.slide-copy');
           if (de && para) para.innerHTML = de.innerHTML;
         });
-        estado.textContent = '';
+        mostraEstado('');
       } catch {
-        if (meu === pedido) estado.textContent = 'a prévia não respondeu';
+        if (meu === pedido) mostraEstado('a prévia não respondeu');
       }
     }
 
@@ -204,7 +210,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
       ultimaFonte = grupo.dataset.fonte || 'interface';
       if (grupo.dataset.secao === 'Nota técnica') return;
       window.clearTimeout(temporizador);
-      temporizador = window.setTimeout(() => (ultimaFonte === 'textos' && pagina === 'metodologia' ? trocaTextoDasLaminas() : recarrega()), ultimaFonte === 'textos' ? 350 : 600);
+      temporizador = window.setTimeout(() => (ultimaFonte === 'textos' && pagina === 'metodologia' ? trocaTextoDasLaminas() : recarrega()), ultimaFonte === 'textos' ? 250 : 400);
     });
 
     // Leva o quadro à lâmina pedida. Não muda location.hash: a navegação

@@ -6,7 +6,7 @@
 // então commita. Erro de validação ou conflito volta para a tela como
 // mensagem, sem gravar nada.
 import { indexaValores, ordenaValores, parseCsv, serializaCsv, validaFonte } from '../../../pipeline/fonte.mjs';
-import { deposito, type Autor, type Versao } from './deposito';
+import { deposito, type Autor, type OpcoesDeLeitura, type Versao } from './deposito';
 import { Conflito, mesclaJson, mesclaLinhas, type LinhaCsv } from './mesclar';
 
 export const ARQUIVOS = {
@@ -30,8 +30,8 @@ export interface Lido<T> {
   versao: string;
 }
 
-export async function leJson<T>(nome: NomeDeJson): Promise<Lido<T>> {
-  const { texto, versao } = await deposito().le(ARQUIVOS[nome]);
+export async function leJson<T>(nome: NomeDeJson, opcoes?: OpcoesDeLeitura): Promise<Lido<T>> {
+  const { texto, versao } = await deposito().le(ARQUIVOS[nome], opcoes);
   return { dados: JSON.parse(texto) as T, versao };
 }
 

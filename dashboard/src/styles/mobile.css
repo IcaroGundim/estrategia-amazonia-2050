@@ -155,11 +155,16 @@
 
   .goals-eixo-head h3 { font-size: 15px; }
   .goals-eixo-head > span { font-size: 11.5px; }
-  .goals-row-name { font-size: 14.5px; }
+  .goals-row-name { font-size: 15px; }
   .goals-row-name small { font-size: 11.5px; }
   .goals-row-ler b { font-size: 28px; }
   .goals-row-ler small { font-size: 11px; }
-  .goals-card-atual { font-size: 11px; }
+  /* No celular os dois números ao lado do nome espremiam o título; eles
+     descem para baixo dele, alinhados à esquerda. */
+  .goals-card-topo { display: block; }
+  .goals-card-numeros { margin-top: 6px; }
+  .goals-card-stat { align-items: flex-start; padding-left: 0; padding-right: 14px; }
+  .goals-card-stat b { font-size: 17px; }
   .goals-legend, .goals-map-hint { font-size: 11.5px; }
   .goals-detail-head h2 { font-size: 19px; }
   .goals-detail-summary dt, .goals-detail-facts dt { font-size: 10.5px; }
@@ -176,7 +181,6 @@
      44px que ele nomeia. */
   .goals-chart-year { font-size: 10.5px; }
 
-  .goals-detail-kicker { font-size: 11.5px; }
   .goals-detail-tabs button { font-size: 13.5px; }
   .goals-faixa { font-size: 10.5px; }
   .goals-list-summary { font-size: 12px; }

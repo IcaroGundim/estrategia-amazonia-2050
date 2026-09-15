@@ -332,7 +332,7 @@ function corpoResultado(meta) {
     ? valor(meta, recorte.valor)
     : (contaEstados ? tp('{cumprem} de {total} estados', { cumprem, total }) : t('Sem dado'));
   const alvo = recorte
-    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, recorte.alvo)}${meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : ''}`
+    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, recorte.alvo)}${meta.prazo ? ` ${tp('até {prazo}', { prazo: meta.prazo })}` : ''}`
     : (contaEstados ? tp('A ou B nos {total} estados', { total }) : '—');
   const jornada = recorte?.categoria && state.uf
     ? (recorte.cumpre ? '100%' : '—')
@@ -446,7 +446,6 @@ function renderDetail() {
   painel.innerHTML = `<div class="goals-detail-content">
       <header class="goals-detail-head">
         <div>
-          <p class="goals-detail-kicker">${escape(item.codigo)}</p>
           <h2 id="goals-detail-title">${escape(nomeDe(item))}</h2>
         </div>
         <button class="goals-detail-close" type="button" aria-label="${t('Fechar detalhes do indicador')}">×</button>
@@ -625,30 +624,31 @@ function linhaDeMeta(meta, anterior) {
   }
 
   const partida = anterior.has(meta.codigo) ? anterior.get(meta.codigo) : p;
-  // O valor de hoje sai da barra e vira uma linha de texto abaixo dela; sem
-  // escala, a barra fica vazia e a linha diz o porquê.
-  const atual = semEscala
-    ? `<span class="goals-card-atual"><b>${escape(valorHoje)}</b> · ${t('sem escala')}</span>`
-    : `<span class="goals-card-atual">${t('atual')} <b>${escape(valorHoje)}</b></span>`;
-
   const classe = item?.cumpre || (contaEstados && cumprem === total)
     ? 'is-met'
     : (item || contaEstados ? 'is-progress' : 'is-empty');
   const prefixo = meta.direcao === 'menor' ? '≤ ' : '';
-  const patamar = item
-    ? `<b>${escape(prefixo + valor(meta, item.alvo))}</b>`
-    : (state.uf ? '<b>—</b>' : `<b>A ou B</b> ${t('nos 9 estados')}`);
+  // Dois números lado a lado, à direita do nome: o valor de hoje e a meta, cada
+  // um com chapéu e uma nota miúda embaixo (sem escala; prazo; "nos 9 estados").
+  const metaValor = item ? prefixo + valor(meta, item.alvo) : (state.uf ? '—' : 'A ou B');
+  const metaNota = [item || state.uf ? '' : t('nos 9 estados'), meta.prazo ? tp('até {prazo}', { prazo: meta.prazo }) : ''].filter(Boolean).join(' · ');
+  const atualNota = semEscala ? t('sem escala') : '';
 
   const ativa = state.detalhesAbertos && meta.codigo === state.codigo ? ' is-active' : '';
   const expandida = state.detalhesAbertos && meta.codigo === state.codigo;
-  // Card: a jornada é o número grande à esquerda; nome, patamar, barra fina e
-  // valor atual ficam ao lado.
+  // Card: a jornada é o número grande à esquerda; nome, os dois números e a
+  // barra ficam ao lado.
   return `<button type="button" data-codigo="${meta.codigo}" class="goals-row ${classe}${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
     <span class="goals-row-ler"><b>${leitura}</b><small>${t('jornada')}</small></span>
     <span class="goals-card-body">
-      <span class="goals-row-name">${escape(nomeDe(meta))}<small>${tp('meta {patamar}{prazo}', { patamar, prazo: meta.prazo ? tp(' até {prazo}', { prazo: meta.prazo }) : '' })}</small></span>
+      <span class="goals-card-topo">
+        <span class="goals-row-name">${escape(nomeDe(meta))}</span>
+        <span class="goals-card-numeros">
+          <span class="goals-card-stat is-atual"><span>${t('atual')}</span><b>${escape(valorHoje)}</b>${atualNota ? `<small>${atualNota}</small>` : ''}</span>
+          <span class="goals-card-stat is-meta"><span>${t('Meta')}</span><b>${escape(metaValor)}</b>${metaNota ? `<small>${escape(metaNota)}</small>` : ''}</span>
+        </span>
+      </span>
       <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" data-meta-barra="${meta.codigo}" data-destino="${p}" style="width:${partida}%"></i></span>
-      ${atual}
     </span>
   </button>`;
 }

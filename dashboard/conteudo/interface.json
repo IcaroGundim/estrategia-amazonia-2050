@@ -126,8 +126,7 @@
         "Meta derivada da baseline",
         "Critério não informado",
         "Leitura regional:",
-        "meta {patamar}{prazo}",
-        " até {prazo}",
+        "até {prazo}",
         "nos 9 estados",
         "A ou B nos {total} estados",
         "{cumprem} de {total} estados",
@@ -891,14 +890,6 @@
     "Leitura regional:": {
       "pt": "Leitura regional:",
       "en": "Regional figure:"
-    },
-    "meta {patamar}{prazo}": {
-      "pt": "meta {patamar}{prazo}",
-      "en": "target {patamar}{prazo}"
-    },
-    " até {prazo}": {
-      "pt": "até {prazo}",
-      "en": "by {prazo}"
     },
     "nos 9 estados": {
       "pt": "nos 9 estados",
@@ -1987,6 +1978,10 @@
     "atual": {
       "pt": "atual",
       "en": "current"
+    },
+    "até {prazo}": {
+      "pt": "até {prazo}",
+      "en": "by {prazo}"
     }
   }
 }
