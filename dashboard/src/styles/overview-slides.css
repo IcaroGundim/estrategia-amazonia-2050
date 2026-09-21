@@ -29,7 +29,7 @@
 .slide-copy .method-list.is-duas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; margin-top: 14px; }
 .slide-copy .method-list li { padding-block: 10px; }
 .slide-copy .method-list li::before { top: 16px; }
-.slide-copy .method-steps.is-themes { gap: 22px; }
+.slide-copy .method-steps.is-eixos { gap: 22px; }
 .slide-copy .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .slide-copy .method-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .slide-photo { position: relative; isolation: isolate; min-width: 0; margin: 0; overflow: hidden; background: var(--mata); color: var(--areia); }
@@ -58,7 +58,7 @@
   .methodology-page .methodology-index nav a { grid-template-columns: 20px 1fr; gap: 5px; padding: 10px; }
   .methodology-page .methodology-index nav a small { display: none; }
   .methodology-page .method-section { grid-template-columns: minmax(0, 1.8fr) minmax(230px, 1fr); }
-  .slide-copy .method-steps.is-themes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .slide-copy .method-steps.is-eixos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
   .methodology-page { padding-top: 20px; }

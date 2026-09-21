@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visão Geral · forma das setas — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-700:#1c4437;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 'Libre Franklin',system-ui,sans-serif}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+
+header{background:var(--mata);color:var(--areia)}
+.top{max-width:1240px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1240px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:26px;margin-bottom:34px}
+.intro h1{font-size:34px;margin:10px 0 14px}
+.intro p{max-width:80ch;color:var(--tinta-3)}
+.intro p+p{margin-top:10px}
+
+.option{margin-bottom:40px}
+.option-head{display:flex;align-items:baseline;gap:16px;padding:0 4px 14px;flex-wrap:wrap}
+.option-head b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.option-head h2{font-size:21px}
+.option-head p{flex:1 1 380px;color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:6px;flex-wrap:wrap;padding:12px 4px 0}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10px;white-space:nowrap}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+/* O palco imita o cartão da lâmina: texto à esquerda, fotografia à direita e a
+   barra de controles embaixo. Só a barra (e as setas) muda entre as opções. */
+.deck{--p:0;--q:.2;position:relative;border:1px solid var(--linha);border-radius:14px;background:var(--papel);box-shadow:0 18px 50px rgba(43,31,23,.08);overflow:hidden}
+.slide{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);height:250px}
+.slide-copy{padding:34px 44px;display:grid;align-content:center;gap:12px}
+.slide-copy h3{font-size:30px;color:var(--mata)}
+.slide-copy i{display:block;height:9px;border-radius:5px;background:var(--linha-2)}
+.slide-copy i:nth-of-type(2){width:88%}.slide-copy i:nth-of-type(3){width:62%}
+.slide-foto{background:linear-gradient(160deg,#274d3e,#0e2b22 70%)}
+
+/* ---- Palco: margem da página em areia, cartão com o respiro real do texto (46px) */
+.palco{position:relative;padding:0 46px}
+.slide-copy{padding:34px 46px}
+button:disabled{opacity:.35;cursor:default}
+.bar{display:flex;align-items:center;gap:20px;padding:16px 28px 14px;border-top:1px solid var(--linha);background:#faf7f1}
+.tabs{flex:1;display:flex;gap:8px;min-width:0}
+.tabs button{flex:1;padding:0;border:0;background:none;text-align:left;font-size:14px;font-weight:500;color:var(--tinta-3);display:grid;gap:9px;white-space:nowrap}
+.tabs button::before{content:'';height:5px;border-radius:3px;background:var(--linha);transition:background .2s}
+.tabs button.is-done::before{background:var(--mata-300)}
+/* A animação constante do trecho atual, igual à que já está no site. */
+.tabs button.is-active::before{background:linear-gradient(90deg,var(--urucum) 0 38%,#f0a27f 50%,var(--urucum) 62% 100%) 100% 0/200% 100% repeat-x;animation:fluxo 2.6s linear infinite}
+@keyframes fluxo{from{background-position:100% 0}to{background-position:-100% 0}}
+.tabs button span{display:flex;gap:8px;align-items:baseline}
+.tabs button b{font:600 11px var(--display);color:var(--tinta-4)}
+.tabs button.is-active{color:var(--mata);font-weight:600}
+.tabs button.is-active b{color:var(--urucum)}
+.seta{position:absolute;z-index:2;border:1px solid var(--linha);background:var(--papel);color:var(--mata);font-size:20px;line-height:1;transition:all .15s ease}
+.seta[data-next]{border-color:var(--urucum);background:var(--urucum);color:#fff}
+
+/* ---- Hoje: círculo a cavalo na borda -------------------------------- */
+.o0 .seta{top:125px;width:48px;height:48px;border-radius:50%;transform:translateY(-50%);box-shadow:0 8px 24px rgba(14,43,34,.22)}
+.o0 .seta[data-prev]{left:22px}.o0 .seta[data-next]{right:22px}
+.o0 .seta:disabled{opacity:0}
+
+/* ---- Opção 1: abas coladas na borda --------------------------------- */
+.o1 .seta{top:125px;width:30px;height:92px;transform:translateY(-50%);box-shadow:0 4px 14px rgba(14,43,34,.14)}
+.o1 .seta[data-prev]{left:47px;border-left:0;border-radius:0 12px 12px 0;background:var(--areia)}
+.o1 .seta[data-next]{right:47px;border-right:0;border-radius:12px 0 0 12px}
+.o1 .seta:hover:not(:disabled){width:36px}
+.o1 .seta:disabled{opacity:0;pointer-events:none}
+
+/* ---- Opção 2: nas pontas da trilha ---------------------------------- */
+.o2 .seta{position:static;flex:none;width:44px;height:44px;border-radius:50%}
+.o2 .seta[data-prev]{border-color:var(--mata-300)}
+.o2 .seta:hover:not(:disabled){transform:scale(1.06)}
+
+/* ---- Opção 3: fora do cartão, na margem ----------------------------- */
+.o3 .palco{padding:0 58px}
+.o3 .seta{top:125px;width:40px;height:40px;border-radius:50%;transform:translateY(-50%)}
+.o3 .seta[data-prev]{left:8px}.o3 .seta[data-next]{right:8px}
+.o3 .seta:hover:not(:disabled){transform:translateY(-50%) scale(1.08)}
+.o3 .seta:disabled{opacity:.3}
+
+/* ---- Opção 4: faixa lateral de altura total ------------------------- */
+.o4 .seta{top:1px;height:249px;width:40px;border:0;box-shadow:none;font-size:26px}
+.o4 .seta[data-prev]{left:47px;color:var(--mata);border-radius:13px 0 0 0;background:linear-gradient(90deg,#0e2b2214,transparent)}
+.o4 .seta[data-next]{right:47px;color:#fff;border-radius:0 13px 0 0;background:linear-gradient(270deg,#c0451fcc,transparent)}
+.o4 .seta[data-prev]:hover{background:linear-gradient(90deg,#0e2b2230,transparent)}
+.o4 .seta[data-next]:hover{background:linear-gradient(270deg,#c0451f,transparent)}
+.o4 .seta:disabled{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="brand">Estratégia 2050</span><span class="badge">Mockup · não publicado</span></div></header>
+<main>
+  <div class="intro">
+    <p class="eyebrow">Visão Geral · forma das setas</p>
+    <h1>Outra forma para as setas</h1>
+    <p>O círculo a cavalo na borda ficou estranho: parece cortado pelo cartão e flutua sem relação com nada. Abaixo, quatro formas de resolver. Todas mantêm a trilha de baixo, já com a animação constante no trecho atual. O palco reproduz a margem da página e o respiro real do texto (46 px), então o que não encosta no texto aqui não encosta no site.</p>
+    <p>Todas funcionam: clique nas setas e nos trechos.</p>
+  </div>
+
+  <section class="option o0">
+    <div class="option-head"><b>HOJE</b><h2>Círculo a cavalo na borda</h2><p>Como está agora, para comparar.</p></div>
+    <div class="palco" data-deck><div class="deck">
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs></div></div>
+    </div><button class="seta" data-prev aria-label="Anterior">←</button><button class="seta" data-next aria-label="Próximo">→</button></div>
+    
+  </section>
+  <section class="option o1">
+    <div class="option-head"><b>OPÇÃO 1</b><h2>Abas coladas na borda</h2><p>Duas abas estreitas e altas, presas por dentro à borda do cartão, como marcadores de página. Têm 30 px de largura, menos que o respiro do texto, então não encostam em nada. Alargam um pouco ao passar o mouse.</p></div>
+    <div class="palco" data-deck><div class="deck">
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs></div></div>
+    </div><button class="seta" data-prev aria-label="Anterior">‹</button><button class="seta" data-next aria-label="Próximo">›</button></div>
+    <div class="tags"><span class="tag ok">Lateral, como você pediu</span><span class="tag ok">Parece parte do cartão, não um adesivo</span><span class="tag alerta">Alvo de clique mais estreito (30 × 92 px)</span></div>
+  </section>
+  <section class="option o2">
+    <div class="option-head"><b>OPÇÃO 2</b><h2>Nas pontas da trilha</h2><p>As setas descem para a barra e fecham a trilha dos dois lados: voltar à esquerda, avançar à direita. Setas e progresso viram uma peça só, e a lâmina fica limpa.</p></div>
+    <div class="palco" data-deck><div class="deck">
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><button class="seta" data-prev aria-label="Anterior">←</button><div class="tabs" data-tabs></div><button class="seta" data-next aria-label="Próximo">→</button></div>
+    </div></div>
+    <div class="tags"><span class="tag ok">Mais limpa e previsível</span><span class="tag ok">Funciona igual no tablet</span><span class="tag alerta">Deixa de ser lateral à lâmina</span></div>
+  </section>
+  <section class="option o3">
+    <div class="option-head"><b>OPÇÃO 3</b><h2>Fora do cartão, na margem</h2><p>Círculos inteiros de 40 px na margem da página, sem tocar o cartão. Para caber, a margem lateral da Visão Geral cresce uns 12 px de cada lado (o cartão estreita cerca de 24 px).</p></div>
+    <div class="palco" data-deck><div class="deck">
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs></div></div>
+    </div><button class="seta" data-prev aria-label="Anterior">←</button><button class="seta" data-next aria-label="Próximo">→</button></div>
+    <div class="tags"><span class="tag ok">Círculo inteiro, nada cortado</span><span class="tag ok">Nunca cobre foto nem texto</span><span class="tag alerta">Cartão um pouco mais estreito</span><span class="tag alerta">Em telas de 921–1100 px a margem é curta</span></div>
+  </section>
+  <section class="option o4">
+    <div class="option-head"><b>OPÇÃO 4</b><h2>Faixa lateral de altura total</h2><p>Uma faixa de 40 px em cada lado, da altura da lâmina, com um degradê leve e a seta no meio. A da direita em urucum, sobre a fotografia. É o padrão de carrossel de galeria.</p></div>
+    <div class="palco" data-deck><div class="deck">
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs></div></div>
+    </div><button class="seta" data-prev aria-label="Anterior">‹</button><button class="seta" data-next aria-label="Próximo">›</button></div>
+    <div class="tags"><span class="tag ok">Maior área de clique</span><span class="tag alerta">A faixa da esquerda passa rente ao texto</span><span class="tag alerta">Tinge a borda da fotografia</span></div>
+  </section>
+</main>
+<script>
+const NOMES = ['Estratégia', 'Visão 2050', 'Eixos', 'Governança', 'Painel'];
+const dois = (n) => String(n).padStart(2, '0');
+document.querySelectorAll('[data-deck]').forEach((deck) => {
+  let atual = 0;
+  const tabs = deck.querySelector('[data-tabs]');
+  const numerado = true;
+  const emSpan = true;
+  tabs.innerHTML = NOMES.map((nome, i) => {
+    const miolo = (numerado ? `<b>${dois(i + 1)}</b>` : '') + nome;
+    return `<button data-i="${i}">${emSpan ? `<span>${miolo}</span>` : miolo}</button>`;
+  }).join('');
+  const pinta = () => {
+    tabs.querySelectorAll('button').forEach((b, i) => {
+      b.classList.toggle('is-active', i === atual);
+      b.classList.toggle('is-done', i < atual);
+    });
+    deck.querySelector('[data-title]').textContent = NOMES[atual];
+    const count = deck.querySelector('[data-count]');
+    if (count) count.innerHTML = count.hasAttribute('data-forte') ? `<b>${dois(atual + 1)}</b> / 05` : `${dois(atual + 1)} / 05`;
+    deck.querySelector('[data-prev]').disabled = atual === 0;
+    deck.querySelector('[data-next]').disabled = atual === NOMES.length - 1;
+    const rotulo = deck.querySelector('[data-next-label]');
+    if (rotulo) rotulo.textContent = NOMES[atual + 1] ?? 'Fim';
+    deck.style.setProperty('--p', atual / (NOMES.length - 1));
+    deck.style.setProperty('--q', (atual + 1) / NOMES.length);
+  };
+  tabs.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { atual = +b.dataset.i; pinta(); } });
+  deck.querySelector('[data-prev]').addEventListener('click', () => { atual = Math.max(0, atual - 1); pinta(); });
+  deck.querySelector('[data-next]').addEventListener('click', () => { atual = Math.min(NOMES.length - 1, atual + 1); pinta(); });
+  pinta();
+});
+</script>
+</body>
+</html>

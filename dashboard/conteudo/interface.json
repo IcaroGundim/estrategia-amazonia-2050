@@ -307,11 +307,11 @@
         "Visão 2050",
         "Transição energética",
         "Implementação",
-        "Este painel",
+        "Painel",
         "Ver o cumprimento das metas",
         "Explorar metas e indicadores",
-        "A Estratégia",
-        "Temas estratégicos",
+        "Estratégia",
+        "Eixos",
         "Governança"
       ]
     },
@@ -1403,9 +1403,9 @@
       "pt": "Implementação",
       "en": "Implementation"
     },
-    "Este painel": {
-      "pt": "Este painel",
-      "en": "This dashboard"
+    "Painel": {
+      "pt": "Painel",
+      "en": "Dashboard"
     },
     "Ver o cumprimento das metas": {
       "pt": "Ver o cumprimento das metas",
@@ -1415,13 +1415,13 @@
       "pt": "Explorar metas e indicadores",
       "en": "Explore goals and indicators"
     },
-    "A Estratégia": {
-      "pt": "A Estratégia",
-      "en": "The Strategy"
+    "Estratégia": {
+      "pt": "Estratégia",
+      "en": "Strategy"
     },
-    "Temas estratégicos": {
-      "pt": "Temas estratégicos",
-      "en": "Strategic themes"
+    "Eixos": {
+      "pt": "Eixos",
+      "en": "Axes"
     },
     "Governança": {
       "pt": "Governança",

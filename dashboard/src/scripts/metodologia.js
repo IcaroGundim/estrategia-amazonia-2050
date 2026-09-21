@@ -51,6 +51,8 @@ function bindSectionNavigation() {
     active = index;
     links.forEach((link, i) => {
       link.classList.toggle('is-active', i === index);
+      // Trechos já percorridos da trilha de baixo.
+      link.classList.toggle('is-done', i < index);
       if (i === index) link.setAttribute('aria-current', 'step');
       else link.removeAttribute('aria-current');
     });

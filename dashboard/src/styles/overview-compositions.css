@@ -18,13 +18,13 @@
 .slide-copy > h2 + p,
 #visao-2050 .method-vision p,
 #visao-2050 .method-list li,
-#temas-estrategicos .method-steps.is-themes p,
+#eixos-de-implementacao .method-steps.is-eixos p,
 #governanca .method-guidance-grid p,
 #governanca .method-flow span,
 #calculo .method-source-block p,
 #calculo .method-guidance-grid p { font-size: var(--slide-body); line-height: var(--slide-body-lh); }
 #visao-2050 .method-subsection h3,
-#temas-estrategicos .method-steps.is-themes h3,
+#eixos-de-implementacao .method-steps.is-eixos h3,
 #governanca .method-guidance-grid h3,
 #calculo .method-guidance-grid h3 { font-size: var(--slide-h3); line-height: 1.25; }
 .slide-copy .method-facts span,
@@ -118,25 +118,33 @@
 #visao-2050 .method-list li { padding: clamp(7px, 1vh, 12px) 2px clamp(7px, 1vh, 12px) 22px; }
 #visao-2050 .method-list li::before { top: clamp(13px, 1.75vh, 20px); }
 
-/* Temas: faixa panorâmica acima da grade de seis prioridades. */
-/* A faixa fica com o que sobrar depois do texto, em vez de uma altura fixa: os seis
-   temas ocupam sempre os mesmos ~390px, então em telas altas a diferença virava
+/* Eixos: faixa panorâmica acima da grade dos cinco eixos. */
+/* A faixa fica com o que sobrar depois do texto, em vez de uma altura fixa: os cinco
+   eixos ocupam sempre os mesmos ~450px, então em telas altas a diferença virava
    espaço morto embaixo da grade. O piso protege as telas baixas e o teto evita que
    a fotografia domine a lâmina quando a janela é muito alta. */
-.methodology-page #temas-estrategicos { grid-template-columns: minmax(0, 1fr); grid-template-rows: clamp(190px, calc(100% - 325px - 12.5vh), 380px) minmax(0, 1fr); }
-#temas-estrategicos .slide-photo { grid-row: 1; }
-#temas-estrategicos .slide-copy { grid-row: 2; padding-block: 28px; display: grid; align-content: safe center; }
-#temas-estrategicos .slide-photo-main { object-position: 50% 56%; }
-#temas-estrategicos .slide-photo::after { background: linear-gradient(90deg, #0e2b2270, transparent 60%), linear-gradient(0deg,#0e2b2280,transparent); }
-#temas-estrategicos .slide-photo-caption { bottom: 24px; max-width: 65%; }
-#temas-estrategicos .slide-photo-caption p { max-width: 36ch; margin-top: 10px; }
-#temas-estrategicos .slide-photo figcaption { left: auto; max-width: 30%; }
-#temas-estrategicos .slide-copy h2 { max-width: none; }
-#temas-estrategicos .slide-copy > h2 + p { margin-top: 10px; max-width: 90ch; }
-#temas-estrategicos .method-steps.is-themes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; gap: 22px 36px; }
-#temas-estrategicos .method-steps.is-themes article { display: grid; grid-template-columns: 30px minmax(0,1fr); column-gap: 10px; align-content: start; }
-#temas-estrategicos .method-steps.is-themes h3 { margin: 0; max-width: 25ch; }
-#temas-estrategicos .method-steps.is-themes p { grid-column: 2; }
+.methodology-page #eixos-de-implementacao { grid-template-columns: minmax(0, 1fr); grid-template-rows: clamp(190px, calc(100% - 385px - 12.5vh), 380px) minmax(0, 1fr); }
+#eixos-de-implementacao .slide-photo { grid-row: 1; }
+#eixos-de-implementacao .slide-copy { grid-row: 2; padding-block: 28px; display: grid; align-content: safe center; }
+#eixos-de-implementacao .slide-photo-main { object-position: 50% 56%; }
+#eixos-de-implementacao .slide-photo::after { background: linear-gradient(90deg, #0e2b2270, transparent 60%), linear-gradient(0deg,#0e2b2280,transparent); }
+#eixos-de-implementacao .slide-photo-caption { bottom: 24px; max-width: 65%; }
+#eixos-de-implementacao .slide-photo-caption p { max-width: 36ch; margin-top: 10px; }
+#eixos-de-implementacao .slide-photo figcaption { left: auto; max-width: 30%; }
+#eixos-de-implementacao .slide-copy h2 { max-width: none; }
+#eixos-de-implementacao .slide-copy > h2 + p { margin-top: 10px; max-width: 90ch; }
+#eixos-de-implementacao .method-steps.is-eixos { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; gap: 22px 36px; }
+#eixos-de-implementacao .method-steps.is-eixos article { display: grid; grid-template-columns: 30px minmax(0,1fr); column-gap: 10px; align-content: start; }
+#eixos-de-implementacao .method-steps.is-eixos h3 { margin: 0; max-width: 25ch; }
+#eixos-de-implementacao .method-steps.is-eixos p { grid-column: 2; }
+/* Cinco eixos em três colunas deixam a segunda linha manca e não cabem na altura da
+   lâmina; em tela larga vão os cinco lado a lado, com o número acima do título. */
+@media (min-width: 1181px) {
+  #eixos-de-implementacao .method-steps.is-eixos { grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 28px; }
+  #eixos-de-implementacao .method-steps.is-eixos article { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
+  #eixos-de-implementacao .method-steps.is-eixos p { grid-column: 1; }
+  #eixos-de-implementacao .slide-copy { padding-block: 20px; }
+}
 
 /* Governança: foto à esquerda e etapas à direita. Sem o antigo bloco "Próximos
    passos", os três grupos restantes se distribuem na altura da lâmina em vez de
@@ -260,10 +268,10 @@
   .slide-copy h1 { font-size: 34px; }
   .slide-copy h2 { font-size: 29px; }
   #visao-2050 .method-vision { padding: 16px 18px; }
-  .methodology-page #temas-estrategicos { grid-template-rows: 125px minmax(0,1fr); }
-  #temas-estrategicos .slide-copy { padding: 24px; }
-  #temas-estrategicos .method-steps.is-themes { grid-template-columns: 1fr; }
-  #temas-estrategicos .slide-photo figcaption { left: 22px; max-width: none; }
+  .methodology-page #eixos-de-implementacao { grid-template-rows: 125px minmax(0,1fr); }
+  #eixos-de-implementacao .slide-copy { padding: 24px; }
+  #eixos-de-implementacao .method-steps.is-eixos { grid-template-columns: 1fr; }
+  #eixos-de-implementacao .slide-photo figcaption { left: 22px; max-width: none; }
   .methodology-page #governanca { grid-template-columns: 1fr; grid-template-rows: 125px minmax(0,1fr); }
   #governanca .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
   #governanca .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
@@ -340,7 +348,7 @@
   /* `calc(100% - …)` num track de grade não resolve contra altura indefinida.
      A faixa da fotografia passa a medir contra a janela, que é o que a altura da
      lâmina media antes de deixar de ser fixa. */
-  .methodology-page #temas-estrategicos { grid-template-rows: clamp(190px, 26dvh, 340px) minmax(0, 1fr); }
+  .methodology-page #eixos-de-implementacao { grid-template-rows: clamp(190px, 26dvh, 340px) minmax(0, 1fr); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -356,7 +364,8 @@
   /* `margin-bottom` é a folga entre a faixa de abas e o primeiro cartão, a mesma
      que separa um cartão do outro. */
   [data-modo="documento"] .overview-controls { order: -1; position: sticky; top: 68px; z-index: 6; display: block; margin-inline: -14px; margin-bottom: 14px; padding: 0; border-top: 0; border-bottom: 1px solid var(--linha); background: var(--areia); }
-  [data-modo="documento"] .overview-status, [data-modo="documento"] .overview-buttons { display: none; }
+  [data-modo="documento"] .overview-status { display: none; }
+  .overview-buttons { display: none; }
   [data-modo="documento"] .methodology-index { padding: 0 14px; overflow-x: auto; scrollbar-width: none; }
   [data-modo="documento"] .methodology-index::-webkit-scrollbar { display: none; }
   [data-modo="documento"] .methodology-index nav { flex-wrap: nowrap; justify-content: start; gap: 18px; }
@@ -394,15 +403,15 @@
    frase precisa de mais espaço do que sobra antes dos créditos e passava por
    cima deles. */
 @media (min-width: 701px) and (max-width: 1180px) {
-  #temas-estrategicos .slide-photo-caption { max-width: 55%; }
-  #temas-estrategicos .slide-photo-caption p { max-width: 24ch; }
+  #eixos-de-implementacao .slide-photo-caption { max-width: 55%; }
+  #eixos-de-implementacao .slide-photo-caption p { max-width: 24ch; }
 }
 @media (max-width: 700px) {
   /* Aqui a frase já está oculta, mas a caixa dela continuava esticada do topo
      até 24px da base — o `bottom` do seletor de id vencia o `bottom: auto` da
      classe — e cobria os créditos. Invisível, e ainda assim capturando o toque:
      o link da licença ficava inalcançável. */
-  #temas-estrategicos .slide-photo-caption { bottom: auto; max-width: none; }
+  #eixos-de-implementacao .slide-photo-caption { bottom: auto; max-width: none; }
 }
 
 /* Em telas estreitas a lâmina cresce em vez de rolar, e a caixinha volta para o fluxo,
@@ -428,3 +437,65 @@
   #a-estrategia .slide-copy .method-facts span { font-size: clamp(12px, 1.6vh, 15px); }
   #a-estrategia .slide-copy .method-facts p { margin-top: clamp(2px, .8vh, 8px); max-width: 66ch; font-size: clamp(15px, 2.2vh, 21px); line-height: 1.55; }
 }
+
+/* Navegação das lâminas: trilha de trechos embaixo e setas nas laterais.
+   A trilha é o próprio índice: cinco trechos na largura toda, o que já passou em
+   verde e a lâmina atual em urucum. As setas são abas estreitas coladas por dentro
+   à borda do cartão, que não alcançam o texto. No celular (modo documento) nada
+   disto vale: o índice é a faixa do topo e a rolagem da página é a navegação. */
+/* O palco tem a largura exata do cartão; a seção em volta tem respiro lateral. */
+.overview-palco { position: relative; }
+.methodology-page .methodology-index nav a b { display: none; }
+@media (min-width: 621px) {
+  .overview-controls { padding: 16px 28px 14px; border-top-color: var(--linha); background: #faf7f1; }
+  .methodology-page .methodology-index nav { flex-wrap: nowrap; justify-content: stretch; gap: 8px; }
+  .methodology-page .methodology-index nav a { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 9px; min-height: 0; padding: 0; border: 0; white-space: nowrap; }
+  .methodology-page .methodology-index nav a::before { display: block; position: static; width: auto; height: 5px; transform: none; border-radius: 3px; background: var(--linha); transition: background 200ms ease; }
+  .methodology-page .methodology-index nav a.is-done::before { background: var(--mata-300); }
+  .methodology-page .methodology-index nav a.is-active::before { background: var(--urucum); }
+  .methodology-page .methodology-index nav a > span { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+  .methodology-page .methodology-index nav a strong { overflow: hidden; text-overflow: ellipsis; }
+  .methodology-page .methodology-index nav a b { display: block; color: var(--tinta-4); font: 600 11px var(--display); }
+  .methodology-page .methodology-index nav a.is-active b { color: var(--urucum); }
+  .methodology-page .methodology-index nav a:not(.is-active):hover::before { background: var(--mata-100); }
+  .methodology-page .methodology-index nav a.is-done:not(.is-active):hover::before { background: var(--mata-500); }
+}
+/* Tablet em pé: a lâmina é mais alta que a tela, e setas a meia altura sairiam da
+   vista. Ficam no canto da barra, ao lado do contador, como antes. */
+@media (min-width: 621px) and (max-width: 920px) {
+  .overview-status { min-height: 34px; }
+  .overview-buttons { position: absolute; z-index: 3; right: 28px; bottom: 14px; }
+}
+/* Acima de 700px a barra é uma linha só (contador, trilha, setas): a trilha cede
+   à direita o lugar das duas setas de 40px, que ficam centradas na altura dela. */
+@media (min-width: 701px) and (max-width: 920px) {
+  .overview-controls { padding-right: 128px; }
+  .overview-buttons { right: 24px; bottom: 13px; }
+}
+@media (min-width: 921px) {
+  /* O número do trecho já diz onde se está; o contador segue só para leitores de tela. */
+  .overview-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .overview-buttons { display: contents; }
+  /* Abas coladas por dentro à borda do cartão, como marcadores de página. Têm 30px
+     de largura, menos que o respiro do texto (28–46px), e ficam a meia altura da
+     lâmina: os 66px são a barra da trilha, descontada da conta. O 1px é a borda do
+     cartão. A seta em texto some e dá lugar a um chevron, mais legível na aba estreita. */
+  .overview-buttons button { position: absolute; z-index: 3; top: calc((100% - 66px) / 2); width: 30px; min-width: 30px; height: 92px; min-height: 92px; padding: 0; border-radius: 0 12px 12px 0; background: var(--areia); font-size: 0; transform: translateY(-50%); box-shadow: 0 4px 14px rgba(14,43,34,.14); transition: width 150ms ease, opacity 150ms ease; }
+  .overview-buttons button::after { content: "‹"; font: 400 26px/1 var(--display); }
+  .overview-buttons button:first-child { left: 1px; border-left: 0; }
+  /* Urucum, e não verde-mata: nas duas primeiras lâminas a aba cai sobre a fotografia. */
+  .overview-buttons button:last-child { right: 1px; border-right: 0; border-radius: 12px 0 0 12px; border-color: var(--urucum); background: var(--urucum); color: #fff; }
+  .overview-buttons button:last-child::after { content: "›"; }
+  .overview-buttons button:hover:not(:disabled) { width: 36px; }
+  .overview-buttons button:disabled { opacity: 0; pointer-events: none; }
+  .methodology-page .overview-buttons button:focus-visible { outline-offset: 2px; }
+}
+/* Até 1180px o texto começa a 28px da borda: a aba afina para não encostar nele. */
+@media (min-width: 921px) and (max-width: 1180px) {
+  .overview-buttons button { width: 22px; min-width: 22px; height: 80px; min-height: 80px; border-radius: 0 10px 10px 0; }
+  .overview-buttons button:last-child { border-radius: 10px 0 0 10px; }
+  .overview-buttons button::after { font-size: 22px; }
+  .overview-buttons button:hover:not(:disabled) { width: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .overview-buttons button, .methodology-page .methodology-index nav a::before { transition: none; } }
+@media print { .overview-buttons { display: none; } }

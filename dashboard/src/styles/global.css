@@ -650,11 +650,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 /* Os temas não são um cartão de dado: são texto de referência. Sem caixa, sem fundo
    e sem sombra, separados só por um filete, eles param de competir com os cartões
    do painel. O peso fica no número em urucum e no respiro entre as colunas. */
-.method-steps.is-themes { margin-top: 26px; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 34px; row-gap: 30px; }
-.method-steps.is-themes article { min-height: 0; padding: 13px 0 0; display: block; border: 0; border-top: 1px solid var(--linha); border-radius: 0; background: none; }
-.method-steps.is-themes b { display: block; color: var(--urucum); font: 800 15px var(--display); letter-spacing: 0.05em; }
-.method-steps.is-themes h3 { margin: 10px 0 0; font-size: 17px; line-height: 1.25; }
-.method-steps.is-themes p { margin: 8px 0 0; padding-top: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.6; }
+.method-steps.is-eixos { margin-top: 26px; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 34px; row-gap: 30px; }
+.method-steps.is-eixos article { min-height: 0; padding: 13px 0 0; display: block; border: 0; border-top: 1px solid var(--linha); border-radius: 0; background: none; }
+.method-steps.is-eixos b { display: block; color: var(--urucum); font: 800 15px var(--display); letter-spacing: 0.05em; }
+.method-steps.is-eixos h3 { margin: 10px 0 0; font-size: 17px; line-height: 1.25; }
+.method-steps.is-eixos p { margin: 8px 0 0; padding-top: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.6; }
 .method-vision { margin-top: 24px; padding: 26px 28px; border-radius: 9px; background: var(--mata); color: var(--areia); }
 .method-vision > span { color: var(--ocre); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .method-vision p { max-width: 105ch; margin: 12px 0 0; color: rgba(245, 240, 232, 0.85); font-size: 15px; line-height: 1.65; }
@@ -979,7 +979,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .menu-button { display: block; }
   .menu-open .topnav { position: absolute; top: 100%; right: 0; left: 0; padding: 14px 24px 18px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; background: var(--mata); box-shadow: 0 16px 30px rgba(14, 43, 34, 0.18); }
   .dashboard-grid { grid-template-columns: minmax(0, 1fr) 370px; }
-  .method-steps.is-themes, .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .method-steps.is-eixos, .method-guidance-grid.is-compacta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .methodology-layout { grid-template-columns: 230px minmax(0, 1fr); gap: 42px; }
 
   /* O cabeçalho já quebra sozinho pelo `flex-wrap` da regra base, e forçar a
@@ -1251,9 +1251,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-facts { grid-template-columns: 1fr 1fr 1fr; gap: 9px; padding: 15px; }
   .method-facts div { padding-right: 7px; }
   .method-facts strong { font-size: 21px; }
-  .method-steps, .method-steps.is-themes, .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
+  .method-steps, .method-steps.is-eixos, .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
   .method-steps article { min-height: 170px; }
-  .method-steps.is-themes article { min-height: 0; }
+  .method-steps.is-eixos article { min-height: 0; }
   .method-subsection { grid-template-columns: 1fr; align-items: start; gap: 12px; }
   .method-guidance-grid { grid-template-columns: 1fr; }
 }

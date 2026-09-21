@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visão Geral · animações da trilha — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-700:#1c4437;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--urucum-claro:#f0a27f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 'Libre Franklin',system-ui,sans-serif}
+h1,h2,p{margin:0}
+h1,h2{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+header{background:var(--mata);color:var(--areia)}
+.top{max-width:1240px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1240px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:26px;margin-bottom:34px}
+.intro h1{font-size:34px;margin:10px 0 14px}
+.intro p{max-width:80ch;color:var(--tinta-3)}
+.intro p+p{margin-top:10px}
+
+.option{margin-bottom:30px}
+.option-head{display:flex;align-items:baseline;gap:16px;padding:0 4px 12px;flex-wrap:wrap}
+.option-head b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.option-head h2{font-size:21px}
+.option-head p{flex:1 1 380px;color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:6px;flex-wrap:wrap;padding:10px 4px 0}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10px;white-space:nowrap}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+/* Só a barra de baixo do cartão: é nela que a animação acontece. */
+.bar{padding:16px 28px 14px;border:1px solid var(--linha);border-radius:0 0 14px 14px;background:#faf7f1;box-shadow:0 12px 35px rgba(14,43,34,.045)}
+.tabs{display:flex;gap:8px}
+.tabs button{position:relative;flex:1;padding:0;border:0;background:none;text-align:left;font-size:14px;font-weight:500;color:var(--tinta-3);display:grid;gap:9px;white-space:nowrap}
+.tabs button::before{content:'';height:5px;border-radius:3px;background:var(--linha);transition:background .2s}
+.tabs button.is-done::before{background:var(--mata-300)}
+.tabs button.is-active::before{background:var(--urucum)}
+.tabs button span{display:flex;gap:8px;align-items:baseline}
+.tabs button b{font:600 11px var(--display);color:var(--tinta-4)}
+.tabs button.is-active{color:var(--mata);font-weight:600}
+.tabs button.is-active b{color:var(--urucum)}
+
+/* ---- 1 · Brilho que corre (o que está no site hoje) ---------------- */
+.a1 .is-active::before{background:linear-gradient(90deg,var(--urucum) 0 38%,var(--urucum-claro) 50%,var(--urucum) 62% 100%) 100% 0/200% 100% repeat-x;animation:brilho 2.6s linear infinite}
+@keyframes brilho{from{background-position:100% 0}to{background-position:-100% 0}}
+
+/* ---- 2 · Correnteza: listras diagonais em movimento ---------------- */
+.a2 .is-active::before{background:linear-gradient(135deg,#d9683f 25%,transparent 25% 50%,#d9683f 50% 75%,transparent 75%) 0 0/14px 14px,var(--urucum);animation:correnteza .9s linear infinite}
+@keyframes correnteza{to{background-position:14px 0,0 0}}
+
+/* ---- 3 · Respiração: a barra pulsa com um halo --------------------- */
+.a3 .is-active::before{animation:respira 2.4s ease-in-out infinite}
+@keyframes respira{0%,100%{opacity:.55;box-shadow:0 0 0 0 #c0451f00}50%{opacity:1;box-shadow:0 0 0 3px #c0451f2e}}
+
+/* ---- 4 · Ponto viajante: um marco em ocre vai e volta -------------- */
+.a4 .is-active::after{content:'';position:absolute;top:-3px;left:0;width:11px;height:11px;border-radius:50%;border:2px solid var(--papel);background:var(--ocre);box-shadow:0 1px 4px rgba(14,43,34,.35);animation:viaja 2.8s ease-in-out infinite alternate}
+@keyframes viaja{to{left:calc(100% - 11px)}}
+
+/* ---- 5 · Maré: enche pela esquerda e escoa pela direita ------------ */
+.a5 .is-active::before{background:linear-gradient(var(--urucum),var(--urucum)) no-repeat left/0% 100%,#ecc8b9;animation:mare 4.2s ease-in-out infinite}
+@keyframes mare{0%{background-size:0% 100%;background-position:left}45%{background-size:100% 100%;background-position:left}55%{background-size:100% 100%;background-position:right}100%{background-size:0% 100%;background-position:right}}
+
+/* ---- 6 · Onda pelo caminho: o brilho percorre tudo o que já foi visto */
+/* Cada trecho repete o mesmo ciclo com atraso de 0,45s × a posição (--i), então o
+   brilho atravessa os trechos verdes em sequência e termina no atual. */
+.a6 .is-done::before,.a6 .is-active::before{animation:onda 3.6s linear infinite;animation-delay:calc(var(--i) * .45s);background-repeat:repeat-x;background-size:200% 100%;background-position:130% 0}
+.a6 .is-done::before{background-image:linear-gradient(90deg,var(--mata-300) 0 38%,#d3e2d7 50%,var(--mata-300) 62% 100%)}
+.a6 .is-active::before{background-image:linear-gradient(90deg,var(--urucum) 0 38%,var(--urucum-claro) 50%,var(--urucum) 62% 100%)}
+@keyframes onda{0%{background-position:130% 0}22%,100%{background-position:-30% 0}}
+
+@media (prefers-reduced-motion:reduce){.tabs button::before,.tabs button::after{animation:none!important}}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="brand">Estratégia 2050</span><span class="badge">Mockup · não publicado</span></div></header>
+<main>
+  <div class="intro">
+    <p class="eyebrow">Visão Geral · trilha de progresso</p>
+    <h1>Animações constantes para a trilha</h1>
+    <p>Seis formas de manter a trilha em movimento. A primeira é a que está no site hoje, para comparar. Todas rodam em laço sem salto, custam quase nada ao navegador (só cor de fundo, opacidade e posição) e param sozinhas quando o visitante pede menos movimento no sistema.</p>
+    <p>Clique nos trechos para ver a animação em outras posições; na 6, quanto mais adiante, mais longo o caminho que o brilho percorre.</p>
+  </div>
+
+  <section class="option a1">
+    <div class="option-head"><b>1 · HOJE</b><h2>Brilho que corre</h2><p>Um reflexo claro cruza o trecho atual da esquerda para a direita, descansa e volta.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="1"></div></div>
+    <div class="tags"><span class="tag ok">Discreta</span><span class="tag alerta">Pode passar despercebida</span></div>
+  </section>
+
+  <section class="option a2">
+    <div class="option-head"><b>2</b><h2>Correnteza</h2><p>Listras diagonais em dois tons de urucum deslizam sem parar, como a barra de um carregamento em curso. É a que mais diz “em andamento”.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="1"></div></div>
+    <div class="tags"><span class="tag ok">Movimento sempre visível</span><span class="tag alerta">Lembra barra de download</span></div>
+  </section>
+
+  <section class="option a3">
+    <div class="option-head"><b>3</b><h2>Respiração</h2><p>O trecho atual clareia e acende devagar, com um halo leve em volta, no ritmo de uma respiração.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="1"></div></div>
+    <div class="tags"><span class="tag ok">A mais sóbria</span><span class="tag ok">Chama o olho sem distrair da leitura</span></div>
+  </section>
+
+  <section class="option a4">
+    <div class="option-head"><b>4</b><h2>Ponto viajante</h2><p>Um marco em ocre percorre o trecho atual de ponta a ponta e volta, como um barco no rio. Usa a segunda cor da marca, então destaca mais.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="1"></div></div>
+    <div class="tags"><span class="tag ok">Maior destaque</span><span class="tag ok">Conversa com o “rio” do topo</span><span class="tag alerta">Um elemento a mais na barra</span></div>
+  </section>
+
+  <section class="option a5">
+    <div class="option-head"><b>5</b><h2>Maré</h2><p>O trecho atual enche pela esquerda, fica cheio por um instante e escoa pela direita, em ciclo de 4 s.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="1"></div></div>
+    <div class="tags"><span class="tag ok">Movimento amplo e calmo</span><span class="tag alerta">Pode sugerir que a lâmina vai avançar sozinha</span></div>
+  </section>
+
+  <section class="option a6">
+    <div class="option-head"><b>6</b><h2>Onda pelo caminho</h2><p>O brilho não fica só no trecho atual: nasce no primeiro trecho, atravessa os verdes já vistos em sequência e termina no urucum. Anima as barras todas, e reforça a ideia de percurso.</p></div>
+    <div class="bar"><div class="tabs" data-tabs data-inicio="2"></div></div>
+    <div class="tags"><span class="tag ok">Anima a trilha inteira</span><span class="tag ok">Mostra o caminho percorrido</span><span class="tag alerta">Na primeira lâmina equivale à opção 1</span></div>
+  </section>
+</main>
+<script>
+const NOMES = ['Estratégia', 'Visão 2050', 'Eixos', 'Governança', 'Painel'];
+document.querySelectorAll('[data-tabs]').forEach((tabs) => {
+  let atual = +tabs.dataset.inicio;
+  tabs.innerHTML = NOMES.map((nome, i) => `<button data-i="${i}" style="--i:${i}"><span><b>${String(i + 1).padStart(2, '0')}</b>${nome}</span></button>`).join('');
+  const pinta = () => tabs.querySelectorAll('button').forEach((b, i) => {
+    b.classList.toggle('is-active', i === atual);
+    b.classList.toggle('is-done', i < atual);
+  });
+  tabs.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { atual = +b.dataset.i; pinta(); } });
+  pinta();
+});
+</script>
+</body>
+</html>

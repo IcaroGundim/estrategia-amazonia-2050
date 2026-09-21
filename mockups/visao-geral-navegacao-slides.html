@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visão Geral · opções para a navegação das lâminas — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-700:#1c4437;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 'Libre Franklin',system-ui,sans-serif}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+
+header{background:var(--mata);color:var(--areia)}
+.top{max-width:1240px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1240px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:26px;margin-bottom:34px}
+.intro h1{font-size:34px;margin:10px 0 14px}
+.intro p{max-width:80ch;color:var(--tinta-3)}
+.intro p+p{margin-top:10px}
+
+.option{margin-bottom:40px}
+.option-head{display:flex;align-items:baseline;gap:16px;padding:0 4px 14px;flex-wrap:wrap}
+.option-head b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.option-head h2{font-size:21px}
+.option-head p{flex:1 1 380px;color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:6px;flex-wrap:wrap;padding:12px 4px 0}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10px;white-space:nowrap}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+/* O palco imita o cartão da lâmina: texto à esquerda, fotografia à direita e a
+   barra de controles embaixo. Só a barra (e as setas) muda entre as opções. */
+.deck{--p:0;--q:.2;position:relative;border:1px solid var(--linha);border-radius:14px;background:var(--papel);box-shadow:0 18px 50px rgba(43,31,23,.08);overflow:hidden}
+.slide{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);height:250px}
+.slide-copy{padding:34px 44px;display:grid;align-content:center;gap:12px}
+.slide-copy h3{font-size:30px;color:var(--mata)}
+.slide-copy i{display:block;height:9px;border-radius:5px;background:var(--linha-2)}
+.slide-copy i:nth-of-type(2){width:88%}.slide-copy i:nth-of-type(3){width:62%}
+.slide-foto{background:linear-gradient(160deg,#274d3e,#0e2b22 70%)}
+
+/* ---- Hoje ---------------------------------------------------------- */
+.bar{display:flex;align-items:center;gap:24px;padding:10px 24px;border-top:1px solid var(--linha-2)}
+.count{flex:none;font:600 13px var(--display);color:var(--tinta-3);white-space:nowrap}
+.tabs{flex:1;display:flex;justify-content:center;gap:34px;min-width:0}
+.tabs button{padding:12px 0;border:0;border-bottom:2px solid transparent;background:none;color:var(--tinta-3);font-size:14px;font-weight:500;white-space:nowrap}
+.tabs button.is-active{border-bottom-color:var(--urucum);color:var(--mata);font-weight:600}
+.arrows{display:flex;gap:8px}
+.arrows button{width:40px;height:40px;border-radius:50%;border:1px solid var(--linha);background:var(--papel);font-size:18px;color:var(--mata)}
+.arrows button[data-next]{background:var(--mata);border-color:var(--mata);color:var(--areia)}
+button:disabled{opacity:.35;cursor:default}
+
+/* ---- Comum às três opções: setas nas laterais ------------------------ */
+.lateral{position:absolute;top:125px;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;border:1px solid var(--linha);background:var(--papel);box-shadow:0 8px 24px rgba(14,43,34,.22);font-size:22px;color:var(--mata);z-index:2;transition:transform .15s ease,box-shadow .15s ease}
+.lateral:hover:not(:disabled){transform:translateY(-50%) scale(1.06);box-shadow:0 10px 28px rgba(14,43,34,.3)}
+.lateral[data-prev]{left:16px}
+/* Urucum, e não verde-mata: a seta da direita cai sobre a fotografia, quase sempre escura. */
+.lateral[data-next]{right:16px;background:var(--urucum);border-color:var(--urucum);color:#fff}
+.lateral:disabled{opacity:0;pointer-events:none}
+.lat .slide-copy{padding-left:96px}
+.lat .bar{background:#faf7f1;border-top-color:var(--linha)}
+
+/* ---- Opção A: trilha de trechos ------------------------------------ */
+.oa .bar{gap:28px;padding:16px 28px 14px}
+.oa .tabs{gap:8px;justify-content:stretch}
+.oa .tabs button{flex:1;padding:0;border:0;text-align:left;font-size:14px;display:grid;gap:9px}
+.oa .tabs button::before{content:'';height:5px;border-radius:3px;background:var(--linha);transition:background .2s}
+.oa .tabs button.is-done::before{background:var(--mata-300)}
+.oa .tabs button.is-active::before{background:var(--urucum)}
+.oa .tabs button span{display:flex;gap:8px;align-items:baseline}
+.oa .tabs button b{font:600 11px var(--display);color:var(--tinta-4)}
+.oa .tabs button.is-active b{color:var(--urucum)}
+
+/* ---- Opção B: linha com marcos ------------------------------------- */
+.ob .bar{padding:18px 28px 14px}
+.ob .tabs{position:relative;gap:0;justify-content:stretch}
+/* A linha corre de centro a centro do primeiro e do último marco: 10% de cada lado. */
+.ob .tabs::before,.ob .tabs::after{content:'';position:absolute;top:8px;left:10%;height:2px;border-radius:1px}
+.ob .tabs::before{right:10%;background:var(--linha)}
+.ob .tabs::after{width:calc(80% * var(--p,0));background:var(--mata);transition:width .3s ease}
+.ob .tabs button{position:relative;z-index:1;flex:1;padding:0;border:0;display:grid;justify-items:center;gap:8px;font-size:14px}
+.ob .tabs button::before{content:'';width:18px;height:18px;border-radius:50%;border:2px solid var(--linha);background:var(--papel);transition:all .2s}
+.ob .tabs button.is-done::before{border-color:var(--mata);background:var(--mata)}
+.ob .tabs button.is-active::before{border-color:var(--urucum);background:var(--urucum);box-shadow:0 0 0 4px #c0451f26}
+.ob .tabs button.is-active{border-bottom:0}
+
+/* ---- Opção C: fio de progresso + seletor --------------------------- */
+.oc .bar{position:relative;justify-content:center;padding:14px 28px 12px}
+.oc .fio{position:absolute;inset:-1px 0 auto;height:4px;background:var(--linha)}
+.oc .fio i{display:block;height:100%;width:calc(100% * var(--q,.2));background:var(--urucum);border-radius:0 2px 2px 0;transition:width .3s ease}
+.oc .count{position:absolute;left:28px;font-size:13px}
+.oc .count b{font-size:20px;font-weight:800;color:var(--mata)}
+.oc .tabs{flex:none;gap:4px;padding:4px;border-radius:999px;background:var(--linha-2)}
+.oc .tabs button{padding:8px 18px;border:0;border-radius:999px;font-size:14px}
+.oc .tabs button.is-done{color:var(--mata-500)}
+.oc .tabs button.is-active{background:var(--papel);box-shadow:0 1px 4px rgba(14,43,34,.18);color:var(--mata)}
+.oc .hint{position:absolute;right:28px;color:var(--tinta-4);font-size:11px}
+.oc .hint kbd{padding:1px 6px;border:1px solid var(--linha);border-radius:4px;font:600 11px var(--display);background:var(--papel)}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="brand">Estratégia 2050</span><span class="badge">Mockup · não publicado</span></div></header>
+<main>
+  <div class="intro">
+    <p class="eyebrow">Visão Geral · navegação das lâminas</p>
+    <h1>Como dar mais destaque ao índice e às setas</h1>
+    <p>Retorno recebido: o índice de baixo e as setas passam despercebidos dentro da lâmina. Direção escolhida: as setas saem da barra e vão para as laterais da lâmina, a meia altura, e a parte de baixo passa a mostrar a progressão pelas cinco lâminas. As três opções abaixo têm as mesmas setas e variam só a forma da progressão.</p>
+    <p>Todas funcionam: clique nas setas e nos itens. Na primeira lâmina a seta de voltar some; na última, a de avançar.</p>
+  </div>
+
+  <section class="option o0">
+    <div class="option-head"><b>HOJE</b><h2>Referência</h2><p>Como está publicado, para comparar.</p></div>
+    <div class="deck" data-deck>
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><span class="count" data-count></span><div class="tabs" data-tabs></div><div class="arrows"><button data-prev aria-label="Anterior">←</button><button data-next aria-label="Próximo">→</button></div></div>
+    </div>
+  </section>
+
+  <section class="option lat oa">
+    <div class="option-head"><b>OPÇÃO A</b><h2>Trilha de trechos</h2><p>Cinco trechos na largura toda, cada um com número e nome. O que já passou fica em verde, a lâmina atual em urucum. Lê-se como um sumário em andamento; cada trecho é clicável.</p></div>
+    <div class="deck" data-deck>
+      <button class="lateral" data-prev aria-label="Anterior">←</button><button class="lateral" data-next aria-label="Próximo">→</button>
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs data-numerado data-span></div></div>
+    </div>
+    <div class="tags"><span class="tag ok">Progresso e índice na mesma peça</span><span class="tag ok">Alvo de clique largo</span><span class="tag alerta">Sem contador 01 / 05 (o número do trecho faz esse papel)</span></div>
+  </section>
+
+  <section class="option lat ob">
+    <div class="option-head"><b>OPÇÃO B</b><h2>Linha com marcos</h2><p>Uma linha única com cinco marcos, que se preenche em verde até a lâmina atual, marcada em urucum. É a leitura mais direta de “jornada”, e conversa com o fluxo 01–04 da lâmina de Governança.</p></div>
+    <div class="deck" data-deck>
+      <button class="lateral" data-prev aria-label="Anterior">←</button><button class="lateral" data-next aria-label="Próximo">→</button>
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="tabs" data-tabs></div></div>
+    </div>
+    <div class="tags"><span class="tag ok">Progressão mais evidente</span><span class="tag ok">Animação suave ao avançar</span><span class="tag alerta">No celular os nomes somem e ficam só os marcos</span></div>
+  </section>
+
+  <section class="option lat oc">
+    <div class="option-head"><b>OPÇÃO C</b><h2>Fio de progresso + seletor</h2><p>Um fio de 4 px no topo da barra avança em urucum conforme a lâmina. Embaixo, o índice em seletor de segmentos centralizado, o contador com o número em destaque e a dica das setas do teclado.</p></div>
+    <div class="deck" data-deck>
+      <button class="lateral" data-prev aria-label="Anterior">←</button><button class="lateral" data-next aria-label="Próximo">→</button>
+      <div class="slide"><div class="slide-copy"><p class="eyebrow">Lâmina</p><h3 data-title></h3><i></i><i></i><i></i></div><div class="slide-foto"></div></div>
+      <div class="bar"><div class="fio"><i></i></div><span class="count" data-count data-forte></span><div class="tabs" data-tabs></div><span class="hint"><kbd>←</kbd> <kbd>→</kbd> no teclado</span></div>
+    </div>
+    <div class="tags"><span class="tag ok">Mais discreta e compacta</span><span class="tag ok">Mantém o contador</span><span class="tag alerta">Progresso menos explícito que em A e B</span></div>
+  </section>
+</main>
+<script>
+const NOMES = ['Estratégia', 'Visão 2050', 'Eixos', 'Governança', 'Painel'];
+const dois = (n) => String(n).padStart(2, '0');
+document.querySelectorAll('[data-deck]').forEach((deck) => {
+  let atual = 0;
+  const tabs = deck.querySelector('[data-tabs]');
+  const numerado = tabs.hasAttribute('data-numerado');
+  const emSpan = tabs.hasAttribute('data-span');
+  tabs.innerHTML = NOMES.map((nome, i) => {
+    const miolo = (numerado ? `<b>${dois(i + 1)}</b>` : '') + nome;
+    return `<button data-i="${i}">${emSpan ? `<span>${miolo}</span>` : miolo}</button>`;
+  }).join('');
+  const pinta = () => {
+    tabs.querySelectorAll('button').forEach((b, i) => {
+      b.classList.toggle('is-active', i === atual);
+      b.classList.toggle('is-done', i < atual);
+    });
+    deck.querySelector('[data-title]').textContent = NOMES[atual];
+    const count = deck.querySelector('[data-count]');
+    if (count) count.innerHTML = count.hasAttribute('data-forte') ? `<b>${dois(atual + 1)}</b> / 05` : `${dois(atual + 1)} / 05`;
+    deck.querySelector('[data-prev]').disabled = atual === 0;
+    deck.querySelector('[data-next]').disabled = atual === NOMES.length - 1;
+    const rotulo = deck.querySelector('[data-next-label]');
+    if (rotulo) rotulo.textContent = NOMES[atual + 1] ?? 'Fim';
+    deck.style.setProperty('--p', atual / (NOMES.length - 1));
+    deck.style.setProperty('--q', (atual + 1) / NOMES.length);
+  };
+  tabs.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { atual = +b.dataset.i; pinta(); } });
+  deck.querySelector('[data-prev]').addEventListener('click', () => { atual = Math.max(0, atual - 1); pinta(); });
+  deck.querySelector('[data-next]').addEventListener('click', () => { atual = Math.min(NOMES.length - 1, atual + 1); pinta(); });
+  pinta();
+});
+</script>
+</body>
+</html>

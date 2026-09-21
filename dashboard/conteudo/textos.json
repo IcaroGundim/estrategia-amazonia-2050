@@ -85,10 +85,10 @@
           }
         },
         {
-          "valor": "06",
+          "valor": "05",
           "rotulo": {
-            "pt": "temas estratégicos",
-            "en": "strategic themes"
+            "pt": "eixos de implementação",
+            "en": "implementation axes"
           }
         },
         {
@@ -165,84 +165,73 @@
         }
       ]
     },
-    "temas": {
+    "eixos": {
       "chapeu": {
         "pt": "Estrutura da Estratégia",
         "en": "How the Strategy is organised"
       },
       "titulo": {
-        "pt": "Seis temas estratégicos",
-        "en": "Six strategic themes"
+        "pt": "Cinco eixos de implementação",
+        "en": "Five implementation axes"
       },
       "abertura": {
-        "pt": "Os temas organizam as prioridades regionais e servem de referência para a leitura dos indicadores deste painel.",
-        "en": "The themes organise the regional priorities and frame how the indicators in this dashboard should be read."
+        "pt": "Os eixos são a espinha dorsal da Estratégia: organizam políticas, programas e investimentos em linhas de ação, e é por eles que este painel agrupa metas e indicadores.",
+        "en": "The axes are the backbone of the Strategy: they organise policies, programmes and investment into lines of action, and they are how this dashboard groups targets and indicators."
       },
       "itens": [
         {
           "numero": "01",
           "titulo": {
-            "pt": "Integração regional",
-            "en": "Regional integration"
+            "pt": "Gestão territorial, sustentabilidade ambiental e governança climática",
+            "en": "Territorial management, environmental sustainability and climate governance"
           },
           "texto": {
-            "pt": "Ordenamento territorial, segurança fundiária, conectividade física e digital e cooperação interestadual e transfronteiriça.",
-            "en": "Land-use planning, secure land tenure, physical and digital connectivity, and cooperation between states and across borders."
+            "pt": "Consolidar a Amazônia Legal como referência mundial em gestão territorial integrada, desmatamento zero e adaptação climática.",
+            "en": "Make the Legal Amazon a world reference in integrated territorial management, zero deforestation and climate adaptation."
           }
         },
         {
           "numero": "02",
           "titulo": {
-            "pt": "Sistemas produtivos sustentáveis",
-            "en": "Sustainable production systems"
+            "pt": "Inclusão social, segurança e qualidade de vida",
+            "en": "Social inclusion, safety and quality of life"
           },
           "texto": {
-            "pt": "Uma economia de baixo carbono, inovadora e centrada na sociobiodiversidade, gerando valor e renda a partir da floresta em pé.",
-            "en": "A low-carbon, innovative economy built on socio-biodiversity, generating value and income from the forest left standing."
+            "pt": "Reduzir desigualdades e garantir segurança alimentar e nutricional, direitos e bem-estar para todas as populações amazônicas.",
+            "en": "Reduce inequality and secure food and nutrition, rights and well-being for every Amazonian population."
           }
         },
         {
           "numero": "03",
           "titulo": {
-            "pt": "Soluções baseadas na natureza",
-            "en": "Nature-based solutions"
+            "pt": "Desenvolvimento econômico sustentável",
+            "en": "Sustainable economic development"
           },
           "texto": {
-            "pt": "Valorização econômica dos ativos ambientais, com conservação, restauração e uso sustentável dos ecossistemas.",
-            "en": "Putting economic value on environmental assets, through conservation, restoration and sustainable use of ecosystems."
+            "pt": "Promover uma economia amazônica diversificada, com cadeias da sociobiodiversidade, empregos verdes e inovação tecnológica.",
+            "en": "Foster a diversified Amazonian economy, with socio-biodiversity value chains, green jobs and technological innovation."
           }
         },
         {
           "numero": "04",
           "titulo": {
-            "pt": "Transição energética",
-            "en": "Energy transition"
+            "pt": "Infraestrutura e integração regional sustentável",
+            "en": "Sustainable infrastructure and regional integration"
           },
           "texto": {
-            "pt": "A Amazônia como polo de inovação em energia limpa, ampliando o acesso à energia renovável.",
-            "en": "The Amazon as a hub for clean-energy innovation, widening access to renewable power."
+            "pt": "Expandir a conectividade física e digital e garantir logística e infraestrutura verde, impulsionando a integração e a competitividade regional.",
+            "en": "Expand physical and digital connectivity and secure green logistics and infrastructure, driving regional integration and competitiveness."
           }
         },
         {
           "numero": "05",
           "titulo": {
-            "pt": "Inclusão social e resiliência",
-            "en": "Social inclusion and resilience"
+            "pt": "Governança e parcerias",
+            "en": "Governance and partnerships"
           },
           "texto": {
-            "pt": "Redução de desigualdades, acesso a serviços essenciais e resiliência das populações frente às mudanças climáticas.",
-            "en": "Narrowing inequality, securing access to essential services, and building people’s resilience to climate change."
-          }
-        },
-        {
-          "numero": "06",
-          "titulo": {
-            "pt": "Infraestrutura sustentável",
-            "en": "Sustainable infrastructure"
-          },
-          "texto": {
-            "pt": "Infraestrutura física, logística e digital integrada e resiliente, respeitando os limites socioambientais.",
-            "en": "Physical, logistical and digital infrastructure that is integrated and resilient, and that respects social and environmental limits."
+            "pt": "Fortalecer a governança regional e a cooperação entre estados, sociedade civil, setor privado e organismos internacionais.",
+            "en": "Strengthen regional governance and cooperation among states, civil society, the private sector and international bodies."
           }
         }
       ]

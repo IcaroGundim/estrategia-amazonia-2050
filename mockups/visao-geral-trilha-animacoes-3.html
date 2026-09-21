@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visão Geral · animações da trilha, terceira rodada — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@property --giro{syntax:'<angle>';inherits:false;initial-value:0deg}
+:root{
+  --mata:#0e2b22;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --mola:cubic-bezier(.34,1.36,.44,1);--suave:cubic-bezier(.5,0,.15,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 'Libre Franklin',system-ui,sans-serif}
+h1,h2,p{margin:0}
+h1,h2{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+header{background:var(--mata);color:var(--areia)}
+.top{max-width:1240px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1240px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:26px;margin-bottom:34px}
+.intro h1{font-size:34px;margin:10px 0 14px}
+.intro p{max-width:82ch;color:var(--tinta-3)}
+.intro p+p{margin-top:10px}
+.option{margin-bottom:38px}
+.option-head{display:flex;align-items:baseline;gap:16px;padding:0 4px 12px;flex-wrap:wrap}
+.option-head b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.option-head h2{font-size:21px}
+.option-head p{flex:1 1 380px;color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:6px;flex-wrap:wrap;padding:10px 4px 0}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10px;white-space:nowrap}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+.bar{padding:16px 28px 14px;border:1px solid var(--linha);border-radius:0 0 14px 14px;background:#faf7f1;box-shadow:0 12px 35px rgba(14,43,34,.045)}
+.trilha{position:relative}
+.tabs{position:relative;display:flex;gap:8px}
+.tabs button{position:relative;z-index:1;flex:1;min-width:0;padding:0;border:0;background:none;text-align:left;font-size:14px;font-weight:500;color:var(--tinta-3);white-space:nowrap;transition:color .3s}
+.rot{display:flex;gap:8px;align-items:baseline}
+.rot b{font:600 11px var(--display);color:var(--tinta-4);transition:color .3s}
+.tabs .is-active{color:var(--mata);font-weight:600}
+.tabs .is-active .rot b{color:var(--urucum)}
+.tabs .is-done .rot b{color:var(--mata-500)}
+
+/* ==== 1 · Tempo de leitura ========================================== */
+/* A barra de progresso no sentido literal, como nos stories: o trecho atual enche
+   devagar e, cheio, passa para a próxima lâmina. Parar o mouse sobre a barra pausa. */
+.t1 .tabs button{display:grid;gap:9px}
+.t1 .tabs button::before{content:'';height:5px;border-radius:3px;background:var(--linha);transition:background .3s}
+.t1 .tabs .is-done::before{background:var(--mata-300)}
+.t1 .tabs .is-active::before{background:linear-gradient(var(--urucum),var(--urucum)) no-repeat left/0% 100%,#ecc8b9;animation:enche 7s linear forwards}
+.t1 .bar:hover .is-active::before{animation-play-state:paused}
+@keyframes enche{to{background-size:100% 100%}}
+
+/* ==== 2 · Trecho que respira ======================================== */
+/* O trecho atual alarga (os outros cedem espaço, com mola) e o preenchimento é um
+   degradê urucum–ocre que escorre sem parar, com o mesmo degradê desfocado embaixo
+   fazendo de luz. Nada além da própria barra se move. */
+.t2 .tabs button{display:grid;gap:10px;transition:flex-grow .6s var(--mola),color .3s}
+.t2 .tabs .is-active{flex-grow:2.4}
+.t2 .tabs button::before,.t2 .tabs .is-active::after{content:'';height:6px;border-radius:3px}
+.t2 .tabs button::before{background:var(--linha);transition:background .3s}
+.t2 .tabs .is-done::before{background:var(--mata-300)}
+.t2 .tabs .is-active::before,.t2 .tabs .is-active::after{background:linear-gradient(90deg,var(--urucum),#dc6f33,var(--ocre),#dc6f33,var(--urucum)) 0 0/300% 100%;animation:escorre 5s linear infinite}
+.t2 .tabs .is-active::after{position:absolute;top:6px;left:6%;right:6%;z-index:-1;filter:blur(6px);opacity:.55}
+@keyframes escorre{to{background-position:-300% 0}}
+
+/* ==== 3 · Cápsula ==================================================== */
+/* Uma cápsula branca desliza de um item a outro com mola. A borda dela é um anel de
+   degradê que gira devagar: é o movimento constante. Um fio fino em cima mostra o
+   quanto já se andou, e acompanha a cápsula. */
+.t3 .fio{height:2px;margin-bottom:12px;border-radius:1px;background:var(--linha)}
+.t3 .fio i{display:block;height:100%;width:var(--meio,0);border-radius:1px;background:linear-gradient(90deg,var(--mata-300),var(--urucum));transition:width .6s var(--suave)}
+.t3 .tabs{gap:4px}
+.t3 .tabs button{padding:9px 14px;text-align:center}
+.t3 .rot{justify-content:center}
+.t3 .pill{position:absolute;z-index:0;top:0;bottom:0;left:0;width:var(--w,0);transform:translateX(var(--x,0));border:1.5px solid transparent;border-radius:999px;background:linear-gradient(var(--papel),var(--papel)) padding-box,conic-gradient(from var(--giro),var(--urucum),var(--ocre),var(--mata-300),var(--linha),var(--urucum)) border-box;box-shadow:0 3px 12px rgba(14,43,34,.1);transition:transform .6s var(--mola),width .6s var(--mola);animation:gira 6s linear infinite}
+@keyframes gira{to{--giro:360deg}}
+
+/* ==== 4 · Traço elástico ============================================ */
+/* Um único traço em urucum sob o item atual. Ao trocar de lâmina ele estica até o
+   destino e depois recolhe (a ponta da frente sai antes da de trás). Parado, o
+   degradê do traço escorre devagar. */
+.t4 .tabs{gap:0;border-bottom:1px solid var(--linha)}
+.t4 .tabs button{padding:4px 0 14px}
+.t4 .ind{position:absolute;bottom:-2px;height:4px;left:var(--l,0);right:var(--r,100%);border-radius:2px;background:linear-gradient(90deg,var(--urucum),var(--ocre),var(--urucum)) 0 0/200% 100%;animation:escorre2 3.5s linear infinite;transition:left .5s var(--suave),right .5s var(--suave)}
+.t4 .ind.indo{transition-delay:.13s,0s}
+.t4 .ind.vindo{transition-delay:0s,.13s}
+@keyframes escorre2{to{background-position:-200% 0}}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="brand">Estratégia 2050</span><span class="badge">Mockup · não publicado</span></div></header>
+<main>
+  <div class="intro">
+    <p class="eyebrow">Visão Geral · trilha de progresso · terceira rodada</p>
+    <h1>Menos enfeite, mais acabamento</h1>
+    <p>A rodada anterior errou a mão: rio, boia, sementes e cometa são enfeites colados em cima da barra, e o painel é institucional. Aqui não entra nenhum objeto novo. O que é “elaborado” é o movimento da própria barra: como ela troca de estado, com que curva, e o que continua vivo quando está parada.</p>
+    <p>Clique nos itens para ver a troca de lâmina, que é onde está metade do efeito.</p>
+  </div>
+
+  <section class="option t1">
+    <div class="option-head"><b>1</b><h2>Tempo de leitura</h2><p>A barra de progresso no sentido literal, como nos stories: o trecho atual enche devagar e, quando completa, a lâmina avança sozinha. Passar o mouse pausa. Aqui o ciclo é de 7 s para o teste; no site seria algo como 20 s.</p></div>
+    <div class="bar"><div class="trilha" data-tipo="tempo"><div class="tabs"></div></div></div>
+    <div class="tags"><span class="tag ok">É o que “barra de progresso animada” costuma significar</span><span class="tag ok">Bom para telão e apresentação</span><span class="tag alerta">Implica avanço automático das lâminas</span></div>
+  </section>
+
+  <section class="option t2">
+    <div class="option-head"><b>2</b><h2>Trecho que respira</h2><p>O trecho atual alarga e os outros cedem espaço, com uma mola leve. O preenchimento é um degradê de urucum a ocre que escorre sem parar, com uma luz difusa embaixo.</p></div>
+    <div class="bar"><div class="trilha" data-tipo="respira"><div class="tabs"></div></div></div>
+    <div class="tags"><span class="tag ok">Mantém a trilha de trechos que você escolheu</span><span class="tag ok">Movimento constante bem visível, sem objeto novo</span></div>
+  </section>
+
+  <section class="option t3">
+    <div class="option-head"><b>3</b><h2>Cápsula</h2><p>Uma cápsula branca desliza de um item a outro com mola. A borda dela é um anel de degradê que gira devagar. Em cima, um fio fino mostra o quanto já se andou.</p></div>
+    <div class="bar"><div class="trilha" data-tipo="capsula"><div class="fio"><i></i></div><div class="tabs"><span class="pill"></span></div></div></div>
+    <div class="tags"><span class="tag ok">Cara de produto atual</span><span class="tag ok">Item atual muito legível</span><span class="tag alerta">Troca os trechos por um fio contínuo</span></div>
+  </section>
+
+  <section class="option t4">
+    <div class="option-head"><b>4</b><h2>Traço elástico</h2><p>Um único traço em urucum sob o item atual. Na troca de lâmina ele estica até o destino e depois recolhe. Parado, o degradê escorre devagar. É a mais contida das quatro.</p></div>
+    <div class="bar"><div class="trilha" data-tipo="elastico"><div class="tabs"><span class="ind"></span></div></div></div>
+    <div class="tags"><span class="tag ok">A mais sóbria</span><span class="tag alerta">Não mostra o que já foi visto</span></div>
+  </section>
+</main>
+<script>
+const NOMES = ['Estratégia', 'Visão 2050', 'Eixos', 'Governança', 'Painel'];
+document.querySelectorAll('.trilha').forEach((wrap) => {
+  const tipo = wrap.dataset.tipo;
+  const tabs = wrap.querySelector('.tabs');
+  let atual = tipo === 'tempo' ? 0 : 1;
+  tabs.insertAdjacentHTML('afterbegin', NOMES.map((nome, i) => `<button data-i="${i}"><span class="rot"><b>${String(i + 1).padStart(2, '0')}</b>${nome}</span></button>`).join(''));
+  const botoes = [...tabs.querySelectorAll('button')];
+  const pill = tabs.querySelector('.pill');
+  const ind = tabs.querySelector('.ind');
+  const pinta = (anterior = atual) => {
+    botoes.forEach((b, i) => {
+      b.classList.toggle('is-active', i === atual);
+      b.classList.toggle('is-done', i < atual);
+    });
+    const b = botoes[atual];
+    if (pill) {
+      pill.style.setProperty('--x', `${b.offsetLeft}px`);
+      pill.style.setProperty('--w', `${b.offsetWidth}px`);
+      wrap.style.setProperty('--meio', `${b.offsetLeft + b.offsetWidth / 2}px`);
+    }
+    if (ind) {
+      // Só o texto do item, não a coluna inteira: o traço fica do tamanho da palavra.
+      const medida = document.createRange();
+      medida.selectNodeContents(b.querySelector('.rot'));
+      const largura = medida.getBoundingClientRect().width;
+      ind.classList.toggle('indo', atual > anterior);
+      ind.classList.toggle('vindo', atual < anterior);
+      ind.style.setProperty('--l', `${b.offsetLeft}px`);
+      ind.style.setProperty('--r', `${tabs.offsetWidth - b.offsetLeft - Math.min(largura, b.offsetWidth - 16)}px`);
+    }
+  };
+  const vai = (i) => { const anterior = atual; atual = i; pinta(anterior); };
+  tabs.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) vai(+b.dataset.i); });
+  // Tempo de leitura: o fim do enchimento avança a lâmina (e volta ao começo no fim).
+  if (tipo === 'tempo') tabs.addEventListener('animationend', () => vai((atual + 1) % NOMES.length));
+  window.addEventListener('resize', () => pinta());
+  document.fonts?.ready.then(() => pinta());
+  pinta();
+});
+</script>
+</body>
+</html>

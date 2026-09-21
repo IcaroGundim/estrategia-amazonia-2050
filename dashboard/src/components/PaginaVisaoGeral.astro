@@ -19,23 +19,24 @@ const t = traduzirCom(lang, Astro.locals.interface);
 const tx = (par: { pt: string; en?: string | null } | string) =>
   (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
 
-const { estrategia, visao2050, temas, governanca, estePainel } = textos.visaoGeral;
+const { estrategia, visao2050, eixos, governanca, estePainel } = textos.visaoGeral;
 // As fontes consolidadas vêm do mesmo arquivo (panorama.metodologia), e por
 // isso a prévia da administração as mostra como qualquer outro texto.
 const fontes = textos.panorama.metodologia.sources;
 
 const INDICE = [
-  { href: '#a-estrategia', rotulo: 'A Estratégia' },
+  { href: '#a-estrategia', rotulo: 'Estratégia' },
   { href: '#visao-2050', rotulo: 'Visão 2050' },
-  { href: '#temas-estrategicos', rotulo: 'Temas estratégicos' },
+  { href: '#eixos-de-implementacao', rotulo: 'Eixos' },
   { href: '#governanca', rotulo: 'Governança' },
-  { href: '#calculo', rotulo: 'Este painel' }
+  { href: '#calculo', rotulo: 'Painel' }
 ];
 
 const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
 ---
 
 <div class="methodology-layout section-shell">
+<div class="overview-palco">
   <div class="overview-deck" role="region" aria-roledescription={t('carrossel')} aria-label={t('Visão Geral da Estratégia Amazônia 2050')}>
     <article class="methodology-article" tabindex="0" aria-label={t('Slides; use as setas para navegar')}>
       <section id="a-estrategia" class="methodology-intro method-section">
@@ -83,13 +84,13 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
         <SlidePhoto variant={2} lang={lang} />
       </section>
 
-      <section id="temas-estrategicos" class="method-section">
+      <section id="eixos-de-implementacao" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{tx(temas.chapeu)}</p>
-          <h2>{tx(temas.titulo)}</h2>
-          <p>{tx(temas.abertura)}</p>
-          <div class="method-steps is-themes">
-            {temas.itens.map(({ numero, titulo, texto }) => (
+          <p class="eyebrow">{tx(eixos.chapeu)}</p>
+          <h2>{tx(eixos.titulo)}</h2>
+          <p>{tx(eixos.abertura)}</p>
+          <div class="method-steps is-eixos">
+            {eixos.itens.map(({ numero, titulo, texto }) => (
               <article>
                 <b>{numero}</b>
                 <h3>{tx(titulo)}</h3>
@@ -147,17 +148,20 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
     </article>
 
     <div class="overview-controls">
-      <span class="overview-status" aria-live="polite" aria-atomic="true"><b data-slide-count>01 / 05</b><span data-slide-title>{t('A Estratégia')}</span></span>
+      <span class="overview-status" aria-live="polite" aria-atomic="true"><b data-slide-count>01 / 05</b><span data-slide-title>{t('Estratégia')}</span></span>
       <aside class="methodology-index" aria-label={t('Navegação dos slides')}>
         <nav>
           {INDICE.map(({ href, rotulo }, indice) => (
             <a class={indice === 0 ? 'is-active' : undefined} href={href}>
-              <span><strong>{t(rotulo)}</strong></span>
+              <span><b aria-hidden="true">{String(indice + 1).padStart(2, '0')}</b><strong>{t(rotulo)}</strong></span>
             </a>
           ))}
         </nav>
       </aside>
-      <div class="overview-buttons"><button type="button" data-slide-prev aria-label={t('Slide anterior')}>← <span>{t('Anterior')}</span></button><button type="button" data-slide-next aria-label={t('Próximo slide')}><span>{t('Próximo')}</span> →</button></div>
     </div>
   </div>
+  {/* Fora do cartão de propósito: as abas laterais se posicionam pelo palco, não pela barra
+      de controles (ver overview-compositions.css). */}
+  <div class="overview-buttons"><button type="button" data-slide-prev aria-label={t('Slide anterior')}>← <span>{t('Anterior')}</span></button><button type="button" data-slide-next aria-label={t('Próximo slide')}><span>{t('Próximo')}</span> →</button></div>
+</div>
 </div>
