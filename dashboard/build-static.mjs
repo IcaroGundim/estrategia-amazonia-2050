@@ -67,7 +67,7 @@ export async function derivaTudo() {
   const fonte = await carregaFonte();
   const dashboard = await derivaDashboard(fonte);
   const catalogo = montaCatalogoPublico(fonte);
-  const metas = buildMetas(catalogo, dashboard, fonte.metas);
+  const metas = buildMetas(catalogo, dashboard, fonte.metas, fonte.projecoes);
   // O Panorama lê só o dashboard.json; a trajetória das metas vai resumida nele.
   dashboard.trajetoria = resumeTrajetoria(metas.metas, fonte.ufs);
   return { fonte, dashboard, catalogo, metas };

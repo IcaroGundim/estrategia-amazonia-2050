@@ -2,7 +2,8 @@
 //
 // Cada arquivo traz: uma aba "Sobre"; o catálogo do eixo; a matriz UF × indicador
 // com os valores atuais; uma aba por indicador com valor atual, série anual e
-// campos auxiliares; as tabelas de detalhe (município, mês, divisão CNAE) que
+// campos auxiliares; a aba "Projecoes_2050" com as trajetórias pactuadas do
+// eixo (uma linha por indicador e cenário, uma coluna por ano); as tabelas de detalhe (município, mês, divisão CNAE) que
 // `public/data/csv/` versiona para aquele eixo; e a aba "Modelo_importacao", que
 // é o formato longo de `conteudo/valores.csv` já preenchido com o eixo — quem
 // atualiza pode editar essa aba e importá-la na tela de administração.
@@ -23,19 +24,28 @@ const DETALHES = {
     ['ideb_uf_ano.csv', 'IDEB_UF_ano'],
     ['ideb_municipio_ano.csv', 'IDEB_municipios'],
     ['obitos_evitaveis_uf_ano.csv', 'Obitos_evitaveis_UF_ano'],
+    ['obitos_evitaveis_5a74_uf_ano.csv', 'Obitos_evitaveis_5a74_UF_ano'],
+    ['ubs_fluviais_uf_ano.csv', 'UBS_fluviais_UF_ano'],
     ['telessaude_uf_ano.csv', 'Telessaude_UF_ano']
   ],
   3: [
     ['pevs_madeireiro_uf_ano.csv', 'PEVS_madeireiro_UF_ano'],
     ['pevs_por_produto_uf.csv', 'PEVS_produtos_UF'],
     ['pia_divisoes_uf_ano.csv', 'PIA_divisoes_UF_ano'],
+    ['pia_receita_liquida_uf_ano.csv', 'PIA_receita_liquida_UF_ano'],
     ['rais_estab_uf_divisao_ano.csv', 'RAIS_divisoes_UF_ano']
   ],
   4: [
     ['censos_saneamento_municipio.csv', 'Saneamento_municipios'],
     ['diagnostico_siga_reconstrucao.csv', 'SIGA_diagnostico']
   ],
-  5: []
+  5: [
+    ['cal_instrumentos.csv', 'CAL_instrumentos'],
+    ['cal_orcamento_execucao.csv', 'CAL_orcamento_execucao'],
+    ['financiamento_climatico_estados.csv', 'Financiamento_climatico'],
+    ['leis_clima_estados.csv', 'Leis_clima_estados'],
+    ['transparencia_estados.csv', 'Transparencia_estados']
+  ]
 };
 
 const CABECALHO = { font: { bold: true, color: { argb: 'FFFFFFFF' } }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0E2B22' } } };
@@ -66,6 +76,7 @@ function abaSobre(workbook, eixo, fonte) {
     ['Catalogo_Indicadores', 'Os indicadores do eixo: código, linha de ação, nome, meta pactuada, descrição, unidade, fonte, prazo e situação da coleta.'],
     ['Matriz_UF', 'Valor atual de cada indicador coletado, por estado.'],
     ['Uma aba por indicador', 'Valor atual, série anual (uma coluna por ano) e campos auxiliares, por estado. Só os indicadores com números.'],
+    ['Projecoes_2050', 'Trajetórias pactuadas até 2050 para a Amazônia Legal, uma linha por indicador e cenário. São metas intermediárias, não previsões. "Comparável" diz se a linha de base é o mesmo número que o painel mede; quando não é, a coluna Observação explica a diferença.'],
     ['Tabelas de detalhe', 'Recortes por município, mês ou divisão CNAE que não cabem no painel por estado, quando existem para o eixo.'],
     ['Modelo_importacao', 'Formato longo usado pela tela de administração do painel: uma linha por célula (código, campo, UF, ano, valor). Edite ou acrescente linhas e importe o arquivo na tela.'],
     ['', ''],
@@ -133,6 +144,33 @@ function abaIndicador(workbook, indicador, ufs) {
   aba.addRow(['Fonte', indicador.fonte]);
   aba.addRow(['Ano de referência', indicador.anoRef]);
   return aba;
+}
+
+function abaProjecoes(workbook, eixo, projecoes) {
+  const codigos = new Set(eixo.indicadores.map((indicador) => indicador.codigo));
+  const itens = (projecoes?.projecoes || []).filter((item) => codigos.has(item.codigo));
+  if (!itens.length) return null;
+  const anos = [...new Set(itens.flatMap((item) => item.cenarios.flatMap((cenario) => Object.keys(cenario.serie))))].sort();
+  const linhas = itens.flatMap((item) => item.cenarios.map((cenario) => ({
+    codigo: item.codigo,
+    nome: item.nome,
+    cenario: cenario.nome,
+    unidade: item.unidade,
+    comparavel: item.comparavel ? 'sim' : 'não',
+    ...Object.fromEntries(anos.map((ano) => [`ano_${ano}`, cenario.serie[ano] ?? null])),
+    observacao: [item.motivo, item.nota].filter(Boolean).join(' '),
+    fonte: item.fonte
+  })));
+  return abaComTabela(workbook, 'Projecoes_2050', [
+    { header: 'Código', key: 'codigo', width: 10 },
+    { header: 'Projeção', key: 'nome', width: 40 },
+    { header: 'Cenário', key: 'cenario', width: 18 },
+    { header: 'Unidade', key: 'unidade', width: 16 },
+    { header: 'Comparável', key: 'comparavel', width: 12 },
+    ...anos.map((ano) => ({ header: ano, key: `ano_${ano}`, width: 10 })),
+    { header: 'Observação', key: 'observacao', width: 70 },
+    { header: 'Arquivo de origem', key: 'fonte', width: 40 }
+  ], linhas);
 }
 
 async function abaDetalhe(workbook, arquivo, nome) {
@@ -208,6 +246,7 @@ export async function geraWorkbooks({ fonte, catalogo }, pastaSaida) {
     for (const indicador of eixo.indicadores) {
       if (indicador.valores || indicador.serieAnual || indicador.extra) abaIndicador(workbook, indicador, fonte.ufs);
     }
+    abaProjecoes(workbook, eixo, fonte.projecoes);
     for (const [arquivo, nome] of DETALHES[eixo.numero] || []) await abaDetalhe(workbook, arquivo, nome);
     abaModelo(workbook, eixo, fonte);
     const nome = NOME_ARQUIVO(eixo.numero);

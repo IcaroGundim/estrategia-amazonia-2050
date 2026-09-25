@@ -1,0 +1,454 @@
+{
+  "id": "2026-09-25-estrategia_set2026-df9d",
+  "geradoEm": "2026-09-25T14:18:29+00:00",
+  "script": "estrategia_set2026",
+  "fonte": "Dados da Estratégia 2050 (set/2026)",
+  "descricao": "Trafegabilidade (I4.2.1) e capacidade adaptativa urbana (I4.4.2) por estado",
+  "valores": [
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 16.23
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "AC",
+      "ano": "",
+      "valor": 98.1
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "AC",
+      "ano": "",
+      "valor": 15.9
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 38.58
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "AM",
+      "ano": "",
+      "valor": 1286.4
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "AM",
+      "ano": "",
+      "valor": 496.3
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 50
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "AP",
+      "ano": "",
+      "valor": 298.9
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "AP",
+      "ano": "",
+      "valor": 149.4
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 43.88
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "MA",
+      "ano": "",
+      "valor": 10296.6
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "MA",
+      "ano": "",
+      "valor": 4518.2
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 50
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "MT",
+      "ano": "",
+      "valor": 1046.6
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "MT",
+      "ano": "",
+      "valor": 523.3
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 47.86
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "PA",
+      "ano": "",
+      "valor": 8022.9
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "PA",
+      "ano": "",
+      "valor": 3839.4
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 49.89
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "RO",
+      "ano": "",
+      "valor": 3883.1
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "RO",
+      "ano": "",
+      "valor": 1937.2
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 50.59
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "RR",
+      "ano": "",
+      "valor": 1535.8
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "RR",
+      "ano": "",
+      "valor": 777.0
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 49.88
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmFisico",
+      "uf": "TO",
+      "ano": "",
+      "valor": 1036.2
+    },
+    {
+      "codigo": "I4.2.1",
+      "campo": "kmEfetivo",
+      "uf": "TO",
+      "ano": "",
+      "valor": 516.9
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 4.55
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "AC",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "AC",
+      "ano": "",
+      "valor": 22
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "AC",
+      "ano": "",
+      "valor": 22
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 0.0
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "AP",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "AP",
+      "ano": "",
+      "valor": 16
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "AP",
+      "ano": "",
+      "valor": 16
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 1.61
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "AM",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "AM",
+      "ano": "",
+      "valor": 62
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "AM",
+      "ano": "",
+      "valor": 62
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 1.1
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "MA",
+      "ano": "",
+      "valor": 2
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "MA",
+      "ano": "",
+      "valor": 147
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "MA",
+      "ano": "",
+      "valor": 181
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 6.34
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "MT",
+      "ano": "",
+      "valor": 9
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "MT",
+      "ano": "",
+      "valor": 141
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "MT",
+      "ano": "",
+      "valor": 142
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 1.39
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "PA",
+      "ano": "",
+      "valor": 2
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "PA",
+      "ano": "",
+      "valor": 144
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "PA",
+      "ano": "",
+      "valor": 144
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 1.92
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "RO",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "RO",
+      "ano": "",
+      "valor": 52
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "RO",
+      "ano": "",
+      "valor": 52
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 0.0
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "RR",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "RR",
+      "ano": "",
+      "valor": 15
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "RR",
+      "ano": "",
+      "valor": 15
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 2.16
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "acima05",
+      "uf": "TO",
+      "ano": "",
+      "valor": 3
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "comDados",
+      "uf": "TO",
+      "ano": "",
+      "valor": 139
+    },
+    {
+      "codigo": "I4.4.2",
+      "campo": "total",
+      "uf": "TO",
+      "ano": "",
+      "valor": 139
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "estrategia_set2026",
+  "celulasAceitas": 63
+}

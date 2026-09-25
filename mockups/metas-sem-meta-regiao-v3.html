@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sem meta numérica · estilo anterior, menos denso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --mata:#0e2b22; --mata-700:#1c4437; --mata-500:#3e6e57; --mata-300:#7fa08c; --mata-100:#c6d2c7; --urucum:#c0451f; --ocre:#e0a83c; --areia:#f5f0e8; --papel:#fff; --linha:#ddd3c6; --linha-2:#ede6dc; --tinta:#1a1613; --tinta-2:#3a342e; --tinta-3:#5c544c; --tinta-4:#8a8078; --display:"Bricolage Grotesque",system-ui,sans-serif; --text:"Libre Franklin",system-ui,sans-serif; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e8e0d6; color:var(--tinta); font:400 14px/1.45 var(--text); padding:28px 16px 64px; }
+  h1 { font:700 26px var(--display); color:var(--mata); margin:0 0 4px; }
+  .lead { color:var(--tinta-3); max-width:920px; margin:0 0 24px; }
+  .opcao { background:var(--areia); border-radius:14px; padding:18px; margin:0 auto 26px; max-width:1260px; }
+  .opcao > h2 { font:700 16px var(--display); color:var(--mata); margin:0 0 2px; }
+  .opcao > p { margin:0 0 14px; color:var(--tinta-3); font-size:13px; max-width:960px; }
+  .rec { display:inline-block; margin-left:8px; padding:1px 8px; border-radius:99px; background:var(--mata); color:#fff; font:600 10.5px var(--text); vertical-align:2px; }
+  .tela { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:14px; align-items:start; }
+  @media (max-width:960px){ .tela { grid-template-columns:1fr; } }
+  .lista, .painel { background:var(--papel); border:1px solid var(--linha-2); border-radius:14px; padding:14px; }
+  .eyebrow { display:flex; align-items:center; gap:10px; margin:2px 0 8px; color:var(--tinta-4); font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+  .eyebrow::after { content:""; flex:1; height:1px; background:var(--linha-2); }
+  .cards { display:grid; gap:8px; }
+  .row { width:100%; text-align:left; font:inherit; color:inherit; cursor:pointer; padding:11px 13px; display:grid; grid-template-columns:78px minmax(0,1fr); gap:2px 12px; align-items:start; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); }
+  .row:hover { border-color:var(--mata-300); }
+  .row.ativo { border-color:var(--urucum); box-shadow:inset 0 0 0 1px var(--urucum); }
+  .row.fixo { cursor:default; }
+  .ler { grid-row:1/3; align-self:center; white-space:nowrap; }
+  .ler .al { display:block; color:var(--tinta-4); font-size:8.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; margin-bottom:3px; }
+  .ler b { display:block; color:var(--mata); font:800 20px/1 var(--display); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .ler small { display:block; margin-top:3px; color:var(--tinta-4); font-size:10px; }
+  .topo { display:flex; gap:10px; align-items:flex-start; }
+  .nome { flex:1; font-size:14px; font-weight:500; line-height:1.3; }
+  .nome small { display:block; margin-top:2px; color:var(--tinta-4); font-size:10px; font-weight:400; }
+  .nome small i { font-style:italic; }
+  .nums { display:flex; gap:12px; text-align:right; }
+  .nums span { font-size:9px; letter-spacing:.08em; color:var(--tinta-4); font-weight:700; text-transform:uppercase; }
+  .nums b { display:block; font:700 14px var(--display); color:var(--tinta); letter-spacing:0; text-transform:none; }
+  .nums em { display:block; font-style:normal; font-size:10px; color:var(--tinta-4); font-weight:400; letter-spacing:0; text-transform:none; }
+  svg text { font:9px var(--text); fill:var(--tinta-4); }
+  .spark { display:block; width:100%; height:32px; margin-top:5px; }
+  .area { fill:var(--mata); opacity:.07; } .ln { fill:none; stroke:var(--mata-500); stroke-width:1.6; stroke-linejoin:round; } .ponto { fill:var(--mata); }
+  .eixo { stroke:var(--linha); } .pt { fill:var(--mata-500); }
+  .pilha { display:flex; height:10px; margin-top:8px; border-radius:4px; overflow:hidden; gap:1px; background:var(--papel); }
+  .pilha i { display:block; height:100%; }
+  .pilha-leg { display:flex; justify-content:space-between; font-size:9px; color:var(--tinta-4); margin-top:3px; }
+  .calorlinha { display:grid; gap:1px; margin-top:7px; height:12px; }
+  .calorlinha i { display:block; border-radius:1px; }
+  /* painel */
+  .ph { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+  .ph h3 { margin:0; font:700 16px/1.25 var(--display); color:var(--tinta); }
+  .x { width:26px; height:26px; border:1px solid var(--linha); border-radius:8px; display:grid; place-items:center; color:var(--tinta-3); font-size:14px; }
+  .abas { display:flex; gap:4px; border-bottom:1px solid var(--linha); margin:12px 0 0; }
+  .abas span { padding:8px 11px; font-size:12px; font-weight:600; color:var(--tinta-4); margin-bottom:-1px; border-bottom:2px solid transparent; }
+  .abas .on { color:var(--mata); border-bottom-color:var(--urucum); }
+  .destaque { margin:14px 0 0; padding:12px 13px; border-radius:11px; background:var(--mata); color:#fff; display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:10px; }
+  .destaque.dois { grid-template-columns:1fr 1fr; }
+  .destaque dt { font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--mata-100); margin-bottom:3px; }
+  .destaque dd { margin:0; font:700 17px/1.2 var(--display); }
+  .destaque dd small { display:block; font:400 10px var(--text); color:var(--mata-100); }
+  .sec { margin-top:15px; padding-top:12px; border-top:1px solid var(--linha-2); }
+  .sec h4 { margin:0 0 9px; color:var(--tinta-3); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+  .sec h4 em { font-style:normal; font-weight:500; letter-spacing:0; text-transform:none; color:var(--tinta-4); font-size:10.5px; }
+  .sec p { margin:0; font-size:12.5px; color:var(--tinta-2); }
+  .grafico { display:block; width:100%; height:auto; }
+  .grafico .grade line { stroke:var(--linha-2); } .grafico .ln { stroke:var(--mata); stroke-width:2.4; } .grafico .sel { fill:var(--urucum); }
+  .grafico .anota { font-size:9.5px; fill:var(--tinta-2); font-weight:600; }
+  table.calor { width:100%; border-collapse:separate; border-spacing:0 2px; font-size:10.5px; font-variant-numeric:tabular-nums; }
+  table.calor th, table.calor td { padding:4px 4px; text-align:right; }
+  table.calor th:first-child, table.calor td:first-child { text-align:left; font-weight:700; color:var(--tinta-3); }
+  table.calor thead th { color:var(--tinta-4); font-size:9px; letter-spacing:.04em; font-weight:700; }
+  table.calor tr.al td { background:var(--mata); color:#fff; font-weight:700; } table.calor tr.al td:first-child { color:#fff; border-radius:6px 0 0 6px; } table.calor tr.al td:last-child { border-radius:0 6px 6px 0; }
+  table.calor td.rit { color:var(--tinta-2); font-weight:600; } table.calor tr.al td.rit { color:#fff; }
+  table.calor td.peso { color:var(--tinta-4); }
+  .sep td { height:4px; padding:0; }
+  .faixas { display:grid; grid-template-columns:24px minmax(0,1fr) 48px; gap:3px 7px; align-items:center; font-size:9.5px; }
+  .faixas .uf { font-weight:700; color:var(--tinta-3); }
+  .faixas .cel { display:grid; gap:1px; height:13px; }
+  .faixas .cel i { display:block; }
+  .faixas .rt { text-align:right; color:var(--tinta-2); font-weight:600; font-variant-numeric:tabular-nums; }
+  .faixas .al .uf, .faixas .al .rt { color:var(--mata); }
+  .anos { display:flex; justify-content:space-between; font-size:8.5px; color:var(--tinta-4); margin:3px 55px 0 31px; }
+  .multi { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+  .multi div { border:1px solid var(--linha-2); border-radius:8px; padding:6px 7px 4px; }
+  .multi b { font-size:10px; color:var(--tinta-2); display:flex; justify-content:space-between; }
+  .multi b em { font-style:normal; font-weight:600; } .multi b em.mais { color:var(--mata-700); } .multi b em.menos { color:#8e3213; }
+  .multi svg { display:block; width:100%; height:30px; margin-top:3px; }
+  .multi .ref { fill:none; stroke:var(--tinta-4); stroke-width:1; stroke-dasharray:2 2; } .multi .ln { stroke:var(--mata); stroke-width:1.6; }
+  .leg { display:flex; gap:14px; flex-wrap:wrap; font-size:10.5px; color:var(--tinta-3); margin-top:6px; }
+  .leg i { display:inline-block; width:16px; vertical-align:middle; margin-right:4px; border-top:2px solid var(--mata); }
+  .leg i.ref { border-top:1.5px dashed var(--tinta-4); }
+  .porque { margin-top:10px; padding:9px 11px; border-left:3px solid var(--ocre); background:#faf6ef; font-size:12px; color:var(--tinta-2); }
+  .porque strong { display:block; font-size:9.5px; letter-spacing:.07em; text-transform:uppercase; color:#76550e; margin-bottom:2px; }
+  .barras { display:grid; gap:6px; }
+  .br { display:grid; grid-template-columns:22px minmax(0,1fr) 44px; gap:7px; align-items:center; }
+  .br span { font-size:9.5px; font-weight:700; color:var(--tinta-3); }
+  .br i { display:block; height:8px; border-radius:3px; background:var(--linha-2); position:relative; }
+  .br i u { position:absolute; inset:0 auto 0 0; border-radius:3px; background:var(--mata-300); }
+  .br b { font-size:9.5px; text-align:right; color:var(--tinta-2); }
+  .dica { margin:6px 0 0; font-size:11px; color:var(--tinta-4); }
+</style>
+</head>
+<body>
+<h1>Sem meta numérica: o estilo anterior, com menos informação</h1>
+<p class="lead">O mesmo visual das quatro opções anteriores (faixa escura da região, tabela com calor, camadas, miniaturas com moldura, quadro ocre da meta), com menos coisa dentro: cartão só com valor, variação e gráfico; dois números na faixa da região; gráfico marcando só o início e o fim; estados reduzidos aos que mais pesam; meta em um parágrafo curto. Clique na <b>mortalidade</b> para o caso sem série.</p>
+<div id="opcoes"></div>
+<script>
+const DADOS = {"painel":{"F3.5":{"nome":"Valor da transformação industrial","meta":"Aumento de 10% ao ano do valor agregado de produtos de transformação industrial","unidade":"R$ (mil)","fonte":"IBGE (PIA-Empresa, SIDRA 1849/10457)","anoRef":"2024","serie":{"AC":{"2007":177862,"2008":147880,"2009":190352,"2010":251367,"2011":281405,"2012":270510,"2013":328993,"2014":518409,"2015":394082,"2016":398946,"2017":279200,"2018":328683,"2019":317261,"2020":320242,"2021":496073,"2022":628889,"2023":649323,"2024":925342},"AP":{"2007":239894,"2008":196896,"2009":275242,"2010":532172,"2011":612456,"2012":639518,"2013":582870,"2014":643486,"2015":488161,"2016":535311,"2017":309766,"2018":527946,"2019":275830,"2020":963936,"2021":479986,"2022":419783,"2023":514770,"2024":592145},"AM":{"2007":23600352,"2008":27202801,"2009":25658863,"2010":29554059,"2011":29642201,"2012":29961311,"2013":33926550,"2014":36041264,"2015":35914870,"2016":35525846,"2017":37418241,"2018":40137037,"2019":40949882,"2020":43511856,"2021":55427911,"2022":62763507,"2023":62646346,"2024":75577158},"MA":{"2007":3002830,"2008":3452709,"2009":2439845,"2010":2855533,"2011":4139786,"2012":4517680,"2013":4020403,"2014":5437595,"2015":7031763,"2016":6221886,"2017":7075188,"2018":8776336,"2019":8192158,"2020":11219119,"2021":14129981,"2022":13156044,"2023":12319388,"2024":14534906},"MT":{"2007":4831940,"2008":6774747,"2009":8085593,"2010":9442466,"2011":11225899,"2012":14366970,"2013":14994680,"2014":14719924,"2015":15762391,"2016":14433467,"2017":13967971,"2018":17059633,"2019":17805064,"2020":24049984,"2021":32463303,"2022":41065895,"2023":38526666,"2024":41521382},"PA":{"2007":9905210,"2008":14657473,"2009":12436118,"2010":23969692,"2011":29424724,"2012":26137304,"2013":30869694,"2014":27362165,"2015":26731282,"2016":28139815,"2017":38175713,"2018":45291481,"2019":56812895,"2020":91708270,"2021":109838666,"2022":66637357,"2023":62596977,"2024":70146964},"RO":{"2007":1235045,"2008":1317673,"2009":1352831,"2010":1889863,"2011":2180932,"2012":2168906,"2013":2924149,"2014":2852504,"2015":2763391,"2016":3048106,"2017":2586505,"2018":2562647,"2019":2884253,"2020":3301806,"2021":3880047,"2022":5534121,"2023":5910248,"2024":6091511},"RR":{"2007":53522,"2008":99358,"2009":77392,"2010":63890,"2011":79702,"2012":72480,"2013":84854,"2014":93906,"2015":91620,"2016":127681,"2017":107185,"2018":91547,"2019":92021,"2020":131162,"2021":192154,"2022":203548,"2023":250891,"2024":378434},"TO":{"2007":350439,"2008":408257,"2009":393300,"2010":673335,"2011":790293,"2012":926821,"2013":1289000,"2014":1800502,"2015":1488246,"2016":1502456,"2017":1900422,"2018":1503851,"2019":1543897,"2020":2085879,"2021":3312199,"2022":4516648,"2023":4739960,"2024":5597138}},"valores":{"AC":925342,"AP":592145,"AM":75577158,"MA":14534906,"MT":41521382,"PA":70146964,"RO":6091511,"RR":378434,"TO":5597138},"extra":{"AC":{"empresas2024":242,"pessoalOcupado2024":6435,"unidadesLocais2024":269,"variacao2023_24Pct":42.5,"receitaLiquida2024":3376228},"AP":{"empresas2024":220,"pessoalOcupado2024":5032,"unidadesLocais2024":228,"variacao2023_24Pct":15,"receitaLiquida2024":1341609},"AM":{"empresas2024":1199,"pessoalOcupado2024":127254,"unidadesLocais2024":1304,"variacao2023_24Pct":20.6,"receitaLiquida2024":192627477},"MA":{"empresas2024":1369,"pessoalOcupado2024":47326,"unidadesLocais2024":1460,"variacao2023_24Pct":18,"receitaLiquida2024":37982794},"MT":{"empresas2024":3623,"pessoalOcupado2024":126489,"unidadesLocais2024":3914,"variacao2023_24Pct":7.8,"receitaLiquida2024":128328986},"PA":{"empresas2024":2307,"pessoalOcupado2024":127208,"unidadesLocais2024":2578,"variacao2023_24Pct":12.1,"receitaLiquida2024":73062342},"RO":{"empresas2024":1198,"pessoalOcupado2024":32783,"unidadesLocais2024":1283,"variacao2023_24Pct":3.1,"receitaLiquida2024":19687183},"RR":{"empresas2024":187,"pessoalOcupado2024":3824,"unidadesLocais2024":200,"variacao2023_24Pct":50.8,"receitaLiquida2024":1081285},"TO":{"empresas2024":773,"pessoalOcupado2024":22080,"unidadesLocais2024":812,"variacao2023_24Pct":18.1,"receitaLiquida2024":17522758}},"motivo":"A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.","status":"coletado (PIA-Empresa: valor da transformação industrial do total da indústria (extrativa + transformação) por UF, 2007-2024)"},"I2.2.1":{"nome":"Mortalidade por causas evitáveis","meta":"Redução de mortes evitáveis em pelo menos 50% na região","unidade":"taxa / 100 mil","fonte":"DATASUS (SIM/TabNet)","anoRef":"2024 (SIM)","serie":null,"valores":{"AC":3.6,"AP":3.26,"AM":2.67,"MA":2.34,"MT":2.69,"PA":2.48,"RO":2.44,"RR":3.45,"TO":2.59},"extra":{"AC":{"obitosEvitaveisMenor5":317,"pop0a4":88.08,"obitos5a74_2024":2541},"AP":{"obitosEvitaveisMenor5":275,"pop0a4":84.262,"obitos5a74_2024":2510},"AM":{"obitosEvitaveisMenor5":1173,"pop0a4":439.528,"obitos5a74_2024":12724},"MA":{"obitosEvitaveisMenor5":1430,"pop0a4":611.962,"obitos5a74_2024":23422},"MT":{"obitosEvitaveisMenor5":953,"pop0a4":354.86,"obitos5a74_2024":14046},"PA":{"obitosEvitaveisMenor5":1922,"pop0a4":775.733,"obitos5a74_2024":27113},"RO":{"obitosEvitaveisMenor5":363,"pop0a4":148.655,"obitos5a74_2024":6172},"RR":{"obitosEvitaveisMenor5":295,"pop0a4":85.616,"obitos5a74_2024":1989},"TO":{"obitosEvitaveisMenor5":362,"pop0a4":139.963,"obitos5a74_2024":5384}},"motivo":"A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.","status":"parcial (TabNet só disponibiliza LBE <5 anos — dado de referência incluído; LBE completa exige microdados SIM)"}},"lista":{"F3.5":{"reg":{"2007":43397094,"2008":54257794,"2009":50909536,"2010":69232377,"2011":78377398,"2012":79061500,"2013":89021193,"2014":89469755,"2015":90665806,"2016":89933514,"2017":101820191,"2018":116279161,"2019":128873261,"2020":177292254,"2021":220220320,"2022":194925792,"2023":188154569,"2024":215364980},"atual":{"AC":925342,"AP":592145,"AM":75577158,"MA":14534906,"MT":41521382,"PA":70146964,"RO":6091511,"RR":378434,"TO":5597138}},"I3.1.1":{"reg":{"1994":2186345,"1996":1926935,"1997":1015411,"1998":976049,"1999":1032171,"2000":1017963,"2001":1141744,"2002":1711562,"2003":1862074,"2004":1717589,"2005":1890459,"2006":2060523,"2007":2229782,"2008":2261827,"2009":3054174,"2010":2711507,"2011":3430943,"2012":2875374,"2013":2900912,"2014":2975131,"2015":3166504,"2016":2890231,"2017":2996840,"2018":2930227,"2019":3192271,"2020":3198054,"2021":4281470,"2022":4338673,"2023":4384987,"2024":5109202},"atual":{"AC":115843,"AP":79934,"AM":376141,"MA":425492,"MT":1042643,"PA":2735080,"RO":230816,"RR":60644,"TO":42609}},"F3.2":{"reg":{"2018":4248237,"2019":4253849,"2020":4242976,"2021":4547117,"2023":5487058,"2024":5678471,"2025":6189078},"atual":{"AC":192323,"AP":184387,"AM":887843,"MA":1064538,"MT":1255349,"PA":1575756,"RO":432740,"RR":158562,"TO":437580}},"I2.2.1":{"reg":{},"atual":{"AC":3.6,"AP":3.26,"AM":2.67,"MA":2.34,"MT":2.69,"PA":2.48,"RO":2.44,"RR":3.45,"TO":2.59}}}};
+const UFS = ['AC','AP','AM','MA','MT','PA','RO','RR','TO'];
+const nf = (v,c=0)=>v.toLocaleString('pt-BR',{minimumFractionDigits:c,maximumFractionDigits:c});
+const P = DADOS.painel, L = DADOS.lista;
+const IND = {
+  'F3.5': { nome:P['F3.5'].nome, unid:'R$', motivo:'Meta de crescer 10% ao ano, sem patamar de valor.', fmt:v=>`R$ ${nf(v/1e6,1)} bi`, curto:v=>`${nf(v/1e6,0)} bi`, est:v=>v>=1e6?`${nf(v/1e6,1)} bi`:`${nf(v/1e3,0)} mi`, clicavel:true, projecao:true },
+  'I3.1.1': { nome:'Valor da produção da sociobioeconomia', unid:'R$', motivo:'Meta de +R$ 100 mi sem ano de partida.', curto:v=>`${nf(v/1e6,1)} bi` },
+  'F3.2': { nome:'Empregos e empresas nas cadeias produtivas', unid:'vínculos', motivo:'Meta qualitativa: estruturar cadeias.', curto:v=>`${nf(v/1e6,1)} mi` },
+  'I2.2.1': { nome:P['I2.2.1'].nome, unid:'por 100 mil', motivo:'Meta de reduzir 50%, sem baseline.', clicavel:true, semSerie:true },
+};
+const serieReg = cod => Object.entries((L[cod]||{}).reg||{}).map(([a,v])=>[+a,v]).sort((x,y)=>x[0]-y[0]);
+const serieUf = (cod,uf) => Object.entries(P[cod].serie?.[uf]||{}).map(([a,v])=>[+a,v]).filter(p=>Number.isFinite(p[1])).sort((x,y)=>x[0]-y[0]);
+const cagr = s => (Math.pow(s.at(-1)[1]/s[0][1], 1/(s.at(-1)[0]-s[0][0]))-1)*100;
+const varp = s => (s.at(-1)[1]/s[0][1]-1)*100;
+const regAno = (cod,a) => UFS.reduce((t,u)=>t+(P[cod].serie[u]?.[a]||0),0);
+const TONS = ['#0e2b22','#1c4437','#3e6e57','#5b8a70','#7fa08c','#a3bba9','#c6d2c7','#dfe6df','#eef2ee'];
+function linha(s, w, h, {rotulos=true, cls='spark', grade=false, anota=false}={}){
+  const x0=rotulos?(grade?34:30):2, x1=w-(rotulos?(grade?10:30):4), y0=grade?16:4, y1=h-(grade?16:4);
+  const a0=s[0][0], a1=s.at(-1)[0], vs=s.map(p=>p[1]), mn=grade?0:Math.min(...vs), mx=Math.max(...vs);
+  const px=a=>x0+(a-a0)/((a1-a0)||1)*(x1-x0), py=v=>y1-(v-mn)/((mx-mn)||1)*(y1-y0);
+  const pts=s.map(([a,v])=>`${px(a).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+  const fim=s.at(-1), pico=s.reduce((m,p)=>p[1]>m[1]?p:m,s[0]);
+  const g = grade ? [0,.5,1].map(f=>{const v=mn+(mx-mn)*f; return `<line x1="${x0}" x2="${x1}" y1="${py(v)}" y2="${py(v)}"/>`}).join('') : '';
+  const an = anota ? `<text class="anota" x="${px(a0)}" y="${py(s[0][1])-7}">${anota(s[0][1])}</text>
+     <text class="anota" x="${px(fim[0])}" y="${py(fim[1])-8}" text-anchor="end">${anota(fim[1])}</text>` : '';
+  return `<svg class="${cls}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${g?`<g class="grade">${g}</g>`:''}
+    <polygon class="area" points="${px(a0)},${y1} ${pts} ${px(a1)},${y1}"/><polyline class="ln" points="${pts}"/>
+    <circle class="${grade?'sel':'ponto'}" cx="${px(fim[0])}" cy="${py(fim[1])}" r="${grade?4:3}"/>${an}
+    ${rotulos?`<text x="${grade?x0:0}" y="${grade?h-3:h/2+3}">${a0}</text><text x="${grade?x1:w}" y="${grade?h-3:h/2+3}" text-anchor="end">${a1}</text>`:''}</svg>`;
+}
+function faixaEstados(cod, w=400, h=32){ const at=L[cod].atual, vs=Object.values(at), mn=Math.min(...vs), mx=Math.max(...vs); const px=v=>30+(v-mn)/((mx-mn)||1)*(w-60);
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><line class="eixo" x1="30" x2="${w-30}" y1="13" y2="13"/>${Object.entries(at).map(([u,v])=>`<circle class="pt" cx="${px(v)}" cy="13" r="3.4"/>${v===mn||v===mx?`<text x="${px(v)}" y="29" text-anchor="middle">${u}</text>`:''}`).join('')}<text x="0" y="16">${nf(mn,1)}</text><text x="${w}" y="16" text-anchor="end">${nf(mx,1)}</text></svg>`; }
+const ordemPeso = cod => { const at=L[cod].atual; return UFS.slice().sort((a,b)=>at[b]-at[a]); };
+
+// ---------- cartões ----------
+function cabecaCartao(cod, sub){ const it=IND[cod]; return `<div class="topo"><div class="nome">${it.nome}<small>${sub}</small></div></div>`; }
+function lerAL(cod){ const it=IND[cod], s=serieReg(cod);
+  if (it.semSerie){ const vs=Object.values(L[cod].atual); return `<div class="ler"><span class="al">Estados</span><b>${nf(Math.min(...vs),1)}–${nf(Math.max(...vs),1)}</b><small>${it.unid}</small></div>`; }
+  return `<div class="ler"><span class="al">Amazônia Legal</span><b>${it.curto(s.at(-1)[1])}</b><small>${it.unid} · ${s.at(-1)[0]}</small></div>`; }
+function subRitmo(cod){ const it=IND[cod], s=serieReg(cod); if(it.semSerie) return 'sem série anual'; return `<b style="color:var(--mata)">${varp(s)>=0?'+':''}${nf(varp(s),0)}%</b> desde ${s[0][0]}`; }
+// A: valor AL + linha AL
+const cartaoA = cod => `<button class="row${IND[cod].clicavel?'':' fixo'}" data-cod="${cod}">${lerAL(cod)}<div>${cabecaCartao(cod, subRitmo(cod))}${IND[cod].semSerie?faixaEstados(cod):linha(serieReg(cod),400,32)}</div></button>`;
+// C: valor AL + composição por estado (último ano)
+function cartaoC(cod){ const it=IND[cod]; if(it.semSerie) return cartaoA(cod);
+  const at=L[cod].atual, tot=Object.values(at).reduce((a,b)=>a+b,0), ord=ordemPeso(cod);
+  const top=ord.slice(0,3), demais=ord.slice(3).reduce((t,u)=>t+at[u],0);
+  const barras=[...top.map((u,i)=>[u,at[u],TONS[i*2]]),['demais',demais,TONS[7]]].map(([u,v,c])=>`<i style="width:${v/tot*100}%;background:${c}" title="${u} ${nf(v/tot*100,0)}%"></i>`).join('');
+  return `<button class="row${it.clicavel?'':' fixo'}" data-cod="${cod}">${lerAL(cod)}<div>${cabecaCartao(cod, subRitmo(cod))}<div class="pilha">${barras}</div><div class="pilha-leg"><span>${top.map(u=>`${u} ${nf(at[u]/tot*100,0)}%`).join(' · ')}</span><span>demais</span></div></div></button>`; }
+// B: valor AL + faixa de calor da região no tempo
+function cartaoB(cod){ const it=IND[cod]; if(it.semSerie) return cartaoA(cod);
+  const s=serieReg(cod), mx=Math.max(...s.map(p=>p[1]));
+  return `<button class="row${it.clicavel?'':' fixo'}" data-cod="${cod}">${lerAL(cod)}<div>${cabecaCartao(cod, subRitmo(cod))}
+    <div class="calorlinha" style="grid-template-columns:repeat(${s.length},1fr)">${s.map(([a,v])=>`<i style="background:rgba(14,43,34,${(0.08+0.85*v/mx).toFixed(2)})" title="${a}"></i>`).join('')}</div>
+    </div></button>`; }
+
+// ---------- painel ----------
+function cabecalho(cod){ const it=IND[cod]; return `<div class="ph"><h3>${it.nome}</h3><span class="x">×</span></div><div class="abas"><span class="on">Resultado</span>${it.projecao?'<span>Trajetória 2050</span>':''}<span>Ficha técnica</span></div>`; }
+function destaqueAL(cod){ const it=IND[cod], s=serieReg(cod);
+  return `<dl class="destaque dois"><div><dt>Amazônia Legal · ${s.at(-1)[0]}</dt><dd>${it.fmt(s.at(-1)[1])}</dd></div>
+    <div><dt>Desde ${s[0][0]}</dt><dd>+${nf(varp(s),0)}%<small>${nf(cagr(s),1)}% ao ano</small></dd></div></dl>`; }
+const porque = cod => `<div class="porque"><strong>Meta pactuada</strong>${P[cod].meta}. <span style="color:var(--tinta-4)">${IND[cod].motivo}</span></div>`;
+function semSerie(cod){ const it=IND[cod], at=P[cod].valores, ord=Object.entries(at).sort((a,b)=>b[1]-a[1]), mx=ord[0][1];
+  return cabecalho(cod)+`<dl class="destaque"><div><dt>Amazônia Legal</dt><dd>—<small>sem valor regional</small></dd></div><div><dt>Maior</dt><dd>${ord[0][0]} ${nf(ord[0][1],2)}<small>${it.unid}</small></dd></div><div><dt>Menor</dt><dd>${ord.at(-1)[0]} ${nf(ord.at(-1)[1],2)}<small>ref. ${P[cod].anoRef}</small></dd></div></dl>`
+   +`<div class="sec"><h4>Estados <em>${it.unid}</em></h4><div class="barras">${ord.map(([u,v])=>`<div class="br"><span>${u}</span><i><u style="width:${v/mx*100}%"></u></i><b>${nf(v,2)}</b></div>`).join('')}</div></div>`
+   +`<div class="sec">${porque(cod)}</div>`; }
+
+// Opção 1: região + tabela com calor e ritmo
+function painel1(cod){ const it=IND[cod]; if(it.semSerie) return semSerie(cod);
+  const s=serieReg(cod), anos=['2007','2015','2024'], ord=ordemPeso(cod), top=ord.slice(0,3), demais=ord.slice(3), tot=regAno(cod,'2024');
+  const somaD=a=>demais.reduce((t,u)=>t+P[cod].serie[u][a],0);
+  const linhas=[...top.map(u=>[u,a=>P[cod].serie[u][a]]),[`Demais ${demais.length}`,somaD]];
+  const mx=Math.max(...linhas.flatMap(([,fn])=>anos.map(fn)));
+  const cel=v=>`<td style="background:rgba(14,43,34,${(0.04+0.55*Math.sqrt(v/mx)).toFixed(2)});color:${v/mx>0.3?'#fff':'var(--tinta-2)'}">${it.est(v)}</td>`;
+  const al=`<tr class="al"><td>AL</td>${anos.map(a=>`<td>${it.est(regAno(cod,a))}</td>`).join('')}<td>100%</td></tr>`;
+  const corpo=linhas.map(([nome,fn])=>`<tr><td>${nome}</td>${anos.map(a=>cel(fn(a))).join('')}<td class="peso">${nf(fn('2024')/tot*100,0)}%</td></tr>`).join('');
+  return cabecalho(cod)+destaqueAL(cod)
+   +`<div class="sec"><h4>Amazônia Legal ao longo do tempo</h4>${linha(s,420,120,{cls:'grafico',grade:true,anota:v=>it.est(v)})}</div>`
+   +`<div class="sec"><h4>Quem mais pesa na região <em>peso em 2024</em></h4><table class="calor"><thead><tr><th></th>${anos.map(a=>`<th>${a}</th>`).join('')}<th>peso</th></tr></thead><tbody>${al}<tr class="sep"><td colspan="5"></td></tr>${corpo}</tbody></table></div>`
+   +`<div class="sec">${porque(cod)}</div>`; }
+
+// Opção 2: região + faixas de calor alinhadas ao eixo dos anos
+function painel2(cod){ const it=IND[cod]; if(it.semSerie) return semSerie(cod);
+  const s=serieReg(cod), anos=s.map(p=>String(p[0]));
+  const faixa=serie=>{ const vs=anos.map(a=>serie[a]); const mx=Math.max(...vs.filter(Number.isFinite)); return `<div class="cel" style="grid-template-columns:repeat(${anos.length},1fr)">${vs.map(v=>`<i style="background:rgba(14,43,34,${(0.06+0.86*(v/mx)).toFixed(2)})"></i>`).join('')}</div>`; };
+  const regObj=Object.fromEntries(s.map(([a,v])=>[String(a),v]));
+  const linhas=ordemPeso(cod).slice(0,5).map(u=>`<span class="uf">${u}</span>${faixa(P[cod].serie[u])}<span class="rt">${nf(cagr(serieUf(cod,u)),1)}%</span>`).join('');
+  return cabecalho(cod)+destaqueAL(cod)
+   +`<div class="sec"><h4>Amazônia Legal ao longo do tempo</h4>${linha(s,420,110,{cls:'grafico',grade:true,anota:v=>it.est(v)})}</div>`
+   +`<div class="sec"><h4>Quando os maiores estados cresceram <em>ritmo ao ano</em></h4>
+     <div class="faixas"><span class="uf" style="color:var(--mata)">AL</span>${faixa(regObj)}<span class="rt" style="color:var(--mata)">${nf(cagr(s),1)}%</span>${linhas}</div>
+     <div class="anos"><span>${anos[0]}</span><span>${anos.at(-1)}</span></div></div>`
+   +`<div class="sec">${porque(cod)}</div>`; }
+
+// Opção 3: composição da região (área empilhada) + tabela curta
+function painel3(cod){ const it=IND[cod]; if(it.semSerie) return semSerie(cod);
+  const s=serieReg(cod), anos=s.map(p=>p[0]), ord=ordemPeso(cod), top=ord.slice(0,3), demais=ord.slice(3);
+  const grupos=[...top.map((u,i)=>[u,a=>P[cod].serie[u][a],TONS[i*2]]),[`Demais ${demais.length}`,a=>demais.reduce((t,u)=>t+P[cod].serie[u][a],0),TONS[7]]];
+  const w=420,h=150,x0=48,x1=w-10,y0=12,y1=h-16, mx=Math.max(...s.map(p=>p[1]));
+  const px=a=>x0+(a-anos[0])/(anos.at(-1)-anos[0])*(x1-x0), py=v=>y1-v/mx*(y1-y0);
+  let base=Object.fromEntries(anos.map(a=>[a,0])), camadas='', rot='';
+  grupos.forEach(([nome,fn,cor],i)=>{ const topo=anos.map(a=>[a,base[a]+fn(a)]), baixo=anos.slice().reverse().map(a=>[a,base[a]]);
+    camadas+=`<polygon points="${[...topo,...baixo].map(([a,v])=>`${px(a).toFixed(1)},${py(v).toFixed(1)}`).join(' ')}" fill="${cor}" stroke="#fff" stroke-width=".6"/>`;
+    const a=anos.at(-1), meio=base[a]+fn(a)/2; if (i<3) rot+=`<text x="${x1-4}" y="${py(meio)+3}" text-anchor="end" style="fill:${i<2?'#fff':'var(--tinta)'};font-weight:700">${nome}</text>`;
+    topo.forEach(([a,v])=>base[a]=v); });
+  const graf=`<svg class="grafico" viewBox="0 0 ${w} ${h}"><g class="grade">${[0,.5,1].map(f=>`<line x1="${x0}" x2="${x1}" y1="${py(mx*f)}" y2="${py(mx*f)}"/><text x="${x0-4}" y="${py(mx*f)+3}" text-anchor="end">${it.est(mx*f)}</text>`).join('')}</g>${camadas}${rot}<text x="${x0}" y="${h-3}">${anos[0]}</text><text x="${x1}" y="${h-3}" text-anchor="end">${anos.at(-1)}</text></svg>`;
+  const a0=String(anos[0]), a1=String(anos.at(-1)), tot0=regAno(cod,a0), tot1=regAno(cod,a1);
+  const tab=grupos.map(([nome,fn])=>`<tr><td>${nome}</td><td class="peso">${nf(fn(a0)/tot0*100,0)}%</td><td>${nf(fn(a1)/tot1*100,0)}%</td></tr>`).join('');
+  return cabecalho(cod)+destaqueAL(cod)
+   +`<div class="sec"><h4>A região e quem a compõe</h4>${graf}</div>`
+   +`<div class="sec"><h4>Peso de cada estado <em>${a0} → ${a1}</em></h4><table class="calor"><thead><tr><th></th><th>${a0}</th><th>${a1}</th></tr></thead><tbody><tr class="al"><td>AL</td><td>100%</td><td>100%</td></tr><tr class="sep"><td colspan="3"></td></tr>${tab}</tbody></table></div>`
+   +`<div class="sec">${porque(cod)}</div>`; }
+
+// Opção 4: estados contra a região (índice base 100) + tabela de ritmo
+function painel4(cod){ const it=IND[cod]; if(it.semSerie) return semSerie(cod);
+  const s=serieReg(cod), a0=s[0][0], a1=s.at(-1)[0]; const idx=ser=>ser.map(([a,v])=>[a,v/ser[0][1]*100]); const alI=idx(s);
+  const w=120,h=30, mx=Math.max(...alI.map(p=>p[1]))*1.9, px=a=>2+(a-a0)/(a1-a0)*(w-4), py=v=>h-2-Math.min(v,mx)/mx*(h-4);
+  const poly=ser=>ser.map(([a,v])=>`${px(a).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+  const rAL=cagr(s);
+  const multi=ordemPeso(cod).slice(0,6).sort((a,b)=>cagr(serieUf(cod,b))-cagr(serieUf(cod,a))).map(u=>{ const su=serieUf(cod,u), r=cagr(su);
+    return `<div><b>${u}<em class="${r>=rAL?'mais':'menos'}">${nf(r,1)}% a.a.</em></b><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline class="ref" points="${poly(alI)}"/><polyline class="ln" points="${poly(idx(su))}"/></svg></div>`; }).join('');
+  return cabecalho(cod)+destaqueAL(cod)
+   +`<div class="sec"><h4>Amazônia Legal ao longo do tempo</h4>${linha(s,420,110,{cls:'grafico',grade:true,anota:v=>it.est(v)})}</div>`
+   +`<div class="sec"><h4>Maiores estados contra o ritmo da região</h4><div class="multi">${multi}</div>
+     <div class="leg"><span><i class="ref"></i>Amazônia Legal (${nf(rAL,1)}% a.a.)</span><span style="color:var(--mata-700)">verde: acima</span><span style="color:#8e3213">vermelho: abaixo</span></div></div>`
+   +`<div class="sec">${porque(cod)}</div>`; }
+const OPCOES = [
+  { id:1, titulo:'1 · Região no alto, estados na tabela', rec:true, cartao:cartaoA, painel:painel1,
+    texto:'Faixa escura com dois números da região, linha da região marcando início e fim, e tabela com calor reduzida a três anos-marco, aos três estados que mais pesam, aos demais e à região.' },
+  { id:2, titulo:'2 · Região e o momento de cada estado', cartao:cartaoB, painel:painel2,
+    texto:'Cartão com a faixa de calor da região. No painel, as faixas de calor só dos cinco maiores estados, com a região no topo e o ritmo ao ano.' },
+  { id:3, titulo:'3 · A região e quem a compõe', cartao:cartaoC, painel:painel3,
+    texto:'Cartão com o peso dos três maiores estados. No painel, camadas com os três maiores e os demais, e o peso no começo e no fim da série.' },
+  { id:4, titulo:'4 · Estados contra o ritmo da região', cartao:cartaoA, painel:painel4,
+    texto:'Miniaturas só dos seis maiores estados, cada uma com a linha da região tracejada e a taxa em verde (acima da região) ou vermelho (abaixo).' },
+];
+document.getElementById('opcoes').innerHTML = OPCOES.map(o=>`<section class="opcao" data-op="${o.id}"><h2>${o.titulo}${o.rec?'<span class="rec">recomendada</span>':''}</h2><p>${o.texto}</p>
+  <div class="tela"><div class="lista"><div class="eyebrow">Coletados, sem meta numérica</div><div class="cards">${['F3.5','I3.1.1','F3.2','I2.2.1'].map(c=>o.cartao(c)).join('')}</div></div><div class="painel" data-painel></div></div></section>`).join('');
+function abrir(sec, cod){ const o=OPCOES.find(x=>x.id==sec.dataset.op); sec.querySelector('[data-painel]').innerHTML=o.painel(cod); sec.querySelectorAll('[data-cod]').forEach(b=>b.classList.toggle('ativo', b.dataset.cod===cod)); }
+document.querySelectorAll('.opcao').forEach(sec=>{ abrir(sec,'F3.5'); sec.addEventListener('click',e=>{ const b=e.target.closest('[data-cod]'); if(b && IND[b.dataset.cod].clicavel) abrir(sec,b.dataset.cod); }); });
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
-  "fonte": "Fichas Técnicas Indicadores - Amazonia2050.docx",
-  "total": 52,
+  "fonte": "Fichas Técnicas Indicadores - Amazonia2050.docx (versão de 15/09/2026)",
+  "total": 57,
   "fichas": {
     "I1.1.1": {
       "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
@@ -223,7 +223,7 @@
     "I1.4.2": {
       "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
       "linhaAcao": "1.4. Recuperar áreas degradadas nos territórios da Amazônia Legal, com foco na restauração ecológica e produtiva.",
-      "meta": "Alcançar xx% da área restaurada utilizando Sistemas Agroflorestais (SAFs).",
+      "meta": "Alcance de 40% da área restaurada utilizando Sistemas Agroflorestais (SAFs).",
       "indicador": "Percentual da área restaurada implantada com SAFs",
       "prazo": "2035",
       "formula": "",
@@ -236,10 +236,49 @@
     "I1.5.1": {
       "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
       "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
-      "meta": "100% das áreas públicas prioritárias de domínio estadual regularizadas, com prioridade para áreas de conflito fundiário, assentamentos e comunidades tradicionais.",
-      "indicador": "Percentual da área pública prioritária de domínio estadual regularizada",
+      "meta": "100% das áreas públicas prioritárias de relevância socioambiental de domínio estadual destinada para fins de conservação e regularização fundiária para PIQCTAF - Povos indígenas, quilombolas, comunidades tradicionais e agricultura familiar, em especial as áreas sob conflito fundiário.",
+      "indicador": "(1) Percentual da área pública prioritária de domínio estadual regularizada para fins de conservação\n(2) Percentual da área pública prioritária de domínio estadual regularizada para PIQCTAF",
+      "prazo": "2035",
+      "formula": "%AP Destinação Conservação + %AP Destinação PIQCTAF",
+      "unidade": "",
+      "fontes": "Órgãos fundiários estaduais",
+      "frequencia": "Anual",
+      "pontuacao": "",
+      "referencias": []
+    },
+    "I1.5.2": {
+      "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
+      "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "meta": "Câmaras Técnicas de Destinação Estaduais constituídas e em operação, com participação deliberativa significativa de movimentos sociais e sociedade civil em todos os 9 estados.",
+      "indicador": "% dos 9 estados da Amazônia Legal com Câmara Técnica de Destinação constituída e operante",
       "prazo": "2030",
-      "formula": "",
+      "formula": "Ato administrativo de constituição e nº de reuniões realizadas/ano",
+      "unidade": "",
+      "fontes": "Órgãos fundiários estaduais",
+      "frequencia": "Anual",
+      "pontuacao": "",
+      "referencias": []
+    },
+    "I1.5.3": {
+      "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
+      "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "meta": "Institucionalizar e fortalecer espaços de governança interinstitucionais de mediação e conciliação de conflitos, no âmbito dos institutos de terras estaduais, em todos os 9 estados da Amazônia Legal",
+      "indicador": "(1) Nº de acordos administrativos de conflitos firmados\n(2) % Redução da judicialização dos conflitos",
+      "prazo": "2030",
+      "formula": "(1) Nº de acordos administrativos firmados ÷ nº de conflitos fundiários registrados no período\n(2) Nº de conflitos levados ao judiciário no período ÷ nº total de conflitos identificados/registrados",
+      "unidade": "",
+      "fontes": "Órgãos fundiários estaduais",
+      "frequencia": "Anual",
+      "pontuacao": "",
+      "referencias": []
+    },
+    "I1.5.4": {
+      "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
+      "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "meta": "Órgãos estaduais de terras utilizando sistemas (ex: Terras do Brasil/ SICARF-Federativo) nos processos de regularização fundiária, para fins de otimização da governança e ordenamento territorial",
+      "indicador": "% de adesão a sistemas interoperáveis de regularização fundiária; aumento na taxa de titulação anual.",
+      "prazo": "2030",
+      "formula": "Aumento (%)=Taxat−1​Taxat​−Taxat−1​​×100",
       "unidade": "",
       "fontes": "Órgãos fundiários estaduais",
       "frequencia": "Anual",
@@ -249,10 +288,36 @@
     "I1.5.5": {
       "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
       "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
-      "meta": "Destinação de 50% das áreas de florestas públicas de domínio estadual não destinadas.",
+      "meta": "Destinação de 100% das áreas de florestas públicas de domínio estadual não destinadas, para fins de conservação e regularização fundiária para PIQCTAF - Povos indígenas, quilombolas, comunidades tradicionais e agricultura familiar, em especial as áreas sob conflito fundiário.",
       "indicador": "% de florestas públicas de domínio estadual destinadas",
-      "prazo": "2030",
-      "formula": "",
+      "prazo": "2035",
+      "formula": "%Florestas destinadas=Área total de florestas públicas estaduais não destinadas, na linha de base (ha) ÷ Área de florestas públicas estaduais efetivamente destinada (ha)​×100",
+      "unidade": "",
+      "fontes": "Órgãos fundiários estaduais",
+      "frequencia": "Anual",
+      "pontuacao": "",
+      "referencias": []
+    },
+    "I1.5.6": {
+      "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
+      "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "meta": "Promover a integração e interoperabilidade das bases fundiária, ambiental e registral, em conformidade com o Decreto de Governança da Terra e a ADPF 743 (STF).",
+      "indicador": "% de integração das bases com o uso dos instrumentos da Política Nacional de Governança da Terra",
+      "prazo": "2035",
+      "formula": "Nº de bases fundiária, ambiental e registral integradas e interoperáveis ÷ Nº total de bases previstas para integração × 100",
+      "unidade": "",
+      "fontes": "Órgãos fundiários estaduais",
+      "frequencia": "Anual",
+      "pontuacao": "",
+      "referencias": []
+    },
+    "I1.5.7": {
+      "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
+      "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
+      "meta": "Resolução de 100% sobreposições de CAR para desbloqueio de validações.",
+      "indicador": "Redução do número de sobreposições de CAR nas bases estaduais",
+      "prazo": "2035",
+      "formula": "Nº total de sobreposições identificadas na linha de base / Nº de sobreposições resolvidas​×100",
       "unidade": "",
       "fontes": "Órgãos fundiários estaduais",
       "frequencia": "Anual",
@@ -262,10 +327,10 @@
     "I1.5.8": {
       "eixo": "Gestão territorial, sustentabilidade ambiental e governança climática",
       "linhaAcao": "1.5. Implementar um sistema de governança fundiária e ambiental multinível, utilizando tecnologias de sensoriamento remoto e cadastros georreferenciados interoperáveis, a fim de garantir a segurança jurídica, combater a grilagem e destravar a regularização de 100% das áreas públicas e privadas na Amazônia Legal.",
-      "meta": "Elaboração e análise de 100% dos registros de Cadastro Ambiental Rural de Povos e Comunidades Tradicionais (CAR/PCT) nos territórios prioritários de cada estado da Amazônia Legal.",
-      "indicador": "Nº de registros de CAR/PCT elaborados e analisados por estado por ano",
-      "prazo": "2027",
-      "formula": "PCTs reconhecidos pelo INCRA e órgãos ambientais estaduais inscritos e analisados no SICAR",
+      "meta": "Elaboração, análise e validação de 100% de Cadastro Ambiental Rural em territórios de PIQCTs.",
+      "indicador": "Nº de registros de CAR/PCT elaborados, analisados e validados por estado por ano",
+      "prazo": "2030",
+      "formula": "Nº de CAR/PCT elaborados, analisados e validados ÷ Nº total de CAR/PCT demandados × 100",
       "unidade": "",
       "fontes": "SICAR/órgãos ambientais estaduais/INCRA",
       "frequencia": "Anual",
@@ -753,10 +818,10 @@
     "I5.1.1": {
       "eixo": "Governança e parcerias",
       "linhaAcao": "5.1. Ampliar a captação de recursos financeiros por meio de parcerias nacionais e internacionais voltadas ao desenvolvimento sustentável da Amazônia Legal.",
-      "meta": "Mobilização de 100 milhões de reais em dólares para financiamento climático.",
-      "indicador": "Aumento do Montante de recursos obtidos pelos nove estados com programas jurisdicionais de crédito de carbono, financiamento climático e ambiental e fundos multilaterais",
+      "meta": "Mobilização de 100 milhões de reais em dólares anuais para financiamento climático.",
+      "indicador": "Aumento do Montante de recursos obtidos anualmente pelos nove estados com programas jurisdicionais de crédito de carbono, financiamento climático e ambiental e fundos multilaterais",
       "prazo": "2050",
-      "formula": "Volume de recursos por estado, somados. O Padrão Internacional: O Relatório sobre Clima e Desenvolvimento para o Brasil (CCDR) do Banco Mundial estima que o país precisa investir cerca de 0,8% do seu PIB ao ano para viabilizar uma transição climática real e sustentável até 2050. Utilizamos isso como linha de base para estimar a realidade da Amazônia Legal",
+      "formula": "Volume de recursos por estado, somados. O Padrão Internacional: O Relatório sobre Clima e Desenvolvimento para o Brasil (CCDR) do Banco Mundial estima que o país precisa investir cerca de 0,8% do seu PIB ao ano para viabilizar uma transição climática real e sustentável até 2050. Utilizamos isso como linha de base para estimar a realidade da Amazônia Legal - O indicador é medido anualmente, e não acumulado",
       "unidade": "reais",
       "fontes": "Estados",
       "frequencia": "anual",
@@ -841,9 +906,11 @@
       "formula": "-",
       "unidade": "-",
       "fontes": "estados e CAL",
-      "frequencia": "-",
+      "frequencia": "anual",
       "pontuacao": "-",
-      "referencias": []
+      "referencias": [
+        "https://www.gov.br/mcti/pt-br/acesso-a-informacao/dados-abertos/dados-abertos/paginas/indicadores-nacionais-de-ciencia-tecnologia-e-inovacao"
+      ]
     },
     "I5.5.1": {
       "eixo": "Governança e parcerias",
@@ -899,5 +966,8 @@
       "referencias": []
     }
   },
-  "_leia": "Fichas técnicas extraídas do .docx (scripts/extract-fichas.ps1), por código. `en` por ficha guarda equações e notas de fórmula em inglês; as equações em LaTeX trazem português dentro, por isso a lista inteira é traduzida."
+  "_leia": "Fichas técnicas extraídas do .docx (scripts/extract-fichas.ps1), por código. `en` por ficha guarda equações e notas de fórmula em inglês; as equações em LaTeX trazem português dentro, por isso a lista inteira é traduzida.",
+  "pendentes": {
+    "I1.5.x titulação": "A versão de 15/09/2026 traz uma ficha a mais na linha 1.5, \"Aumento na taxa de titulação de povos e comunidades tradicionais\" (nº de territórios titulados ÷ nº de territórios reivindicados, reconhecidos ou em processo de regularização; prazo 2030), sem código no catálogo. Fica fora até o catálogo ganhar o indicador."
+  }
 }

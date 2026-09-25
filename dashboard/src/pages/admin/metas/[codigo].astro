@@ -15,8 +15,9 @@ interface Parametro {
   agregacao?: string; valorDe?: 'ultimoDaSerie' | { panorama: string   trajetoria?: { janela?: number; metodo?: 'linear' | 'composto'; desligada?: boolean; nota?: string };
 }; baselineAno?: number; unidade?: string;
   categoriasCumpre?: string[]; nota?: string; notaAgregacao?: string;
+  razao?: { numerador: string; denominador: string; fator?: number };
 }
-interface Metas { parametros: Parametro[]; exclusoes: Record<string, string> }
+interface Metas { parametros: Parametro[]; exclusoes: Record<string, string>; semMeta?: Record<string, unknown> }
 interface Catalogo { eixos: { indicadores: { codigo: string; nome: string; meta: string; unidade: string }[] }[] }
 interface Panorama { metricas: { chave: string; rotulo?: string }[] }
 
@@ -39,6 +40,7 @@ const AGREGACOES = [
   { valor: 'populacao', rotulo: 'Média ponderada pela população' },
   { valor: 'razaoUc', rotulo: 'Unidades com plano e conselho sobre o total (só I1.1.2)' },
   { valor: 'razaoCvli', rotulo: 'Total de CVLI sobre a população regional (só I2.4.1)' },
+  { valor: 'razaoCampos', rotulo: 'Razão entre dois campos auxiliares (soma sobre soma)' },
   { valor: 'contagem', rotulo: 'Sem valor regional (classificação por estado)' }
 ];
 
@@ -75,6 +77,12 @@ if (Astro.request.method === 'POST') {
       const valorDe = texto(dados, 'valorDe');
       if (!usaRegra && valorDe === 'ultimoDaSerie') novoParametro.valorDe = 'ultimoDaSerie';
       if (valorDe.startsWith('panorama:')) novoParametro.valorDe = { panorama: valorDe.slice('panorama:'.length) };
+      if (novoParametro.agregacao === 'razaoCampos') {
+        const numerador = texto(dados, 'razaoNumerador');
+        const denominador = texto(dados, 'razaoDenominador');
+        if (!numerador || !denominador) throw new ErroDeEdicao('A razão entre campos precisa do campo do numerador e do denominador (ex.: kmEfetivo e kmFisico).');
+        novoParametro.razao = { numerador, denominador, fator: numeroOuNulo(dados, 'razaoFator') ?? 100 };
+      }
       const baseline = numeroOuNulo(dados, 'baselineAno');
       if (baseline !== null) novoParametro.baselineAno = baseline;
       const unidade = textoOuNulo(dados, 'unidade');
@@ -106,6 +114,8 @@ if (Astro.request.method === 'POST') {
         const ordem = catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((item) => item.codigo));
         const posicao = metas.parametros.findIndex((item) => ordem.indexOf(item.codigo) > ordem.indexOf(codigo));
         if (posicao < 0) metas.parametros.push(novoParametro); else metas.parametros.splice(posicao, 0, novoParametro);
+        // Entrou no quadro: a forma de exibir os que ficam fora deixa de valer.
+        if (metas.semMeta) delete metas.semMeta[codigo];
       }
       if (novoMotivo) metas.exclusoes[codigo] = novoMotivo;
       return metas;
@@ -114,7 +124,7 @@ if (Astro.request.method === 'POST') {
   } catch (falha) {
     erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
     motivo = texto(dados, 'motivo');
-    parametro = { codigo, direcao: texto(dados, 'direcao') as Parametro['direcao'], tipo: texto(dados, 'tipo') as Parametro['tipo'], agregacao: texto(dados, 'agregacao'), alvo: texto(dados, 'alvoModo') === 'regra' ? { tipo: 'reducaoSobreMedia', desde: Number(texto(dados, 'regraDesde')) || 0, fator: Number(texto(dados, 'regraFator')) || 0 } : (Number(texto(dados, 'alvo').replace(',', '.')) || null), baselineAno: Number(texto(dados, 'baselineAno')) || undefined, unidade: textoOuNulo(dados, 'unidade') || undefined, nota: textoOuNulo(dados, 'nota') || undefined, notaAgregacao: textoOuNulo(dados, 'notaAgregacao') || undefined, categoriasCumpre: texto(dados, 'categoriasCumpre').split(',').map((s) => s.trim()).filter(Boolean) };
+    parametro = { codigo, direcao: texto(dados, 'direcao') as Parametro['direcao'], tipo: texto(dados, 'tipo') as Parametro['tipo'], agregacao: texto(dados, 'agregacao'), alvo: texto(dados, 'alvoModo') === 'regra' ? { tipo: 'reducaoSobreMedia', desde: Number(texto(dados, 'regraDesde')) || 0, fator: Number(texto(dados, 'regraFator')) || 0 } : (Number(texto(dados, 'alvo').replace(',', '.')) || null), baselineAno: Number(texto(dados, 'baselineAno')) || undefined, unidade: textoOuNulo(dados, 'unidade') || undefined, nota: textoOuNulo(dados, 'nota') || undefined, notaAgregacao: textoOuNulo(dados, 'notaAgregacao') || undefined, razao: texto(dados, 'razaoNumerador') ? { numerador: texto(dados, 'razaoNumerador'), denominador: texto(dados, 'razaoDenominador'), fator: Number(texto(dados, 'razaoFator')) || 100 } : undefined, categoriasCumpre: texto(dados, 'categoriasCumpre').split(',').map((s) => s.trim()).filter(Boolean) };
   }
 }
 
@@ -172,6 +182,11 @@ const opcoesValorDe = [
         <div class="admin-form-linha">
           <Campo nome="agregacao" rotulo="Valor regional (Amazônia Legal)" tipo="select" valor={parametro?.agregacao || 'media'} opcoes={AGREGACOES} />
           <Campo nome="valorDe" rotulo="De onde vem o valor por estado" tipo="select" valor={valorDeAtual} opcoes={opcoesValorDe} />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="razaoNumerador" rotulo="Razão: campo do numerador" valor={parametro?.razao?.numerador ?? ''} ajuda="Só para razão entre campos. Nome do campo auxiliar (ex.: kmEfetivo)" />
+          <Campo nome="razaoDenominador" rotulo="Razão: campo do denominador" valor={parametro?.razao?.denominador ?? ''} ajuda="Ex.: kmFisico" />
+          <Campo nome="razaoFator" rotulo="Razão: fator" tipo="numero" valor={parametro?.razao?.fator ?? ''} ajuda="100 para percentual (padrão)" />
         </div>
         <div class="admin-form-linha">
           <Campo nome="baselineAno" rotulo="Ano de partida (baseline)" tipo="numero" valor={parametro?.baselineAno ?? ''} ajuda="Opcional: mede o avanço desde este ano da série" />

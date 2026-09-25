@@ -1,0 +1,481 @@
+{
+  "id": "2026-09-25-eixo5_transparencia-47c6",
+  "geradoEm": "2026-09-25T15:20:34+00:00",
+  "script": "eixo5_transparencia",
+  "fonte": "CGU (EBT 360, via Wayback Machine); Atricon (PNTP); Transparência Internacional (ITGP)",
+  "descricao": "I5.5.2: nota EBT 360 2018 e 2020; PNTP 2025 e ITGP 2025 como auxiliares",
+  "valores": [
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2018",
+      "valor": 6.67,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2020",
+      "valor": 6.53,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 6.53,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": 68.55
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": "Intermediário"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": 50.3
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2018",
+      "valor": 5.99,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2020",
+      "valor": 9.83,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 9.83,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": 95.51
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": 46.9
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2018",
+      "valor": 7.25,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2020",
+      "valor": 8.67,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 8.67,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": 76.5
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2018",
+      "valor": 7.74,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2020",
+      "valor": 8.96,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 8.96,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": 97.62
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": 76.9
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2018",
+      "valor": 8.87,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2020",
+      "valor": 9.74,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 9.74,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": 95.28
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": 75.3
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2018",
+      "valor": 7.47,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2020",
+      "valor": 5.92,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 5.92,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": 75.06
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": "Prata"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": 60.8
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2018",
+      "valor": 8.8,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2020",
+      "valor": 9.6,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 9.6,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": 97.96
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": 70.1
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2018",
+      "valor": 6.55,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2020",
+      "valor": 4.91,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 4.91,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": 73.89
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": "Intermediário"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": 48.2
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2018",
+      "valor": 8.54,
+      "nota": "EBT 360, 1ª avaliação (2018)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2020",
+      "valor": 6.96,
+      "nota": "EBT 360, 2ª avaliação (2020)"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 6.96,
+      "nota": "EBT 360, 2ª avaliação (2020), a última publicada pela CGU"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpIndice2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": 99.18
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpNivel2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": "Diamante"
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "pntpEssenciais2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": 100
+    },
+    {
+      "codigo": "I5.5.2",
+      "campo": "itgp2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": 57.5
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "eixo5_transparencia",
+  "celulasAceitas": 63
+}

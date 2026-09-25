@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projeções 2050 · opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --mata:#0e2b22; --urucum:#c0451f; --ocre:#e0a83c; --areia:#f5f0e8; --papel:#fff; --linha:#ddd3c6; --tinta:#1a1613; --suave:#6b5f55; --rio:#157f72; --display:"Bricolage Grotesque",system-ui,sans-serif; --text:"Libre Franklin",system-ui,sans-serif; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--areia); color:var(--tinta); font:14px/1.45 var(--text); padding:28px 16px 60px; }
+  h1 { font:700 26px var(--display); color:var(--mata); margin:0 0 4px; }
+  .lead { color:var(--suave); max-width:760px; margin:0 0 28px; }
+  .grade { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:22px; max-width:1100px; }
+  .opcao > h2 { font:700 15px var(--display); color:var(--mata); margin:0 0 2px; }
+  .opcao > p { margin:0 0 10px; color:var(--suave); font-size:13px; }
+  .card { background:var(--papel); border:1px solid var(--linha); border-radius:14px; padding:18px; }
+  .titulo { font:600 15px var(--display); margin:0 0 10px; }
+  .abas { display:flex; gap:4px; border-bottom:1px solid var(--linha); margin:0 0 14px; }
+  .abas span { padding:6px 10px; font-size:12.5px; color:var(--suave); }
+  .abas .on { color:var(--mata); font-weight:600; border-bottom:2px solid var(--mata); margin-bottom:-1px; }
+  .eyebrow { font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--suave); font-weight:600; margin:14px 0 6px; }
+  .nota { font-size:12px; color:var(--suave); margin:8px 0 0; }
+  .aviso { font-size:12px; background:#faf6ef; border-left:3px solid var(--ocre); padding:8px 10px; margin-top:10px; color:#5a4a2c; }
+  .leg { display:flex; flex-wrap:wrap; gap:12px; font-size:11.5px; color:var(--suave); margin-top:6px; }
+  .leg i { display:inline-block; width:18px; height:0; border-top:2px solid; vertical-align:middle; margin-right:5px; }
+  svg text { font:10.5px var(--text); fill:var(--suave); }
+  .marcos { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .marco { border:1px solid var(--linha); border-radius:10px; padding:8px; text-align:center; }
+  .marco b { display:block; font:700 17px var(--display); color:var(--mata); }
+  .marco small { color:var(--suave); font-size:11px; }
+  .marco.hoje { background:var(--mata); border-color:var(--mata); }
+  .marco.hoje b, .marco.hoje small { color:#fff; }
+  .selo { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:99px; background:#fbe9e3; color:var(--urucum); }
+  .selo.ok { background:#e3f1ee; color:var(--rio); }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  th, td { padding:6px 4px; text-align:right; border-bottom:1px solid var(--linha); }
+  th:first-child, td:first-child { text-align:left; }
+  th { font-weight:600; color:var(--suave); font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
+  tr.central td { font-weight:600; color:var(--mata); }
+  .linha-meta { display:flex; align-items:center; gap:10px; border:1px solid var(--linha); border-radius:12px; padding:10px 12px; }
+  .linha-meta .pct { font:700 20px var(--display); color:var(--mata); width:48px; }
+  .linha-meta .nome { flex:1; font-weight:500; }
+  .linha-meta .num { text-align:right; font-size:11px; color:var(--suave); }
+  .linha-meta .num b { display:block; font-size:13px; color:var(--tinta); }
+</style>
+</head>
+<body>
+<h1>Trajetórias pactuadas até 2050: 4 opções</h1>
+<p class="lead">Todas usam os dados reais do pacote. Em cima, <b>I4.2.1 Trafegabilidade</b>, com três cenários e comparável ao valor medido (46,44% em 2025). A opção A mostra também <b>I2.1.1 Pobreza</b>, cuja linha de base (6,9%) não é o número que o painel mede. Nesse caso a série medida não é desenhada e o motivo aparece.</p>
+
+<div class="grade">
+
+<!-- A -->
+<section class="opcao">
+  <h2>A · Nova aba "Trajetória 2050" no painel lateral</h2>
+  <p>Gráfico de linha com a faixa entre os cenários, o central em destaque e o valor medido em ponto. Fica separado de "Resultado".</p>
+  <div class="card">
+    <div class="titulo">Adequação e trafegabilidade de transportes</div>
+    <div class="abas"><span>Resultado</span><span class="on">Trajetória 2050</span><span>Ficha técnica</span></div>
+    <svg viewBox="0 0 400 190" width="100%" role="img" aria-label="Trajetória 2025–2050">
+      <g stroke="#eee5d9"><line x1="36" x2="390" y1="30" y2="30"/><line x1="36" x2="390" y1="80" y2="80"/><line x1="36" x2="390" y1="130" y2="130"/><line x1="36" x2="390" y1="165" y2="165"/></g>
+      <text x="4" y="33">70%</text><text x="4" y="83">60%</text><text x="4" y="133">50%</text><text x="4" y="168">45%</text>
+      <polygon points="36,148 107,125 178,98 249,68 320,38 390,20 390,70 320,85 249,100 178,113 107,124 36,148" fill="#157f72" opacity=".12"/>
+      <polyline points="36,148 107,125 178,98 249,68 320,38 390,20" fill="none" stroke="#157f72" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <polyline points="36,148 107,124 178,113 249,100 320,85 390,70" fill="none" stroke="#157f72" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <polyline points="36,148 107,128 178,108 249,86 320,63 390,45" fill="none" stroke="#0e2b22" stroke-width="2.4"/>
+      <circle cx="36" cy="148" r="5" fill="#c0451f"/>
+      <g fill="#0e2b22"><circle cx="107" cy="128" r="3"/><circle cx="249" cy="86" r="3"/><circle cx="390" cy="45" r="3.5"/></g>
+      <text x="394" y="22" text-anchor="end">70</text><text x="386" y="41" text-anchor="end" style="fill:#0e2b22;font-weight:600">65%</text><text x="394" y="82" text-anchor="end">60</text>
+      <text x="30" y="183">2025</text><text x="98" y="183">2030</text><text x="240" y="183">2040</text><text x="370" y="183">2050</text>
+    </svg>
+    <div class="leg"><span><i style="border-color:#0e2b22"></i>Moderado (meta 65%)</span><span><i style="border-color:#157f72;border-top-style:dashed"></i>Arrojado · Conservador</span><span><i style="border:0;width:9px;height:9px;border-radius:50%;background:#c0451f"></i>Medido 2025: 46,44%</span></div>
+    <p class="nota">Trajetória pactuada: meta intermediária, não previsão. Não se confunde com o "ritmo atual" do Panorama.</p>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="titulo">Pobreza (CadÚnico)</div>
+    <div class="abas"><span>Resultado</span><span class="on">Trajetória 2050</span><span>Ficha técnica</span></div>
+    <svg viewBox="0 0 400 120" width="100%" role="img" aria-label="Extrema pobreza 2025–2050">
+      <g stroke="#eee5d9"><line x1="36" x2="390" y1="20" y2="20"/><line x1="36" x2="390" y1="100" y2="100"/></g>
+      <text x="4" y="23">7%</text><text x="4" y="103">3%</text>
+      <polyline points="36,22 390,98" fill="none" stroke="#0e2b22" stroke-width="2.4"/>
+      <text x="30" y="116">2025</text><text x="370" y="116">2050</text>
+    </svg>
+    <div class="leg"><span><i style="border-color:#0e2b22"></i>População em extrema pobreza: 6,9% → 2,9%</span></div>
+    <div class="aviso">Não comparável ao valor do painel: a projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0%).</div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="opcao">
+  <h2>B · Marcos na própria aba "Resultado"</h2>
+  <p>Sem gráfico. Mostra quatro marcos (hoje, 2030, 2040, 2050) e um selo que diz se o valor medido está no caminho pactuado.</p>
+  <div class="card">
+    <div class="titulo">Adequação e trafegabilidade de transportes</div>
+    <div class="abas"><span class="on">Resultado</span><span>Ficha técnica</span></div>
+    <div class="eyebrow">Caminho pactuado · cenário moderado</div>
+    <div class="marcos">
+      <div class="marco hoje"><b>46,4%</b><small>2025 medido</small></div>
+      <div class="marco"><b>49,7%</b><small>2030</small></div>
+      <div class="marco"><b>56,8%</b><small>2040</small></div>
+      <div class="marco"><b>65%</b><small>2050</small></div>
+    </div>
+    <p style="margin:12px 0 0"><span class="selo ok">No caminho</span> <span class="nota">Medido em 2025 = linha de base da trajetória.</span></p>
+    <p class="nota">Arrojado chega a 70% e conservador a 60% em 2050. <a href="#">Ver os três cenários</a></p>
+    <div class="eyebrow">Amazônia Legal e estados</div>
+    <div style="height:52px;border:1px dashed var(--linha);border-radius:8px;display:grid;place-items:center;color:var(--suave);font-size:12px">(lista de estados atual, sem mudança)</div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="opcao">
+  <h2>C · Mini-trajetória no cartão da lista + detalhe</h2>
+  <p>Cada meta na lista ganha uma linha fina até 2050. O cartão mostra de relance quem tem trajetória, e o painel lateral recebe o gráfico da opção A.</p>
+  <div class="card" style="display:grid;gap:8px">
+    <div class="linha-meta">
+      <div class="pct">71%</div>
+      <div class="nome">Adequação e trafegabilidade de transportes
+        <svg viewBox="0 0 200 26" width="100%" height="26" style="display:block;margin-top:4px">
+          <polygon points="0,22 200,2 200,12 0,22" fill="#157f72" opacity=".13"/>
+          <polyline points="0,22 200,7" fill="none" stroke="#0e2b22" stroke-width="1.6"/>
+          <circle cx="3" cy="22" r="3" fill="#c0451f"/>
+        </svg>
+      </div>
+      <div class="num">ATUAL<b>46,44%</b>META<b>65% · 2050</b></div>
+    </div>
+    <div class="linha-meta">
+      <div class="pct">67%</div>
+      <div class="nome">Conectividade digital (IBC-AMZ)
+        <svg viewBox="0 0 200 26" width="100%" height="26" style="display:block;margin-top:4px">
+          <polyline points="0,22 40,16 120,9 200,3" fill="none" stroke="#0e2b22" stroke-width="1.6"/>
+          <circle cx="3" cy="22" r="3" fill="#c0451f"/>
+        </svg>
+      </div>
+      <div class="num">ATUAL<b>53,5</b>META<b>80 · 2050</b></div>
+    </div>
+    <div class="linha-meta" style="opacity:.8">
+      <div class="pct">21%</div>
+      <div class="nome">Pobreza (CadÚnico)<div class="nota" style="margin:2px 0 0">Trajetória pactuada só de referência (outra linha de base)</div></div>
+      <div class="num">ATUAL<b>14,0%</b>META<b>≤ 3% · 2050</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="opcao">
+  <h2>D · Tabela de marcos por cenário</h2>
+  <p>A leitura mais sóbria e fácil de conferir, com os números exatos. Um bloco "Trajetória pactuada" dentro de "Resultado", abaixo dos estados.</p>
+  <div class="card">
+    <div class="titulo">Adequação e trafegabilidade de transportes</div>
+    <div class="abas"><span class="on">Resultado</span><span>Ficha técnica</span></div>
+    <div class="eyebrow">Trajetória pactuada até 2050 · Amazônia Legal</div>
+    <table>
+      <thead><tr><th>Cenário</th><th>2025</th><th>2030</th><th>2035</th><th>2040</th><th>2050</th></tr></thead>
+      <tbody>
+        <tr><td>Arrojado</td><td>46,4</td><td>50,4</td><td>54,7</td><td>59,4</td><td>70,0</td></tr>
+        <tr class="central"><td>Moderado ●</td><td>46,4</td><td>49,7</td><td>53,1</td><td>56,8</td><td>65,0</td></tr>
+        <tr><td>Conservador</td><td>46,4</td><td>48,9</td><td>51,5</td><td>54,2</td><td>60,0</td></tr>
+        <tr><td style="color:var(--urucum)">Medido</td><td style="color:var(--urucum);font-weight:600">46,44</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+      </tbody>
+    </table>
+    <p class="nota">● cenário que corresponde à meta do catálogo (65%). Valores em %.</p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,991 @@
+{
+  "_leia": "Trajetórias pactuadas até 2050, regionais (Amazônia Legal), das planilhas de projeção do pacote 'Dados da Estratégia 2050' (set/2026). Geradas por scripts/estrategia_set2026.py. São metas intermediárias, não previsões nem a projeção mecânica do Panorama. `comparavel` só é true quando a linha de base é o mesmo número que o painel calcula para a região; `motivo` explica os demais.",
+  "atualizadoEm": "2026-09-25",
+  "projecoes": [
+    {
+      "codigo": "I1.1.2",
+      "variante": null,
+      "nome": "UCs estaduais com plano de manejo e conselho gestor",
+      "unidade": "%",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2026,
+        "valor": 21.1,
+        "rotulo": "CNUC/MMA 2026 (42 de 199 UCs)"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2026": 21.1,
+            "2027": 23.81,
+            "2028": 26.82,
+            "2029": 29.0,
+            "2030": 31.4,
+            "2031": 33.33,
+            "2032": 35.36,
+            "2033": 36.86,
+            "2034": 38.73,
+            "2035": 40.0
+          }
+        }
+      ],
+      "comparavel": true,
+      "motivo": null,
+      "nota": "A planilha traz também 2025 (81 de 393 UCs, 20,6%), com um cadastro maior; a trajetória parte do recorte de 2026, o mesmo do painel."
+    },
+    {
+      "codigo": "I2.1.1",
+      "variante": "extremaPobreza",
+      "nome": "População em extrema pobreza",
+      "unidade": "%",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 6.9,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 6.9,
+            "2026": 6.59,
+            "2027": 6.44,
+            "2028": 6.28,
+            "2029": 6.13,
+            "2030": 5.98,
+            "2031": 5.82,
+            "2032": 5.67,
+            "2033": 5.52,
+            "2034": 5.36,
+            "2035": 5.21,
+            "2036": 5.05,
+            "2037": 4.9,
+            "2038": 4.75,
+            "2039": 4.59,
+            "2040": 4.44,
+            "2041": 4.28,
+            "2042": 4.13,
+            "2043": 3.98,
+            "2044": 3.82,
+            "2045": 3.67,
+            "2046": 3.52,
+            "2047": 3.36,
+            "2048": 3.21,
+            "2049": 3.05,
+            "2050": 2.9
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção."
+    },
+    {
+      "codigo": "I2.2.1",
+      "variante": "obitosEvitaveis",
+      "nome": "Óbitos por causas evitáveis",
+      "unidade": "óbitos",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 839766.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 839766.0,
+            "2026": 822971.0,
+            "2027": 806175.0,
+            "2028": 789380.0,
+            "2029": 772585.0,
+            "2030": 755789.0,
+            "2031": 738994.0,
+            "2032": 722199.0,
+            "2033": 705403.0,
+            "2034": 688608.0,
+            "2035": 671813.0,
+            "2036": 655017.0,
+            "2037": 638222.0,
+            "2038": 621427.0,
+            "2039": 604632.0,
+            "2040": 587836.0,
+            "2041": 571041.0,
+            "2042": 554246.0,
+            "2043": 537450.0,
+            "2044": 520655.0,
+            "2045": 503860.0,
+            "2046": 487064.0,
+            "2047": 470269.0,
+            "2048": 453474.0,
+            "2049": 436678.0,
+            "2050": 419883.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos."
+    },
+    {
+      "codigo": "I2.2.3",
+      "variante": null,
+      "nome": "Municípios com telessaúde",
+      "unidade": "municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 35.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 35.0,
+            "2026": 49.0,
+            "2027": 63.0,
+            "2028": 77.0,
+            "2029": 91.0,
+            "2030": 105.0,
+            "2031": 119.0,
+            "2032": 133.0,
+            "2033": 147.0,
+            "2034": 161.0,
+            "2035": 175.0,
+            "2036": 189.0,
+            "2037": 203.0,
+            "2038": 218.0,
+            "2039": 232.0,
+            "2040": 246.0,
+            "2041": 260.0,
+            "2042": 274.0,
+            "2043": 288.0,
+            "2044": 302.0,
+            "2045": 316.0,
+            "2046": 330.0,
+            "2047": 344.0,
+            "2048": 358.0,
+            "2049": 372.0,
+            "2050": 386.0
+          }
+        }
+      ],
+      "comparavel": true,
+      "motivo": null,
+      "observado": "soma",
+      "nota": "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados."
+    },
+    {
+      "codigo": "I2.3.1",
+      "variante": "anosIniciais",
+      "nome": "IDEB anos iniciais: municípios na meta",
+      "unidade": "% de municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2023,
+        "valor": 30.3,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2023": 30.3,
+            "2026": 33.09,
+            "2027": 35.88,
+            "2028": 38.66,
+            "2029": 41.45,
+            "2030": 44.24,
+            "2031": 47.03,
+            "2032": 49.82,
+            "2033": 52.6,
+            "2034": 55.39,
+            "2035": 58.18,
+            "2036": 60.97,
+            "2037": 63.76,
+            "2038": 66.54,
+            "2039": 69.33,
+            "2040": 72.12,
+            "2041": 74.91,
+            "2042": 77.7,
+            "2043": 80.48,
+            "2044": 83.27,
+            "2045": 86.06,
+            "2046": 88.85,
+            "2047": 91.64,
+            "2048": 94.42,
+            "2049": 97.21,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "nota": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026."
+    },
+    {
+      "codigo": "I2.3.1",
+      "variante": "anosFinais",
+      "nome": "IDEB anos finais: municípios na meta",
+      "unidade": "% de municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2023,
+        "valor": 7.7,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2023": 7.7,
+            "2026": 11.39,
+            "2027": 15.08,
+            "2028": 18.78,
+            "2029": 22.47,
+            "2030": 26.16,
+            "2031": 29.85,
+            "2032": 33.54,
+            "2033": 37.24,
+            "2034": 40.93,
+            "2035": 44.62,
+            "2036": 48.31,
+            "2037": 52.0,
+            "2038": 55.7,
+            "2039": 59.39,
+            "2040": 63.08,
+            "2041": 66.77,
+            "2042": 70.46,
+            "2043": 74.16,
+            "2044": 77.85,
+            "2045": 81.54,
+            "2046": 85.23,
+            "2047": 88.92,
+            "2048": 92.62,
+            "2049": 96.31,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "nota": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026."
+    },
+    {
+      "codigo": "I2.3.1",
+      "variante": "ensinoMedio",
+      "nome": "IDEB ensino médio: municípios na meta",
+      "unidade": "% de municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2023,
+        "valor": 58.1,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2023": 58.1,
+            "2026": 59.78,
+            "2027": 61.45,
+            "2028": 63.13,
+            "2029": 64.8,
+            "2030": 66.48,
+            "2031": 68.16,
+            "2032": 69.83,
+            "2033": 71.51,
+            "2034": 73.18,
+            "2035": 74.86,
+            "2036": 76.54,
+            "2037": 78.21,
+            "2038": 79.89,
+            "2039": 81.56,
+            "2040": 83.24,
+            "2041": 84.92,
+            "2042": 86.59,
+            "2043": 88.27,
+            "2044": 89.94,
+            "2045": 91.62,
+            "2046": 93.3,
+            "2047": 94.97,
+            "2048": 96.65,
+            "2049": 98.32,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "nota": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026."
+    },
+    {
+      "codigo": "I2.3.2",
+      "variante": null,
+      "nome": "Taxa de escolarização",
+      "unidade": "%",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 75.5,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 75.5,
+            "2026": 76.48,
+            "2027": 77.46,
+            "2028": 78.44,
+            "2029": 79.42,
+            "2030": 80.4,
+            "2031": 81.38,
+            "2032": 82.36,
+            "2033": 83.34,
+            "2034": 84.32,
+            "2035": 85.3,
+            "2036": 86.28,
+            "2037": 87.26,
+            "2038": 88.24,
+            "2039": 89.22,
+            "2040": 90.2,
+            "2041": 91.18,
+            "2042": 92.16,
+            "2043": 93.14,
+            "2044": 94.12,
+            "2045": 95.1,
+            "2046": 96.08,
+            "2047": 97.06,
+            "2048": 98.04,
+            "2049": 99.02,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes."
+    },
+    {
+      "codigo": "I2.4.1",
+      "variante": null,
+      "nome": "Taxa de CVLI",
+      "unidade": "por 100 mil hab.",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 22.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 22.0,
+            "2026": 21.52,
+            "2027": 21.04,
+            "2028": 20.56,
+            "2029": 20.08,
+            "2030": 19.6,
+            "2031": 19.12,
+            "2032": 18.64,
+            "2033": 18.16,
+            "2034": 17.68,
+            "2035": 17.2,
+            "2036": 16.72,
+            "2037": 16.24,
+            "2038": 15.76,
+            "2039": 15.28,
+            "2040": 14.8,
+            "2041": 14.32,
+            "2042": 13.84,
+            "2043": 13.36,
+            "2044": 12.88,
+            "2045": 12.4,
+            "2046": 11.92,
+            "2047": 11.44,
+            "2048": 10.96,
+            "2049": 10.48,
+            "2050": 10.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de 22,0 por 100 mil; o painel calcula 23,8 em 2024 e 21,1 em 2025. A linha de base não coincide com nenhum ano da série."
+    },
+    {
+      "codigo": "I2.4.2",
+      "variante": "segurancaCidada",
+      "nome": "Municípios com programa de segurança cidadã",
+      "unidade": "% de municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 4.1,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 4.1,
+            "2026": 4.1,
+            "2027": 8.1,
+            "2028": 12.09,
+            "2029": 16.09,
+            "2030": 20.08,
+            "2031": 24.08,
+            "2032": 28.08,
+            "2033": 32.07,
+            "2034": 36.07,
+            "2035": 40.06,
+            "2036": 44.06,
+            "2037": 48.05,
+            "2038": 52.05,
+            "2039": 56.05,
+            "2040": 60.04,
+            "2041": 64.04,
+            "2042": 68.03,
+            "2043": 72.03,
+            "2044": 76.03,
+            "2045": 80.02,
+            "2046": 84.02,
+            "2047": 88.01,
+            "2048": 92.01,
+            "2049": 96.0,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Indicador ainda sem valores coletados no painel."
+    },
+    {
+      "codigo": "I2.4.2",
+      "variante": "adaptacaoClimatica",
+      "nome": "Municípios com plano de adaptação climática",
+      "unidade": "% de municípios",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 1.3,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 1.3,
+            "2026": 1.3,
+            "2027": 5.41,
+            "2028": 9.53,
+            "2029": 13.64,
+            "2030": 17.75,
+            "2031": 21.86,
+            "2032": 25.97,
+            "2033": 30.09,
+            "2034": 34.2,
+            "2035": 38.31,
+            "2036": 42.42,
+            "2037": 46.54,
+            "2038": 50.65,
+            "2039": 54.76,
+            "2040": 58.87,
+            "2041": 62.99,
+            "2042": 67.1,
+            "2043": 71.21,
+            "2044": 75.32,
+            "2045": 79.44,
+            "2046": 83.55,
+            "2047": 87.66,
+            "2048": 91.77,
+            "2049": 95.89,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Indicador ainda sem valores coletados no painel."
+    },
+    {
+      "codigo": "F3.5",
+      "variante": null,
+      "nome": "Receita líquida da indústria",
+      "unidade": "R$ bilhões",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 578.1,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 578.1,
+            "2026": 577.89,
+            "2027": 637.41,
+            "2028": 703.07,
+            "2029": 775.48,
+            "2030": 855.36,
+            "2031": 943.46,
+            "2032": 1040.63,
+            "2033": 1147.82,
+            "2034": 1266.04,
+            "2035": 1396.45,
+            "2036": 1540.28,
+            "2037": 1698.93,
+            "2038": 1873.92,
+            "2039": 2066.93,
+            "2040": 2279.83,
+            "2041": 2514.65,
+            "2042": 2773.66,
+            "2043": 3059.34,
+            "2044": 3374.46,
+            "2045": 3722.03,
+            "2046": 4105.39,
+            "2047": 4528.25,
+            "2048": 4994.66,
+            "2049": 5509.11,
+            "2050": 6076.55
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de R$ 578,1 bi de receita líquida da indústria, e nenhum recorte da tabela SIDRA 10457 de 2024 reproduz esse número: receita de atividades industriais de R$ 584,3 bi (indústria total) ou R$ 475,0 bi (transformação, campo receitaLiquida2024); receita total de vendas de R$ 598,4 bi ou R$ 489,1 bi. O valor principal do painel é outra variável, o valor da transformação industrial da indústria total (R$ 215,4 bi)."
+    },
+    {
+      "codigo": "I4.1.1",
+      "variante": null,
+      "nome": "Conectividade digital (IBC-AMZ)",
+      "unidade": "0 a 100",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 53.52,
+        "rotulo": "IBC-AMZ 2025 ponderado"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Marcos pactuados",
+          "serie": {
+            "2025": 53.52,
+            "2030": 62.79,
+            "2040": 72.06,
+            "2050": 80.0
+          }
+        }
+      ],
+      "comparavel": true,
+      "motivo": null
+    },
+    {
+      "codigo": "I4.2.1",
+      "variante": null,
+      "nome": "Adequação e trafegabilidade de transportes",
+      "unidade": "%",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 46.44,
+        "rotulo": "km efetivo sobre km físico, 2025"
+      },
+      "cenarios": [
+        {
+          "chave": "arrojado",
+          "nome": "Arrojado",
+          "serie": {
+            "2025": 46.44,
+            "2026": 47.21,
+            "2027": 47.99,
+            "2028": 48.79,
+            "2029": 49.59,
+            "2030": 50.41,
+            "2031": 51.25,
+            "2032": 52.1,
+            "2033": 52.96,
+            "2034": 53.83,
+            "2035": 54.72,
+            "2036": 55.63,
+            "2037": 56.55,
+            "2038": 57.49,
+            "2039": 58.44,
+            "2040": 59.4,
+            "2041": 60.39,
+            "2042": 61.39,
+            "2043": 62.4,
+            "2044": 63.44,
+            "2045": 64.49,
+            "2046": 65.55,
+            "2047": 66.64,
+            "2048": 67.74,
+            "2049": 68.86,
+            "2050": 70.0
+          }
+        },
+        {
+          "chave": "moderado",
+          "nome": "Moderado",
+          "serie": {
+            "2025": 46.44,
+            "2026": 47.07,
+            "2027": 47.71,
+            "2028": 48.35,
+            "2029": 49.01,
+            "2030": 49.67,
+            "2031": 50.34,
+            "2032": 51.03,
+            "2033": 51.72,
+            "2034": 52.42,
+            "2035": 53.13,
+            "2036": 53.85,
+            "2037": 54.57,
+            "2038": 55.31,
+            "2039": 56.06,
+            "2040": 56.82,
+            "2041": 57.59,
+            "2042": 58.37,
+            "2043": 59.16,
+            "2044": 59.96,
+            "2045": 60.77,
+            "2046": 61.6,
+            "2047": 62.43,
+            "2048": 63.28,
+            "2049": 64.13,
+            "2050": 65.0
+          },
+          "central": true
+        },
+        {
+          "chave": "conservador",
+          "nome": "Conservador",
+          "serie": {
+            "2025": 46.44,
+            "2026": 46.92,
+            "2027": 47.4,
+            "2028": 47.89,
+            "2029": 48.38,
+            "2030": 48.88,
+            "2031": 49.39,
+            "2032": 49.89,
+            "2033": 50.41,
+            "2034": 50.93,
+            "2035": 51.45,
+            "2036": 51.98,
+            "2037": 52.52,
+            "2038": 53.06,
+            "2039": 53.6,
+            "2040": 54.16,
+            "2041": 54.71,
+            "2042": 55.28,
+            "2043": 55.85,
+            "2044": 56.42,
+            "2045": 57.0,
+            "2046": 57.59,
+            "2047": 58.18,
+            "2048": 58.78,
+            "2049": 59.39,
+            "2050": 60.0
+          }
+        }
+      ],
+      "comparavel": true,
+      "motivo": null,
+      "nota": "A meta do catálogo (65% em 2050) é o cenário moderado."
+    },
+    {
+      "codigo": "I4.3.1",
+      "variante": null,
+      "nome": "Transição energética e qualidade distributiva (ITEQ)",
+      "unidade": "%",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 60.1,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Marcos pactuados",
+          "serie": {
+            "2025": 60.1,
+            "2030": 66.3,
+            "2035": 72.5
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Indicador ainda sem valores coletados no painel."
+    },
+    {
+      "codigo": "I4.3.2",
+      "variante": null,
+      "nome": "Participação de renováveis",
+      "unidade": "%",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 62.5,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Marcos pactuados",
+          "serie": {
+            "2025": 62.5,
+            "2030": 72.6,
+            "2035": 80.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base."
+    },
+    {
+      "codigo": "I4.4.1",
+      "variante": null,
+      "nome": "Saneamento básico adequado",
+      "unidade": "%",
+      "fonte": "projeções indicadores eixos 1 e 5.xlsx",
+      "baseline": {
+        "ano": 2022,
+        "valor": 41.52,
+        "rotulo": "Censo 2022"
+      },
+      "cenarios": [
+        {
+          "chave": "linear",
+          "nome": "Linear",
+          "serie": {
+            "2022": 41.52,
+            "2032": 55.26,
+            "2042": 69.01,
+            "2050": 80.0
+          }
+        },
+        {
+          "chave": "acelerada",
+          "nome": "Acelerada",
+          "serie": {
+            "2022": 41.52,
+            "2032": 60.63,
+            "2042": 72.13,
+            "2050": 80.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice."
+    },
+    {
+      "codigo": "I5.1.1",
+      "variante": null,
+      "nome": "Captação nova de financiamento climático",
+      "unidade": "R$ milhões",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 0.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 0.0,
+            "2026": 0.0,
+            "2027": 4.17,
+            "2028": 8.33,
+            "2029": 12.5,
+            "2030": 16.67,
+            "2031": 20.83,
+            "2032": 25.0,
+            "2033": 29.17,
+            "2034": 33.33,
+            "2035": 37.5,
+            "2036": 41.67,
+            "2037": 45.83,
+            "2038": 50.0,
+            "2039": 54.17,
+            "2040": 58.33,
+            "2041": 62.5,
+            "2042": 66.67,
+            "2043": 70.83,
+            "2044": 75.0,
+            "2045": 79.17,
+            "2046": 83.33,
+            "2047": 87.5,
+            "2048": 91.67,
+            "2049": 95.83,
+            "2050": 100.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos."
+    },
+    {
+      "codigo": "I5.2.1",
+      "variante": null,
+      "nome": "Alavancagem de blended finance",
+      "unidade": "R$ privado por R$ público",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 1.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 1.0,
+            "2026": 1.0,
+            "2027": 1.12,
+            "2028": 1.25,
+            "2029": 1.38,
+            "2030": 1.5,
+            "2031": 1.62,
+            "2032": 1.75,
+            "2033": 1.88,
+            "2034": 2.0,
+            "2035": 2.12,
+            "2036": 2.25,
+            "2037": 2.38,
+            "2038": 2.5,
+            "2039": 2.62,
+            "2040": 2.75,
+            "2041": 2.88,
+            "2042": 3.0,
+            "2043": 3.12,
+            "2044": 3.25,
+            "2045": 3.38,
+            "2046": 3.5,
+            "2047": 3.62,
+            "2048": 3.75,
+            "2049": 3.88,
+            "2050": 4.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Indicador ainda sem valores coletados no painel."
+    },
+    {
+      "codigo": "I5.2.2",
+      "variante": null,
+      "nome": "Rateio contratado dos estados com o Consórcio",
+      "unidade": "R$",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2026,
+        "valor": 6120000.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2026": 6120000.0,
+            "2027": 6600000.0,
+            "2028": 7090000.0,
+            "2029": 7570000.0,
+            "2030": 8060000.0,
+            "2031": 8540000.0,
+            "2032": 9020000.0,
+            "2033": 9510000.0,
+            "2034": 9990000.0,
+            "2035": 10480000.0,
+            "2036": 10960000.0,
+            "2037": 11440000.0,
+            "2038": 11930000.0,
+            "2039": 12410000.0,
+            "2040": 12900000.0,
+            "2041": 13380000.0,
+            "2042": 13860000.0,
+            "2043": 14350000.0,
+            "2044": 14830000.0,
+            "2045": 15320000.0,
+            "2046": 15800000.0,
+            "2047": 16280000.0,
+            "2048": 16770000.0,
+            "2049": 17250000.0,
+            "2050": 17740000.0
+          }
+        }
+      ],
+      "comparavel": true,
+      "motivo": null,
+      "observado": "soma",
+      "nota": "A ficha parte de R$ 6,12 mi em 2026, o rateio ordinário dos nove estados fixado pela Res. 001/2026 (a ficha o chama de executado; é orçamento). A série medida soma os contratos de rateio de cada estado com o Consórcio: valor contratado, não arrecadado. Em 2019 e 2020 a receita arrecadada (R$ 0,70 mi e R$ 3,11 mi) ficou abaixo do contratado; 2024 e 2025 incluem aportes extras (HUB e COP30). Recursos de terceiros e a execução estão nas tabelas cal_instrumentos e cal_orcamento_execucao."
+    },
+    {
+      "codigo": "I5.3.2",
+      "variante": null,
+      "nome": "Sistemas de dados integrados",
+      "unidade": "sistemas",
+      "fonte": "Projecoes_Indicadores_Eixos 2 3 e 5.xlsx",
+      "baseline": {
+        "ano": 2025,
+        "valor": 0.0,
+        "rotulo": "linha de base"
+      },
+      "cenarios": [
+        {
+          "chave": "pactuada",
+          "nome": "Trajetória pactuada",
+          "serie": {
+            "2025": 0.0,
+            "2026": 0.0,
+            "2027": 0.0,
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 1.0,
+            "2031": 1.0,
+            "2032": 1.0,
+            "2033": 1.0,
+            "2034": 1.0,
+            "2035": 2.0,
+            "2036": 2.0,
+            "2037": 2.0,
+            "2038": 2.0,
+            "2039": 2.0,
+            "2040": 3.0,
+            "2041": 3.0,
+            "2042": 3.0,
+            "2043": 3.0,
+            "2044": 3.0,
+            "2045": 4.0,
+            "2046": 4.0,
+            "2047": 4.0,
+            "2048": 4.0,
+            "2049": 4.0,
+            "2050": 5.0
+          }
+        }
+      ],
+      "comparavel": false,
+      "motivo": "Indicador ainda sem valores coletados no painel."
+    }
+  ]
+}

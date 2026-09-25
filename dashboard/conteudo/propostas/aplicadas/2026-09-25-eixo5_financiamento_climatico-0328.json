@@ -1,0 +1,1101 @@
+{
+  "id": "2026-09-25-eixo5_financiamento_climatico-0328",
+  "geradoEm": "2026-09-25T15:27:54+00:00",
+  "script": "eixo5_financiamento_climatico",
+  "fonte": "Fundo Amazônia (BNDES) e Programa REM Acre",
+  "descricao": "I5.1.1: desembolsos a governos estaduais, por UF e ano, 2011-2025 (parcial: dois componentes)",
+  "valores": [
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2011",
+      "valor": 31557354.63
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2012",
+      "valor": 10967582.68
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2013",
+      "valor": 64887758.76
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2014",
+      "valor": 21785934.72
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2015",
+      "valor": 13310774.33
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2016",
+      "valor": 10691916.7
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2017",
+      "valor": 27430983.95
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2018",
+      "valor": 47178685.31
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2019",
+      "valor": -224937.09
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2020",
+      "valor": 5076000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2021",
+      "valor": 24757898.95
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2022",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2024",
+      "valor": 60490200.71
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2025",
+      "valor": 47113.86
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 47113.86,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "AC",
+      "ano": "",
+      "valor": 32100000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2012",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2013",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2014",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2016",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2017",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2018",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2020",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2022",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2024",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2025",
+      "valor": 22498840.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 22498840.0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "AP",
+      "ano": "",
+      "valor": 13145230.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2011",
+      "valor": 1129355.42
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2012",
+      "valor": 14138005.98
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2013",
+      "valor": 2249386.02
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2014",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2016",
+      "valor": 1948538.77
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2017",
+      "valor": -1890000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2018",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2020",
+      "valor": 3067018.92
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2022",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2023",
+      "valor": 1585030.8
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2024",
+      "valor": 7496022.29
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2025",
+      "valor": 21500000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 21500000.0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "AM",
+      "ano": "",
+      "valor": 13200000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2012",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2013",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2014",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2016",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2017",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2018",
+      "valor": 95665.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2019",
+      "valor": 2766263.98
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2020",
+      "valor": 3717744.2
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2021",
+      "valor": 6843313.48
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2022",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2024",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2025",
+      "valor": 22156350.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 22156350.0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "MA",
+      "ano": "",
+      "valor": 11275880.55
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2012",
+      "valor": 579120.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2013",
+      "valor": 7689600.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2014",
+      "valor": 5267360.96
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2015",
+      "valor": 1341979.6
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2016",
+      "valor": 5687369.12
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2017",
+      "valor": 4226343.47
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2018",
+      "valor": 7775693.24
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2019",
+      "valor": 730581.96
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2020",
+      "valor": 6438301.17
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2021",
+      "valor": 4491596.2
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2022",
+      "valor": 10539181.68
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2023",
+      "valor": 4144259.15
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2024",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2025",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "MT",
+      "ano": "",
+      "valor": 23075553.1
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2011",
+      "valor": 3216379.62
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2012",
+      "valor": 6408021.68
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2013",
+      "valor": 18987487.64
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2014",
+      "valor": 24914363.49
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2015",
+      "valor": 1901571.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2016",
+      "valor": 18516028.57
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2017",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2018",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2020",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2022",
+      "valor": 4401305.24
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2024",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2025",
+      "valor": 22471098.1
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 22471098.1,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "PA",
+      "ano": "",
+      "valor": 37400114.68
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2012",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2013",
+      "valor": 4324000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2014",
+      "valor": 16948751.9
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2016",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2017",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2018",
+      "valor": 4409748.1
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2020",
+      "valor": 5255194.29
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2022",
+      "valor": 10817562.43
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2024",
+      "valor": 1513251.43
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2025",
+      "valor": 16955000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 16955000.0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "RO",
+      "ano": "",
+      "valor": 8222186.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2012",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2013",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2014",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2016",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2017",
+      "valor": 3075205.25
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2018",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2020",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2022",
+      "valor": -1660896.88
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2024",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2025",
+      "valor": 21952597.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 21952597.0,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "RR",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2011",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2012",
+      "valor": 1700000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2013",
+      "valor": 1227910.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2014",
+      "valor": 21334370.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2015",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2016",
+      "valor": 336000.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2017",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2018",
+      "valor": 5148914.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2019",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2020",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2021",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2022",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2023",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2024",
+      "valor": -388065.0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2025",
+      "valor": 15742787.48
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 15742787.48,
+      "nota": "2025: Fundo Amazônia (projetos estaduais) + REM Acre; componentes datados disponíveis"
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "parcial2026",
+      "uf": "TO",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I5.1.1",
+      "campo": "remMtFase1Acumulado",
+      "uf": "MT",
+      "ano": "",
+      "valor": 267700000,
+      "nota": "REM Mato Grosso fase I, total recebido (Funbio), sem divisão por ano: https://rem.sema.mt.gov.br/wp-content/uploads/2026/03/RELATORIO-EXECUTIVO-EDICAO-2025-1.pdf (p. 8)"
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "eixo5_financiamento_climatico",
+  "celulasAceitas": 154
+}

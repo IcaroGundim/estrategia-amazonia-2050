@@ -1,0 +1,1158 @@
+{
+  "id": "2026-09-25-estrategia_brutos_set2026-07e4",
+  "geradoEm": "2026-09-25T14:54:53+00:00",
+  "script": "estrategia_brutos_set2026",
+  "fonte": "Dados da Estratégia 2050 (set/2026): CNES, SIM e PIA",
+  "descricao": "Telessaúde por município (I2.2.3), UBS fluviais, óbitos evitáveis 5-74 (I2.2.1), receita líquida da indústria (F3.5)",
+  "valores": [
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 1,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2014",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2015",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2016",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2017",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2018",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2019",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2020",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2021",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2022",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2023",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2024",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2025",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2026",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "AC",
+      "ano": "",
+      "valor": 1,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "AC",
+      "ano": "",
+      "valor": 5
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 1,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2025",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2026",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "AP",
+      "ano": "",
+      "valor": 1,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "AP",
+      "ano": "",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 9,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2012",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2013",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2014",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2015",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2016",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2017",
+      "valor": 7
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2018",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2019",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2020",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2021",
+      "valor": 8
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2022",
+      "valor": 8
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2023",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2024",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2025",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2026",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "AM",
+      "ano": "",
+      "valor": 13,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": 13
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "AM",
+      "ano": "",
+      "valor": 64
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 3,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2012",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2013",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2014",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2015",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2016",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2017",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2018",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2019",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2020",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2021",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2022",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2023",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2024",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2025",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2026",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "MA",
+      "ano": "",
+      "valor": 8,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": 6
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "MA",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 4,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2013",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2014",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2015",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2016",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2017",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2018",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2019",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2020",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2021",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2022",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2023",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2024",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2025",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2026",
+      "valor": 6
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "MT",
+      "ano": "",
+      "valor": 7,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": 5
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "MT",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 12,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2012",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2013",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2014",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2015",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2016",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2017",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2018",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2019",
+      "valor": 5
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2020",
+      "valor": 6
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2021",
+      "valor": 6
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2022",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2023",
+      "valor": 10
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2024",
+      "valor": 11
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2025",
+      "valor": 12
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2026",
+      "valor": 13
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "PA",
+      "ano": "",
+      "valor": 17,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": 16
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "PA",
+      "ano": "",
+      "valor": 58
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 1,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2013",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2014",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2015",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2016",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2024",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2025",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2026",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "RO",
+      "ano": "",
+      "valor": 2,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "RO",
+      "ano": "",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 2,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2015",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2016",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2017",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2018",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2019",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2020",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2021",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2022",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2023",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2024",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2025",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2026",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "RR",
+      "ano": "",
+      "valor": 4,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": 4
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "RR",
+      "ano": "",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 2,
+      "nota": "Municípios com estabelecimento de telessaúde ativo, CNES dez/2025"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2013",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2014",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2015",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2016",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2017",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2018",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2019",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2020",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2021",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2022",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2023",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2024",
+      "valor": 1
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2025",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2026",
+      "valor": 2
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentosJul2026",
+      "uf": "TO",
+      "ano": "",
+      "valor": 3,
+      "nota": "Valor que o painel mostrava antes: estabelecimentos, não municípios"
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "estabelecimentos2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": 3
+    },
+    {
+      "codigo": "I2.2.3",
+      "campo": "ubsFluviais2025",
+      "uf": "TO",
+      "ano": "",
+      "valor": 0
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "AC",
+      "ano": "",
+      "valor": 2541
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "AP",
+      "ano": "",
+      "valor": 2510
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "AM",
+      "ano": "",
+      "valor": 12724
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "MA",
+      "ano": "",
+      "valor": 23422
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "MT",
+      "ano": "",
+      "valor": 14046
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "PA",
+      "ano": "",
+      "valor": 27113
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "RO",
+      "ano": "",
+      "valor": 6172
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "RR",
+      "ano": "",
+      "valor": 1989
+    },
+    {
+      "codigo": "I2.2.1",
+      "campo": "obitos5a74_2024",
+      "uf": "TO",
+      "ano": "",
+      "valor": 5384
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "AC",
+      "ano": "",
+      "valor": 3376228
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "AP",
+      "ano": "",
+      "valor": 1341609
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "AM",
+      "ano": "",
+      "valor": 192627477
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "MA",
+      "ano": "",
+      "valor": 37982794
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "MT",
+      "ano": "",
+      "valor": 128328986
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "PA",
+      "ano": "",
+      "valor": 73062342
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "RO",
+      "ano": "",
+      "valor": 19687183
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "RR",
+      "ano": "",
+      "valor": 1081285
+    },
+    {
+      "codigo": "F3.5",
+      "campo": "receitaLiquida2024",
+      "uf": "TO",
+      "ano": "",
+      "valor": 17522758
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "estrategia_brutos_set2026",
+  "celulasAceitas": 161
+}

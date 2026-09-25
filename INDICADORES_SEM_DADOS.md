@@ -83,7 +83,7 @@ entregar.
 
 | Código | Indicador | Onde está |
 |---|---|---|
-| I5.1.1 | Financiamento climático captado/executado | Estados |
+| I5.1.1 | Financiamento climático captado/executado | Estados. **Parcial desde 25/09/2026**: Fundo Amazônia a projetos estaduais e REM Acre, por UF e ano (`scripts/eixo5_financiamento_climatico.py`) |
 | I5.2.1 | Taxa de alavancagem (blended finance) | Estados |
 | I5.3.1 | Arranjo jurídico climático estadual | Estados |
 | I5.3.2 | Interoperabilidade de dados prioritários | Estados |
@@ -124,6 +124,12 @@ temporariamente fora do ar para atualizações. Previsão de retorno: novembro/2
 O `dadosabertos.cgu.gov.br` **não resolve mais em DNS**.
 
 Vale reconferir depois de novembro de 2026.
+
+**Atualização 25/09/2026 — resolvido pelas cópias do Wayback Machine.** As páginas de
+resultado das duas edições da EBT 360 (2018 e 2020) estão arquivadas com a nota de
+cada estado. Viraram o valor do indicador (`scripts/eixo5_transparencia.py`). Não
+houve edição depois de 2020. O PNTP da Atricon, avaliação anual desde 2022, entrou
+como campo auxiliar.
 
 ### I2.4.2 e I4.4.2 — AdaptaBrasil
 
@@ -172,6 +178,11 @@ leitura de documento, não de consulta.
 
 O site do Consórcio é **Wix**, e a tabela de orçamento carrega por JavaScript — não há
 endpoint estável para automatizar. É leitura de página.
+
+**Atualização 25/09/2026 — resolvido.** As páginas de item (orçamento anual, contratos
+de rateio, acordos e termos) são renderizadas no servidor e listadas nos sitemaps do
+próprio site. A execução anual vem dos relatórios de gestão e da API de despesas do
+CAL (Fiorilli). Ver `scripts/eixo5_cal.py`.
 
 ---
 

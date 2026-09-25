@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coletados sem meta · opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --mata:#0e2b22; --mata-500:#3e6e57; --mata-300:#7fa08c; --mata-100:#c6d2c7; --urucum:#c0451f; --ocre:#e0a83c; --areia:#f5f0e8; --papel:#fff; --linha:#ddd3c6; --linha-2:#ede6dc; --tinta:#1a1613; --tinta-3:#5c544c; --tinta-4:#8a8078; --display:"Bricolage Grotesque",system-ui,sans-serif; --text:"Libre Franklin",system-ui,sans-serif; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e8e0d6; color:var(--tinta); font:400 14px/1.45 var(--text); padding:28px 16px 64px; }
+  h1 { font:700 26px var(--display); color:var(--mata); margin:0 0 4px; }
+  .lead { color:var(--tinta-3); max-width:880px; margin:0 0 26px; }
+  .opcao { background:var(--areia); border-radius:14px; padding:18px 18px 20px; margin:0 auto 24px; max-width:1180px; }
+  .opcao > h2 { font:700 16px var(--display); color:var(--mata); margin:0 0 2px; }
+  .opcao > p { margin:0 0 12px; color:var(--tinta-3); font-size:13px; max-width:880px; }
+  .rec { display:inline-block; margin-left:8px; padding:1px 8px; border-radius:99px; background:var(--mata); color:#fff; font:600 10.5px var(--text); letter-spacing:.04em; vertical-align:2px; }
+  .eyebrow { display:flex; align-items:center; gap:10px; margin:14px 0 8px; color:var(--tinta-4); font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+  .eyebrow::after { content:""; flex:1; height:1px; background:var(--linha-2); }
+  .grade { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  @media (max-width:760px){ .grade { grid-template-columns:1fr; } }
+
+  /* cartão-base (igual ao painel) */
+  .row { position:relative; padding:12px 14px; display:grid; grid-template-columns:64px minmax(0,1fr); gap:2px 12px; align-items:start; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); }
+  .ler { grid-row:1/3; align-self:center; white-space:nowrap; }
+  .ler b { display:block; color:var(--mata); font:800 26px/1 var(--display); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .ler b.menor { font-size:20px; }
+  .ler small { display:block; margin-top:3px; color:var(--tinta-4); font-size:10px; }
+  .topo { display:flex; gap:12px; align-items:flex-start; }
+  .nome { flex:1; font-size:15px; font-weight:500; line-height:1.3; }
+  .nome small { display:block; margin-top:2px; color:var(--tinta-4); font-size:10px; font-style:italic; font-weight:400; }
+  .nums { display:flex; gap:14px; text-align:right; }
+  .nums span { font-size:9px; letter-spacing:.08em; color:var(--tinta-4); font-weight:700; text-transform:uppercase; }
+  .nums b { display:block; font:700 15px var(--display); color:var(--tinta); letter-spacing:0; text-transform:none; }
+  .nums em { display:block; font-style:normal; font-size:10px; color:var(--tinta-4); font-weight:400; letter-spacing:0; text-transform:none; }
+  .bar { height:10px; margin-top:8px; border-radius:4px; background:var(--linha-2); overflow:hidden; position:relative; }
+  .bar .resta { position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent 0 5px,rgba(192,69,31,.12) 5px 10px); }
+  .bar .feito { position:absolute; inset:0 auto 0 0; background:var(--mata-500); border-radius:4px 2px 2px 4px; }
+  svg text { font:9.5px var(--text); fill:var(--tinta-4); }
+  .spark { display:block; width:100%; height:34px; margin-top:6px; }
+  .spark .area { fill:var(--mata); opacity:.07; }
+  .spark .linha { fill:none; stroke:var(--mata-500); stroke-width:1.6; stroke-linejoin:round; }
+  .spark .fim { fill:var(--mata); }
+  .faixa { display:block; width:100%; height:34px; margin-top:6px; }
+  .faixa .eixo { stroke:var(--linha); stroke-width:1; }
+  .faixa .pt { fill:var(--mata-500); }
+  .selo { display:inline-flex; align-items:center; gap:6px; color:#1c4437; font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; white-space:nowrap; }
+  .selo i { width:12px; height:12px; border-radius:50%; background:#1c4437; display:inline-block; }
+  .chip { display:inline-block; padding:1px 7px; border-radius:99px; background:var(--linha-2); color:var(--tinta-3); font-size:10.5px; }
+  .cols { display:grid; grid-template-columns:repeat(9,1fr); gap:4px; align-items:end; height:34px; margin-top:6px; }
+  .cols div { background:var(--mata-300); border-radius:2px 2px 0 0; min-height:2px; }
+  .cols div.max { background:var(--mata-500); }
+  .ufs { display:grid; grid-template-columns:repeat(9,1fr); gap:4px; font-size:8.5px; color:var(--tinta-4); text-align:center; margin-top:2px; letter-spacing:.03em; }
+  /* D: linha compacta */
+  .linha-c { display:grid; grid-template-columns:minmax(0,1fr) auto auto auto; align-items:center; gap:14px; padding:12px 14px; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); }
+  .linha-c .v { text-align:right; font:700 14px var(--display); }
+  .linha-c .v em { display:block; font:400 10px var(--text); color:var(--tinta-4); font-style:normal; }
+  .mini { width:88px; height:24px; }
+  .nota { margin:10px 0 0; font-size:12px; color:var(--tinta-3); }
+</style>
+</head>
+<body>
+<h1>Indicadores coletados sem meta numérica: 4 opções</h1>
+<p class="lead">Hoje eles aparecem como os pendentes, só com o selo "COLETADO". A ideia é mostrar o valor e o comportamento no tempo sem inventar uma barra de progresso: a barra mede distância até um alvo, e essas metas não têm alvo numérico. Todos os números abaixo são reais: soma dos nove estados, último ano disponível. A mortalidade (I2.2.1) não tem série histórica, então mostra os estados lado a lado. Em cada opção, o primeiro cartão é uma meta atual, para comparar a coerência.</p>
+
+<section class="opcao">
+  <h2>A · Valor e linha do tempo <span class="rec">recomendada</span></h2>
+  <p>Mesmo esqueleto do cartão de meta: número grande à esquerda (o valor atual da região) e, no lugar da barra, a linha da série com o primeiro e o último ano. Sem série, a linha vira uma faixa com os nove estados posicionados do menor ao maior valor. A troca de barra por linha já diz, sem legenda, que ali não há meta a percorrer.</p>
+  <div class="eyebrow">Metas com patamar mensurável</div>
+  <div class="grade"><div id="a-ref"></div></div>
+  <div class="eyebrow">Coletados, sem meta numérica</div>
+  <div class="grade" id="a"></div>
+</section>
+
+<section class="opcao">
+  <h2>B · Variação no período</h2>
+  <p>O número grande passa a ser o crescimento do período ("+396% desde 2007"), e o valor atual fica à direita, onde nas metas está o par atual/meta. Destaca a tendência, que é o que a meta de crescimento do F3.5 pede. Sem série, o número grande vira a amplitude entre os estados.</p>
+  <div class="eyebrow">Coletados, sem meta numérica</div>
+  <div class="grade" id="b"></div>
+</section>
+
+<section class="opcao">
+  <h2>C · Estados lado a lado</h2>
+  <p>Valor da região à esquerda e, embaixo do nome, nove colunas finas: uma por estado, no último ano. Não depende de série (vale igual para todos) e conversa com a fileira de bandeiras da página. Não mostra evolução no tempo.</p>
+  <div class="eyebrow">Coletados, sem meta numérica</div>
+  <div class="grade" id="c"></div>
+</section>
+
+<section class="opcao">
+  <h2>D · Linha compacta</h2>
+  <p>Mudança mínima: o cartão continua uma linha, como os pendentes, mas ganha à direita o valor atual e uma linha do tempo em miniatura antes do selo. Ocupa pouco espaço e mantém a leitura de lista.</p>
+  <div class="eyebrow">Coletados, sem meta numérica</div>
+  <div class="grade" id="d"></div>
+</section>
+
+<script>
+const D = {"F3.5":{"reg":{"2007":43397094,"2008":54257794,"2009":50909536,"2010":69232377,"2011":78377398,"2012":79061500,"2013":89021193,"2014":89469755,"2015":90665806,"2016":89933514,"2017":101820191,"2018":116279161,"2019":128873261,"2020":177292254,"2021":220220320,"2022":194925792,"2023":188154569,"2024":215364980},"atual":{"AC":925342,"AP":592145,"AM":75577158,"MA":14534906,"MT":41521382,"PA":70146964,"RO":6091511,"RR":378434,"TO":5597138}},"I3.1.1":{"reg":{"1994":2186345,"1996":1926935,"1997":1015411,"1998":976049,"1999":1032171,"2000":1017963,"2001":1141744,"2002":1711562,"2003":1862074,"2004":1717589,"2005":1890459,"2006":2060523,"2007":2229782,"2008":2261827,"2009":3054174,"2010":2711507,"2011":3430943,"2012":2875374,"2013":2900912,"2014":2975131,"2015":3166504,"2016":2890231,"2017":2996840,"2018":2930227,"2019":3192271,"2020":3198054,"2021":4281470,"2022":4338673,"2023":4384987,"2024":5109202},"atual":{"AC":115843,"AP":79934,"AM":376141,"MA":425492,"MT":1042643,"PA":2735080,"RO":230816,"RR":60644,"TO":42609}},"F3.2":{"reg":{"2018":4248237,"2019":4253849,"2020":4242976,"2021":4547117,"2023":5487058,"2024":5678471,"2025":6189078},"atual":{"AC":192323,"AP":184387,"AM":887843,"MA":1064538,"MT":1255349,"PA":1575756,"RO":432740,"RR":158562,"TO":437580}},"I2.2.1":{"reg":{},"atual":{"AC":3.6,"AP":3.26,"AM":2.67,"MA":2.34,"MT":2.69,"PA":2.48,"RO":2.44,"RR":3.45,"TO":2.59}}};
+const UFS = ['TO','AP','AM','RO','RR','MT','AC','PA','MA'];
+const ITENS = [
+  { cod:'F3.5', nome:'Valor da transformação industrial', motivo:'A meta é crescer 10% ao ano; um ano de variação nominal não mede isso.', fmt:v=>`${nf(v/1e6,1)} bi`, unid:'R$', curto:v=>`${nf(v/1e6,0)} bi` },
+  { cod:'I3.1.1', nome:'Valor da produção da sociobioeconomia', motivo:'A meta de +R$ 100 milhões não diz a partir de que ano nem se é por estado.', fmt:v=>`${nf(v/1e6,2)} bi`, unid:'R$', curto:v=>`${nf(v/1e6,1)} bi` },
+  { cod:'F3.2', nome:'Empregos e empresas nas cadeias produtivas', motivo:'A ficha define as cadeias de forma qualitativa, sem patamar numérico.', fmt:v=>`${nf(v/1e6,2)} mi`, unid:'vínculos', curto:v=>`${nf(v/1e6,1)} mi` },
+  { cod:'I2.2.1', nome:'Mortalidade por causas evitáveis', motivo:'A meta é reduzir 50% na região, sem baseline informada.', fmt:v=>nf(v,2), unid:'por 100 mil · por estado', curto:v=>nf(v,1), semSerie:true },
+];
+function nf(v,c){ return v.toLocaleString('pt-BR',{minimumFractionDigits:c,maximumFractionDigits:c}); }
+const serie = cod => Object.entries(D[cod].reg).map(([a,v])=>[+a,v]).sort((x,y)=>x[0]-y[0]);
+function spark(cod, w=400, h=34, rotulos=true){
+  const s=serie(cod); const x0=rotulos?30:2, x1=w-(rotulos?30:4), y0=4, y1=h-4;
+  const a0=s[0][0], a1=s.at(-1)[0], vmin=Math.min(...s.map(p=>p[1])), vmax=Math.max(...s.map(p=>p[1]));
+  const px=a=>x0+(a-a0)/(a1-a0)*(x1-x0), py=v=>y1-(v-vmin)/((vmax-vmin)||1)*(y1-y0);
+  const pts=s.map(([a,v])=>`${px(a).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+  const fim=s.at(-1);
+  return `<svg class="${rotulos?'spark':'mini'}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <polygon class="area" points="${px(a0)},${y1} ${pts} ${px(a1)},${y1}"/>
+    <polyline class="linha" points="${pts}"/>
+    <circle class="fim" cx="${px(fim[0])}" cy="${py(fim[1])}" r="${rotulos?3:2.4}"/>
+    ${rotulos?`<text x="0" y="${h/2+3}">${a0}</text><text x="${w}" y="${h/2+3}" text-anchor="end">${a1}</text>`:''}
+  </svg>`;
+}
+function faixa(cod, w=400, h=34){
+  const at=D[cod].atual; const vs=Object.values(at); const mn=Math.min(...vs), mx=Math.max(...vs);
+  const px=v=>30+(v-mn)/((mx-mn)||1)*(w-60);
+  return `<svg class="faixa" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <line class="eixo" x1="30" x2="${w-30}" y1="14" y2="14"/>
+    ${Object.entries(at).map(([uf,v])=>`<circle class="pt" cx="${px(v)}" cy="14" r="3.5"><title>${uf}: ${nf(v,2)}</title></circle>${v===mn||v===mx?`<text x="${px(v)}" y="30" text-anchor="middle">${uf}</text>`:''}`).join('')}
+    <text x="0" y="17">${nf(mn,1)}</text><text x="${w}" y="17" text-anchor="end">${nf(mx,1)}</text>
+  </svg>`;
+}
+function colunas(cod){
+  const at=D[cod].atual; const mx=Math.max(...Object.values(at));
+  return `<div class="cols">${UFS.map(uf=>`<div class="${at[uf]===mx?'max':''}" style="height:${Math.max(4,at[uf]/mx*100)}%" title="${uf}"></div>`).join('')}</div>
+    <div class="ufs">${UFS.map(uf=>`<span>${uf}</span>`).join('')}</div>`;
+}
+const regAtual = cod => { const s=serie(cod); return s.length? s.at(-1) : null; };
+const selo = '<span class="selo"><i></i>Coletado</span>';
+
+// referência: cartão de meta atual
+document.getElementById('a-ref').innerHTML = `<div class="row"><div class="ler"><b>53%</b><small>jornada</small></div>
+  <div><div class="topo"><div class="nome">UCs estaduais com plano de manejo e conselho gestor</div>
+  <div class="nums"><span>Atual<b>21,11%</b></span><span>Meta<b>40%</b><em>até 2035</em></span></div></div>
+  <div class="bar"><div class="resta"></div><div class="feito" style="width:53%"></div></div></div></div>`;
+
+// A
+document.getElementById('a').innerHTML = ITENS.map(it=>{
+  const r=regAtual(it.cod);
+  const grande = it.semSerie ? `<b class="menor">${nf(Math.min(...Object.values(D[it.cod].atual)),1)}–${nf(Math.max(...Object.values(D[it.cod].atual)),1)}</b><small>${it.unid.split(' ·')[0]}</small>`
+                             : `<b class="menor">${it.curto(r[1])}</b><small>${it.unid} · ${r[0]}</small>`;
+  return `<div class="row"><div class="ler">${grande}</div>
+    <div><div class="topo"><div class="nome">${it.nome}<small>${it.motivo}</small></div>${selo}</div>
+    ${it.semSerie? faixa(it.cod) : spark(it.cod)}</div></div>`;
+}).join('');
+
+// B
+document.getElementById('b').innerHTML = ITENS.map(it=>{
+  if (it.semSerie){ const vs=Object.values(D[it.cod].atual); const mn=Math.min(...vs), mx=Math.max(...vs);
+    return `<div class="row"><div class="ler"><b class="menor">${nf(mx/mn,1)}×</b><small>maior / menor</small></div>
+      <div><div class="topo"><div class="nome">${it.nome}<small>${it.motivo}</small></div>
+      <div class="nums"><span>Estados<b>${nf(mn,2)} a ${nf(mx,2)}</b><em>${it.unid.split(' ·')[0]}</em></span></div></div>${faixa(it.cod)}</div></div>`; }
+  const s=serie(it.cod), a=s[0], z=s.at(-1); const varp=(z[1]/a[1]-1)*100; const anos=z[0]-a[0]; const aa=(Math.pow(z[1]/a[1],1/anos)-1)*100;
+  return `<div class="row"><div class="ler"><b class="menor">${varp>=0?'+':''}${nf(varp,0)}%</b><small>desde ${a[0]}</small></div>
+    <div><div class="topo"><div class="nome">${it.nome}<small>${nf(aa,1)}% ao ano em média · ${it.motivo}</small></div>
+    <div class="nums"><span>Atual<b>${it.fmt(z[1])}</b><em>${it.unid} · ${z[0]}</em></span></div></div>${spark(it.cod)}</div></div>`;
+}).join('');
+
+// C
+document.getElementById('c').innerHTML = ITENS.map(it=>{
+  const r=regAtual(it.cod);
+  const grande = it.semSerie ? `<b class="menor">—</b><small>sem valor regional</small>` : `<b class="menor">${it.curto(r[1])}</b><small>${it.unid} · ${r[0]}</small>`;
+  return `<div class="row"><div class="ler">${grande}</div>
+    <div><div class="topo"><div class="nome">${it.nome}<small>${it.motivo}</small></div>${selo}</div>${colunas(it.cod)}</div></div>`;
+}).join('');
+
+// D
+document.getElementById('d').innerHTML = ITENS.map(it=>{
+  const r=regAtual(it.cod);
+  const valor = it.semSerie ? `${nf(Math.min(...Object.values(D[it.cod].atual)),1)}–${nf(Math.max(...Object.values(D[it.cod].atual)),1)}<em>${it.unid.split(' ·')[0]}</em>` : `${it.fmt(r[1])}<em>${it.unid} · ${r[0]}</em>`;
+  const graf = it.semSerie ? '<span class="chip">sem série</span>' : spark(it.cod, 88, 24, false);
+  return `<div class="linha-c"><div class="nome">${it.nome}<small>${it.motivo}</small></div><div class="v">${valor}</div>${graf}${selo}</div>`;
+}).join('');
+</script>
+</body>
+</html>

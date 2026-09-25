@@ -10,10 +10,12 @@ import { leJson } from '../../../lib/admin/edicao';
 
 interface Parametro { codigo: string; alvo?: number | { tipo: string } | null; direcao: string; tipo: string; agregacao?: string }
 interface Metas { parametros: Parametro[]; exclusoes: Record<string, string> }
+interface Projecao { codigo: string; nome: string; unidade: string; comparavel: boolean; motivo?: string | null; cenarios: { nome: string; serie: Record<string, number> }[] }
 interface Catalogo { eixos: { numero: number; nome: string; indicadores: { codigo: string; nome: string; meta: string }[] }[] }
 
 const sessao = Astro.locals.sessao!;
-const [{ dados: metas }, { dados: catalogo }] = await Promise.all([leJson<Metas>('metas'), leJson<Catalogo>('catalogo')]);
+const [{ dados: metas }, { dados: catalogo }, { dados: projecoes }] = await Promise.all([leJson<Metas>('metas'), leJson<Catalogo>('catalogo'), leJson<{ atualizadoEm: string; projecoes: Projecao[] }>('projecoes')]);
+const anosDe = (item: Projecao) => { const anos = item.cenarios.flatMap((c) => Object.keys(c.serie)).sort(); return `${anos[0]}–${anos.at(-1)}`; };
 const salvo = Astro.url.searchParams.get('salvo');
 const indicadores = catalogo.eixos.flatMap((eixo) => eixo.indicadores.map((item) => ({ ...item, eixo: eixo.numero })));
 const nomeDe = (codigo: string) => indicadores.find((item) => item.codigo === codigo)?.nome || '';
@@ -66,6 +68,19 @@ const descreveAlvo = (parametro: Parametro) => {
     <ul class="admin-lista is-compacta">
       {semNada.map((item) => (
         <li><div><a href={`/admin/metas/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.meta}</small></div></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="admin-cartao">
+    <h2>Trajetórias pactuadas até 2050 ({projecoes.projecoes.length})</h2>
+    <p>Metas intermediárias regionais das planilhas de projeção da Estratégia (atualizadas em {projecoes.atualizadoEm}). Só leitura aqui: vêm de <code>conteudo/projecoes.json</code>, gerado por <code>scripts/estrategia_set2026.py</code>. "Comparável" quer dizer que a linha de base é o mesmo número que o painel mede, e só então a página de Metas desenha a série observada sobre a trajetória.</p>
+    <ul class="admin-lista is-compacta">
+      {projecoes.projecoes.map((item) => (
+        <li>
+          <div><a href={`/admin/metas/${encodeURIComponent(item.codigo)}`}><b>{item.codigo}</b> {item.nome}</a><br /><small>{item.cenarios.map((c) => c.nome).join(', ')} · {anosDe(item)} · {item.unidade}{item.motivo ? ` · ${item.motivo}` : ''}</small></div>
+          <span class={`admin-etiqueta${item.comparavel ? '' : ' is-pendente'}`}>{item.comparavel ? 'comparável' : 'só referência'}</span>
+        </li>
       ))}
     </ul>
   </section>

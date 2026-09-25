@@ -26,6 +26,11 @@ Thumbs.db
 *.7z
 *.pptx
 /Logomarca Consórcio Horizontal CLARA.avif
+# Pacote de dados brutos da Estratégia (424 MB) e o PDF dela, já versionado em
+# dashboard/. O que o painel usa desse pacote está em dashboard/conteudo/ e nos
+# CSVs de dashboard/public/data/csv/, com os scripts que o extraem.
+/Dados da Estratégia 2050/
+/estrategia.pdf
 
 # Derivados de dashboard/conteudo/ pelo build (node build-static.mjs).
 # geo.json, os JSONs de detalhe por tema, flags/ e os .md/.pdf de downloads

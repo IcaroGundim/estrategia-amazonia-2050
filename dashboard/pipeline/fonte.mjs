@@ -12,6 +12,7 @@
 //   textos.json     textos do painel que não são dados
 //   painel.json     data de atualização e constantes
 //   fichas.json     fichas técnicas (extraídas do .docx)
+//   projecoes.json  trajetórias pactuadas até 2050, regionais, por cenário
 //
 // O CSV de valores é "longo": uma célula por linha. `campo` vazio é o valor
 // principal do código; preenchido é um valor auxiliar (o `extra` do catálogo).
@@ -152,7 +153,7 @@ function exige(condicao, mensagem) {
 }
 
 export async function carregaFonte() {
-  const [catalogo, metas, panorama, textos, interfaceTextos, painel, fichas, valoresTexto] = await Promise.all([
+  const [catalogo, metas, panorama, textos, interfaceTextos, painel, fichas, projecoes, valoresTexto] = await Promise.all([
     leJson('catalogo.json'),
     leJson('metas.json'),
     leJson('panorama.json'),
@@ -160,16 +161,17 @@ export async function carregaFonte() {
     leJson('interface.json'),
     leJson('painel.json'),
     leJson('fichas.json'),
+    leJson('projecoes.json'),
     readFile(join(conteudoRoot, 'valores.csv'), 'utf8')
   ]);
   const linhas = parseCsv(valoresTexto);
   const ufs = Object.keys(panorama.estados);
-  const fonte = { catalogo, metas, panorama, textos, interface: interfaceTextos, painel, fichas, linhas, ufs, valores: indexaValores(linhas) };
+  const fonte = { catalogo, metas, panorama, textos, interface: interfaceTextos, painel, fichas, projecoes, linhas, ufs, valores: indexaValores(linhas) };
   validaFonte(fonte);
   return fonte;
 }
 
-export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, valores, interface: interfaceTextos }) {
+export function validaFonte({ catalogo, metas, panorama, painel, projecoes, linhas, ufs, valores, interface: interfaceTextos }) {
   exige(Array.isArray(catalogo.eixos) && catalogo.eixos.length, 'catalogo.json sem eixos');
   if (interfaceTextos) {
     exige(interfaceTextos.textos && typeof interfaceTextos.textos === 'object', 'interface.json sem textos');
@@ -224,7 +226,20 @@ export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, va
       exige(traj.metodo === undefined || ['linear', 'composto'].includes(traj.metodo), `${parametro.codigo}: método da trajetória precisa ser linear ou composto`);
     }
   }
+  for (const parametro of metas.parametros.filter((item) => item.agregacao === 'razaoCampos')) {
+    const razao = parametro.razao || {};
+    exige(razao.numerador && razao.denominador, `${parametro.codigo}: agregação razaoCampos sem numerador ou denominador`);
+  }
+  if (projecoes) validaProjecoes(projecoes, codigos);
   for (const codigo of Object.keys(metas.exclusoes)) exige(codigos.has(codigo), `metas.json exclui código fora do catálogo: ${codigo}`);
+  const parametrizados = new Set(metas.parametros.map((parametro) => parametro.codigo));
+  for (const [codigo, item] of Object.entries(metas.semMeta || {})) {
+    if (codigo.startsWith('_')) continue;
+    exige(codigos.has(codigo), `metas.json > semMeta cita código fora do catálogo: ${codigo}`);
+    exige(!parametrizados.has(codigo), `metas.json > semMeta: ${codigo} tem meta no quadro; semMeta é só para os que ficam fora`);
+    exige(item.agregacao === undefined || item.agregacao === 'soma', `metas.json > semMeta: ${codigo} com agregação "${item.agregacao}" (só 'soma' ou nenhuma)`);
+    exige(item.unidade === undefined || (typeof item.unidade === 'string' && item.unidade.trim()), `metas.json > semMeta: ${codigo} com unidade vazia`);
+  }
   exige(painel.atualizadoEm, 'painel.json sem atualizadoEm');
   const ufsConhecidas = new Set(ufs);
   linhas.forEach((row, index) => {
@@ -237,6 +252,28 @@ export function validaFonte({ catalogo, metas, panorama, painel, linhas, ufs, va
   for (const codigo of valores.keys()) {
     const conhecido = codigos.has(codigo) || panorama.metricas.some((metrica) => metrica.codigo === codigo || metrica.bruto === codigo || metrica.denominador === codigo || metrica.chave === codigo);
     exige(conhecido, `valores.csv traz o código "${codigo}", que não está no catálogo nem no panorama`);
+  }
+}
+
+export function validaProjecoes(projecoes, codigos) {
+  exige(Array.isArray(projecoes.projecoes), 'projecoes.json sem a lista `projecoes`');
+  const vistas = new Set();
+  for (const item of projecoes.projecoes) {
+    const id = `${item.codigo}|${item.variante || ''}`;
+    exige(codigos.has(item.codigo), `projecoes.json cita código fora do catálogo: ${item.codigo}`);
+    exige(!vistas.has(id), `projecoes.json repete ${id}`);
+    vistas.add(id);
+    exige(item.nome && item.unidade && item.fonte, `projecoes.json: ${id} sem nome, unidade ou fonte`);
+    exige(Array.isArray(item.cenarios) && item.cenarios.length, `projecoes.json: ${id} sem cenários`);
+    for (const cenario of item.cenarios) {
+      exige(cenario.chave && cenario.nome, `projecoes.json: ${id} tem cenário sem chave ou nome`);
+      const anos = Object.entries(cenario.serie || {});
+      exige(anos.length >= 2, `projecoes.json: ${id}/${cenario.chave} precisa de dois anos ou mais`);
+      for (const [ano, valor] of anos) exige(/^\d{4}$/.test(ano) && Number.isFinite(valor), `projecoes.json: ${id}/${cenario.chave} ${ano} inválido`);
+    }
+    exige(typeof item.comparavel === 'boolean', `projecoes.json: ${id} sem \`comparavel\``);
+    exige(item.comparavel || item.motivo, `projecoes.json: ${id} não é comparável e não diz por quê`);
+    exige(item.observado === undefined || item.observado === 'soma', `projecoes.json: ${id} tem observado desconhecido "${item.observado}"`);
   }
 }
 

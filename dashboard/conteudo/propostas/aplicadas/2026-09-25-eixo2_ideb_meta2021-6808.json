@@ -1,0 +1,670 @@
+{
+  "id": "2026-09-25-eixo2_ideb_meta2021-6808",
+  "geradoEm": "2026-09-25T14:48:30+00:00",
+  "script": "eixo2_ideb_meta2021",
+  "fonte": "INEP/IDEB municipal (divulgação 2023 e 2025) contra a meta de 2021",
+  "descricao": "I2.3.1: % de municípios que atingiram a última meta do IDEB, por etapa",
+  "valores": [
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2023",
+      "valor": 34.38,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "AC",
+      "ano": "",
+      "valor": 22
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "AC",
+      "ano": "",
+      "valor": 64
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2025",
+      "valor": 44.62,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 44.62,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "AC",
+      "ano": "",
+      "valor": 29
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "AC",
+      "ano": "",
+      "valor": 65
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "AC",
+      "ano": "",
+      "valor": 90.91
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "AC",
+      "ano": "",
+      "valor": 9.09
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "AC",
+      "ano": "",
+      "valor": 33.33
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2023",
+      "valor": 25.64,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "AP",
+      "ano": "",
+      "valor": 10
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "AP",
+      "ano": "",
+      "valor": 39
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2025",
+      "valor": 41.3,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 41.3,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "AP",
+      "ano": "",
+      "valor": 19
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "AP",
+      "ano": "",
+      "valor": 46
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "AP",
+      "ano": "",
+      "valor": 37.5
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "AP",
+      "ano": "",
+      "valor": 0.0
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "AP",
+      "ano": "",
+      "valor": 92.86
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2023",
+      "valor": 26.49,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "AM",
+      "ano": "",
+      "valor": 49
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "AM",
+      "ano": "",
+      "valor": 185
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2025",
+      "valor": 44.62,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 44.62,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "AM",
+      "ano": "",
+      "valor": 83
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "AM",
+      "ano": "",
+      "valor": 186
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "AM",
+      "ano": "",
+      "valor": 64.52
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "AM",
+      "ano": "",
+      "valor": 19.35
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "AM",
+      "ano": "",
+      "valor": 50.0
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2023",
+      "valor": 30.05,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "MA",
+      "ano": "",
+      "valor": 192
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "MA",
+      "ano": "",
+      "valor": 639
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2025",
+      "valor": 45.58,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 45.58,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "MA",
+      "ano": "",
+      "valor": 294
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "MA",
+      "ano": "",
+      "valor": 645
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "MA",
+      "ano": "",
+      "valor": 62.96
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "MA",
+      "ano": "",
+      "valor": 19.91
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "MA",
+      "ano": "",
+      "valor": 53.99
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2023",
+      "valor": 51.25,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "MT",
+      "ano": "",
+      "valor": 205
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "MT",
+      "ano": "",
+      "valor": 400
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2025",
+      "valor": 66.75,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 66.75,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "MT",
+      "ano": "",
+      "valor": 273
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "MT",
+      "ano": "",
+      "valor": 409
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "MT",
+      "ano": "",
+      "valor": 76.64
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "MT",
+      "ano": "",
+      "valor": 29.29
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "MT",
+      "ano": "",
+      "valor": 96.21
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2023",
+      "valor": 43.29,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "PA",
+      "ano": "",
+      "valor": 184
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "PA",
+      "ano": "",
+      "valor": 425
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2025",
+      "valor": 66.12,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 66.12,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "PA",
+      "ano": "",
+      "valor": 283
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "PA",
+      "ano": "",
+      "valor": 428
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "PA",
+      "ano": "",
+      "valor": 80.56
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "PA",
+      "ano": "",
+      "valor": 18.75
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "PA",
+      "ano": "",
+      "valor": 100.0
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2023",
+      "valor": 18.18,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "RO",
+      "ano": "",
+      "valor": 28
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "RO",
+      "ano": "",
+      "valor": 154
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2025",
+      "valor": 39.22,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 39.22,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "RO",
+      "ano": "",
+      "valor": 60
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "RO",
+      "ano": "",
+      "valor": 153
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "RO",
+      "ano": "",
+      "valor": 80.39
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "RO",
+      "ano": "",
+      "valor": 9.62
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "RO",
+      "ano": "",
+      "valor": 28.0
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2023",
+      "valor": 13.51,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "RR",
+      "ano": "",
+      "valor": 5
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "RR",
+      "ano": "",
+      "valor": 37
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2025",
+      "valor": 23.08,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 23.08,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "RR",
+      "ano": "",
+      "valor": 9
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "RR",
+      "ano": "",
+      "valor": 39
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "RR",
+      "ano": "",
+      "valor": 33.33
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "RR",
+      "ano": "",
+      "valor": 0.0
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "RR",
+      "ano": "",
+      "valor": 28.57
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2023",
+      "valor": 19.7,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram2023",
+      "uf": "TO",
+      "ano": "",
+      "valor": 80
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados2023",
+      "uf": "TO",
+      "ano": "",
+      "valor": 406
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2025",
+      "valor": 31.39,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021)"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 31.39,
+      "nota": "IDEB observado contra a última meta projetada pelo INEP (2021); edição 2025"
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "atingiram",
+      "uf": "TO",
+      "ano": "",
+      "valor": 129
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "avaliados",
+      "uf": "TO",
+      "ano": "",
+      "valor": 411
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosIniciais",
+      "uf": "TO",
+      "ano": "",
+      "valor": 35.04
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctAnosFinais",
+      "uf": "TO",
+      "ano": "",
+      "valor": 1.44
+    },
+    {
+      "codigo": "I2.3.1",
+      "campo": "pctEnsinoMedio",
+      "uf": "TO",
+      "ano": "",
+      "valor": 58.52
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "eixo2_ideb_meta2021",
+  "celulasAceitas": 90
+}

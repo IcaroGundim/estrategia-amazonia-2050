@@ -13,7 +13,10 @@ $codes = @(
   'I1.2.1', 'I1.2.2',
   'I1.3.1', 'I1.3.2', 'I1.3.3', 'I1.3.4', 'I1.3.5', 'I1.3.6', 'I1.3.7', 'I1.3.8',
   'I1.4.1', 'I1.4.2',
-  'I1.5.1', 'I1.5.5', 'I1.5.8',
+  # Versao de 15/09/2026: a linha 1.5 ganhou uma ficha por indicador. A 19a
+  # tabela (titulacao de territorios de povos e comunidades tradicionais) nao
+  # tem codigo no catalogo: fica de fora ($null) ate o catalogo decidir.
+  'I1.5.1', 'I1.5.2', 'I1.5.3', $null, 'I1.5.4', 'I1.5.5', 'I1.5.6', 'I1.5.7', 'I1.5.8',
   'I2.1.1', 'I2.1.2',
   'I2.2.1', 'I2.2.2', 'I2.2.3',
   'I2.3.1', 'I2.3.2',
@@ -56,6 +59,19 @@ function Get-Field($Fields, [string[]]$Names) {
   return ''
 }
 
+# Fichas com dois indicadores trazem "Indicador 1"/"Indicador 2" (e "Formula
+# indicador 1"/"2") no lugar do campo unico: junta os dois, numerados.
+function Get-FieldOrPair($Fields, [string[]]$Names, [string]$Prefix) {
+  $single = Get-Field $Fields $Names
+  if ($single) { return $single }
+  $parts = @()
+  foreach ($n in 1, 2) {
+    $value = Get-Field $Fields @("$Prefix $n")
+    if ($value) { $parts += "($n) $value" }
+  }
+  return ($parts -join "`n")
+}
+
 if (-not $InputDocx) {
   $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
   $source = Get-ChildItem -LiteralPath $projectRoot -Filter 'Fichas T*cnicas Indicadores - Amazonia2050.docx' | Select-Object -First 1
@@ -82,6 +98,7 @@ try {
 
   $fichas = [ordered]@{}
   for ($index = 0; $index -lt $tables.Count; $index++) {
+    if ($null -eq $codes[$index]) { continue }
     $fields = [ordered]@{}
     foreach ($row in $tables[$index].SelectNodes('./w:tr', $ns)) {
       $cells = $row.SelectNodes('./w:tc', $ns)
@@ -98,13 +115,13 @@ try {
       eixo = Get-Field $fields @('Eixo')
       linhaAcao = Get-Field $fields @('Linha de Acao')
       meta = Get-Field $fields @('META ajustada', 'META')
-      indicador = Get-Field $fields @('Indicador', 'Indicador ajustado')
+      indicador = Get-FieldOrPair $fields @('Indicador', 'Indicador ajustado') 'Indicador'
       prazo = Get-Field $fields @('Prazo')
       # Quatro fichas do Eixo 4 trazem "Formula ajustada" no lugar de "Formula": sem o
       # apelido, o metodo de calculo delas sai vazio para o painel. A linha "Definicao"
       # do I4.4.2 fica de fora de proposito - ela conceitua cidades resilientes, nao
       # descreve um calculo.
-      formula = Get-Field $fields @('Formula', 'Formula ajustada')
+      formula = Get-FieldOrPair $fields @('Formula', 'Formula ajustada') 'Formula indicador'
       unidade = Get-Field $fields @('Unidade')
       fontes = Get-Field $fields @('Fontes')
       frequencia = Get-Field $fields @('Frequencia de medicao')

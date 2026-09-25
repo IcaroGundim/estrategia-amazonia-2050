@@ -1,0 +1,661 @@
+{
+  "id": "2026-09-25-eixo5_cal-7e57",
+  "geradoEm": "2026-09-25T15:14:46+00:00",
+  "script": "eixo5_cal",
+  "fonte": "Consórcio da Amazônia Legal: contratos de rateio e resoluções do OAC",
+  "descricao": "I5.2.2: recursos repassados por cada estado ao CAL por contrato de rateio, 2019-2026",
+  "valores": [
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2024",
+      "valor": 1125000.0,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "2026",
+      "valor": 512309.44,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AC",
+      "ano": "",
+      "valor": 512309.44,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2024",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "2026",
+      "valor": 491807.88,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AP",
+      "ano": "",
+      "valor": 491807.88,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2024",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "2026",
+      "valor": 742201.76,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "AM",
+      "ano": "",
+      "valor": 742201.76,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2024",
+      "valor": 1125000.0,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "2026",
+      "valor": 827062.72,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MA",
+      "ano": "",
+      "valor": 827062.72,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2024",
+      "valor": 1125000.0,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "2026",
+      "valor": 885994.56,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "MT",
+      "ano": "",
+      "valor": 885994.56,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2024",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "2026",
+      "valor": 1040165.44,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "PA",
+      "ano": "",
+      "valor": 1040165.44,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2024",
+      "valor": 1125000.0,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "2026",
+      "valor": 579934.08,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RO",
+      "ano": "",
+      "valor": 579934.08,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2024",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "2026",
+      "valor": 451156.98,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "RR",
+      "ano": "",
+      "valor": 451156.98,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2019",
+      "valor": 125000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2020",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 02/2019"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2021",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2020"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2022",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2021"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2023",
+      "valor": 500000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 04/2022"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2024",
+      "valor": 1125000.0,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 01/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2025",
+      "valor": 680000,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 05/2024"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "2026",
+      "valor": 589367.13,
+      "nota": "Contratos de rateio com o CAL; parte do ordinário pela Res. 001/2026"
+    },
+    {
+      "codigo": "I5.2.2",
+      "campo": "",
+      "uf": "TO",
+      "ano": "",
+      "valor": 589367.13,
+      "nota": "Contrato de rateio 2026 (valor contratado, vigência em andamento)"
+    }
+  ],
+  "decisao": "aceita",
+  "decididoEm": "2026-09-25",
+  "por": "eixo5_cal",
+  "celulasAceitas": 81
+}

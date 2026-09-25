@@ -102,6 +102,15 @@ o painel sozinhos: cada execução vira uma **proposta**, listada em
   previsão. Dá para escolher quantos anos entram no ritmo (padrão 5, mínimo
   3), o método (linear ou composto) e desligar a trajetória numa meta cuja
   série tem quebra, com uma nota explicando.
+- **Trajetória pactuada até 2050** (lista no fim da tela de Metas, só
+  leitura): as metas intermediárias regionais das planilhas de projeção da
+  Estratégia, com todos os cenários. Na página de Metas aparecem na aba
+  **Trajetória 2050** do detalhe, com gráfico e tabela de marcos. Não se
+  confunde com a trajetória acima: esta é o caminho combinado, aquela é o
+  ritmo observado. Quando a projeção parte de outro número que o painel não
+  mede, a aba mostra "Só referência" com o motivo. Para trocar as projeções,
+  a equipe técnica roda de novo `scripts/estrategia_set2026.py` com as
+  planilhas novas.
 - **Ficha técnica**: a partir do indicador no catálogo, o detalhe que abre na
   página de Metas (definição, fórmula, fontes, frequência).
 - **Data e constantes**: a data "atualizado em" que o painel exibe.
@@ -136,6 +145,8 @@ depois do próximo deploy, em 1 a 2 minutos.
 ## 9. O que fica por conta da equipe técnica
 
 - Rodar os scripts de coleta e enviar as propostas ao repositório.
+- Atualizar `conteudo/projecoes.json` (trajetórias pactuadas) quando a
+  Estratégia publicar planilhas de projeção novas.
 - Gerar a nota técnica em PDF.
 - Manter as variáveis do serviço (segredo da sessão, token do GitHub) e o
   endereço da prévia.

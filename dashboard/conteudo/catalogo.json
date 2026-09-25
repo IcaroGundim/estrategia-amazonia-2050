@@ -373,7 +373,7 @@
           "descricao": "% de incremento de florestas públicas de domínio estadual destinadas",
           "unidade": "%",
           "fonte": "Órgãos fundiários estaduais",
-          "prazo": 2030,
+          "prazo": 2035,
           "status": "coleta manual",
           "anoRef": null,
           "en": {
@@ -552,15 +552,15 @@
           "meta": "Alcançar as metas de proficiência (IDEB) do INEP nas três etapas",
           "descricao": "Percentual de municípios/estados da AL que atingiram ou superaram a meta do IDEB (Anos Iniciais, Anos Finais e Ensino Médio)",
           "unidade": "%",
-          "fonte": "INEP (IDEB)",
+          "fonte": "INEP (IDEB municipal), contra a última meta projetada (2021)",
           "prazo": 2050,
-          "status": "pendente (INEP Data sem API aberta; download.inep.gov.br bloqueado)",
-          "anoRef": null,
+          "status": "coletado",
+          "anoRef": "2025",
           "en": {
             "nome": "Basic education index (IDEB)",
             "meta": "Meet INEP’s IDEB proficiency targets at all three stages of basic education",
             "descricao": "Share of Legal Amazon municipalities and states that met or beat the IDEB target (primary, lower secondary and upper secondary)",
-            "fonte": "INEP (IDEB)",
+            "fonte": "INEP (municipal IDEB), against the last projected target (2021)",
             "unidade": null
           }
         },
@@ -655,10 +655,10 @@
           "nome": "Valor da produção da sociobioeconomia",
           "meta": "Aumentar em 100 milhões de reais o valor da produção das atividades da sociobioeconomia",
           "descricao": "Valor da produção das atividades da sociobioeconomia (MMA)",
-          "unidade": "R$",
+          "unidade": "R$ (mil)",
           "fonte": "MMA (Plataforma da Ecosociobiodiversidade, em construção); proxy: IBGE PEVS (SIDRA 289)",
           "prazo": 2050,
-          "status": "coletado (proxy PEVS/IBGE: valor da produção da extração vegetal, 2015-2024)",
+          "status": "coletado (proxy PEVS/IBGE: valor da produção da extração vegetal, 1994-2024)",
           "anoRef": "2024",
           "en": {
             "nome": "Value of socio-bioeconomy output",
@@ -829,8 +829,8 @@
           "unidade": "nº de vínculos",
           "fonte": "MMA; proxy: MTE (RAIS Estabelecimentos 2023-2024)",
           "prazo": 2050,
-          "status": "coletado (proxy RAIS: vínculos ativos e estabelecimentos ativos por UF x divisão CNAE, 2023-2024)",
-          "anoRef": "2024",
+          "status": "coletado (proxy RAIS: vínculos ativos e estabelecimentos ativos por UF, 2018-2025, sem 2022, edição com defeito na RAIS; por divisão CNAE, 2023-2024)",
+          "anoRef": "2025",
           "en": {
             "nome": "Jobs and firms in the value chains",
             "meta": "Sustainable value chains established (technical sheet: growth in output value, in jobs and in the number of firms)",
@@ -848,7 +848,7 @@
           "unidade": "R$ (mil)",
           "fonte": "IBGE (PIA-Empresa, SIDRA 1849/10457)",
           "prazo": 2050,
-          "status": "coletado (PIA-Empresa: valor da transformação industrial por UF, 2015-2024)",
+          "status": "coletado (PIA-Empresa: valor da transformação industrial do total da indústria (extrativa + transformação) por UF, 2007-2024)",
           "anoRef": "2024",
           "en": {
             "nome": "Value added by manufacturing",
@@ -893,15 +893,15 @@
           "meta": "Elevar a adequação e trafegabilidade da infraestrutura estadual de 46,5% para 65% até 2050",
           "descricao": "Taxa de adequação e trafegabilidade da infraestrutura de transportes (%)",
           "unidade": "%",
-          "fonte": "Min. Transportes; DNIT; CNT",
+          "fonte": "Estratégia Amazônia 2050: km efetivo sobre km físico da malha estadual (Min. Transportes; DNIT; CNT)",
           "prazo": 2050,
-          "status": "pendente (painel CNT em Power BI sem API; DNIT vgeo só publica geometria, sem estado de conservação)",
-          "anoRef": null,
+          "status": "coletado",
+          "anoRef": "2025",
           "en": {
             "nome": "Road condition and passability",
             "meta": "Raise the condition and passability of state transport infrastructure from 46.5% to 65% by 2050",
             "descricao": "Rate of adequacy and passability of transport infrastructure (%)",
-            "fonte": "Ministry of Transport; DNIT; CNT",
+            "fonte": "Amazon 2050 Strategy: effective over physical km of the state network (Ministry of Transport; DNIT; CNT)",
             "unidade": null
           }
         },
@@ -969,15 +969,15 @@
           "meta": "80% dos municípios com capacidade adaptativa média acima de 0,5",
           "descricao": "% de municípios com média de capacidade adaptativa acima de 0.5",
           "unidade": "% de municípios",
-          "fonte": "AdaptaBrasil MCTI (Painel Cidades)",
+          "fonte": "AdaptaBrasil MCTI: escore de capacidade adaptativa por município (36 indicadores)",
           "prazo": 2035,
-          "status": "pendente (Painel Cidades é SPA sem API; API do AdaptaBrasil 403)",
-          "anoRef": null,
+          "status": "coletado",
+          "anoRef": "2020",
           "en": {
             "nome": "Urban adaptive capacity",
             "meta": "80% of municipalities with average adaptive capacity above 0.5",
             "descricao": "Share of municipalities with average adaptive capacity above 0.5",
-            "fonte": "AdaptaBrasil MCTI (Cities dashboard)",
+            "fonte": "AdaptaBrasil MCTI: municipal adaptive capacity score (36 indicators)",
             "unidade": null
           }
         }
@@ -997,15 +997,15 @@
           "meta": "Mobilizar recursos para financiamento climático e ambiental equivalentes a, no mínimo, 0,1% do PIB da AL",
           "descricao": "Valor anual e acumulado dos recursos captados e efetivamente executados, por estado, origem e instrumento financeiro",
           "unidade": "R$",
-          "fonte": "Estados (programas jurisdicionais de crédito de carbono, financiamento climático e fundos multilaterais)",
+          "fonte": "Fundo Amazônia/BNDES (páginas de projeto, desembolsos datados) e Programa REM Acre (relatórios anuais)",
           "prazo": 2050,
-          "status": "coleta manual (não há base consolidada pública por estado; documentos estaduais e relatórios de fundos)",
-          "anoRef": null,
+          "status": "parcial (desembolsos do Fundo Amazônia a projetos de governos estaduais e liberações do REM Acre, 2011-2025; faltam REM Mato Grosso por ano, pago ao Funbio, e dois contratos estaduais do Amazonas sem data; LEAF/Emergent e Mercuria ainda não pagaram)",
+          "anoRef": "2025",
           "en": {
             "nome": "Climate finance raised and spent",
             "meta": "Mobilise climate and environmental finance worth at least 0.1% of the Legal Amazon’s GDP",
             "descricao": "Annual and cumulative value of funds raised and actually spent, by state, by origin and by financial instrument",
-            "fonte": "State governments (jurisdictional carbon credit programmes, climate finance and multilateral funds)",
+            "fonte": "Amazon Fund/BNDES (project pages, dated disbursements) and REM Acre programme (annual reports)",
             "unidade": null
           }
         },
@@ -1018,7 +1018,7 @@
           "unidade": "R$ privado / R$ público",
           "fonte": "Estados",
           "prazo": 2050,
-          "status": "coleta manual (mecanismos ainda por estruturar)",
+          "status": "coleta manual (nenhum mecanismo regional de financiamento misto estruturado até set/2026 (o Fundo Brasil-ONU é de doação; o instrumento da NatureFinance está em desenho), então não há taxa de alavancagem a calcular)",
           "anoRef": null,
           "en": {
             "nome": "Leverage ratio (blended finance)",
@@ -1034,16 +1034,16 @@
           "nome": "Governança regional / recursos executados pelo CAL",
           "meta": "Institucionalizar modelo permanente de governança regional coordenado pelo CAL, com participação dos 9 estados",
           "descricao": "Nº de mecanismos de governança regional instituídos e em operação; volume de recursos (R$) captados e executados de forma centralizada pelo Consórcio da Amazônia Legal",
-          "unidade": "nº / R$",
-          "fonte": "CAL (consorcioamazonialegal.gov.br/orcamento-anual)",
+          "unidade": "R$",
+          "fonte": "CAL: contratos de rateio e resoluções do Orçamento Anual do Consórcio (consorcioamazonialegal.gov.br/transparencia)",
           "prazo": 2050,
-          "status": "pendente via automação (site do CAL em Wix — tabela carrega via JS autenticado; coleta manual junto ao CAL. Ref. da ficha técnica: orçamento executado 2026 = R$ 6.120.000; crescimento médio de R$ 483.566/ano no histórico 2019-2026)",
-          "anoRef": null,
+          "status": "coletado (contratos de rateio de cada estado com o CAL, 2019-2026; valores contratados, o CAL não publica execução anual. Nº de mecanismos de governança não coletado)",
+          "anoRef": "2026",
           "en": {
             "nome": "Regional governance and funds managed by the Consortium",
             "meta": "A permanent regional governance model coordinated by the Consortium, with all nine states taking part",
             "descricao": "Number of regional governance mechanisms set up and operating; value of funds raised and spent centrally by the Interstate Consortium for the Legal Amazon",
-            "fonte": "Interstate Consortium for the Legal Amazon (consorcioamazonialegal.gov.br/orcamento-anual)",
+            "fonte": "Interstate Consortium for the Legal Amazon: apportionment contracts and annual budget resolutions (consorcioamazonialegal.gov.br/transparencia)",
             "unidade": null
           }
         },
@@ -1056,7 +1056,7 @@
           "unidade": "nº / %",
           "fonte": "Estados",
           "prazo": 2050,
-          "status": "coleta manual (diretrizes regionais em desenvolvimento)",
+          "status": "coleta manual (o CAL não aprovou arranjo jurídico climático regional com diretrizes comuns (há planos e cartas: PRV 2021, Carta de Manaus 2023, Carta de São Luís 2025); as leis estaduais de clima são anteriores e não incorporam diretrizes regionais)",
           "anoRef": null,
           "en": {
             "nome": "State climate legal framework",
@@ -1075,7 +1075,7 @@
           "unidade": "% / bases",
           "fonte": "Estados",
           "prazo": 2050,
-          "status": "coleta manual",
+          "status": "coleta manual (a Plataforma CAL2050 (lançada na COP30, nov/2025) agrega camadas de dados dos nove estados, mas não há adesão formal nem contagem de bases interoperáveis publicada)",
           "anoRef": null,
           "en": {
             "nome": "Interoperability of priority data",
@@ -1113,7 +1113,7 @@
           "unidade": "grau A-C",
           "fonte": "STN — Tesouro Transparente (Capacidade de Pagamento dos Estados)",
           "prazo": 2050,
-          "status": "coletado (CKAN do Tesouro Transparente, 2018-2025; 2024 = revisão de 04/2025)",
+          "status": "coletado (CKAN do Tesouro Transparente, 2018-2025; 2024 = revisão de 04/2025; componentes e ICF de 2025)",
           "anoRef": "2025",
           "en": {
             "nome": "CAPAG rating of A or B (creditworthiness)",
@@ -1130,15 +1130,15 @@
           "meta": "Atender 90% dos critérios da principal avaliação nacional de transparência pública vigente",
           "descricao": "Número e percentual de estados que atingem o patamar mínimo estabelecido (Escala Brasil Transparente 360)",
           "unidade": "0 a 10",
-          "fonte": "CGU — Escala Brasil Transparente 360 (Mapa Brasil Transparente)",
+          "fonte": "CGU — Escala Brasil Transparente 360 (Mapa Brasil Transparente, cópias do Wayback Machine)",
           "prazo": 2050,
-          "status": "pendente (sistema MBT/CGU fora do ar para atualização — retorno previsto nov/2026; portal dadosabertos.cgu.gov.br inacessível no dia da coleta)",
-          "anoRef": null,
+          "status": "coletado (EBT 360, 1ª e 2ª avaliações, 2018 e 2020, pelas cópias do Wayback Machine: o Mapa Brasil Transparente da CGU segue fora do ar e não houve edição depois de 2020; PNTP/Atricon 2025 e ITGP 2025 como campos auxiliares)",
+          "anoRef": "2020",
           "en": {
             "nome": "Public transparency (EBT 360)",
             "meta": "Meet 90% of the criteria of the national public transparency assessment in force",
             "descricao": "Number and share of states reaching the minimum threshold on the Escala Brasil Transparente 360",
-            "fonte": "Office of the Comptroller General (CGU) — Escala Brasil Transparente 360",
+            "fonte": "Office of the Comptroller General (CGU) — Escala Brasil Transparente 360 (Wayback Machine copies)",
             "unidade": null
           }
         },
@@ -1151,7 +1151,7 @@
           "unidade": "modelos",
           "fonte": "Estados e CAL",
           "prazo": 2050,
-          "status": "coleta manual",
+          "status": "coleta manual (o CAL tem 12 câmaras setoriais consultivas, grupos de trabalho e participa da governança do Fundo Brasil-ONU, mas não publica quais modelos têm equipe delegada, orçamento e plano de implementação)",
           "anoRef": null,
           "en": {
             "nome": "Shared regional governance models",

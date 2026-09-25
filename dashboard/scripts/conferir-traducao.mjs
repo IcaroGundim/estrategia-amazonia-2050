@@ -74,6 +74,32 @@ const dados = [
   })
   .join('\n');
 
+// Textos de dados que a página de Metas passa pelo `t()` sem que apareçam no
+// código: o motivo de cada indicador fora do quadro e os textos das trajetórias
+// pactuadas (conteudo/projecoes.json). Sem entrada, o inglês mostra o português.
+function textosDeDados() {
+  const saida = new Map();
+  const le = (caminho) => {
+    try {
+      return JSON.parse(readFileSync(fileURLToPath(new URL(caminho, import.meta.url)), 'utf8'));
+    } catch {
+      return null;
+    }
+  };
+  const anota = (texto, origem) => {
+    if (texto && typeof texto === 'string' && texto !== '%') saida.set(texto, [...(saida.get(texto) || []), origem]);
+  };
+  for (const item of le('../public/data/metas.json')?.foraDoPainel || []) anota(item.motivo, `motivo ${item.codigo}`);
+  for (const item of le('../conteudo/projecoes.json')?.projecoes || []) {
+    for (const texto of [item.nome, item.unidade, item.motivo, item.nota, ...item.cenarios.map((c) => c.nome)]) anota(texto, `projeção ${item.codigo}`);
+  }
+  return saida;
+}
+for (const [texto, origens] of textosDeDados()) {
+  if (!usadas.has(texto)) usadas.set(texto, []);
+  usadas.get(texto).push(...origens);
+}
+
 const orfas = [...usadas.keys()].filter((texto) => !(texto in en)).sort();
 // Para a sobra a busca é textual, e não pela chamada: boa parte dos textos
 // chega ao `t()` como variável — `TEMAS.map(({ titulo }) => t(titulo))` —, e

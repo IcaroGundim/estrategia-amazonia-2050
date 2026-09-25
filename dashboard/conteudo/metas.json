@@ -50,6 +50,20 @@
       "agregacao": "populacao"
     },
     {
+      "codigo": "I2.3.1",
+      "alvo": 100,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "razaoCampos",
+      "razao": {
+        "numerador": "atingiram",
+        "denominador": "avaliados",
+        "fator": 100
+      },
+      "notaAgregacao": "Pares município × etapa que atingiram a meta sobre os pares avaliados, nas três etapas juntas. O percentual de cada etapa está nos campos auxiliares.",
+      "nota": "O INEP projetou metas só até 2021; como a Estratégia, o IDEB de 2023 e 2025 é comparado com a meta de 2021. Alvo de 100% dos municípios, o ponto de chegada das trajetórias pactuadas em 2050."
+    },
+    {
       "codigo": "I2.3.2",
       "alvo": 100,
       "direcao": "maior",
@@ -74,6 +88,20 @@
       "baselineAno": 2021
     },
     {
+      "codigo": "I4.2.1",
+      "alvo": 65,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "razaoCampos",
+      "razao": {
+        "numerador": "kmEfetivo",
+        "denominador": "kmFisico",
+        "fator": 100
+      },
+      "notaAgregacao": "Quilômetros efetivos sobre quilômetros físicos da malha dos nove estados, como na planilha de origem (46,44%). A média simples dos estados daria 44,1%, porque o Maranhão e o Pará concentram a malha.",
+      "nota": "Meta de 65% em 2050, o cenário moderado da trajetória pactuada."
+    },
+    {
       "codigo": "I4.3.2",
       "alvo": 80,
       "direcao": "maior",
@@ -88,6 +116,20 @@
       "tipo": "declarada",
       "unidade": "%",
       "agregacao": "populacao"
+    },
+    {
+      "codigo": "I4.4.2",
+      "alvo": 80,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "razaoCampos",
+      "razao": {
+        "numerador": "acima05",
+        "denominador": "total",
+        "fator": 100
+      },
+      "notaAgregacao": "Municípios com escore acima de 0,5 sobre todos os 773 municípios da Amazônia Legal (19 de 773). Os 35 municípios sem informação no AdaptaBrasil, quase todos no Maranhão, entram no denominador como não atingindo o patamar.",
+      "nota": "Os indicadores que compõem o escore têm anos de referência entre 2015 e 2020, os mais recentes publicados pelo AdaptaBrasil."
     },
     {
       "codigo": "I5.4.1",
@@ -114,6 +156,14 @@
         "B"
       ],
       "nota": "A meta do indicador é CAPAG A ou B. Notas com sinal (A+, B+) são contadas dentro da faixa correspondente."
+    },
+    {
+      "codigo": "I5.5.2",
+      "alvo": 9,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "contagem",
+      "nota": "A meta é atender 90% dos critérios da principal avaliação nacional de transparência; na escala de 0 a 10 da EBT 360, a avaliação que a ficha cita, isso é a nota 9,0. A última edição da EBT 360 é de 2020; o PNTP, que a Atricon e os Tribunais de Contas fazem todo ano, está nos campos auxiliares."
     }
   ],
   "exclusoes": {
@@ -122,6 +172,18 @@
     "I2.2.3": "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
     "I3.1.1": "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
     "F3.2": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
-    "F3.5": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050."
+    "F3.5": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
+    "I5.2.2": "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
+    "I5.1.1": "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador."
+  },
+  "semMeta": {
+    "_leia": "Como a página mostra os indicadores coletados que ficam fora do quadro. agregacao 'soma' diz que o valor da Amazônia Legal é a soma dos nove estados (só vale para quantidades: reais, vínculos, municípios); sem ela não há valor regional (taxas, índices). unidade corrige a unidade exibida quando o valor coletado não está na unidade da meta.",
+    "I2.2.2": { "unidade": "equipes" },
+    "I2.2.3": { "agregacao": "soma" },
+    "I3.1.1": { "agregacao": "soma" },
+    "F3.2": { "agregacao": "soma" },
+    "F3.5": { "agregacao": "soma" },
+    "I5.1.1": { "agregacao": "soma" },
+    "I5.2.2": { "agregacao": "soma" }
   }
 }

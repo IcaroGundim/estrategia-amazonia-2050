@@ -221,6 +221,7 @@ function valorMeta(meta, valor) {
   if (meta.codigo === 'I1.3.4') return `${nf(valor, 0)} focos`;
   if (unidade === 'taxa / 100 mil') return `${nfi(valor, 1)} por 100 mil hab.`;
   if (unidade === '0 a 100' || unidade.startsWith('pontos')) return `${nfi(valor, 1)} pontos`;
+  if (unidade === '0 a 10') return `nota ${nfi(valor, 2)}`;
   throw new Error(`Nota técnica: não sei escrever a unidade "${meta.unidade}" de ${meta.codigo}`);
 }
 
@@ -939,6 +940,10 @@ if (!semPdf) {
     `--print-to-pdf=${SAIDA}`,
     pathToFileURL(arquivoHtml).href
   ], { stdio: 'inherit' });
-  confere(existsSync(SAIDA) && statSync(SAIDA).mtimeMs > antes, 'o navegador não gravou o PDF');
+  // No Windows o msedge.exe lançador pode voltar antes de o processo que imprime
+  // terminar de gravar: espera o arquivo mudar por até um minuto.
+  const gravado = () => existsSync(SAIDA) && statSync(SAIDA).mtimeMs > antes;
+  for (let espera = 0; espera < 60 && !gravado(); espera += 1) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1000);
+  confere(gravado(), 'o navegador não gravou o PDF');
   console.log(`PDF: ${SAIDA} (${Math.round(statSync(SAIDA).size / 1024)} KB)`);
 }

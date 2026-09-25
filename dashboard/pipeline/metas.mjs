@@ -20,7 +20,14 @@
 //   baselineAno primeiro ano da série considerado como ponto de partida
 //   unidade     sobrepõe a unidade do catálogo quando o valor confrontado está
 //               em outra (I5.4.1: % do PIB, não R$ milhões)
+//   razao       com agregacao 'razaoCampos': { numerador, denominador, fator }
+//               nomes de dois campos auxiliares do CSV; o regional é
+//               Σ numerador / Σ denominador × fator (I4.2.1, I4.4.2)
 //   categoriasCumpre, nota, notaAgregacao
+//
+// `projecoes` (conteudo/projecoes.json) viaja junto de cada meta e de cada
+// indicador fora do quadro: as trajetórias pactuadas até 2050. Não entram na
+// avaliação — são a referência de percurso, não o valor medido.
 
 import { trajetoriaDaMeta } from './trajetoria.mjs';
 
@@ -62,7 +69,22 @@ function alvoPorEstado(parametro, serie) {
   throw new Error(`metas.json: regra de alvo desconhecida "${regra.tipo}" em ${parametro.codigo}`);
 }
 
-function agregaHistorico(parametro, indicador, valores, contexto) {
+// Σ numerador / Σ denominador dos estados presentes, com os campos auxiliares
+// nomeados em `parametro.razao`. Nulo se faltar o denominador. Com `ano`, usa
+// os campos daquele ano pela convenção do CSV (`atingiram2023`); sem eles, só o
+// ano mais recente pode usar os campos sem ano — os demais ficam sem regional,
+// em vez de repetir o denominador de outro ano.
+function razaoDeCampos(parametro, indicador, entradas, ano = null, maisRecente = true) {
+  const { numerador, denominador, fator = 1 } = parametro.razao;
+  const temDoAno = ano && entradas.some(([uf]) => indicador.extra?.[uf]?.[`${denominador}${ano}`] !== undefined);
+  if (ano && !temDoAno && !maisRecente) return null;
+  const nome = (campo) => (temDoAno ? `${campo}${ano}` : campo);
+  const soma = (campo) => entradas.reduce((total, [uf]) => total + (Number(indicador.extra?.[uf]?.[nome(campo)]) || 0), 0);
+  const base = soma(denominador);
+  return base ? soma(numerador) / base * fator : null;
+}
+
+function agregaHistorico(parametro, indicador, valores, contexto, ano = null, maisRecente = true) {
   const entradas = Object.entries(valores).filter(([, valor]) => Number.isFinite(valor));
   if (!entradas.length || parametro.agregacao === 'contagem') return null;
   const soma = (fn) => entradas.reduce((total, entrada) => total + (fn(entrada) || 0), 0);
@@ -81,6 +103,7 @@ function agregaHistorico(parametro, indicador, valores, contexto) {
     const peso = soma(([uf]) => contexto.populacaoPorUf[uf]);
     return peso ? soma(([uf, valor]) => valor * (contexto.populacaoPorUf[uf] || 0)) / peso : null;
   }
+  if (parametro.agregacao === 'razaoCampos') return razaoDeCampos(parametro, indicador, entradas, ano, maisRecente);
   return null;
 }
 
@@ -119,11 +142,12 @@ function montaHistorico(parametro, indicador, estados, ufs, contexto) {
     }
   }
 
+  const ultimoAno = Math.max(...[...porAno.keys()].map(Number));
   return [...porAno.entries()]
     .map(([ano, valores]) => ({
       ano,
       valores,
-      regional: agregaHistorico(parametro, indicador, valores, contexto)
+      regional: agregaHistorico(parametro, indicador, valores, contexto, ano, Number(ano) === ultimoAno)
     }))
     .sort((a, b) => Number(a.ano) - Number(b.ano));
 }
@@ -142,7 +166,8 @@ export const ROTULO_AGREGACAO = {
   media: 'média simples dos nove estados',
   razaoUc: 'unidades com plano e conselho sobre o total de unidades',
   razaoCvli: 'total de CVLI sobre a população regional',
-  contagem: 'sem valor regional: a meta é uma classificação por estado'
+  razaoCampos: 'soma dos numeradores sobre a soma dos denominadores dos nove estados',
+  contagem: 'sem valor regional: a meta é lida estado a estado'
 };
 
 // Motivos padrão de um indicador ficar fora do quadro, quando `exclusoes` não
@@ -180,6 +205,8 @@ function agregaRegional(parametro, indicador, estados, contexto) {
     const peso = soma(([uf]) => populacaoPorUf[uf]);
     if (!peso) return null;
     valor = soma(([uf]) => cvliPorUf[uf]) / peso * 100000;
+  } else if (parametro.agregacao === 'razaoCampos') {
+    valor = razaoDeCampos(parametro, indicador, celulas);
   }
 
   if (!Number.isFinite(valor) || !Number.isFinite(alvo)) return null;
@@ -201,8 +228,51 @@ function agregaRegional(parametro, indicador, estados, contexto) {
   };
 }
 
-export function buildMetas(catalogo, dashboard, config) {
+// Indicador coletado que não entra no quadro (a meta não tem patamar numérico):
+// a página mostra o valor e como ele andou, sem jornada. Viajam os números por
+// estado (atual e série) e, quando `conteudo/metas.json > semMeta` declara que
+// o valor da região é a soma dos estados, a série regional — só nos anos em que
+// os nove têm valor, pelo mesmo motivo do `observadoRegional` acima. Sem essa
+// declaração (taxas, índices) não há valor regional: somar taxas não é regional.
+// `unidade` em `semMeta` corrige a unidade exibida quando o valor coletado não
+// está na unidade da meta (APS: equipes, não % de cobertura).
+function dadosSemMeta(indicador, config = {}, ufs) {
+  const numero = (valor) => (typeof valor === 'number' && Number.isFinite(valor) ? valor : null);
+  const valores = Object.fromEntries(ufs.map((uf) => [uf, numero(indicador.valores?.[uf])]));
+  const serieAnual = Object.fromEntries(ufs.map((uf) => [uf, Object.fromEntries(
+    Object.entries(indicador.serieAnual?.[uf] || {}).map(([ano, valor]) => [ano, numero(valor)]).filter(([, valor]) => valor !== null)
+  )]));
+  const agregacao = config.agregacao || null;
+  let serieRegional = [];
+  let regionalAtual = null;
+  if (agregacao === 'soma') {
+    const anos = [...new Set(ufs.flatMap((uf) => Object.keys(serieAnual[uf])))].sort();
+    serieRegional = anos.flatMap((ano) => {
+      const doAno = ufs.map((uf) => serieAnual[uf][ano]);
+      return doAno.every((valor) => valor !== null && valor !== undefined) ? [{ ano: Number(ano), valor: doAno.reduce((a, b) => a + b, 0) }] : [];
+    });
+    const atuais = ufs.map((uf) => valores[uf]);
+    if (serieRegional.length) regionalAtual = serieRegional.at(-1);
+    else if (atuais.every((valor) => valor !== null)) regionalAtual = { ano: Number(anoDaReferencia(indicador.anoRef)) || null, valor: atuais.reduce((a, b) => a + b, 0) };
+  }
+  return { unidadeValor: config.unidade || indicador.unidade, agregacao, valores, serieAnual, serieRegional, regionalAtual };
+}
+
+export function buildMetas(catalogo, dashboard, config, projecoes = null) {
   const { parametros, exclusoes } = config;
+  const projecoesDe = (codigo) => (projecoes?.projecoes || []).filter((item) => item.codigo === codigo);
+  // Fora do quadro não há histórico regional; a projeção comparável que pede
+  // `observado: 'soma'` recebe a soma dos estados por ano, só nos anos em que os
+  // nove têm valor (um estado faltando faria a soma parecer uma queda).
+  const projecoesComObservado = (indicador, ufsDoPainel) => projecoesDe(indicador.codigo).map((item) => {
+    if (!item.comparavel || item.observado !== 'soma') return item;
+    const anos = new Set(ufsDoPainel.flatMap((uf) => Object.keys(indicador.serieAnual?.[uf] || {})));
+    const observadoRegional = [...anos].sort().flatMap((ano) => {
+      const valores = ufsDoPainel.map((uf) => Number(indicador.serieAnual?.[uf]?.[ano]));
+      return valores.every(Number.isFinite) ? [{ ano: Number(ano), valor: valores.reduce((a, b) => a + b, 0) }] : [];
+    });
+    return { ...item, observadoRegional };
+  });
   const ufs = (dashboard?.states || []).map((estado) => estado.uf);
   const porCodigo = new Map();
   for (const eixo of catalogo?.eixos || []) {
@@ -294,7 +364,8 @@ export function buildMetas(catalogo, dashboard, config) {
       avaliados,
       regional: agregaRegional(parametro, indicador, estados, contexto),
       agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null,
-      historico: montaHistorico(parametro, indicador, estados, ufs, contexto)
+      historico: montaHistorico(parametro, indicador, estados, ufs, contexto),
+      projecoes: projecoesDe(indicador.codigo)
     };
     // Depende do histórico e do valor regional, por isso vem depois.
     meta.trajetoria = trajetoriaDaMeta(meta, parametro, ufs);
@@ -331,7 +402,9 @@ export function buildMetas(catalogo, dashboard, config) {
       status: indicador.status,
       temValores: Boolean(indicador.valores),
       cobertura: preenchidos,
-      motivo
+      motivo,
+      projecoes: projecoesComObservado(indicador, ufs),
+      ...(indicador.valores ? dadosSemMeta(indicador, config.semMeta?.[indicador.codigo], ufs) : {})
     });
   }
 
@@ -354,6 +427,7 @@ export function buildMetas(catalogo, dashboard, config) {
       totalIndicadores: porCodigo.size,
       metasAvaliadas: metas.length,
       comValores: [...porCodigo.values()].filter((indicador) => indicador.valores).length,
+      comProjecao: new Set((projecoes?.projecoes || []).map((item) => item.codigo)).size,
       regional: {
         comValorRegional: comRegional.length,
         cumpridas: comRegional.filter((meta) => meta.regional.cumpre).length,

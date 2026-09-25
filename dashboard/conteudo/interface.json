@@ -128,7 +128,6 @@
         "Leitura regional:",
         "até {prazo}",
         "nos 9 estados",
-        "A ou B nos {total} estados",
         "{cumprem} de {total} estados",
         "{cumprem} de {total}",
         "Sem dado",
@@ -152,7 +151,9 @@
         "{total} indicador · {comMeta} com meta mensurável",
         "{total} indicadores · {comMeta} com meta mensurável",
         "Não foi possível exportar",
-        "Preparando…"
+        "Preparando…",
+        "{alvo} nos {total} estados",
+        "A ou B"
       ],
       "alvo": ".goals-list-card"
     },
@@ -262,7 +263,9 @@
         "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
         "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
         "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
-        "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050."
+        "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
+        "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
+        "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador."
       ],
       "alvo": "#goals-detail",
       "abre": "#goals-list button[data-codigo]"
@@ -492,6 +495,97 @@
         "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo."
       ],
       "alvo": ".trajetoria"
+    },
+    {
+      "titulo": "Metas: trajetória pactuada até 2050",
+      "chaves": [
+        "Trajetória 2050",
+        "Metas intermediárias pactuadas na Estratégia, para a região. Não são previsão nem o ritmo atual calculado no Panorama.",
+        "Trajetória pactuada de {nome}",
+        "Valor medido pelo painel",
+        "Cenário",
+        "Medido",
+        "cenário que corresponde à meta do catálogo.",
+        "Só referência:",
+        "soma dos numeradores sobre a soma dos denominadores dos nove estados",
+        "Trajetória pactuada",
+        "Marcos pactuados",
+        "Linear",
+        "Acelerada",
+        "Arrojado",
+        "Moderado",
+        "Conservador",
+        "UCs estaduais com plano de manejo e conselho gestor",
+        "População em extrema pobreza",
+        "Óbitos por causas evitáveis",
+        "Municípios com telessaúde",
+        "IDEB anos iniciais: municípios na meta",
+        "IDEB anos finais: municípios na meta",
+        "IDEB ensino médio: municípios na meta",
+        "Taxa de escolarização",
+        "Taxa de CVLI",
+        "Municípios com programa de segurança cidadã",
+        "Municípios com plano de adaptação climática",
+        "Receita líquida da indústria",
+        "Adequação e trafegabilidade de transportes",
+        "Transição energética e qualidade distributiva (ITEQ)",
+        "Participação de renováveis",
+        "Saneamento básico adequado",
+        "Captação nova de financiamento climático",
+        "Alavancagem de blended finance",
+        "Sistemas de dados integrados",
+        "óbitos",
+        "municípios",
+        "por 100 mil hab.",
+        "R$ bilhões",
+        "R$ milhões",
+        "R$ privado por R$ público",
+        "sistemas",
+        "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.",
+        "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.",
+        "A projeção parte de 22,0 por 100 mil; o painel calcula 23,8 em 2024 e 21,1 em 2025. A linha de base não coincide com nenhum ano da série.",
+        "Indicador ainda sem valores coletados no painel.",
+        "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.",
+        "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.",
+        "A planilha traz também 2025 (81 de 393 UCs, 20,6%), com um cadastro maior; a trajetória parte do recorte de 2026, o mesmo do painel.",
+        "A meta do catálogo (65% em 2050) é o cenário moderado.",
+        "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+        "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.",
+        "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+        "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+        "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.",
+        "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.",
+        "R$",
+        "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.",
+        "mi",
+        "Rateio contratado dos estados com o Consórcio",
+        "A ficha parte de R$ 6,12 mi em 2026, o rateio ordinário dos nove estados fixado pela Res. 001/2026 (a ficha o chama de executado; é orçamento). A série medida soma os contratos de rateio de cada estado com o Consórcio: valor contratado, não arrecadado. Em 2019 e 2020 a receita arrecadada (R$ 0,70 mi e R$ 3,11 mi) ficou abaixo do contratado; 2024 e 2025 incluem aportes extras (HUB e COP30). Recursos de terceiros e a execução estão nas tabelas cal_instrumentos e cal_orcamento_execucao.",
+        "A projeção parte de R$ 578,1 bi de receita líquida da indústria, e nenhum recorte da tabela SIDRA 10457 de 2024 reproduz esse número: receita de atividades industriais de R$ 584,3 bi (indústria total) ou R$ 475,0 bi (transformação, campo receitaLiquida2024); receita total de vendas de R$ 598,4 bi ou R$ 489,1 bi. O valor principal do painel é outra variável, o valor da transformação industrial da indústria total (R$ 215,4 bi)."
+      ]
+    },
+    {
+      "titulo": "Metas: coletados sem meta numérica",
+      "chaves": [
+        "Coletados, sem meta numérica",
+        "A região e o momento de cada estado",
+        "O momento de cada estado",
+        "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.",
+        "Desde {ano}",
+        "Estados",
+        "Maior",
+        "Menor",
+        "ao ano",
+        "ritmo ao ano",
+        "bi",
+        "mil",
+        "sem série anual",
+        "série desde {ano}",
+        "{lugar} ao longo do tempo",
+        "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.",
+        "{variacao} desde {ano}",
+        "vínculos",
+        "equipes"
+      ]
     }
   ],
   "textos": {
@@ -894,10 +988,6 @@
     "nos 9 estados": {
       "pt": "nos 9 estados",
       "en": "across the 9 states"
-    },
-    "A ou B nos {total} estados": {
-      "pt": "A ou B nos {total} estados",
-      "en": "A or B in all {total} states"
     },
     "{cumprem} de {total} estados": {
       "pt": "{cumprem} de {total} estados",
@@ -1982,6 +2072,346 @@
     "até {prazo}": {
       "pt": "até {prazo}",
       "en": "by {prazo}"
+    },
+    "Trajetória 2050": {
+      "pt": "Trajetória 2050",
+      "en": "Pathway to 2050"
+    },
+    "Metas intermediárias pactuadas na Estratégia, para a região. Não são previsão nem o ritmo atual calculado no Panorama.": {
+      "pt": "Metas intermediárias pactuadas na Estratégia, para a região. Não são previsão nem o ritmo atual calculado no Panorama.",
+      "en": "Interim targets agreed in the Strategy, for the region as a whole. They are neither a forecast nor the current pace calculated on the Overview."
+    },
+    "Trajetória pactuada de {nome}": {
+      "pt": "Trajetória pactuada de {nome}",
+      "en": "Agreed pathway for {nome}"
+    },
+    "Valor medido pelo painel": {
+      "pt": "Valor medido pelo painel",
+      "en": "Value measured by the dashboard"
+    },
+    "Cenário": {
+      "pt": "Cenário",
+      "en": "Scenario"
+    },
+    "Medido": {
+      "pt": "Medido",
+      "en": "Measured"
+    },
+    "cenário que corresponde à meta do catálogo.": {
+      "pt": "cenário que corresponde à meta do catálogo.",
+      "en": "scenario that matches the catalogue target."
+    },
+    "Só referência:": {
+      "pt": "Só referência:",
+      "en": "Reference only:"
+    },
+    "soma dos numeradores sobre a soma dos denominadores dos nove estados": {
+      "pt": "soma dos numeradores sobre a soma dos denominadores dos nove estados",
+      "en": "sum of the numerators over the sum of the denominators of the nine states"
+    },
+    "Trajetória pactuada": {
+      "pt": "Trajetória pactuada",
+      "en": "Agreed pathway"
+    },
+    "Marcos pactuados": {
+      "pt": "Marcos pactuados",
+      "en": "Agreed milestones"
+    },
+    "Linear": {
+      "pt": "Linear",
+      "en": "Linear"
+    },
+    "Acelerada": {
+      "pt": "Acelerada",
+      "en": "Accelerated"
+    },
+    "Arrojado": {
+      "pt": "Arrojado",
+      "en": "Ambitious"
+    },
+    "Moderado": {
+      "pt": "Moderado",
+      "en": "Moderate"
+    },
+    "Conservador": {
+      "pt": "Conservador",
+      "en": "Conservative"
+    },
+    "UCs estaduais com plano de manejo e conselho gestor": {
+      "pt": "UCs estaduais com plano de manejo e conselho gestor",
+      "en": "State protected areas with a management plan and governing council"
+    },
+    "População em extrema pobreza": {
+      "pt": "População em extrema pobreza",
+      "en": "Population in extreme poverty"
+    },
+    "Óbitos por causas evitáveis": {
+      "pt": "Óbitos por causas evitáveis",
+      "en": "Deaths from avoidable causes"
+    },
+    "Municípios com telessaúde": {
+      "pt": "Municípios com telessaúde",
+      "en": "Municipalities with telehealth"
+    },
+    "IDEB anos iniciais: municípios na meta": {
+      "pt": "IDEB anos iniciais: municípios na meta",
+      "en": "IDEB early primary: municipalities on target"
+    },
+    "IDEB anos finais: municípios na meta": {
+      "pt": "IDEB anos finais: municípios na meta",
+      "en": "IDEB lower secondary: municipalities on target"
+    },
+    "IDEB ensino médio: municípios na meta": {
+      "pt": "IDEB ensino médio: municípios na meta",
+      "en": "IDEB upper secondary: municipalities on target"
+    },
+    "Taxa de escolarização": {
+      "pt": "Taxa de escolarização",
+      "en": "School enrolment rate"
+    },
+    "Taxa de CVLI": {
+      "pt": "Taxa de CVLI",
+      "en": "Intentional violent death rate"
+    },
+    "Municípios com programa de segurança cidadã": {
+      "pt": "Municípios com programa de segurança cidadã",
+      "en": "Municipalities with a citizen security programme"
+    },
+    "Municípios com plano de adaptação climática": {
+      "pt": "Municípios com plano de adaptação climática",
+      "en": "Municipalities with a climate adaptation plan"
+    },
+    "Receita líquida da indústria": {
+      "pt": "Receita líquida da indústria",
+      "en": "Net industrial revenue"
+    },
+    "Adequação e trafegabilidade de transportes": {
+      "pt": "Adequação e trafegabilidade de transportes",
+      "en": "Road condition and passability"
+    },
+    "Transição energética e qualidade distributiva (ITEQ)": {
+      "pt": "Transição energética e qualidade distributiva (ITEQ)",
+      "en": "Energy transition and distribution quality (ITEQ)"
+    },
+    "Participação de renováveis": {
+      "pt": "Participação de renováveis",
+      "en": "Share of renewables"
+    },
+    "Saneamento básico adequado": {
+      "pt": "Saneamento básico adequado",
+      "en": "Adequate basic sanitation"
+    },
+    "Captação nova de financiamento climático": {
+      "pt": "Captação nova de financiamento climático",
+      "en": "New climate finance raised"
+    },
+    "Alavancagem de blended finance": {
+      "pt": "Alavancagem de blended finance",
+      "en": "Blended finance leverage"
+    },
+    "Sistemas de dados integrados": {
+      "pt": "Sistemas de dados integrados",
+      "en": "Integrated data systems"
+    },
+    "óbitos": {
+      "pt": "óbitos",
+      "en": "deaths"
+    },
+    "municípios": {
+      "pt": "municípios",
+      "en": "municipalities"
+    },
+    "por 100 mil hab.": {
+      "pt": "por 100 mil hab.",
+      "en": "per 100,000 inhabitants"
+    },
+    "R$ bilhões": {
+      "pt": "R$ bilhões",
+      "en": "R$ billion"
+    },
+    "R$ milhões": {
+      "pt": "R$ milhões",
+      "en": "R$ million"
+    },
+    "R$ privado por R$ público": {
+      "pt": "R$ privado por R$ público",
+      "en": "private R$ per public R$"
+    },
+    "sistemas": {
+      "pt": "sistemas",
+      "en": "systems"
+    },
+    "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.": {
+      "pt": "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.",
+      "en": "The projection starts from 6.9% in extreme poverty; the dashboard measures poverty through CadÚnico (14.0% in the Legal Amazon) and extreme poverty through IBGE's SIS (5.5%). Neither is the projection's baseline."
+    },
+    "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.": {
+      "pt": "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.",
+      "en": "The projection starts from 75.5%; school attendance for ages 4 to 17 on the dashboard is 96.4%. Different age ranges."
+    },
+    "A projeção parte de 22,0 por 100 mil; o painel calcula 23,8 em 2024 e 21,1 em 2025. A linha de base não coincide com nenhum ano da série.": {
+      "pt": "A projeção parte de 22,0 por 100 mil; o painel calcula 23,8 em 2024 e 21,1 em 2025. A linha de base não coincide com nenhum ano da série.",
+      "en": "The projection starts from 22.0 per 100,000; the dashboard calculates 23.8 in 2024 and 21.1 in 2025. The baseline matches no year in the series."
+    },
+    "Indicador ainda sem valores coletados no painel.": {
+      "pt": "Indicador ainda sem valores coletados no painel.",
+      "en": "Indicator not yet collected on the dashboard."
+    },
+    "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.": {
+      "pt": "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.",
+      "en": "The projection starts from 41.5% in 2022; the dashboard's ISGR is 47.2 (adequate water and sewage, population-weighted). Different index composition."
+    },
+    "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.": {
+      "pt": "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.",
+      "en": "The projection starts from 62.5%; the dashboard calculates 60.9% (simple mean of the states) or 85.2% (weighted by inspected capacity). Neither is the baseline."
+    },
+    "A planilha traz também 2025 (81 de 393 UCs, 20,6%), com um cadastro maior; a trajetória parte do recorte de 2026, o mesmo do painel.": {
+      "pt": "A planilha traz também 2025 (81 de 393 UCs, 20,6%), com um cadastro maior; a trajetória parte do recorte de 2026, o mesmo do painel.",
+      "en": "The spreadsheet also has 2025 (81 of 393 protected areas, 20.6%), from a larger register; the pathway starts from the 2026 scope, the same as the dashboard's."
+    },
+    "A meta do catálogo (65% em 2050) é o cenário moderado.": {
+      "pt": "A meta do catálogo (65% em 2050) é o cenário moderado.",
+      "en": "The catalogue target (65% by 2050) is the moderate scenario."
+    },
+    "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
+      "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 30.3% and the dashboard calculates 30.7% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+    },
+    "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.": {
+      "pt": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.",
+      "en": "The spreadsheet baseline corresponds to the 2023 IDEB round; the projection's annual series starts in 2026."
+    },
+    "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
+      "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 7.7% and the dashboard calculates 7.8% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+    },
+    "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
+      "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 58.1% and the dashboard calculates 61.4% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+    },
+    "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.": {
+      "pt": "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.",
+      "en": "The projection covers all of Brazil: 839,766 avoidable deaths aged 5 to 74 in 2024 (SIM), the baseline cited in the technical sheet. In the Legal Amazon there were 95,901 (field obitos5a74_2024). The dashboard's main value is the under-5 rate."
+    },
+    "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.": {
+      "pt": "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.",
+      "en": "Target: 50% of the Legal Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
+    },
+    "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.": {
+      "pt": "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
+      "en": "The target is regional (a permanent governance model coordinated by the Consortium), and so is the budget projection, R$ 17.7 million by 2050: there is no threshold per state. The value per state is each state's contribution to the Consortium; the Pathway to 2050 tab compares the sum of the nine with the projection."
+    },
+    "R$": {
+      "pt": "R$",
+      "en": "R$"
+    },
+    "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador.": {
+      "pt": "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador.",
+      "en": "The target is regional (mobilise the equivalent of 0.1% of the Legal Amazon's GDP a year; the technical sheet says R$ 100 million a year) and has no threshold per state. The value per state is what each government received in the year from the Amazon Fund and REM Acre, two components of the indicator."
+    },
+    "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.": {
+      "pt": "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.",
+      "en": "The projection counts new funds raised starting from zero in 2025; the dashboard adds up what state governments received from the Amazon Fund and REM Acre (R$ 143.3 million in 2025), without separating new money from ongoing older contracts."
+    },
+    "mi": {
+      "pt": "mi",
+      "en": "M"
+    },
+    "{alvo} nos {total} estados": {
+      "pt": "{alvo} nos {total} estados",
+      "en": "{alvo} in all {total} states"
+    },
+    "A ou B": {
+      "pt": "A ou B",
+      "en": "A or B"
+    },
+    "Rateio contratado dos estados com o Consórcio": {
+      "pt": "Rateio contratado dos estados com o Consórcio",
+      "en": "Apportionment contracted by the states with the Consortium"
+    },
+    "A ficha parte de R$ 6,12 mi em 2026, o rateio ordinário dos nove estados fixado pela Res. 001/2026 (a ficha o chama de executado; é orçamento). A série medida soma os contratos de rateio de cada estado com o Consórcio: valor contratado, não arrecadado. Em 2019 e 2020 a receita arrecadada (R$ 0,70 mi e R$ 3,11 mi) ficou abaixo do contratado; 2024 e 2025 incluem aportes extras (HUB e COP30). Recursos de terceiros e a execução estão nas tabelas cal_instrumentos e cal_orcamento_execucao.": {
+      "pt": "A ficha parte de R$ 6,12 mi em 2026, o rateio ordinário dos nove estados fixado pela Res. 001/2026 (a ficha o chama de executado; é orçamento). A série medida soma os contratos de rateio de cada estado com o Consórcio: valor contratado, não arrecadado. Em 2019 e 2020 a receita arrecadada (R$ 0,70 mi e R$ 3,11 mi) ficou abaixo do contratado; 2024 e 2025 incluem aportes extras (HUB e COP30). Recursos de terceiros e a execução estão nas tabelas cal_instrumentos e cal_orcamento_execucao.",
+      "en": "The technical sheet starts from R$ 6.12 million in 2026, the nine states' ordinary apportionment set by Resolution 001/2026 (the sheet calls it spent; it is the budget). The measured series adds up each state's apportionment contracts with the Consortium: contracted value, not collected. In 2019 and 2020 collected revenue (R$ 0.70 million and R$ 3.11 million) fell short of the contracted amount; 2024 and 2025 include extra contributions (HUB and COP30). Third-party funds and spending are in the cal_instrumentos and cal_orcamento_execucao tables."
+    },
+    "A projeção parte de R$ 578,1 bi de receita líquida da indústria, e nenhum recorte da tabela SIDRA 10457 de 2024 reproduz esse número: receita de atividades industriais de R$ 584,3 bi (indústria total) ou R$ 475,0 bi (transformação, campo receitaLiquida2024); receita total de vendas de R$ 598,4 bi ou R$ 489,1 bi. O valor principal do painel é outra variável, o valor da transformação industrial da indústria total (R$ 215,4 bi).": {
+      "pt": "A projeção parte de R$ 578,1 bi de receita líquida da indústria, e nenhum recorte da tabela SIDRA 10457 de 2024 reproduz esse número: receita de atividades industriais de R$ 584,3 bi (indústria total) ou R$ 475,0 bi (transformação, campo receitaLiquida2024); receita total de vendas de R$ 598,4 bi ou R$ 489,1 bi. O valor principal do painel é outra variável, o valor da transformação industrial da indústria total (R$ 215,4 bi).",
+      "en": "The projection starts from R$ 578.1 billion of industrial net revenue, and no breakdown of SIDRA table 10457 for 2024 reproduces that figure: net revenue from industrial activities of R$ 584.3 billion (all industry) or R$ 475.0 billion (manufacturing, field receitaLiquida2024); total net sales of R$ 598.4 billion or R$ 489.1 billion. The dashboard's main value is a different variable, industrial value added for all industry (R$ 215.4 billion)."
+    },
+    "Coletados, sem meta numérica": {
+      "pt": "Coletados, sem meta numérica",
+      "en": "Collected, no numeric target"
+    },
+    "A região e o momento de cada estado": {
+      "pt": "A região e o momento de cada estado",
+      "en": "The region and each state's moment"
+    },
+    "O momento de cada estado": {
+      "pt": "O momento de cada estado",
+      "en": "Each state's moment"
+    },
+    "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.": {
+      "pt": "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.",
+      "en": "Each row has its own scale: the darkest shade is that row's highest value in the period."
+    },
+    "Desde {ano}": {
+      "pt": "Desde {ano}",
+      "en": "Since {ano}"
+    },
+    "Estados": {
+      "pt": "Estados",
+      "en": "States"
+    },
+    "Maior": {
+      "pt": "Maior",
+      "en": "Highest"
+    },
+    "Menor": {
+      "pt": "Menor",
+      "en": "Lowest"
+    },
+    "ao ano": {
+      "pt": "ao ano",
+      "en": "per year"
+    },
+    "ritmo ao ano": {
+      "pt": "ritmo ao ano",
+      "en": "annual pace"
+    },
+    "bi": {
+      "pt": "bi",
+      "en": "B"
+    },
+    "mil": {
+      "pt": "mil",
+      "en": "k"
+    },
+    "sem série anual": {
+      "pt": "sem série anual",
+      "en": "no annual series"
+    },
+    "série desde {ano}": {
+      "pt": "série desde {ano}",
+      "en": "series since {ano}"
+    },
+    "{lugar} ao longo do tempo": {
+      "pt": "{lugar} ao longo do tempo",
+      "en": "{lugar} over time"
+    },
+    "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.": {
+      "pt": "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.",
+      "en": "{lugar}: {inicio} in {primeiro} and {fim} in {ultimo}. Use the arrow keys to move through the years."
+    },
+    "{variacao} desde {ano}": {
+      "pt": "{variacao} desde {ano}",
+      "en": "{variacao} since {ano}"
+    },
+    "vínculos": {
+      "pt": "vínculos",
+      "en": "formal jobs"
+    },
+    "equipes": {
+      "pt": "equipes",
+      "en": "teams"
     }
   }
 }

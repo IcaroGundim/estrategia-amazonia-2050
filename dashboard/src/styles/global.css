@@ -861,6 +861,20 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-row.is-catalog { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
 .goals-row.is-catalog .goals-row-name small { color: var(--tinta-4); font-style: italic; }
 .goals-row.is-catalog .goals-row-ler { grid-row: auto; display: flex; align-items: center; }
+/* Coletados sem meta numérica: no lugar da jornada, o valor da Amazônia Legal
+   (ou do estado das bandeiras), e no lugar da barra, a série em faixa de calor. */
+.goals-row.is-coletado { grid-template-columns: 80px minmax(0, 1fr); }
+.goals-row.is-coletado .goals-row-ler b { font-size: 20px; }
+.goals-row.is-coletado .goals-row-ler b.is-faixa { font-size: 15px; }
+.goals-row-lugar { display: block; margin-bottom: 3px; color: var(--tinta-4); font-size: 8.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; white-space: normal; }
+.coletado-calor { height: 12px; margin-top: 8px; display: grid; gap: 1px; }
+.coletado-calor i { display: block; border-radius: 1px; }
+.coletado-calor i.is-vazio { background: var(--linha-2); }
+.coletado-pontos { position: relative; height: 24px; margin-top: 6px; display: block; }
+.coletado-pontos::before { content: ""; position: absolute; top: 6px; left: 0; right: 0; height: 1px; background: var(--linha); }
+.coletado-pontos i { position: absolute; top: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--mata-500); transform: translateX(-50%); }
+.coletado-pontos i.is-selected { z-index: 1; background: var(--urucum); }
+.coletado-pontos span { position: absolute; top: 13px; color: var(--tinta-4); font-size: 9px; font-weight: 700; transform: translateX(-50%); }
 /* Com o painel de detalhe aberto a lista fica com dois terços da largura, e
    duas colunas só cabem em telas largas. */
 @media (max-width: 1400px) { .goals-board.has-detail .goals-cards { grid-template-columns: minmax(0, 1fr); } }
@@ -907,6 +921,76 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-detail-tabs button:focus-visible { border-bottom-color: var(--mata-300); }
 .goals-detail-tabs button.is-active { border-bottom-color: var(--urucum); color: var(--mata); }
 .goals-detail-painel { min-width: 0; }
+/* Aba "Trajetória 2050": gráfico com a faixa entre cenários, o central em
+   destaque e o valor medido em ponto; embaixo, a tabela de marcos. */
+.projecao-lead { margin: 14px 0 0; color: var(--tinta-3); font-size: 12.5px; }
+.projecao h3 + .projecao-unidade { margin-top: 2px; }
+.projecao-unidade { margin: 0 0 4px; color: var(--tinta-4); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+.projecao-grafico { width: 100%; height: auto; display: block; }
+.projecao-grafico text { font: 10.5px var(--text); fill: var(--tinta-4); }
+.projecao-grade line { stroke: var(--linha-2); }
+.projecao-faixa { fill: var(--rio); opacity: 0.12; }
+.projecao-cenario { fill: none; stroke: var(--rio); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.projecao-central { fill: none; stroke: var(--mata); stroke-width: 2.4; stroke-linejoin: round; }
+.projecao-marco { fill: var(--mata); }
+.projecao-grafico .projecao-final { fill: var(--mata); font-weight: 600; }
+.projecao-medido { fill: var(--urucum); stroke: var(--papel); stroke-width: 1.5; }
+.projecao-legenda { margin: 4px 0 10px; display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--tinta-3); font-size: 11.5px; }
+.projecao-legenda i { width: 18px; margin-right: 5px; display: inline-block; vertical-align: middle; border-top: 2px solid var(--mata); }
+.projecao-legenda i.leg-cenario { border-top: 1.5px dashed var(--rio); }
+.projecao-legenda i.leg-medido { width: 9px; height: 9px; border: 0; border-radius: 50%; background: var(--urucum); }
+.projecao-tabela-rolagem { overflow-x: auto; }
+.projecao-tabela { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.projecao-tabela th, .projecao-tabela td { padding: 5px 4px; border-bottom: 1px solid var(--linha-2); text-align: right; white-space: nowrap; }
+.projecao-tabela th:first-child { text-align: left; font-weight: 500; color: var(--tinta-2); }
+.projecao-tabela thead th { color: var(--tinta-4); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; }
+.projecao-tabela tr.is-central th, .projecao-tabela tr.is-central td { color: var(--mata); font-weight: 600; }
+.projecao-tabela tr.is-medido th, .projecao-tabela tr.is-medido td { color: var(--urucum); }
+.projecao-aviso { margin: 10px 0 0; padding: 8px 10px; border-left: 3px solid var(--ocre); background: #faf6ef; color: var(--tinta-2); font-size: 12px; }
+/* Aba "Resultado" dos coletados sem meta numérica: a meta pactuada na faixa
+   escura, os números em foco, a linha no tempo e as faixas de calor. */
+.coletado-meta { margin: 14px 0 0; padding: 13px 14px 12px; border-radius: 11px; background: var(--mata); color: #fff; }
+.coletado-meta h3 { margin: 0 0 5px; color: var(--mata-100); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.coletado-meta-texto { margin: 0; font: 700 16px/1.3 var(--display); }
+.coletado-meta-motivo { margin: 8px 0 0; padding-top: 8px; border-top: 1px solid rgba(198, 210, 199, 0.25); color: var(--mata-100); font-size: 11.5px; line-height: 1.45; }
+.coletado-resumo { margin: 14px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.coletado-resumo div { min-width: 0; }
+.coletado-resumo dt { margin-bottom: 3px; color: var(--tinta-4); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.coletado-resumo dd { margin: 0; color: var(--mata); font: 700 16px/1.2 var(--display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.coletado-resumo dd small { display: block; color: var(--tinta-4); font: 400 10px var(--text); }
+.coletado-secao h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.coletado-secao h3 em { flex: none; white-space: nowrap; color: var(--tinta-4); font-size: 10.5px; font-style: normal; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.coletado-interativo { position: relative; }
+.coletado-grafico { border-radius: 6px; }
+.coletado-grafico:focus-visible { outline: 2px solid var(--mata-300); outline-offset: 3px; }
+.coletado-svg { display: block; width: 100%; height: auto; }
+.coletado-svg text { font: 12.5px var(--text); fill: var(--tinta-4); font-variant-numeric: tabular-nums; }
+.coletado-grade line { stroke: var(--linha-2); }
+.coletado-grade line.is-zero { stroke: var(--linha); }
+.coletado-area { fill: var(--mata); opacity: 0.07; }
+.coletado-linha { fill: none; stroke: var(--mata); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.coletado-fim { fill: var(--urucum); }
+.coletado-marcador { opacity: 0; pointer-events: none; transition: opacity 120ms ease; }
+.coletado-marcador.is-visivel { opacity: 1; }
+.coletado-marcador line { stroke: var(--tinta-4); stroke-width: 1; stroke-dasharray: 2 2; }
+.coletado-marcador circle { fill: var(--papel); stroke: var(--mata); stroke-width: 2; }
+.coletado-alvo { fill: transparent; cursor: crosshair; }
+.coletado-dica { position: absolute; z-index: 5; padding: 5px 8px; border-radius: 6px; background: var(--mata); color: #fff; font-size: 11px; font-weight: 600; line-height: 1.3; white-space: nowrap; font-variant-numeric: tabular-nums; pointer-events: none; box-shadow: 0 6px 16px rgba(14, 43, 34, 0.18); }
+.coletado-dica[hidden] { display: none; }
+.coletado-faixas { display: grid; gap: 3px; }
+.coletado-faixa { display: grid; grid-template-columns: 24px minmax(0, 1fr) 46px; align-items: center; gap: 7px; }
+.coletado-faixa .uf { color: var(--tinta-3); font-size: 9.5px; font-weight: 700; }
+.coletado-faixa .rt { color: var(--tinta-2); font-size: 9.5px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.coletado-faixa.is-regional { margin-bottom: 4px; }
+.coletado-faixa.is-regional .uf, .coletado-faixa.is-regional .rt { color: var(--mata); font-weight: 800; }
+.coletado-faixa.is-selected .uf, .coletado-faixa.is-selected .rt { color: var(--urucum); }
+.coletado-faixa.is-selected .coletado-cel { box-shadow: 0 0 0 1.5px var(--urucum); }
+.coletado-cel { height: 13px; display: grid; gap: 1px; border-radius: 2px; }
+.coletado-cel i { display: block; min-width: 0; }
+.coletado-cel i[data-dica] { cursor: crosshair; }
+.coletado-cel i.is-vazio { background: var(--linha-2); opacity: 0.5; }
+.coletado-cel i.is-ano { outline: 1.5px solid var(--urucum); outline-offset: 0; position: relative; z-index: 1; }
+.coletado-anos { margin: 4px 53px 0 31px; display: flex; justify-content: space-between; color: var(--tinta-4); font-size: 9px; font-variant-numeric: tabular-nums; }
 /* Dentro do painel a ficha não tem cabeçalho próprio: quem nomeia o indicador é
    o topo do painel, comum às duas abas. O recheio lateral também é dele. */
 .goals-detail-painel .indicator-detail-summary { margin-top: 4px; }
@@ -1224,6 +1308,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .goals-list-card { padding: 18px 10px 12px 16px; }
   .goals-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .goals-detail-summary div:last-child { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid var(--linha-2); }
+  .coletado-resumo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .coletado-resumo div:last-child { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid var(--linha-2); }
   /* Painel recolhível: aberto, os filtros e os cinco downloads somam cerca de
      600px e a lista de indicadores só começava abaixo disso. Fechado por padrão,
      com o resumo do que está filtrado no próprio botão. */
