@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Bandeira mesclada de Estados Unidos e Reino Unido, marca do inglês no seletor
+  de idioma.
+
+  Não existe bandeira da língua inglesa, e escolher uma das duas seria dizer de
+  qual inglês o painel fala. A divisão em diagonal é a convenção dos seletores de
+  idioma para esse caso: cada metade traz a bandeira inteira, comprimida na
+  largura, em vez de um pedaço de cada uma. Os EUA ficam à esquerda porque o
+  cantão azul precisa da parte larga da diagonal para não ser cortado.
+
+  Como a da Bandeira_do_Brasil.svg, é um desenho para 15px de altura: as 50
+  estrelas viraram dezoito pontos e a Union Jack não tem o descolamento entre o
+  aspa vermelho e o branco, invisível nesse tamanho. As larguras de traço da cruz
+  de São Jorge são dadas separadas para o braço deitado e o em pé, porque a
+  compressão horizontal afinaria o segundo e a cruz sairia torta.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" role="img">
+  <defs>
+    <clipPath id="lado-eua"><path d="M0 0H36L24 40H0Z"/></clipPath>
+    <clipPath id="lado-uk"><path d="M36 0H60V40H24Z"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#lado-eua)">
+    <g transform="scale(.617 1)">
+      <rect width="60" height="40" fill="#fff"/>
+      <g fill="#b31942">
+        <rect width="60" height="3.08"/>
+        <rect y="6.15" width="60" height="3.08"/>
+        <rect y="12.31" width="60" height="3.08"/>
+        <rect y="18.46" width="60" height="3.08"/>
+        <rect y="24.62" width="60" height="3.08"/>
+        <rect y="30.77" width="60" height="3.08"/>
+        <rect y="36.92" width="60" height="3.08"/>
+      </g>
+      <rect width="24" height="21.54" fill="#0a3161"/>
+      <g fill="#fff">
+        <circle cx="3.4" cy="2.7" r="1.15"/><circle cx="9" cy="2.7" r="1.15"/><circle cx="14.6" cy="2.7" r="1.15"/><circle cx="20.2" cy="2.7" r="1.15"/>
+        <circle cx="6.2" cy="6.6" r="1.15"/><circle cx="11.8" cy="6.6" r="1.15"/><circle cx="17.4" cy="6.6" r="1.15"/>
+        <circle cx="3.4" cy="10.5" r="1.15"/><circle cx="9" cy="10.5" r="1.15"/><circle cx="14.6" cy="10.5" r="1.15"/><circle cx="20.2" cy="10.5" r="1.15"/>
+        <circle cx="6.2" cy="14.4" r="1.15"/><circle cx="11.8" cy="14.4" r="1.15"/><circle cx="17.4" cy="14.4" r="1.15"/>
+        <circle cx="3.4" cy="18.3" r="1.15"/><circle cx="9" cy="18.3" r="1.15"/><circle cx="14.6" cy="18.3" r="1.15"/><circle cx="20.2" cy="18.3" r="1.15"/>
+      </g>
+    </g>
+  </g>
+
+  <g clip-path="url(#lado-uk)">
+    <g transform="translate(22.8 0) scale(.62 1)">
+      <rect width="60" height="40" fill="#012169"/>
+      <path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/>
+      <path d="M0 0 60 40M60 0 0 40" stroke="#c8102e" stroke-width="3.5"/>
+      <path d="M0 20H60" stroke="#fff" stroke-width="12"/>
+      <path d="M30 0V40" stroke="#fff" stroke-width="19.4"/>
+      <path d="M0 20H60" stroke="#c8102e" stroke-width="7.4"/>
+      <path d="M30 0V40" stroke="#c8102e" stroke-width="11.9"/>
+    </g>
+  </g>
+</svg>

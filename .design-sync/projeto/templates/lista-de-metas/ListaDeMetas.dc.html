@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Lista de metas" description="Página de matriz: busca, filtros em cápsula, eixos e cartões de meta em duas colunas, com a jornada até o patamar." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>*{box-sizing:border-box}body{margin:0;background:#f5f0e8;color:#1a1613;font:400 15px/1.55 "Libre Franklin",system-ui,sans-serif}a{color:#0e2b22}a:hover{color:#c0451f}</style>
+</helmet>
+<section style="padding:40px 0 88px;background:#f5f0e8">
+<div style="width:min(2200px,100%);margin-inline:auto;padding-inline:clamp(24px,3.2vw,72px)">
+<header style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+<h1 style="margin:0;font:800 clamp(26px,2.2vw,40px)/0.96 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">Metas - <em style="color:#c0451f;font-style:normal">Amazônia Legal.</em></h1>
+<p style="margin:0;color:#8a8078;font-size:12px">16 metas com patamar mensurável · 59 indicadores na matriz</p>
+</header>
+<div style="margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.SearchField" style="flex:1 1 200px;max-width:340px;min-height:40px" value="{{ busca }}" on-change="{{ buscar }}" hint-size="340px,40px"></x-import>
+<div style="display:flex;align-items:center;gap:9px">
+<p style="margin:0;color:#c0451f;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Eixo</p>
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<sc-for list="{{ eixos }}" as="eixo" hint-placeholder-count="6">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.FilterChip" active="{{ eixo.ativo }}" on-click="{{ eixo.escolher }}" style="min-width:32px;justify-content:center" hint-size="42px,32px">{{ eixo.rotulo }}</x-import>
+</sc-for>
+</div>
+</div>
+</div>
+<article style="border:1px solid #ddd3c6;border-radius:14px;background:#fff;padding:22px 26px 18px">
+<sc-for list="{{ secoes }}" as="secao" hint-placeholder-count="2">
+<section style="margin-top:22px">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.AxisHeader" number="{{ secao.numero }}" title="{{ secao.titulo }}" meta="{{ secao.contagem }}" hint-size="100%,32px"></x-import>
+<p style="margin:16px 0 2px;display:flex;align-items:baseline;gap:7px;color:#8a8078;font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase">Metas com patamar mensurável</p>
+<div style="margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+<sc-for list="{{ secao.metas }}" as="meta" hint-placeholder-count="3">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.GoalCard" name="{{ meta.nome }}" reading="{{ meta.leitura }}" current="{{ meta.valor }}" current-note="{{ meta.notaAtual }}" target="{{ meta.alvo }}" target-note="{{ meta.prazo }}" progress="{{ meta.jornada }}" met="{{ meta.cumprida }}" hint-size="100%,78px"></x-import>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</article>
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { busca: '', eixo: 'todos' };
+  renderVals() {
+    const rotulos = ['todos', '1', '2', '3', '4', '5'];
+    const secoes = [
+      {
+        numero: '1', titulo: 'Território, Ambiente e Clima', contagem: '10 indicadores',
+        metas: [
+          { nome: 'UCs estaduais com plano de manejo e conselho gestor', alvo: '40%', prazo: 'até 2035', jornada: 53, valor: '21,11%', leitura: '53%', cumprida: false },
+          { nome: 'Vulnerabilidade climática municipal (IIVCM)', alvo: '≤ 52,1', prazo: 'até 2050', jornada: 88, valor: '59,32', leitura: '88%', cumprida: false },
+          { nome: 'Desmatamento ilegal', alvo: '≤ 0 ha', prazo: 'até 2030', jornada: 0, valor: '6.518 ha', notaAtual: 'sem escala', leitura: '—', cumprida: false },
+          { nome: 'Focos de calor', alvo: '≤ 98.543', prazo: 'até 2035', jornada: 50, valor: '198.972', leitura: '50%', cumprida: false }
+        ]
+      },
+      {
+        numero: '4', titulo: 'Infraestrutura e integração regional sustentável', contagem: '8 indicadores',
+        metas: [
+          { nome: 'Participação de renováveis (PER)', alvo: '80%', prazo: 'até 2035', jornada: 76, valor: '60,9%', leitura: '76%', cumprida: false },
+          { nome: 'Conectividade digital (IBC-AMZ)', alvo: '80 pts', prazo: 'até 2050', jornada: 67, valor: '53,5 pts', leitura: '67%', cumprida: false }
+        ]
+      }
+    ];
+    return {
+      busca: this.state.busca,
+      buscar: (evento) => this.setState({ busca: evento.target.value }),
+      eixos: rotulos.map((rotulo) => ({
+        rotulo: rotulo === 'todos' ? 'Todos' : rotulo,
+        ativo: this.state.eixo === rotulo,
+        escolher: () => this.setState({ eixo: rotulo })
+      })),
+      secoes
+    };
+  }
+}
+</script>
+</body>
+</html>

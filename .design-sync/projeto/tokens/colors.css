@@ -1,0 +1,81 @@
+/* Paleta do painel Estratégia 2050. Nomes de base em português, como no
+   repositório de origem (dashboard/src/styles/global.css :root). */
+:root {
+  /* Verdes — floresta e rio */
+  --mata: #0e2b22;
+  --mata-700: #1c4437;
+  --mata-500: #3e6e57;
+  --mata-300: #7fa08c;
+  --mata-100: #c6d2c7;
+  --rio: #157f72;
+  --folha: #6fa24a;
+
+  /* Terras — urucum e ocre são os dois acentos de sinalização */
+  --urucum: #c0451f;
+  --urucum-escuro: #a83a19;
+  --ocre: #e0a83c;
+  --barro: #a8613a;
+  --acai: #4a2a6a;
+  --ceu: #3e6fa8;
+
+  /* Papéis e linhas */
+  --areia: #f5f0e8;
+  --papel: #ffffff;
+  --barro-claro: #e8e0d6;
+  --linha: #ddd3c6;
+  --linha-2: #ede6dc;
+
+  /* Tintas */
+  --tinta: #1a1613;
+  --tinta-2: #3a342e;
+  --tinta-3: #5c544c;
+  --tinta-4: #8a8078;
+
+  /* Estados de superfície usados em hover e seleção */
+  --papel-quente: #fffdfa;
+  --areia-selecao: #f5f1ea;
+  --verde-selecao: #e7ede8;
+
+  /* Semânticos */
+  --superficie-pagina: var(--areia);
+  --superficie-fundo: var(--barro-claro);
+  --superficie-cartao: var(--papel);
+  --superficie-escura: var(--mata);
+  --superficie-selecionada: var(--areia-selecao);
+  --texto-forte: var(--tinta);
+  --texto-corpo: var(--tinta-2);
+  --texto-secundario: var(--tinta-3);
+  --texto-suave: var(--tinta-4);
+  --texto-sobre-escuro: var(--areia);
+  --texto-sobre-escuro-suave: rgba(245, 240, 232, 0.72);
+  --borda: var(--linha);
+  --borda-suave: var(--linha-2);
+  --acento: var(--urucum);
+  --acento-hover: var(--urucum-escuro);
+  --destaque: var(--ocre);
+
+  /* Situação da coleta — tons já escurecidos para texto sobre papel */
+  --status-ok: var(--mata-700);
+  --status-parcial: #76550e;
+  --status-pendente: #8e3213;
+  --status-manual: var(--tinta-3);
+
+  /* Cor de acento por estado (mapa e listas) */
+  --uf-ac: #157f72;
+  --uf-ap: #3e6fa8;
+  --uf-am: #3e6e57;
+  --uf-ma: #a8613a;
+  --uf-mt: #c0451f;
+  --uf-pa: #4a2a6a;
+  --uf-ro: #8a8078;
+  --uf-rr: #157f72;
+  --uf-to: #e0a83c;
+  --uf-regiao: #00766d;
+
+  /* Rampa de desempenho relativo do mapa (menor → maior) */
+  --rampa-1: #ede6dc;
+  --rampa-2: #c6d2c7;
+  --rampa-3: #7fa08c;
+  --rampa-4: #3e6e57;
+  --rampa-5: #1c4437;
+}

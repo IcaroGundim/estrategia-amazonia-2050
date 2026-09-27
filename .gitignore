@@ -65,3 +65,13 @@ INDICADORES_SEM_DADOS.log
 
 # Cache local do wrangler (workers/proxy)
 .wrangler/
+
+# Sincronização com o Claude Design (.design-sync/NOTES.md): o backup do projeto remoto,
+# as telas geradas do build, o bundle local de conferência e o runtime dos templates,
+# que é do app e só foi baixado para testar.
+/.design-sync/.cache/
+/.design-sync/projeto/ui_kits/painel-estrategia-2050/
+/.design-sync/projeto/_ds_bundle.js
+/.design-sync/projeto/_ds_needs_recompile
+/.design-sync/projeto/templates/*/support.js
+/.design-sync/projeto/templates/*/ds-base.js

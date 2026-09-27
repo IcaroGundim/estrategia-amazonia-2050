@@ -1,0 +1,16 @@
+:root {
+  /* Movimento. Duas curvas: `ease` para trocas de cor e borda, e uma
+     desaceleração forte para o que muda de tamanho ou posição. */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --dur-cor: 140ms; /* @kind other */
+  --dur-borda: 150ms; /* @kind other */
+  --dur-menu: 130ms; /* @kind other */
+  --dur-seta: 160ms; /* @kind other */
+  --dur-painel: 260ms; /* @kind other */
+  --dur-grade: 420ms; /* @kind other */
+  --dur-barra: 620ms; /* @kind other */
+
+  --transicao-cor: color var(--dur-cor) ease, background var(--dur-cor) ease; /* @kind other */
+  --transicao-borda: border-color var(--dur-borda) ease, box-shadow var(--dur-borda) ease, background var(--dur-borda) ease; /* @kind other */
+  --transicao-barra: width var(--dur-barra) var(--curva); /* @kind other */
+}

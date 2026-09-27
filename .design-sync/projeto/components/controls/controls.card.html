@@ -1,0 +1,66 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Controles — seletor, busca, filtros, abas, bandeiras" subtitle="Dropdown, SearchField, FilterChip, Tabs e FlagButton" -->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><style>*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--areia);font:var(--corpo);color:var(--tinta)}h1,h2,h3,p{margin:0}.rotulo{color:var(--tinta-4);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}.col{display:flex;flex-direction:column;gap:18px}.lin{display:flex;align-items:center;gap:10px;flex-wrap:wrap}a{color:var(--mata)}a:hover{color:var(--urucum)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+
+const { Dropdown, SearchField, FilterChip, Tabs, FlagButton, Card } = window.EstratGiaAmazNia2050DesignSystem_81a706;
+const OPCOES = [
+  { value: 'prodesRate', label: 'Desmatamento PRODES', sublabel: 'menor taxa = melhor posição', groupLabel: 'Indicadores oficiais' },
+  { value: 'cvliRate', label: 'Segurança (CVLI)', sublabel: 'menor taxa = melhor posição', groupLabel: 'Indicadores oficiais' },
+  { value: 'ibc', label: 'Conectividade digital (IBC-AMZ)', sublabel: 'maior índice = melhor posição', groupLabel: 'Indicadores oficiais' }
+];
+const UFS = [
+  ['Bandeira_da_Amazonia_Legal.svg', 'Amazônia Legal'], ['Bandeira_do_Acre.svg', 'Acre'], ['Bandeira_do_Amapa.svg', 'Amapá'],
+  ['Bandeira_do_Amazonas.svg', 'Amazonas'], ['Bandeira_do_Maranhao.svg', 'Maranhão'], ['Bandeira_de_Mato_Grosso.svg', 'Mato Grosso'],
+  ['Bandeira_do_Para.svg', 'Pará'], ['Bandeira_de_Rondonia.svg', 'Rondônia'], ['Bandeira_de_Roraima.svg', 'Roraima'], ['Bandeira_do_Tocantins.svg', 'Tocantins']
+];
+function Demo() {
+  const [metrica, setMetrica] = React.useState('prodesRate');
+  const [aba, setAba] = React.useState('state');
+  const [uf, setUf] = React.useState('Bandeira_do_Para.svg');
+  const [eixo, setEixo] = React.useState('Todos');
+  return (
+    <div className="col">
+      <div className="lin" style={{ alignItems: 'flex-end', gap: 12 }}>
+        <Dropdown label="Indicador exibido" options={OPCOES} value={metrica} onChange={setMetrica} style={{ width: 320 }} />
+        <Dropdown label="Ano exibido" options={[{ value: '2025', label: '2025', groupLabel: 'Série' }]} value="2025" style={{ width: 152 }} menuWidth="100%" />
+        <SearchField style={{ flex: 1, minWidth: 220 }} />
+      </div>
+      <div className="lin">
+        <p className="rotulo" style={{ margin: 0 }}>Eixo</p>
+        {['Todos', '1', '2', '3', '4', '5'].map((item) => (
+          <FilterChip key={item} active={eixo === item} onClick={() => setEixo(item)}>{item}</FilterChip>
+        ))}
+        <span style={{ width: 12 }} />
+        <p className="rotulo" style={{ margin: 0 }}>Coleta</p>
+        <FilterChip count={18}>Coletado</FilterChip>
+        <FilterChip count={41}>Não coletado</FilterChip>
+      </div>
+      <div className="lin" style={{ alignItems: 'flex-start', gap: 20 }}>
+        <Card padding={0} style={{ flex: 1, overflow: 'hidden' }}>
+          <Tabs variant="sidebar" value={aba} onChange={setAba} items={[{ key: 'state', label: 'Visão geral' }, { key: 'ranking', label: 'Comparação estadual' }]} />
+          <div style={{ padding: '14px 22px', color: 'var(--tinta-4)', fontSize: 12 }}>Abas da coluna lateral</div>
+        </Card>
+        <div style={{ flex: 1 }}>
+          <Tabs variant="detail" value="resultado" items={[{ key: 'resultado', label: 'Resultado' }, { key: 'ficha', label: 'Ficha técnica' }]} style={{ marginTop: 0 }} />
+          <div style={{ padding: '12px 0', color: 'var(--tinta-4)', fontSize: 12 }}>Abas do painel de detalhe</div>
+        </div>
+      </div>
+      <div>
+        <p className="rotulo">Recorte por estado</p>
+        <div className="lin" style={{ gap: 5 }}>
+          {UFS.map(([arquivo, nome]) => (
+            <FlagButton key={arquivo} src={'../../assets/flags/' + arquivo} alt={nome} active={uf === arquivo} ratio={arquivo.indexOf('Legal') > -1 ? '3 / 2' : undefined} onClick={() => setUf(arquivo)} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+
+</script></body></html>

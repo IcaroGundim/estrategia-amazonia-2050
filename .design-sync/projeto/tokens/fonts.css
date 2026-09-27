@@ -1,0 +1,5 @@
+/* Bricolage Grotesque (display) e Libre Franklin (texto) — as duas famílias do
+   painel Estratégia 2050, carregadas dos mesmos eixos e pesos que o site usa.
+   O repositório de origem também as serve pelo Google Fonts (link no <head> de
+   src/layouts/Base.astro); não há binários versionados para copiar. */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap");

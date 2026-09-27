@@ -6,6 +6,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "dashboard", "--", "--port", "4322"],
       "port": 4322
+    },
+    {
+      "name": "design-kit",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".design-sync/tools/servir.mjs", ".design-sync/projeto", "4330"],
+      "port": 4330
+    },
+    {
+      "name": "dashboard-build",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".design-sync/tools/servir.mjs", "dashboard/dist/client", "4331"],
+      "port": 4331
     }
   ]
 }

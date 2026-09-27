@@ -1,0 +1,51 @@
+:root {
+  /* Espaçamento — a escala real do painel, em passos de 4 a 6px com
+     saltos maiores entre blocos. */
+  --esp-1: 4px;
+  --esp-2: 6px;
+  --esp-3: 8px;
+  --esp-4: 10px;
+  --esp-5: 12px;
+  --esp-6: 14px;
+  --esp-7: 18px;
+  --esp-8: 22px;
+  --esp-9: 26px;
+  --esp-10: 34px;
+  --esp-11: 44px;
+  --esp-12: 58px;
+
+  /* Recheios canônicos */
+  --recheio-cartao: 22px;
+  --recheio-cartao-largo: 24px;
+  --recheio-metrica: 17px;
+  --recheio-painel: 22px 24px 24px; /* @kind spacing */
+
+  /* Trilho da página */
+  --largura-maxima: 2200px;
+  --margem-pagina: clamp(24px, 3.2vw, 72px); /* @kind spacing */
+  --altura-topbar: 84px;
+  --altura-topbar-compacta: 68px;
+  --topo-preso: 96px;
+
+  /* Cantos */
+  --raio-cartao: 14px;
+  --raio-menu: 12px;
+  --raio-campo: 11px;
+  --raio-botao: 9px;
+  --raio-opcao: 8px;
+  --raio-link: 7px;
+  --raio-nota: 6px;
+  --raio-selo: 4px;
+  --raio-barra: 4px;
+  --raio-pilula: 999px;
+
+  /* Bordas */
+  --traco: 1px;
+  --traco-forte: 2px;
+  --traco-marcador: 3px;
+
+  /* Alvos de toque */
+  --alvo-minimo: 44px;
+  --altura-campo: 58px;
+  --altura-botao: 40px;
+}

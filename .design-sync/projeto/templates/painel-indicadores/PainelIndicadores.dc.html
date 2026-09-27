@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Painel de indicadores" description="Página de painel com barra do topo, faixa de números, cartão de conteúdo e coluna de leitura." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>*{box-sizing:border-box}body{margin:0;background:#e8e0d6;color:#1a1613;font:400 15px/1.55 "Libre Franklin",system-ui,sans-serif}a{color:#0e2b22}a:hover{color:#c0451f}</style>
+</helmet>
+<div style="min-height:100vh;background:#e8e0d6">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.Topbar" active="index" logo-src="../../assets/logo-consorcio-clara.avif" items="{{ rotas }}" languages="{{ idiomas }}" language="pt-BR" hint-size="100%,84px"></x-import>
+<section style="padding:36px 0 58px;background:#f5f0e8">
+<div style="width:min(2200px,100%);margin-inline:auto;padding-inline:clamp(24px,3.2vw,72px)">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) clamp(430px,25vw,540px);align-items:start;gap:clamp(20px,1.7vw,34px)">
+<div style="min-width:0;display:flex;flex-direction:column;gap:18px">
+<article style="border:1px solid #ddd3c6;border-radius:14px;background:#fff;padding:22px 22px 20px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:18px 32px;margin-bottom:18px">
+<div style="min-width:0;flex:1 1 360px">
+<h1 style="margin:0;font:800 clamp(26px,2.05vw,40px)/0.96 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">Panorama - <em style="color:#c0451f;font-style:normal">Amazônia Legal.</em></h1>
+<p style="margin:9px 0 0;max-width:560px;color:#5c544c;font-size:14px">Explore os indicadores oficiais e compare os nove estados</p>
+</div>
+<div style="width:484px;flex:0 0 484px;display:grid;grid-template-columns:minmax(0,320px) 152px;align-items:end;gap:12px">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.Dropdown" label="Indicador exibido" options="{{ indicadores }}" value="{{ indicador }}" on-change="{{ escolherIndicador }}" hint-size="100%,90px"></x-import>
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.Dropdown" label="Ano exibido" menu-width="100%" options="{{ anos }}" value="{{ ano }}" on-change="{{ escolherAno }}" hint-size="100%,90px"></x-import>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:clamp(210px,15vw,260px) minmax(0,1fr);align-items:center;gap:18px">
+<div style="padding:19px;border:1px solid #ddd3c6;border-radius:10px;background:#f5f0e8">
+<h3 style="margin:0;font:800 21px/1.08 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">Título do indicador</h3>
+<p style="margin:11px 0 0;color:#5c544c;font-size:11px;line-height:1.5">Uma frase que diz o que a medida é e como foi apurada. Troque por texto da ficha técnica.</p>
+<dl style="margin:16px 0 0;padding-top:13px;border-top:1px solid #ddd3c6">
+<dt style="color:#8a8078;font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Fonte</dt>
+<dd style="margin:3px 0 0;color:#0e2b22;font-size:10px;line-height:1.4">Instituição · ano de referência</dd>
+</dl>
+</div>
+<div style="min-height:360px;display:grid;place-content:center;border:1px dashed #ddd3c6;border-radius:10px;color:#8a8078;font-size:12px">Conteúdo principal — mapa, gráfico ou tabela</div>
+</div>
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.LegendRamp" hint-size="100%,34px"></x-import>
+</article>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+<sc-for list="{{ numeros }}" as="numero" hint-placeholder-count="4">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.MetricCard" label="{{ numero.label }}" value="{{ numero.value }}" footnote="{{ numero.footnote }}" hint-size="100%,126px"></x-import>
+</sc-for>
+</div>
+</div>
+<article style="border:1px solid #ddd3c6;border-radius:14px;background:#fff;box-shadow:0 16px 38px rgba(43,31,23,.07);position:sticky;top:96px;overflow:hidden">
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.Tabs" variant="sidebar" value="{{ aba }}" on-change="{{ escolherAba }}" items="{{ abas }}" hint-size="100%,52px"></x-import>
+<div style="padding:22px 24px 24px">
+<p style="margin:0 0 10px;color:#c0451f;font:600 10px/1.2 'Libre Franklin',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase">Perspectiva regional</p>
+<div style="margin-top:21px;display:flex;align-items:center;gap:15px">
+<img src="../../assets/flags/Bandeira_da_Amazonia_Legal.svg" alt="" style="width:auto;height:50px;border:1px solid #ddd3c6;border-radius:6px">
+<div>
+<h2 style="margin:0;font:800 30px/0.95 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">Amazônia Legal</h2>
+<p style="margin:6px 0 0;color:#8a8078;font-size:12px;text-transform:uppercase;letter-spacing:.04em">9 estados · 808 municípios</p>
+</div>
+</div>
+<section style="padding:20px 0;margin-top:16px;border-top:1px solid #ddd3c6;border-bottom:1px solid #ddd3c6">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<span style="color:#c0451f;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase">Indicador exibido</span>
+<small style="color:#8a8078;font-size:10px">método de agregação</small>
+</div>
+<strong style="display:block;margin-top:7px;color:#0e2b22;font:800 26px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">00,0 un.</strong>
+<p style="margin:4px 0 0;color:#8a8078;font-size:11px">Nome do indicador · como ler o valor</p>
+</section>
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.DarkPanel" style="margin-top:16px" note="Diga aqui o limite do método: ponderação, quebra de série ou ano em curso." hint-size="100%,120px">A <strong style="color:#f5f0e8;font-weight:600">Amazônia Legal</strong> registra <strong style="color:#f5f0e8;font-weight:600">00,0 un.</strong> no indicador exibido.</x-import>
+</div>
+</article>
+</div>
+</div>
+</section>
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.RiverRule" hint-size="100%,32px"></x-import>
+<x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.Footer" hint-size="100%,60px"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { indicador: 'a', ano: '2025', aba: 'state' };
+  renderVals() {
+    return {
+      rotas: [
+        { key: 'metodologia', label: 'Visão Geral' },
+        { key: 'metas', label: 'Metas e indicadores' },
+        { key: 'index', label: 'Panorama' }
+      ],
+      idiomas: [
+        { code: 'pt-BR', flagSrc: '../../assets/idiomas/Bandeira_do_Brasil.svg', ratio: '10 / 7', label: 'Ler esta página em português' },
+        { code: 'en', flagSrc: '../../assets/idiomas/Bandeira_EUA_Reino_Unido.svg', ratio: '3 / 2', label: 'Read this page in English' }
+      ],
+      indicadores: [
+        { value: 'a', label: 'Primeiro indicador', sublabel: 'menor taxa = melhor posição', groupLabel: 'Indicadores oficiais' },
+        { value: 'b', label: 'Segundo indicador', sublabel: 'maior índice = melhor posição', groupLabel: 'Indicadores oficiais' }
+      ],
+      anos: [{ value: '2025', label: '2025', groupLabel: 'Série disponível' }, { value: '2024', label: '2024', groupLabel: 'Série disponível' }],
+      abas: [{ key: 'state', label: 'Visão geral' }, { key: 'ranking', label: 'Comparação estadual' }],
+      numeros: [
+        { label: 'População observada', value: '29,7 mi pessoas', footnote: 'projeção IBGE para 2025' },
+        { label: 'Território', value: '5,1 mi km²', footnote: 'área total dos nove estados' },
+        { label: 'Municípios', value: '808', footnote: 'na Amazônia Legal · base AdaptaBrasil' },
+        { label: 'Unidades de conservação', value: '544', footnote: 'federais e estaduais · CNUC/MMA 2026' }
+      ],
+      indicador: this.state.indicador,
+      ano: this.state.ano,
+      aba: this.state.aba,
+      escolherIndicador: (valor) => this.setState({ indicador: valor }),
+      escolherAno: (valor) => this.setState({ ano: valor }),
+      escolherAba: (valor) => this.setState({ aba: valor })
+    };
+  }
+}
+</script>
+</body>
+</html>

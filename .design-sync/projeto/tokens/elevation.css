@@ -1,0 +1,22 @@
+:root {
+  /* Sombras. Todas em marrom-tinta (43,31,23) sobre papel ou verde-mata
+     (14,43,34) quando a peça nasce do verde. Opacidades baixas: o painel é
+     impresso, não empilhado. */
+  --shadow: 0 18px 50px rgba(43, 31, 23, 0.08);
+  --sombra-cartao: var(--shadow);
+  --sombra-lateral: 0 16px 38px rgba(43, 31, 23, 0.07);
+  --sombra-topbar: 0 4px 20px rgba(14, 43, 34, 0.16);
+  --sombra-menu: 0 24px 64px rgba(43, 31, 23, 0.2);
+  --sombra-menu-curto: 0 12px 28px rgba(43, 31, 23, 0.14);
+  --sombra-tooltip: 0 10px 24px rgba(14, 43, 34, 0.18);
+  --sombra-linha-hover: 0 4px 14px rgba(14, 43, 34, 0.09);
+  --sombra-deck: 0 12px 35px rgba(14, 43, 34, 0.045);
+  --sombra-indice: 0 18px 45px rgba(14, 43, 34, 0.06);
+  --sombra-preso: 0 10px 22px rgba(43, 31, 23, 0.1);
+  --sombra-polaroide: 0 12px 30px rgba(0, 0, 0, 0.2);
+
+  /* Anéis de foco e seleção */
+  --foco-acento: 0 0 0 4px rgba(192, 69, 31, 0.1);
+  --foco-mata: 0 0 0 3px rgba(14, 43, 34, 0.07);
+  --anel-selecao: 0 0 0 1px var(--urucum);
+}

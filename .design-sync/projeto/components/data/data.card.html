@@ -1,0 +1,58 @@
+<!-- @dsCard group="Components" viewport="900x860" name="Dados — número, ranking, meta, barra, legenda, trajetória" subtitle="MetricCard, RankRow, GoalCard, BarMeter, LegendRamp e Sparkline" -->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><style>*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--areia);font:var(--corpo);color:var(--tinta)}h1,h2,h3,p{margin:0}.rotulo{color:var(--tinta-4);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}.col{display:flex;flex-direction:column;gap:18px}.lin{display:flex;align-items:center;gap:10px;flex-wrap:wrap}a{color:var(--mata)}a:hover{color:var(--urucum)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+
+const { MetricCard, RankRow, GoalCard, BarMeter, LegendRamp, Sparkline, StatusBadge, Card } = window.EstratGiaAmazNia2050DesignSystem_81a706;
+const bandeira = (arquivo) => '../../assets/flags/' + arquivo;
+function Demo() {
+  const [ativo, setAtivo] = React.useState('PA');
+  return (
+    <div className="col">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <MetricCard label="População observada" value="29,7 mi" footnote="projeção IBGE para 2025" />
+        <MetricCard label="Território" value="5,1 mi km²" footnote="área total dos nove estados" />
+        <MetricCard label="Municípios" value="808" footnote="na Amazônia Legal · base AdaptaBrasil" />
+        <MetricCard label="Unidades de conservação" value="544" footnote="federais e estaduais · CNUC/MMA 2026" />
+      </div>
+      <div className="lin" style={{ alignItems: 'flex-start', gap: 18 }}>
+        <Card style={{ flex: 1 }} padding={16}>
+          <p className="rotulo">Comparação estadual</p>
+          <RankRow region flagSrc={bandeira('Bandeira_da_Amazonia_Legal.svg')} name="Amazônia Legal" meta="média ponderada pela população" value="21,1 / 100 mil" fill={64} />
+          <RankRow position={1} flagSrc={bandeira('Bandeira_do_Tocantins.svg')} name="Tocantins" meta="Palmas" value="16,3 / 100 mil" fill={48} selected={ativo === 'TO'} onClick={() => setAtivo('TO')} />
+          <RankRow position={2} flagSrc={bandeira('Bandeira_do_Para.svg')} name="Pará" meta="Belém" value="19,4 / 100 mil" fill={58} selected={ativo === 'PA'} onClick={() => setAtivo('PA')} />
+          <LegendRamp />
+        </Card>
+        <Card style={{ width: 250 }} padding={16}>
+          <p className="rotulo">Trajetória do estado</p>
+          <Sparkline values={[62, 58, 61, 55, 51, 49, 47]} reference={[70, 68, 67, 66, 64, 63, 63]} height={70} />
+          <div style={{ display: 'grid', gap: 4, marginTop: 9, color: 'var(--tinta-4)', fontSize: 10 }}>
+            <span>Pará</span><span>Amazônia Legal · média ponderada</span>
+          </div>
+        </Card>
+      </div>
+      <Card padding={16}>
+        <p className="rotulo">Metas com patamar mensurável</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
+          <GoalCard name="UCs estaduais com plano de manejo e conselho gestor" reading="53%" current="21,11%" target="40%" targetNote="até 2035" progress={53} active />
+          <GoalCard name="Vulnerabilidade climática municipal (IIVCM)" reading="88%" current="59,32" target="≤ 52,1" targetNote="até 2050" progress={88} />
+          <GoalCard name="Desmatamento ilegal" reading="—" current="6.518 ha" currentNote="sem escala" target="≤ 0 ha" targetNote="até 2030" progress={0} />
+          <GoalCard variant="catalogo" name="ZEE vigente e atualizado" reason="O indicador ainda não tem valores coletados para os nove estados." status={<StatusBadge status="pendente" />} />
+        </div>
+        <div style={{ marginTop: 14, display: 'grid', gap: 7 }}>
+          <BarMeter tone="regional" label="AL" value="21,1%" fill={53} target={100} />
+          <BarMeter label="AC" value="75,0%" fill={100} tone="cumprida" target={100} />
+          <BarMeter label="PA" value="35,7%" fill={89} target={100} tone="selecionada" />
+          <BarMeter label="RR" value="0,0%" fill={0} target={100} />
+        </div>
+      </Card>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+
+</script></body></html>

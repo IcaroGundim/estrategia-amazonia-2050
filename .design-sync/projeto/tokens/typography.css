@@ -1,0 +1,46 @@
+:root {
+  --display: "Bricolage Grotesque", system-ui, sans-serif; /* @kind font */
+  --text: "Libre Franklin", system-ui, sans-serif; /* @kind font */
+  --fonte-display: var(--display); /* @kind font */
+  --fonte-texto: var(--text); /* @kind font */
+
+  /* Pesos em uso: o display só aparece em 800 (títulos e números) e 600/700
+     (rótulos curtos); o texto em 400, 500 e 600. */
+  --peso-display: 800; /* @kind font */
+  --peso-display-medio: 600; /* @kind font */
+  --peso-forte: 600; /* @kind font */
+  --peso-medio: 500; /* @kind font */
+  --peso-normal: 400; /* @kind font */
+
+  /* Corpo do documento */
+  --corpo: 400 15px/1.55 var(--text); /* @kind font */
+  --corpo-tamanho: 15px; /* @kind font */
+  --corpo-altura: 1.55; /* @kind font */
+
+  /* Escala de títulos (display, 800, tracking negativo) */
+  --h1: clamp(42px, 5vw, 68px); /* @kind font */
+  --h1-altura: 0.96; /* @kind font */
+  --h2: clamp(24px, 2.2vw, 34px); /* @kind font */
+  --h2-altura: 1.04; /* @kind font */
+  --h3: 21px; /* @kind font */
+  --titulo-tracking: -0.03em; /* @kind font */
+  --titulo-tracking-forte: -0.04em; /* @kind font */
+
+  /* Texto de apoio */
+  --lead: 16px; /* @kind font */
+  --texto-cartao: 13px; /* @kind font */
+  --texto-menor: 12px; /* @kind font */
+  --texto-nota: 11px; /* @kind font */
+  --texto-mudo: 10px; /* @kind font */
+  --texto-micro: 9px; /* @kind font */
+
+  /* Sobrelinha: o rótulo em versalete que abre quase toda seção */
+  --eyebrow-tamanho: 10px; /* @kind font */
+  --eyebrow-tracking: 0.14em; /* @kind font */
+  --eyebrow-peso: 600; /* @kind font */
+
+  /* Números: sempre tabulares, sempre no display */
+  --numero-grande: 800 30px/1 var(--display); /* @kind font */
+  --numero-medio: 800 26px/1 var(--display); /* @kind font */
+  --numero-pequeno: 800 17px/1 var(--display); /* @kind font */
+}

@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" viewport="1280x360" name="Estrutura — barra, eixo, rio, rodapé" subtitle="Topbar, AxisHeader, RiverRule e Footer" -->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><style>*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--barro-claro);font:var(--corpo);color:var(--tinta)}h1,h2,h3,p{margin:0}.rotulo{color:var(--tinta-4);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}.col{display:flex;flex-direction:column;gap:18px}.lin{display:flex;align-items:center;gap:10px;flex-wrap:wrap}a{color:var(--mata)}a:hover{color:var(--urucum)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+
+const { Topbar, Footer, RiverRule, AxisHeader, Button, Card } = window.EstratGiaAmazNia2050DesignSystem_81a706;
+function Demo() {
+  const [rota, setRota] = React.useState('metodologia');
+  return (
+    <div style={{ border: '1px solid var(--linha)', borderRadius: 14, overflow: 'hidden', background: 'var(--areia)' }}>
+      <Topbar
+        logoSrc="../../assets/logo-consorcio-clara.avif"
+        active={rota}
+        onNavigate={setRota}
+        action={<Button variant="outline">Baixar nota técnica</Button>}
+        languages={[
+          { code: 'pt-BR', flagSrc: '../../assets/idiomas/Bandeira_do_Brasil.svg', ratio: '10 / 7', label: 'Ler esta página em português' },
+          { code: 'en', flagSrc: '../../assets/idiomas/Bandeira_EUA_Reino_Unido.svg', ratio: '3 / 2', label: 'Read this page in English' }
+        ]}
+        style={{ position: 'static' }}
+      />
+      <div style={{ padding: '22px var(--margem-pagina)' }}>
+        <Card padding={16}>
+          <AxisHeader number="1" title="Território, Ambiente e Clima" meta="10 indicadores" />
+          <p style={{ margin: '12px 0 0', color: 'var(--tinta-4)', fontSize: 9.5, fontWeight: 600, letterSpacing: '.09em', textTransform: 'uppercase' }}>Metas com patamar mensurável</p>
+        </Card>
+      </div>
+      <RiverRule />
+      <Footer />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+
+</script></body></html>

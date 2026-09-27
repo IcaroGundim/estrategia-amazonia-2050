@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Sinalização — selos, notas, leitura e dica" subtitle="StatusBadge, Note, DarkPanel e Tooltip" -->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script><style>*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--areia);font:var(--corpo);color:var(--tinta)}h1,h2,h3,p{margin:0}.rotulo{color:var(--tinta-4);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}.col{display:flex;flex-direction:column;gap:18px}.lin{display:flex;align-items:center;gap:10px;flex-wrap:wrap}a{color:var(--mata)}a:hover{color:var(--urucum)}</style></head><body><div id="root"></div>
+<script type="text/babel">
+
+const { StatusBadge, Note, DarkPanel, Tooltip, Card } = window.EstratGiaAmazNia2050DesignSystem_81a706;
+function Demo() {
+  return (
+    <div className="col">
+      <Card padding={16}>
+        <p className="rotulo">Situação da coleta</p>
+        <div className="lin" style={{ gap: 22 }}>
+          <StatusBadge status="coletado" />
+          <StatusBadge status="parcial" />
+          <StatusBadge status="pendente" />
+          <StatusBadge status="manual" />
+          <StatusBadge status="coletado" size={17} label="Coletado · ficha" />
+        </div>
+      </Card>
+      <div className="lin" style={{ alignItems: 'stretch', gap: 14 }}>
+        <div style={{ flex: 1, display: 'grid', gap: 10 }}>
+          <Note><strong style={{ color: 'var(--mata)' }}>Ficha técnica não localizada no documento.</strong> São exibidas apenas as informações disponíveis no catálogo.</Note>
+          <Note variant="ano">Ano em curso: a série ainda não fechou, então o valor não é comparável aos anteriores.</Note>
+        </div>
+        <DarkPanel style={{ width: 300 }} note="Média simples dos nove estados; ponderar pela potência instalada exigiria dado que a base não traz.">
+          A <strong style={{ color: 'var(--areia)', fontWeight: 600 }}>Amazônia Legal</strong> registra <strong style={{ color: 'var(--areia)', fontWeight: 600 }}>60,9%</strong> de renováveis na matriz elétrica, entre AP e RO.
+        </DarkPanel>
+      </div>
+      <div className="lin" style={{ gap: 16 }}>
+        <Tooltip title="Pará" meta="Desmatamento PRODES · 2025" value="3,2 km² / mil km²" />
+        <Tooltip title="Amazônia Legal" meta="Segurança (CVLI) · 2025" value="21,1 / 100 mil" />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+
+</script></body></html>
