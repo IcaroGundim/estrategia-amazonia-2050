@@ -1,5 +1,5 @@
 import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
-import { carregaDossie, carregaKatexSeNecessario, exportCsv, normalise, renderFicha, selo, statusOf, STATUS } from './fichas.js';
+import { carregaDossie, carregaKatexSeNecessario, exportCsv, normalise, renderFicha, selo, statusOf } from './fichas.js';
 import { idiomaAtual, rota, t, tp } from '../i18n/index.js';
 import { campo, carregaConteudo, nomeDoEixo } from './conteudo.js';
 
@@ -16,9 +16,13 @@ function motivoDe(item) { return t(item.motivo || ''); }
 // segunda aba do painel de detalhe.
 //
 // O recorte por estado é sempre o mesmo — a fileira de bandeiras — e vale para a
-// jornada, para o gráfico e para o valor da ficha.
+// jornada dos eixos, para a da meta, para o gráfico e para o valor da ficha.
+//
+// A rota abre nos cinco eixos (`eixo: null`); escolher um mostra só os
+// indicadores dele, e a busca vale dentro do eixo aberto.
 const state = {
   data: null,
+  eixo: null,
   codigo: null,
   uf: null,
   aba: 'resultado',
@@ -26,8 +30,6 @@ const state = {
   animarDetalhe: false,
   anosGrafico: {},
   busca: '',
-  eixos: new Set(),
-  status: 'all',
   dossie: null,
   katex: null
 };
@@ -91,8 +93,7 @@ function itemAtual() {
 }
 
 function passaNoFiltro(item) {
-  if (state.eixos.size && !state.eixos.has(String(item.eixo))) return false;
-  if (state.status !== 'all' && statusOf(item) !== state.status) return false;
+  if (state.eixo && item.eixo !== state.eixo) return false;
   if (state.busca) {
     const palheiro = normalise([item.codigo, item.nome, nomeDe(item), item.metaTexto, metaTextoDe(item), item.fonte, item.eixoNome, item.linhaAcao].join(' '));
     if (!palheiro.includes(normalise(state.busca))) return false;
@@ -230,64 +231,163 @@ function renderGrafico(meta) {
 
 // ---------- bandeiras de estado ----------
 
+// A mesma fileira aparece nos cinco eixos e no quadro de um eixo aberto: o
+// recorte é um só, e as duas cópias acendem juntas.
 function renderFlags() {
-  const wrap = document.querySelector('#goals-flags');
-  if (!wrap) return;
   const nome = state.uf
     ? (state.data.estados.find((estado) => estado.uf === state.uf)?.name || state.uf)
     : t('Amazônia Legal (região)');
-  wrap.innerHTML = `<span class="goals-flags-nome">${escape(nome)}</span>`
+  const html = `<span class="goals-flags-nome">${escape(nome)}</span>`
     + `<button type="button" class="goals-flag${state.uf ? '' : ' is-active'}" data-uf="" title="${t('Amazônia Legal — visão regional')}" aria-label="${t('Amazônia Legal, visão regional')}" aria-pressed="${state.uf ? 'false' : 'true'}">${flagImage(BANDEIRA_REGIAO, '')}</button>`
     + state.data.estados.map((estado) => `<button type="button" class="goals-flag${state.uf === estado.uf ? ' is-active' : ''}" data-uf="${estado.uf}" title="${escape(estado.name)}" aria-label="${escape(estado.name)}" aria-pressed="${state.uf === estado.uf ? 'true' : 'false'}">${flagImage(estado, '')}</button>`).join('');
+  document.querySelectorAll('[data-goals-flags]').forEach((wrap) => { wrap.innerHTML = html; });
 }
 
-// ---------- busca, filtros e exportação ----------
+// ---------- os cinco eixos ----------
 
-// Sem contagem nas pastilhas: quantos indicadores cada eixo tem já está escrito
-// no cabeçalho do grupo, na lista, e o total no resumo acima dela. E sem a
-// palavra "Eixo" seis vezes seguidas ao lado do rótulo que já diz "Eixo" — só o
-// número, que é o que muda de uma pastilha para a outra. O nome inteiro fica no
-// `aria-label`, para quem ouve a página em vez de vê-la.
-function renderEixoFilters() {
-  const alvo = document.querySelector('#goals-eixo-filters');
+// Nome curto de cada eixo para as abas do eixo aberto, onde os cinco nomes
+// inteiros não cabem numa linha. O nome inteiro vem dos dados (nomeDoEixo) e
+// fica no `title` da aba.
+function nomeCurtoDoEixo(eixo) {
+  return ({ 1: t('Território'), 2: t('Pessoas'), 3: t('Economia'), 4: t('Infraestrutura'), 5: t('Governança') })[eixo]
+    || tp('Eixo {n}', { n: eixo });
+}
+
+// A jornada de uma meta como fração de 0 a 1, com a mesma regra do cartão da
+// meta (dadosDaMeta): cumprida vale 1; sem valor regional único, a região conta
+// quantos estados já cumprem (a CAPAG); sem escala, a meta fica fora da média.
+function fracaoDaJornada(meta) {
+  const { item, cumprem, total, contaEstados } = dadosDaMeta(meta);
+  if (item) {
+    if (item.cumpre) return 1;
+    return Number.isFinite(item.escala) ? item.escala : null;
+  }
+  return contaEstados ? cumprem / total : null;
+}
+
+/**
+ * O que o cartão e o cabeçalho de um eixo dizem dele: a jornada média das metas
+ * com escala, quantas ficaram fora da média, e a situação da coleta de todos os
+ * indicadores do eixo. A média é simples — cada meta pesa o mesmo.
+ */
+function resumoDoEixo(eixo) {
+  const itens = acervo().filter((item) => item.eixo === eixo);
+  const metas = itens.filter((item) => item.temMeta);
+  const fracoes = metas.map(fracaoDaJornada).filter((fracao) => fracao !== null);
+  const situacao = { coletado: 0, parcial: 0, pendente: 0 };
+  for (const item of itens) situacao[statusOf(item)] += 1;
+  return {
+    eixo,
+    nome: nomeDoEixo(eixo, itens[0]?.eixoNome) || tp('Eixo {n}', { n: eixo }),
+    total: itens.length,
+    metas: metas.length,
+    comEscala: fracoes.length,
+    semEscala: metas.length - fracoes.length,
+    comValores: itens.filter((item) => item.temMeta || item.temValores).length,
+    situacao,
+    jornada: fracoes.length ? fracoes.reduce((soma, fracao) => soma + fracao, 0) / fracoes.length : null
+  };
+}
+
+function eixosDoAcervo() {
+  return [...new Set(acervo().map((item) => item.eixo))].sort((a, b) => a - b);
+}
+
+const porcentagem = (fracao) => `${Math.round(fracao * 100)}%`;
+
+// Rótulo de duas linhas ao lado do número grande: a primeira palavra em cima.
+function rotuloEmDuasLinhas(texto) {
+  const [primeira, ...resto] = texto.split(' ');
+  return resto.length ? `${escape(primeira)}<br>${escape(resto.join(' '))}` : escape(primeira);
+}
+
+function notaDaJornada(resumo) {
+  if (!resumo.metas) return tp('{n} de {total} indicadores já têm valores', { n: resumo.comValores, total: resumo.total });
+  const media = tp(resumo.comEscala === 1 ? 'média de {n} meta' : 'média de {n} metas', { n: resumo.comEscala });
+  return resumo.semEscala ? `${media} · ${tp('{n} sem escala', { n: resumo.semEscala })}` : media;
+}
+
+function leituraDaJornada(resumo) {
+  const vazio = resumo.jornada === null;
+  const rotulo = resumo.metas
+    ? `<span>${rotuloEmDuasLinhas(t('Jornada do eixo'))}</span>`
+    : `<span class="is-texto">${t('sem meta com patamar mensurável')}</span>`;
+  const barra = vazio
+    ? '<span class="eixo-barra" aria-hidden="true"></span>'
+    : `<span class="eixo-barra" aria-hidden="true"><i class="resta"></i><i class="feito" style="width:${(resumo.jornada * 100).toFixed(1)}%"></i></span>`;
+  return `<div class="eixo-leitura"><b${vazio ? ' class="is-vazio"' : ''}>${vazio ? '—' : porcentagem(resumo.jornada)}</b>${rotulo}</div>
+    ${barra}
+    <p class="eixo-nota">${escape(notaDaJornada(resumo))}</p>`;
+}
+
+const ROTULO_SITUACAO = {
+  coletado: ['{n} coletado', '{n} coletados'],
+  parcial: ['{n} parcial', '{n} parciais'],
+  pendente: ['{n} pendente', '{n} pendentes']
+};
+
+function situacaoDaColeta(resumo) {
+  const presentes = Object.entries(resumo.situacao).filter(([, n]) => n);
+  const segmentos = presentes.map(([chave, n]) => `<i class="is-${chave}" style="flex-grow:${n}"></i>`).join('');
+  const legenda = presentes.map(([chave, n]) => `<span><i class="is-${chave}"></i>${escape(tp(ROTULO_SITUACAO[chave][n === 1 ? 0 : 1], { n }))}</span>`).join('');
+  return `<span class="eixo-coleta-barra" aria-hidden="true">${segmentos}</span>
+    <span class="eixo-legenda">${legenda}</span>`;
+}
+
+function renderEixos() {
+  const alvo = document.querySelector('#eixos-cartoes');
   if (!alvo) return;
-  const eixos = [...new Set(acervo().map((item) => item.eixo))].sort((a, b) => a - b);
-  const opcoes = [
-    { valor: 'all', rotulo: t('Todos'), nome: t('Todos os eixos'), ativo: state.eixos.size === 0 },
-    ...eixos.map((eixo) => ({
-      valor: String(eixo),
-      rotulo: String(eixo),
-      nome: tp('Eixo {n}', { n: eixo }),
-      ativo: state.eixos.has(String(eixo))
-    }))
-  ];
-  alvo.innerHTML = opcoes.map((opcao) => `
-    <button type="button" class="status-filter${opcao.ativo ? ' is-active' : ''}" data-eixo="${opcao.valor}" aria-label="${escape(opcao.nome)}" aria-pressed="${opcao.ativo}">${escape(opcao.rotulo)}</button>`).join('');
+  alvo.innerHTML = eixosDoAcervo().map((eixo) => {
+    const resumo = resumoDoEixo(eixo);
+    return `<a class="eixo-cartao" href="#eixo-${eixo}" data-ir-eixo="${eixo}">
+      <h3 class="eixo-cartao-nome">${escape(resumo.nome)}</h3>
+      <span class="eixo-cartao-jornada">${leituraDaJornada(resumo)}</span>
+      <span class="eixo-cartao-coleta">
+        <span class="eixo-contagem"><span><b>${resumo.total}</b> ${t('indicadores')}</span><span><b>${resumo.metas}</b> ${t('com meta')}</span></span>
+        ${situacaoDaColeta(resumo)}
+      </span>
+      <span class="eixo-cartao-ver">${escape(tp('Ver os {n} indicadores', { n: resumo.total }))} ›</span>
+    </a>`;
+  }).join('');
 }
 
-function renderStatusFilters() {
-  const alvo = document.querySelector('#goals-status-filters');
-  if (!alvo) return;
-  const opcoes = [
-    { valor: 'all', rotulo: t('Todas') },
-    ...Object.entries(STATUS).map(([valor, { label }]) => ({ valor, rotulo: t(label) }))
-  ];
-  alvo.innerHTML = opcoes.map((opcao) => `
-    <button type="button" class="status-filter${state.status === opcao.valor ? ' is-active' : ''}" data-status="${opcao.valor}" aria-pressed="${state.status === opcao.valor}">${escape(opcao.rotulo)}</button>`).join('');
+function renderCabecalhoDoEixo() {
+  const abas = document.querySelector('#eixo-abas');
+  const corpo = document.querySelector('#eixo-resumo');
+  if (!abas || !corpo || !state.eixo) return;
+  abas.innerHTML = eixosDoAcervo().map((eixo) => {
+    const resumo = resumoDoEixo(eixo);
+    const atual = eixo === state.eixo;
+    return `<a class="eixo-aba" href="#eixo-${eixo}" data-ir-eixo="${eixo}" title="${escape(resumo.nome)}"${atual ? ' aria-current="page"' : ''}>${escape(nomeCurtoDoEixo(eixo))}<small>${resumo.jornada === null ? '—' : porcentagem(resumo.jornada)}</small></a>`;
+  }).join('');
+  // No celular as abas rolam de lado: a do eixo aberto fica no meio da faixa.
+  const abaAtual = abas.querySelector('[aria-current]');
+  if (abaAtual && abas.scrollWidth > abas.clientWidth) {
+    const deslocamento = abaAtual.getBoundingClientRect().left - abas.getBoundingClientRect().left;
+    abas.scrollLeft += deslocamento - (abas.clientWidth - abaAtual.offsetWidth) / 2;
+  }
+
+  const resumo = resumoDoEixo(state.eixo);
+  const coletados = resumo.total ? resumo.situacao.coletado / resumo.total : 0;
+  corpo.innerHTML = `<h2 id="eixo-titulo" class="eixo-titulo" tabindex="-1">${escape(resumo.nome)}</h2>
+    <div class="eixo-metricas">
+      <div class="eixo-metrica">${leituraDaJornada(resumo)}</div>
+      <div class="eixo-metrica">
+        <div class="eixo-leitura"><b>${porcentagem(coletados)}</b><span>${rotuloEmDuasLinhas(t('Coleta do eixo'))}</span></div>
+        ${situacaoDaColeta(resumo)}
+      </div>
+    </div>`;
 }
 
-// No celular o bloco de filtros fica fechado, então o que está selecionado
-// precisa aparecer no botão que o abre — do contrário a lista mostraria um
-// recorte sem dizer qual.
-function renderFiltersSummary() {
-  const resumo = document.querySelector('[data-filters-summary]');
-  if (!resumo) return;
-  const partes = [];
-  if (state.eixos.size) partes.push(state.eixos.size > 1 ? tp('{n} eixos', { n: state.eixos.size }) : tp('{n} eixo', { n: state.eixos.size }));
-  if (state.status !== 'all') partes.push(t(STATUS[state.status]?.label ?? state.status));
-  if (state.busca) partes.push(`“${state.busca}”`);
-  resumo.textContent = partes.length ? partes.join(' · ') : t('Todos os indicadores');
+// Uma vista de cada vez: os cinco eixos, ou o eixo aberto com a lista e o detalhe.
+function renderVista() {
+  const visao = document.querySelector('[data-eixos-visao]');
+  const aberto = document.querySelector('[data-eixo-aberto]');
+  if (visao) visao.hidden = Boolean(state.eixo);
+  if (aberto) aberto.hidden = !state.eixo;
 }
+
+// ---------- busca e exportação ----------
 
 function renderContagem(lista) {
   const alvo = document.querySelector('[data-lista-resumo]');
@@ -348,7 +448,16 @@ function corpoResultado(meta) {
     ? `<p class="goals-detail-method"><strong>${t('Leitura regional:')}</strong> ${escape(t(recorte.metodoRotulo))}.${recorte.nota ? ` ${escape(recorte.nota)}` : ''}</p>`
     : '';
 
+  // A meta pactuada abre o painel, no mesmo destaque dos coletados sem meta
+  // numérica: é o compromisso que os números abaixo medem.
+  const prazo = meta.prazo ? ` · ${tp('até {prazo}', { prazo: meta.prazo })}` : '';
+
   return `
+    <section class="coletado-meta">
+      <h3>${t('Meta pactuada')}${escape(prazo)}</h3>
+      <p class="coletado-meta-texto">${escape(metaTextoDe(meta) || t('Meta não informada.'))}</p>
+    </section>
+
     <dl class="goals-detail-summary">
       <div><dt>${t('Valor atual')}</dt><dd>${escape(valorAtual)}</dd></div>
       <div><dt>${t('Meta')}</dt><dd>${escape(alvo)}</dd></div>
@@ -357,11 +466,6 @@ function corpoResultado(meta) {
 
     <section class="goals-detail-chart">
       ${renderGrafico(meta)}
-    </section>
-
-    <section class="goals-detail-section">
-      <h3>${t('Meta pactuada')}</h3>
-      <p class="goals-detail-meta">${escape(metaTextoDe(meta) || t('Meta não informada.'))}</p>
     </section>
 
     <section class="goals-detail-section">
@@ -1118,6 +1222,15 @@ function abaInicial(item) {
 function abrirItem(codigo, { aba = null, animar = true } = {}) {
   const item = itemPorCodigo(codigo);
   if (!item) return;
+  // Um indicador de outro eixo (um link com o código, a prévia da administração)
+  // leva junto o eixo dele: o detalhe nunca fala de algo que a lista não mostra.
+  if (state.eixo !== item.eixo) {
+    entraNoEixo(item.eixo, { endereco: false });
+    animar = false;
+    renderVista();
+    renderEixos();
+    renderCabecalhoDoEixo();
+  }
   state.codigo = codigo;
   state.detalhesAbertos = true;
   state.animarDetalhe = animar;
@@ -1221,7 +1334,7 @@ function renderList() {
   renderContagem(lista);
 
   if (!lista.length) {
-    alvo.innerHTML = `<p class="indicator-empty">${t('Nenhum indicador corresponde aos filtros selecionados.')}</p>`;
+    alvo.innerHTML = `<p class="indicator-empty">${t('Nenhum indicador do eixo corresponde à busca.')}</p>`;
     return;
   }
 
@@ -1233,10 +1346,9 @@ function renderList() {
     grupos.get(item.eixo)[item.temMeta ? 'metas' : (item.temValores ? 'coletados' : 'catalogo')].push(item);
   }
 
-  alvo.innerHTML = [...grupos.values()].sort((a, b) => a.eixo - b.eixo).map(({ eixo, eixoNome, metas, coletados, catalogo }) => {
-    const total = metas.length + coletados.length + catalogo.length;
-    // As faixas são rótulos, não contadores: o total do eixo está no cabeçalho
-    // logo acima, e escrever "4" e "19" ao lado dele seria dizer 23 três vezes.
+  // O nome e os números do eixo estão no cabeçalho acima do quadro; aqui ficam
+  // só as faixas. Elas são rótulos, não contadores: o total já está no resumo.
+  alvo.innerHTML = [...grupos.values()].sort((a, b) => a.eixo - b.eixo).map(({ metas, coletados, catalogo }) => {
     const faixaMetas = metas.length
       ? `<p class="goals-faixa">${t('Metas com patamar mensurável')}</p>
          <div class="goals-cards">${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}</div>`
@@ -1250,11 +1362,6 @@ function renderList() {
          <div class="goals-cards">${catalogo.map(linhaDeCatalogo).join('')}</div>`
       : '';
     return `<section class="goals-eixo">
-      <header class="goals-eixo-head">
-        <span class="num" aria-hidden="true">${eixo}</span>
-        <h3>${escape(nomeDoEixo(eixo, eixoNome) || tp('Eixo {n}', { n: eixo }))}</h3>
-        <span>${tp(total === 1 ? '{n} indicador' : '{n} indicadores', { n: total })}</span>
-      </header>
       ${faixaMetas}
       ${faixaColetados}
       ${faixaCatalogo}
@@ -1266,11 +1373,58 @@ function renderList() {
 }
 
 function renderAll() {
-  renderEixoFilters();
-  renderStatusFilters();
-  renderFiltersSummary();
+  renderVista();
+  renderEixos();
+  renderCabecalhoDoEixo();
   renderList();
   renderDetail();
+}
+
+// ---------- navegação entre os eixos ----------
+
+// `#eixo-3` abre o terceiro eixo; sem nada, a rota mostra os cinco.
+function eixoDoEndereco() {
+  const achado = location.hash.match(/^#eixo-(\d+)$/);
+  const eixo = achado ? Number(achado[1]) : null;
+  return eixo && eixosDoAcervo().includes(eixo) ? eixo : null;
+}
+
+// O primeiro da lista do eixo abre no detalhe: uma meta, se houver; senão um
+// coletado; senão o primeiro do catálogo.
+function primeiroDoEixo(eixo) {
+  const doEixo = acervo().filter((item) => item.eixo === eixo);
+  return doEixo.find((item) => item.temMeta) || doEixo.find((item) => item.temValores) || doEixo[0] || null;
+}
+
+// Troca o estado para outro eixo (ou para os cinco, com `null`) sem desenhar.
+// A busca vale dentro de um eixo, então recomeça a cada troca.
+function entraNoEixo(eixo, { endereco = true } = {}) {
+  state.eixo = eixo;
+  state.busca = '';
+  const campo = document.querySelector('#indicator-search');
+  if (campo) campo.value = '';
+  abreExport(false);
+  // O endereço acompanha a vista, para o link poder ser compartilhado. Troca, e
+  // não empilha: com entradas próprias no histórico, voltar faria o roteador do
+  // Astro redesenhar a página inteira. O estado dele vai junto, intacto. Quem
+  // chegou pelo código de um indicador fica com o código no endereço.
+  if (!endereco) return;
+  const destino = `${location.pathname}${location.search}${eixo ? `#eixo-${eixo}` : ''}`;
+  if (`${location.pathname}${location.search}${location.hash}` !== destino) history.replaceState(history.state, '', destino);
+}
+
+function mostraEixo(eixo) {
+  entraNoEixo(eixo);
+  const primeiro = eixo ? primeiroDoEixo(eixo) : null;
+  state.codigo = primeiro?.codigo ?? null;
+  state.detalhesAbertos = Boolean(primeiro);
+  state.aba = abaInicial(primeiro);
+  state.animarDetalhe = false;
+  renderAll();
+  // A troca de vista muda a página inteira: a leitura recomeça do topo, de uma
+  // vez — rolar suave por um conteúdo que já não é o mesmo só desorienta. Rolar
+  // até o `main` não serve: a barra fixa do topo cobriria o "Todos os eixos".
+  if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // Um filtro pode esconder o item aberto. Fechar o painel nesse caso evita o
@@ -1286,17 +1440,39 @@ function aplicaFiltros() {
 // ---------- eventos ----------
 
 function bindEvents() {
-  const flags = document.querySelector('#goals-flags');
-  if (flags) {
+  document.querySelectorAll('[data-goals-flags]').forEach((flags) => {
     flags.addEventListener('click', (event) => {
       const button = event.target.closest('button[data-uf]');
       if (!button) return;
       state.uf = button.dataset.uf || null;
       renderFlags();
+      renderEixos();
+      renderCabecalhoDoEixo();
       renderList();
       renderDetail();
     });
-  }
+  });
+
+  // Cartões e abas são links (`#eixo-3`) para abrirem em outra aba com o botão
+  // do meio ou com Ctrl; o clique simples troca a vista aqui mesmo. Cancelado o
+  // clique, o roteador do Astro também não o trata.
+  const irParaEixo = (event) => {
+    const link = event.target.closest('[data-ir-eixo]');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const eixo = Number(link.dataset.irEixo);
+    if (eixo === state.eixo) return;
+    mostraEixo(eixo);
+    document.querySelector('#eixo-titulo')?.focus({ preventScroll: true });
+  };
+  document.querySelector('#eixos-cartoes').addEventListener('click', irParaEixo);
+  document.querySelector('#eixo-abas').addEventListener('click', irParaEixo);
+
+  document.querySelector('[data-voltar-eixos]').addEventListener('click', () => {
+    const anterior = state.eixo;
+    mostraEixo(null);
+    document.querySelector(`#eixos-cartoes [data-ir-eixo="${anterior}"]`)?.focus({ preventScroll: true });
+  });
 
   document.querySelector('#goals-list').addEventListener('click', (event) => {
     const button = event.target.closest('button[data-codigo]');
@@ -1442,26 +1618,8 @@ function bindEvents() {
     dropdown.querySelector('.dropdown-menu').hidden = true;
   }, { signal: sinalDaPagina() });
 
-  document.querySelector('#goals-eixo-filters').addEventListener('click', (event) => {
-    const botao = event.target.closest('[data-eixo]');
-    if (!botao) return;
-    const valor = botao.dataset.eixo;
-    if (valor === 'all') state.eixos.clear();
-    else if (state.eixos.has(valor)) state.eixos.delete(valor);
-    else state.eixos.add(valor);
-    aplicaFiltros();
-  });
-
-  document.querySelector('#goals-status-filters').addEventListener('click', (event) => {
-    const botao = event.target.closest('[data-status]');
-    if (!botao) return;
-    state.status = botao.dataset.status;
-    aplicaFiltros();
-  });
-
   document.querySelector('#indicator-search').addEventListener('input', (event) => {
     state.busca = event.target.value;
-    renderFiltersSummary();
     aplicaFiltros();
   });
 
@@ -1478,14 +1636,6 @@ function bindEvents() {
     if (!event.target.closest('#export-menu')) abreExport(false);
   }, { signal: sinalDaPagina() });
 
-  // O botão só é exibido no celular, mas o vínculo é feito sempre: girar o
-  // aparelho não recarrega a página, e o CSS é quem decide quando ele aparece.
-  const filtros = document.querySelector('.filters-toggle');
-  filtros.addEventListener('click', () => {
-    const aberto = filtros.closest('.filters-card').classList.toggle('is-open');
-    filtros.setAttribute('aria-expanded', String(aberto));
-  });
-
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     // O menu de downloads fecha primeiro: ele está por cima, e quem o abriu não
@@ -1499,10 +1649,16 @@ function bindEvents() {
   }, { signal: sinalDaPagina() });
 
   // Trocar só o `#` não recarrega o documento: sem isto, seguir um link para
-  // outro código dentro da própria página não faria nada.
+  // outro código (ou para `#eixo-2`) dentro da própria página não faria nada.
+  // Outras âncoras, como a do "pular para o conteúdo", não mexem na vista.
   window.addEventListener('hashchange', () => {
     const codigo = codigoDoEndereco();
-    if (codigo && codigo !== state.codigo) abrirItem(codigo);
+    if (codigo) {
+      if (codigo !== state.codigo || !state.detalhesAbertos) abrirItem(codigo);
+      return;
+    }
+    const eixo = eixoDoEndereco();
+    if (eixo && eixo !== state.eixo) mostraEixo(eixo);
   }, { signal: sinalDaPagina() });
 
   bindMenu();
@@ -1522,10 +1678,17 @@ async function init() {
   const [dados] = await Promise.all([fetch('/data/metas.json').then(readResponse), carregaConteudo()]);
   state.data = dados;
   state.uf = null;
+  state.busca = '';
+  // Sem nada no endereço, a rota abre nos cinco eixos. `#eixo-2` abre o eixo
+  // com o primeiro indicador dele no detalhe; o código de um indicador abre o
+  // eixo dele com aquele indicador.
   const doEndereco = codigoDoEndereco();
-  state.codigo = doEndereco || state.data.metas[0]?.codigo || state.data.foraDoPainel[0]?.codigo || null;
+  state.eixo = doEndereco ? itemPorCodigo(doEndereco).eixo : eixoDoEndereco();
+  const aberto = doEndereco ? itemPorCodigo(doEndereco) : (state.eixo ? primeiroDoEixo(state.eixo) : null);
+  state.codigo = aberto?.codigo ?? null;
+  state.detalhesAbertos = Boolean(aberto);
   // A regra de qual aba abre é a mesma de um clique na lista, e mora num lugar só.
-  state.aba = abaInicial(itemAtual());
+  state.aba = abaInicial(aberto);
   renderFlags();
   bindEvents();
   renderAll();

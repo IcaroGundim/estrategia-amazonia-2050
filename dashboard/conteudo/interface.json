@@ -68,6 +68,29 @@
       "alvo": ".map-card"
     },
     {
+      "titulo": "Metas: os cinco eixos",
+      "pagina": "metas",
+      "chaves": [
+        "Metas -",
+        "Jornada do eixo",
+        "sem meta com patamar mensurável",
+        "média de {n} meta",
+        "média de {n} metas",
+        "{n} sem escala",
+        "{n} de {total} indicadores já têm valores",
+        "indicadores",
+        "com meta",
+        "Ver os {n} indicadores",
+        "{n} coletado",
+        "{n} coletados",
+        "{n} parcial",
+        "{n} parciais",
+        "{n} pendente",
+        "{n} pendentes"
+      ],
+      "alvo": ".eixos-visao"
+    },
+    {
       "titulo": "Metas e indicadores: cabeçalho da página",
       "pagina": "metas",
       "chaves": [
@@ -75,8 +98,6 @@
         "Cumprimento das metas da Estratégia Amazônia 2050 e catálogo completo dos indicadores da matriz de resultados.",
         "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
         "Estado exibido na progressão das metas",
-        "Busca e filtros",
-        "Todos os indicadores",
         "Buscar meta, indicador ou código",
         "Eixo",
         "Coleta",
@@ -87,9 +108,13 @@
         "Metas e indicadores por eixo",
         "Todos os eixos",
         "Todos",
-        "Todas"
+        "Eixos da Estratégia",
+        "Economia",
+        "Infraestrutura",
+        "Coleta do eixo"
       ],
-      "alvo": ".goals-toolbar"
+      "alvo": ".eixo-cabeca",
+      "abre": ".eixo-cartao"
     },
     {
       "titulo": "Quadro de metas: lista, gráfico e detalhe",
@@ -142,10 +167,8 @@
         "Metas com patamar mensurável",
         "Demais indicadores do eixo",
         "Indicadores do eixo",
-        "Nenhum indicador corresponde aos filtros selecionados.",
+        "Nenhum indicador do eixo corresponde à busca.",
         "Eixo {n}",
-        "{n} eixo",
-        "{n} eixos",
         "{n} indicador",
         "{n} indicadores",
         "{total} indicador · {comMeta} com meta mensurável",
@@ -155,7 +178,8 @@
         "{alvo} nos {total} estados",
         "A ou B"
       ],
-      "alvo": ".goals-list-card"
+      "alvo": ".goals-list-card",
+      "abre": ".eixo-cartao"
     },
     {
       "titulo": "Ficha técnica",
@@ -250,7 +274,8 @@
         "grau A-C",
         "modelos"
       ],
-      "alvo": ".goals-list-card"
+      "alvo": ".goals-list-card",
+      "abre": ".eixo-cartao"
     },
     {
       "titulo": "Motivos de um indicador ficar fora do quadro",
@@ -280,7 +305,8 @@
         "por 100 mil habitantes",
         "pontos"
       ],
-      "alvo": ".goals-list-card"
+      "alvo": ".goals-list-card",
+      "abre": ".eixo-cartao"
     },
     {
       "titulo": "Situação da coleta",
@@ -290,7 +316,8 @@
         "Parcial",
         "Pendente"
       ],
-      "alvo": ".goals-toolbar"
+      "alvo": "#goals-detail",
+      "abre": "#goals-list button[data-codigo]"
     },
     {
       "titulo": "Visão Geral: moldura das lâminas",
@@ -813,14 +840,6 @@
       "pt": "Estado exibido na progressão das metas",
       "en": "State shown in the goal progress"
     },
-    "Busca e filtros": {
-      "pt": "Busca e filtros",
-      "en": "Search and filters"
-    },
-    "Todos os indicadores": {
-      "pt": "Todos os indicadores",
-      "en": "All indicators"
-    },
     "Buscar meta, indicador ou código": {
       "pt": "Buscar meta, indicador ou código",
       "en": "Search goals, indicators or codes"
@@ -857,12 +876,88 @@
       "pt": "Todos os eixos",
       "en": "All pillars"
     },
+    "Metas -": {
+      "pt": "Metas -",
+      "en": "Goals -"
+    },
+    "Jornada do eixo": {
+      "pt": "Jornada do eixo",
+      "en": "Pillar progress"
+    },
+    "sem meta com patamar mensurável": {
+      "pt": "sem meta com patamar mensurável",
+      "en": "no goal with a measurable target"
+    },
+    "média de {n} meta": {
+      "pt": "média de {n} meta",
+      "en": "average of {n} goal"
+    },
+    "média de {n} metas": {
+      "pt": "média de {n} metas",
+      "en": "average of {n} goals"
+    },
+    "{n} sem escala": {
+      "pt": "{n} sem escala",
+      "en": "{n} without a scale"
+    },
+    "{n} de {total} indicadores já têm valores": {
+      "pt": "{n} de {total} indicadores já têm valores",
+      "en": "{n} of {total} indicators already have values"
+    },
+    "indicadores": {
+      "pt": "indicadores",
+      "en": "indicators"
+    },
+    "com meta": {
+      "pt": "com meta",
+      "en": "with a target"
+    },
+    "Ver os {n} indicadores": {
+      "pt": "Ver os {n} indicadores",
+      "en": "See the {n} indicators"
+    },
+    "{n} coletado": {
+      "pt": "{n} coletado",
+      "en": "{n} collected"
+    },
+    "{n} coletados": {
+      "pt": "{n} coletados",
+      "en": "{n} collected"
+    },
+    "{n} parcial": {
+      "pt": "{n} parcial",
+      "en": "{n} partial"
+    },
+    "{n} parciais": {
+      "pt": "{n} parciais",
+      "en": "{n} partial"
+    },
+    "{n} pendente": {
+      "pt": "{n} pendente",
+      "en": "{n} pending"
+    },
+    "{n} pendentes": {
+      "pt": "{n} pendentes",
+      "en": "{n} pending"
+    },
+    "Eixos da Estratégia": {
+      "pt": "Eixos da Estratégia",
+      "en": "Strategy pillars"
+    },
+    "Economia": {
+      "pt": "Economia",
+      "en": "Economy"
+    },
+    "Infraestrutura": {
+      "pt": "Infraestrutura",
+      "en": "Infrastructure"
+    },
+    "Coleta do eixo": {
+      "pt": "Coleta do eixo",
+      "en": "Data collected"
+    },
     "Todos": {
       "pt": "Todos",
-      "en": "All"
-    },
-    "Todas": {
-      "pt": "Todas",
       "en": "All"
     },
     "Amazônia Legal (região)": {
@@ -1045,21 +1140,13 @@
       "pt": "Indicadores do eixo",
       "en": "Indicators in this pillar"
     },
-    "Nenhum indicador corresponde aos filtros selecionados.": {
-      "pt": "Nenhum indicador corresponde aos filtros selecionados.",
-      "en": "No indicator matches the filters selected."
+    "Nenhum indicador do eixo corresponde à busca.": {
+      "pt": "Nenhum indicador do eixo corresponde à busca.",
+      "en": "No indicator in this pillar matches the search."
     },
     "Eixo {n}": {
       "pt": "Eixo {n}",
       "en": "Pillar {n}"
-    },
-    "{n} eixo": {
-      "pt": "{n} eixo",
-      "en": "{n} pillar"
-    },
-    "{n} eixos": {
-      "pt": "{n} eixos",
-      "en": "{n} pillars"
     },
     "{n} indicador": {
       "pt": "{n} indicador",

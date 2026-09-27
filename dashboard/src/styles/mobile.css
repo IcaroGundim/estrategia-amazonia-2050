@@ -153,8 +153,6 @@
   .rank-name small { font-size: 11px; }
   .rank-measure b { font-size: 12px; }
 
-  .goals-eixo-head h3 { font-size: 15px; }
-  .goals-eixo-head > span { font-size: 11.5px; }
   .goals-row-name { font-size: 15px; }
   .goals-row-name small { font-size: 11.5px; }
   .goals-row-ler b { font-size: 28px; }
@@ -171,7 +169,6 @@
   .goals-detail-summary dd { font-size: 17px; }
   .goals-detail-facts dd { font-size: 13px; }
   .goals-detail-section h3, .goals-detail-chart-head h3 { font-size: 11px; }
-  .goals-detail-meta { font-size: 14px; }
   .goals-detail-method { font-size: 12.5px; }
   .goals-chart-uf, .goals-chart-row > b { font-size: 11px; }
   .goals-chart-scale, .goals-chart-legend { font-size: 10px; }
@@ -298,7 +295,6 @@
   .goals-list-summary { padding: 0; }
   .goals-list-head { padding: 0 2px 4px; }
   .goals-list { margin-top: 14px; }
-  .goals-eixo-head { padding: 0 2px 8px; }
   .goals-faixa { padding: 0 2px; }
 
   .goals-cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }

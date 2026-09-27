@@ -272,7 +272,9 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
       if (!janela || !seletor || pagina === 'metodologia') return;
       const doc = janela.document;
       let alvo = doc.querySelector<HTMLElement>(seletor);
-      if ((!alvo || alvo.hidden) && grupo?.dataset.abre) {
+      // O alvo pode estar escondido por um ancestral (nas Metas, a vista do
+      // eixo aberto inteira), não só por ele mesmo.
+      if ((!alvo || alvo.closest('[hidden]')) && grupo?.dataset.abre) {
         doc.querySelector<HTMLElement>(grupo.dataset.abre)?.click();
         alvo = doc.querySelector<HTMLElement>(seletor);
       }

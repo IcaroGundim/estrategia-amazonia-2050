@@ -726,59 +726,112 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    dentro de uma página que não rola. */
 .goals-board.has-ficha .goals-detail { position: static; max-height: none; overflow: visible; padding: 24px clamp(24px, 2.4vw, 44px) 34px; }
 
-/* --- barra de busca, filtros e downloads ------------------------------------
-   Era a coluna fixa da rota de indicadores. Deitada acima do quadro, ela cabe
-   sem tirar largura da lista nem do painel — e o seletor de estado, que naquela
-   rota era um segundo menu suspenso, some: as bandeiras do cabeçalho já dizem o
-   recorte, para a jornada e para a ficha ao mesmo tempo. */
 .goals-list-head.is-pagina { margin-bottom: 16px; padding-right: 0; }
-.goals-toolbar { margin-bottom: 16px; padding: 12px 20px; }
 
-/* Deitada só no computador. Abaixo de 920 as consultas de largura mais adiante
-   já reorganizam os grupos, e um seletor com duas classes venceria as duas —
-   a barra apareceria em duas colunas de 141px num aparelho, com cada pastilha
-   de filtro numa linha.
+/* --- metas por eixo ----------------------------------------------------------
+   A rota abre nos cinco eixos: um cartão por eixo, com a jornada média das metas
+   dele e a situação da coleta dos seus indicadores. Escolher um eixo troca a
+   vista para o cabeçalho dele (abas dos eixos, busca, baixar e os dois números)
+   e o quadro de sempre, com a lista e o detalhe. */
+.eixos-visao { padding: 22px 26px 26px; }
+.eixos-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 18px; border-bottom: 1px solid var(--linha); }
+.eixos-topo .goals-flags { margin-left: auto; }
+.eixos-titulo { margin: 0; font-size: clamp(26px, 2.2vw, 40px); line-height: 0.96; }
+.eixos-titulo em { color: var(--urucum); font-style: normal; }
+/* Cada cartão ocupa quatro linhas da grade (nome, jornada, coleta, link) como
+   subgrade: um nome de três linhas empurra as quatro partes dos vizinhos junto,
+   e os números ficam na mesma altura. */
+.eixos-cartoes { margin-top: 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
 
-   A busca deixa de ocupar a linha inteira — esticada por 1.283px ela era um
-   campo vazio do tamanho da página — e os rótulos dos filtros passam a ficar ao
-   lado das pastilhas, e não como título acima delas. Com isso os três cabem numa
-   linha só nas telas largas; abaixo disso o `flex-wrap` os desdobra sozinho, sem
-   precisar de mais um ponto de quebra. */
-@media (min-width: 921px) {
-  /* `flex-direction` explícito: a regra base da `.filters-body` é uma coluna, e
-     herdá-la aqui faria o `flex-basis` da busca valer como altura — o campo
-     abria com 280px de altura no meio da barra. */
-  /* Sem moldura no computador: uma faixa de busca e filtros não é um bloco de
-     conteúdo, e o cartão branco com borda, sombra e recheio a fazia pesar como
-     um. Solta sobre a areia, ela lê como o que é — uma barra de controles — e
-     devolve à lista os 40px que a moldura consumia. No celular o cartão fica:
-     lá o bloco recolhe e abre, e a moldura é o que diz onde ele começa. */
-  .goals-toolbar { padding: 0; border: 0; background: none; box-shadow: none; }
-  .goals-toolbar .filters-body { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-  /* Busca e botão de baixar dividem a linha: `.filters-card .dropdown-toggle`
-     impõe 46px ao segundo, e um campo de 38 ao lado de um botão de 46 desalinha
-     a barra inteira. Os dois vêm para 40. */
-  .goals-toolbar .indicator-search { flex: 1 1 200px; max-width: 340px; min-height: 40px; }
-  .goals-toolbar .export-toggle { min-height: 40px; }
-  /* O invólucro sai do caminho para os dois filtros quebrarem cada um por si:
-     como uma peça só ele não cabia ao lado da busca em telas de ~900px e descia
-     inteiro, devolvendo à barra as fileiras que ela tinha antes. */
-  .goals-toolbar .filter-linhas { display: contents; }
-  .goals-toolbar .filter-group { display: flex; align-items: center; gap: 9px; }
-  .goals-toolbar .filter-group + .filter-group { padding-top: 0; border-top: 0; }
-  .goals-toolbar .filter-title { margin: 0; font-size: 10px; letter-spacing: 0.1em; }
-  /* Onze pastilhas em linha: cada pixel de recheio custa onze na largura da
-     barra, e é o que decide se ela cabe numa fileira ou em duas. */
-  .goals-toolbar .status-filter-list { gap: 5px; }
-  .goals-toolbar .status-filter { min-height: 32px; padding: 5px 10px; font-size: 10.5px; }
-  /* Os cinco eixos são um dígito cada: sem um piso de largura eles ficariam com
-     pastilhas de tamanhos diferentes de "Todos", e a fileira lia como irregular. */
-  .goals-toolbar #goals-eixo-filters .status-filter { min-width: 32px; padding-inline: 8px; justify-content: center; display: inline-flex; align-items: center; }
-  /* Encostado à direita: é a única peça da barra que não filtra a lista. */
-  /* A busca fica à esquerda; os filtros de eixo e coleta se encostam no botão
-     de baixar, à direita, como um só bloco de controles. */
-  .goals-toolbar .filter-linhas .filter-group:first-child { margin-left: auto; }
-  .goals-toolbar .export-group { margin-left: 0; }
+.eixo-cartao { min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 16px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 150ms ease, box-shadow 150ms ease; }
+.eixo-cartao:hover { border-color: var(--mata-300); box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
+.eixo-cartao:focus-visible { border-color: var(--mata); box-shadow: 0 0 0 3px rgba(14, 43, 34, 0.12); outline: none; }
+.eixo-cartao-nome { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+.eixo-cartao-jornada, .eixo-cartao-coleta { display: grid; align-content: start; gap: 9px; }
+.eixo-cartao-coleta { padding-top: 14px; border-top: 1px solid var(--linha-2); }
+.eixo-cartao-ver { align-self: end; padding-top: 4px; color: var(--urucum); font-size: 12px; font-weight: 600; }
+.eixo-cartao:hover .eixo-cartao-ver { text-decoration: underline; text-underline-offset: 3px; }
+
+/* O número grande e o rótulo de duas linhas ao lado, alinhados pela base. */
+.eixo-leitura { display: flex; align-items: flex-end; gap: 10px; }
+.eixo-leitura b { color: var(--mata); font: 800 44px/0.9 var(--display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.eixo-leitura b.is-vazio { color: var(--tinta-4); }
+.eixo-leitura span { padding-bottom: 3px; color: var(--tinta-4); font: 600 10px/1.3 var(--text); letter-spacing: 0.12em; text-transform: uppercase; }
+.eixo-leitura span.is-texto { max-width: 17ch; padding-bottom: 2px; font: 400 11px/1.3 var(--text); letter-spacing: 0; text-transform: none; }
+/* A mesma barra dos cartões de meta: o hachurado em urucum é o que falta. */
+.eixo-barra { position: relative; display: block; height: 10px; overflow: hidden; border-radius: 4px; background: var(--linha-2); }
+.eixo-barra .resta { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 5px, rgba(192, 69, 31, 0.12) 5px 10px); }
+.eixo-barra .feito { position: absolute; inset: 0 auto 0 0; border-radius: 4px 2px 2px 4px; background: var(--mata-500); }
+.eixo-nota { margin: 0; color: var(--tinta-4); font-size: 10px; }
+.eixo-contagem { display: flex; justify-content: space-between; gap: 8px; color: var(--tinta-3); font-size: 12px; }
+.eixo-contagem b { color: var(--mata); font-variant-numeric: tabular-nums; }
+/* Coleta em três tons: coletado em verde, parcial em ocre, pendente no mesmo
+   hachurado neutro do que ainda falta. */
+.eixo-coleta-barra { display: flex; gap: 2px; height: 6px; overflow: hidden; border-radius: 3px; }
+.eixo-coleta-barra i { flex: 1 1 0; }
+.eixo-coleta-barra .is-coletado, .eixo-legenda .is-coletado { background: var(--mata-700); }
+.eixo-coleta-barra .is-parcial, .eixo-legenda .is-parcial { background: var(--ocre); }
+.eixo-coleta-barra .is-pendente, .eixo-legenda .is-pendente { background: repeating-linear-gradient(45deg, var(--linha-2) 0 3px, var(--linha) 3px 6px); }
+.eixo-legenda { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--tinta-3); font-size: 10.5px; }
+.eixo-legenda > span { display: inline-flex; align-items: center; gap: 5px; }
+.eixo-legenda i { width: 8px; height: 8px; border-radius: 2px; }
+
+/* O eixo aberto: voltar, as abas dos cinco, a busca e o baixar numa linha; o
+   nome do eixo e os dois números (jornada e coleta) embaixo. */
+.eixo-cabeca { padding: 16px 22px 20px; }
+.eixo-cabeca-topo { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+.eixo-voltar { min-height: 40px; padding: 0; border: 0; background: none; color: var(--mata); font-size: 12.5px; font-weight: 600; }
+.eixo-voltar:hover, .eixo-voltar:focus-visible { color: var(--urucum); }
+.eixo-abas { display: flex; flex-wrap: wrap; gap: 6px; }
+.eixo-aba { min-height: 40px; padding: 0 14px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); color: var(--tinta-2); font-size: 12px; font-weight: 600; white-space: nowrap; transition: border-color 150ms ease; }
+.eixo-aba:hover, .eixo-aba:focus-visible { border-color: var(--mata-300); outline: none; }
+.eixo-aba small { color: var(--tinta-4); font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.eixo-aba[aria-current="page"] { border-color: var(--mata); background: var(--mata); color: var(--areia); }
+.eixo-aba[aria-current="page"] small { color: rgba(245, 240, 232, 0.72); }
+
+/* Busca e baixar dentro do cabeçalho: sem moldura em nenhuma largura e sem o
+   botão que recolhe o bloco no celular — são só duas peças. A classe
+   `filters-card` fica por causa do desenho do botão de baixar; os seletores
+   abaixo vencem as regras dela que moldurariam ou esconderiam a barra. */
+.eixo-cabeca .goals-toolbar { flex: 0 1 440px; margin: 0 0 0 auto; padding: 0; border: 0; background: none; box-shadow: none; }
+.eixo-cabeca .goals-toolbar.filters-card .filters-body { display: flex; flex-direction: row; align-items: center; gap: 8px 12px; padding: 0; }
+.eixo-cabeca .goals-toolbar .indicator-search { flex: 1 1 200px; max-width: 340px; min-height: 40px; }
+.eixo-cabeca .goals-toolbar .export-toggle { min-height: 40px; }
+
+.eixo-cabeca-corpo { margin-top: 16px; padding-top: 22px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 48px; border-top: 1px solid var(--linha-2); }
+.eixo-titulo { margin: 0; font-size: 34px; line-height: 1.05; text-wrap: balance; }
+.eixo-titulo:focus { outline: none; }
+.eixo-metricas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--linha-2); }
+.eixo-metrica { display: grid; gap: 10px; align-content: start; padding: 0 28px; }
+.eixo-metrica + .eixo-metrica { padding-right: 0; border-left: 1px solid var(--linha-2); }
+.eixo-metrica .eixo-leitura b { font-size: 40px; }
+.eixo-metrica .eixo-coleta-barra { height: 10px; border-radius: 4px; }
+.eixo-aberto .goals-board { margin-top: 16px; }
+
+@media (max-width: 1279px) {
+  .eixos-cartoes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 920px) {
+  .eixos-visao, .eixo-cabeca { padding: 18px 18px 20px; }
+  .eixos-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eixo-cabeca .goals-toolbar { flex-basis: 100%; margin-left: 0; }
+  .eixo-cabeca .goals-toolbar .indicator-search { max-width: none; }
+  .eixo-cabeca-corpo { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .eixo-metricas { border-left: 0; }
+  .eixo-metrica:first-child { padding-left: 0; }
+}
+
+@media (max-width: 620px) {
+  .eixos-topo .goals-flags { margin-left: 0; }
+  .eixos-cartoes { grid-template-columns: minmax(0, 1fr); }
+  /* As cinco abas rolam de lado, numa linha só, em vez de virarem três fileiras. */
+  .eixo-abas { flex: 1 1 100%; flex-wrap: nowrap; margin-inline: -18px; padding-inline: 18px; overflow-x: auto; scrollbar-width: none; }
+  .eixo-abas::-webkit-scrollbar { display: none; }
+  .eixo-titulo { font-size: 26px; }
+  .eixo-metricas { grid-template-columns: minmax(0, 1fr); }
+  .eixo-metrica, .eixo-metrica + .eixo-metrica { padding: 0; border-left: 0; }
+  .eixo-metrica + .eixo-metrica { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--linha-2); }
 }
 
 
@@ -820,11 +873,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    lida como uma meta sem número. */
 .goals-faixa { margin: 16px 0 2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
 .goals-faixa::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
-.goals-eixo-head + .goals-faixa { margin-top: 10px; }
-.goals-eixo-head { display: flex; align-items: center; gap: 10px; padding-bottom: 7px; border-bottom: 2px solid var(--mata); }
-.goals-eixo-head .num { display: grid; place-content: center; flex: none; width: 22px; height: 22px; border-radius: 6px; background: var(--mata); color: var(--areia); font: 800 12px var(--display); }
-.goals-eixo-head h3 { font-size: 13.5px; letter-spacing: 0.01em; }
-.goals-eixo-head > span { color: var(--tinta-4); font-size: 10.5px; }
 /* Metas em cards: a jornada é o número grande à esquerda; nome, patamar, barra
    fina e valor atual ficam ao lado. Duas colunas quando há largura; uma quando
    o painel de detalhe está aberto ou a tela é estreita. */
@@ -1041,7 +1089,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-chart-empty { margin: 8px 0 0; color: var(--tinta-4); font-size: 10.5px; line-height: 1.5; }
 .goals-detail-section { margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--linha-2); }
 .goals-detail-section h3 { margin-bottom: 8px; color: var(--tinta-3); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; }
-.goals-detail-meta { margin: 0; color: var(--tinta); font: 500 13px/1.5 var(--text); }
 .goals-detail-facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .goals-detail-facts .is-wide { grid-column: 1 / -1; }
 .goals-detail-method { margin: 13px 0 0; color: var(--tinta-3); font-size: 10.5px; line-height: 1.5; }
