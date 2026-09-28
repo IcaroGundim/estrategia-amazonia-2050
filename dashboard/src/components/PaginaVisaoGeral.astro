@@ -20,6 +20,9 @@ const tx = (par: { pt: string; en?: string | null } | string) =>
   (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
 
 const { estrategia, visao2050, eixos, governanca, estePainel } = textos.visaoGeral;
+// O rascunho da administração pode ainda não ter o crédito, se a mescla com a
+// main falhou; aí vale o publicado.
+const contribuicao = estePainel.contribuicao ?? textosPublicados.visaoGeral.estePainel.contribuicao;
 // As fontes consolidadas vêm do mesmo arquivo (panorama.metodologia), e por
 // isso a prévia da administração as mostra como qualquer outro texto.
 const fontes = textos.panorama.metodologia.sources;
@@ -143,7 +146,14 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
             <a class="secondary-link" href={rotaMetas}>{t('Explorar metas e indicadores')}</a>
           </div>
         </div>
-        <SlidePhoto variant={5} lang={lang} />
+        {/* No lugar da fotografia, o crédito ao IPAM, dentro da mesma moldura. A marca
+            é a versão vertical colorida, a preferencial do manual do instituto, e
+            vai sem efeito nenhum sobre ela. */}
+        <aside class="slide-contribuicao" aria-label={tx(contribuicao.rotulo)}>
+          <span>{tx(contribuicao.rotulo)}</span>
+          <img src="/logo-ipam-amazonia.png" alt="IPAM Amazônia" width="720" height="844" loading="lazy" />
+          <a href="https://ipam.org.br" target="_blank" rel="noreferrer">ipam.org.br ↗</a>
+        </aside>
       </section>
     </article>
 

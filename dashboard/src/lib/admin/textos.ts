@@ -55,7 +55,7 @@ export const GRUPOS: Grupo[] = [
   { caminhos: ['visaoGeral.visao2050'], secao: 'Lâminas', titulo: 'Lâmina 2: Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.', ancora: 'visao-2050' },
   { caminhos: ['visaoGeral.eixos'], secao: 'Lâminas', titulo: 'Lâmina 3: Eixos', descricao: 'Os cinco eixos.', ancora: 'eixos-de-implementacao' },
   { caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.', ancora: 'governanca' },
-  { caminhos: ['visaoGeral.estePainel', 'panorama.metodologia.sources'], secao: 'Lâminas', titulo: 'Lâmina 5: Painel', descricao: 'Como os dados são lidos e a lista de fontes consolidadas.', ancora: 'calculo' },
+  { caminhos: ['visaoGeral.estePainel', 'panorama.metodologia.sources'], secao: 'Lâminas', titulo: 'Lâmina 5: Painel', descricao: 'Como os dados são lidos, a lista de fontes consolidadas e o crédito ao IPAM.', ancora: 'calculo' },
   { caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto e dimensões da síntese comparativa. Vão para a nota técnica em PDF ("Baixar nota técnica"), que é gerada à parte; nenhuma página do painel os mostra, então a prévia não muda.' }
 ];
 

@@ -152,10 +152,10 @@
 .methodology-page #governanca { grid-template-columns: minmax(0, .65fr) minmax(0, 1.6fr); }
 #governanca .slide-photo { grid-column: 1; grid-row: 1; }
 #governanca .slide-copy { grid-column: 2; grid-row: 1; padding: 32px 38px; display: grid; align-content: space-between; }
-/* O painel é retrato e a foto é larga: o recorte mostra só cerca de um terço dela.
-   O enquadramento fica sobre a torre principal do Mercado de Ferro, e não no centro
-   geométrico, que cairia no telhado. */
-#governanca .slide-photo-main { object-position: 74% 50%; }
+/* O Teatro Amazonas é retrato, como o painel: na horizontal o recorte é pequeno e
+   puxa para a direita, para caber a cúpula e o pórtico. Na faixa baixa das telas
+   estreitas é a vertical que corta, e os 22% seguram a cúpula em vez do calçamento. */
+#governanca .slide-photo-main { object-position: 60% 22%; }
 #governanca .slide-photo-caption { left: 26px; right: 26px; }
 #governanca .slide-photo figcaption { left: 26px; right: 20px; }
 #governanca .method-guidance-grid.is-compacta { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: clamp(18px, 3.3vh, 30px); gap: clamp(14px, 2.6vh, 24px) 26px; }
@@ -180,14 +180,16 @@
 #governanca .method-flow b { color: var(--ocre); letter-spacing: .1em; }
 #governanca .method-flow span { color: inherit; }
 
-/* Leitura dos dados: a fotografia vertical do Teatro Amazonas exibida inteira. */
+/* Leitura dos dados: no painel, o crédito ao IPAM, que deu apoio técnico e
+   científico à Estratégia. */
 .methodology-page #calculo { grid-template-columns: minmax(0,.75fr) minmax(0,1.4fr); grid-template-rows: minmax(0,1fr); }
 /* Moldura real em vez de um painel colorido: perfil escuro por fora, passe-partout
-   claro por dentro e um fio fino rente à fotografia. Os créditos ficam no próprio
-   passe-partout, como a etiqueta de uma gravura emoldurada. */
-#calculo > .slide-photo {
-  grid-column: 1; grid-row: 1; margin: 26px 0 26px 26px;
-  display: flex; flex-direction: column; padding: clamp(20px, 2.8vh, 30px);
+   claro por dentro, e a marca centrada nele com a etiqueta acima e o link
+   abaixo, como uma placa. */
+#calculo > .slide-contribuicao {
+  grid-column: 1; grid-row: 1; min-width: 0; margin: 26px 0 26px 26px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(10px, 2.2vh, 22px);
+  padding: clamp(20px, 2.8vh, 30px); text-align: center;
   background: var(--papel);
   /* O perfil não é uma borda chapada: o gradiente escurece do topo para a base,
      como a luz bate numa moldura de madeira, e o `border-image` pinta os quatro
@@ -201,18 +203,12 @@
     0 22px 44px -14px rgba(14, 43, 34, .45),     /* a moldura projeta sombra na parede */
     0 4px 12px -4px rgba(14, 43, 34, .25);
 }
-/* Com o invólucro, a caixa da imagem passa a ter exatamente o tamanho da foto
-   exibida — antes o `object-fit: contain` deixava sobras na caixa do <img>, e
-   qualquer traço nela descolava do conteúdo em parte das telas. A foto continua
-   posicionada em absoluto: como item de grade, o `max-height: 100%` não resolvia
-   contra um poço de altura flexível e a imagem transbordava sobre a etiqueta. */
-#calculo .slide-photo-well { display: block; position: relative; flex: 1; min-height: 0; }
-#calculo .slide-photo-main { inset: 0; margin: auto; width: auto; height: auto; max-width: 100%; max-height: 100%; border: 1px solid rgba(14, 43, 34, .3); filter: drop-shadow(0 3px 7px rgba(14, 43, 34, .28)); }
-#calculo .slide-photo::after { display: none; }
-#calculo .slide-photo-caption { position: static; max-width: none; margin: 16px 0 10px; }
-#calculo .slide-photo-caption > span { color: var(--mata-500); }
-#calculo .slide-photo-caption p { display: none; }
-#calculo .slide-photo figcaption { position: static; max-width: none; width: auto; color: var(--tinta-3); }
+/* A marca é o assunto da placa e ocupa quase todo o passe-partout: segue a altura
+   da tela, para caber nas lâminas baixas, e nunca passa de quatro quintos da
+   largura, o que deixa a área de proteção nas laterais. */
+#calculo .slide-contribuicao img { display: block; flex: none; width: min(80%, clamp(120px, 34vh, 340px)); height: auto; }
+#calculo .slide-contribuicao > span { color: var(--mata-500); font-size: clamp(10px, 1.2vh, 12px); font-weight: 600; text-transform: uppercase; letter-spacing: .16em; line-height: 1.5; }
+#calculo .slide-contribuicao a { color: var(--mata-700); font: 600 var(--slide-label) var(--display); text-decoration: underline; text-underline-offset: 3px; }
 #calculo .slide-copy { grid-column: 2; grid-row: 1; display: block; width: 100%; max-width: none; padding: clamp(26px,3vw,48px); }
 #calculo .slide-copy h2 { max-width: 22ch; }
 #calculo .slide-copy > h2 + p { max-width: 78ch; }
@@ -262,6 +258,17 @@
 @media (max-width: 900px) {
   .methodology-page .methodology-index nav a strong { font-size: 12px; }
 }
+/* Do tablet em pé para baixo a placa sai do lado do texto e vai para cima dele,
+   na largura toda. Ao lado, a coluna dela ficava com uns 150px de largura e mais
+   de 1000px de altura. A faixa mede o que a placa pedir, e não uma altura fixa. */
+@media (max-width: 920px) {
+  .methodology-page #calculo { grid-template-columns: minmax(0,1fr); grid-template-rows: auto minmax(0,1fr); }
+  #calculo > .slide-contribuicao { margin: 14px 14px 0; padding: 18px 16px; border-width: 6px; gap: 12px; }
+  #calculo .slide-contribuicao img { width: clamp(130px, 30vw, 170px); }
+  #calculo .slide-contribuicao > span { font-size: 10px; }
+  #calculo .slide-contribuicao a { font-size: 12px; }
+  #calculo .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
+}
 @media (max-width: 700px) {
   .methodology-page .method-section { height: max(560px, calc(100dvh - 235px)); grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,1fr) 140px; }
   .slide-copy { padding: 24px; }
@@ -279,12 +286,6 @@
   .slide-photo-caption { bottom: auto; top: 18px; left: 22px; right: 22px; }
   .slide-photo-caption p { display: none; }
   .slide-photo figcaption { left: 22px; bottom: 16px; right: 22px; width: auto; font-size: 9px; }
-  .methodology-page #calculo { grid-template-columns: minmax(0,1fr); grid-template-rows: 180px minmax(0,1fr); }
-  #calculo > .slide-photo { grid-column: 1; grid-row: 1; margin: 14px 14px 0; padding: 13px; border-width: 6px; display: grid; grid-template-columns: 100px minmax(0,1fr); grid-template-rows: 1fr 1fr; gap: 6px 16px; }
-  #calculo .slide-photo-well { grid-column: 1; grid-row: 1 / -1; min-height: 0; }
-  #calculo .slide-photo-caption { grid-column: 2; grid-row: 1; align-self: end; margin: 0; }
-  #calculo .slide-photo figcaption { grid-column: 2; grid-row: 2; align-self: start; }
-  #calculo .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
   .overview-controls { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 10px 14px; }
   .methodology-page .methodology-index { grid-column: 1 / -1; grid-row: 1; padding: 0; }
   .methodology-page .methodology-index nav { flex-wrap: wrap; justify-content: center; gap: 0 16px; }
@@ -388,11 +389,9 @@
   [data-modo="documento"] .slide-photo-caption p { display: block; margin-top: 5px; font-size: 20px; }
   [data-modo="documento"] .slide-photo::after { background: linear-gradient(180deg, rgba(14,43,34,.15) 20%, rgba(14,43,34,.9)); }
   [data-modo="documento"] .slide-photo figcaption { position: static; width: auto; margin-top: 9px; }
-  /* A quinta lâmina exibe a fotografia emoldurada, deitada ao lado dos créditos.
-     A moldura é o assunto dela e sobrevive à mudança de modo. */
-  [data-modo="documento"] #calculo > .slide-photo { height: 196px; margin: 14px 14px 0; }
-  [data-modo="documento"] #calculo .slide-photo-caption { position: static; bottom: auto; }
-  [data-modo="documento"] #calculo .slide-photo-caption p { display: none; }
+  /* A quinta lâmina abre com a placa do IPAM, como até 920px, no lugar que as
+     fotografias ocupam nas outras. A moldura sobrevive à mudança de modo. */
+  [data-modo="documento"] #calculo > .slide-contribuicao { order: -1; }
   /* A capa abre o documento: sem legenda a disputar a faixa, ela ganha altura
      própria em vez dos 172px das fotografias. */
   [data-modo="documento"] #a-estrategia > .slide-photo { height: clamp(240px, 78vw, 340px); }

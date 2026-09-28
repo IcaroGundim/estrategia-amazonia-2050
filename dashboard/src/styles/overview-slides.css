@@ -87,5 +87,5 @@
   .methodology-page .methodology-article { display: block; overflow: visible; }
   .methodology-page .method-section { display: block; height: auto; break-after: page; }
   .slide-copy { overflow: visible; }
-  .slide-photo, .overview-controls, .methodology-page .methodology-index { display: none; }
+  .slide-photo, .slide-contribuicao, .overview-controls, .methodology-page .methodology-index { display: none; }
 }

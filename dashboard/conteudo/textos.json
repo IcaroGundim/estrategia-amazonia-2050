@@ -354,6 +354,12 @@
       "fontesRotulo": {
         "pt": "Fontes consolidadas",
         "en": "Consolidated sources"
+      },
+      "contribuicao": {
+        "rotulo": {
+          "pt": "Contribuição técnica e científica",
+          "en": "Technical and scientific support"
+        }
       }
     }
   }

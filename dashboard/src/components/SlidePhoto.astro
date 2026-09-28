@@ -21,9 +21,10 @@ const photos = [
   { file: 'capa-estrategia-2050.jpg', srcset: '/photos/capa-estrategia-2050-900.webp 900w, /photos/capa-estrategia-2050-1241.webp 1241w, /photos/capa-estrategia-2050-2067.webp 2067w', sizes: '(max-width: 620px) 65vw, min(34vw, calc((100vh - 220px) * .764), 688px)', source: null, author: null, license: null, width: 1241, height: 1754, place: null, title: null, alt: 'Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.' },
   { file: 'manaus.jpg', srcset: null, sizes: null, source: 'Amazon4.jpg', author: 'Neil Palmer / CIAT', license: '2.0', width: 1280, height: 850, place: 'Floresta amazônica · Amazonas', title: 'Floresta em pé, qualidade de vida.', alt: 'Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.' },
   { file: 'jalapao.jpg', srcset: null, sizes: null, source: 'Jalapao_05.jpg', author: 'Pedro Henrique Álvares', license: '3.0', width: 1280, height: 836, place: 'Jalapão · Tocantins', title: 'Conectar prioridades. Valorizar o território.', alt: 'Paisagem do Parque Estadual do Jalapão, no Tocantins.' },
-  { file: 'ver-o-peso.jpg', srcset: null, sizes: null, source: 'Bel%C3%A9m_Ver-o-Peso_01.jpg', author: 'Cayambe', license: '3.0', width: 1280, height: 828, place: 'Ver-o-Peso · Belém, Pará', title: 'Cooperação que atravessa fronteiras.', alt: 'O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.' },
-  { file: 'teatro-amazonas.jpg', srcset: null, sizes: null, source: 'TeatroAmazonas.jpg', author: 'Jaques Sabon', license: '3.0', width: 683, height: 1000, place: 'Teatro Amazonas · Manaus', title: 'Evidências para orientar o futuro.', alt: 'Fachada e cúpula do Teatro Amazonas, em Manaus.' },
+  { file: 'teatro-amazonas.jpg', srcset: null, sizes: null, source: 'TeatroAmazonas.jpg', author: 'Jaques Sabon', license: '3.0', width: 683, height: 1000, place: 'Teatro Amazonas · Manaus', title: 'Cooperação que atravessa fronteiras.', alt: 'Fachada e cúpula do Teatro Amazonas, em Manaus.' },
 ];
+// A quinta lâmina não tem fotografia: o painel dela é o crédito ao IPAM, em
+// PaginaVisaoGeral.astro.
 const photo = photos[variant - 1];
 ---
 <figure class="slide-photo">
