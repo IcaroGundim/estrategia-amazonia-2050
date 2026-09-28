@@ -20,16 +20,16 @@ export interface TopbarLanguage {
 
 /**
  * Barra fixa do topo, em verde-mata: logo do Consórcio, a marca da Estratégia
- * ("Estratégia Regional" em versalete, "Amazônia" em letra cursiva e "2050" em
- * ocre), as rotas do painel, uma ação em contorno claro e o seletor de idioma.
+ * ("Estratégia Regional" em versalete sobre "Amazônia 2050" em display 800, com o
+ * ano em ocre no mesmo corpo), as rotas do painel, uma ação em contorno claro e o seletor de idioma.
  * A rota ativa fica em ocre, com um filete de 2px sob o rótulo.
  */
 export interface TopbarProps extends React.HTMLAttributes<HTMLElement> {
   /** Caminho do logo claro do Consórcio (assets/logo-consorcio-clara.avif). */
   logoSrc?: string;
-  /** Rótulo em versalete acima do cursivo. Padrão: "Estratégia Regional". */
+  /** Rótulo em versalete acima de "Amazônia 2050". Padrão: "Estratégia Regional". */
   eyebrow?: string;
-  /** Ano ao lado do cursivo, em ocre. Padrão: "2050". */
+  /** Ano ao lado de "Amazônia", em ocre e no mesmo corpo. Padrão: "2050". */
   year?: string;
   /** Esconde a marca da Estratégia e deixa só o logo, como no celular. */
   showBrand?: boolean;

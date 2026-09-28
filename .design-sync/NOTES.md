@@ -69,23 +69,47 @@ componentes importados por todas (`Topbar.dc.html`, `Rodape.dc.html`, com a prop
 - A ordem das folhas no kit segue a do build: `global.css`, `mobile.css` e, na Visão Geral,
   `overview-slides.css` e `overview-compositions.css` (ver a memória sobre a ordem da CSS no Astro).
 - KaTeX (fórmulas da ficha técnica) vem da CDN jsdelivr na versão instalada no dashboard.
-- Ficha técnica em largura cheia nas Metas: o rodapé sobe por cima do conteúdo — acontece no site
-  também (`.goals-board.has-ficha` fica mais baixo que o conteúdo), não é defeito da cópia.
+- A ficha técnica das Metas abre no painel lateral, como Resultado e Trajetória 2050 (desde
+  27/09/2026; antes ocupava a largura toda com `.goals-board.has-ficha`, que saiu). Canvas na versão
+  24, com a prancheta da ficha recapturada e a `global.css` em `/_blob/4ac6f490…`.
 
 ## Riscos para a próxima sincronização
 
-- A proposta "Metas por eixos" foi implementada no painel em 27/09/2026. As telas de Metas do UI kit
-  e as três pranchetas antigas de Metas no canvas mostram o layout anterior (filtros de eixo e
-  coleta) até o próximo `gerar-telas.mjs` e a próxima captura. A jornada do eixo no site usa a regra
-  de `dadosDaMeta` (a CAPAG conta estados que cumprem), por isso os números diferem dos da proposta.
+- Sincronização de 27/09/2026 (fim do dia): UI kit regerado com as Metas por eixos, as metas
+  avaliadas pela Amazônia Legal (baseline declarada ou média de 10/5 anos) e a marca provisória em
+  texto ("Amazônia 2050", sem a cursiva, até sair o manual de uso da marca). Topbar.jsx, as docs de
+  GoalCard e FlagButton, o readme e o template ListaDeMetas foram atualizados junto.
+- Ainda desatualizados: o componente `AxisHeader` e o template `ListaDeMetas` reproduzem a lista
+  antiga (cabeçalho de eixo e filtros de eixo), que o site não usa mais — faltam componentes para o
+  cartão de eixo e o cabeçalho do eixo aberto.
+- Canvas de pranchetas atualizado em 27/09/2026 (versão 18): marca em texto no `Topbar.dc.html`, CSS
+  nova (global e mobile reenviadas como assets; o manifesto aponta os endereços novos) e a fileira
+  das Metas trocada pelas telas reais — os cinco eixos (`Metas.dc.html`), cada eixo aberto
+  (`Metas-Eixo1..5`), Trajetória 2050 e Ficha técnica (as duas de I1.1.2). A fileira da proposta e a
+  prancheta `Metas-Eixos.dc.html` saíram; `montar-proposta-eixos.mjs` ficou só como registro.
+  Capturas antigas em `.cache/capturas-antigas/`.
+- `montar-canvas.mjs` recebe o `canvas.json` publicado como argumento e mantém as chaves que o
+  editor guarda nele (`createdOnFiles`, `attachments`...), trocando só pranchetas, ordem e notas.
+- A tela dos cinco eixos (título "Eixos - Amazônia Legal.", eixos 1–3 em cima e 4–5 nos vãos, texto
+  de cada eixo sob o nome, vindo de `conteudo/textos.json` > `visaoGeral.eixos`) nasceu no canvas e
+  foi levada ao site em 27/09/2026; o ajuste manual saiu do `montar-canvas.mjs` e a prancheta volta a
+  ser captura pura (canvas na versão 26, `global.css` em `/_blob/6e760926…`).
+- Versão 22 do canvas: o gráfico "Trajetória da região" do Panorama ganhou eixos (valores no Y,
+  anos no X) no site, e as três pranchetas do Panorama foram recapturadas com a CSS nova
+  (`global.css` em `/_blob/652483d8…`). As demais pranchetas ainda apontam a `global.css` anterior,
+  que só não tem os estilos dos eixos; a próxima regeração completa unifica.
+- A marca "Amazônia" é provisória: quando o manual de uso sair, ela muda no site
+  (`dashboard/src/layouts/Base.astro`, `.brand-product` em global.css), no `Topbar.jsx`, no readme e
+  na capa da nota técnica.
 - O `servir.mjs` também serve o build do painel (`dashboard-build` no `.claude/launch.json`):
   `/metas` cai em `metas/index.html` ou `metas.html`.
 
 - O UI kit é uma foto do build: qualquer mudança no painel pede `npm run build` + `gerar-telas.mjs` +
   novo envio. Os componentes React (`Topbar`, `GoalCard` e os demais) são recriações e não
   acompanham o site sozinhos — confira-os contra `global.css` quando o topo ou as metas mudarem.
-- A contagem "16 metas com patamar mensurável · 59 indicadores" está escrita no template
-  `ListaDeMetas` e no `readme.md`.
+- A contagem "19 metas com patamar mensurável · 59 indicadores" está escrita no template
+  `ListaDeMetas` e no `readme.md`, e os números de exemplo do template e do `data.card.html` são
+  copiados à mão do `metas.json`.
 - A versão em inglês e a administração (`/admin`) não estão no projeto.
 - O remoto não tem `_ds_sync.json`: cada sincronização compara pelo `list_files` e pelo backup em
   `.design-sync/.cache/backup-*` (fora do git).

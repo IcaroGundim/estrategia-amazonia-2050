@@ -5,7 +5,9 @@
 //
 // Estados capturados (nomes esperados pelo montar-canvas.mjs), com a janela em 1440×900:
 //   index.html    → vg-1 … vg-5: clique em cada item da trilha e capture com { slide: n, altura: 900 }
-//   metas.html    → metas; aba "Trajetória 2050" → metas-trajetoria; aba "Ficha técnica" → metas-ficha
+//   metas.html    → metas (os cinco eixos); metas.html?c=N#eixo-N → metas-eixo-N (carga nova a cada
+//                   eixo); metas.html#I1.1.2, aba "Trajetória 2050" → metas-trajetoria; aba
+//                   "Ficha técnica" → metas-ficha
 //   panorama.html → panorama; aba "Comparação estadual" → panorama-comparacao
 // e em 390×844 (celular): mobile-vg, mobile-metas, mobile-panorama, sem opções.
 window.__capturar = async function (nome, opcoes = {}) {

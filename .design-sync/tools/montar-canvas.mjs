@@ -3,7 +3,7 @@
 // dos assets enviados (manifesto-assets.mjs). A marcação é a do site, com as classes reais; a CSS
 // de origem entra como asset no <head> de cada prancheta. Topo e rodapé viram componentes
 // compartilhados (Topbar.dc.html, Rodape.dc.html) importados por todas as telas.
-// Uso: node .design-sync/tools/montar-canvas.mjs → .design-sync/.cache/canvas/project/
+// Uso: node .design-sync/tools/montar-canvas.mjs [canvas.json publicado] → .design-sync/.cache/canvas/project/
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -38,7 +38,8 @@ const PRANCHETAS = [
   { arquivo: 'VisaoGeral-03-Eixos.dc.html', captura: 'vg-3', titulo: 'Visão Geral · 03 Eixos', ativo: 'metodologia', css: CSS.visaoGeral },
   { arquivo: 'VisaoGeral-04-Governanca.dc.html', captura: 'vg-4', titulo: 'Visão Geral · 04 Governança', ativo: 'metodologia', css: CSS.visaoGeral },
   { arquivo: 'VisaoGeral-05-Painel.dc.html', captura: 'vg-5', titulo: 'Visão Geral · 05 Este painel', ativo: 'metodologia', css: CSS.visaoGeral },
-  { arquivo: 'Metas.dc.html', captura: 'metas', titulo: 'Metas · Resultado', ativo: 'metas', css: CSS.base },
+  { arquivo: 'Metas.dc.html', captura: 'metas', titulo: 'Metas · Os cinco eixos', ativo: 'metas', css: CSS.base },
+  ...[1, 2, 3, 4, 5].map((n) => ({ arquivo: `Metas-Eixo${n}.dc.html`, captura: `metas-eixo-${n}`, titulo: `Metas · Eixo ${n} aberto`, ativo: 'metas', css: CSS.base })),
   { arquivo: 'Metas-Trajetoria2050.dc.html', captura: 'metas-trajetoria', titulo: 'Metas · Trajetória 2050', ativo: 'metas', css: CSS.base },
   { arquivo: 'Metas-FichaTecnica.dc.html', captura: 'metas-ficha', titulo: 'Metas · Ficha técnica', ativo: 'metas', css: CSS.ficha },
   { arquivo: 'Panorama.dc.html', captura: 'panorama', titulo: 'Panorama · Visão geral', ativo: 'index', css: CSS.base },
@@ -85,6 +86,9 @@ export function mapeadorDeUrl(celular) {
       if (arquivo === 'logo-consorcio-clara.avif') return blob('img/logo-consorcio-clara.webp');
       return blob(`img/${decodeURIComponent(arquivo)}`);
     }
+    // Cartões e abas de eixo (#eixo-3) abrem a prancheta do eixo no modo Play. No celular
+    // não há prancheta por eixo: o link fica parado.
+    if (caminho === '' && /^eixo-[1-5]$/.test(hash || '')) return celular ? '#' : `Metas-Eixo${hash.slice(5)}.dc.html`;
     if (caminho === 'index.html' || (caminho === '' && hash && LAMINAS[hash])) {
       if (celular) return hash ? `#${hash}` : rotas.metodologia;
       return hash && LAMINAS[hash] ? LAMINAS[hash] : rotas.metodologia;
@@ -218,8 +222,14 @@ function principal() {
   for (const p of PRANCHETAS) {
     const dados = captura(p.captura);
     const largura = dados.largura;
-    const altura = Math.min(8000, dados.altura);
-    const { principal } = partes(converterAtributos(dados.html, mapeadorDeUrl(!!p.celular)));
+    const altura = p.altura ?? Math.min(8000, dados.altura);
+    let { principal } = partes(converterAtributos(dados.html, mapeadorDeUrl(!!p.celular)));
+    // "← Todos os eixos" é um botão no site; na prancheta vira link para a tela dos eixos.
+    if (p.ajuste) principal = p.ajuste(principal);
+    if (!p.celular) {
+      principal = principal.replace(/<button class="eixo-voltar"[^>]*>([\s\S]*?)<\/button>/,
+        (_, rotulo) => `<a class="eixo-voltar" href="${DESKTOP.metas}" style="display: inline-flex; align-items: center">${rotulo}</a>`);
+    }
     if (principal.includes('{{')) throw new Error(`texto com {{ em ${p.captura}`);
     const celular = p.celular ? ' celular="{{ sim }}"' : '';
     const corpo = `<dc-import name="Topbar" ativo="${p.ativo}"${celular} hint-size="100%,${p.celular ? 68 : 84}px"></dc-import>
@@ -234,11 +244,12 @@ function principal() {
   }
 
   // Índice do canvas: uma fileira por rota, o celular abaixo e as peças compartilhadas por último.
+  const daRota = (ativo, celular = false) => PRANCHETAS.filter((p) => p.ativo === ativo && !p.celular === !celular).map((p) => p.arquivo);
   const FILEIRAS = [
-    { titulo: 'Visão Geral', arquivos: PRANCHETAS.slice(0, 5).map((p) => p.arquivo) },
-    { titulo: 'Metas e indicadores', arquivos: PRANCHETAS.slice(5, 8).map((p) => p.arquivo) },
-    { titulo: 'Panorama', arquivos: PRANCHETAS.slice(8, 10).map((p) => p.arquivo) },
-    { titulo: 'Celular', arquivos: PRANCHETAS.slice(10).map((p) => p.arquivo) },
+    { titulo: 'Visão Geral', arquivos: daRota('metodologia') },
+    { titulo: 'Metas e indicadores', arquivos: daRota('metas') },
+    { titulo: 'Panorama', arquivos: daRota('index') },
+    { titulo: 'Celular', arquivos: PRANCHETAS.filter((p) => p.celular).map((p) => p.arquivo) },
     { titulo: 'Peças compartilhadas', arquivos: ['Topbar.dc.html', 'Rodape.dc.html'] }
   ];
   tamanhos['Topbar.dc.html'] = { w: 1440, h: 84, title: 'Barra do topo (compartilhada)' };
@@ -258,16 +269,25 @@ function principal() {
       x += w + 80;
       alturaDaFileira = Math.max(alturaDaFileira, h);
     }
-    notes[`fileira-${indice + 1}`] = { x: 0, y: y - 300, text: fileira.titulo, kind: 'title1', maxW: Math.max(1440, x - 80) };
+    notes[`fileira-${indice + 1}`] = { x: 0, y: y - 300, text: fileira.titulo, kind: 'title1', maxW: Math.min(8000, Math.max(1440, x - 80)) }; // o editor não passa de 8000
     y += alturaDaFileira + 420;
   });
+  // Como navegar nas Metas no modo Play, ao lado da última prancheta da fileira.
+  const ultimaDasMetas = boards[FILEIRAS[1].arquivos.at(-1)];
+  notes['metas-como'] = {
+    x: ultimaDasMetas.x + ultimaDasMetas.w + 80, y: ultimaDasMetas.y, w: 420, maxH: 360,
+    text: 'No modo Play, clicar num eixo abre a prancheta dele; as abas de eixo trocam de uma para outra, e "← Todos os eixos" volta à primeira. A jornada é sempre a da Amazônia Legal: o percurso desde a baseline até a meta.'
+  };
   const pecas = boards['Rodape.dc.html'];
   notes.pecas = {
     x: pecas.x + pecas.w + 80, y: boards['Topbar.dc.html'].y, w: 420, maxH: 360,
     text: 'A barra do topo e o rodapé (com a barra inferior do celular) são componentes: toda tela importa estes dois. Edite aqui e a mudança vale para todas. Nas telas, a propriedade "ativo" marca a rota acesa.'
   };
 
-  const indice = {
+  // Com o canvas.json publicado como argumento, o índice mantém o que o editor guardou nele
+  // (createdOnFiles, attachments, designSystems...) e só troca pranchetas, ordem e notas.
+  const publicado = process.argv[2] ? JSON.parse(readFileSync(process.argv[2], 'utf8')) : null;
+  const indice = publicado ? { ...publicado, boards, order, notes } : {
     v: 3,
     createdOnFiles: { v: 1, at: new Date().toISOString().replace(/\.\d+Z$/, 'Z') },
     title: 'Painel Estratégia Amazônia 2050',

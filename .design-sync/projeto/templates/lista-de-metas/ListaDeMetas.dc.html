@@ -16,7 +16,7 @@
 <div style="width:min(2200px,100%);margin-inline:auto;padding-inline:clamp(24px,3.2vw,72px)">
 <header style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
 <h1 style="margin:0;font:800 clamp(26px,2.2vw,40px)/0.96 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-0.03em">Metas - <em style="color:#c0451f;font-style:normal">Amazônia Legal.</em></h1>
-<p style="margin:0;color:#8a8078;font-size:12px">16 metas com patamar mensurável · 59 indicadores na matriz</p>
+<p style="margin:0;color:#8a8078;font-size:12px">19 metas com patamar mensurável · 59 indicadores na matriz</p>
 </header>
 <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
 <x-import component-from-global-scope="EstratGiaAmazNia2050DesignSystem_81a706.SearchField" style="flex:1 1 200px;max-width:340px;min-height:40px" value="{{ busca }}" on-change="{{ buscar }}" hint-size="340px,40px"></x-import>
@@ -55,16 +55,16 @@ class Component extends DCLogic {
         numero: '1', titulo: 'Território, Ambiente e Clima', contagem: '10 indicadores',
         metas: [
           { nome: 'UCs estaduais com plano de manejo e conselho gestor', alvo: '40%', prazo: 'até 2035', jornada: 53, valor: '21,11%', leitura: '53%', cumprida: false },
-          { nome: 'Vulnerabilidade climática municipal (IIVCM)', alvo: '≤ 52,1', prazo: 'até 2050', jornada: 88, valor: '59,32', leitura: '88%', cumprida: false },
-          { nome: 'Desmatamento ilegal', alvo: '≤ 0 ha', prazo: 'até 2030', jornada: 0, valor: '6.518 ha', notaAtual: 'sem escala', leitura: '—', cumprida: false },
-          { nome: 'Focos de calor', alvo: '≤ 98.543', prazo: 'até 2035', jornada: 50, valor: '198.972', leitura: '50%', cumprida: false }
+          { nome: 'Vulnerabilidade climática municipal (IIVCM)', alvo: '≤ 52,1', prazo: 'até 2050', jornada: 0, valor: '59,32', leitura: '0%', cumprida: false },
+          { nome: 'Desmatamento ilegal', alvo: '≤ 0 ha', prazo: 'até 2030', jornada: 36, valor: '6.518 ha', leitura: '36%', cumprida: false },
+          { nome: 'Focos de calor', alvo: '≤ 98.543', prazo: 'até 2035', jornada: 0, valor: '198.972', leitura: '0%', cumprida: false }
         ]
       },
       {
         numero: '4', titulo: 'Infraestrutura e integração regional sustentável', contagem: '8 indicadores',
         metas: [
-          { nome: 'Participação de renováveis (PER)', alvo: '80%', prazo: 'até 2035', jornada: 76, valor: '60,9%', leitura: '76%', cumprida: false },
-          { nome: 'Conectividade digital (IBC-AMZ)', alvo: '80 pts', prazo: 'até 2050', jornada: 67, valor: '53,5 pts', leitura: '67%', cumprida: false }
+          { nome: 'Participação de renováveis (PER)', alvo: '80%', prazo: 'até 2035', jornada: 0, valor: '60,9%', leitura: '0%', cumprida: false },
+          { nome: 'Conectividade digital (IBC-AMZ)', alvo: '80 pts', prazo: 'até 2050', jornada: 0, valor: '53,5 pts', leitura: '0%', cumprida: false }
         ]
       }
     ];

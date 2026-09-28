@@ -39,7 +39,7 @@ Um produto só, com três rotas, nesta ordem no menu — é o que o repositório
 | Rota | Nome | O que faz |
 | --- | --- | --- |
 | `/` | Visão Geral | Cinco lâminas sobre a Estratégia — a Estratégia (com a capa do documento), a Visão 2050, os cinco eixos de implementação, a governança e como o painel lê os dados —, com trilha de progresso embaixo e abas laterais para avançar |
-| `/metas` | Metas e indicadores | A matriz completa: 59 indicadores, 16 com meta mensurável, em cartões por eixo; o detalhe abre ao lado com Resultado, Trajetória 2050 e Ficha técnica. Os coletados sem meta numérica mostram o valor da região e uma faixa de calor por estado |
+| `/metas` | Metas e indicadores | A matriz completa: 59 indicadores, 19 com meta mensurável. Abre nos cinco eixos, cada um com a jornada e a coleta; o eixo aberto mostra os cartões e o detalhe ao lado com Resultado, Trajetória 2050 e Ficha técnica. As metas são lidas para a Amazônia Legal como um todo; os estados entram no detalhe como complemento. Os coletados sem meta numérica mostram o valor da região e uma faixa de calor por estado |
 | `/panorama` | Panorama | Mapa dos nove estados, seletor de indicador e ano, coluna lateral com o painel do estado ou a comparação estadual e, abaixo, a trajetória de cada indicador até 2050 |
 
 As três existem também em inglês (`/en`, `/en/goals`, `/en/panorama`), com os textos de
@@ -57,7 +57,7 @@ Legal registra 21,1 / 100 mil em Segurança (CVLI)"*. Verbos no presente para o 
 quando se cita a visão pactuada (*"Em 2050, a Amazônia Legal terá alcançado…"*).
 
 **Caixa.** Frases em caixa normal. Versalete (caixa alta + tracking) só em rótulos curtos:
-sobrelinhas (`PERSPECTIVA REGIONAL`), títulos de filtro (`EIXO`, `COLETA`), rótulos de campo
+sobrelinhas (`PERSPECTIVA REGIONAL`), títulos de seletor (`INDICADOR EXIBIDO`, `ANO EXIBIDO`), rótulos de número (`JORNADA DO EIXO`), rótulos de campo
 (`POPULAÇÃO`, `FONTE`) e selos de coleta (`COLETADO`). Títulos nunca em caixa alta.
 
 **Títulos com ênfase.** O padrão da casa é `Panorama - <em>Amazônia Legal.</em>` — a segunda parte em
@@ -82,7 +82,8 @@ estados."* A ficha técnica ausente é declarada: *"Ficha técnica não localiza
 publicitários, nada de "descubra", "explore agora", "clique aqui".
 
 **Vocabulário fixo.** Use *eixo* (não "categoria"), *meta pactuada* (não "objetivo"), *patamar*
-(não "alvo" no texto corrido), *jornada* (a fração percorrida até o patamar), *ficha técnica*
+(não "alvo" no texto corrido), *jornada* (o percurso da região desde a baseline até o patamar;
+quando a meta não diz a baseline, ela é a média dos últimos 10 anos, ou 5), *ficha técnica*
 (não "detalhes"), *situação da coleta* (não "status"), *Amazônia Legal* ou *a região* (não "AL" em
 texto corrido — a sigla só aparece em rótulo de gráfico).
 
@@ -116,9 +117,10 @@ Duas famílias, ambas do Google Fonts, como no produto original:
 - **Bricolage Grotesque** — títulos, números e rótulos de peso. Sempre 800, tracking `-0.03em`
   (`-0.04em` em números grandes). Nunca em texto corrido.
 - **Libre Franklin** — corpo (400), rótulos e botões (600), valores de tabela (500/600).
-- **"Amazônia" cursivo** — só na marca da barra do topo, e não é fonte: é um traçado SVG
-  vetorizado (em `components/layout/Topbar.jsx`), em `currentColor`. Nunca escreva outra palavra
-  em cursiva nem imite a letra com uma fonte manuscrita.
+- **Marca da Estratégia** — provisória até sair o manual de uso da marca: "ESTRATÉGIA REGIONAL"
+  em versalete sobre "Amazônia 2050" em Bricolage Grotesque 800, com o ano em ocre no mesmo corpo
+  (em `components/layout/Topbar.jsx`). É toda em texto: não use letra cursiva nem manuscrita na
+  marca, nem recrie uma marca "Amazônia" desenhada, até o manual defini-la.
 
 Escala: h1 `clamp(42px, 5vw, 68px)/0.96`, h2 `clamp(24px, 2.2vw, 34px)/1.04`, h3 21px, corpo
 15px/1.55, abertura 16px, cartão 13px, nota 11px, procedência 10px, microrrótulo 8–9px. O painel

@@ -1,4 +1,5 @@
-Bandeira como botão — é assim que o painel troca de estado; não há seletor de UF em texto.
+Bandeira como botão — é assim que o Panorama troca de estado; não há seletor de UF em texto. As Metas
+não têm recorte por estado: a leitura é sempre a da Amazônia Legal.
 
     <FlagButton src="assets/flags/Bandeira_do_Para.svg" alt="Pará" active />
 
