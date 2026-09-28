@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metas · dos eixos às metas — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Tokens e medidas copiados de dashboard/src/styles/global.css e de
+   .design-sync/projeto/tokens/motion.css. */
+:root{
+  --mata:#0e2b22;--mata-700:#1c4437;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-2:#3a342e;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--text:'Libre Franklin',system-ui,sans-serif;
+  --curva:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.5 var(--text)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+.card{border:1px solid var(--linha);border-radius:14px;background:var(--papel)}
+
+/* ==== Barra do topo (84 px, como no site) com os controles do mockup ===== */
+.topo{position:sticky;top:0;z-index:50;height:84px;background:var(--mata);color:var(--areia)}
+.topo-dentro{height:100%;padding-inline:clamp(24px,3.2vw,72px);display:flex;align-items:center;gap:22px}
+.marca{display:grid;line-height:1.15}
+.marca b{font:800 19px var(--display);letter-spacing:-.02em}
+.marca small{color:rgba(245,240,232,.62);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.opcoes{margin-left:auto;display:flex;gap:4px;padding:4px;border:1px solid rgba(245,240,232,.18);border-radius:11px}
+.opcoes button{min-height:36px;padding:0 12px;display:flex;align-items:center;gap:7px;border:0;border-radius:8px;background:none;color:rgba(245,240,232,.78);font-size:12.5px;font-weight:600;white-space:nowrap;transition:background 140ms ease,color 140ms ease}
+.opcoes button b{color:var(--ocre);font:700 12px var(--display)}
+.opcoes button:hover{color:var(--areia)}
+.opcoes button[aria-pressed="true"]{background:var(--areia);color:var(--mata)}
+.opcoes button[aria-pressed="true"] b{color:var(--urucum)}
+.testes{display:flex;gap:6px}
+.testes button{min-height:36px;padding:0 11px;border:1px solid rgba(245,240,232,.28);border-radius:8px;background:none;color:var(--areia);font-size:12px;white-space:nowrap;transition:border-color 140ms ease}
+.testes button:hover{border-color:var(--ocre)}
+
+main{padding-top:40px;padding-bottom:40px}
+.section-shell{width:min(2200px,100%);margin-inline:auto;padding-inline:clamp(24px,3.2vw,72px)}
+
+/* ==== Vista 1 · os cinco eixos ========================================= */
+.eixos-visao{padding:22px 26px 26px;transition:background 140ms ease,border-color 140ms ease}
+.eixos-topo{padding-bottom:18px;border-bottom:1px solid var(--linha);transition:border-color 140ms ease}
+.eixos-titulo{font-size:clamp(26px,2.2vw,40px);line-height:.96}
+.eixos-titulo em{color:var(--urucum);font-style:normal}
+.eixos-cartoes{margin-top:22px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.eixos-cartoes>.eixo-cartao:nth-child(1){grid-column:1/span 2;grid-row:1/span 4}
+.eixos-cartoes>.eixo-cartao:nth-child(2){grid-column:3/span 2;grid-row:1/span 4}
+.eixos-cartoes>.eixo-cartao:nth-child(3){grid-column:5/span 2;grid-row:1/span 4}
+.eixos-cartoes>.eixo-cartao:nth-child(4){grid-column:2/span 2;grid-row:5/span 4}
+.eixos-cartoes>.eixo-cartao:nth-child(5){grid-column:4/span 2;grid-row:5/span 4}
+.eixo-cartao{position:relative;min-width:0;padding:20px 20px 18px;display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:16px;border:1px solid var(--linha);border-radius:14px;background:var(--papel);color:var(--tinta);transition:border-color 150ms ease,box-shadow 150ms ease}
+.eixo-cartao:hover{border-color:var(--mata-300);box-shadow:0 4px 14px rgba(14,43,34,.09)}
+.eixo-cartao:focus-visible{border-color:var(--mata);box-shadow:0 0 0 3px rgba(14,43,34,.12);outline:none}
+.eixo-cartao-cabeca{display:grid;align-content:start;gap:8px}
+.eixo-cartao-nome{font-size:19px;line-height:1.2;text-wrap:balance}
+.eixo-cartao-texto{color:var(--tinta-3);font-size:12.5px;line-height:1.45}
+.eixo-cartao-jornada,.eixo-cartao-coleta{display:grid;align-content:start;gap:9px}
+.eixo-cartao-coleta{padding-top:14px;border-top:1px solid var(--linha-2)}
+.eixo-cartao-ver{align-self:end;padding-top:4px;color:var(--urucum);font-size:12px;font-weight:600}
+.eixo-cartao:hover .eixo-cartao-ver{text-decoration:underline;text-underline-offset:3px}
+
+.eixo-leitura{display:flex;align-items:flex-end;gap:10px}
+.eixo-leitura b{color:var(--mata);font:800 44px/.9 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.eixo-leitura span{padding-bottom:3px;color:var(--tinta-4);font:600 10px/1.3 var(--text);letter-spacing:.12em;text-transform:uppercase}
+.eixo-barra{position:relative;display:block;height:10px;overflow:hidden;border-radius:4px;background:var(--linha-2)}
+.eixo-barra .resta,.goals-row-bar .resta{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 5px,rgba(192,69,31,.12) 5px 10px)}
+.eixo-barra .feito{position:absolute;inset:0 auto 0 0;border-radius:4px 2px 2px 4px;background:var(--mata-500)}
+.eixo-nota{color:var(--tinta-4);font-size:10px}
+.eixo-contagem{display:flex;justify-content:space-between;gap:8px;color:var(--tinta-3);font-size:12px}
+.eixo-contagem b{color:var(--mata);font-variant-numeric:tabular-nums}
+.eixo-coleta-barra{display:flex;gap:2px;height:6px;overflow:hidden;border-radius:3px}
+.eixo-coleta-barra i{flex:1 1 0}
+.is-coletado{background:var(--mata-700)}
+.is-parcial{background:var(--ocre)}
+.is-pendente{background:repeating-linear-gradient(45deg,var(--linha-2) 0 3px,var(--linha) 3px 6px)}
+.eixo-legenda{display:flex;flex-wrap:wrap;gap:4px 12px;color:var(--tinta-3);font-size:10.5px}
+.eixo-legenda>span{display:inline-flex;align-items:center;gap:5px}
+.eixo-legenda i{width:8px;height:8px;border-radius:2px}
+
+/* ==== Vista 2 · o eixo aberto ========================================== */
+.eixo-cabeca{position:relative;padding:16px 22px 20px}
+.eixo-cabeca-topo{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap}
+.eixo-voltar{min-height:40px;padding:0;border:0;background:none;color:var(--mata);font-size:12.5px;font-weight:600}
+.eixo-voltar:hover,.eixo-voltar:focus-visible{color:var(--urucum);outline:none}
+.eixo-abas{display:flex;flex-wrap:wrap;gap:6px}
+.eixo-aba{min-height:40px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--linha);border-radius:9px;background:var(--papel);color:var(--tinta-2);font-size:12px;font-weight:600;white-space:nowrap;transition:border-color 150ms ease}
+.eixo-aba:hover,.eixo-aba:focus-visible{border-color:var(--mata-300);outline:none}
+.eixo-aba small{color:var(--tinta-4);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.eixo-aba[aria-current="page"]{border-color:var(--mata);background:var(--mata);color:var(--areia)}
+.eixo-aba[aria-current="page"] small{color:rgba(245,240,232,.72)}
+.barra-ferramentas{flex:0 1 440px;margin-left:auto;display:flex;align-items:center;gap:8px 12px}
+.busca{flex:1 1 200px;max-width:340px;min-height:40px;padding:0 15px;display:flex;align-items:center;gap:10px;border:1px solid var(--linha);border-radius:9px;background:var(--papel);color:var(--tinta-4);font-size:13px}
+.baixar{min-height:40px;padding:0 12px;display:flex;align-items:center;gap:10px;border:1px solid var(--linha);border-radius:8px;background:var(--papel);color:var(--mata);font:600 11.5px var(--text)}
+.baixar i{width:9px;height:9px;margin-top:-4px;border-right:2px solid var(--urucum);border-bottom:2px solid var(--urucum);transform:rotate(45deg)}
+.eixo-cabeca-corpo{margin-top:16px;padding-top:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:48px;border-top:1px solid var(--linha-2);transition:border-color 200ms ease}
+.eixo-titulo{font-size:34px;line-height:1.05;text-wrap:balance}
+.eixo-titulo:focus{outline:none}
+.eixo-metricas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-left:1px solid var(--linha-2);transition:border-color 200ms ease}
+.eixo-metrica{display:grid;gap:10px;align-content:start;padding:0 28px}
+.eixo-metrica+.eixo-metrica{padding-right:0;border-left:1px solid var(--linha-2);transition:border-color 200ms ease}
+.eixo-metrica .eixo-leitura b{font-size:40px}
+.eixo-metrica .eixo-coleta-barra{height:10px;border-radius:4px}
+
+.goals-board{margin-top:16px;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start;gap:22px}
+.goals-list-card{padding:22px 26px 18px}
+.goals-list-top{padding-bottom:14px;border-bottom:1px solid var(--linha)}
+.goals-list-summary{color:var(--tinta-4);font-size:12px}
+.goals-list-summary span{color:var(--mata);font-weight:700}
+.goals-faixa{margin:16px 0 2px;display:flex;align-items:baseline;gap:7px;color:var(--tinta-4);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+.goals-faixa::after{content:"";flex:1;height:1px;background:var(--linha-2)}
+.goals-cards{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.goals-row{position:relative;width:100%;min-width:0;padding:12px 14px;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:2px 12px;border:1px solid var(--linha-2);border-radius:10px;background:var(--papel);text-align:left}
+.goals-row.is-active{border-color:var(--urucum);box-shadow:inset 0 0 0 1px var(--urucum)}
+.goals-card-body{display:block;min-width:0}
+.goals-card-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.goals-row-name{display:block;flex:1;min-width:0;color:var(--tinta);font-size:15px;font-weight:500;line-height:1.3}
+.goals-card-numeros{flex:none;display:flex;gap:8px;white-space:nowrap}
+.goals-card-stat{display:flex;flex-direction:column;align-items:flex-end;padding:2px 0 2px 10px;line-height:1.15}
+.goals-card-stat>span{color:var(--tinta-4);font:600 9px var(--text);letter-spacing:.12em;text-transform:uppercase}
+.goals-card-stat b{color:var(--tinta-2);font:700 16px/1.15 var(--display);font-variant-numeric:tabular-nums}
+.goals-card-stat small{color:var(--tinta-4);font-size:10px}
+.goals-card-stat.is-meta b{color:var(--mata);font-weight:800}
+.goals-row-bar{position:relative;height:10px;margin-top:8px;display:block;overflow:hidden;border-radius:4px;background:var(--linha-2)}
+.goals-row-bar .feito{position:absolute;inset:0 auto 0 0;border-radius:4px 2px 2px 4px;background:var(--mata-500)}
+.goals-row.is-met .goals-row-bar .feito{background:var(--mata)}
+.goals-row-ler{grid-row:1/3;align-self:center;white-space:nowrap}
+.goals-row-ler b{display:block;color:var(--mata);font:800 26px/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.goals-row-ler small{display:block;margin-top:3px;color:var(--tinta-4);font-size:10px}
+.goals-row.is-catalog{grid-template-columns:minmax(0,1fr) auto;align-items:center}
+.goals-row.is-catalog .goals-row-ler{grid-row:auto}
+.selo{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.selo i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.selo.pendente{color:var(--urucum)}.selo.coletado{color:var(--mata-500)}.selo.parcial{color:#b07d1c}
+
+.goals-detail{padding:20px}
+.goals-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.goals-detail-head h2{max-width:27ch;font-size:clamp(16px,1.15vw,19px);line-height:1.22;text-wrap:balance}
+.fechar{flex:none;width:32px;height:32px;border:1px solid var(--linha);border-radius:4px;background:var(--papel);color:var(--tinta-3);font:500 20px/1 var(--text)}
+.goals-detail-tabs{margin-top:15px;display:flex;gap:4px;border-bottom:1px solid var(--linha)}
+.goals-detail-tabs span{margin-bottom:-1px;padding:9px 12px;border-bottom:2px solid transparent;color:var(--tinta-4);font:600 12.5px var(--text)}
+.goals-detail-tabs span:first-child{border-bottom-color:var(--urucum);color:var(--mata)}
+.meta-pactuada{margin-top:14px;padding:13px 14px 12px;border-radius:11px;background:var(--mata);color:#fff}
+.meta-pactuada h3{margin:0 0 5px;color:var(--mata-100);font:700 9px var(--text);letter-spacing:.08em;text-transform:uppercase}
+.meta-pactuada p{font:700 16px/1.3 var(--display)}
+.resumo-detalhe{margin:14px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.resumo-detalhe dt{margin-bottom:3px;color:var(--tinta-4);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.resumo-detalhe dd{margin:0;color:var(--mata);font:700 15px/1.3 var(--display)}
+.grafico{margin-top:18px;padding-top:16px;border-top:1px solid var(--linha-2)}
+.grafico h3{margin-bottom:12px;color:var(--tinta-3);font:600 9.5px var(--text);letter-spacing:.08em;text-transform:uppercase}
+.barras{display:grid;gap:7px}
+.linha-uf{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:7px}
+.linha-uf>span{color:var(--tinta-3);font-size:9.5px;font-weight:700}
+.linha-uf>i{position:relative;height:8px;display:block;border-radius:3px;background:var(--linha-2)}
+.linha-uf>i>i{position:absolute;inset:0 auto 0 0;min-width:2px;border-radius:3px;background:var(--mata-300)}
+.linha-uf>b{min-width:48px;color:var(--tinta-2);font-size:9.5px;text-align:right;font-variant-numeric:tabular-nums}
+.linha-uf.is-regional{margin-bottom:3px;padding-bottom:8px;border-bottom:1px solid var(--linha-2)}
+.linha-uf.is-regional>span,.linha-uf.is-regional>b{color:var(--mata);font-weight:800}
+.linha-uf.is-regional>i>i{background:var(--mata)}
+
+/* ==== Durante o voo ==================================================== */
+/* O cartão que viaja é uma caixa à parte (.voo-caixa). A caixa de verdade fica
+   sem fundo nem borda até o voo acabar, e o que está dentro dela passa por cima. */
+.voo-caixa{position:fixed;z-index:40;border:1px solid var(--linha);border-radius:14px;background:var(--papel);pointer-events:none}
+.voo-texto{position:fixed;z-index:42;margin:0;pointer-events:none}
+.em-voo{z-index:41;background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.eixo-cartao.em-voo{position:relative}
+.eixo-cabeca.em-voo .eixo-cabeca-corpo,.eixo-cabeca.em-voo .eixo-metricas,.eixo-cabeca.em-voo .eixo-metrica+.eixo-metrica{border-color:transparent}
+.eixo-cartao.em-voo .eixo-cartao-coleta{border-top-color:transparent}
+.apagando{background:transparent!important;border-color:transparent!important}
+.apagando .eixos-topo{border-bottom-color:transparent}
+
+/* ==== Notas abaixo do quadro =========================================== */
+.notas{margin-top:48px;padding-top:26px;border-top:1px solid var(--linha);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:28px}
+.notas .eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.notas h2{margin:8px 0 10px;font-size:26px;letter-spacing:-.03em}
+.notas p{color:var(--tinta-3);font-size:13.5px;line-height:1.55}
+.notas p+p{margin-top:8px}
+.notas-opcoes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.nota{padding:16px 18px;border:1px solid var(--linha);border-radius:12px;background:#faf7f1}
+.nota h3{display:flex;align-items:baseline;gap:8px;font-size:16px}
+.nota h3 b{color:var(--urucum);font:600 13px var(--display)}
+.nota p{margin-top:6px;font-size:13px}
+.rec{padding:1px 6px;border-radius:4px;background:#e7ede8;color:var(--mata-500);font:600 9.5px var(--text);letter-spacing:.06em;text-transform:uppercase}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10.5px}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+@media (max-width:1100px){
+  .eixos-visao,.eixo-cabeca{padding:18px 18px 20px}
+  .eixos-cartoes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .eixos-cartoes>.eixo-cartao:nth-child(n){grid-column:auto;grid-row:span 4}
+  .barra-ferramentas{flex-basis:100%;margin-left:0}
+  .busca{max-width:none}
+  .eixo-cabeca-corpo{grid-template-columns:minmax(0,1fr);gap:20px}
+  .eixo-metricas{border-left:0}
+  .eixo-metrica:first-child{padding-left:0}
+  .goals-board{grid-template-columns:minmax(0,1fr)}
+  .goals-cards{grid-template-columns:minmax(0,1fr)}
+  .notas,.notas-opcoes{grid-template-columns:minmax(0,1fr)}
+  .testes{display:none}
+}
+@media (max-width:760px){
+  .topo-dentro{gap:12px}
+  .marca small{display:none}
+  .opcoes button span{display:none}
+  .eixos-cartoes{grid-template-columns:minmax(0,1fr)}
+  .eixo-abas{flex:1 1 100%;flex-wrap:nowrap;margin-inline:-18px;padding-inline:18px;overflow-x:auto;scrollbar-width:none}
+  .eixo-titulo{font-size:26px}
+  .eixo-metricas{grid-template-columns:minmax(0,1fr)}
+  .eixo-metrica,.eixo-metrica+.eixo-metrica{padding:0;border-left:0}
+  .eixo-metrica+.eixo-metrica{margin-top:18px;padding-top:18px;border-top:1px solid var(--linha-2)}
+  .goals-list-card{padding:18px 12px 12px 14px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-dentro">
+    <div class="marca"><b>Estratégia 2050</b><small>Mockup · não publicado</small></div>
+    <div class="opcoes" role="group" aria-label="Opção de transição" data-opcoes></div>
+    <div class="testes">
+      <button type="button" data-teste="1">Abrir 1ª fileira</button>
+      <button type="button" data-teste="2">Abrir 2ª fileira</button>
+      <button type="button" data-teste="voltar">Voltar</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="section-shell">
+    <h1 hidden>Metas e indicadores</h1>
+
+    <section class="eixos-visao card" data-eixos-visao aria-labelledby="eixos-titulo">
+      <div class="eixos-topo"><h2 id="eixos-titulo" class="eixos-titulo">Eixos - <em>Amazônia Legal.</em></h2></div>
+      <div id="eixos-cartoes" class="eixos-cartoes"></div>
+    </section>
+
+    <div class="eixo-aberto" data-eixo-aberto hidden>
+      <section class="eixo-cabeca card" aria-labelledby="eixo-titulo">
+        <div class="eixo-cabeca-topo">
+          <button class="eixo-voltar" type="button" data-voltar>← Todos os eixos</button>
+          <nav id="eixo-abas" class="eixo-abas" aria-label="Eixos da Estratégia"></nav>
+          <div class="barra-ferramentas" aria-hidden="true">
+            <div class="busca"><span>⌕</span>Buscar meta, indicador ou código</div>
+            <span class="baixar">Baixar <i></i></span>
+          </div>
+        </div>
+        <div id="eixo-resumo" class="eixo-cabeca-corpo"></div>
+      </section>
+
+      <div class="goals-board">
+        <section class="goals-list-card card" aria-label="Metas e indicadores do eixo">
+          <div class="goals-list-top"><p class="goals-list-summary" data-lista-resumo></p></div>
+          <div id="goals-list"></div>
+        </section>
+        <aside id="goals-detail" class="goals-detail card" aria-label="Detalhe"></aside>
+      </div>
+    </div>
+
+    <section class="notas" aria-labelledby="notas-titulo">
+      <div>
+        <p class="eyebrow">Metas e indicadores · abertura do eixo</p>
+        <h2 id="notas-titulo">Dos eixos às metas</h2>
+        <p>Hoje, clicar num eixo troca a tela de uma vez; só a lista desliza depois, para abrir espaço ao detalhe. As opções animam essa passagem só com o que já está na página, na curva e nos tempos do design system: 420 ms para o que muda de lugar, 260 ms para o painel que entra, sem escala nem bounce.</p>
+        <p>Use a barra do topo para trocar de opção e testar. O “← Todos os eixos” faz o caminho de volta.</p>
+      </div>
+      <div class="notas-opcoes" data-notas></div>
+    </section>
+  </div>
+</main>
+
+<script>
+// Números, nomes e textos da /metas atual (extraídos da página, 28/09/2026).
+const EIXOS = [{"n":1,"nome":"Território, Ambiente e Clima","curto":"Território","texto":"Consolidar a Amazônia Legal como referência mundial em gestão territorial integrada, desmatamento zero e adaptação climática.","jornada":"22%","barra":22.2,"nota":"média de 4 metas","total":23,"comMeta":4,"coleta":[["coletado",3],["parcial",1],["pendente",19]],"legenda":["3 coletados","1 parcial","19 pendentes"],"ver":"Ver os 23 indicadores ›","coletaPct":"13%","resumo":"23 indicadores · 4 com meta mensurável","metas":[{"ler":"53%","nome":"UCs estaduais com plano de manejo e conselho gestor","atual":"21,11%","atualNota":"","meta":"40%","nota":"até 2035","p":53,"met":false},{"ler":"0%","nome":"Vulnerabilidade climática municipal (IIVCM)","atual":"59,32","atualNota":"","meta":"≤ 52,1","nota":"até 2050","p":0,"met":false},{"ler":"36%","nome":"Desmatamento ilegal","atual":"6.518 ha","atualNota":"","meta":"≤ 0 ha","nota":"até 2030","p":36,"met":false},{"ler":"0%","nome":"Focos de calor","atual":"198.972","atualNota":"","meta":"≤ 98.543","nota":"até 2035","p":0,"met":false}],"outros":[["ZEE vigente e atualizado","pendente"],["Cooperação técnica PNGATI/PNGTAQ","pendente"]],"detalhe":{"titulo":"UCs estaduais com plano de manejo e conselho gestor","abas":["Resultado","Trajetória 2050","Ficha técnica"],"pactuada":"40% de UCs estaduais da AL com plano de manejo elaborado/atualizado e conselho gestor em funcionamento","prazo":2035,"atual":"21,11%","meta":"40% até 2035","jornada":"53%","barras":[["AL","21,11%",28.14],["TO","23,1%",30.8],["AP","40%",53.33],["AM","26,8%",35.73],["RO","8,2%",10.93],["RR","0%",0],["MT","10,5%",14],["AC","75%",100],["PA","35,7%",47.6],["MA","15,4%",20.53]]}},{"n":2,"nome":"Pessoas e Bem-estar","curto":"Pessoas","texto":"Reduzir desigualdades e garantir segurança alimentar e nutricional, direitos e bem-estar para todas as populações amazônicas.","jornada":"36%","barra":35.6,"nota":"média de 6 metas","total":10,"comMeta":6,"coleta":[["coletado",5],["parcial",2],["pendente",3]],"legenda":["5 coletados","2 parciais","3 pendentes"],"ver":"Ver os 10 indicadores ›","coletaPct":"50%","resumo":"10 indicadores · 6 com meta mensurável","metas":[{"ler":"21%","nome":"Pobreza (CadÚnico)","atual":"14,03%","atualNota":"","meta":"≤ 3%","nota":"até 2050","p":21,"met":false},{"ler":"17%","nome":"Mortalidade por causas evitáveis","atual":"7.577","atualNota":"","meta":"≤ 4.151","nota":"até 2050","p":17,"met":false},{"ler":"3%","nome":"Telessaúde em municípios remotos","atual":"4,95%","atualNota":"","meta":"50%","nota":"até 2050","p":3,"met":false},{"ler":"49%","nome":"IDEB","atual":"49,5%","atualNota":"","meta":"100%","nota":"até 2050","p":49,"met":false},{"ler":"96%","nome":"Atendimento escolar 4-17 anos","atual":"96,39%","atualNota":"","meta":"100%","nota":"até 2050","p":96,"met":false},{"ler":"26%","nome":"Crimes Violentos Letais Intencionais (CVLI)","atual":"21,09","atualNota":"","meta":"≤ 10","nota":"até 2050","p":26,"met":false}],"outros":[["Cobertura da Atenção Primária","coletado"],["Cobertura de programas de inclusão produtiva","pendente"]],"detalhe":{"titulo":"Pobreza (CadÚnico)","abas":["Resultado","Trajetória 2050","Ficha técnica"],"pactuada":"Redução da taxa de pobreza para patamar ≤ 3%","prazo":2050,"atual":"14,03%","meta":"≤ 3% até 2050","jornada":"21%","barras":[["AL","14,03%",63.5],["TO","9,1%",41.18],["AP","11,2%",50.68],["AM","14%",63.35],["RO","5,5%",24.89],["RR","14,3%",64.71],["MT","3,3%",14.93],["AC","18%",81.45],["PA","14,8%",66.97],["MA","22,1%",100]]}},{"n":3,"nome":"Desenvolvimento econômico sustentável","curto":"Economia","texto":"Promover uma economia amazônica diversificada, com cadeias da sociobiodiversidade, empregos verdes e inovação tecnológica.","jornada":"100%","barra":100,"nota":"média de 1 meta","total":11,"comMeta":1,"coleta":[["coletado",3],["pendente",8]],"legenda":["3 coletados","8 pendentes"],"ver":"Ver os 11 indicadores ›","coletaPct":"27%","resumo":"11 indicadores · 1 com meta mensurável","metas":[{"ler":"100%","nome":"Valor da produção da sociobioeconomia","atual":"R$ 5,11 bi","atualNota":"","meta":"R$ 3,75 bi","nota":"até 2050","p":100,"met":true}],"outros":[["Empregos e empresas nas cadeias produtivas","coletado"],["Valor da transformação industrial","coletado"]],"detalhe":{"titulo":"Valor da produção da sociobioeconomia","abas":["Resultado","Ficha técnica"],"pactuada":"Aumentar em 100 milhões de reais o valor da produção das atividades da sociobioeconomia","prazo":2050,"atual":"R$ 5,11 bi","meta":"R$ 3,75 bi até 2050","jornada":"100%","barras":[["AL","R$ 5,11 bi",100],["TO","R$ 42,6 mi",0.83],["AP","R$ 79,9 mi",1.56],["AM","R$ 376 mi",7.36],["RO","R$ 231 mi",4.52],["RR","R$ 60,6 mi",1.19],["MT","R$ 1,04 bi",20.41],["AC","R$ 116 mi",2.27],["PA","R$ 2,74 bi",53.53],["MA","R$ 425 mi",8.33]]}},{"n":4,"nome":"Infraestrutura e integração regional sustentável","curto":"Infraestrutura","texto":"Expandir a conectividade física e digital e garantir logística e infraestrutura verde, impulsionando a integração e a competitividade regional.","jornada":"1%","barra":0.6,"nota":"média de 5 metas","total":6,"comMeta":5,"coleta":[["coletado",5],["parcial",1]],"legenda":["5 coletados","1 parcial"],"ver":"Ver os 6 indicadores ›","coletaPct":"83%","resumo":"6 indicadores · 5 com meta mensurável","metas":[{"ler":"0%","nome":"Conectividade digital (IBC-AMZ)","atual":"53,51","atualNota":"","meta":"80","nota":"até 2050","p":0,"met":false},{"ler":"0%","nome":"Adequação e trafegabilidade de transportes","atual":"46,44%","atualNota":"","meta":"65%","nota":"até 2050","p":0,"met":false},{"ler":"0%","nome":"Participação de renováveis (PER)","atual":"60,94%","atualNota":"","meta":"80%","nota":"até 2035","p":0,"met":false},{"ler":"0%","nome":"Saneamento básico e gestão de riscos (ISGR)","atual":"47,23%","atualNota":"","meta":"80%","nota":"até 2050","p":0,"met":false},{"ler":"3%","nome":"Capacidade adaptativa urbana","atual":"2,46%","atualNota":"","meta":"80%","nota":"até 2035","p":3,"met":false}],"outros":[["Transição energética (ITEQ)","parcial"]],"detalhe":{"titulo":"Conectividade digital (IBC-AMZ)","abas":["Resultado","Trajetória 2050","Ficha técnica"],"pactuada":"Elevar o Índice Brasileiro de Conectividade médio da AL de 53,52 pontos (2025) para 80,00 pontos até 2050","prazo":2050,"atual":"53,51","meta":"80 até 2050","jornada":"0%","barras":[["AL","54,03",67.54],["TO","53,73",67.16],["AP","54,89",68.61],["AM","46,74",58.43],["RO","58,45",73.06],["RR","46,53",58.16],["MT","61,31",76.64],["AC","52,43",65.54],["PA","53,05",66.31],["MA","55,56",69.45]]}},{"n":5,"nome":"Governança e parcerias","curto":"Governança","texto":"Fortalecer a governança regional e a cooperação entre estados, sociedade civil, setor privado e organismos internacionais.","jornada":"44%","barra":43.9,"nota":"média de 3 metas","total":9,"comMeta":3,"coleta":[["coletado",3],["parcial",2],["pendente",4]],"legenda":["3 coletados","2 parciais","4 pendentes"],"ver":"Ver os 9 indicadores ›","coletaPct":"33%","resumo":"9 indicadores · 3 com meta mensurável","metas":[{"ler":"6%","nome":"Dispêndio em P&D (% do PIB estadual)","atual":"0,063%","atualNota":"","meta":"1%","nota":"até 2050","p":6,"met":false},{"ler":"37%","nome":"CAPAG A ou B (capacidade de pagamento)","atual":"88,89%","atualNota":"","meta":"100%","nota":"até 2050","p":37,"met":false},{"ler":"88%","nome":"Transparência pública (EBT 360)","atual":"7,9","atualNota":"","meta":"9","nota":"até 2050","p":88,"met":false}],"outros":[["Financiamento climático captado/executado","coletado"],["Governança regional / recursos executados pelo CAL","coletado"]],"detalhe":{"titulo":"Dispêndio em P&D (% do PIB estadual)","abas":["Resultado","Ficha técnica"],"pactuada":"Ampliar o investimento público e privado em P&D nos estados da AL, alcançando o equivalente a 1% do PIB estadual ao ano","prazo":2050,"atual":"0,063%","meta":"1% até 2050","jornada":"6%","barras":[["AL","0,063%",6.29],["TO","0,023%",2.3],["AP","0,02%",1.99],["AM","0,133%",13.29],["RO","0,013%",1.29],["RR","0,12%",11.96],["MT","0,044%",4.42],["AC","0,056%",5.58],["PA","0,066%",6.63],["MA","0,092%",9.16]]}}];
+
+const CURVA = 'cubic-bezier(.22,1,.36,1)';
+const OPCOES = [
+  { titulo: 'Esmaecer', curto: 'Esmaecer',
+    texto: 'Os cinco eixos apagam em 0,14 s e o eixo aberto entra como o painel de detalhe já entra hoje: sobe 10 px e perde o desfoque.',
+    tags: [['ok', 'O mais discreto'], ['alerta', 'Não mostra qual cartão virou qual tela']] },
+  { titulo: 'Cascata', curto: 'Cascata',
+    texto: 'O eixo aberto se monta em ordem: o cabeçalho, o nome, as duas leituras com as barras enchendo, as metas uma a uma e, por último, o detalhe.',
+    tags: [['ok', 'Lê como “do eixo às metas”'], ['alerta', 'A mais longa: cerca de 1 s até o detalhe']] },
+  { titulo: 'Cartão que se abre', curto: 'Cartão se abre', rec: true,
+    texto: 'O cartão clicado vira o cabeçalho do eixo. O nome desliza até o título, a jornada e a coleta vão para as leituras do topo, e o resto aparece depois.',
+    tags: [['ok', 'Mostra que a tela nova é aquele cartão'], ['ok', 'Volta pelo mesmo caminho'], ['ok', 'Funciona no celular']] },
+  { titulo: 'Cartões viram abas', curto: 'Viram abas',
+    texto: 'Os cinco cartões encolhem até a fileira de abas do topo; o clicado chega já escuro, como aba ativa. Os eixos continuam na tela, só que menores.',
+    tags: [['ok', 'Mostra onde os outros eixos foram parar'], ['alerta', 'Cinco coisas se movendo ao mesmo tempo'], ['alerta', 'No celular vira a 3: as abas rolam de lado']] }
+];
+
+const state = { eixo: null, opcao: 3 };
+const A = document.querySelector('[data-eixos-visao]');
+const B = document.querySelector('[data-eixo-aberto]');
+let geracao = 0;
+let teste = 0;
+
+const reduz = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const escape = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const eixoPor = (n) => EIXOS.find((e) => e.n === n);
+const anima = (el, quadros, duracao, atraso = 0, extra = {}) => el?.animate(quadros, { duration: duracao, delay: atraso, easing: CURVA, fill: 'backwards', ...extra });
+// A entrada de painel do design system: sobe 10 px e o desfoque de 3 px se dissolve.
+const entraPainel = (el, atraso = 0, duracao = 260) => anima(el, [{ opacity: 0, transform: 'translateY(10px)', filter: 'blur(3px)' }, { opacity: 1, transform: 'none', filter: 'none' }], duracao, atraso);
+const aparece = (el, atraso = 0, duracao = 220) => anima(el, [{ opacity: 0 }, { opacity: 1 }], duracao, atraso);
+const apaga = (el, duracao = 140) => el?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: duracao, easing: 'ease-in', fill: 'forwards' });
+
+// ---------- desenho ----------
+
+function leitura(e) {
+  return `<div class="eixo-leitura"><b>${e.jornada}</b><span>Jornada<br>do eixo</span></div>
+    <span class="eixo-barra" aria-hidden="true"><i class="resta"></i><i class="feito" style="width:${e.barra}%"></i></span>
+    <p class="eixo-nota">${escape(e.nota)}</p>`;
+}
+
+function coleta(e) {
+  return `<span class="eixo-coleta-barra" aria-hidden="true">${e.coleta.map(([k, n]) => `<i class="is-${k}" style="flex-grow:${n}"></i>`).join('')}</span>
+    <span class="eixo-legenda">${e.legenda.map((txt, i) => `<span><i class="is-${e.coleta[i][0]}"></i>${escape(txt)}</span>`).join('')}</span>`;
+}
+
+function renderCartoes() {
+  document.querySelector('#eixos-cartoes').innerHTML = EIXOS.map((e) => `
+    <a class="eixo-cartao" href="#eixo-${e.n}" data-ir-eixo="${e.n}">
+      <div class="eixo-cartao-cabeca"><h3 class="eixo-cartao-nome">${escape(e.nome)}</h3><p class="eixo-cartao-texto">${escape(e.texto)}</p></div>
+      <span class="eixo-cartao-jornada">${leitura(e)}</span>
+      <span class="eixo-cartao-coleta"><span class="eixo-contagem"><span><b>${e.total}</b> indicadores</span><span><b>${e.comMeta}</b> com meta</span></span>${coleta(e)}</span>
+      <span class="eixo-cartao-ver">${escape(e.ver)}</span>
+    </a>`).join('');
+}
+
+function cartaoMeta(m, i) {
+  return `<div class="goals-row ${m.met ? 'is-met' : ''}${i === 0 ? ' is-active' : ''}">
+    <span class="goals-row-ler"><b>${m.ler}</b><small>jornada</small></span>
+    <span class="goals-card-body">
+      <span class="goals-card-topo">
+        <span class="goals-row-name">${escape(m.nome)}</span>
+        <span class="goals-card-numeros">
+          <span class="goals-card-stat"><span>atual</span><b>${escape(m.atual)}</b>${m.atualNota ? `<small>${escape(m.atualNota)}</small>` : ''}</span>
+          <span class="goals-card-stat is-meta"><span>Meta</span><b>${escape(m.meta)}</b><small>${escape(m.nota)}</small></span>
+        </span>
+      </span>
+      <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" style="width:${m.p}%"></i></span>
+    </span>
+  </div>`;
+}
+
+function renderAberto(n) {
+  const e = eixoPor(n);
+  document.querySelector('#eixo-abas').innerHTML = EIXOS.map((x) => `<a class="eixo-aba" href="#eixo-${x.n}" data-ir-eixo="${x.n}" title="${escape(x.nome)}"${x.n === n ? ' aria-current="page"' : ''}>${x.curto}<small>${x.jornada}</small></a>`).join('');
+  document.querySelector('#eixo-resumo').innerHTML = `<h2 id="eixo-titulo" class="eixo-titulo" tabindex="-1">${escape(e.nome)}</h2>
+    <div class="eixo-metricas">
+      <div class="eixo-metrica">${leitura(e)}</div>
+      <div class="eixo-metrica"><div class="eixo-leitura"><b>${e.coletaPct}</b><span>Coleta<br>do eixo</span></div>${coleta(e)}</div>
+    </div>`;
+  const [total, comMeta] = e.resumo.match(/\d+/g);
+  document.querySelector('[data-lista-resumo]').innerHTML = `<span>${total}</span> indicadores · <span>${comMeta}</span> com meta mensurável`;
+  document.querySelector('#goals-list').innerHTML = `<p class="goals-faixa">Metas com patamar mensurável</p>
+    <div class="goals-cards">${e.metas.map(cartaoMeta).join('')}</div>
+    <p class="goals-faixa">Demais indicadores do eixo</p>
+    <div class="goals-cards">${e.outros.map(([nome, st]) => `<div class="goals-row is-catalog"><span class="goals-row-name">${escape(nome)}</span><span class="goals-row-ler"><span class="selo ${st}"><i></i>${st}</span></span></div>`).join('')}</div>`;
+  const d = e.detalhe;
+  document.querySelector('#goals-detail').innerHTML = `<div class="goals-detail-head"><h2>${escape(d.titulo)}</h2><span class="fechar" aria-hidden="true">×</span></div>
+    <div class="goals-detail-tabs">${d.abas.map((a) => `<span>${a}</span>`).join('')}</div>
+    <section class="meta-pactuada"><h3>Meta pactuada · até ${d.prazo}</h3><p>${escape(d.pactuada)}</p></section>
+    <dl class="resumo-detalhe"><div><dt>Valor atual</dt><dd>${escape(d.atual)}</dd></div><div><dt>Meta</dt><dd>${escape(d.meta)}</dd></div><div><dt>Jornada</dt><dd>${d.jornada}</dd></div></dl>
+    <section class="grafico"><h3>Amazônia Legal e estados</h3><div class="barras">${d.barras.map(([uf, v, w], i) => `<div class="linha-uf${i === 0 ? ' is-regional' : ''}"><span>${uf}</span><i><i style="width:${w}%"></i></i><b>${escape(v)}</b></div>`).join('')}</div></section>`;
+}
+
+// A troca de vista do site: uma vista de cada vez e a leitura recomeça do topo,
+// de uma vez (metas.js, mostraEixo). Nada de rolagem suave.
+function mostrar(n) {
+  state.eixo = n;
+  if (n) renderAberto(n);
+  A.hidden = Boolean(n);
+  B.hidden = !n;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function parar() {
+  geracao++;
+  document.querySelectorAll('.voo-caixa, .voo-texto').forEach((el) => el.remove());
+  document.querySelectorAll('.em-voo, .apagando').forEach((el) => el.classList.remove('em-voo', 'apagando'));
+  for (const raiz of [A, B]) raiz.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+}
+
+// ---------- medidas e voo ----------
+
+const retangulo = (el) => el.getBoundingClientRect();
+
+// As mesmas cinco peças existem no cartão e no cabeçalho do eixo aberto.
+function pecasDoCartao(cartao) {
+  return {
+    caixa: cartao,
+    nome: cartao.querySelector('.eixo-cartao-nome'),
+    leitura: cartao.querySelector('.eixo-cartao-jornada .eixo-leitura'),
+    barra: cartao.querySelector('.eixo-cartao-jornada .eixo-barra'),
+    coleta: cartao.querySelector('.eixo-coleta-barra'),
+    legenda: cartao.querySelector('.eixo-legenda'),
+    resto: cartao.querySelectorAll('.eixo-cartao-texto, .eixo-nota, .eixo-contagem, .eixo-cartao-ver')
+  };
+}
+function pecasDoCabecalho() {
+  const cab = B.querySelector('.eixo-cabeca');
+  const [m1, m2] = cab.querySelectorAll('.eixo-metrica');
+  return {
+    caixa: cab,
+    nome: cab.querySelector('#eixo-titulo'),
+    leitura: m1.querySelector('.eixo-leitura'),
+    barra: m1.querySelector('.eixo-barra'),
+    coleta: m2.querySelector('.eixo-coleta-barra'),
+    legenda: m2.querySelector('.eixo-legenda'),
+    resto: cab.querySelectorAll('.eixo-cabeca-topo, .eixo-metrica .eixo-nota, .eixo-metrica + .eixo-metrica .eixo-leitura')
+  };
+}
+const medir = (pecas) => Object.fromEntries(['caixa', 'nome', 'leitura', 'barra', 'coleta', 'legenda'].map((k) => [k, retangulo(pecas[k])]));
+
+// Uma cópia do texto, presa à tela, para o nome antigo seguir até o lugar do
+// novo enquanto apaga. Nenhum texto é ampliado: os dois tamanhos se cruzam.
+function copiaDeTexto(el) {
+  const r = retangulo(el);
+  const cs = getComputedStyle(el);
+  const c = document.createElement('p');
+  c.className = 'voo-texto';
+  c.textContent = el.textContent;
+  Object.assign(c.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', fontFamily: cs.fontFamily, fontSize: cs.fontSize, fontWeight: cs.fontWeight, lineHeight: cs.lineHeight, letterSpacing: cs.letterSpacing, color: cs.color, textWrap: 'balance' });
+  document.body.append(c);
+  return c;
+}
+
+function caixaEmVoo(de, para, { raioDe = 14, raioPara = 14, fundoPara = null, atraso = 0, emFoco = false } = {}) {
+  const c = document.createElement('div');
+  c.className = 'voo-caixa';
+  document.body.append(c);
+  const inicio = { left: de.left + 'px', top: de.top + 'px', width: de.width + 'px', height: de.height + 'px', borderRadius: raioDe + 'px' };
+  const fim = { left: para.left + 'px', top: para.top + 'px', width: para.width + 'px', height: para.height + 'px', borderRadius: raioPara + 'px' };
+  // O cartão clicado está sob o cursor, com a borda e a sombra do hover: a caixa
+  // parte desse desenho e o perde no caminho, em vez de trocar no primeiro quadro.
+  if (emFoco) { inicio.borderColor = '#7fa08c'; inicio.boxShadow = '0 4px 14px rgba(14,43,34,.09)'; fim.borderColor = '#ddd3c6'; fim.boxShadow = '0 0 0 rgba(14,43,34,0)'; }
+  if (fundoPara) { inicio.backgroundColor = '#fff'; inicio.borderColor = '#ddd3c6'; fim.backgroundColor = fundoPara; fim.borderColor = fundoPara; }
+  const a = c.animate([inicio, fim], { duration: 420, delay: atraso, easing: CURVA, fill: 'both' });
+  return { el: c, a };
+}
+
+const desloca = (de, para) => `translate(${de.left - para.left}px, ${de.top - para.top}px)`;
+
+// Leva as peças do destino a partir de onde estavam as da origem. As barras
+// também mudam de largura; o nome cruza com a cópia do nome antigo.
+function voarPecas(de, destino, copiaNome) {
+  const para = medir(destino);
+  anima(destino.nome, [{ opacity: 0, transform: desloca(de.nome, para.nome) }, { opacity: 1, transform: 'none' }], 420);
+  const n = retangulo(copiaNome);
+  copiaNome.animate([
+    { transform: 'none', opacity: 1 },
+    { opacity: 0, offset: 0.55 },
+    { transform: `translate(${para.nome.left - n.left}px, ${para.nome.top - n.top}px)`, opacity: 0 }
+  ], { duration: 420, easing: CURVA, fill: 'forwards' });
+  anima(destino.leitura, [{ transform: desloca(de.leitura, para.leitura) }, { transform: 'none' }], 420);
+  anima(destino.legenda, [{ transform: desloca(de.legenda, para.legenda) }, { transform: 'none' }], 420);
+  for (const k of ['barra', 'coleta']) {
+    anima(destino[k], [
+      { transform: desloca(de[k], para[k]), width: de[k].width + 'px', height: de[k].height + 'px' },
+      { transform: 'none', width: para[k].width + 'px', height: para[k].height + 'px' }
+    ], 420);
+  }
+  return para;
+}
+
+// ---------- abrir ----------
+
+async function abrir3(n, cartao, g) {
+  const outros = [...A.querySelectorAll('.eixo-cartao')].filter((c) => c !== cartao);
+  const origem = pecasDoCartao(cartao);
+  outros.forEach((c) => apaga(c));
+  apaga(A.querySelector('.eixos-titulo'));
+  origem.resto.forEach((el) => apaga(el, 120));
+  A.classList.add('apagando');
+  await espera(140);
+  if (g !== geracao) return;
+
+  const de = medir(origem);
+  const emFoco = cartao.matches(':hover');
+  const copia = copiaDeTexto(origem.nome);
+  mostrar(n);
+  A.classList.remove('apagando');
+  const destino = pecasDoCabecalho();
+  destino.caixa.classList.add('em-voo');
+  const para = medir(destino);
+  const voo = caixaEmVoo(de.caixa, para.caixa, { emFoco });
+  voarPecas(de, destino, copia);
+  destino.resto.forEach((el) => aparece(el, 260, 220));
+  entraPainel(B.querySelector('.goals-list-card'), 300);
+  entraPainel(B.querySelector('.goals-detail'), 360);
+  await voo.a.finished.catch(() => {});
+  if (g !== geracao) return;
+  destino.caixa.classList.remove('em-voo');
+  voo.el.remove();
+  copia.remove();
+}
+
+async function voltar3(n, g) {
+  const origem = pecasDoCabecalho();
+  origem.resto.forEach((el) => apaga(el, 120));
+  apaga(B.querySelector('.goals-board'));
+  await espera(140);
+  if (g !== geracao) return;
+
+  const de = medir(origem);
+  const copia = copiaDeTexto(origem.nome);
+  mostrar(null);
+  const cartao = A.querySelector(`[data-ir-eixo="${n}"]`);
+  const destino = pecasDoCartao(cartao);
+  cartao.classList.add('em-voo');
+  A.classList.add('apagando');
+  const para = medir(destino);
+  const voo = caixaEmVoo(de.caixa, para.caixa);
+  voarPecas(de, destino, copia);
+  destino.resto.forEach((el) => aparece(el, 260, 220));
+  aparece(A.querySelector('.eixos-titulo'), 200, 240);
+  [...A.querySelectorAll('.eixo-cartao')].filter((c) => c !== cartao).forEach((c, i) => aparece(c, 200 + i * 30, 260));
+  requestAnimationFrame(() => A.classList.remove('apagando'));
+  await voo.a.finished.catch(() => {});
+  if (g !== geracao) return;
+  cartao.classList.remove('em-voo');
+  voo.el.remove();
+  copia.remove();
+  cartao.focus({ preventScroll: true });
+}
+
+async function abrir4(n, cartao, g) {
+  const cartoes = [...A.querySelectorAll('.eixo-cartao')];
+  cartoes.forEach((c) => [...c.children].forEach((filho) => apaga(filho, 120)));
+  apaga(A.querySelector('.eixos-titulo'));
+  A.classList.add('apagando');
+  await espera(130);
+  if (g !== geracao) return;
+
+  const de = cartoes.map(retangulo);
+  mostrar(n);
+  A.classList.remove('apagando');
+  const abas = [...B.querySelectorAll('.eixo-aba')];
+  const para = abas.map(retangulo);
+  const voos = de.map((r, i) => caixaEmVoo(r, para[i], { raioPara: 9, fundoPara: EIXOS[i].n === n ? '#0e2b22' : '#ffffff', atraso: i * 20 }));
+  // As abas esperam os cartões pousarem; o resto do eixo entra por baixo deles.
+  abas.forEach((aba) => aba.animate([{ opacity: 0 }, { opacity: 0, offset: 0.8 }, { opacity: 1 }], { duration: 620, fill: 'backwards' }));
+  const cab = B.querySelector('.eixo-cabeca');
+  aparece(cab, 240, 240);
+  aparece(cab.querySelector('.eixo-voltar'), 320);
+  aparece(cab.querySelector('.barra-ferramentas'), 320);
+  entraPainel(cab.querySelector('.eixo-cabeca-corpo'), 300);
+  entraPainel(B.querySelector('.goals-list-card'), 360);
+  entraPainel(B.querySelector('.goals-detail'), 420);
+  await Promise.all(voos.map((v) => v.a.finished.catch(() => {})));
+  if (g !== geracao) return;
+  voos.forEach((v) => v.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, fill: 'forwards' }).finished.then(() => v.el.remove(), () => {}));
+}
+
+async function voltar4(n, g) {
+  const abas = [...B.querySelectorAll('.eixo-aba')];
+  const cab = B.querySelector('.eixo-cabeca');
+  abas.forEach((aba) => apaga(aba, 100));
+  apaga(cab.querySelector('.eixo-voltar'));
+  apaga(cab.querySelector('.barra-ferramentas'));
+  apaga(cab.querySelector('.eixo-cabeca-corpo'));
+  apaga(B.querySelector('.goals-board'));
+  await espera(140);
+  if (g !== geracao) return;
+
+  const de = abas.map(retangulo);
+  mostrar(null);
+  const cartoes = [...A.querySelectorAll('.eixo-cartao')];
+  cartoes.forEach((c) => c.classList.add('em-voo'));
+  const para = cartoes.map(retangulo);
+  const voos = de.map((r, i) => caixaEmVoo(r, para[i], { raioDe: 9, atraso: i * 20 }));
+  cartoes.forEach((c) => [...c.children].forEach((filho) => aparece(filho, 420, 220)));
+  aparece(A.querySelector('.eixos-titulo'), 200, 240);
+  A.classList.add('apagando');
+  setTimeout(() => { if (g === geracao) A.classList.remove('apagando'); }, 240);
+  await Promise.all(voos.map((v) => v.a.finished.catch(() => {})));
+  if (g !== geracao) return;
+  cartoes.forEach((c) => c.classList.remove('em-voo'));
+  voos.forEach((v) => v.el.remove());
+  A.querySelector(`[data-ir-eixo="${n}"]`).focus({ preventScroll: true });
+}
+
+async function abrir1(n, cartao, g) {
+  apaga(A);
+  await espera(140);
+  if (g !== geracao) return;
+  mostrar(n);
+  entraPainel(B, 0, 280);
+}
+
+async function voltar1(n, g) {
+  apaga(B);
+  await espera(140);
+  if (g !== geracao) return;
+  mostrar(null);
+  entraPainel(A, 0, 280);
+  A.querySelector(`[data-ir-eixo="${n}"]`).focus({ preventScroll: true });
+}
+
+function cascataAberto() {
+  const cab = B.querySelector('.eixo-cabeca');
+  aparece(cab, 0, 200);
+  entraPainel(cab.querySelector('.eixo-cabeca-topo'), 40);
+  anima(cab.querySelector('#eixo-titulo'), [{ opacity: 0, transform: 'translateX(-12px)' }, { opacity: 1, transform: 'none' }], 420, 100);
+  cab.querySelectorAll('.eixo-metrica').forEach((m, i) => entraPainel(m, 180 + i * 90));
+  cab.querySelectorAll('.eixo-barra .feito').forEach((f) => anima(f, [{ width: '0%' }, { width: f.style.width }], 620, 240));
+  cab.querySelectorAll('.eixo-coleta-barra i').forEach((i) => anima(i, [{ flexGrow: 0 }, { flexGrow: i.style.flexGrow }], 620, 330));
+  entraPainel(B.querySelector('.goals-list-card'), 300);
+  let j = 0;
+  for (const el of B.querySelectorAll('#goals-list .goals-faixa, #goals-list .goals-row')) {
+    const atraso = 360 + Math.min(j, 5) * 50;
+    if (el.classList.contains('goals-faixa')) { aparece(el, atraso); continue; }
+    entraPainel(el, atraso);
+    const f = el.querySelector('.feito');
+    if (f) anima(f, [{ width: '0%' }, { width: f.style.width }], 620, atraso + 120);
+    j++;
+  }
+  entraPainel(B.querySelector('.goals-detail'), 640);
+}
+
+async function abrir2(n, cartao, g) {
+  apaga(A);
+  await espera(140);
+  if (g !== geracao) return;
+  mostrar(n);
+  cascataAberto();
+}
+
+async function voltar2(n, g) {
+  apaga(B);
+  await espera(140);
+  if (g !== geracao) return;
+  mostrar(null);
+  A.classList.add('apagando');
+  setTimeout(() => { if (g === geracao) A.classList.remove('apagando'); }, 240);
+  aparece(A.querySelector('.eixos-titulo'), 0, 240);
+  A.querySelectorAll('.eixo-cartao').forEach((c, i) => {
+    entraPainel(c, 60 + i * 60);
+    const f = c.querySelector('.eixo-barra .feito');
+    anima(f, [{ width: '0%' }, { width: f.style.width }], 620, 180 + i * 60);
+  });
+  A.querySelector(`[data-ir-eixo="${n}"]`).focus({ preventScroll: true });
+}
+
+const MOTORES = { 1: [abrir1, voltar1], 2: [abrir2, voltar2], 3: [abrir3, voltar3], 4: [abrir4, voltar4] };
+// No celular os cartões ficam numa coluna e as abas rolam de lado: quatro dos
+// cinco voos sairiam de fora da tela. Ali a 4 faz o mesmo que a 3.
+const opcaoEfetiva = () => (state.opcao === 4 && innerWidth < 900 ? 3 : state.opcao);
+
+async function abrir(n) {
+  parar();
+  const g = geracao;
+  const cartao = A.querySelector(`[data-ir-eixo="${n}"]`);
+  if (reduz()) mostrar(n);
+  else await MOTORES[opcaoEfetiva()][0](n, cartao, g);
+  if (g === geracao) document.querySelector('#eixo-titulo')?.focus({ preventScroll: true });
+}
+
+async function voltar() {
+  const n = state.eixo;
+  parar();
+  const g = geracao;
+  if (reduz()) { mostrar(null); A.querySelector(`[data-ir-eixo="${n}"]`).focus({ preventScroll: true }); return; }
+  await MOTORES[opcaoEfetiva()][1](n, g);
+}
+
+// Trocar de eixo pelas abas é igual em todas as opções: o miolo apaga e entra de novo.
+async function trocarAba(n) {
+  parar();
+  const g = geracao;
+  const partes = [B.querySelector('.eixo-cabeca-corpo'), B.querySelector('.goals-board')];
+  if (!reduz()) { partes.forEach((p) => apaga(p, 110)); await espera(110); }
+  if (g !== geracao) return;
+  state.eixo = n;
+  renderAberto(n);
+  partes.forEach((p) => p.getAnimations().forEach((a) => a.cancel()));
+  if (!reduz()) { entraPainel(partes[0], 0); entraPainel(partes[1], 60); }
+  document.querySelector('#eixo-titulo')?.focus({ preventScroll: true });
+}
+
+// ---------- eventos ----------
+
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('[data-ir-eixo]');
+  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  const n = Number(link.dataset.irEixo);
+  if (n === state.eixo) return;
+  if (state.eixo) trocarAba(n);
+  else abrir(n);
+});
+document.querySelector('[data-voltar]').addEventListener('click', voltar);
+
+function renderOpcoes() {
+  document.querySelector('[data-opcoes]').innerHTML = OPCOES.map((o, i) => `<button type="button" data-opcao="${i + 1}" aria-pressed="${state.opcao === i + 1}"><b>${i + 1}</b><span>${o.curto}</span></button>`).join('');
+  document.querySelector('[data-notas]').innerHTML = OPCOES.map((o, i) => `<article class="nota">
+      <h3><b>${i + 1}</b>${o.titulo}${o.rec ? ' <em class="rec">recomendada</em>' : ''}</h3>
+      <p>${o.texto}</p>
+      <div class="tags">${o.tags.map(([c, t]) => `<span class="tag ${c}">${t}</span>`).join('')}</div>
+    </article>`).join('');
+}
+
+document.querySelector('[data-opcoes]').addEventListener('click', (event) => {
+  const botao = event.target.closest('[data-opcao]');
+  if (!botao) return;
+  state.opcao = Number(botao.dataset.opcao);
+  renderOpcoes();
+  // Volta aos cinco eixos, sem animação, para a próxima abertura já ser da opção nova.
+  parar();
+  mostrar(null);
+});
+
+// Os testes começam sempre do mesmo ponto: a lista dos eixos no topo (ou o eixo
+// aberto, no caso de "Voltar"). A 2ª fileira é aberta depois de rolar a página.
+document.querySelector('.testes').addEventListener('click', async (event) => {
+  const botao = event.target.closest('[data-teste]');
+  if (!botao) return;
+  const id = ++teste;
+  const tipo = botao.dataset.teste;
+  parar();
+  if (tipo === 'voltar') {
+    if (!state.eixo) mostrar(2);
+    await espera(500);
+    if (id === teste) voltar();
+    return;
+  }
+  mostrar(null);
+  if (tipo === '2') window.scrollTo({ top: 260, behavior: 'instant' });
+  await espera(450);
+  if (id === teste) abrir(tipo === '1' ? 2 : 4);
+});
+
+renderCartoes();
+renderOpcoes();
+</script>
+</body>
+</html>

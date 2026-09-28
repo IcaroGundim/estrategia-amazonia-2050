@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metas · transição do eixo às metas — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-500:#3e6e57;--mata-300:#7fa08c;--mata-100:#c6d2c7;
+  --urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--linha-2:#ede6dc;
+  --tinta:#1a1613;--tinta-2:#3a342e;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--text:'Libre Franklin',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.6 var(--text)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.15}
+button{font:inherit;color:inherit;cursor:pointer}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+header.site{background:var(--mata);color:var(--areia)}
+.top{max-width:1320px;margin:auto;padding:20px 34px;display:flex;align-items:center;gap:24px}
+.brand{font:800 19px var(--display)}
+.badge{margin-left:auto;border:1px solid #ffffff40;padding:5px 11px;border-radius:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1320px;margin:auto;padding:34px 34px 70px}
+.intro{border-bottom:1px solid var(--linha);padding-bottom:24px;margin-bottom:28px}
+.intro h1{font-size:34px;letter-spacing:-.03em;margin:10px 0 12px}
+.intro p{max-width:82ch;color:var(--tinta-3)}
+.intro p+p{margin-top:8px}
+
+.palco{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:start}
+
+/* ==== Painel das opções ============================================== */
+.painel{position:sticky;top:20px;padding:18px 18px 20px;border:1px solid var(--linha);border-radius:14px;background:#faf7f1;box-shadow:0 12px 35px rgba(14,43,34,.045)}
+.opcoes{display:grid;gap:6px;margin:10px 0 16px}
+.opcoes button{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start;padding:10px 12px;border:1px solid var(--linha);border-radius:10px;background:var(--papel);text-align:left;transition:border-color .15s,box-shadow .15s}
+.opcoes button:hover{border-color:var(--mata-300)}
+.opcoes button>b{font:600 13px/1.5 var(--display);color:var(--urucum)}
+.opcoes strong{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font:600 15px/1.35 var(--display);letter-spacing:-.01em}
+.opcoes small{display:block;color:var(--tinta-3);font-size:12px;line-height:1.4}
+.opcoes button[aria-checked="true"]{border-color:var(--urucum);box-shadow:inset 0 0 0 1px var(--urucum)}
+.rec{padding:1px 6px;border-radius:4px;background:#e7ede8;color:var(--mata-500);font:600 9.5px var(--text);letter-spacing:.06em;text-transform:uppercase}
+.descricao p{color:var(--tinta-3);font-size:13px;line-height:1.55}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10.5px;line-height:1.45}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+.painel hr{margin:16px 0 14px;border:0;border-top:1px solid var(--linha)}
+.testes{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.testes button{padding:7px 11px;border:1px solid var(--linha);border-radius:8px;background:var(--papel);font-size:12px;transition:border-color .15s}
+.testes button:hover{border-color:var(--mata)}
+.testes .rever{border-style:dashed}
+
+/* ==== Réplica de /metas (mesmos valores do global.css) =============== */
+.card{border:1px solid var(--linha);border-radius:14px;background:var(--papel)}
+.goals-toolbar{margin-bottom:16px;display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap}
+.busca{flex:1 1 200px;display:flex;align-items:center;gap:10px;min-height:40px;padding:0 14px;border:1px solid var(--linha);border-radius:8px;background:var(--papel);color:var(--tinta-4);font-size:13px}
+.filtro{display:flex;align-items:center;gap:8px}
+.filter-title{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.status-filter-list{display:flex;gap:5px}
+.status-filter{min-height:32px;padding:5px 10px;border:1px solid var(--linha);border-radius:999px;background:#efede9;color:var(--tinta-2);font-size:10.5px;transition:background .18s,color .18s,border-color .18s,transform .12s}
+.status-filter.is-num{min-width:32px;padding-inline:8px;display:inline-flex;align-items:center;justify-content:center}
+.status-filter:hover,.status-filter:focus-visible{border-color:var(--mata);outline:none}
+.status-filter.is-active{border-color:var(--mata);background:var(--mata);color:var(--areia);font-weight:600}
+.status-filter.is-pressed{transform:scale(.9)}
+.filtro.inerte .status-filter{cursor:default}
+
+.goals-list-card{padding:22px 26px 18px}
+.goals-list-top{padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--linha)}
+.goals-list-summary{color:var(--tinta-4);font-size:12px}
+.goals-list-summary span{color:var(--mata);font-weight:700;font-variant-numeric:tabular-nums}
+/* O espaço entre eixos fica dentro de cada bloco (padding-bottom), e não entre
+   eles: é o que deixa o bloco recolher até zero sem sobrar um pulo de 22 px. */
+.goals-list{margin-bottom:-22px}
+.goals-eixo{padding-bottom:22px}
+.goals-eixo-head{position:relative;display:flex;align-items:center;gap:10px;padding-bottom:7px}
+.goals-eixo-fio{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--mata);transform-origin:left}
+.goals-eixo-head .num{display:grid;place-content:center;flex:none;width:22px;height:22px;border-radius:6px;background:var(--mata);color:var(--areia);font:800 12px var(--display)}
+.goals-eixo-head h3{font-size:13.5px;letter-spacing:.01em}
+.goals-eixo-head>span:not(.num){color:var(--tinta-4);font-size:10.5px}
+.goals-faixa{margin:16px 0 2px;display:flex;align-items:baseline;gap:7px;color:var(--tinta-4);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+.goals-faixa::after{content:"";flex:1;height:1px;background:var(--linha-2)}
+.goals-eixo-head+.goals-faixa{margin-top:10px}
+.goals-cards{margin-top:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.goals-row{position:relative;width:100%;min-width:0;padding:12px 14px;display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:2px 12px;border:1px solid var(--linha-2);border-radius:10px;background:var(--papel);text-align:left;transition:border-color 160ms ease}
+.goals-row:hover{border-color:var(--mata-300)}
+.goals-card-body{display:block;min-width:0}
+.goals-row-name{display:block;min-width:0;color:var(--tinta);font-size:15px;font-weight:500;line-height:1.3}
+.goals-card-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.goals-card-topo .goals-row-name{flex:1}
+.goals-card-numeros{flex:none;display:flex;gap:8px;align-items:flex-start;white-space:nowrap}
+.goals-card-stat{display:flex;flex-direction:column;align-items:flex-end;padding:2px 0 2px 10px;line-height:1.15}
+.goals-card-stat>span{color:var(--tinta-4);font:600 9px var(--text);letter-spacing:.12em;text-transform:uppercase}
+.goals-card-stat b{color:var(--tinta-2);font:700 16px/1.15 var(--display);font-variant-numeric:tabular-nums}
+.goals-card-stat small{color:var(--tinta-4);font-size:10px}
+.goals-card-stat.is-meta b{color:var(--mata);font-weight:800}
+.goals-row-bar{position:relative;height:10px;margin-top:8px;display:block;overflow:hidden;border-radius:4px;background:var(--linha-2)}
+.goals-row-bar .resta{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 5px,rgba(192,69,31,.12) 5px 10px)}
+.goals-row-bar .feito{position:absolute;inset:0 auto 0 0;border-radius:4px 2px 2px 4px;background:var(--mata-500)}
+.goals-row-ler{grid-row:1/3;align-self:center;white-space:nowrap}
+.goals-row-ler b{display:block;color:var(--mata);font:800 26px/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.goals-row-ler small{display:block;margin-top:3px;color:var(--tinta-4);font-size:10px}
+.goals-row.is-empty .goals-row-ler b{color:var(--tinta-4)}
+.goals-row.is-catalog{grid-template-columns:minmax(0,1fr) auto;align-items:center}
+.goals-row.is-catalog .goals-row-ler{grid-row:auto;display:flex;align-items:center}
+.ind-status{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.ind-status i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.is-pendente{color:var(--urucum)}
+.is-coletado{color:var(--mata-500)}
+
+/* O número que desce na opção 4: uma cópia da pastilha ativa, fora do fluxo. */
+.num-voo{position:fixed;z-index:60;display:grid;place-content:center;border-radius:999px;background:var(--mata);color:var(--areia);font:800 12px var(--display);pointer-events:none}
+
+@media (max-width:1040px){
+  .palco{grid-template-columns:minmax(0,1fr)}
+  .painel{position:static;order:-1}
+}
+@media (max-width:680px){
+  main{padding:22px 16px 50px}
+  .top{padding:16px}
+  .intro h1{font-size:27px}
+  .goals-list-card{padding:18px 14px 12px}
+  .goals-cards{grid-template-columns:minmax(0,1fr)}
+  .filtro.inerte{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="site"><div class="top"><span class="brand">Estratégia 2050</span><span class="badge">Mockup · não publicado</span></div></header>
+<main>
+  <div class="intro">
+    <p class="eyebrow">Metas e indicadores · troca de eixo</p>
+    <h1>Do eixo às metas</h1>
+    <p>Hoje, ao clicar num número do filtro Eixo, a lista troca de uma vez. As cinco opções animam essa troca só com o que já está na página: o cabeçalho do eixo, os cartões e as barras.</p>
+    <p>O filtro aceita mais de um eixo: de Todos, clicar em 1 deixa só o eixo 1, clicar em 3 soma o eixo 3, e clicar de novo tira. Os botões de teste repetem as trocas que mais diferenciam as opções.</p>
+  </div>
+
+  <div class="palco">
+    <div class="replica">
+      <div class="goals-toolbar">
+        <div class="busca"><span aria-hidden="true">⌕</span>Buscar meta, indicador ou código</div>
+        <div class="filtro">
+          <span class="filter-title">Eixo</span>
+          <div class="status-filter-list" id="eixo-pills" role="group" aria-label="Eixo">
+            <button type="button" class="status-filter is-active" data-eixo="all" aria-pressed="true">Todos</button>
+            <button type="button" class="status-filter is-num" data-eixo="1" aria-label="Eixo 1" aria-pressed="false">1</button>
+            <button type="button" class="status-filter is-num" data-eixo="2" aria-label="Eixo 2" aria-pressed="false">2</button>
+            <button type="button" class="status-filter is-num" data-eixo="3" aria-label="Eixo 3" aria-pressed="false">3</button>
+            <button type="button" class="status-filter is-num" data-eixo="4" aria-label="Eixo 4" aria-pressed="false">4</button>
+            <button type="button" class="status-filter is-num" data-eixo="5" aria-label="Eixo 5" aria-pressed="false">5</button>
+          </div>
+        </div>
+        <div class="filtro inerte" aria-hidden="true">
+          <span class="filter-title">Coleta</span>
+          <div class="status-filter-list"><span class="status-filter is-active">Todas</span><span class="status-filter">Coletado</span><span class="status-filter">Parcial</span><span class="status-filter">Pendente</span></div>
+        </div>
+      </div>
+
+      <section class="goals-list-card card" aria-label="Metas e indicadores da Estratégia">
+        <div class="goals-list-top"><p class="goals-list-summary" data-resumo aria-live="polite"></p></div>
+        <div id="goals-list" class="goals-list"></div>
+      </section>
+    </div>
+
+    <aside class="painel" aria-label="Opções de transição">
+      <p class="eyebrow">Opções</p>
+      <div class="opcoes" role="radiogroup" aria-label="Opção de transição" data-opcoes></div>
+      <div class="descricao" data-descricao></div>
+      <hr>
+      <p class="eyebrow">Testar</p>
+      <div class="testes" data-testes>
+        <button type="button" data-teste="todos-1">Todos → 1</button>
+        <button type="button" data-teste="1-13">1 → 1 + 3</button>
+        <button type="button" data-teste="23-3">2 + 3 → 3</button>
+        <button type="button" class="rever" data-entrada>Rever entrada</button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+// A mesma curva das barras do painel (global.css, .goals-row-bar .feito).
+const EASE = 'cubic-bezier(.22,1,.36,1)';
+
+// Nomes, contagens e números reais de dashboard/public/data/metas.json. Cada eixo
+// mostra só uma parte dos cartões: o bastante para a animação ter o que mover.
+const EIXOS = [
+  { n: 1, nome: 'Território, Ambiente e Clima', total: 23, comMeta: 4,
+    metas: [
+      { nome: 'UCs estaduais com plano de manejo e conselho gestor', ler: '53%', atual: '21,11%', meta: '40%', nota: 'até 2035', p: 53 },
+      { nome: 'Vulnerabilidade climática municipal (IIVCM)', ler: '88%', atual: '59,32', meta: '≤ 52,1', nota: 'até 2050', p: 88 },
+      { nome: 'Desmatamento ilegal', ler: '—', atual: '6.518 ha', atualNota: 'sem escala', meta: '≤ 0 ha', nota: 'até 2030', p: 0, vazio: true },
+      { nome: 'Focos de calor', ler: '50%', atual: '198.972', meta: '≤ 98.543', nota: 'até 2035', p: 50 }
+    ],
+    outros: [['ZEE vigente e atualizado', 'pendente'], ['Planos Estaduais de Adaptação aprovados e em execução', 'pendente']] },
+  { n: 2, nome: 'Pessoas e Bem-estar', total: 10, comMeta: 4,
+    metas: [
+      { nome: 'Pobreza (CadÚnico)', ler: '21%', atual: '14,03%', meta: '≤ 3%', nota: 'até 2050', p: 21 },
+      { nome: 'IDEB', ler: '49%', atual: '49,5%', meta: '100%', nota: 'até 2050', p: 49 },
+      { nome: 'Atendimento escolar 4-17 anos', ler: '96%', atual: '96,39%', meta: '100%', nota: 'até 2050', p: 96 },
+      { nome: 'Crimes Violentos Letais Intencionais (CVLI)', ler: '47%', atual: '21,09', meta: '≤ 10', nota: 'até 2050', p: 47 }
+    ],
+    outros: [['Mortalidade por causas evitáveis', 'coletado'], ['Renda da sociobioeconomia', 'pendente']] },
+  { n: 3, nome: 'Desenvolvimento econômico sustentável', total: 11, comMeta: 0,
+    metas: [],
+    outros: [['Valor da produção da sociobioeconomia', 'coletado'], ['Valor da transformação industrial', 'coletado'], ['Cadeias produtivas estruturadas', 'pendente'], ['Beneficiários de PSA', 'pendente']] },
+  { n: 4, nome: 'Infraestrutura e integração regional sustentável', total: 6, comMeta: 5,
+    metas: [
+      { nome: 'Conectividade digital (IBC-AMZ)', ler: '67%', atual: '53,51', meta: '80', nota: 'até 2050', p: 67 },
+      { nome: 'Adequação e trafegabilidade de transportes', ler: '71%', atual: '46,44%', meta: '65%', nota: 'até 2050', p: 71 },
+      { nome: 'Participação de renováveis (PER)', ler: '76%', atual: '60,94%', meta: '80%', nota: 'até 2035', p: 76 },
+      { nome: 'Saneamento básico e gestão de riscos (ISGR)', ler: '59%', atual: '47,23%', meta: '80%', nota: 'até 2050', p: 59 }
+    ],
+    outros: [['Transição energética (ITEQ)', 'pendente']] },
+  { n: 5, nome: 'Governança e parcerias', total: 9, comMeta: 3,
+    metas: [
+      { nome: 'Dispêndio em P&D (% do PIB estadual)', ler: '6%', atual: '0,06%', meta: '1%', nota: 'até 2050', p: 6 },
+      { nome: 'CAPAG A ou B (capacidade de pagamento)', ler: '8/9', atual: '8 de 9', meta: '9 de 9', nota: 'nos 9 estados · até 2050', p: 89 },
+      { nome: 'Transparência pública (EBT 360)', ler: '3/9', atual: '3 de 9', meta: '9 de 9', nota: 'nos 9 estados · até 2050', p: 33 }
+    ],
+    outros: [['Financiamento climático captado/executado', 'coletado'], ['Arranjo jurídico climático estadual', 'pendente']] }
+];
+
+const OPCOES = [
+  { titulo: 'Esmaecer', resumo: 'A lista apaga e volta.',
+    texto: 'A lista inteira apaga em 0,12 s e reaparece em 0,24 s, subindo 6 px. É a troca de hoje sem o corte seco.',
+    tags: [['ok', 'O mais discreto'], ['ok', 'Serve igual para a busca e a coleta'], ['alerta', 'Não mostra o que entrou nem o que saiu']] },
+  { titulo: 'Cascata do eixo', resumo: 'Primeiro o eixo, depois as metas.',
+    texto: 'O número e o nome do eixo aparecem, o fio verde do cabeçalho se desenha da esquerda para a direita, e as metas sobem uma a uma, com as barras enchendo. Recomeça a cada troca.',
+    tags: [['ok', 'A leitura mais literal de “do eixo às metas”'], ['ok', 'Serve também de entrada da página'], ['alerta', 'Repete a cascata de um eixo que já estava na tela']] },
+  { titulo: 'Recolher e abrir', resumo: 'Só se move o que mudou.',
+    texto: 'O eixo que sai apaga e recolhe, e os de baixo sobem para o lugar dele. O eixo que entra se abre na sua posição da ordem. O que já estava na tela não se mexe.',
+    tags: [['ok', 'Funciona com mais de um eixo marcado'], ['ok', 'O quadro da lista cresce e encolhe sem pulo'], ['alerta', 'De Todos para um eixo, quase nada se move na tela: o que recolhe fica abaixo da dobra']] },
+  { titulo: 'Número que desce', resumo: 'O número clicado vira o cabeçalho.',
+    texto: 'Como a 3, e o número clicado no filtro desce até o cabeçalho do eixo, onde vira o quadrado verde. Mostra de onde veio o bloco que abriu.',
+    tags: [['ok', 'Liga o filtro ao bloco'], ['alerta', 'Pode parecer lúdico'], ['alerta', 'Com a página rolada, o número passa por fora da tela']] },
+  { titulo: 'Recolher e desdobrar', resumo: 'A 3, com a cascata no eixo clicado.', rec: true,
+    texto: 'Os outros eixos recolhem ou sobem como na 3. O eixo que você clicou, e qualquer eixo que entra, refaz a cascata da 2: cabeçalho, fio verde, metas e barras.',
+    tags: [['ok', 'De Todos para um eixo, o movimento acontece na tela'], ['ok', 'Funciona com mais de um eixo marcado'], ['ok', 'A mesma cascata serve de entrada da página']] }
+];
+
+const state = { eixos: new Set(), opcao: 1 };
+const lista = document.querySelector('#goals-list');
+const pills = document.querySelector('#eixo-pills');
+const resumo = document.querySelector('[data-resumo]');
+let geracao = 0;
+let teste = 0;
+
+const reduz = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const escape = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const visiveis = () => EIXOS.filter((e) => !state.eixos.size || state.eixos.has(e.n));
+const anima = (el, quadros, duracao, atraso = 0) => el?.animate(quadros, { duration: duracao, delay: atraso, easing: EASE, fill: 'backwards' });
+
+// ---------- lista ----------
+
+function cartaoMeta(m) {
+  return `<button type="button" class="goals-row ${m.vazio ? 'is-empty' : 'is-progress'}">
+    <span class="goals-row-ler"><b>${m.ler}</b><small>jornada</small></span>
+    <span class="goals-card-body">
+      <span class="goals-card-topo">
+        <span class="goals-row-name">${escape(m.nome)}</span>
+        <span class="goals-card-numeros">
+          <span class="goals-card-stat is-atual"><span>atual</span><b>${escape(m.atual)}</b>${m.atualNota ? `<small>${m.atualNota}</small>` : ''}</span>
+          <span class="goals-card-stat is-meta"><span>Meta</span><b>${escape(m.meta)}</b><small>${escape(m.nota)}</small></span>
+        </span>
+      </span>
+      <span class="goals-row-bar" aria-hidden="true"><i class="resta"></i><i class="feito" data-p="${m.p}" style="width:${m.p}%"></i></span>
+    </span>
+  </button>`;
+}
+
+function cartaoOutro([nome, status]) {
+  return `<button type="button" class="goals-row is-catalog">
+    <span class="goals-row-name">${escape(nome)}</span>
+    <span class="goals-row-ler"><span class="ind-status is-${status}"><i></i>${status === 'coletado' ? 'Coletado' : 'Pendente'}</span></span>
+  </button>`;
+}
+
+function secaoHTML(e) {
+  const metas = e.metas.length
+    ? `<p class="goals-faixa">Metas com patamar mensurável</p><div class="goals-cards">${e.metas.map(cartaoMeta).join('')}</div>` : '';
+  const outros = `<p class="goals-faixa">${e.metas.length ? 'Demais indicadores do eixo' : 'Indicadores do eixo'}</p><div class="goals-cards">${e.outros.map(cartaoOutro).join('')}</div>`;
+  return `<section class="goals-eixo" data-eixo="${e.n}">
+    <header class="goals-eixo-head"><span class="num" aria-hidden="true">${e.n}</span><h3>${escape(e.nome)}</h3><span>${e.total} indicadores</span><i class="goals-eixo-fio" aria-hidden="true"></i></header>
+    ${metas}${outros}
+  </section>`;
+}
+
+function criaSecao(n) {
+  const molde = document.createElement('template');
+  molde.innerHTML = secaoHTML(EIXOS.find((e) => e.n === n)).trim();
+  return molde.content.firstElementChild;
+}
+
+function renderTudo() {
+  lista.innerHTML = visiveis().map(secaoHTML).join('');
+}
+
+function atualizaFiltro() {
+  for (const botao of pills.querySelectorAll('[data-eixo]')) {
+    const v = botao.dataset.eixo;
+    const ativo = v === 'all' ? state.eixos.size === 0 : state.eixos.has(Number(v));
+    botao.classList.toggle('is-active', ativo);
+    botao.setAttribute('aria-pressed', String(ativo));
+  }
+  const vs = visiveis();
+  const total = vs.reduce((t, e) => t + e.total, 0);
+  const comMeta = vs.reduce((t, e) => t + e.comMeta, 0);
+  resumo.innerHTML = `<span>${total}</span> indicadores · <span>${comMeta}</span> com meta mensurável`;
+}
+
+// Um clique no meio de uma troca termina a anterior na hora, no estado final,
+// e só então começa a nova. Sem isso as duas animações brigam pelo mesmo bloco.
+function parar() {
+  geracao++;
+  lista.querySelectorAll('[data-saindo]').forEach((s) => s.remove());
+  document.querySelectorAll('.num-voo').forEach((c) => c.remove());
+  lista.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+  lista.querySelectorAll('.goals-eixo').forEach((s) => { s.style.overflow = ''; });
+  lista.querySelectorAll('.num').forEach((n) => { n.style.visibility = ''; });
+}
+
+// ---------- 1 · Esmaecer ----------
+
+async function sumir() {
+  const a = lista.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(-4px)' }], { duration: 120, easing: 'ease-in', fill: 'forwards' });
+  await a.finished.catch(() => {});
+  return a;
+}
+
+async function esmaecer() {
+  const g = geracao;
+  const saida = await sumir();
+  if (g !== geracao) return;
+  renderTudo();
+  saida.cancel();
+  anima(lista, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], 240);
+}
+
+function entradaEsmaecer() {
+  anima(lista, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], 320);
+}
+
+// ---------- 2 · Cascata do eixo ----------
+
+const cascata = () => cascataEm([...lista.querySelectorAll('.goals-eixo')]);
+
+function cascataEm(secoes) {
+  secoes.forEach((s, i) => {
+    // Os eixos abaixo da dobra não esperam a vez: a partir do quarto, todos juntos.
+    const base = Math.min(i, 3) * 120;
+    anima(s.querySelector('.num'), [{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'none' }], 280, base);
+    anima(s.querySelector('h3'), [{ opacity: 0, transform: 'translateX(-8px)' }, { opacity: 1, transform: 'none' }], 300, base + 60);
+    anima(s.querySelector('.goals-eixo-head > span:not(.num)'), [{ opacity: 0 }, { opacity: 1 }], 260, base + 140);
+    anima(s.querySelector('.goals-eixo-fio'), [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], 560, base + 80);
+    // Até seis cartões em fila; do sétimo em diante entram com o sexto.
+    let j = 0;
+    for (const el of s.querySelectorAll('.goals-faixa, .goals-row')) {
+      const passo = Math.min(j, 5) * 50;
+      if (el.classList.contains('goals-faixa')) {
+        anima(el, [{ opacity: 0 }, { opacity: 1 }], 260, base + 220 + passo);
+        continue;
+      }
+      const atraso = base + 260 + passo;
+      anima(el, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], 340, atraso);
+      const barra = el.querySelector('.feito');
+      if (barra) anima(barra, [{ width: '0%' }, { width: barra.dataset.p + '%' }], 720, atraso + 160);
+      j++;
+    }
+  });
+}
+
+async function cascataTroca() {
+  const g = geracao;
+  const saida = await sumir();
+  if (g !== geracao) return;
+  renderTudo();
+  saida.cancel();
+  cascata();
+}
+
+// ---------- 3 · Recolher e abrir (4 acrescenta o voo do número; 5, a cascata) ----------
+
+function recolher(pilula, { voo = false, desdobra = false } = {}) {
+  const alvo = visiveis().map((e) => e.n);
+  const atuais = [...lista.querySelectorAll('.goals-eixo')];
+  const presentes = new Map(atuais.map((s) => [Number(s.dataset.eixo), s]));
+  const saem = atuais.filter((s) => !alvo.includes(Number(s.dataset.eixo)));
+  const entram = [];
+  for (const n of alvo) {
+    if (presentes.has(n)) continue;
+    const s = criaSecao(n);
+    lista.insertBefore(s, [...lista.children].find((c) => Number(c.dataset.eixo) > n) || null);
+    presentes.set(n, s);
+    entram.push(s);
+  }
+  // Todas as medidas antes de qualquer animação começar.
+  const alturas = new Map([...saem, ...entram].map((s) => [s, s.offsetHeight]));
+
+  const clicado = pilula && pilula.dataset.eixo !== 'all' ? Number(pilula.dataset.eixo) : null;
+  if (voo && clicado && alvo.includes(clicado)) {
+    const destino = presentes.get(clicado);
+    // Onde o cabeçalho vai parar: a posição de agora menos o que recolhe acima dele.
+    const acima = saem
+      .filter((s) => s.compareDocumentPosition(destino) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .reduce((t, s) => t + alturas.get(s), 0);
+    voar(pilula, destino.querySelector('.num'), acima);
+  }
+
+  for (const s of saem) {
+    const h = alturas.get(s);
+    s.dataset.saindo = '';
+    s.style.overflow = 'hidden';
+    s.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: 'ease-out', fill: 'forwards' });
+    s.animate([{ height: h + 'px', paddingBottom: '22px' }, { height: '0px', paddingBottom: '0px' }], { duration: 340, delay: 90, easing: EASE, fill: 'forwards' })
+      .finished.then(() => s.remove(), () => {});
+  }
+  for (const s of entram) {
+    const h = alturas.get(s);
+    s.style.overflow = 'hidden';
+    s.animate([{ height: '0px', paddingBottom: '0px' }, { height: h + 'px', paddingBottom: '22px' }], { duration: 340, easing: EASE })
+      .finished.then(() => { s.style.overflow = ''; }, () => {});
+    if (!desdobra) anima(s, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], 280, 140);
+  }
+
+  // Na 5, a cascata vai para o eixo clicado (mesmo que ele já estivesse na tela)
+  // e para os que entram. Os que só sobem de lugar ficam quietos.
+  if (desdobra) {
+    const escolhido = clicado && alvo.includes(clicado) ? presentes.get(clicado) : null;
+    cascataEm([...lista.querySelectorAll('.goals-eixo:not([data-saindo])')].filter((s) => s === escolhido || entram.includes(s)));
+  }
+}
+
+function voar(pilula, numDestino, subida) {
+  const de = pilula.getBoundingClientRect();
+  const para = numDestino.getBoundingClientRect();
+  const copia = document.createElement('span');
+  copia.className = 'num-voo';
+  copia.textContent = pilula.textContent.trim();
+  Object.assign(copia.style, { left: de.left + 'px', top: de.top + 'px', width: de.width + 'px', height: de.height + 'px' });
+  document.body.append(copia);
+  numDestino.style.visibility = 'hidden';
+  const fim = () => { numDestino.style.visibility = ''; copia.remove(); };
+  // Mesmo atraso, duração e curva do recolhimento: o número pousa no mesmo
+  // instante em que o cabeçalho termina de subir.
+  copia.animate([
+    { transform: 'translate(0, 0)', width: de.width + 'px', height: de.height + 'px', borderRadius: '999px' },
+    { transform: `translate(${para.left - de.left}px, ${para.top - subida - de.top}px)`, width: para.width + 'px', height: para.height + 'px', borderRadius: '6px' }
+  ], { duration: 340, delay: 90, easing: EASE, fill: 'both' }).finished.then(fim, fim);
+}
+
+function entradaSecoes() {
+  lista.querySelectorAll('.goals-eixo').forEach((s, i) => {
+    anima(s, [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], 360, Math.min(i, 3) * 90);
+  });
+}
+
+// ---------- troca ----------
+
+const MOTORES = [
+  { trocar: esmaecer, entrada: entradaEsmaecer },
+  { trocar: cascataTroca, entrada: cascata },
+  { trocar: (pilula) => recolher(pilula), entrada: entradaSecoes },
+  { trocar: (pilula) => recolher(pilula, { voo: true }), entrada: entradaSecoes },
+  { trocar: (pilula) => recolher(pilula, { desdobra: true }), entrada: cascata }
+];
+
+function trocar(pilula) {
+  parar();
+  if (reduz()) { renderTudo(); return; }
+  MOTORES[state.opcao - 1].trocar(pilula);
+}
+
+function entrada() {
+  parar();
+  renderTudo();
+  if (!reduz()) MOTORES[state.opcao - 1].entrada();
+}
+
+pills.addEventListener('click', (event) => {
+  const botao = event.target.closest('[data-eixo]');
+  if (!botao) return;
+  const antes = visiveis().map((e) => e.n).join();
+  const v = botao.dataset.eixo;
+  if (v === 'all') state.eixos.clear();
+  else if (state.eixos.has(Number(v))) state.eixos.delete(Number(v));
+  else state.eixos.add(Number(v));
+  atualizaFiltro();
+  if (visiveis().map((e) => e.n).join() !== antes) trocar(botao);
+});
+
+// ---------- painel ----------
+
+const opcoesEl = document.querySelector('[data-opcoes]');
+const descricaoEl = document.querySelector('[data-descricao]');
+
+function renderOpcoes() {
+  opcoesEl.innerHTML = OPCOES.map((o, i) => `
+    <button type="button" role="radio" aria-checked="${state.opcao === i + 1}" data-opcao="${i + 1}">
+      <b>${i + 1}</b><span><strong>${o.titulo}${o.rec ? '<em class="rec">recomendada</em>' : ''}</strong><small>${o.resumo}</small></span>
+    </button>`).join('');
+  const o = OPCOES[state.opcao - 1];
+  descricaoEl.innerHTML = `<p>${o.texto}</p><div class="tags">${o.tags.map(([cls, txt]) => `<span class="tag ${cls}">${txt}</span>`).join('')}</div>`;
+}
+
+opcoesEl.addEventListener('click', (event) => {
+  const botao = event.target.closest('[data-opcao]');
+  if (!botao) return;
+  state.opcao = Number(botao.dataset.opcao);
+  renderOpcoes();
+  opcoesEl.querySelector(`[data-opcao="${state.opcao}"]`).focus();
+  entrada();
+});
+
+const TESTES = { 'todos-1': [[], '1'], '1-13': [[1], '3'], '23-3': [[2, 3], '2'] };
+
+document.querySelector('[data-testes]').addEventListener('click', async (event) => {
+  const botao = event.target.closest('button');
+  if (!botao) return;
+  const id = ++teste;
+  if (botao.hasAttribute('data-entrada')) { entrada(); return; }
+  const [inicio, clique] = TESTES[botao.dataset.teste];
+  parar();
+  state.eixos = new Set(inicio);
+  atualizaFiltro();
+  renderTudo();
+  const topo = document.querySelector('.goals-toolbar').getBoundingClientRect().top;
+  if (topo < 0 || topo > innerHeight * 0.45) window.scrollTo({ top: scrollY + topo - 16 });
+  await espera(600);
+  if (id !== teste) return;
+  const pilula = pills.querySelector(`[data-eixo="${clique}"]`);
+  pilula.classList.add('is-pressed');
+  setTimeout(() => pilula.classList.remove('is-pressed'), 160);
+  pilula.click();
+});
+
+renderOpcoes();
+atualizaFiltro();
+entrada();
+</script>
+</body>
+</html>
