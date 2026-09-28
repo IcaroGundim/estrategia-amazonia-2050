@@ -57,7 +57,7 @@ const PAGINAS = {
 
   {pagina === 'metodologia' && <PaginaVisaoGeral lang={lang} textos={textos as typeof textosPublicados} />}
   {pagina === 'index' && <PaginaPanorama lang={lang} />}
-  {pagina === 'metas' && <PaginaMetas lang={lang} />}
+  {pagina === 'metas' && <PaginaMetas lang={lang} textos={textos as typeof textosPublicados} />}
 
   <script>
     // Cada módulo só arranca se a âncora da sua página existir; importar os

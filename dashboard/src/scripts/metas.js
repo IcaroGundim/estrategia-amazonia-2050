@@ -1,4 +1,4 @@
-import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, decimals, escape, flagImage, number, readResponse, sinalDaPagina } from './shared.js';
+import { aoEntrarNaPagina, bindMenu, bindVista, decimals, escape, number, readResponse, sinalDaPagina } from './shared.js';
 import { carregaDossie, carregaKatexSeNecessario, exportCsv, normalise, renderFicha, selo, statusOf } from './fichas.js';
 import { idiomaAtual, rota, t, tp } from '../i18n/index.js';
 import { campo, carregaConteudo, nomeDoEixo } from './conteudo.js';
@@ -15,8 +15,9 @@ function motivoDe(item) { return t(item.motivo || ''); }
 // meta pactuada e fonte escritos de novo. Aqui a meta é a espinha e a ficha é a
 // segunda aba do painel de detalhe.
 //
-// O recorte por estado é sempre o mesmo — a fileira de bandeiras — e vale para a
-// jornada dos eixos, para a da meta, para o gráfico e para o valor da ficha.
+// As metas são da Amazônia Legal como um todo: a jornada dos eixos, a de cada
+// meta e o cumprimento são sempre os da região. Os estados aparecem no detalhe,
+// ao lado do valor regional, como complemento da leitura.
 //
 // A rota abre nos cinco eixos (`eixo: null`); escolher um mostra só os
 // indicadores dele, e a busca vale dentro do eixo aberto.
@@ -24,7 +25,6 @@ const state = {
   data: null,
   eixo: null,
   codigo: null,
-  uf: null,
   aba: 'resultado',
   detalhesAbertos: true,
   animarDetalhe: false,
@@ -65,6 +65,8 @@ function unidadeCurta(meta) {
 function valor(meta, value) {
   if (typeof value === 'string') return value;
   if (!Number.isFinite(value)) return '—';
+  // Reais em escala curta, como nos coletados: "R$ 5,11 bi".
+  if (String(meta.unidade || '').trim().startsWith('R$')) return valorColetado({ unidadeValor: meta.unidade }, value);
   if (ehPercentual(meta)) return `${number(value)}%`;
   if (String(meta.unidade || '').trim() === '% / ha') return `${number(value, decimals(value))} ha`;
   return number(value, decimals(value));
@@ -105,27 +107,37 @@ function visiveis() {
   return acervo().filter(passaNoFiltro);
 }
 
-function contagem(meta) {
-  const avaliados = Object.values(meta.estados).filter(Boolean);
-  return { cumprem: avaliados.filter((item) => item.cumpre).length, total: avaliados.length };
-}
-
+// O resultado da meta é o da região. A CAPAG, que é uma classificação por
+// estado, chega aqui como a parcela dos nove na faixa pedida.
 function dadosDaMeta(meta) {
-  const item = state.uf ? meta.estados[state.uf] : meta.regional;
-  const { cumprem, total } = contagem(meta);
-  const contaEstados = !item && !state.uf && total > 0;
+  const item = meta.regional;
   const progresso = item
     ? (item.cumpre ? 100 : (Number.isFinite(item.escala) ? Math.round(item.escala * 100) : 0))
-    : (contaEstados ? Math.round(cumprem / total * 100) : 0);
-  const semEscala = Boolean(item && !item.cumpre && !Number.isFinite(item.escala) && !item.categoria);
-  return { item, cumprem, total, contaEstados, progresso, semEscala };
+    : 0;
+  const semEscala = Boolean(item && !item.cumpre && !Number.isFinite(item.escala));
+  return { item, progresso, semEscala };
 }
 
-// Patamar de uma meta que só se lê como contagem de estados: a CAPAG é uma
-// classificação ("A ou B"); as demais têm um número (EBT 360: nota 9).
-function alvoDaContagem(meta) {
-  if (meta.direcao === 'categoria') return t('A ou B');
-  return `${meta.direcao === 'menor' ? '≤ ' : '≥ '}${valor(meta, meta.alvo)}`;
+// De onde partiu a jornada, em uma frase: a média da regra geral, o período
+// citado na meta ou o ponto declarado nela.
+function textoDaBaseline(meta, regional) {
+  const base = regional?.baseline;
+  if (!base) return t('não calculada: a série tem menos de 5 anos');
+  const numero = valor(meta, base.valor);
+  if (base.tipo === 'media') {
+    return tp(base.janela === 10 ? '{valor}, média dos últimos 10 anos ({desde}–{ate})' : '{valor}, média dos últimos 5 anos ({desde}–{ate})', { valor: numero, desde: base.desde, ate: base.ate });
+  }
+  if (base.tipo === 'periodo') return tp('{valor}, média de {desde} a {ate}, o período citado na meta', { valor: numero, desde: base.desde, ate: base.ate });
+  if (base.origem === 'atual') return tp('{valor}, o valor de {ano}, ano da baseline citada na meta', { valor: numero, ano: base.ano });
+  if (base.origem === 'serie') return tp('{valor}, o valor da região em {ano}, ano da baseline citada na meta', { valor: numero, ano: base.ano });
+  return base.ano ? tp('{valor}, declarada na meta ({ano})', { valor: numero, ano: base.ano }) : tp('{valor}, declarada na meta', { valor: numero });
+}
+
+function textoDaJornada(regional) {
+  if (regional.escalaTipo === 'baseline') return t('quanto do caminho entre a baseline e a meta a região já percorreu.');
+  if (!regional.cumpre && !Number.isFinite(regional.escala)) return t('sem escala: não há baseline para medir o caminho até uma meta zero.');
+  if (regional.baseline) return t('a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.');
+  return t('sem baseline, é a posição do valor atual em relação à meta.');
 }
 
 function rotuloTipo(tipo) {
@@ -169,8 +181,7 @@ function renderGrafico(meta) {
     const barras = linhas.map((item) => {
       const largura = ESCALA_CAPAG.indexOf(item.faixa) / ultimaFaixa * 100;
       const cumpre = ESCALA_CAPAG.indexOf(item.faixa) >= ESCALA_CAPAG.indexOf('B');
-      const selecionado = state.uf === item.uf ? ' is-selected' : '';
-      return `<div class="goals-chart-row goals-chart-row-category${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${tp('{estado}: classificação {nota}', { estado: escape(item.name), nota: escape(item.nota) })}">
+      return `<div class="goals-chart-row goals-chart-row-category${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${tp('{estado}: classificação {nota}', { estado: escape(item.name), nota: escape(item.nota) })}">
         <span class="goals-chart-uf">${escape(item.uf)}</span>
         <span class="goals-chart-track" aria-hidden="true">
           <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
@@ -187,10 +198,12 @@ function renderGrafico(meta) {
       <p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('meta mínima: B')}</p>`;
   }
 
+  // O marcador de cada estado é o mesmo patamar da meta, quando ela tem um que se
+  // aplica a cada um; um acréscimo em reais sobre a região não tem.
   const estados = state.data.estados.map((estado) => {
     const valorEstado = Number(recorte?.valores?.[estado.uf]);
-    const alvoEstado = Number(meta.estados?.[estado.uf]?.alvo ?? meta.alvo);
-    return Number.isFinite(valorEstado) ? { ...estado, valor: valorEstado, alvo: alvoEstado } : null;
+    const alvoEstado = meta.estados?.[estado.uf]?.alvo ?? meta.alvo;
+    return Number.isFinite(valorEstado) ? { ...estado, valor: valorEstado, alvo: typeof alvoEstado === 'number' ? alvoEstado : NaN } : null;
   }).filter(Boolean);
   const valorRegional = Number.isFinite(recorte?.regional) ? recorte.regional : null;
   const alvoRegional = Number(meta.regional?.alvo ?? meta.alvo);
@@ -212,9 +225,8 @@ function renderGrafico(meta) {
     const cumpre = Number.isFinite(item.alvo)
       ? (meta.direcao === 'menor' ? item.valor <= item.alvo : item.valor >= item.alvo)
       : false;
-    const selecionado = state.uf === item.uf ? ' is-selected' : '';
     const regional = item.regional ? ' is-regional' : '';
-    return `<div class="goals-chart-row${regional}${selecionado}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(valor(meta, item.valor))}">
+    return `<div class="goals-chart-row${regional}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(valor(meta, item.valor))}">
       <span class="goals-chart-uf">${escape(item.uf)}</span>
       <span class="goals-chart-track" aria-hidden="true">
         <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
@@ -229,20 +241,6 @@ function renderGrafico(meta) {
     <p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('marcador da meta')}</p>`;
 }
 
-// ---------- bandeiras de estado ----------
-
-// A mesma fileira aparece nos cinco eixos e no quadro de um eixo aberto: o
-// recorte é um só, e as duas cópias acendem juntas.
-function renderFlags() {
-  const nome = state.uf
-    ? (state.data.estados.find((estado) => estado.uf === state.uf)?.name || state.uf)
-    : t('Amazônia Legal (região)');
-  const html = `<span class="goals-flags-nome">${escape(nome)}</span>`
-    + `<button type="button" class="goals-flag${state.uf ? '' : ' is-active'}" data-uf="" title="${t('Amazônia Legal — visão regional')}" aria-label="${t('Amazônia Legal, visão regional')}" aria-pressed="${state.uf ? 'false' : 'true'}">${flagImage(BANDEIRA_REGIAO, '')}</button>`
-    + state.data.estados.map((estado) => `<button type="button" class="goals-flag${state.uf === estado.uf ? ' is-active' : ''}" data-uf="${estado.uf}" title="${escape(estado.name)}" aria-label="${escape(estado.name)}" aria-pressed="${state.uf === estado.uf ? 'true' : 'false'}">${flagImage(estado, '')}</button>`).join('');
-  document.querySelectorAll('[data-goals-flags]').forEach((wrap) => { wrap.innerHTML = html; });
-}
-
 // ---------- os cinco eixos ----------
 
 // Nome curto de cada eixo para as abas do eixo aberto, onde os cinco nomes
@@ -254,15 +252,12 @@ function nomeCurtoDoEixo(eixo) {
 }
 
 // A jornada de uma meta como fração de 0 a 1, com a mesma regra do cartão da
-// meta (dadosDaMeta): cumprida vale 1; sem valor regional único, a região conta
-// quantos estados já cumprem (a CAPAG); sem escala, a meta fica fora da média.
+// meta (dadosDaMeta): cumprida vale 1; sem escala, a meta fica fora da média.
 function fracaoDaJornada(meta) {
-  const { item, cumprem, total, contaEstados } = dadosDaMeta(meta);
-  if (item) {
-    if (item.cumpre) return 1;
-    return Number.isFinite(item.escala) ? item.escala : null;
-  }
-  return contaEstados ? cumprem / total : null;
+  const { item } = dadosDaMeta(meta);
+  if (!item) return null;
+  if (item.cumpre) return 1;
+  return Number.isFinite(item.escala) ? item.escala : null;
 }
 
 /**
@@ -334,13 +329,29 @@ function situacaoDaColeta(resumo) {
     <span class="eixo-legenda">${legenda}</span>`;
 }
 
+// O que cada eixo é, numa frase: o texto da lâmina "Eixos" da Visão Geral, que a
+// página entrega já na língua dela (PaginaMetas.astro, data-textos).
+function textosDosEixos(alvo) {
+  try {
+    return JSON.parse(alvo.dataset.textos || '{}');
+  } catch {
+    return {};
+  }
+}
+
 function renderEixos() {
   const alvo = document.querySelector('#eixos-cartoes');
   if (!alvo) return;
+  const textos = textosDosEixos(alvo);
   alvo.innerHTML = eixosDoAcervo().map((eixo) => {
     const resumo = resumoDoEixo(eixo);
+    // Nome e texto dividem a primeira faixa do cartão: é ela que se alinha entre
+    // os vizinhos da mesma fileira (subgrade), então o percentual fica na mesma altura.
     return `<a class="eixo-cartao" href="#eixo-${eixo}" data-ir-eixo="${eixo}">
-      <h3 class="eixo-cartao-nome">${escape(resumo.nome)}</h3>
+      <div class="eixo-cartao-cabeca">
+        <h3 class="eixo-cartao-nome">${escape(resumo.nome)}</h3>
+        ${textos[eixo] ? `<p class="eixo-cartao-texto">${escape(textos[eixo])}</p>` : ''}
+      </div>
       <span class="eixo-cartao-jornada">${leituraDaJornada(resumo)}</span>
       <span class="eixo-cartao-coleta">
         <span class="eixo-contagem"><span><b>${resumo.total}</b> ${t('indicadores')}</span><span><b>${resumo.metas}</b> ${t('com meta')}</span></span>
@@ -417,7 +428,7 @@ async function baixarCsv() {
   try {
     const dossie = await carregaDossie();
     state.dossie = dossie;
-    exportCsv(visiveis(), dossie.indicadores, state.uf);
+    exportCsv(visiveis(), dossie.indicadores);
     abreExport(false);
   } catch {
     if (botao) botao.textContent = t('Não foi possível exportar');
@@ -434,18 +445,15 @@ async function baixarCsv() {
 // resultado: o painel abre direto na ficha, e a meta pactuada viaja com ela.
 function corpoResultado(meta) {
   if (!meta.temMeta) return corpoColetado(meta);
-  const { item: recorte, cumprem, total, contaEstados, progresso, semEscala } = dadosDaMeta(meta);
-  const valorAtual = recorte
-    ? valor(meta, recorte.valor)
-    : (contaEstados ? tp('{cumprem} de {total} estados', { cumprem, total }) : t('Sem dado'));
-  const alvo = recorte
-    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, recorte.alvo)}${meta.prazo ? ` ${tp('até {prazo}', { prazo: meta.prazo })}` : ''}`
-    : (contaEstados ? tp('{alvo} nos {total} estados', { alvo: alvoDaContagem(meta), total }) : '—');
-  const jornada = recorte?.categoria && state.uf
-    ? (recorte.cumpre ? '100%' : '—')
-    : (semEscala || (!recorte && !contaEstados) ? t('Sem escala') : `${progresso}%`);
-  const agregacao = !state.uf && recorte?.metodoRotulo
-    ? `<p class="goals-detail-method"><strong>${t('Leitura regional:')}</strong> ${escape(t(recorte.metodoRotulo))}.${recorte.nota ? ` ${escape(recorte.nota)}` : ''}</p>`
+  const { item: regional, progresso, semEscala } = dadosDaMeta(meta);
+  const valorAtual = regional ? valor(meta, regional.valor) : t('Sem dado');
+  const alvo = regional
+    ? `${meta.direcao === 'menor' ? '≤ ' : ''}${valor(meta, regional.alvo)}${meta.prazo ? ` ${tp('até {prazo}', { prazo: meta.prazo })}` : ''}`
+    : '—';
+  const jornada = semEscala || !regional ? t('Sem escala') : `${progresso}%`;
+  const leitura = regional
+    ? `<p class="goals-detail-method"><strong>${t('Jornada:')}</strong> ${escape(textoDaJornada(regional))}</p>
+      <p class="goals-detail-method"><strong>${t('Leitura regional:')}</strong> ${escape(t(regional.metodoRotulo))}.${regional.nota ? ` ${escape(regional.nota)}` : ''}</p>`
     : '';
 
   // A meta pactuada abre o painel, no mesmo destaque dos coletados sem meta
@@ -473,8 +481,9 @@ function corpoResultado(meta) {
       <dl class="goals-detail-facts">
         <div><dt>${t('Referência')}</dt><dd>${escape(meta.anoRef || t('Não informada'))}</dd></div>
         <div><dt>${t('Critério')}</dt><dd>${escape(rotuloTipo(meta.tipo))}</dd></div>
+        ${regional ? `<div class="is-wide"><dt>${t('Baseline')}</dt><dd>${escape(textoDaBaseline(meta, regional))}</dd></div>` : ''}
       </dl>
-      ${agregacao}
+      ${leitura}
     </section>`;
 }
 
@@ -542,20 +551,8 @@ function serieDe(porAno) {
     .sort((a, b) => a.ano - b.ano);
 }
 
-// A série em foco segue as bandeiras, como a jornada das metas: a da região, ou
-// a do estado escolhido — com o último ano do próprio estado, que pode ser
-// posterior ao último ano em que os nove têm valor.
+// A série em foco é a da região, como nas metas; os estados vêm nas faixas.
 function focoColetado(item) {
-  if (state.uf) {
-    const serie = serieDe(item.serieAnual?.[state.uf]);
-    const valorAtual = item.valores?.[state.uf];
-    const ano = Number(String(item.anoRef || '').match(/\d{4}/)?.[0]) || null;
-    return {
-      lugar: nomeDoEstado(state.uf),
-      serie,
-      atual: serie.at(-1) || (Number.isFinite(valorAtual) ? { ano, valor: valorAtual } : null)
-    };
-  }
   return { lugar: t('Amazônia Legal'), serie: item.serieRegional || [], atual: item.regionalAtual || null };
 }
 
@@ -615,7 +612,7 @@ function pontosDosEstados(item) {
   const posicao = (v) => (maximo > minimo ? 4 + (v - minimo) / (maximo - minimo) * 92 : 50);
   const extremos = maximo > minimo ? [lista.find((p) => p.v === minimo), lista.find((p) => p.v === maximo)] : [];
   return `<span class="coletado-pontos" aria-hidden="true">
-    ${lista.map((ponto) => `<i class="${ponto.uf === state.uf ? 'is-selected' : ''}" style="left:${posicao(ponto.v).toFixed(1)}%"></i>`).join('')}
+    ${lista.map((ponto) => `<i style="left:${posicao(ponto.v).toFixed(1)}%"></i>`).join('')}
     ${extremos.map((ponto) => `<span style="left:${posicao(ponto.v).toFixed(1)}%">${escape(ponto.uf)}</span>`).join('')}
   </span>`;
 }
@@ -630,8 +627,6 @@ function linhaDeColetado(item) {
   let corpo;
   if (atual) {
     ler = `<span class="goals-row-lugar">${escape(lugar)}</span><b>${escape(numeroCurto(item, atual.valor))}</b><small>${unidade}${atual.ano ? ` · ${atual.ano}` : ''}</small>`;
-  } else if (state.uf) {
-    ler = `<span class="goals-row-lugar">${escape(lugar)}</span><b>—</b><small>${t('sem dado')}</small>`;
   } else {
     // Sem valor regional: a amplitude entre os estados.
     const valores = Object.values(item.valores || {}).filter(Number.isFinite);
@@ -646,7 +641,7 @@ function linhaDeColetado(item) {
     const anos = anosEntre([serie]);
     corpo = `<span class="coletado-calor" aria-hidden="true" style="grid-template-columns:repeat(${anos.length},minmax(0,1fr))">${celulasDeCalor(serie, anos)}</span>`;
   } else {
-    sub = state.uf || item.agregacao ? t('sem série anual') : t('sem valor regional');
+    sub = item.agregacao ? t('sem série anual') : t('sem valor regional');
     corpo = pontosDosEstados(item);
   }
   return `<button type="button" data-codigo="${item.codigo}" class="goals-row is-coletado${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
@@ -734,7 +729,7 @@ function graficoColetado(item, lugar, serie) {
 }
 
 // A região no topo, depois os nove estados do maior para o menor valor atual,
-// todos no mesmo eixo de anos. O estado das bandeiras fica destacado.
+// todos no mesmo eixo de anos.
 function faixasDosEstados(item) {
   const regional = item.serieRegional || [];
   const estados = state.data.estados
@@ -750,7 +745,7 @@ function faixasDosEstados(item) {
     </div>`;
   const linhas = [
     regional.length ? linha('AL', t('Amazônia Legal'), regional, ' is-regional') : '',
-    ...estados.map((estado) => linha(estado.uf, nomeDoEstado(estado.uf), estado.serie, state.uf === estado.uf ? ' is-selected' : ''))
+    ...estados.map((estado) => linha(estado.uf, nomeDoEstado(estado.uf), estado.serie, ''))
   ].join('');
   return `<section class="goals-detail-section coletado-secao">
       <h3>${regional.length ? t('A região e o momento de cada estado') : t('O momento de cada estado')}<em>${t('ritmo ao ano')}</em></h3>
@@ -771,7 +766,7 @@ function barrasDosEstados(item) {
     .sort((a, b) => b.v - a.v);
   if (!lista.length) return '';
   const maximo = Math.max(...lista.map((estado) => estado.v), 0);
-  const barras = lista.map((estado) => `<div class="goals-chart-row${state.uf === estado.uf ? ' is-selected' : ''}" role="listitem" aria-label="${escape(estado.name)}: ${escape(valorColetado(item, estado.v))}">
+  const barras = lista.map((estado) => `<div class="goals-chart-row" role="listitem" aria-label="${escape(estado.name)}: ${escape(valorColetado(item, estado.v))}">
       <span class="goals-chart-uf">${escape(estado.uf)}</span>
       <span class="goals-chart-track" aria-hidden="true"><i class="goals-chart-fill" style="width:${(maximo > 0 ? Math.max(0, estado.v) / maximo * 100 : 0).toFixed(2)}%"></i></span>
       <b>${escape(numeroCurto(item, estado.v))}</b>
@@ -805,8 +800,7 @@ function corpoColetado(item) {
       .map((estado) => ({ uf: estado.uf, v: item.valores?.[estado.uf] }))
       .filter((estado) => Number.isFinite(estado.v))
       .sort((a, b) => b.v - a.v);
-    const semValor = state.uf ? t('sem dado') : t('sem valor regional');
-    resumo = `<div><dt>${escape(lugar)}</dt><dd>${atual ? `${escape(numero(atual.valor))}${unidadePequena}` : `—<small>${semValor}</small>`}</dd></div>
+    resumo = `<div><dt>${escape(lugar)}</dt><dd>${atual ? `${escape(numero(atual.valor))}${unidadePequena}` : `—<small>${t('sem valor regional')}</small>`}</dd></div>
       ${estados.length ? `<div><dt>${t('Maior')}</dt><dd>${escape(estados[0].uf)} ${escape(numeroCurto(item, estados[0].v))}</dd></div>
       <div><dt>${t('Menor')}</dt><dd>${escape(estados.at(-1).uf)} ${escape(numeroCurto(item, estados.at(-1).v))}</dd></div>` : ''}`;
   }
@@ -906,7 +900,6 @@ function corpoFicha(item) {
   return renderFicha({
     indicador,
     ficha: state.dossie.fichas[item.codigo] || null,
-    uf: state.uf,
     katex: state.katex,
     // Nas metas com patamar e nos coletados a meta pactuada já está na aba
     // Resultado; repeti-la aqui seria escrevê-la duas vezes no mesmo painel.
@@ -1062,7 +1055,7 @@ function renderDetail() {
   const item = itemAtual();
   if (!painel || !item || !state.detalhesAbertos) {
     if (painel) painel.hidden = true;
-    if (board) board.classList.remove('has-detail', 'has-ficha');
+    if (board) board.classList.remove('has-detail');
     return;
   }
 
@@ -1109,13 +1102,10 @@ function renderDetail() {
   fechamentoDetalhe += 1;
   painel.classList.remove('is-closing', 'is-opening');
   painel.hidden = false;
-  if (board) {
-    board.classList.add('has-detail');
-    // A ficha traz equações e uma legenda de símbolos que não cabem nos ~314px
-    // da coluna lateral. Aqui a lista recolhe e o painel fica com a largura
-    // toda, pela mesma transição de grade que abre e fecha o detalhe.
-    board.classList.toggle('has-ficha', naFicha);
-  }
+  // As três abas abrem na mesma coluna lateral, ao lado da lista. A ficha usa ali
+  // o arranjo estreito (ver .goals-detail-painel em global.css), e a fórmula
+  // larga rola de lado dentro do bloco dela.
+  if (board) board.classList.add('has-detail');
   posicionaDetalhe();
   if (naFicha && !state.dossie) garanteDossie(item.codigo);
 
@@ -1188,7 +1178,6 @@ function fecharDetalheAnimado() {
   state.detalhesAbertos = false;
   state.aba = 'resultado';
   renderList();
-  if (board) board.classList.remove('has-ficha');
   if (!painel || painel.hidden) {
     if (board) board.classList.remove('has-detail');
     return;
@@ -1267,33 +1256,17 @@ function animaBarras() {
 }
 
 function linhaDeMeta(meta, anterior) {
-  const { item, cumprem, total, contaEstados, progresso: p, semEscala } = dadosDaMeta(meta);
-  // Não ter valor regional único não quer dizer não ter progresso: a CAPAG é uma
-  // classificação por estado e o patamar da meta são os nove em A ou B, então a
-  // jornada da região é quantos já chegaram lá. Na visão de um estado o vazio
-  // continua vazio — ali a ausência é falta de dado, não uma contagem.
-  let valorHoje;
-  let leitura;
-  if (!item) {
-    if (state.uf) { valorHoje = t('sem dado'); leitura = '—'; }
-    else { valorHoje = tp('{cumprem} de {total}', { cumprem, total }); leitura = `${cumprem}/${total}`; }
-  } else if (item.categoria) {
-    valorHoje = valor(meta, item.valor);
-    leitura = item.cumpre ? '✓' : (state.uf ? '—' : `${cumprem}/${total}`);
-  } else {
-    valorHoje = valor(meta, item.valor);
-    leitura = semEscala ? '—' : `${p}%`;
-  }
+  const { item, progresso: p, semEscala } = dadosDaMeta(meta);
+  const valorHoje = item ? valor(meta, item.valor) : t('sem dado');
+  const leitura = !item || semEscala ? '—' : `${p}%`;
 
   const partida = anterior.has(meta.codigo) ? anterior.get(meta.codigo) : p;
-  const classe = item?.cumpre || (contaEstados && cumprem === total)
-    ? 'is-met'
-    : (item || contaEstados ? 'is-progress' : 'is-empty');
+  const classe = item?.cumpre ? 'is-met' : (item ? 'is-progress' : 'is-empty');
   const prefixo = meta.direcao === 'menor' ? '≤ ' : '';
   // Dois números lado a lado, à direita do nome: o valor de hoje e a meta, cada
-  // um com chapéu e uma nota miúda embaixo (sem escala; prazo; "nos 9 estados").
-  const metaValor = item ? prefixo + valor(meta, item.alvo) : (state.uf ? '—' : alvoDaContagem(meta));
-  const metaNota = [item || state.uf ? '' : t('nos 9 estados'), meta.prazo ? tp('até {prazo}', { prazo: meta.prazo }) : ''].filter(Boolean).join(' · ');
+  // um com chapéu e uma nota miúda embaixo (sem escala; prazo).
+  const metaValor = item ? prefixo + valor(meta, item.alvo) : '—';
+  const metaNota = meta.prazo ? tp('até {prazo}', { prazo: meta.prazo }) : '';
   const atualNota = semEscala ? t('sem escala') : '';
 
   const ativa = state.detalhesAbertos && meta.codigo === state.codigo ? ' is-active' : '';
@@ -1440,19 +1413,6 @@ function aplicaFiltros() {
 // ---------- eventos ----------
 
 function bindEvents() {
-  document.querySelectorAll('[data-goals-flags]').forEach((flags) => {
-    flags.addEventListener('click', (event) => {
-      const button = event.target.closest('button[data-uf]');
-      if (!button) return;
-      state.uf = button.dataset.uf || null;
-      renderFlags();
-      renderEixos();
-      renderCabecalhoDoEixo();
-      renderList();
-      renderDetail();
-    });
-  });
-
   // Cartões e abas são links (`#eixo-3`) para abrirem em outra aba com o botão
   // do meio ou com Ctrl; o clique simples troca a vista aqui mesmo. Cancelado o
   // clique, o roteador do Astro também não o trata.
@@ -1677,7 +1637,6 @@ function codigoDoEndereco() {
 async function init() {
   const [dados] = await Promise.all([fetch('/data/metas.json').then(readResponse), carregaConteudo()]);
   state.data = dados;
-  state.uf = null;
   state.busca = '';
   // Sem nada no endereço, a rota abre nos cinco eixos. `#eixo-2` abre o eixo
   // com o primeiro indicador dele no detalhe; o código de um indicador abre o
@@ -1689,7 +1648,6 @@ async function init() {
   state.detalhesAbertos = Boolean(aberto);
   // A regra de qual aba abre é a mesma de um clique na lista, e mora num lugar só.
   state.aba = abaInicial(aberto);
-  renderFlags();
   bindEvents();
   renderAll();
   if (doEndereco) {

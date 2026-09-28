@@ -1,13 +1,22 @@
 ---
 // Corpo da página de metas e indicadores, comum às duas línguas.
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+import textosPublicados from '../../conteudo/textos.json';
 
 interface Props {
   lang?: string;
+  /** Outra versão dos textos, no mesmo formato do JSON: a prévia da administração passa o rascunho por aqui. */
+  textos?: typeof textosPublicados;
 }
 
-const { lang = IDIOMA_PADRAO } = Astro.props;
+const { lang = IDIOMA_PADRAO, textos = textosPublicados } = Astro.props;
 const t = traduzirCom(lang, Astro.locals.interface);
+const tx = (par: { pt: string; en?: string | null }) => ((lang === 'en' && par.en) ? par.en : par.pt);
+
+// O texto de cada eixo nos cartões é o mesmo da lâmina "Eixos" da Visão Geral
+// (conteudo/textos.json, visaoGeral.eixos): um lugar só para editar os dois.
+// Chega ao metas.js pelo atributo do contêiner, que é quem desenha os cartões.
+const textosDosEixos = Object.fromEntries(textos.visaoGeral.eixos.itens.map((item) => [Number(item.numero), tx(item.texto)]));
 
 // Os cinco workbooks continuam sendo o download bruto da matriz. Eram o atalho
 // da topbar da rota /indicadores, que deixou de existir.
@@ -23,11 +32,12 @@ const WORKBOOKS = [1, 2, 3, 4, 5];
   <h1 class="sr-only">{t('Metas e indicadores')}</h1>
 
   <section class="eixos-visao card" data-eixos-visao aria-labelledby="eixos-titulo">
+    {/* As metas são da região como um todo: não há recorte por estado aqui. Os
+        estados aparecem no detalhe de cada meta, ao lado do valor regional. */}
     <div class="eixos-topo">
-      <h2 id="eixos-titulo" class="eixos-titulo">{t('Metas -')} <em>{t('Amazônia Legal.')}</em></h2>
-      <div class="goals-flags" data-goals-flags role="group" aria-label={t('Estado exibido na progressão das metas')}></div>
+      <h2 id="eixos-titulo" class="eixos-titulo">{t('Eixos -')} <em>{t('Amazônia Legal.')}</em></h2>
     </div>
-    <div id="eixos-cartoes" class="eixos-cartoes"></div>
+    <div id="eixos-cartoes" class="eixos-cartoes" data-textos={JSON.stringify(textosDosEixos)}></div>
   </section>
 
   <div class="eixo-aberto" data-eixo-aberto hidden>
@@ -72,7 +82,6 @@ const WORKBOOKS = [1, 2, 3, 4, 5];
       <section class="goals-list-card card" aria-label={t('Metas e indicadores da Estratégia')}>
         <div class="goals-list-top">
           <p class="goals-list-summary" aria-live="polite" data-lista-resumo></p>
-          <div class="goals-flags" data-goals-flags role="group" aria-label={t('Estado exibido na progressão das metas')}></div>
         </div>
         <div id="goals-list" class="goals-list" role="list" aria-label={t('Metas e indicadores por eixo')}></div>
       </section>

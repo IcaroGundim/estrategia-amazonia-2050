@@ -39,26 +39,23 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
 .topbar-inner { width: min(2200px, 100%); min-height: 84px; margin: 0 auto; padding: 10px clamp(24px, 3.2vw, 72px); display: flex; align-items: center; gap: 34px; }
 .brand { display: flex; align-items: center; gap: 18px; min-width: max-content; }
 .brand-logo { width: 172px; height: 60px; display: block; object-fit: contain; }
-/* Marca da Estratégia: o rótulo em caixa-alta espaçada sobre "Amazônia", e o ano
-   em ocre ao lado, da altura das duas linhas juntas. Um fio a separa da marca do
-   Consórcio, que continua à esquerda. */
-.brand-product { display: flex; align-items: center; gap: 12px; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, 0.2); color: var(--areia); white-space: nowrap; }
-.brand-product-nome { display: grid; gap: 4px; }
+/* Marca da Estratégia, provisória até sair o manual de uso da marca: o rótulo em
+   caixa-alta espaçada sobre "Amazônia 2050", na fonte dos títulos, com o ano em
+   ocre no mesmo corpo da palavra. Um fio a separa da marca do Consórcio, que
+   continua à esquerda. */
+.brand-product { display: flex; align-items: center; padding-left: 18px; border-left: 1px solid rgba(245, 240, 232, 0.2); color: var(--areia); white-space: nowrap; }
+.brand-product-nome { display: grid; gap: 5px; }
 .brand-product-nome small { font: 600 10px/1 var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-100); }
-.brand-product-nome strong { display: block; line-height: 0; }
-/* "Amazônia" cursiva: 188 × 40 no desenho; a altura dá o tamanho e a largura acompanha.
-   O "A" ocupa 25 das 40 unidades (o resto é a descendente do "z"); com 45px ele fica
-   um pouco abaixo dos 32px dos algarismos do "2050" ao lado. */
-.brand-product-cursiva { display: block; height: 45px; width: auto; aspect-ratio: 188 / 40; }
-.brand-product-ano { position: relative; top: 2px; font: 800 46px/0.78 var(--display); letter-spacing: -0.045em; color: var(--ocre); }
-/* `top`, e não `transform`: a animação de entrada do ano já usa transform. */
-/* Entrada única: ao abrir o painel, o nome aparece e o ano sobe 10px com a
-   entreletra se fechando; depois a marca fica parada. Os `@keyframes` só têm
-   `from`: o fim é o próprio estilo do elemento, o que vale também para o
-   tamanho menor da barra estreita.
+.brand-product-palavra { display: flex; align-items: baseline; gap: 0.24em; font: 800 30px/0.86 var(--display); letter-spacing: -0.035em; }
+.brand-product-palavra > span { display: block; }
+.brand-product-ano { font: inherit; letter-spacing: inherit; color: var(--ocre); }
+/* Entrada única: ao abrir o painel, o rótulo aparece, "Amazônia" corre da
+   esquerda para a direita e o ano sobe com a entreletra se fechando; depois a
+   marca fica parada. Os `@keyframes` só têm `from`: o fim é o próprio estilo do
+   elemento, o que vale também para o tamanho menor da barra estreita.
    A entreletra aberta alargava o número e empurrava a navegação ao lado durante
    a entrada. A margem negativa anda junto e desconta o excesso quadro a quadro:
-   4 algarismos × 0,105em a mais de entreletra = 0,42em.
+   4 algarismos × 0,095em a mais de entreletra = 0,38em.
 
    "Única" de verdade: o ClientRouter refaz o <body> a cada troca de aba, e sem
    trava a marca reencenava a entrada em toda navegação — um sobressalto num
@@ -66,39 +63,27 @@ h1, h2, h3 { margin-bottom: 0; font-family: var(--display); font-weight: 800; le
    sobrevive à troca (ver `shared.js`), e tira a animação dali em diante. Só
    uma carga nova da página — F5, endereço digitado, troca de língua — reabre
    o painel e reencena. */
-/* "Amazônia" se forma como o curso de um rio, e o ano chega quando a água chega.
-   Parada (sem animação, já navegado ou com movimento reduzido), a cursiva aparece
-   inteira e a máscara não se aplica. Durante a entrada, o trecho ainda não
-   percorrido fica escondido: só a parte já construída aparece.
-
-   Durante a entrada, o rio é revelado por uma máscara: um traço grosso ao longo do
-   contorno externo da letra. O contorno sai da ponta final do "a", vai por uma borda
-   até a ponta do "A" (52,49% do caminho, medido com pathLength 1000) e volta pela
-   outra. Os dois trechos crescem a partir da ponta do "A" em sentidos opostos e
-   chegam juntos ao fim, então a letra se forma inteira, da esquerda para a direita.
-   O desfoque na máscara dá à frente da água uma borda macia. No fim o traço engrossa
-   para cobrir qualquer curva que a largura normal deixasse de fora. */
-.brand-agua { stroke-width: 40; }
+/* "Amazônia" chega como água: uma borda macia revela a palavra da esquerda para a
+   direita, e o ano chega quando ela se completa. A máscara é um degradê com o
+   dobro da largura da palavra: na posição 100% só a parte transparente a cobre;
+   em 0, só a opaca. Parada (sem animação, já navegado ou com movimento
+   reduzido), a palavra aparece inteira e sem máscara. */
 html:not([data-navegado]) .brand-product-nome small { animation: marca-surge 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both; }
-/* A máscara vale só enquanto a água corre (0,35 s + 2,3 s); pronta, a letra fica sem ela,
-   igual à estática, sem a borda macia sobre a ponta do "a". */
-html:not([data-navegado]) .brand-rio { animation: marca-solta 2.65s step-end both; }
-@keyframes marca-solta { 0% { mask: url(#marca-agua); } 100% { mask: none; } }
-html:not([data-navegado]) .brand-agua { animation: marca-agua 2.3s cubic-bezier(0.55, 0.05, 0.3, 1) 0.35s both; }
-html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both; }
-@keyframes marca-surge { from { opacity: 0; transform: translateX(-6px); } }
-@keyframes marca-agua {
-  0% { stroke-dasharray: 0 524.9 0 1000; stroke-width: 11; }
-  94% { stroke-dasharray: 0 0 1000 1000; stroke-width: 11; }
-  100% { stroke-dasharray: 0 0 1000 1000; stroke-width: 40; }
+html:not([data-navegado]) .brand-product-palavra > span {
+  -webkit-mask: linear-gradient(90deg, #000 44%, transparent 56%) 0 0 / 230% 100% no-repeat;
+  mask: linear-gradient(90deg, #000 44%, transparent 56%) 0 0 / 230% 100% no-repeat;
+  animation: marca-agua 1.25s cubic-bezier(0.55, 0.05, 0.3, 1) 0.3s both;
 }
-@keyframes marca-entrada { from { opacity: 0; filter: blur(5px); transform: translateY(10px); letter-spacing: 0.06em; margin-right: -0.42em; } }
+html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.1s cubic-bezier(0.22, 1, 0.36, 1) 1.2s both; }
+@keyframes marca-surge { from { opacity: 0; transform: translateX(-6px); } }
+@keyframes marca-agua { from { -webkit-mask-position: 100% 0; mask-position: 100% 0; transform: translateY(0.14em); } }
+@keyframes marca-entrada { from { opacity: 0; filter: blur(5px); transform: translateY(0.3em); letter-spacing: 0.06em; margin-right: -0.38em; } }
 /* Mesmo prefixo dos seletores acima: sem ele estas regras perdem na especificidade. */
 @media (prefers-reduced-motion: reduce) {
   html:not([data-navegado]) .brand-product-nome small,
   html:not([data-navegado]) .brand-product-ano,
-  html:not([data-navegado]) .brand-agua,
-  html:not([data-navegado]) .brand-rio { animation: none; }
+  html:not([data-navegado]) .brand-product-palavra > span { animation: none; }
+  html:not([data-navegado]) .brand-product-palavra > span { -webkit-mask: none; mask: none; }
 }
 .topnav { display: flex; align-self: stretch; align-items: center; gap: 25px; margin-left: 18px; }
 .topnav a, .topnav button { position: relative; padding: 10px 0; border: 0; background: none; color: rgba(245, 240, 232, 0.7); font-size: 13px; }
@@ -341,7 +326,23 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
    com menos que isso ela cobria o título da seção e a faixa de anos. */
 /* `pan-y` deixa o arrasto vertical rolar a página e reserva o horizontal para a
    leitura da série — sem isso os dois gestos disputavam o mesmo movimento. */
-.spark-wrap { position: relative; margin-top: 52px; cursor: pointer; touch-action: pan-y; }
+/* Eixos em volta do desenho: a escala do Y à esquerda, os anos embaixo e, nas
+   taxas, a unidade em cima. A folga para a dica fica no bloco todo; com unidade,
+   ela já ocupa parte dessa folga. */
+.spark-eixos { margin-top: 52px; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto; column-gap: 8px; }
+.spark-eixos.tem-unidade { margin-top: 34px; }
+.spark-unidade { grid-column: 1 / -1; grid-row: 1; margin-bottom: 8px; color: var(--tinta-4); font-size: 10px; }
+/* Os rótulos do Y ficam na altura exata das linhas de grade: o mesmo recuo de
+   4 em 46 unidades que o desenho deixa em cima e embaixo, nos 88px do gráfico. */
+.spark-y { grid-column: 1; grid-row: 2; height: 88px; padding: calc(88px * 4 / 46) 0; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; color: var(--tinta-4); font-size: 10px; font-variant-numeric: tabular-nums; }
+.spark-y.is-unico { justify-content: center; }
+.spark-y span { height: 0; display: flex; align-items: center; white-space: nowrap; }
+.spark-x { grid-column: 2; grid-row: 3; position: relative; height: 14px; margin-top: 6px; color: var(--tinta-4); font-size: 10px; font-variant-numeric: tabular-nums; }
+.spark-x span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.spark-x .is-inicio { transform: none; }
+.spark-x .is-fim { transform: translateX(-100%); }
+.spark-grade { stroke: var(--linha-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.spark-wrap { position: relative; grid-column: 2; grid-row: 2; cursor: pointer; touch-action: pan-y; }
 .spark-wrap:focus-visible { outline: 2px solid var(--mata-500); outline-offset: 3px; border-radius: 4px; }
 .spark { width: 100%; height: 88px; display: block; overflow: visible; }
 .spark-line { fill: none; stroke: var(--mata-500); stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
@@ -712,20 +713,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-page { padding: 40px 0 88px; background: var(--areia); }
 .goals-board { margin-top: 4px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0fr); align-items: start; column-gap: 0; row-gap: 22px; transition: grid-template-columns 420ms cubic-bezier(.22, 1, .36, 1), column-gap 420ms cubic-bezier(.22, 1, .36, 1); }
 .goals-board.has-detail { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: 22px; }
-/* Terceiro estado da mesma grade: a ficha técnica traz equações e uma legenda de
-   símbolos que não cabem nos ~314px da coluna lateral. Aqui a lista recolhe e o
-   painel fica com a largura toda, pela transição que já existia entre os outros
-   dois estados. */
-.goals-board.has-ficha { grid-template-columns: minmax(0, 0fr) minmax(0, 1fr); column-gap: 0; }
-/* Zerar a largura não basta: as 59 linhas continuariam empilhadas numa coluna de
-   poucos pixels e o cartão pediria quase 16.000px de altura, que a página teria
-   de rolar. A altura vai junto, e a opacidade cobre o instante em que ela cai. */
-.goals-board.has-ficha .goals-list-card { max-height: 0; padding-block: 0; border-block-width: 0; overflow: hidden; opacity: 0; transition: opacity 180ms ease; }
-/* A ficha em largura cheia é um bloco da página, não uma coluna que acompanha a
-   rolagem: presa, ela viraria uma caixa de 836px com barra de rolagem própria
-   dentro de uma página que não rola. */
-.goals-board.has-ficha .goals-detail { position: static; max-height: none; overflow: visible; padding: 24px clamp(24px, 2.4vw, 44px) 34px; }
-
 .goals-list-head.is-pagina { margin-bottom: 16px; padding-right: 0; }
 
 /* --- metas por eixo ----------------------------------------------------------
@@ -735,18 +722,27 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    e o quadro de sempre, com a lista e o detalhe. */
 .eixos-visao { padding: 22px 26px 26px; }
 .eixos-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 18px; border-bottom: 1px solid var(--linha); }
-.eixos-topo .goals-flags { margin-left: auto; }
 .eixos-titulo { margin: 0; font-size: clamp(26px, 2.2vw, 40px); line-height: 0.96; }
 .eixos-titulo em { color: var(--urucum); font-style: normal; }
-/* Cada cartão ocupa quatro linhas da grade (nome, jornada, coleta, link) como
-   subgrade: um nome de três linhas empurra as quatro partes dos vizinhos junto,
-   e os números ficam na mesma altura. */
-.eixos-cartoes { margin-top: 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+/* Cada cartão ocupa quatro linhas da grade (nome e texto, jornada, coleta, link)
+   como subgrade: um nome de três linhas empurra as quatro partes dos vizinhos
+   junto, e os números ficam na mesma altura.
+   Três eixos em cima e dois embaixo, desencontrados: a grade tem seis colunas,
+   cada cartão ocupa duas, e o 4 e o 5 entram nos vãos entre o 1 e o 2 e entre o
+   2 e o 3. */
+.eixos-cartoes { margin-top: 22px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.eixos-cartoes > .eixo-cartao:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(2) { grid-column: 3 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(3) { grid-column: 5 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(4) { grid-column: 2 / span 2; grid-row: 5 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(5) { grid-column: 4 / span 2; grid-row: 5 / span 4; }
 
 .eixo-cartao { min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 16px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .eixo-cartao:hover { border-color: var(--mata-300); box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
 .eixo-cartao:focus-visible { border-color: var(--mata); box-shadow: 0 0 0 3px rgba(14, 43, 34, 0.12); outline: none; }
+.eixo-cartao-cabeca { display: grid; align-content: start; gap: 8px; }
 .eixo-cartao-nome { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+.eixo-cartao-texto { margin: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.45; }
 .eixo-cartao-jornada, .eixo-cartao-coleta { display: grid; align-content: start; gap: 9px; }
 .eixo-cartao-coleta { padding-top: 14px; border-top: 1px solid var(--linha-2); }
 .eixo-cartao-ver { align-self: end; padding-top: 4px; color: var(--urucum); font-size: 12px; font-weight: 600; }
@@ -808,13 +804,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .eixo-metrica .eixo-coleta-barra { height: 10px; border-radius: 4px; }
 .eixo-aberto .goals-board { margin-top: 16px; }
 
-@media (max-width: 1279px) {
-  .eixos-cartoes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
 @media (max-width: 920px) {
   .eixos-visao, .eixo-cabeca { padding: 18px 18px 20px; }
+  /* Em duas colunas os cartões voltam à ordem corrida: 1 e 2, 3 e 4, 5. */
   .eixos-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eixos-cartoes > .eixo-cartao:nth-child(n) { grid-column: auto; grid-row: span 4; }
   .eixo-cabeca .goals-toolbar { flex-basis: 100%; margin-left: 0; }
   .eixo-cabeca .goals-toolbar .indicator-search { max-width: none; }
   .eixo-cabeca-corpo { grid-template-columns: minmax(0, 1fr); gap: 20px; }
@@ -823,7 +817,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 }
 
 @media (max-width: 620px) {
-  .eixos-topo .goals-flags { margin-left: 0; }
   .eixos-cartoes { grid-template-columns: minmax(0, 1fr); }
   /* As cinco abas rolam de lado, numa linha só, em vez de virarem três fileiras. */
   .eixo-abas { flex: 1 1 100%; flex-wrap: nowrap; margin-inline: -18px; padding-inline: 18px; overflow-x: auto; scrollbar-width: none; }
@@ -840,8 +833,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-list-head h1 { font-size: clamp(26px, 2.2vw, 40px); margin-bottom: 0; }
 .goals-list-head h2 { font-size: clamp(22px, 1.9vw, 28px); }
 .goals-list-head h2 em { color: var(--urucum); font-style: normal; }
-.goals-flags { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
-.goals-flags-nome { margin-right: 9px; color: var(--tinta-3); font: 600 13px var(--text); }
 .goals-flag { width: 42px; height: 28px; padding: 0; display: grid; place-content: center; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); overflow: hidden; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease; }
 .goals-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -854,14 +845,11 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .goals-list-head h2 { font-size: 20px; }
 .goals-list-head p { max-width: 46ch; margin: 8px 0 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.5; }
 .goals-list-top { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--linha); }
-.goals-list-top .goals-flags { margin-left: auto; }
 /* Quando a coluna da lista fica estreita, o seletor desce para a própria linha,
    com o nome em cima e as dez bandeiras juntas embaixo, em vez de uma sobrar
    sozinha na quebra. */
 @media (max-width: 1500px) {
   .goals-list-top { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .goals-list-top .goals-flags { margin-left: 0; }
-  .goals-list-top .goals-flags-nome { flex-basis: 100%; margin: 0 0 2px; }
 }
 .goals-list-summary { margin: 0; color: var(--tinta-4); font-size: 12px; }
 .goals-list-summary span { color: var(--mata); font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -1042,6 +1030,20 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 /* Dentro do painel a ficha não tem cabeçalho próprio: quem nomeia o indicador é
    o topo do painel, comum às duas abas. O recheio lateral também é dele. */
 .goals-detail-painel .indicator-detail-summary { margin-top: 4px; }
+/* A ficha abre na coluna lateral, como as outras abas, então usa ali o arranjo
+   estreito em qualquer tela: o resumo em duas colunas, com a fonte na largura
+   toda, e a fórmula e os dados complementares um embaixo do outro. A fórmula
+   larga rola de lado dentro do bloco verde (.indicator-formula-card). */
+.goals-detail-painel .indicator-detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.goals-detail-painel .indicator-detail-summary > div { padding: 16px 16px 16px 0; }
+.goals-detail-painel .indicator-detail-summary > div:nth-child(2) { padding-left: 16px; }
+.goals-detail-painel .indicator-detail-summary > div:nth-child(3) { padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
+.goals-detail-painel .indicator-detail-summary > div:nth-child(4) { padding-left: 16px; border-top: 1px solid var(--linha-2); }
+.goals-detail-painel .indicator-detail-summary > div:nth-child(5) { grid-column: 1 / -1; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
+.goals-detail-painel .indicator-detail-summary .indicator-value-cell strong { font-size: 24px; }
+.goals-detail-painel .indicator-detail-lower { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.goals-detail-painel .indicator-detail-aside { margin-top: 24px; padding-top: 24px; padding-left: 0; border-top: 1px solid var(--linha); border-left: 0; }
+.goals-detail-painel .indicator-detail-section-heading h3 { font-size: 19px; white-space: normal; }
 .goals-detail-painel .indicator-detail-note { margin-top: clamp(20px, 1.6vw, 32px); }
 .goals-detail-close { flex: none; width: 32px; height: 32px; padding: 0; border: 1px solid var(--linha); border-radius: 4px; background: var(--papel); color: var(--tinta-3); font: 500 20px/1 var(--text); cursor: pointer; }
 .goals-detail-close:hover, .goals-detail-close:focus-visible { border-color: var(--mata-500); color: var(--mata); outline: none; }
@@ -1185,10 +1187,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .topbar-inner { min-height: 68px; padding: 8px 24px; }
   .brand { gap: 14px; }
   .brand-logo { width: 145px; height: 50px; }
-  .brand-product { gap: 10px; padding-left: 14px; }
+  .brand-product { padding-left: 14px; }
   .brand-product-nome small { font-size: 9px; }
-  .brand-product-cursiva { height: 38px; }
-  .brand-product-ano { font-size: 39px; }
+  .brand-product-palavra { font-size: 26px; }
   html[data-vista="fluxo"] .vista-toggle { display: inline-flex; align-items: center; }
   /* O botão de vista ocupa o lugar que era do atalho de ação: os dois na mesma
      linha, com a marca e o menu, estouravam a barra em 621px. Os destinos do
@@ -1369,6 +1370,12 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .filter-linhas { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .filter-group + .filter-group { padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-summary, .indicator-detail-grid { grid-template-columns: 1fr; }
+  /* O arranjo da ficha no painel lateral tem mais especificidade: no celular ele
+     também desce para uma coluna. */
+  .goals-detail-painel .indicator-detail-summary { grid-template-columns: 1fr; }
+  .goals-detail-painel .indicator-detail-summary > div,
+  .goals-detail-painel .indicator-detail-summary > div:nth-child(n) { padding: 14px 0; border-left: 0; }
+  .goals-detail-painel .indicator-detail-summary > div + div { border-top: 1px solid var(--linha-2); }
   .indicator-detail-summary > div + div { padding-top: 16px; padding-left: 0; border-top: 1px solid var(--linha-2); border-left: 0; }
   .indicator-detail-field.is-wide { grid-column: auto; }
   .indicator-detail-section-heading { grid-template-columns: 1fr; gap: 4px; }

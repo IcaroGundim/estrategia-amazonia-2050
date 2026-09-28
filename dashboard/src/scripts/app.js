@@ -66,6 +66,7 @@ function montaMetricas(panorama) {
       serie: metrica.serie ? metrica.chave : undefined,
       field: metrica.chave,
       direction: metrica.direcao,
+      formato: metrica.formato,
       formatter: FORMATOS[metrica.formato] || FORMATOS.num1
     };
     // Todo indicador do seletor tem agregação. A guarda por ausência segue no
@@ -705,8 +706,47 @@ function selecionaEscopo(uf) {
 
 // Minigráfico da série do escopo atual. SVG à mão, como o resto dos gráficos.
 // A escala é min–max da própria série: o que se lê é a forma da trajetória, não a
-// distância até o zero — por isso o eixo não é rotulado com valores.
+// distância até o zero. Os eixos dizem isso com números — no Y o mínimo, o meio e o
+// máximo da série; no X os anos —, para a linha não parecer partir do zero.
 const SPARK = { largura: 240, altura: 46, margem: 4 };
+
+// Valor curto para a escala do eixo Y: o número, com a unidade só quando ela é
+// curta (%, R$ bi, pts). As taxas levam a unidade uma vez, acima do eixo. As três
+// marcas usam as mesmas casas decimais, escolhidas pela maior delas.
+function casasDoEixo(valores) {
+  const maior = Math.max(...valores.map((valor) => Math.abs(valor)));
+  return maior >= 100 ? 0 : maior >= 10 ? 1 : 2;
+}
+
+function rotuloDoEixo(metric, valor, casas) {
+  const numero = new Intl.NumberFormat(localeDe(), { minimumFractionDigits: casas, maximumFractionDigits: casas }).format(valor);
+  if (/^pct/.test(metric.formato || '')) return `${numero}%`;
+  if (metric.formato === 'reaisBi') return tp('R$ {valor} bi', { valor: numero });
+  if (metric.formato === 'pontos1') return `${numero} ${t('pts')}`;
+  return numero;
+}
+
+function unidadeDoEixo(metric) {
+  return ({
+    km2PorMilKm2: `km² / ${t('mil km²')}`,
+    porMilKm2: t('por mil km²'),
+    porCemMil: t('por 100 mil habitantes')
+  })[metric.formato] || '';
+}
+
+// Anos do eixo X: o primeiro, o último e os redondos entre eles (de 10 em 10, 5 em
+// 5 ou 2 em 2, conforme o período), sem os que encostariam nas pontas.
+function anosDoEixo(primeiro, ultimo) {
+  const extensao = ultimo - primeiro;
+  if (extensao <= 0) return [primeiro];
+  const passo = extensao > 20 ? 10 : extensao > 8 ? 5 : extensao > 3 ? 2 : 1;
+  const anos = [primeiro];
+  for (let ano = Math.ceil(primeiro / passo) * passo; ano < ultimo; ano += passo) {
+    if (ano - primeiro >= passo * 0.6 && ultimo - ano >= passo * 0.8) anos.push(ano);
+  }
+  anos.push(ultimo);
+  return anos;
+}
 
 // Posição de cada ponto, em unidades do viewBox e em porcentagem. Como o SVG é
 // esticado nos dois eixos (preserveAspectRatio="none"), a porcentagem vale
@@ -735,7 +775,20 @@ function pontosDaSpark(serie, dominio = dominioDaSpark(serie)) {
 
 function sparkline(pontos, { parciais = [], anoAtivo = null, escopo = 'regional', referencia = null, referenciaRotulo = '' } = {}) {
   if (pontos.length < 2) return '';
-  const { largura, altura } = SPARK;
+  const { largura, altura, margem } = SPARK;
+  const metric = currentMetric();
+  // A escala é a mesma de pontosDaSpark: a união da série com a de referência.
+  const { min, max, primeiroAno, ultimoAno } = dominioDaSpark(pontos, referencia && referencia.length > 1 ? referencia : []);
+  const escalaY = max === min
+    ? [{ valor: min, y: altura / 2 }]
+    : [{ valor: max, y: margem }, { valor: (max + min) / 2, y: altura / 2 }, { valor: min, y: altura - margem }];
+  const grade = escalaY.map(({ y }) => `<line class="spark-grade" x1="0" y1="${y.toFixed(1)}" x2="${largura}" y2="${y.toFixed(1)}" />`).join('');
+  const anosX = anosDoEixo(primeiroAno, ultimoAno).map((ano) => {
+    const pct = (margem + ((ano - primeiroAno) / ((ultimoAno - primeiroAno) || 1)) * (largura - margem * 2)) / largura * 100;
+    const ponta = ano === primeiroAno ? ' class="is-inicio"' : ano === ultimoAno ? ' class="is-fim"' : '';
+    return `<span${ponta} style="left:${pct.toFixed(2)}%">${ano}</span>`;
+  }).join('');
+  const unidade = unidadeDoEixo(metric);
   const linha = pontos.map(({ x, y }, index) => `${index ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join('');
   const area = `${linha}L${pontos.at(-1).x.toFixed(1)},${altura}L${pontos[0].x.toFixed(1)},${altura}Z`;
   // A referência tem guarda própria: a série regional pode ter menos de dois
@@ -748,16 +801,24 @@ function sparkline(pontos, { parciais = [], anoAtivo = null, escopo = 'regional'
   const marcador = ativo
     ? `<line class="spark-marker ${parciais.includes(ativo.ano) ? 'is-parcial' : ''}" x1="${ativo.x.toFixed(1)}" y1="${ativo.y.toFixed(1)}" x2="${ativo.x.toFixed(1)}" y2="${altura}" />`
     : '';
-  return `<div class="spark-wrap" tabindex="0" role="group" aria-label="Trajetória ${escape(escopo)} de ${pontos[0].ano} a ${pontos.at(-1).ano}.${ref ? ` Uma segunda linha, tracejada, traz a Amazônia Legal por ${escape(referenciaRotulo)}, na mesma escala.` : ''} Use as setas para mudar o ano exibido.">
-    <svg class="spark" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
-      <path class="spark-area" d="${area}" />
-      ${ref}
-      <path class="spark-line" d="${linha}" />
-      ${marcador}
-    </svg>
-    <i class="spark-guia" hidden aria-hidden="true"></i>
-    <i class="spark-ponto" hidden aria-hidden="true"></i>
-    <div class="spark-tip" hidden role="status"></div>
+  // Os rótulos dos eixos ficam fora do .spark-wrap: é a caixa dele que o hover mede
+  // em porcentagem, e ela precisa ser só a área do desenho.
+  return `<div class="spark-eixos${unidade ? ' tem-unidade' : ''}">
+    ${unidade ? `<span class="spark-unidade">${escape(unidade)}</span>` : ''}
+    <div class="spark-y${escalaY.length === 1 ? ' is-unico' : ''}" aria-hidden="true">${escalaY.map(({ valor }) => `<span>${escape(rotuloDoEixo(metric, valor, casasDoEixo(escalaY.map((marca) => marca.valor))))}</span>`).join('')}</div>
+    <div class="spark-wrap" tabindex="0" role="group" aria-label="Trajetória ${escape(escopo)} de ${pontos[0].ano} a ${pontos.at(-1).ano}, entre ${escape(textoDoValor(metric, min))} e ${escape(textoDoValor(metric, max))}.${ref ? ` Uma segunda linha, tracejada, traz a Amazônia Legal por ${escape(referenciaRotulo)}, na mesma escala.` : ''} Use as setas para mudar o ano exibido.">
+      <svg class="spark" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
+        ${grade}
+        <path class="spark-area" d="${area}" />
+        ${ref}
+        <path class="spark-line" d="${linha}" />
+        ${marcador}
+      </svg>
+      <i class="spark-guia" hidden aria-hidden="true"></i>
+      <i class="spark-ponto" hidden aria-hidden="true"></i>
+      <div class="spark-tip" hidden role="status"></div>
+    </div>
+    <div class="spark-x" aria-hidden="true">${anosX}</div>
   </div>`;
 }
 

@@ -291,7 +291,6 @@
 @media (max-width: 620px) {
   .goals-list-card { padding: 0; border: 0; background: none; overflow: visible; }
   .goals-list-top { padding: 0 2px 12px; }
-  .goals-list-top .goals-flags { margin-left: 0; }
   .goals-list-summary { padding: 0; }
   .goals-list-head { padding: 0 2px 4px; }
   .goals-list { margin-top: 14px; }
@@ -465,27 +464,6 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-}
-
-/* ---------------------------------------------------------------------------
-   8b. Celular: o seletor de estado das Metas vira grade
-
-   São onze peças numa faixa que quebra sozinha: o nome do recorte em vigor e
-   dez bandeiras — a região e os nove estados. Em 375px o nome ocupava 148px da
-   primeira linha e empurrava sete bandeiras para a segunda, deixando a linha de
-   cima com três. O resultado é uma faixa desalinhada em que a bandeira da
-   região, que é a opção de voltar ao todo, cai no meio de uma fileira e não se
-   distingue das outras.
-
-   Com o nome numa linha própria, as dez bandeiras ocupam duas fileiras de cinco
-   e a da região volta a abrir a primeira. As colunas têm a largura da bandeira,
-   e não uma fração da linha: as bandeiras têm proporção própria e esticá-las só
-   as faria serem cortadas pelo `object-fit: cover`. A grade fica com 234px e
-   alinhada à esquerda, que é onde o nome dela também começa.
-   --------------------------------------------------------------------------- */
-@media (max-width: 620px) {
-  .goals-flags { display: grid; grid-template-columns: repeat(5, 42px); gap: 9px 6px; }
-  .goals-flags-nome { grid-column: 1 / -1; margin-right: 0; }
 }
 
 /* ---------------------------------------------------------------------------

@@ -71,7 +71,7 @@
       "titulo": "Metas: os cinco eixos",
       "pagina": "metas",
       "chaves": [
-        "Metas -",
+        "Eixos -",
         "Jornada do eixo",
         "sem meta com patamar mensurável",
         "média de {n} meta",
@@ -97,7 +97,6 @@
         "Metas — Estratégia 2050",
         "Cumprimento das metas da Estratégia Amazônia 2050 e catálogo completo dos indicadores da matriz de resultados.",
         "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
-        "Estado exibido na progressão das metas",
         "Buscar meta, indicador ou código",
         "Eixo",
         "Coleta",
@@ -120,7 +119,6 @@
       "titulo": "Quadro de metas: lista, gráfico e detalhe",
       "pagina": "metas",
       "chaves": [
-        "Amazônia Legal (região)",
         "Amazônia Legal e estados",
         "Valores por estado",
         "Ano",
@@ -153,8 +151,6 @@
         "Leitura regional:",
         "até {prazo}",
         "nos 9 estados",
-        "{cumprem} de {total} estados",
-        "{cumprem} de {total}",
         "Sem dado",
         "Sem escala",
         "sem dado",
@@ -175,8 +171,23 @@
         "{total} indicadores · {comMeta} com meta mensurável",
         "Não foi possível exportar",
         "Preparando…",
-        "{alvo} nos {total} estados",
-        "A ou B"
+        "A ou B",
+        "Baseline",
+        "Jornada:",
+        "quanto do caminho entre a baseline e a meta a região já percorreu.",
+        "sem baseline, é a posição do valor atual em relação à meta.",
+        "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.",
+        "sem escala: não há baseline para medir o caminho até uma meta zero.",
+        "não calculada: a série tem menos de 5 anos",
+        "{valor}, média dos últimos 10 anos ({desde}–{ate})",
+        "{valor}, média dos últimos 5 anos ({desde}–{ate})",
+        "{valor}, média de {desde} a {ate}, o período citado na meta",
+        "{valor}, o valor de {ano}, ano da baseline citada na meta",
+        "{valor}, o valor da região em {ano}, ano da baseline citada na meta",
+        "{valor}, declarada na meta ({ano})",
+        "{valor}, declarada na meta",
+        "soma dos nove estados sobre o total de referência dos nove",
+        "parcela dos nove estados que atingem o patamar"
       ],
       "alvo": ".goals-list-card",
       "abre": ".eixo-cartao"
@@ -283,14 +294,11 @@
       "chaves": [
         "O indicador ainda não tem valores coletados para os nove estados.",
         "A meta não define um patamar numérico comparável aos valores coletados.",
-        "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
         "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
-        "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
-        "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
         "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
         "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
-        "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
-        "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador."
+        "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
+        "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador."
       ],
       "alvo": "#goals-detail",
       "abre": "#goals-list button[data-codigo]"
@@ -430,6 +438,7 @@
       "pagina": "index",
       "chaves": [
         "mil km²",
+        "por mil km²",
         "100 mil",
         "pts",
         "R$ {valor} bi",
@@ -836,10 +845,6 @@
       "pt": "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
       "en": "Where the Legal Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
     },
-    "Estado exibido na progressão das metas": {
-      "pt": "Estado exibido na progressão das metas",
-      "en": "State shown in the goal progress"
-    },
     "Buscar meta, indicador ou código": {
       "pt": "Buscar meta, indicador ou código",
       "en": "Search goals, indicators or codes"
@@ -876,9 +881,9 @@
       "pt": "Todos os eixos",
       "en": "All pillars"
     },
-    "Metas -": {
-      "pt": "Metas -",
-      "en": "Goals -"
+    "Eixos -": {
+      "pt": "Eixos -",
+      "en": "Pillars -"
     },
     "Jornada do eixo": {
       "pt": "Jornada do eixo",
@@ -959,10 +964,6 @@
     "Todos": {
       "pt": "Todos",
       "en": "All"
-    },
-    "Amazônia Legal (região)": {
-      "pt": "Amazônia Legal (região)",
-      "en": "The Legal Amazon (region)"
     },
     "Amazônia Legal e estados": {
       "pt": "Amazônia Legal e estados",
@@ -1083,14 +1084,6 @@
     "nos 9 estados": {
       "pt": "nos 9 estados",
       "en": "across the 9 states"
-    },
-    "{cumprem} de {total} estados": {
-      "pt": "{cumprem} de {total} estados",
-      "en": "{cumprem} of {total} states"
-    },
-    "{cumprem} de {total}": {
-      "pt": "{cumprem} de {total}",
-      "en": "{cumprem} of {total}"
     },
     "Sem dado": {
       "pt": "Sem dado",
@@ -1468,21 +1461,9 @@
       "pt": "A meta não define um patamar numérico comparável aos valores coletados.",
       "en": "The target sets no numerical threshold that the collected figures can be measured against."
     },
-    "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.": {
-      "pt": "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
-      "en": "The target is a 50% regional reduction, but the catalogue records no baseline. Without a starting point there is no way to say whether a state is on track."
-    },
     "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.": {
       "pt": "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
       "en": "The target is 100% population coverage, but what was collected is the number of primary care teams, not the coverage rate."
-    },
-    "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.": {
-      "pt": "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
-      "en": "The target is telehealth in at least 50% of municipalities; what was collected is the raw count of municipalities served, and the catalogue carries no municipal total per state."
-    },
-    "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.": {
-      "pt": "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
-      "en": "The R$ 100 million increase does not say which baseline it refers to, nor whether it is per state or regional."
     },
     "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.": {
       "pt": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
@@ -1819,6 +1800,10 @@
     "mil km²": {
       "pt": "mil km²",
       "en": "thousand km²"
+    },
+    "por mil km²": {
+      "pt": "por mil km²",
+      "en": "per thousand km²"
     },
     "100 mil": {
       "pt": "100 mil",
@@ -2384,17 +2369,9 @@
       "pt": "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.",
       "en": "Target: 50% of the Legal Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
     },
-    "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.": {
-      "pt": "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
-      "en": "The target is regional (a permanent governance model coordinated by the Consortium), and so is the budget projection, R$ 17.7 million by 2050: there is no threshold per state. The value per state is each state's contribution to the Consortium; the Pathway to 2050 tab compares the sum of the nine with the projection."
-    },
     "R$": {
       "pt": "R$",
       "en": "R$"
-    },
-    "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador.": {
-      "pt": "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador.",
-      "en": "The target is regional (mobilise the equivalent of 0.1% of the Legal Amazon's GDP a year; the technical sheet says R$ 100 million a year) and has no threshold per state. The value per state is what each government received in the year from the Amazon Fund and REM Acre, two components of the indicator."
     },
     "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.": {
       "pt": "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.",
@@ -2403,10 +2380,6 @@
     "mi": {
       "pt": "mi",
       "en": "M"
-    },
-    "{alvo} nos {total} estados": {
-      "pt": "{alvo} nos {total} estados",
-      "en": "{alvo} in all {total} states"
     },
     "A ou B": {
       "pt": "A ou B",
@@ -2499,6 +2472,78 @@
     "equipes": {
       "pt": "equipes",
       "en": "teams"
+    },
+    "Baseline": {
+      "pt": "Baseline",
+      "en": "Baseline"
+    },
+    "Jornada:": {
+      "pt": "Jornada:",
+      "en": "Progress:"
+    },
+    "quanto do caminho entre a baseline e a meta a região já percorreu.": {
+      "pt": "quanto do caminho entre a baseline e a meta a região já percorreu.",
+      "en": "how much of the way from the baseline to the target the region has already covered."
+    },
+    "sem baseline, é a posição do valor atual em relação à meta.": {
+      "pt": "sem baseline, é a posição do valor atual em relação à meta.",
+      "en": "with no baseline, it is where the current value stands against the target."
+    },
+    "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.": {
+      "pt": "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.",
+      "en": "the baseline was already past the target; progress is where the current value stands against it."
+    },
+    "sem escala: não há baseline para medir o caminho até uma meta zero.": {
+      "pt": "sem escala: não há baseline para medir o caminho até uma meta zero.",
+      "en": "no scale: there is no baseline to measure the way to a zero target."
+    },
+    "não calculada: a série tem menos de 5 anos": {
+      "pt": "não calculada: a série tem menos de 5 anos",
+      "en": "not calculated: the series covers fewer than 5 years"
+    },
+    "{valor}, média dos últimos 10 anos ({desde}–{ate})": {
+      "pt": "{valor}, média dos últimos 10 anos ({desde}–{ate})",
+      "en": "{valor}, average of the last 10 years ({desde}–{ate})"
+    },
+    "{valor}, média dos últimos 5 anos ({desde}–{ate})": {
+      "pt": "{valor}, média dos últimos 5 anos ({desde}–{ate})",
+      "en": "{valor}, average of the last 5 years ({desde}–{ate})"
+    },
+    "{valor}, média de {desde} a {ate}, o período citado na meta": {
+      "pt": "{valor}, média de {desde} a {ate}, o período citado na meta",
+      "en": "{valor}, average from {desde} to {ate}, the period cited in the target"
+    },
+    "{valor}, o valor de {ano}, ano da baseline citada na meta": {
+      "pt": "{valor}, o valor de {ano}, ano da baseline citada na meta",
+      "en": "{valor}, the {ano} value, the baseline year cited in the target"
+    },
+    "{valor}, o valor da região em {ano}, ano da baseline citada na meta": {
+      "pt": "{valor}, o valor da região em {ano}, ano da baseline citada na meta",
+      "en": "{valor}, the region's value in {ano}, the baseline year cited in the target"
+    },
+    "{valor}, declarada na meta ({ano})": {
+      "pt": "{valor}, declarada na meta ({ano})",
+      "en": "{valor}, stated in the target ({ano})"
+    },
+    "{valor}, declarada na meta": {
+      "pt": "{valor}, declarada na meta",
+      "en": "{valor}, stated in the target"
+    },
+    "soma dos nove estados sobre o total de referência dos nove": {
+      "pt": "soma dos nove estados sobre o total de referência dos nove",
+      "en": "sum of the nine states over the nine states' reference total"
+    },
+    "parcela dos nove estados que atingem o patamar": {
+      "pt": "parcela dos nove estados que atingem o patamar",
+      "en": "share of the nine states that reach the threshold"
+    },
+    "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.": {
+      "pt": "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
+      "en": "The target is to institutionalise a permanent regional governance model coordinated by the Consortium, with no numeric threshold. The budget projection, R$ 17.7 million by 2050, is a pathway rather than a target: the Pathway to 2050 tab compares the sum of the nine states' contributions with it."
+    },
+    "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.": {
+      "pt": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.",
+      "en": "The target is to mobilise the equivalent of 0.1% of the Legal Amazon's GDP a year, while the technical sheet speaks of R$ 100 million a year: the two thresholds do not match, and the dashboard's data does not include the region's GDP for the year of the funds. The value per state is what each government received from the Amazon Fund and REM Acre, two components of the indicator."
     }
   }
 }
