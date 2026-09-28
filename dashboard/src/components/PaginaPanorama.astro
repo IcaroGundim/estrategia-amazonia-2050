@@ -49,29 +49,6 @@ const t = traduzirCom(lang, Astro.locals.interface);
             <span>{t('maior desempenho')}</span>
           </div>
         </article>
-
-        <section class="overview" aria-label={t('Resumo regional')}>
-          <article class="card">
-            <p class="metric-label">{t('População observada')}</p>
-            <p class="metric-value" data-population>—</p>
-            <p>{t('projeção IBGE para 2025')}</p>
-          </article>
-          <article class="card">
-            <p class="metric-label">{t('Território')}</p>
-            <p class="metric-value" data-territorio>—</p>
-            <p>{t('área total dos nove estados')}</p>
-          </article>
-          <article class="card">
-            <p class="metric-label">{t('Municípios')}</p>
-            <p class="metric-value" data-municipios>—</p>
-            <p>{t('na Amazônia Legal · base AdaptaBrasil')}</p>
-          </article>
-          <article class="card">
-            <p class="metric-label">{t('Unidades de conservação')}</p>
-            <p class="metric-value" data-ucs>—</p>
-            <p>{t('federais e estaduais · CNUC/MMA 2026')}</p>
-          </article>
-        </section>
       </div>
 
       <aside class="dashboard-sidebar card" aria-label={t('Detalhes e comparação estadual')}>
@@ -143,7 +120,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
                     <dt>{t('Leituras')}</dt>
                     <dd>
                       {/* Régua: onde cai o ano de alcance em relação ao prazo. As cores
-                          são as da tendência tracejada na lista (COR_CLASSE em app.js). */}
+                          são as da projeção tracejada nos cards (COR_CLASSE em app.js). */}
                       <svg class="traj-regua" viewBox="0 0 388 70" role="img" aria-label={t('Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.')}>
                         <line x1="0" y1="34" x2="388" y2="34" stroke="var(--linha)" stroke-width="1.5" />
                         <circle cx="10" cy="34" r="4" fill="var(--mata)" />
@@ -159,7 +136,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
                       </svg>
                       <ul class="traj-leituras">
                         <li><i style="background:#3e6e57"></i><span><b>{t('no ritmo')}</b> {t('o ano de alcance é igual ou anterior ao prazo da meta.')}</span></li>
-                        <li><i style="background:#e0a83c"></i><span><b>{t('abaixo do ritmo')}</b> {t('o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:')}<span class="traj-formula">{t('(meta − último valor) ÷ (prazo − último ano) ÷ β')}</span></span></li>
+                        <li><i style="background:#e0a83c"></i><span><b>{t('abaixo do ritmo')}</b> {t('o ano de alcance é posterior ao prazo.')}</span></li>
                         <li><i style="background:#c0451f"></i><span><b>{t('não alcança')}</b> {t('a inclinação é nula ou tem sentido contrário ao da meta.')}</span></li>
                         <li><i style="background:var(--mata)"></i><span><b>{t('cumprida')}</b> {t('o último valor já atende à meta.')}</span></li>
                         <li><i style="background:var(--tinta-4)"></i><span><b>{t('sem série')}</b> {t('menos de três anos com dado.')}</span></li>
@@ -173,7 +150,10 @@ const t = traduzirCom(lang, Astro.locals.interface);
           </div>
         </div>
       </div>
-      <ol class="trajetoria-lista" data-trajetoria-lista aria-live="polite"></ol>
+      {/* Um card por meta com projeção, com o gráfico da série e da tendência. As
+          cumpridas e as que ainda não têm série vêm depois, numa linha cada. */}
+      <div class="traj-cards" data-trajetoria-lista aria-live="polite"></div>
+      <div class="traj-fecho" data-trajetoria-fecho></div>
       <p class="trajetoria-rodape">{t('Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.')} <a href={lang === 'en' ? '/en/goals' : '/metas'}>{t('Ver o quadro de metas')}</a></p>
     </section>
   </div>

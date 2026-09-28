@@ -183,9 +183,12 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .dropdown-option.is-selected > i { background: var(--mata); }
 
 .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(430px, 25vw, 540px); align-items: start; gap: clamp(20px, 1.7vw, 34px); }
-.dashboard-primary { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+/* Sem os números da região embaixo do mapa (a lateral já os traz), o card do
+   mapa ocupa a altura da coluna: o mapa fica centrado e a legenda no pé. */
+.dashboard-primary { min-width: 0; display: flex; flex-direction: column; gap: 18px; align-self: stretch; }
 .card { border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
-.map-card { padding: 22px 22px 20px; }
+.map-card { padding: 22px 22px 20px; flex: 1; display: flex; flex-direction: column; }
+.map-card > .map-body { flex: 1; }
 .card-heading { display: flex; align-items: end; justify-content: space-between; gap: 25px; }
 .card-heading h2 { font-size: 25px; }
 .map-body { display: grid; grid-template-columns: clamp(210px, 15vw, 260px) minmax(0, 1fr); align-items: center; gap: 18px; }
@@ -230,13 +233,6 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .legend-ramp b:nth-child(4) { background: var(--mata-500); }
 .legend-ramp b:nth-child(5) { background: var(--mata-700); }
 
-.overview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.overview article { min-height: 126px; padding: 17px; display: flex; flex-direction: column; justify-content: space-between; }
-.overview p { margin-bottom: 0; }
-.overview article > p:last-child { color: var(--tinta-4); font-size: 10px; }
-.metric-label { color: var(--tinta-3); }
-.metric-value { margin: 6px 0; color: var(--mata); font: 800 30px/1 var(--display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-.metric-value.compact { font-size: 22px; }
 
 .ranking-card { padding: 24px 24px 18px; scroll-margin-top: 100px; }
 .ranking-panel-head { padding-bottom: 19px; display: flex; align-items: end; justify-content: space-between; gap: 24px; }
@@ -1232,7 +1228,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .map-legend { order: 3; }
   .dashboard-sidebar { order: 4; }
   .map-indicator-card { order: 5; }
-  .overview { order: 6; }
   /* O card branco morreu junto com o `display: contents` do `.map-card` e volta
      aqui só em volta do mapa. O fundo opaco não é decoração: sem ele o conteúdo
      rolaria visível através dos vazios do SVG. */
@@ -1253,7 +1248,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* O painel para logo abaixo do mapa fixo, não debaixo dele. */
   .dashboard-sidebar { scroll-margin-top: calc(var(--topo-fixo) + var(--mapa-altura) + 74px); }
   .sidebar-panel { flex: 0 0 auto; overflow: visible; }
-  .overview { grid-template-columns: repeat(2, 1fr); }
   .panorama-heading h1 { font-size: clamp(26px, 4.4vw, 32px); }
   .goals-board, .goals-board.has-detail { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
   .goals-cards { grid-template-columns: minmax(0, 1fr); }
@@ -1285,10 +1279,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
    --------------------------------------------------------------------------- */
 @media (min-width: 621px) and (max-width: 920px) {
   .dashboard-grid { --mapa-altura: clamp(300px, 40vh, 430px); }
-  .overview { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .overview article { min-height: 132px; }
-  .metric-value { font-size: 26px; }
-  .metric-value.compact { font-size: 20px; }
   .goals-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -1333,9 +1323,6 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   /* A composição da legenda no celular está na camada de celular: lá a rampa
      ganha uma linha própria e estas duas regras — que tentavam resolver o mesmo
      aperto deixando a rampa espremer entre os rótulos — não teriam mais efeito. */
-  .overview { grid-template-columns: 1fr 1fr; }
-  .overview article { min-height: 116px; }
-  .metric-value { font-size: 27px; }
   .ranking-panel-head { align-items: start; flex-direction: column; }
   /* Com `.dashboard-sidebar` no seletor: a regra base para o ranking dentro da
      lateral tem especificidade maior e vencia a versão estreita daqui, então a
@@ -1485,27 +1472,60 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .traj-metodo, .traj-metodo-caixa { width: 100%; }
   .traj-metodo:hover .traj-metodo-caixa, .traj-metodo:focus-within .traj-metodo-caixa { width: 100%; }
 }
-.trajetoria-lista { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--linha); }
-.trajetoria-item { display: grid; grid-template-columns: minmax(200px, 1fr) 260px 108px minmax(240px, 1.3fr); align-items: center; gap: 12px 24px; padding: 13px 0; border-bottom: 1px solid var(--linha-2); }
-.trajetoria-meta { min-width: 0; display: grid; gap: 2px; }
-.trajetoria-meta strong { color: var(--tinta); font-size: 14px; line-height: 1.3; }
-.trajetoria-meta small { color: var(--tinta-3); font-size: 12.5px; }
-.trajetoria-item svg { display: block; width: 260px; height: 54px; overflow: visible; }
-.traj-rotulo { font: 500 9px var(--text); fill: var(--tinta-4); }
-.trajetoria-ano { color: var(--mata); font: 800 26px/1 var(--display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-.trajetoria-ano small { display: block; margin-top: 4px; color: var(--tinta-4); font: 400 11.5px/1.3 var(--text); letter-spacing: 0; }
-.is-contrario .trajetoria-ano, .is-contrario .trajetoria-ano small { color: var(--urucum); }
-.is-acelerar .trajetoria-ano { color: #8a6416; }
-.is-semSerie .trajetoria-ano, .is-desligada .trajetoria-ano, .trajetoria-ano.is-cinza { color: var(--tinta-4); }
-.trajetoria-frase { margin: 0; color: var(--tinta-2); font-size: 13px; line-height: 1.5; }
+/* Cards da trajetória: a borda, o raio e o respiro do card de Metas; dois por
+   linha, um no celular. O gráfico segue o vocabulário de .coletado-* (série em
+   linha cheia com área, marcador tracejado, dica escura). */
+.traj-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.traj-card { min-width: 0; padding: 12px 14px 8px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); }
+.traj-card-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 4px; }
+.traj-card-topo h3 { min-width: 0; margin: 0; color: var(--tinta); font: 500 15px/1.3 var(--text); letter-spacing: 0; }
+.traj-card-ano { flex: none; margin: 0; text-align: right; white-space: nowrap; }
+.traj-card-ano b { display: block; color: var(--mata); font: 800 26px/1 var(--display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.traj-card-ano small { display: block; margin-top: 3px; color: var(--tinta-4); font-size: 10px; }
+.traj-card.is-acelerar .traj-card-ano b { color: #8a6416; }
+.traj-card.is-contrario .traj-card-ano b, .traj-card.is-contrario .traj-card-ano small { color: var(--urucum); }
+.traj-card-nota { margin: 4px 0 2px; color: var(--tinta-3); font-size: 12px; line-height: 1.45; }
+.traj-vazio { grid-column: 1 / -1; margin: 0; color: var(--tinta-3); font-size: 13px; }
+
+.traj-graf { position: relative; border-radius: 6px; }
+.traj-graf:focus-visible { outline: 2px solid var(--mata-300); outline-offset: 3px; }
+.traj-graf svg { display: block; width: 100%; height: auto; overflow: visible; }
+.traj-graf text { font: 11px var(--text); fill: var(--tinta-4); font-variant-numeric: tabular-nums; }
+.traj-graf text.is-forte { fill: var(--tinta-2); font-weight: 600; }
+.traj-grade line { stroke: var(--linha-2); }
+.traj-grade line.is-zero { stroke: var(--linha); }
+.traj-area { fill: var(--mata); opacity: 0.07; }
+.traj-medida { fill: none; stroke: var(--mata); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.traj-projecao { fill: none; stroke-width: 2; stroke-dasharray: 5 4; stroke-linecap: round; stroke-linejoin: round; }
+.traj-meta { stroke: var(--tinta-3); stroke-width: 1; }
+.traj-prazo { stroke: var(--tinta-3); stroke-width: 1; stroke-dasharray: 2 3; }
+.traj-ultimo { fill: var(--mata); }
+.traj-chega { stroke: var(--papel); stroke-width: 2; }
+.traj-marcador { opacity: 0; pointer-events: none; transition: opacity 120ms ease; }
+.traj-marcador.is-visivel { opacity: 1; }
+.traj-marcador line { stroke: var(--tinta-4); stroke-width: 1; stroke-dasharray: 2 2; }
+.traj-marcador circle { fill: var(--papel); stroke: var(--mata); stroke-width: 2; }
+.traj-alvo { fill: transparent; cursor: crosshair; }
+.traj-dica { position: absolute; z-index: 5; padding: 5px 8px; border-radius: 6px; background: var(--mata); color: #fff; font-size: 11px; font-weight: 600; line-height: 1.3; white-space: nowrap; font-variant-numeric: tabular-nums; pointer-events: none; box-shadow: 0 6px 16px rgba(14, 43, 34, 0.18); }
+.traj-dica small { font-size: 10px; font-weight: 400; opacity: 0.75; }
+.traj-dica[hidden] { display: none; }
+
+/* Depois dos cards: as cumpridas numa linha e as sem série recolhidas. */
+.traj-fecho { display: grid; gap: 6px; margin-top: 14px; color: var(--tinta-3); font-size: 12.5px; }
+.traj-fecho:empty { display: none; }
+.traj-fecho p { margin: 0; }
+.traj-fecho b { color: var(--tinta); font-weight: 600; }
+.traj-fecho summary { width: fit-content; cursor: pointer; list-style: none; }
+.traj-fecho summary::-webkit-details-marker { display: none; }
+.traj-fecho summary::before { content: "+"; display: inline-block; width: 14px; color: var(--mata-500); font-weight: 700; }
+.traj-fecho details[open] summary::before { content: "−"; }
+.traj-fecho details p { margin: 6px 0 0 14px; color: var(--tinta-4); }
 .trajetoria-rodape { margin: 14px 0 0; color: var(--tinta-3); font-size: 12px; }
 .trajetoria-rodape a { color: var(--mata-700); }
-@media (max-width: 1100px) {
-  .trajetoria-item { grid-template-columns: minmax(0, 1fr) 260px 100px; }
-  .trajetoria-frase { grid-column: 1 / -1; }
+@media (prefers-reduced-motion: reduce) { .traj-marcador { transition: none; } }
+@media (max-width: 760px) {
+  .traj-cards { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 620px) {
   .trajetoria { padding: 20px 16px 16px; }
-  .trajetoria-item { grid-template-columns: minmax(0, 1fr) 90px; }
-  .trajetoria-item svg { grid-column: 1 / -1; width: 100%; }
 }

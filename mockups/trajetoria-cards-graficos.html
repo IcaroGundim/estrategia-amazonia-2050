@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trajetória em cards com gráfico · opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --mata:#0e2b22; --mata-700:#1c4437; --mata-500:#3e6e57; --mata-300:#7fa08c; --urucum:#c0451f; --ocre:#e0a83c; --ocre-texto:#8a6416; --areia:#f5f0e8; --papel:#fff; --linha:#ddd3c6; --linha-2:#ede6dc; --tinta:#1a1613; --tinta-2:#3a342e; --tinta-3:#5c544c; --tinta-4:#8a8078; --display:"Bricolage Grotesque",system-ui,sans-serif; --text:"Libre Franklin",system-ui,sans-serif; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e8e0d6; color:var(--tinta); font:400 14px/1.45 var(--text); padding:28px 16px 64px; }
+  .pagina { max-width:1180px; margin:0 auto; }
+  h1 { font:700 26px var(--display); color:var(--mata); margin:0 0 4px; letter-spacing:-.02em; }
+  .lead { color:var(--tinta-3); max-width:760px; margin:0 0 16px; }
+
+  .recortes { position:sticky; top:0; z-index:10; display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 -16px 22px; padding:10px 16px; background:rgba(232,224,214,.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--linha); }
+  .recortes button { height:30px; padding:0 12px; border:1px solid var(--linha); border-radius:99px; background:var(--papel); color:var(--tinta-2); font:600 12.5px var(--text); cursor:pointer; }
+  .recortes button:hover { border-color:var(--mata-300); }
+  .recortes button[aria-pressed="true"] { background:var(--mata); border-color:var(--mata); color:var(--areia); }
+
+  .opcao { background:var(--areia); border-radius:14px; padding:18px 18px 20px; margin:0 0 24px; }
+  .opcao > h2 { font:700 17px var(--display); color:var(--mata); margin:0 0 2px; letter-spacing:-.01em; }
+  .opcao > p { margin:0 0 12px; color:var(--tinta-3); font-size:13px; }
+  .rec { display:inline-block; margin-left:8px; padding:1px 8px; border-radius:99px; background:var(--mata); color:#fff; font:600 10.5px var(--text); letter-spacing:.04em; vertical-align:2px; }
+  .quadro { border:1px solid var(--linha); border-radius:14px; background:var(--papel); padding:18px clamp(16px,2vw,26px) 16px; }
+
+  /* ---- card (mesma borda, raio e respiro do card de Metas) ---- */
+  .cards { display:grid; gap:10px; }
+  .cards.duas { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cards.tres { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .card { min-width:0; padding:12px 14px 8px; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); }
+  .card-topo { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:4px; }
+  .card-nome { min-width:0; margin:0; color:var(--tinta); font:500 15px/1.3 var(--text); }
+  .ler { flex:none; text-align:right; white-space:nowrap; }
+  .ler b { display:block; color:var(--mata); font:800 26px/1 var(--display); letter-spacing:-.01em; font-variant-numeric:tabular-nums; }
+  .ler small { display:block; margin-top:3px; color:var(--tinta-4); font-size:10px; }
+  .is-acelerar .ler b { color:var(--ocre-texto); }
+  .is-contrario .ler b, .is-contrario .ler small { color:var(--urucum); }
+
+  /* B · card de Metas: número grande à esquerda */
+  .card-metas { display:grid; grid-template-columns:72px minmax(0,1fr); gap:2px 12px; }
+  .card-metas .ler { grid-row:1; text-align:left; align-self:start; padding-top:2px; }
+  .card-metas .ler b.longo { font-size:19px; }
+  .card-metas .card-topo { margin:0; }
+  .card-metas .graf { grid-column:1/-1; }
+  .stats { flex:none; display:flex; gap:8px; white-space:nowrap; }
+  .stat { display:flex; flex-direction:column; align-items:flex-end; padding:2px 0 2px 10px; line-height:1.15; }
+  .stat > span { color:var(--tinta-4); font:600 9px var(--text); letter-spacing:.12em; text-transform:uppercase; }
+  .stat b { color:var(--tinta-2); font:700 16px/1.15 var(--display); font-variant-numeric:tabular-nums; }
+  .stat small { color:var(--tinta-4); font-size:10px; }
+  .stat.is-meta b { color:var(--mata); font-weight:800; }
+  .faixa { margin:16px 0 8px; display:flex; align-items:center; gap:7px; color:var(--tinta-4); font-size:9.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; }
+  .faixa:first-child { margin-top:0; }
+  .faixa::after { content:""; flex:1; height:1px; background:var(--linha-2); }
+  .faixa i { width:7px; height:7px; border-radius:50%; }
+
+  /* C · compacto */
+  .card.compacto { padding:10px 12px 6px; }
+  .card.compacto .card-nome { font-size:13.5px; }
+  .card.compacto .ler b { font-size:20px; }
+  .legenda { display:flex; flex-wrap:wrap; gap:4px 16px; margin:0 0 10px; padding:0; list-style:none; color:var(--tinta-3); font-size:11.5px; }
+  .legenda li { display:inline-flex; align-items:center; gap:6px; }
+  .legenda i { width:16px; height:0; border-top:2px dashed; }
+
+  /* D · destaque */
+  .destaque { display:grid; grid-template-columns:280px minmax(0,1fr); gap:14px; align-items:start; }
+  .escolhas { display:grid; gap:8px; }
+  .escolha { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; padding:10px 12px; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); color:var(--tinta); font:500 13.5px/1.3 var(--text); text-align:left; cursor:pointer; transition:border-color .16s, box-shadow .18s; }
+  .escolha:hover { border-color:var(--mata-300); }
+  .escolha[aria-pressed="true"] { border-color:var(--mata); box-shadow:inset 0 0 0 1px var(--mata); }
+  .escolha b { flex:none; color:var(--mata); font:800 18px/1 var(--display); font-variant-numeric:tabular-nums; }
+  .escolha.is-acelerar b { color:var(--ocre-texto); }
+  .escolha.is-contrario b { color:var(--urucum); font-size:13px; }
+  .destaque .card { padding:16px 18px 10px; }
+  .destaque .card-nome { font:700 19px/1.2 var(--display); color:var(--mata); letter-spacing:-.02em; }
+  .destaque .ler b { font-size:32px; }
+
+  /* ---- gráfico interativo (vocabulário de .coletado-* em global.css) ---- */
+  .graf { position:relative; border-radius:6px; outline:none; }
+  .graf:focus-visible { outline:2px solid var(--mata-300); outline-offset:3px; }
+  .graf svg { display:block; width:100%; height:auto; overflow:visible; }
+  .graf text { font:11px var(--text); fill:var(--tinta-4); font-variant-numeric:tabular-nums; }
+  .graf text.forte { fill:var(--tinta-2); font-weight:600; }
+  .graf .grade line { stroke:var(--linha-2); }
+  .graf .grade line.zero { stroke:var(--linha); }
+  .graf .area { fill:var(--mata); opacity:.07; }
+  .graf .obs { fill:none; stroke:var(--mata); stroke-width:2.2; stroke-linejoin:round; stroke-linecap:round; }
+  .graf .proj { fill:none; stroke-width:2; stroke-dasharray:5 4; stroke-linecap:round; }
+  .graf .meta { stroke:var(--tinta-3); stroke-width:1; }
+  .graf .prazo { stroke:var(--tinta-3); stroke-width:1; stroke-dasharray:2 3; }
+  .graf .hoje { fill:var(--mata); }
+  .graf .chega { stroke:#fff; stroke-width:2; }
+  .graf .marcador { opacity:0; pointer-events:none; transition:opacity .12s ease; }
+  .graf .marcador.visivel { opacity:1; }
+  .graf .marcador line { stroke:var(--tinta-4); stroke-width:1; stroke-dasharray:2 2; }
+  .graf .marcador circle { fill:var(--papel); stroke-width:2; }
+  .graf .alvo { fill:transparent; cursor:crosshair; }
+  .dica { position:absolute; z-index:5; padding:5px 8px; border-radius:6px; background:var(--mata); color:#fff; font-size:11px; font-weight:600; line-height:1.3; white-space:nowrap; font-variant-numeric:tabular-nums; pointer-events:none; box-shadow:0 6px 16px rgba(14,43,34,.18); }
+  .dica small { font-weight:400; opacity:.75; }
+  .dica[hidden] { display:none; }
+
+  /* linhas finais, iguais em todas as opções */
+  .fecho { margin-top:14px; padding-top:10px; border-top:1px solid var(--linha-2); display:grid; gap:6px; color:var(--tinta-3); font-size:12.5px; }
+  .fecho p { margin:0; }
+  .fecho b { color:var(--tinta); font-weight:600; }
+  .fecho summary { cursor:pointer; list-style:none; }
+  .fecho summary::-webkit-details-marker { display:none; }
+  .fecho summary::before { content:"+"; display:inline-block; width:14px; color:var(--mata-500); font-weight:700; }
+  .fecho details[open] summary::before { content:"−"; }
+  .fecho details p { margin:6px 0 0 14px; color:var(--tinta-4); }
+
+  .porque { margin:4px 0 0; padding:10px 14px; border-left:3px solid var(--ocre); border-radius:0 8px 8px 0; background:#fbf3e2; color:var(--tinta-2); font-size:12.5px; max-width:760px; }
+
+  @media (max-width:900px) { .cards.tres { grid-template-columns:repeat(2,minmax(0,1fr)); } .destaque { grid-template-columns:minmax(0,1fr); } }
+  @media (max-width:760px) {
+    .cards.duas, .cards.tres { grid-template-columns:minmax(0,1fr); }
+    .card-metas .card-topo { flex-direction:column; gap:6px; }
+    .card-metas .stat { padding:0 10px 0 0; align-items:flex-start; }
+    .escolhas { grid-auto-flow:column; grid-auto-columns:minmax(240px,80%); overflow-x:auto; padding-bottom:4px; }
+  }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <h1>Trajetória em cards, com o gráfico da projeção</h1>
+  <p class="lead">Cada meta com projeção vira um card com o gráfico interativo: passe o mouse ou use as setas para ler cada ano, medido ou projetado. As quatro versões mudam o que vai no topo do card e como os cards se arrumam.</p>
+
+  <nav class="recortes" aria-label="Recorte" data-recortes></nav>
+
+  <section class="opcao">
+    <h2>A · Dois por linha, o ano no canto <span class="rec">recomendada</span></h2>
+    <p>No topo, o nome e o ano de alcance com a leitura embaixo. O gráfico traz a meta e o prazo; o resto aparece ao passar o mouse.</p>
+    <div class="quadro" data-opcao="a"></div>
+  </section>
+
+  <section class="opcao">
+    <h2>B · O card de Metas com o gráfico no lugar da barra</h2>
+    <p>Agrupado por leitura. O número grande à esquerda e “ritmo | necessário” à direita, como “atual | meta” no quadro de Metas.</p>
+    <div class="quadro" data-opcao="b"></div>
+  </section>
+
+  <section class="opcao">
+    <h2>C · Três por linha, gráfico enxuto</h2>
+    <p>Cards menores, sem eixo de valores: a cor do tracejado diz a leitura e o valor de cada ano sai ao passar o mouse.</p>
+    <div class="quadro" data-opcao="c"></div>
+  </section>
+
+  <section class="opcao">
+    <h2>D · Um gráfico por vez</h2>
+    <p>À esquerda, os cards de escolha com o ano; à direita, o gráfico grande da meta escolhida.</p>
+    <div class="quadro" data-opcao="d"></div>
+  </section>
+
+  <p class="porque"><b>Por que A.</b> Todas as metas ficam visíveis de uma vez, cada uma com o próprio gráfico, e o card só diz o que o gráfico não mostra à primeira vista: o ano de alcance. C cabe mais numa tela, mas perde o eixo; D é a mais leve, mas esconde as outras metas.</p>
+</div>
+
+<script>
+const DADOS = {"anoLimite":2050,"estados":{"TO":"Tocantins","AP":"Amapá","AM":"Amazonas","RO":"Rondônia","RR":"Roraima","MT":"Mato Grosso","AC":"Acre","PA":"Pará","MA":"Maranhão"},"ufs":["AC","AP","AM","MA","MT","PA","RO","RR","TO"],"metas":[{"codigo":"I1.1.2","nome":"UCs estaduais com plano de manejo e conselho gestor","unidade":"%","prazo":2035,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2026,"valor":21.1055,"alvo":40,"ritmo":null,"nec":2.09939,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,21.1055]]},"AC":{"classe":"cumprida","ano":2026,"valor":75,"alvo":40,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,75]]},"AP":{"classe":"cumprida","ano":2026,"valor":40,"alvo":40,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,40]]},"AM":{"classe":"semSerie","ano":2026,"valor":26.8,"alvo":40,"ritmo":null,"nec":1.46667,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,26.8]]},"MA":{"classe":"semSerie","ano":2026,"valor":15.4,"alvo":40,"ritmo":null,"nec":2.73333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,15.4]]},"MT":{"classe":"semSerie","ano":2026,"valor":10.5,"alvo":40,"ritmo":null,"nec":3.27778,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,10.5]]},"PA":{"classe":"semSerie","ano":2026,"valor":35.7,"alvo":40,"ritmo":null,"nec":0.477778,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,35.7]]},"RO":{"classe":"semSerie","ano":2026,"valor":8.2,"alvo":40,"ritmo":null,"nec":3.53333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,8.2]]},"RR":{"classe":"semSerie","ano":2026,"valor":0,"alvo":40,"ritmo":null,"nec":4.44444,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,0]]},"TO":{"classe":"semSerie","ano":2026,"valor":23.1,"alvo":40,"ritmo":null,"nec":1.87778,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,23.1]]}}},{"codigo":"I1.3.1","nome":"Vulnerabilidade climática municipal (IIVCM)","unidade":"pontos (0-100)","prazo":2050,"direcao":"menor","escopos":{"regional":{"classe":"semSerie","ano":2025,"valor":59.3189,"alvo":52.1,"ritmo":null,"nec":-0.288756,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.3189]]},"AC":{"classe":"semSerie","ano":2025,"valor":60.23,"alvo":52.1,"ritmo":null,"nec":-0.3252,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,60.23]]},"AP":{"classe":"semSerie","ano":2025,"valor":60.08,"alvo":52.1,"ritmo":null,"nec":-0.3192,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,60.08]]},"AM":{"classe":"semSerie","ano":2025,"valor":58.9,"alvo":52.1,"ritmo":null,"nec":-0.272,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,58.9]]},"MA":{"classe":"semSerie","ano":2025,"valor":59.21,"alvo":52.1,"ritmo":null,"nec":-0.2844,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.21]]},"MT":{"classe":"semSerie","ano":2025,"valor":59.21,"alvo":52.1,"ritmo":null,"nec":-0.2844,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.21]]},"PA":{"classe":"semSerie","ano":2025,"valor":59.52,"alvo":52.1,"ritmo":null,"nec":-0.2968,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.52]]},"RO":{"classe":"semSerie","ano":2025,"valor":59.31,"alvo":52.1,"ritmo":null,"nec":-0.2884,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.31]]},"RR":{"classe":"semSerie","ano":2025,"valor":57.77,"alvo":52.1,"ritmo":null,"nec":-0.2268,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,57.77]]},"TO":{"classe":"semSerie","ano":2025,"valor":59.64,"alvo":52.1,"ritmo":null,"nec":-0.3016,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,59.64]]}}},{"codigo":"I1.3.2","nome":"Desmatamento ilegal","unidade":"% / ha","prazo":2030,"direcao":"menor","escopos":{"regional":{"classe":"noRitmo","ano":2024,"valor":6518,"alvo":0,"ritmo":-1264,"nec":-1086.33,"alcance":2030,"acel":0.859441,"metodo":"linear","serie":[[2020,10851],[2021,13038],[2022,11594],[2023,9064],[2024,6518]]},"AC":{"classe":"noRitmo","ano":2024,"valor":449,"alvo":0,"ritmo":-80.2,"nec":-74.8333,"alcance":2030,"acel":0.933084,"metodo":"linear","serie":[[2020,706],[2021,889],[2022,840],[2023,601],[2024,449]]},"AP":{"classe":"contrario","ano":2024,"valor":27,"alvo":0,"ritmo":0.6,"nec":-4.5,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,24],[2021,17],[2022,14],[2023,17],[2024,27]]},"AM":{"classe":"acelerar","ano":2024,"valor":1223,"alvo":0,"ritmo":-127.4,"nec":-203.833,"alcance":2034,"acel":1.59995,"metodo":"linear","serie":[[2020,1512],[2021,2306],[2022,2594],[2023,1610],[2024,1223]]},"MA":{"classe":"acelerar","ano":2024,"valor":307,"alvo":0,"ritmo":-10.2,"nec":-51.1667,"alcance":2055,"acel":5.01634,"metodo":"linear","serie":[[2020,336],[2021,350],[2022,271],[2023,306],[2024,307]]},"MT":{"classe":"acelerar","ano":2024,"valor":1257,"alvo":0,"ritmo":-120.9,"nec":-209.5,"alcance":2035,"acel":1.73284,"metodo":"linear","serie":[[2020,1779],[2021,2213],[2022,1927],[2023,2048],[2024,1257]]},"PA":{"classe":"noRitmo","ano":2024,"valor":2395,"alvo":0,"ritmo":-694.7,"nec":-399.167,"alcance":2028,"acel":0.574589,"metodo":"linear","serie":[[2020,4899],[2021,5238],[2022,4162],[2023,3299],[2024,2395]]},"RO":{"classe":"noRitmo","ano":2024,"valor":360,"alvo":0,"ritmo":-263.2,"nec":-60,"alcance":2026,"acel":0.227964,"metodo":"linear","serie":[[2020,1273],[2021,1673],[2022,1480],[2023,867],[2024,360]]},"RR":{"classe":"contrario","ano":2024,"valor":468,"alvo":0,"ritmo":31.1,"nec":-78,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,297],[2021,315],[2022,279],[2023,284],[2024,468]]},"TO":{"classe":"contrario","ano":2024,"valor":32,"alvo":0,"ritmo":0.9,"nec":-5.33333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,25],[2021,37],[2022,27],[2023,32],[2024,32]]}}},{"codigo":"I1.3.4","nome":"Focos de calor","unidade":"nº","prazo":2035,"direcao":"menor","escopos":{"regional":{"classe":"contrario","ano":2024,"valor":198972,"alvo":98543.3,"ritmo":11414,"nec":-9129.88,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,152745],[2016,131747],[2017,154734],[2018,93953],[2019,130249],[2020,154968],[2021,106851],[2022,150559],[2023,132983],[2024,198972]]},"AC":{"classe":"noRitmo","ano":2024,"valor":8658,"alvo":5478.69,"ritmo":-333.6,"nec":-289.028,"alcance":2034,"acel":0.866391,"metodo":"linear","serie":[[2015,5779],[2016,7684],[2017,6295],[2018,6626],[2019,6802],[2020,9193],[2021,8828],[2022,11840],[2023,6562],[2024,8658]]},"AP":{"classe":"contrario","ano":2024,"valor":2014,"alvo":1185.94,"ritmo":440.4,"nec":-75.2782,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,2936],[2016,2595],[2017,1946],[2018,1206],[2019,1277],[2020,750],[2021,676],[2022,990],[2023,2552],[2024,2014]]},"AM":{"classe":"contrario","ano":2024,"valor":25499,"alvo":11080.5,"ritmo":2229.3,"nec":-1310.77,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,13419],[2016,11173],[2017,11685],[2018,11446],[2019,12676],[2020,16729],[2021,14848],[2022,21217],[2023,19601],[2024,25499]]},"MA":{"classe":"contrario","ano":2024,"valor":22879,"alvo":14372.7,"ritmo":1716,"nec":-773.302,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,28436],[2016,21789],[2017,25576],[2018,13892],[2019,18521],[2020,16817],[2021,16077],[2022,20224],[2023,21113],[2024,22879]]},"MT":{"classe":"contrario","ano":2024,"valor":50551,"alvo":21468.9,"ritmo":488.9,"nec":-2643.82,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,27741],[2016,27305],[2017,30911],[2018,18032],[2019,31169],[2020,47708],[2021,22520],[2022,29039],[2023,21723],[2024,50551]]},"PA":{"classe":"contrario","ano":2024,"valor":56070,"alvo":26291.2,"ritmo":5377.3,"nec":-2707.17,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,43164],[2016,29724],[2017,49770],[2018,22080],[2019,30165],[2020,38603],[2021,22876],[2022,41421],[2023,41715],[2024,56070]]},"RO":{"classe":"noRitmo","ano":2024,"valor":10692,"alvo":7753.76,"ritmo":-351.9,"nec":-267.113,"alcance":2033,"acel":0.759059,"metodo":"linear","serie":[[2015,13113],[2016,13113],[2017,11313],[2018,10255],[2019,11230],[2020,11145],[2021,10030],[2022,12460],[2023,7417],[2024,10692]]},"RR":{"classe":"contrario","ano":2024,"valor":5358,"alvo":1904.91,"ritmo":852.6,"nec":-313.917,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,2452],[2016,3870],[2017,1565],[2018,2383],[2019,4784],[2020,1930],[2021,989],[2022,1223],[2023,2659],[2024,5358]]},"TO":{"classe":"contrario","ano":2024,"valor":17251,"alvo":9006.69,"ritmo":995,"nec":-749.483,"alcance":null,"acel":null,"metodo":"linear","serie":[[2015,15705],[2016,14494],[2017,15673],[2018,8033],[2019,13625],[2020,12093],[2021,10007],[2022,12145],[2023,9641],[2024,17251]]}}},{"codigo":"I2.1.1","nome":"Pobreza (CadÚnico)","unidade":"%","prazo":2050,"direcao":"menor","escopos":{"regional":{"classe":"semSerie","ano":2024,"valor":14.0333,"alvo":3,"ritmo":null,"nec":-0.424356,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,14.0333]]},"AC":{"classe":"semSerie","ano":2024,"valor":18,"alvo":3,"ritmo":null,"nec":-0.576923,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,18]]},"AP":{"classe":"semSerie","ano":2024,"valor":11.2,"alvo":3,"ritmo":null,"nec":-0.315385,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,11.2]]},"AM":{"classe":"semSerie","ano":2024,"valor":14,"alvo":3,"ritmo":null,"nec":-0.423077,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,14]]},"MA":{"classe":"semSerie","ano":2024,"valor":22.1,"alvo":3,"ritmo":null,"nec":-0.734615,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,22.1]]},"MT":{"classe":"semSerie","ano":2024,"valor":3.3,"alvo":3,"ritmo":null,"nec":-0.0115385,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,3.3]]},"PA":{"classe":"semSerie","ano":2024,"valor":14.8,"alvo":3,"ritmo":null,"nec":-0.453846,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,14.8]]},"RO":{"classe":"semSerie","ano":2024,"valor":5.5,"alvo":3,"ritmo":null,"nec":-0.0961538,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,5.5]]},"RR":{"classe":"semSerie","ano":2024,"valor":14.3,"alvo":3,"ritmo":null,"nec":-0.434615,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,14.3]]},"TO":{"classe":"semSerie","ano":2024,"valor":9.1,"alvo":3,"ritmo":null,"nec":-0.234615,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,9.1]]}}},{"codigo":"I2.3.1","nome":"IDEB","unidade":"%","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2025,"valor":49.4962,"alvo":100,"ritmo":null,"nec":2.02015,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,32.9928],[2025,49.4962]]},"AC":{"classe":"semSerie","ano":2025,"valor":44.62,"alvo":100,"ritmo":null,"nec":2.2152,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,34.38],[2025,44.62]]},"AP":{"classe":"semSerie","ano":2025,"valor":41.3,"alvo":100,"ritmo":null,"nec":2.348,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,25.64],[2025,41.3]]},"AM":{"classe":"semSerie","ano":2025,"valor":44.62,"alvo":100,"ritmo":null,"nec":2.2152,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,26.49],[2025,44.62]]},"MA":{"classe":"semSerie","ano":2025,"valor":45.58,"alvo":100,"ritmo":null,"nec":2.1768,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,30.05],[2025,45.58]]},"MT":{"classe":"semSerie","ano":2025,"valor":66.75,"alvo":100,"ritmo":null,"nec":1.33,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,51.25],[2025,66.75]]},"PA":{"classe":"semSerie","ano":2025,"valor":66.12,"alvo":100,"ritmo":null,"nec":1.3552,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,43.29],[2025,66.12]]},"RO":{"classe":"semSerie","ano":2025,"valor":39.22,"alvo":100,"ritmo":null,"nec":2.4312,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,18.18],[2025,39.22]]},"RR":{"classe":"semSerie","ano":2025,"valor":23.08,"alvo":100,"ritmo":null,"nec":3.0768,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,13.51],[2025,23.08]]},"TO":{"classe":"semSerie","ano":2025,"valor":31.39,"alvo":100,"ritmo":null,"nec":2.7444,"alcance":null,"acel":null,"metodo":"linear","serie":[[2023,19.7],[2025,31.39]]}}},{"codigo":"I2.3.2","nome":"Atendimento escolar 4-17 anos","unidade":"%","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2024,"valor":96.3869,"alvo":100,"ritmo":null,"nec":0.138967,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,96.3869]]},"AC":{"classe":"semSerie","ano":2024,"valor":94.2,"alvo":100,"ritmo":null,"nec":0.223077,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,94.2]]},"AP":{"classe":"semSerie","ano":2024,"valor":92.9,"alvo":100,"ritmo":null,"nec":0.273077,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,92.9]]},"AM":{"classe":"semSerie","ano":2024,"valor":95.6,"alvo":100,"ritmo":null,"nec":0.169231,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,95.6]]},"MA":{"classe":"semSerie","ano":2024,"valor":96.9,"alvo":100,"ritmo":null,"nec":0.119231,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,96.9]]},"MT":{"classe":"semSerie","ano":2024,"valor":97.5,"alvo":100,"ritmo":null,"nec":0.0961538,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,97.5]]},"PA":{"classe":"semSerie","ano":2024,"valor":96.4,"alvo":100,"ritmo":null,"nec":0.138462,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,96.4]]},"RO":{"classe":"semSerie","ano":2024,"valor":96,"alvo":100,"ritmo":null,"nec":0.153846,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,96]]},"RR":{"classe":"semSerie","ano":2024,"valor":94.4,"alvo":100,"ritmo":null,"nec":0.215385,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,94.4]]},"TO":{"classe":"semSerie","ano":2024,"valor":97.8,"alvo":100,"ritmo":null,"nec":0.0846154,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,97.8]]}}},{"codigo":"I2.4.1","nome":"Crimes Violentos Letais Intencionais (CVLI)","unidade":"taxa / 100 mil","prazo":2050,"direcao":"menor","escopos":{"regional":{"classe":"noRitmo","ano":2025,"valor":21.0883,"alvo":10,"ritmo":-1.53703,"nec":-0.443532,"alcance":2033,"acel":0.288564,"metodo":"linear","serie":[[2020,25.6553],[2021,27.2001],[2022,26.914],[2023,25.6587],[2024,23.7673],[2025,21.0883]]},"AC":{"classe":"noRitmo","ano":2025,"valor":19.3358,"alvo":10,"ritmo":-0.565373,"nec":-0.37343,"alcance":2042,"acel":0.660502,"metodo":"linear","serie":[[2020,31.887],[2021,19.4488],[2022,23.6326],[2023,20.8057],[2024,18.205],[2025,19.3358]]},"AP":{"classe":"noRitmo","ano":2025,"valor":24.178,"alvo":10,"ritmo":-2.92616,"nec":-0.567122,"alcance":2030,"acel":0.193811,"metodo":"linear","serie":[[2020,32.3614],[2021,38.9328],[2022,27.5258],[2023,41.0407],[2024,27.7737],[2025,24.178]]},"AM":{"classe":"noRitmo","ano":2025,"valor":17.1001,"alvo":10,"ritmo":-4.46592,"nec":-0.284003,"alcance":2027,"acel":0.0635935,"metodo":"linear","serie":[[2020,23.3477],[2021,35.8199],[2022,32.6961],[2023,30.6367],[2024,25.4766],[2025,17.1001]]},"MA":{"classe":"contrario","ano":2025,"valor":26.9299,"alvo":10,"ritmo":0.379014,"nec":-0.677198,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,26.8444],[2021,26.7875],[2022,24.7356],[2023,25.4766],[2024,28.2408],[2025,26.9299]]},"MT":{"classe":"noRitmo","ano":2025,"valor":17.8752,"alvo":10,"ritmo":-0.362127,"nec":-0.315009,"alcance":2047,"acel":0.869884,"metodo":"linear","serie":[[2020,20.6233],[2021,19.2364],[2022,23.5254],[2023,22.9347],[2024,22.6265],[2025,17.8752]]},"PA":{"classe":"noRitmo","ano":2025,"valor":20.1694,"alvo":10,"ritmo":-2.0422,"nec":-0.406778,"alcance":2030,"acel":0.199186,"metodo":"linear","serie":[[2020,27.1145],[2021,27.5278],[2022,27.6196],[2023,24.6809],[2024,21.9143],[2025,20.1694]]},"RO":{"classe":"noRitmo","ano":2025,"valor":23.9733,"alvo":10,"ritmo":-0.559377,"nec":-0.558931,"alcance":2050,"acel":0.999204,"metodo":"linear","serie":[[2020,22.2609],[2021,25.229],[2022,27.8547],[2023,24.2587],[2024,24.7724],[2025,23.9733]]},"RR":{"classe":"noRitmo","ano":2025,"valor":18.815,"alvo":10,"ritmo":-3.04559,"nec":-0.3526,"alcance":2028,"acel":0.115774,"metodo":"linear","serie":[[2020,25.583],[2021,29.6438],[2022,25.1769],[2023,21.3868],[2024,16.3785],[2025,18.815]]},"TO":{"classe":"noRitmo","ano":2025,"valor":16.3216,"alvo":10,"ritmo":-2.35686,"nec":-0.252862,"alcance":2028,"acel":0.107288,"metodo":"linear","serie":[[2020,27.9168],[2021,22.6863],[2022,26.5304],[2023,23.3795],[2024,15.6914],[2025,16.3216]]}}},{"codigo":"I4.1.1","nome":"Conectividade digital (IBC-AMZ)","unidade":"0 a 100","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"noRitmo","ano":2025,"valor":54.0316,"alvo":80,"ritmo":4.86715,"nec":1.03874,"alcance":2031,"acel":0.213418,"metodo":"linear","serie":[[2021,36.2641],[2022,38.2307],[2023,38.9446],[2024,51.3672],[2025,54.0316]]},"AC":{"classe":"noRitmo","ano":2025,"valor":52.43,"alvo":80,"ritmo":4.774,"nec":1.1028,"alcance":2031,"acel":0.231001,"metodo":"linear","serie":[[2021,33.41],[2022,41.62],[2023,41.71],[2024,51.32],[2025,52.43]]},"AP":{"classe":"noRitmo","ano":2025,"valor":54.89,"alvo":80,"ritmo":3.313,"nec":1.0044,"alcance":2033,"acel":0.303169,"metodo":"linear","serie":[[2021,39.14],[2022,53.11],[2023,58.67],[2024,54.74],[2025,54.89]]},"AM":{"classe":"noRitmo","ano":2025,"valor":46.74,"alvo":80,"ritmo":4.363,"nec":1.3304,"alcance":2033,"acel":0.304928,"metodo":"linear","serie":[[2021,30.94],[2022,32.89],[2023,34.2],[2024,44.92],[2025,46.74]]},"MA":{"classe":"noRitmo","ano":2025,"valor":55.56,"alvo":80,"ritmo":8.444,"nec":0.9776,"alcance":2028,"acel":0.115775,"metodo":"linear","serie":[[2021,26.88],[2022,25.28],[2023,25.59],[2024,52.36],[2025,55.56]]},"MT":{"classe":"contrario","ano":2025,"valor":61.31,"alvo":80,"ritmo":-0.818,"nec":0.7476,"alcance":null,"acel":null,"metodo":"linear","serie":[[2021,63.62],[2022,61.12],[2023,62.59],[2024,57.56],[2025,61.31]]},"PA":{"classe":"noRitmo","ano":2025,"valor":53.05,"alvo":80,"ritmo":5.611,"nec":1.078,"alcance":2030,"acel":0.192123,"metodo":"linear","serie":[[2021,32.13],[2022,36.25],[2023,36.28],[2024,50.52],[2025,53.05]]},"RO":{"classe":"noRitmo","ano":2025,"valor":58.45,"alvo":80,"ritmo":3.722,"nec":0.862,"alcance":2031,"acel":0.231596,"metodo":"linear","serie":[[2021,43.02],[2022,49.24],[2023,51.43],[2024,55.6],[2025,58.45]]},"RR":{"classe":"noRitmo","ano":2025,"valor":46.53,"alvo":80,"ritmo":3.716,"nec":1.3388,"alcance":2035,"acel":0.36028,"metodo":"linear","serie":[[2021,33.94],[2022,31.76],[2023,27.92],[2024,43.74],[2025,46.53]]},"TO":{"classe":"noRitmo","ano":2025,"valor":53.73,"alvo":80,"ritmo":2.929,"nec":1.0508,"alcance":2034,"acel":0.358757,"metodo":"linear","serie":[[2021,41.59],[2022,46.17],[2023,47.32],[2024,51.18],[2025,53.73]]}}},{"codigo":"I4.2.1","nome":"Adequação e trafegabilidade de transportes","unidade":"%","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2025,"valor":46.4417,"alvo":65,"ritmo":null,"nec":0.742333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,46.4417]]},"AC":{"classe":"semSerie","ano":2025,"valor":16.23,"alvo":65,"ritmo":null,"nec":1.9508,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,16.23]]},"AP":{"classe":"semSerie","ano":2025,"valor":50,"alvo":65,"ritmo":null,"nec":0.6,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,50]]},"AM":{"classe":"semSerie","ano":2025,"valor":38.58,"alvo":65,"ritmo":null,"nec":1.0568,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,38.58]]},"MA":{"classe":"semSerie","ano":2025,"valor":43.88,"alvo":65,"ritmo":null,"nec":0.8448,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,43.88]]},"MT":{"classe":"semSerie","ano":2025,"valor":50,"alvo":65,"ritmo":null,"nec":0.6,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,50]]},"PA":{"classe":"semSerie","ano":2025,"valor":47.86,"alvo":65,"ritmo":null,"nec":0.6856,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,47.86]]},"RO":{"classe":"semSerie","ano":2025,"valor":49.89,"alvo":65,"ritmo":null,"nec":0.6044,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,49.89]]},"RR":{"classe":"semSerie","ano":2025,"valor":50.59,"alvo":65,"ritmo":null,"nec":0.5764,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,50.59]]},"TO":{"classe":"semSerie","ano":2025,"valor":49.88,"alvo":65,"ritmo":null,"nec":0.6048,"alcance":null,"acel":null,"metodo":"linear","serie":[[2025,49.88]]}}},{"codigo":"I4.3.2","nome":"Participação de renováveis (PER)","unidade":"%","prazo":2035,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2026,"valor":60.9444,"alvo":80,"ritmo":null,"nec":2.11728,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,60.9444]]},"AC":{"classe":"semSerie","ano":2026,"valor":1.6,"alvo":80,"ritmo":null,"nec":8.71111,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,1.6]]},"AP":{"classe":"cumprida","ano":2026,"valor":97.3,"alvo":80,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,97.3]]},"AM":{"classe":"semSerie","ano":2026,"valor":11.8,"alvo":80,"ritmo":null,"nec":7.57778,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,11.8]]},"MA":{"classe":"semSerie","ano":2026,"valor":40.7,"alvo":80,"ritmo":null,"nec":4.36667,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,40.7]]},"MT":{"classe":"cumprida","ano":2026,"valor":86.5,"alvo":80,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,86.5]]},"PA":{"classe":"cumprida","ano":2026,"valor":98.6,"alvo":80,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,98.6]]},"RO":{"classe":"cumprida","ano":2026,"valor":95,"alvo":80,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,95]]},"RR":{"classe":"semSerie","ano":2026,"valor":17.9,"alvo":80,"ritmo":null,"nec":6.9,"alcance":null,"acel":null,"metodo":"linear","serie":[[2026,17.9]]},"TO":{"classe":"cumprida","ano":2026,"valor":99.1,"alvo":80,"ritmo":null,"nec":null,"alcance":2026,"acel":null,"metodo":"linear","serie":[[2026,99.1]]}}},{"codigo":"I4.4.1","nome":"Saneamento básico e gestão de riscos (ISGR)","unidade":"%","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2022,"valor":47.23,"alvo":80,"ritmo":null,"nec":1.17036,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,47.23]]},"AC":{"classe":"semSerie","ano":2022,"valor":49.33,"alvo":80,"ritmo":null,"nec":1.09536,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,49.33]]},"AP":{"classe":"semSerie","ano":2022,"valor":48.61,"alvo":80,"ritmo":null,"nec":1.12107,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,48.61]]},"AM":{"classe":"semSerie","ano":2022,"valor":50.44,"alvo":80,"ritmo":null,"nec":1.05571,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,50.44]]},"MA":{"classe":"semSerie","ano":2022,"valor":41.31,"alvo":80,"ritmo":null,"nec":1.38179,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,41.31]]},"MT":{"classe":"semSerie","ano":2022,"valor":56.67,"alvo":80,"ritmo":null,"nec":0.833214,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,56.67]]},"PA":{"classe":"semSerie","ano":2022,"valor":45.47,"alvo":80,"ritmo":null,"nec":1.23321,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,45.47]]},"RO":{"classe":"semSerie","ano":2022,"valor":38.83,"alvo":80,"ritmo":null,"nec":1.47036,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,38.83]]},"RR":{"classe":"semSerie","ano":2022,"valor":68.97,"alvo":80,"ritmo":null,"nec":0.393929,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,68.97]]},"TO":{"classe":"semSerie","ano":2022,"valor":48.45,"alvo":80,"ritmo":null,"nec":1.12679,"alcance":null,"acel":null,"metodo":"linear","serie":[[2022,48.45]]}}},{"codigo":"I4.4.2","nome":"Capacidade adaptativa urbana","unidade":"% de municípios","prazo":2035,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2020,"valor":2.45796,"alvo":80,"ritmo":null,"nec":5.16947,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,2.45796]]},"AC":{"classe":"semSerie","ano":2020,"valor":4.55,"alvo":80,"ritmo":null,"nec":5.03,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,4.55]]},"AP":{"classe":"semSerie","ano":2020,"valor":0,"alvo":80,"ritmo":null,"nec":5.33333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,0]]},"AM":{"classe":"semSerie","ano":2020,"valor":1.61,"alvo":80,"ritmo":null,"nec":5.226,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,1.61]]},"MA":{"classe":"semSerie","ano":2020,"valor":1.1,"alvo":80,"ritmo":null,"nec":5.26,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,1.1]]},"MT":{"classe":"semSerie","ano":2020,"valor":6.34,"alvo":80,"ritmo":null,"nec":4.91067,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,6.34]]},"PA":{"classe":"semSerie","ano":2020,"valor":1.39,"alvo":80,"ritmo":null,"nec":5.24067,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,1.39]]},"RO":{"classe":"semSerie","ano":2020,"valor":1.92,"alvo":80,"ritmo":null,"nec":5.20533,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,1.92]]},"RR":{"classe":"semSerie","ano":2020,"valor":0,"alvo":80,"ritmo":null,"nec":5.33333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,0]]},"TO":{"classe":"semSerie","ano":2020,"valor":2.16,"alvo":80,"ritmo":null,"nec":5.18933,"alcance":null,"acel":null,"metodo":"linear","serie":[[2020,2.16]]}}},{"codigo":"I5.4.1","nome":"Dispêndio em P&D (% do PIB estadual)","unidade":"% do PIB","prazo":2050,"direcao":"maior","escopos":{"regional":{"classe":"semSerie","ano":2024,"valor":0.0629111,"alvo":1,"ritmo":null,"nec":0.0360419,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0629111]]},"AC":{"classe":"semSerie","ano":2024,"valor":0.0558,"alvo":1,"ritmo":null,"nec":0.0363154,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0558]]},"AP":{"classe":"semSerie","ano":2024,"valor":0.0199,"alvo":1,"ritmo":null,"nec":0.0376962,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0199]]},"AM":{"classe":"semSerie","ano":2024,"valor":0.1329,"alvo":1,"ritmo":null,"nec":0.03335,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.1329]]},"MA":{"classe":"semSerie","ano":2024,"valor":0.0916,"alvo":1,"ritmo":null,"nec":0.0349385,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0916]]},"MT":{"classe":"semSerie","ano":2024,"valor":0.0442,"alvo":1,"ritmo":null,"nec":0.0367615,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0442]]},"PA":{"classe":"semSerie","ano":2024,"valor":0.0663,"alvo":1,"ritmo":null,"nec":0.0359115,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0663]]},"RO":{"classe":"semSerie","ano":2024,"valor":0.0129,"alvo":1,"ritmo":null,"nec":0.0379654,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.0129]]},"RR":{"classe":"semSerie","ano":2024,"valor":0.1196,"alvo":1,"ritmo":null,"nec":0.0338615,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.1196]]},"TO":{"classe":"semSerie","ano":2024,"valor":0.023,"alvo":1,"ritmo":null,"nec":0.0375769,"alcance":null,"acel":null,"metodo":"linear","serie":[[2024,0.023]]}}},{"codigo":"I5.5.2","nome":"Transparência pública (EBT 360)","unidade":"0 a 10","prazo":2050,"direcao":"maior","escopos":{"regional":null,"AC":{"classe":"semSerie","ano":2020,"valor":6.53,"alvo":9,"ritmo":null,"nec":0.0823333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,6.67],[2020,6.53]]},"AP":{"classe":"cumprida","ano":2020,"valor":9.83,"alvo":9,"ritmo":null,"nec":null,"alcance":2020,"acel":null,"metodo":"linear","serie":[[2018,5.99],[2020,9.83]]},"AM":{"classe":"semSerie","ano":2020,"valor":8.67,"alvo":9,"ritmo":null,"nec":0.011,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,7.25],[2020,8.67]]},"MA":{"classe":"semSerie","ano":2020,"valor":8.96,"alvo":9,"ritmo":null,"nec":0.00133333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,7.74],[2020,8.96]]},"MT":{"classe":"cumprida","ano":2020,"valor":9.74,"alvo":9,"ritmo":null,"nec":null,"alcance":2020,"acel":null,"metodo":"linear","serie":[[2018,8.87],[2020,9.74]]},"PA":{"classe":"semSerie","ano":2020,"valor":5.92,"alvo":9,"ritmo":null,"nec":0.102667,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,7.47],[2020,5.92]]},"RO":{"classe":"cumprida","ano":2020,"valor":9.6,"alvo":9,"ritmo":null,"nec":null,"alcance":2020,"acel":null,"metodo":"linear","serie":[[2018,8.8],[2020,9.6]]},"RR":{"classe":"semSerie","ano":2020,"valor":4.91,"alvo":9,"ritmo":null,"nec":0.136333,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,6.55],[2020,4.91]]},"TO":{"classe":"semSerie","ano":2020,"valor":6.96,"alvo":9,"ritmo":null,"nec":0.068,"alcance":null,"acel":null,"metodo":"linear","serie":[[2018,8.54],[2020,6.96]]}}}]};
+
+const ORDEM = { contrario: 0, acelerar: 1, noRitmo: 2 };
+const LEITURA = { noRitmo: 'no ritmo', acelerar: 'abaixo do ritmo', contrario: 'não alcança' };
+const COR = { noRitmo: '#3e6e57', acelerar: '#e0a83c', contrario: '#c0451f' };
+const FIM = DADOS.anoLimite;
+let escopo = 'regional';
+let escolhidaD = null;
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function numero(v, casas) {
+  if (!Number.isFinite(v)) return '—';
+  if (v === 0) return '0';
+  const m = Math.abs(v);
+  if (m >= 10000) return new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(v);
+  return new Intl.NumberFormat('pt-BR', { maximumFractionDigits: casas ?? (m >= 100 ? 0 : m >= 10 ? 1 : 2) }).format(v);
+}
+const valor = (v, unidade) => /^%(\s+d[oa]\s|$)/.test(String(unidade || '').trim()) ? `${numero(v)}%` : numero(v);
+const comSinal = (v, unidade) => `${v > 0 ? '+' : '−'}${valor(Math.abs(v), unidade)}`;
+const anoDe = (i) => i.alcance > FIM ? `> ${FIM}` : String(i.alcance);
+
+function partes() {
+  const com = [], cumpridas = [], sem = [];
+  for (const m of DADOS.metas) {
+    const i = m.escopos[escopo];
+    if (i && ORDEM[i.classe] !== undefined) com.push({ m, i });
+    else if (i && i.classe === 'cumprida') cumpridas.push(m);
+    else sem.push(m);
+  }
+  com.sort((a, b) => ORDEM[a.i.classe] - ORDEM[b.i.classe] || a.m.codigo.localeCompare(b.m.codigo));
+  return { com, cumpridas, sem };
+}
+function fecho(cumpridas, sem) {
+  return `<div class="fecho">${cumpridas.length ? `<p><b>Já cumpridas:</b> ${cumpridas.map((m) => esc(m.nome)).join(' · ')}</p>` : ''}${sem.length
+    ? `<details><summary>${sem.length} metas ainda sem série para projetar</summary><p>${sem.map((m) => esc(m.nome)).join(' · ')}</p></details>` : ''}</div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Gráfico: série medida em linha cheia com área, projeção tracejada na cor da
+// leitura, linha da meta e marca do prazo. Cada ano, medido ou projetado, tem
+// uma área de toque que leva o marcador e a dica até ele.
+// ---------------------------------------------------------------------------
+function marcasDoEixo(minimo, maximo) {
+  const baixo = Math.min(0, minimo), alto = Math.max(0, maximo);
+  const bruto = (alto - baixo || 1) / 4;
+  const ordem = 10 ** Math.floor(Math.log10(bruto));
+  const passo = [1, 2, 2.5, 5, 10].map((k) => k * ordem).find((p) => p >= bruto * (1 - 1e-9));
+  const inicio = Math.floor(baixo / passo) * passo;
+  const fim = Math.max(inicio + passo, Math.ceil(alto / passo) * passo);
+  const marcas = [];
+  for (let k = 0; inicio + k * passo <= fim + passo * 1e-6; k += 1) marcas.push(Number((inicio + k * passo).toPrecision(12)));
+  return marcas;
+}
+
+function projecaoDe(m, i) {
+  // O ritmo parte do último valor medido (pipeline/trajetoria.mjs).
+  const reta = (ano) => i.valor + i.ritmo * (ano - i.ano);
+  if (i.classe === 'contrario') {
+    const ate = Math.max(m.prazo, i.ano + 1);
+    return { ate, fimX: ate, fimY: reta(ate), chega: false, reta };
+  }
+  const exato = i.ano + (i.alvo - i.valor) / i.ritmo; // ano, com fração, em que a reta cruza a meta
+  if (exato <= FIM) return { ate: i.alcance, fimX: exato, fimY: i.alvo, chega: true, reta };
+  return { ate: FIM, fimX: FIM, fimY: reta(FIM), chega: false, reta };
+}
+
+function grafico(m, i, { W, H, eixoY }) {
+  const serie = i.serie;
+  const p = projecaoDe(m, i);
+  const cor = COR[i.classe];
+  const valores = [...serie.map(([, v]) => v), i.alvo, p.fimY];
+  const marcas = marcasDoEixo(Math.min(...valores), Math.max(...valores));
+  const rotY = (v) => numero(v);
+  const y0 = 10, y1 = H - 24;
+  const x0 = eixoY ? Math.max(26, Math.max(...marcas.map((v) => rotY(v).length)) * 6.4 + 10) : 4;
+  const x1 = W - 6;
+  const a0 = serie[0][0], a1 = FIM;
+  const px = (ano) => x0 + (ano - a0) / (a1 - a0) * (x1 - x0);
+  const vMin = marcas[0], vMax = marcas.at(-1);
+  const py = (v) => y1 - (v - vMin) / (vMax - vMin || 1) * (y1 - y0);
+  const f = (n) => n.toFixed(1);
+
+  const grade = eixoY
+    ? marcas.map((v) => `<line x1="${x0}" x2="${x1}" y1="${f(py(v))}" y2="${f(py(v))}"${v === 0 ? ' class="zero"' : ''}/><text x="${f(x0 - 6)}" y="${f(py(v) + 4)}" text-anchor="end">${rotY(v)}</text>`).join('')
+    : `<line x1="${x0}" x2="${x1}" y1="${f(py(Math.max(vMin, 0)))}" y2="${f(py(Math.max(vMin, 0)))}" class="zero"/>`;
+  const pts = serie.map(([a, v]) => `${f(px(a))},${f(py(v))}`).join(' ');
+  const base = f(py(Math.max(vMin, 0)));
+  const ult = serie.at(-1);
+  // Meta: linha fina com o valor escrito uma vez, na ponta direita.
+  const yMeta = py(i.alvo);
+  const meta = `<line class="meta" x1="${x0}" x2="${x1}" y1="${f(yMeta)}" y2="${f(yMeta)}"/><text x="${x1}" y="${f(yMeta > y0 + 14 ? yMeta - 5 : yMeta + 13)}" text-anchor="end" class="forte">meta ${valor(i.alvo, m.unidade)}</text>`;
+  const prazo = m.prazo < FIM ? `<line class="prazo" x1="${f(px(m.prazo))}" x2="${f(px(m.prazo))}" y1="${y0}" y2="${y1}"/>` : '';
+  const anos = [...new Set([a0, m.prazo, FIM])].map((a) => `<text x="${f(px(a))}" y="${H - 6}" text-anchor="${a === a0 ? 'start' : a === FIM ? 'end' : 'middle'}"${a === m.prazo ? ' class="forte"' : ''}>${a === m.prazo && a !== FIM ? `prazo ${a}` : a}</text>`).join('');
+  const proj = `<line class="proj" x1="${f(px(ult[0]))}" y1="${f(py(ult[1]))}" x2="${f(px(p.fimX))}" y2="${f(py(p.fimY))}" stroke="${cor}"/>`;
+  const chega = p.chega ? `<circle class="chega" cx="${f(px(p.fimX))}" cy="${f(py(p.fimY))}" r="5" fill="${cor}"/>` : '';
+
+  // Pontos de leitura: anos medidos e, depois do último, os anos projetados.
+  const leitura = serie.map(([a, v]) => ({ a, v, proj: false }));
+  for (let a = ult[0] + 1; a <= p.ate; a += 1) {
+    let v = p.reta(a);
+    if (p.chega && (i.ritmo > 0 ? v > i.alvo : v < i.alvo)) v = i.alvo;
+    leitura.push({ a, v, proj: true });
+  }
+  const alvos = leitura.map((pt, k) => {
+    const x = px(pt.a);
+    const antes = k ? (px(leitura[k - 1].a) + x) / 2 : x0 - 4;
+    const depois = k < leitura.length - 1 ? (x + px(leitura[k + 1].a)) / 2 : x1 + 4;
+    const texto = `${pt.a} · ${valor(pt.v, m.unidade)}${pt.proj ? ' <small>projeção</small>' : ''}`;
+    return `<rect class="alvo" x="${f(antes)}" y="0" width="${f(depois - antes)}" height="${y1 + 4}" data-x="${f(x)}" data-y="${f(py(pt.v))}" data-cor="${pt.proj ? cor : '#0e2b22'}" data-dica="${esc(texto)}"/>`;
+  }).join('');
+
+  return `<div class="graf" tabindex="0" role="group" aria-label="${esc(`${m.nome}: ${valor(ult[1], m.unidade)} em ${ult[0]}; meta ${valor(i.alvo, m.unidade)} até ${m.prazo}. Use as setas para percorrer os anos.`)}">
+    <svg viewBox="0 0 ${W} ${H}" aria-hidden="true">
+      <g class="grade">${grade}</g>
+      ${prazo}
+      <polygon class="area" points="${f(px(a0))},${base} ${pts} ${f(px(ult[0]))},${base}"/>
+      ${meta}
+      <polyline class="obs" points="${pts}"/>
+      ${proj}
+      <circle class="hoje" cx="${f(px(ult[0]))}" cy="${f(py(ult[1]))}" r="3.5"/>
+      ${chega}
+      <g>${anos}</g>
+      <g class="marcador"><line y1="${y0 - 2}" y2="${y1}"/><circle r="4.5"/></g>
+      ${alvos}
+    </svg>
+    <div class="dica" hidden></div>
+  </div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Opções
+// ---------------------------------------------------------------------------
+// No celular o viewBox fica estreito, para o texto do gráfico não encolher junto.
+const estreita = matchMedia('(max-width:760px)');
+const tamanho = (largo, alto, altoEstreito) => (estreita.matches ? { W: 340, H: altoEstreito } : { W: largo, H: alto });
+estreita.addEventListener('change', () => renderTudo());
+
+const lerAno = (i) => i.classe === 'contrario'
+  ? `<span class="ler"><b>—</b><small>não alcança</small></span>`
+  : `<span class="ler"><b>${anoDe(i)}</b><small>${LEITURA[i.classe]}</small></span>`;
+
+function cardA({ m, i }) {
+  return `<article class="card is-${i.classe}">
+    <div class="card-topo"><h3 class="card-nome">${esc(m.nome)}</h3>${lerAno(i)}</div>
+    ${grafico(m, i, { ...tamanho(520, 200, 170), eixoY: true })}
+  </article>`;
+}
+
+function cardB({ m, i }) {
+  const ler = i.classe === 'contrario' ? '<span class="ler"><b>—</b></span>' : `<span class="ler"><b class="${i.alcance > FIM ? 'longo' : ''}">${anoDe(i)}</b><small>alcance</small></span>`;
+  const nec = Number.isFinite(i.nec) ? comSinal(i.nec, m.unidade) : '—';
+  return `<article class="card card-metas is-${i.classe}">
+    ${ler}
+    <div class="card-topo">
+      <h3 class="card-nome">${esc(m.nome)}</h3>
+      <span class="stats">
+        <span class="stat"><span>ritmo</span><b>${comSinal(i.ritmo, m.unidade)}</b><small>por ano</small></span>
+        <span class="stat is-meta"><span>necessário</span><b>${nec}</b><small>até ${m.prazo}</small></span>
+      </span>
+    </div>
+    ${grafico(m, i, { ...tamanho(520, 170, 150), eixoY: true })}
+  </article>`;
+}
+
+function cardC({ m, i }) {
+  const ler = i.classe === 'contrario' ? '<span class="ler"><b>—</b></span>' : `<span class="ler"><b>${anoDe(i)}</b></span>`;
+  return `<article class="card compacto is-${i.classe}">
+    <div class="card-topo"><h3 class="card-nome">${esc(m.nome)}</h3>${ler}</div>
+    ${grafico(m, i, { W: 340, H: 132, eixoY: false })}
+  </article>`;
+}
+
+function porGrupo(com, card) {
+  return ['contrario', 'acelerar', 'noRitmo'].map((c) => [c, com.filter(({ i }) => i.classe === c)]).filter(([, l]) => l.length)
+    .map(([c, lista]) => `<p class="faixa"><i style="background:${COR[c]}"></i>${LEITURA[c]}</p><div class="cards duas">${lista.map(card).join('')}</div>`).join('');
+}
+
+function renderD(com) {
+  if (!com.length) return '';
+  if (!com.some(({ m }) => m.codigo === escolhidaD)) escolhidaD = com[0].m.codigo;
+  const atual = com.find(({ m }) => m.codigo === escolhidaD);
+  const escolhas = com.map(({ m, i }) => `<button type="button" class="escolha is-${i.classe}" data-escolha="${m.codigo}" aria-pressed="${m.codigo === escolhidaD}">
+      <span>${esc(m.nome)}</span><b>${i.classe === 'contrario' ? 'não alcança' : anoDe(i)}</b></button>`).join('');
+  const { m, i } = atual;
+  return `<div class="destaque">
+    <div class="escolhas">${escolhas}</div>
+    <article class="card is-${i.classe}">
+      <div class="card-topo"><h3 class="card-nome">${esc(m.nome)}</h3>${lerAno(i)}</div>
+      ${grafico(m, i, { ...tamanho(760, 280, 190), eixoY: true })}
+    </article>
+  </div>`;
+}
+
+function renderTudo() {
+  const { com, cumpridas, sem } = partes();
+  const f = fecho(cumpridas, sem);
+  document.querySelector('[data-opcao="a"]').innerHTML = `<div class="cards duas">${com.map(cardA).join('')}</div>${f}`;
+  document.querySelector('[data-opcao="b"]').innerHTML = porGrupo(com, cardB) + f;
+  document.querySelector('[data-opcao="c"]').innerHTML = `<ul class="legenda">${['noRitmo', 'acelerar', 'contrario'].filter((c) => com.some(({ i }) => i.classe === c))
+    .map((c) => `<li><i style="border-color:${COR[c]}"></i>${LEITURA[c]}</li>`).join('')}</ul><div class="cards tres">${com.map(cardC).join('')}</div>${f}`;
+  document.querySelector('[data-opcao="d"]').innerHTML = renderD(com) + f;
+  document.querySelectorAll('[data-recortes] button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.escopo === escopo)));
+}
+
+// ---------------------------------------------------------------------------
+// Interação: mouse, toque e setas do teclado
+// ---------------------------------------------------------------------------
+function mostra(alvo) {
+  const caixa = alvo.closest('.graf');
+  const svg = alvo.ownerSVGElement;
+  const dica = caixa.querySelector('.dica');
+  const marcador = svg.querySelector('.marcador');
+  const { x, y, cor } = alvo.dataset;
+  marcador.querySelector('line').setAttribute('x1', x);
+  marcador.querySelector('line').setAttribute('x2', x);
+  const c = marcador.querySelector('circle');
+  c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('stroke', cor);
+  marcador.classList.add('visivel');
+  dica.innerHTML = alvo.dataset.dica;
+  dica.hidden = false;
+  const escala = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+  const w = dica.offsetWidth, h = dica.offsetHeight, largura = caixa.offsetWidth;
+  const px = Number(x) * escala, py = Number(y) * escala;
+  dica.style.left = `${Math.max(0, Math.min(largura - w, px - w / 2))}px`;
+  dica.style.top = `${py - h - 10 < 0 ? py + 12 : py - h - 10}px`;
+  caixa.dataset.indice = [...svg.querySelectorAll('.alvo')].indexOf(alvo);
+}
+function esconde(caixa) {
+  caixa.querySelector('.dica').hidden = true;
+  caixa.querySelector('.marcador').classList.remove('visivel');
+  delete caixa.dataset.indice;
+}
+document.addEventListener('mouseover', (ev) => { const a = ev.target.closest('.alvo'); if (a) mostra(a); });
+document.addEventListener('mouseout', (ev) => {
+  const caixa = ev.target.closest('.graf');
+  if (caixa && !caixa.contains(ev.relatedTarget) && document.activeElement !== caixa) esconde(caixa);
+});
+document.addEventListener('focusout', (ev) => { if (ev.target.classList?.contains('graf')) esconde(ev.target); });
+document.addEventListener('keydown', (ev) => {
+  const caixa = ev.target.closest?.('.graf');
+  if (!caixa || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(ev.key)) return;
+  ev.preventDefault();
+  const alvos = [...caixa.querySelectorAll('.alvo')];
+  const agora = caixa.dataset.indice === undefined ? alvos.length - 1 : Number(caixa.dataset.indice);
+  const ultimo = alvos.length - 1;
+  const k = ev.key === 'Home' ? 0 : ev.key === 'End' ? ultimo : ev.key === 'ArrowLeft' ? Math.max(0, agora - 1) : Math.min(ultimo, agora + 1);
+  mostra(alvos[caixa.dataset.indice === undefined ? agora : k]);
+});
+document.addEventListener('click', (ev) => {
+  const e = ev.target.closest('[data-escopo]');
+  if (e) { escopo = e.dataset.escopo; renderTudo(); return; }
+  const d = ev.target.closest('[data-escolha]');
+  if (d) { escolhidaD = d.dataset.escolha; renderTudo(); }
+});
+
+document.querySelector('[data-recortes]').innerHTML = ['regional', ...DADOS.ufs].map((e) =>
+  `<button type="button" data-escopo="${e}" title="${esc(e === 'regional' ? 'Amazônia Legal' : DADOS.estados[e])}">${e === 'regional' ? 'Amazônia Legal' : e}</button>`).join('');
+
+// #MA, #MT… no endereço abre já no estado
+const doEndereco = location.hash.slice(1).toUpperCase();
+if (DADOS.ufs.includes(doEndereco)) escopo = doEndereco;
+renderTudo();
+</script>
+</body>
+</html>

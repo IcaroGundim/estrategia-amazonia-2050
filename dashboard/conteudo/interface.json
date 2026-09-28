@@ -46,15 +46,8 @@
         "Escala de desempenho relativo",
         "menor desempenho",
         "maior desempenho",
-        "Resumo regional",
-        "População observada",
-        "projeção IBGE para 2025",
         "Território",
-        "área total dos nove estados",
         "Municípios",
-        "na Amazônia Legal · base AdaptaBrasil",
-        "Unidades de conservação",
-        "federais e estaduais · CNUC/MMA 2026",
         "Detalhes e comparação estadual",
         "Conteúdo da coluna lateral",
         "Visão geral",
@@ -359,12 +352,10 @@
       "chaves": [
         "Floresta amazônica · Amazonas",
         "Jalapão · Tocantins",
-        "Ver-o-Peso · Belém, Pará",
         "Teatro Amazonas · Manaus",
         "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.",
         "Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.",
         "Paisagem do Parque Estadual do Jalapão, no Tocantins.",
-        "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.",
         "Fachada e cúpula do Teatro Amazonas, em Manaus."
       ]
     },
@@ -412,7 +403,6 @@
         "UCs cadastradas",
         "federais e estaduais",
         "{estados} estados · {municipios} municípios",
-        "{valor} pessoas",
         "Indicador selecionado na região",
         "ano de referência",
         "sem valor regional",
@@ -465,7 +455,6 @@
         "Floresta em pé, qualidade de vida.",
         "Conectar prioridades. Valorizar o território.",
         "Cooperação que atravessa fronteiras.",
-        "Evidências para orientar o futuro.",
         "recorte de exibição"
       ],
       "alvo": "#map-indicator-card"
@@ -500,8 +489,7 @@
         "último ano",
         "prazo",
         "abaixo do ritmo",
-        "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:",
-        "(meta − último valor) ÷ (prazo − último ano) ÷ β",
+        "o ano de alcance é posterior ao prazo.",
         "o ano de alcance é igual ou anterior ao prazo da meta.",
         "a inclinação é nula ou tem sentido contrário ao da meta.",
         "o último valor já atende à meta.",
@@ -509,26 +497,18 @@
         "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.",
         "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.",
         "Nenhuma meta com trajetória neste recorte.",
-        "meta {alvo} até {prazo}",
-        "Trajetória desligada para esta meta.",
-        "Sem valor para este estado.",
         "cumprida",
         "no ritmo",
         "não alcança",
-        "desligada",
         "sem série",
-        "Em {ano}, {valor}.",
-        "Em {ano}, {valor}: a meta de {alvo} já está cumprida.",
-        "Há um só ano de dados; a projeção aparece a partir do terceiro.",
-        "Há {n} anos de dados; a projeção aparece a partir do terceiro.",
-        "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
-        "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
-        "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.",
-        "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.",
-        "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.",
-        "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.",
-        "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
-        "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo."
+        "meta {valor}",
+        "prazo {ano}",
+        "projeção",
+        "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.",
+        "Já cumpridas:",
+        "Trajetória desligada:",
+        "1 meta ainda sem série para projetar",
+        "{n} metas ainda sem série para projetar"
       ],
       "alvo": ".trajetoria"
     },
@@ -761,41 +741,13 @@
       "pt": "maior desempenho",
       "en": "higher performance"
     },
-    "Resumo regional": {
-      "pt": "Resumo regional",
-      "en": "Regional summary"
-    },
-    "População observada": {
-      "pt": "População observada",
-      "en": "Population"
-    },
-    "projeção IBGE para 2025": {
-      "pt": "projeção IBGE para 2025",
-      "en": "IBGE projection for 2025"
-    },
     "Território": {
       "pt": "Território",
       "en": "Territory"
     },
-    "área total dos nove estados": {
-      "pt": "área total dos nove estados",
-      "en": "combined area of the nine states"
-    },
     "Municípios": {
       "pt": "Municípios",
       "en": "Municipalities"
-    },
-    "na Amazônia Legal · base AdaptaBrasil": {
-      "pt": "na Amazônia Legal · base AdaptaBrasil",
-      "en": "in the Legal Amazon · AdaptaBrasil"
-    },
-    "Unidades de conservação": {
-      "pt": "Unidades de conservação",
-      "en": "Protected areas"
-    },
-    "federais e estaduais · CNUC/MMA 2026": {
-      "pt": "federais e estaduais · CNUC/MMA 2026",
-      "en": "federal and state · CNUC/MMA 2026"
     },
     "Detalhes e comparação estadual": {
       "pt": "Detalhes e comparação estadual",
@@ -1593,10 +1545,6 @@
       "pt": "Jalapão · Tocantins",
       "en": "Jalapão · Tocantins"
     },
-    "Ver-o-Peso · Belém, Pará": {
-      "pt": "Ver-o-Peso · Belém, Pará",
-      "en": "Ver-o-Peso · Belém, Pará"
-    },
     "Teatro Amazonas · Manaus": {
       "pt": "Teatro Amazonas · Manaus",
       "en": "Teatro Amazonas · Manaus"
@@ -1612,10 +1560,6 @@
     "Paisagem do Parque Estadual do Jalapão, no Tocantins.": {
       "pt": "Paisagem do Parque Estadual do Jalapão, no Tocantins.",
       "en": "Landscape of the Jalapão State Park, in Tocantins."
-    },
-    "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.": {
-      "pt": "O Mercado de Ferro do Ver-o-Peso, com suas torres, e barcos de pesca atracados à frente, em Belém.",
-      "en": "The turreted iron market hall at Ver-o-Peso, with fishing boats moored in front of it, in Belém."
     },
     "Fachada e cúpula do Teatro Amazonas, em Manaus.": {
       "pt": "Fachada e cúpula do Teatro Amazonas, em Manaus.",
@@ -1724,10 +1668,6 @@
     "{estados} estados · {municipios} municípios": {
       "pt": "{estados} estados · {municipios} municípios",
       "en": "{estados} states · {municipios} municipalities"
-    },
-    "{valor} pessoas": {
-      "pt": "{valor} pessoas",
-      "en": "{valor} people"
     },
     "Indicador selecionado na região": {
       "pt": "Indicador selecionado na região",
@@ -1909,10 +1849,6 @@
       "pt": "Cooperação que atravessa fronteiras.",
       "en": "Cooperation that crosses borders."
     },
-    "Evidências para orientar o futuro.": {
-      "pt": "Evidências para orientar o futuro.",
-      "en": "Evidence to steer what comes next."
-    },
     "recorte de exibição": {
       "pt": "recorte de exibição",
       "en": "cropped for display"
@@ -2021,14 +1957,6 @@
       "pt": "abaixo do ritmo",
       "en": "below pace"
     },
-    "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:": {
-      "pt": "o ano de alcance é posterior ao prazo. A frase de cada meta indica quantas vezes o ritmo atual seria necessário para cumpri-lo:",
-      "en": "the year reached is after the deadline. Each target’s sentence states how many times the current pace would be needed to meet it:"
-    },
-    "(meta − último valor) ÷ (prazo − último ano) ÷ β": {
-      "pt": "(meta − último valor) ÷ (prazo − último ano) ÷ β",
-      "en": "(target − latest value) ÷ (deadline − latest year) ÷ β"
-    },
     "o ano de alcance é igual ou anterior ao prazo da meta.": {
       "pt": "o ano de alcance é igual ou anterior ao prazo da meta.",
       "en": "the year reached is on or before the target deadline."
@@ -2061,18 +1989,6 @@
       "pt": "Nenhuma meta com trajetória neste recorte.",
       "en": "No target with a trajectory in this view."
     },
-    "meta {alvo} até {prazo}": {
-      "pt": "meta {alvo} até {prazo}",
-      "en": "target {alvo} by {prazo}"
-    },
-    "Trajetória desligada para esta meta.": {
-      "pt": "Trajetória desligada para esta meta.",
-      "en": "Trajectory switched off for this target."
-    },
-    "Sem valor para este estado.": {
-      "pt": "Sem valor para este estado.",
-      "en": "No value for this state."
-    },
     "cumprida": {
       "pt": "cumprida",
       "en": "met"
@@ -2081,61 +1997,45 @@
       "pt": "não alcança",
       "en": "not reached"
     },
-    "desligada": {
-      "pt": "desligada",
-      "en": "switched off"
-    },
     "sem série": {
       "pt": "sem série",
       "en": "no series"
     },
-    "Em {ano}, {valor}.": {
-      "pt": "Em {ano}, {valor}.",
-      "en": "In {ano}, {valor}."
+    "o ano de alcance é posterior ao prazo.": {
+      "pt": "o ano de alcance é posterior ao prazo.",
+      "en": "the year reached is after the deadline."
     },
-    "Em {ano}, {valor}: a meta de {alvo} já está cumprida.": {
-      "pt": "Em {ano}, {valor}: a meta de {alvo} já está cumprida.",
-      "en": "In {ano}, {valor}: the target of {alvo} is already met."
+    "meta {valor}": {
+      "pt": "meta {valor}",
+      "en": "target {valor}"
     },
-    "Há um só ano de dados; a projeção aparece a partir do terceiro.": {
-      "pt": "Há um só ano de dados; a projeção aparece a partir do terceiro.",
-      "en": "There is only one year of data; the projection appears from the third."
+    "prazo {ano}": {
+      "pt": "prazo {ano}",
+      "en": "deadline {ano}"
     },
-    "Há {n} anos de dados; a projeção aparece a partir do terceiro.": {
-      "pt": "Há {n} anos de dados; a projeção aparece a partir do terceiro.",
-      "en": "There are {n} years of data; the projection appears from the third."
+    "projeção": {
+      "pt": "projeção",
+      "en": "projection"
     },
-    "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.": {
-      "pt": "A série vem subindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
-      "en": "The series has been rising by about {ritmo} a year, moving away from the target of {alvo} for {prazo}."
+    "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.": {
+      "pt": "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.",
+      "en": "{nome}: {valor} in {ano}; target {alvo} by {prazo}. Use the arrow keys to move through the years."
     },
-    "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.": {
-      "pt": "A série vem caindo cerca de {ritmo} por ano, afastando-se da meta de {alvo} para {prazo}.",
-      "en": "The series has been falling by about {ritmo} a year, moving away from the target of {alvo} for {prazo}."
+    "Já cumpridas:": {
+      "pt": "Já cumpridas:",
+      "en": "Already met:"
     },
-    "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.": {
-      "pt": "Em {ano}, {valor}, subindo cerca de {ritmo} por ano.",
-      "en": "In {ano}, {valor}, rising by about {ritmo} a year."
+    "Trajetória desligada:": {
+      "pt": "Trajetória desligada:",
+      "en": "Trajectory switched off:"
     },
-    "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.": {
-      "pt": "Em {ano}, {valor}, caindo cerca de {ritmo} por ano.",
-      "en": "In {ano}, {valor}, falling by about {ritmo} a year."
+    "1 meta ainda sem série para projetar": {
+      "pt": "1 meta ainda sem série para projetar",
+      "en": "1 target without a series to project yet"
     },
-    "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.": {
-      "pt": "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, antes do prazo de {prazo}.",
-      "en": "If the pace holds, the target of {alvo} is reached in {anoAlcance}, ahead of the {prazo} deadline."
-    },
-    "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.": {
-      "pt": "Se o ritmo se mantiver, a meta de {alvo} é alcançada em {anoAlcance}, no prazo.",
-      "en": "If the pace holds, the target of {alvo} is reached in {anoAlcance}, on time."
-    },
-    "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.": {
-      "pt": "Nesse ritmo a meta de {alvo} não chega até {fim}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
-      "en": "At this pace the target of {alvo} is not reached by {fim}; meeting the {prazo} deadline would take {vezes} times this pace."
-    },
-    "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.": {
-      "pt": "Nesse ritmo a meta de {alvo} só chega em {anoAlcance}; cumprir o prazo de {prazo} exigiria {vezes} vezes esse ritmo.",
-      "en": "At this pace the target of {alvo} is only reached in {anoAlcance}; meeting the {prazo} deadline would take {vezes} times this pace."
+    "{n} metas ainda sem série para projetar": {
+      "pt": "{n} metas ainda sem série para projetar",
+      "en": "{n} targets without a series to project yet"
     },
     "atual": {
       "pt": "atual",

@@ -145,7 +145,6 @@
   .spark-legend { font-size: 11.5px; }
   .spark-tip b, .spark-tip span, .spark-tip em { font-size: 13px; }
 
-  .overview article > p:last-child { font-size: 11.5px; }
   .ranking-panel-head small { font-size: 12px; }
   .text-button { font-size: 12.5px; }
   .rank-number { font-size: 16px; }
@@ -243,41 +242,6 @@
 
   .goals-page { padding-top: 18px; }
   .goals-list-head h1 { font-size: 24px; }
-}
-
-/* ---------------------------------------------------------------------------
-   4. Celular: os quatro números da região viram um trilho
-
-   Em duas colunas eles ocupavam 260px de altura e ainda quebravam "29,7 mi
-   pessoas" em duas linhas. Deitados num trilho que desliza, cada cartão fica com
-   largura suficiente para o número numa linha só, e os quatro custam a altura de
-   um. O `scroll-snap` faz o trilho parar sempre com um cartão alinhado à margem.
-   --------------------------------------------------------------------------- */
-@media (max-width: 620px) {
-  .overview {
-    display: grid;
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    /* Pouco menos de 70%: o segundo cartão aparece pela metade na borda, que é o
-       que informa que o trilho continua. */
-    grid-auto-columns: 68%;
-    gap: 10px;
-    /* Sangra até a borda da tela: o trilho precisa parecer que continua para
-       fora dela, senão não se lê como deslizável. O recheio devolve o alinhamento
-       do primeiro cartão à margem do texto. */
-    margin-inline: -14px;
-    padding-inline: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 14px;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-  }
-  .overview::-webkit-scrollbar { display: none; }
-  .overview article { min-height: 0; scroll-snap-align: start; }
-  /* 26px e não 29: "29,7 mi pessoas" é o rótulo mais longo dos quatro e em 29px
-     quebrava em duas linhas dentro do cartão. */
-  .metric-value { font-size: 26px; }
 }
 
 /* ---------------------------------------------------------------------------
