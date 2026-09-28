@@ -9,13 +9,16 @@ import Campo from '../../../components/admin/Campo.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
 import { ErroDeEdicao, leJson, numeroOuNulo, salvaJson, texto, textoOuNulo } from '../../../lib/admin/edicao';
 
-interface Regra { tipo: 'reducaoSobreMedia'; desde: number; fator: number }
+interface Regra { tipo: 'sobreBaseline'; fator?: number; soma?: number }
+interface Baseline { ano?: number; valor?: number; desde?: number; ate?: number }
+type ValorDe = 'ultimoDaSerie' | { panorama: string } | { arquivo: string; serie?: string; ateAno?: string | number };
 interface Parametro {
   codigo: string; alvo?: number | Regra | null; direcao: 'maior' | 'menor' | 'categoria'; tipo: 'declarada' | 'inferida' | 'derivada';
-  agregacao?: string; valorDe?: 'ultimoDaSerie' | { panorama: string   trajetoria?: { janela?: number; metodo?: 'linear' | 'composto'; desligada?: boolean; nota?: string };
-}; baselineAno?: number; unidade?: string;
+  agregacao?: string; valorDe?: ValorDe; baseline?: Baseline; unidade?: string;
   categoriasCumpre?: string[]; nota?: string; notaAgregacao?: string;
   razao?: { numerador: string; denominador: string; fator?: number };
+  denominador?: { arquivo: string; caminho: string; fator?: number };
+  trajetoria?: { janela?: number; metodo?: 'linear' | 'composto'; desligada?: boolean; nota?: string };
 }
 interface Metas { parametros: Parametro[]; exclusoes: Record<string, string>; semMeta?: Record<string, unknown> }
 interface Catalogo { eixos: { indicadores: { codigo: string; nome: string; meta: string; unidade: string }[] }[] }
@@ -41,8 +44,43 @@ const AGREGACOES = [
   { valor: 'razaoUc', rotulo: 'Unidades com plano e conselho sobre o total (só I1.1.2)' },
   { valor: 'razaoCvli', rotulo: 'Total de CVLI sobre a população regional (só I2.4.1)' },
   { valor: 'razaoCampos', rotulo: 'Razão entre dois campos auxiliares (soma sobre soma)' },
-  { valor: 'contagem', rotulo: 'Sem valor regional (classificação por estado)' }
+  { valor: 'razaoDenominador', rotulo: 'Soma sobre um total de referência de um arquivo de detalhe (ex.: municípios)' },
+  { valor: 'contagem', rotulo: 'Parcela dos estados que atingem o patamar (classificação por estado)' }
 ];
+
+// A opção "de onde vem o valor" do formulário de volta ao formato do metas.json.
+// A série de um arquivo de detalhe (I2.2.1) o formulário não edita, só mantém:
+// ela viaja como JSON no valor da opção.
+function valorDeDoFormulario(opcao: string): ValorDe | undefined {
+  if (opcao === 'ultimoDaSerie') return 'ultimoDaSerie';
+  if (opcao.startsWith('panorama:')) return { panorama: opcao.slice('panorama:'.length) };
+  if (opcao.startsWith('arquivo:')) {
+    const origem = JSON.parse(opcao.slice('arquivo:'.length));
+    if (!/^[a-z0-9-]+\.json$/.test(origem?.arquivo || '')) throw new ErroDeEdicao('A série de arquivo de detalhe está com o nome do arquivo inválido.');
+    return origem;
+  }
+  return undefined;
+}
+
+// Monta a baseline do formulário: nada (regra geral), um ponto declarado ou um período.
+function baselineDoFormulario(dados: FormData): Baseline | undefined {
+  const modo = texto(dados, 'baselineModo');
+  if (modo === 'ponto') {
+    const ano = numeroOuNulo(dados, 'baselineAno');
+    const valor = numeroOuNulo(dados, 'baselineValor');
+    if (ano === null && valor === null) throw new ErroDeEdicao('A baseline declarada precisa do ano, do valor ou dos dois.');
+    if (ano !== null && !Number.isInteger(ano)) throw new ErroDeEdicao('O ano da baseline precisa ser inteiro.');
+    return { ...(ano !== null && { ano }), ...(valor !== null && { valor }) };
+  }
+  if (modo === 'periodo') {
+    const desde = numeroOuNulo(dados, 'baselineDesde');
+    const ate = numeroOuNulo(dados, 'baselineAte');
+    if (desde === null || !Number.isInteger(desde)) throw new ErroDeEdicao('O período da baseline precisa do ano inicial.');
+    if (ate !== null && (!Number.isInteger(ate) || ate < desde)) throw new ErroDeEdicao('O ano final da baseline precisa ser inteiro e não anterior ao inicial.');
+    return { desde, ...(ate !== null && { ate }) };
+  }
+  return undefined;
+}
 
 if (Astro.request.method === 'POST') {
   const dados = await Astro.request.formData();
@@ -62,29 +100,34 @@ if (Astro.request.method === 'POST') {
       if (direcao === 'categoria') {
         const categorias = texto(dados, 'categoriasCumpre').split(',').map((item) => item.trim()).filter(Boolean);
         if (!categorias.length) throw new ErroDeEdicao('Diga quais categorias cumprem a meta, separadas por vírgula (ex.: A+, A, B+, B).');
+        if (novoParametro.agregacao !== 'contagem') throw new ErroDeEdicao('Meta por categoria se lê na região como a parcela dos estados que atingem o patamar: escolha essa forma de valor regional.');
         novoParametro.categoriasCumpre = categorias;
       } else if (usaRegra) {
-        const desde = numeroOuNulo(dados, 'regraDesde');
         const fator = numeroOuNulo(dados, 'regraFator');
-        if (fator === null) throw new ErroDeEdicao('A regra precisa do fator (ex.: 0,7 para redução de 30%).');
-        novoParametro.alvo = { tipo: 'reducaoSobreMedia', desde: desde ?? 0, fator };
-        novoParametro.valorDe = 'ultimoDaSerie';
+        const soma = numeroOuNulo(dados, 'regraSoma');
+        if (fator === null && soma === null) throw new ErroDeEdicao('A regra precisa do fator (ex.: 0,7 para redução de 30%), do acréscimo (ex.: 100000 para R$ 100 milhões em R$ mil) ou dos dois.');
+        novoParametro.alvo = { tipo: 'sobreBaseline', ...(fator !== null && { fator }), ...(soma !== null && { soma }) };
       } else {
         const alvo = numeroOuNulo(dados, 'alvo');
         if (alvo === null) throw new ErroDeEdicao('Informe o alvo numérico da meta.');
         novoParametro.alvo = alvo;
       }
-      const valorDe = texto(dados, 'valorDe');
-      if (!usaRegra && valorDe === 'ultimoDaSerie') novoParametro.valorDe = 'ultimoDaSerie';
-      if (valorDe.startsWith('panorama:')) novoParametro.valorDe = { panorama: valorDe.slice('panorama:'.length) };
+      const valorDe = valorDeDoFormulario(texto(dados, 'valorDe'));
+      if (valorDe) novoParametro.valorDe = valorDe;
       if (novoParametro.agregacao === 'razaoCampos') {
         const numerador = texto(dados, 'razaoNumerador');
         const denominador = texto(dados, 'razaoDenominador');
         if (!numerador || !denominador) throw new ErroDeEdicao('A razão entre campos precisa do campo do numerador e do denominador (ex.: kmEfetivo e kmFisico).');
         novoParametro.razao = { numerador, denominador, fator: numeroOuNulo(dados, 'razaoFator') ?? 100 };
       }
-      const baseline = numeroOuNulo(dados, 'baselineAno');
-      if (baseline !== null) novoParametro.baselineAno = baseline;
+      if (novoParametro.agregacao === 'razaoDenominador') {
+        const arquivo = texto(dados, 'denominadorArquivo');
+        const caminho = texto(dados, 'denominadorCaminho');
+        if (!/^[a-z0-9-]+\.json$/.test(arquivo) || !caminho) throw new ErroDeEdicao('A soma sobre um total de referência precisa do arquivo de public/data (ex.: telessaude.json) e do caminho do total por estado (ex.: denominador.porUf).');
+        novoParametro.denominador = { arquivo, caminho, fator: numeroOuNulo(dados, 'denominadorFator') ?? 100 };
+      }
+      const baseline = baselineDoFormulario(dados);
+      if (baseline) novoParametro.baseline = baseline;
       const unidade = textoOuNulo(dados, 'unidade');
       if (unidade) novoParametro.unidade = unidade;
       const nota = textoOuNulo(dados, 'nota');
@@ -124,17 +167,41 @@ if (Astro.request.method === 'POST') {
   } catch (falha) {
     erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
     motivo = texto(dados, 'motivo');
-    parametro = { codigo, direcao: texto(dados, 'direcao') as Parametro['direcao'], tipo: texto(dados, 'tipo') as Parametro['tipo'], agregacao: texto(dados, 'agregacao'), alvo: texto(dados, 'alvoModo') === 'regra' ? { tipo: 'reducaoSobreMedia', desde: Number(texto(dados, 'regraDesde')) || 0, fator: Number(texto(dados, 'regraFator')) || 0 } : (Number(texto(dados, 'alvo').replace(',', '.')) || null), baselineAno: Number(texto(dados, 'baselineAno')) || undefined, unidade: textoOuNulo(dados, 'unidade') || undefined, nota: textoOuNulo(dados, 'nota') || undefined, notaAgregacao: textoOuNulo(dados, 'notaAgregacao') || undefined, razao: texto(dados, 'razaoNumerador') ? { numerador: texto(dados, 'razaoNumerador'), denominador: texto(dados, 'razaoDenominador'), fator: Number(texto(dados, 'razaoFator')) || 100 } : undefined, categoriasCumpre: texto(dados, 'categoriasCumpre').split(',').map((s) => s.trim()).filter(Boolean) };
+    // Devolve ao formulário o que foi digitado, para a pessoa corrigir só o erro.
+    const numeroDigitado = (nome: string) => { const valor = Number(texto(dados, nome).replace(',', '.')); return texto(dados, nome) && Number.isFinite(valor) ? valor : undefined; };
+    const modoBaseline = texto(dados, 'baselineModo');
+    parametro = {
+      codigo,
+      direcao: texto(dados, 'direcao') as Parametro['direcao'],
+      tipo: texto(dados, 'tipo') as Parametro['tipo'],
+      agregacao: texto(dados, 'agregacao'),
+      alvo: texto(dados, 'alvoModo') === 'regra' ? { tipo: 'sobreBaseline', fator: numeroDigitado('regraFator'), soma: numeroDigitado('regraSoma') } : (numeroDigitado('alvo') ?? null),
+      baseline: modoBaseline === 'ponto' ? { ano: numeroDigitado('baselineAno'), valor: numeroDigitado('baselineValor') } : modoBaseline === 'periodo' ? { desde: numeroDigitado('baselineDesde'), ate: numeroDigitado('baselineAte') } : undefined,
+      unidade: textoOuNulo(dados, 'unidade') || undefined,
+      nota: textoOuNulo(dados, 'nota') || undefined,
+      notaAgregacao: textoOuNulo(dados, 'notaAgregacao') || undefined,
+      razao: texto(dados, 'razaoNumerador') ? { numerador: texto(dados, 'razaoNumerador'), denominador: texto(dados, 'razaoDenominador'), fator: numeroDigitado('razaoFator') ?? 100 } : undefined,
+      denominador: texto(dados, 'denominadorArquivo') ? { arquivo: texto(dados, 'denominadorArquivo'), caminho: texto(dados, 'denominadorCaminho'), fator: numeroDigitado('denominadorFator') ?? 100 } : undefined,
+      valorDe: valorDeDoFormulario(texto(dados, 'valorDe')),
+      categoriasCumpre: texto(dados, 'categoriasCumpre').split(',').map((s) => s.trim()).filter(Boolean)
+    };
   }
 }
 
 const regra = parametro?.alvo && typeof parametro.alvo === 'object' ? (parametro.alvo as Regra) : null;
-const valorDeAtual = parametro?.valorDe ? (typeof parametro.valorDe === 'string' ? parametro.valorDe : `panorama:${parametro.valorDe.panorama}`) : 'catalogo';
+const origemValor = parametro?.valorDe;
+const valorDeArquivo = origemValor && typeof origemValor === 'object' && 'arquivo' in origemValor ? `arquivo:${JSON.stringify(origemValor)}` : null;
+const valorDeAtual = !origemValor ? 'catalogo'
+  : typeof origemValor === 'string' ? origemValor
+  : 'panorama' in origemValor ? `panorama:${origemValor.panorama}` : valorDeArquivo;
 const opcoesValorDe = [
   { valor: 'catalogo', rotulo: 'Valor atual do catálogo (padrão)' },
   { valor: 'ultimoDaSerie', rotulo: 'Último ponto da série anual' },
-  ...panorama.metricas.map((metrica) => ({ valor: `panorama:${metrica.chave}`, rotulo: `Panorama: ${metrica.rotulo || metrica.chave}` }))
+  ...panorama.metricas.map((metrica) => ({ valor: `panorama:${metrica.chave}`, rotulo: `Panorama: ${metrica.rotulo || metrica.chave}` })),
+  ...(valorDeArquivo ? [{ valor: valorDeArquivo, rotulo: `Série do arquivo de detalhe ${(origemValor as { arquivo: string }).arquivo}` }] : [])
 ];
+const base = parametro?.baseline;
+const baselineModo = base?.desde !== undefined ? 'periodo' : base ? 'ponto' : 'regra';
 ---
 
 <Admin title={`Meta ${codigo}`} sessao={sessao}>
@@ -148,7 +215,7 @@ const opcoesValorDe = [
     <form class="admin-form" method="post" data-form-meta>
       <input type="hidden" name="versao" value={versao} />
       <Campo nome="situacao" rotulo="Situação no quadro de metas" tipo="select" valor={situacao} opcoes={[
-        { valor: 'avaliada', rotulo: 'Avaliada: a meta é confrontada com os valores por estado' },
+        { valor: 'avaliada', rotulo: 'Avaliada: a meta é confrontada com o valor da Amazônia Legal' },
         { valor: 'excluida', rotulo: 'Fora do quadro, com motivo próprio' },
         { valor: 'padrao', rotulo: 'Fora do quadro, com o motivo padrão' }
       ]} />
@@ -163,21 +230,34 @@ const opcoesValorDe = [
           ]} />
           <Campo nome="tipo" rotulo="Tipo de meta" tipo="select" valor={parametro?.tipo || 'declarada'} opcoes={[
             { valor: 'declarada', rotulo: 'Declarada: o número está escrito na meta' },
-            { valor: 'inferida', rotulo: 'Inferida: meta qualitativa ou regional, operacionalizada aqui' },
-            { valor: 'derivada', rotulo: 'Derivada: alvo calculado da série de cada estado' }
+            { valor: 'inferida', rotulo: 'Inferida: meta qualitativa, operacionalizada aqui' },
+            { valor: 'derivada', rotulo: 'Derivada: alvo calculado sobre a baseline da região' }
           ]} />
         </div>
         <div class="admin-form-linha">
           <Campo nome="alvoModo" rotulo="Como o alvo é definido" tipo="select" valor={regra ? 'regra' : 'fixo'} opcoes={[
-            { valor: 'fixo', rotulo: 'Um número, igual para todos os estados' },
-            { valor: 'regra', rotulo: 'Redução sobre a média histórica de cada estado' }
+            { valor: 'fixo', rotulo: 'Um número escrito na meta' },
+            { valor: 'regra', rotulo: 'Calculado sobre a baseline da região' }
           ]} />
-          <Campo nome="alvo" rotulo="Alvo" tipo="numero" valor={regra ? '' : (typeof parametro?.alvo === 'number' ? parametro.alvo : '')} ajuda="Na unidade do indicador. Ignorado na direção por categoria." />
+          <Campo nome="alvo" rotulo="Alvo" tipo="numero" valor={regra ? '' : (typeof parametro?.alvo === 'number' ? parametro.alvo : '')} ajuda="Na unidade do valor confrontado. Ignorado na direção por categoria." />
         </div>
         <div class="admin-form-linha">
-          <Campo nome="regraDesde" rotulo="Regra: média a partir do ano" tipo="numero" valor={regra?.desde ?? ''} />
-          <Campo nome="regraFator" rotulo="Regra: fator sobre a média" tipo="numero" valor={regra?.fator ?? ''} ajuda="0,7 = redução de 30%" />
+          <Campo nome="regraFator" rotulo="Regra: fator sobre a baseline" tipo="numero" valor={regra?.fator ?? ''} ajuda="0,7 = redução de 30%; 0,5 = redução de 50%" />
+          <Campo nome="regraSoma" rotulo="Regra: acréscimo sobre a baseline" tipo="numero" valor={regra?.soma ?? ''} ajuda="Na unidade do valor: 100000 = R$ 100 milhões em R$ mil" />
           <Campo nome="categoriasCumpre" rotulo="Categorias que cumprem" valor={(parametro?.categoriasCumpre || []).join(', ')} ajuda="Só para direção por categoria; separadas por vírgula" />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="baselineModo" rotulo="Baseline" tipo="select" valor={baselineModo} opcoes={[
+            { valor: 'regra', rotulo: 'A meta não diz: média dos últimos 10 anos da série regional (5 se for mais curta)' },
+            { valor: 'ponto', rotulo: 'Declarada na meta: um ano e/ou um valor' },
+            { valor: 'periodo', rotulo: 'Declarada na meta: a média de um período' }
+          ]} />
+          <Campo nome="baselineAno" rotulo="Baseline: ano" tipo="numero" valor={base?.ano ?? ''} ajuda="Se o valor atual é desse ano, ele é a baseline; senão, o valor da região nesse ano da série" />
+          <Campo nome="baselineValor" rotulo="Baseline: valor declarado" tipo="numero" valor={base?.valor ?? ''} ajuda="Usado só quando a série não tem o ano" />
+        </div>
+        <div class="admin-form-linha">
+          <Campo nome="baselineDesde" rotulo="Baseline: período, de" tipo="numero" valor={base?.desde ?? ''} />
+          <Campo nome="baselineAte" rotulo="Baseline: período, até" tipo="numero" valor={base?.ate ?? ''} ajuda="Opcional; vazio = até o último ano da série" />
         </div>
         <div class="admin-form-linha">
           <Campo nome="agregacao" rotulo="Valor regional (Amazônia Legal)" tipo="select" valor={parametro?.agregacao || 'media'} opcoes={AGREGACOES} />
@@ -189,7 +269,11 @@ const opcoesValorDe = [
           <Campo nome="razaoFator" rotulo="Razão: fator" tipo="numero" valor={parametro?.razao?.fator ?? ''} ajuda="100 para percentual (padrão)" />
         </div>
         <div class="admin-form-linha">
-          <Campo nome="baselineAno" rotulo="Ano de partida (baseline)" tipo="numero" valor={parametro?.baselineAno ?? ''} ajuda="Opcional: mede o avanço desde este ano da série" />
+          <Campo nome="denominadorArquivo" rotulo="Total de referência: arquivo" valor={parametro?.denominador?.arquivo ?? ''} ajuda="Só para soma sobre total de referência. Arquivo de public/data (ex.: telessaude.json)" />
+          <Campo nome="denominadorCaminho" rotulo="Total de referência: caminho" valor={parametro?.denominador?.caminho ?? ''} ajuda="O total por estado dentro do arquivo (ex.: denominador.porUf)" />
+          <Campo nome="denominadorFator" rotulo="Total de referência: fator" tipo="numero" valor={parametro?.denominador?.fator ?? ''} ajuda="100 para percentual (padrão)" />
+        </div>
+        <div class="admin-form-linha">
           <Campo nome="unidade" rotulo="Unidade exibida" valor={parametro?.unidade ?? ''} ajuda="Só se for diferente da unidade do catálogo" />
         </div>
         <Campo nome="nota" rotulo="Nota da parametrização" tipo="area" valor={parametro?.nota ?? ''} ajuda="Aparece na página de Metas explicando a escolha" largo />

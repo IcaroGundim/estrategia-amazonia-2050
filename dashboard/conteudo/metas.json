@@ -8,15 +8,18 @@
       "codigo": "I1.1.2",
       "alvo": 40,
       "direcao": "maior",
-      "tipo": "inferida",
+      "tipo": "declarada",
       "agregacao": "razaoUc",
-      "nota": "A meta é regional (40% das UCs estaduais da Amazônia Legal). Aqui ela é aplicada como referência para cada estado, o que não equivale ao compromisso pactuado no agregado."
+      "nota": "A meta é de 40% das UCs estaduais da Amazônia Legal: o valor da região é o total de unidades com plano de manejo e conselho gestor sobre o total de unidades dos nove estados."
     },
     {
       "codigo": "I1.3.1",
       "alvo": 52.1,
       "direcao": "menor",
       "tipo": "declarada",
+      "baseline": {
+        "ano": 2025
+      },
       "agregacao": "media",
       "notaAgregacao": "Média simples dos nove estados: o catálogo traz a média estadual já consolidada, não o número de municípios prioritários que a compõe.",
       "nota": "Convergência para 52,1 pontos, a média do grupo menos vulnerável. O valor estadual é a média dos municípios prioritários, o mesmo recorte citado na meta."
@@ -27,20 +30,23 @@
       "direcao": "menor",
       "tipo": "declarada",
       "agregacao": "soma",
-      "nota": "A meta é desmatamento ilegal zero e não define ano de partida, então não há percentual de percurso: o que se lê é a área que falta zerar."
+      "nota": "A meta é desmatamento ilegal zero e não define ano de partida: vale a regra geral de baseline, a média dos últimos anos da série regional."
     },
     {
       "codigo": "I1.3.4",
       "alvo": {
-        "tipo": "reducaoSobreMedia",
-        "desde": 2015,
+        "tipo": "sobreBaseline",
         "fator": 0.7
       },
       "direcao": "menor",
       "tipo": "derivada",
+      "baseline": {
+        "desde": 2015,
+        "ate": 2025
+      },
       "agregacao": "soma",
       "valorDe": "ultimoDaSerie",
-      "nota": "Redução de 30% sobre a média histórica de cada estado. A meta cita a baseline 2015–2025; a série consolidada termina em 2024, então a janela usada é 2015–2024."
+      "nota": "Redução de 30% sobre a média da região no período da baseline citada na meta, 2015–2025. A série consolidada termina em 2024, então a média é a de 2015 a 2024."
     },
     {
       "codigo": "I2.1.1",
@@ -48,6 +54,38 @@
       "direcao": "menor",
       "tipo": "declarada",
       "agregacao": "populacao"
+    },
+    {
+      "codigo": "I2.2.1",
+      "alvo": {
+        "tipo": "sobreBaseline",
+        "fator": 0.5
+      },
+      "direcao": "menor",
+      "tipo": "derivada",
+      "agregacao": "soma",
+      "valorDe": {
+        "arquivo": "mortalidade-evitavel.json",
+        "serie": "serie",
+        "ateAno": "anoFinal"
+      },
+      "unidade": "óbitos",
+      "nota": "A meta é reduzir as mortes evitáveis em pelo menos 50% na região e não informa a baseline, então vale a regra geral: a média dos últimos 10 anos. O painel conta os óbitos por causas evitáveis de menores de 5 anos no SIM, só nos anos com dados finais; a taxa por habitante dependeria de uma revisão da projeção de população que não está publicada."
+    },
+    {
+      "codigo": "I2.2.3",
+      "alvo": 50,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "razaoDenominador",
+      "denominador": {
+        "arquivo": "telessaude.json",
+        "caminho": "denominador.porUf",
+        "fator": 100
+      },
+      "unidade": "% dos municípios",
+      "notaAgregacao": "Municípios com telessaúde ativa sobre o total de municípios dos nove estados, pelo IBGE, o mesmo recorte da coleta.",
+      "nota": "O valor coletado é o número de municípios com ao menos um estabelecimento de telessaúde no CNES; a meta pede 50% dos municípios da região."
     },
     {
       "codigo": "I2.3.1",
@@ -80,18 +118,37 @@
       "agregacao": "razaoCvli"
     },
     {
+      "codigo": "I3.1.1",
+      "alvo": {
+        "tipo": "sobreBaseline",
+        "soma": 100000
+      },
+      "direcao": "maior",
+      "tipo": "derivada",
+      "agregacao": "soma",
+      "valorDe": "ultimoDaSerie",
+      "nota": "A meta é aumentar em R$ 100 milhões o valor da produção e não informa a baseline, então vale a regra geral: a média dos últimos 10 anos da série da PEVS. Os valores são nominais, em mil reais."
+    },
+    {
       "codigo": "I4.1.1",
       "alvo": 80,
       "direcao": "maior",
       "tipo": "declarada",
-      "agregacao": "populacao",
-      "baselineAno": 2021
+      "baseline": {
+        "ano": 2025,
+        "valor": 53.52
+      },
+      "agregacao": "populacao"
     },
     {
       "codigo": "I4.2.1",
       "alvo": 65,
       "direcao": "maior",
       "tipo": "declarada",
+      "baseline": {
+        "ano": 2025,
+        "valor": 46.5
+      },
       "agregacao": "razaoCampos",
       "razao": {
         "numerador": "kmEfetivo",
@@ -106,6 +163,10 @@
       "alvo": 80,
       "direcao": "maior",
       "tipo": "declarada",
+      "baseline": {
+        "ano": 2025,
+        "valor": 65.24
+      },
       "agregacao": "media",
       "notaAgregacao": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada."
     },
@@ -114,6 +175,10 @@
       "alvo": 80,
       "direcao": "maior",
       "tipo": "declarada",
+      "baseline": {
+        "ano": 2022,
+        "valor": 41.52
+      },
       "unidade": "%",
       "agregacao": "populacao"
     },
@@ -155,6 +220,8 @@
         "B+",
         "B"
       ],
+      "unidade": "% dos estados",
+      "notaAgregacao": "A meta pede CAPAG A ou B em todos os estados: o valor da região é a parcela dos nove nessa faixa, e o alvo é 100%.",
       "nota": "A meta do indicador é CAPAG A ou B. Notas com sinal (A+, B+) são contadas dentro da faixa correspondente."
     },
     {
@@ -162,25 +229,21 @@
       "alvo": 9,
       "direcao": "maior",
       "tipo": "inferida",
-      "agregacao": "contagem",
+      "agregacao": "media",
+      "notaAgregacao": "Média simples das notas dos nove estados.",
       "nota": "A meta é atender 90% dos critérios da principal avaliação nacional de transparência; na escala de 0 a 10 da EBT 360, a avaliação que a ficha cita, isso é a nota 9,0. A última edição da EBT 360 é de 2020; o PNTP, que a Atricon e os Tribunais de Contas fazem todo ano, está nos campos auxiliares."
     }
   ],
   "exclusoes": {
-    "I2.2.1": "A meta é de redução de 50% na região, sem baseline informada no catálogo. Sem o ponto de partida não há como dizer se um estado está cumprindo.",
     "I2.2.2": "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
-    "I2.2.3": "A meta é ter telessaúde em pelo menos 50% dos municípios; o valor coletado é a contagem absoluta de municípios atendidos, sem o total municipal por estado no catálogo.",
-    "I3.1.1": "A meta de aumento de R$ 100 milhões não indica a que baseline se refere nem se é por estado ou regional.",
     "F3.2": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
     "F3.5": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
-    "I5.2.2": "A meta é regional (um modelo permanente de governança coordenado pelo CAL) e a projeção do orçamento, R$ 17,7 mi em 2050, também: não há patamar por estado. O valor por estado é a contribuição de cada um ao Consórcio; a aba Trajetória 2050 compara a soma dos nove com a projeção.",
-    "I5.1.1": "A meta é regional (mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha fala em R$ 100 milhões anuais) e não tem patamar por estado. O valor por estado é o que cada governo recebeu no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador."
+    "I5.2.2": "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
+    "I5.1.1": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador."
   },
   "semMeta": {
     "_leia": "Como a página mostra os indicadores coletados que ficam fora do quadro. agregacao 'soma' diz que o valor da Amazônia Legal é a soma dos nove estados (só vale para quantidades: reais, vínculos, municípios); sem ela não há valor regional (taxas, índices). unidade corrige a unidade exibida quando o valor coletado não está na unidade da meta.",
     "I2.2.2": { "unidade": "equipes" },
-    "I2.2.3": { "agregacao": "soma" },
-    "I3.1.1": { "agregacao": "soma" },
     "F3.2": { "agregacao": "soma" },
     "F3.5": { "agregacao": "soma" },
     "I5.1.1": { "agregacao": "soma" },

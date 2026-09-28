@@ -222,6 +222,12 @@ function valorMeta(meta, valor) {
   if (unidade === 'taxa / 100 mil') return `${nfi(valor, 1)} por 100 mil hab.`;
   if (unidade === '0 a 100' || unidade.startsWith('pontos')) return `${nfi(valor, 1)} pontos`;
   if (unidade === '0 a 10') return `nota ${nfi(valor, 2)}`;
+  if (unidade === 'óbitos') return `${nf(valor, 0)} óbitos`;
+  // A PEVS publica em mil reais.
+  if (unidade === 'R$ (mil)') {
+    const reais = valor * 1000;
+    return Math.abs(reais) >= 1e9 ? `R$ ${nf(reais / 1e9, 2)} bi` : `R$ ${nf(reais / 1e6, 1)} mi`;
+  }
   throw new Error(`Nota técnica: não sei escrever a unidade "${meta.unidade}" de ${meta.codigo}`);
 }
 
@@ -233,9 +239,27 @@ function distanciaMeta(meta, valor) {
 
 const TIPO_META = {
   declarada: { rotulo: 'Meta declarada', texto: 'o número está escrito na meta da Estratégia.' },
-  inferida: { rotulo: 'Meta inferida', texto: 'a meta é qualitativa ou regional, e o painel a traduziu num patamar numérico. A tradução é uma leitura do painel, não um compromisso da Estratégia, e vem explicada na nota da meta.' },
-  derivada: { rotulo: 'Meta derivada da baseline', texto: 'o alvo de cada estado é calculado a partir da sua própria série histórica — por exemplo, 30% abaixo da média do período de referência.' }
+  inferida: { rotulo: 'Meta inferida', texto: 'a meta é qualitativa, e o painel a traduziu num patamar numérico. A tradução é uma leitura do painel, não um compromisso da Estratégia, e vem explicada na nota da meta.' },
+  derivada: { rotulo: 'Meta derivada da baseline', texto: 'o alvo é calculado a partir da baseline da região — por exemplo, 30% abaixo da média do período de referência, ou R$ 100 milhões acima dela.' }
 };
+
+// De onde partiu a jornada, como na página de Metas (textoDaBaseline em metas.js).
+function textoBaseline(meta) {
+  const base = meta.regional?.baseline;
+  if (!base) return 'não calculada, porque a série regional tem menos de 5 anos';
+  const numero = valorMeta(meta, base.valor);
+  if (base.tipo === 'media') return `${numero}, média dos últimos ${base.janela} anos da série regional (${base.desde}–${base.ate}); a meta não especifica a baseline`;
+  if (base.tipo === 'periodo') return `${numero}, média de ${base.desde} a ${base.ate}, o período citado na meta`;
+  if (base.origem === 'atual') return `${numero}, o valor de ${base.ano}, ano da baseline citada na meta`;
+  if (base.origem === 'serie') return `${numero}, o valor da região em ${base.ano}, ano da baseline citada na meta`;
+  return `${numero}, declarada na meta${base.ano ? ` (${base.ano})` : ''}`;
+}
+
+function textoJornada(regional) {
+  const numero = regional.cumpre ? 100 : Number.isFinite(regional.escala) ? Math.round(regional.escala * 100) : null;
+  if (numero === null) return 'sem escala';
+  return `${numero}% · ${regional.escalaTipo === 'baseline' ? 'percurso desde a baseline' : 'posição em relação ao alvo, sem baseline'}`;
+}
 
 const MARCAS = {
   coletado: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M4.8 8.5l2.2 2.2 4.2-5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -294,7 +318,7 @@ function secaoObjetivo() {
   return `
   <section class="secao">
     <h2><span class="num">1</span>Objetivo do painel e desta nota</h2>
-    <p>O painel acompanha a Estratégia Regional Amazônia 2050 nos nove estados da Amazônia Legal — ${lista(UFS.map((uf) => NOME_UF[uf]))}. Ele reúne, num só lugar, os valores que fontes públicas publicam para cada estado, a posição relativa de cada um e, quando a meta permite, a distância entre o valor atual e o alvo fixado na Estratégia.</p>
+    <p>O painel acompanha a Estratégia Regional Amazônia 2050 nos nove estados da Amazônia Legal — ${lista(UFS.map((uf) => NOME_UF[uf]))}. Ele reúne, num só lugar, os valores que fontes públicas publicam para cada estado, a posição relativa de cada um e, quando a meta permite, a distância entre o valor atual da Amazônia Legal e o alvo fixado na Estratégia — as metas são da região como um todo.</p>
     <p>Esta nota explica de onde vêm os números, como o painel os organiza, calcula e compara, e o que eles ainda não permitem afirmar. Ela acompanha a versão dos dados de <strong>${esc(DATA_DADOS)}</strong> e é gerada a partir dos mesmos arquivos que alimentam o painel: as contagens e tabelas a seguir são as do painel nessa data.</p>
     <p>O painel não produz dados primários — todos os valores vêm das bases públicas citadas aqui ou são calculados a partir delas, como as taxas por área ou por habitante. Também não é uma avaliação de políticas públicas nem substitui a publicação da Estratégia, onde as metas estão na sua redação original.</p>
 
@@ -500,25 +524,30 @@ function cartaoMeta(meta) {
   const anoValor = meta.historico?.at(-1)?.ano ?? meta.anoRef;
   const referencia = /^média/i.test(meta.anoRef || '') || meta.anoRef === anoValor ? anoValor : meta.anoRef;
 
+  const r = meta.regional;
+  confere(r, `${meta.codigo} não tem valor regional: toda meta avaliada é lida na Amazônia Legal`);
+  const sinal = meta.direcao === 'menor' ? '≤' : '≥';
   let alvo;
-  if (meta.direcao === 'categoria') alvo = '<strong>CAPAG A ou B</strong> em cada estado';
-  else if (meta.alvoPorEstado) alvo = '<strong>Alvo próprio de cada estado</strong>, calculado a partir da sua série histórica';
-  else if (meta.alvo === 0) alvo = '<strong>Zero</strong> em cada estado';
-  else alvo = `<strong>${meta.direcao === 'maior' ? '≥' : '≤'} ${esc(valorMeta(meta, meta.alvo))}</strong> em cada estado`;
+  if (meta.direcao === 'categoria') alvo = '<strong>CAPAG A ou B</strong> em todos os estados, ou 100% dos nove';
+  else if (meta.tipo === 'derivada') alvo = `<strong>${sinal} ${esc(valorMeta(meta, r.alvo))}</strong> na Amazônia Legal, calculado sobre a baseline`;
+  else if (meta.alvo === 0) alvo = '<strong>Zero</strong> na Amazônia Legal';
+  else alvo = `<strong>${sinal} ${esc(valorMeta(meta, r.alvo))}</strong> na Amazônia Legal`;
 
+  const situacaoRegional = r.cumpre ? 'atinge o alvo' : `faltam ${esc(distanciaMeta(meta, r.distancia))}`;
+  const regional = `<p class="valor"><strong>${esc(valorMeta(meta, r.valor))}</strong> <span>alvo ${esc(valorMeta(meta, r.alvo))} · ${situacaoRegional}</span></p>
+        <p class="metodo">${esc(r.metodoRotulo.charAt(0).toUpperCase() + r.metodoRotulo.slice(1))}.</p>
+        <p class="metodo"><strong>Baseline:</strong> ${esc(textoBaseline(meta))}.</p>
+        <p class="metodo"><strong>Jornada:</strong> ${esc(textoJornada(r))}.</p>`;
+
+  // Os estados como complemento: quais já estão no patamar, quando a meta tem
+  // um patamar que se aplica a cada um.
   const cumprem = UFS.filter((uf) => meta.estados[uf]?.cumpre);
-  const estados = cumprem.length ? esc(cumprem.join(', ')) : 'nenhum estado';
+  const estados = meta.avaliados
+    ? `<p class="rotulo">Estados no patamar, como complemento</p>
+        <p class="metodo">${meta.cumpridas} de ${meta.avaliados}${cumprem.length ? `: ${esc(cumprem.join(', '))}` : ''}.</p>`
+    : '';
 
-  let regional;
-  if (meta.regional) {
-    const r = meta.regional;
-    const situacaoRegional = r.cumpre ? 'atinge o alvo' : `faltam ${esc(distanciaMeta(meta, r.distancia))}`;
-    regional = `<p class="valor"><strong>${esc(valorMeta(meta, r.valor))}</strong> <span>alvo ${esc(valorMeta(meta, r.alvo))} · ${situacaoRegional}</span></p><p class="metodo">${esc(r.metodoRotulo.charAt(0).toUpperCase() + r.metodoRotulo.slice(1))}.</p>`;
-  } else {
-    regional = `<p class="metodo">${esc((meta.agregacaoRotulo || 'sem valor regional').replace(/^./, (letra) => letra.toUpperCase()))}.</p>`;
-  }
-
-  const notas = [meta.nota, meta.regional?.nota, NOTAS_EXTRA[meta.codigo]].filter(Boolean);
+  const notas = [meta.nota, r.nota, NOTAS_EXTRA[meta.codigo]].filter(Boolean);
   return `
   <article class="meta-card">
     <header>
@@ -534,10 +563,9 @@ function cartaoMeta(meta) {
         <p>${alvo}</p>
       </div>
       <div class="resultado">
-        <p class="rotulo">Estados que atingem o alvo · dados de ${esc(referencia)}</p>
-        <p class="valor"><strong>${meta.cumpridas} de ${meta.avaliados}</strong> <span>${estados}</span></p>
-        <p class="rotulo">Amazônia Legal</p>
+        <p class="rotulo">Amazônia Legal · dados de ${esc(referencia)}</p>
         ${regional}
+        ${estados}
       </div>
     </div>
     ${notas.length ? `<footer>${notas.map((nota) => `<p>${esc(nota)}</p>`).join('')}</footer>` : ''}
@@ -546,7 +574,7 @@ function cartaoMeta(meta) {
 }
 
 function secaoMetas() {
-  const comRegional = METAS.filter((meta) => meta.regional).length;
+  const comBaseline = METAS.filter((meta) => meta.regional?.escalaTipo === 'baseline').length;
   const prazos = [...new Set(METAS.map((meta) => meta.prazo))].sort((a, b) => a - b);
   const prazosTexto = prazos.length < 2 ? String(prazos[0]) : `${prazos.slice(0, -1).join(', ')} ou ${prazos.at(-1)}`;
   return `
@@ -556,8 +584,8 @@ function secaoMetas() {
     <dl class="tipos">
       ${Object.entries(TIPO_META).map(([chave, tipo]) => `<div><dt><span class="tipo tipo-${chave}">${esc(tipo.rotulo)}</span></dt><dd>${esc(tipo.texto.charAt(0).toUpperCase() + tipo.texto.slice(1))}</dd></div>`).join('')}
     </dl>
-    <p>Um estado atinge o alvo quando o valor mais recente está do lado certo dele — igual ou acima, nas metas de aumento; igual ou abaixo, nas de redução. A distância é quanto falta, na unidade do indicador. Quando existe um ponto de partida comparável, o painel mostra também o percurso já feito desde ele; quando não existe, mostra a posição do valor em relação ao alvo. A meta de capacidade de pagamento (CAPAG) é uma classificação e é lida por faixa.</p>
-    <p>O valor da Amazônia Legal usa o método de agregação indicado em cada meta, e ${comRegional} das ${METAS.length} metas têm valor regional. Atingir o alvo no agregado não equivale a atingi-lo em cada estado, e vice-versa.</p>
+    <p>As metas da Estratégia são da Amazônia Legal como um todo. O que o painel confronta com o alvo é o valor da região, calculado a partir dos nove estados pelo método indicado em cada meta; os valores por estado acompanham a leitura como complemento e não decidem se a meta é atingida. A região atinge o alvo quando o valor mais recente está do lado certo dele — igual ou acima, nas metas de aumento; igual ou abaixo, nas de redução. A distância é quanto falta, na unidade do indicador. A meta de capacidade de pagamento (CAPAG) é uma classificação por estado e pede A ou B em todos eles: na região, ela é lida como a parcela dos nove nessa faixa.</p>
+    <p>A jornada é o percurso desde a baseline: quanto do caminho entre o ponto de partida e o alvo a região já percorreu. A baseline é a que a meta especifica; quando ela não a especifica, é a média dos últimos 10 anos da série regional, ou dos últimos 5 quando a série é mais curta. Com menos de 5 anos de série não há baseline, e a jornada passa a ser a posição do valor em relação ao alvo. Hoje ${comBaseline} das ${METAS.length} metas têm a jornada medida desde a baseline.</p>
     <p class="destaque">As metas avaliadas têm prazo em ${prazosTexto}. Comparar o valor de hoje com o alvo mostra a distância a percorrer — não indica descumprimento de uma meta cujo prazo ainda não chegou.</p>
     <div class="metas">${METAS.map(cartaoMeta).join('')}</div>
   </section>`;
@@ -580,8 +608,8 @@ function secaoLimitacoes() {
   const inferidas = METAS.filter((meta) => meta.tipo === 'inferida').map((meta) => meta.codigo);
   const derivadas = METAS.filter((meta) => meta.tipo === 'derivada').map((meta) => meta.codigo);
   const escolhas = [
-    inferidas.length ? `${inferidas.length} ${inferidas.length === 1 ? 'foi inferida' : 'foram inferidas'} (${lista(inferidas)}), por não trazerem um patamar aplicável a cada estado` : '',
-    derivadas.length ? `${derivadas.length} ${derivadas.length === 1 ? 'teve' : 'tiveram'} o alvo de cada estado derivado da série histórica (${lista(derivadas)})` : ''
+    inferidas.length ? `${inferidas.length} ${inferidas.length === 1 ? 'foi inferida' : 'foram inferidas'} (${lista(inferidas)}), por não trazerem um patamar numérico` : '',
+    derivadas.length ? `${derivadas.length} ${derivadas.length === 1 ? 'teve' : 'tiveram'} o alvo calculado sobre a baseline da região (${lista(derivadas)})` : ''
   ].filter(Boolean);
 
   const series = new Map();
@@ -656,7 +684,7 @@ function secaoDados() {
 
   const jsons = [
     ['catalogo.json', `os ${TOTAL} indicadores, com meta, fonte, prazo, situação e valores por estado`],
-    ['metas.json', `as ${METAS.length} metas avaliadas, com o alvo, o resultado por estado e o regional, e os demais indicadores com o motivo`],
+    ['metas.json', `as ${METAS.length} metas avaliadas, com o alvo, a baseline e o resultado da Amazônia Legal, os valores por estado e os demais indicadores com o motivo`],
     ['dashboard.json', 'os valores e as séries do Panorama por estado e a síntese comparativa'],
     ['fichas.json', 'as fichas técnicas dos indicadores']
   ].filter(([arquivo]) => existsSync(join(RAIZ, 'public', 'data', arquivo)));

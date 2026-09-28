@@ -1,4 +1,9 @@
-// Avaliação das metas da Estratégia Amazônia 2050 por estado.
+// Avaliação das metas da Estratégia Amazônia 2050 para a Amazônia Legal.
+//
+// As metas são da região como um todo: o que se confronta com o alvo é o valor
+// da Amazônia Legal, agregado dos nove estados pelo método de cada meta. Os
+// valores por estado acompanham a meta como complemento — a página os mostra
+// ao lado do regional —, mas não decidem se ela é cumprida.
 //
 // A parametrização vem de `conteudo/metas.json`: só as metas que podem ser
 // confrontadas com os valores coletados na mesma unidade estão lá, e as que não
@@ -7,23 +12,44 @@
 //
 // Campos de cada parâmetro:
 //   codigo      indicador do catálogo
-//   alvo        número, ou uma regra: { tipo: 'reducaoSobreMedia', desde, fator }
-//               calcula o alvo por estado a partir da própria série
+//   alvo        número, ou uma regra sobre a baseline da região:
+//               { tipo: 'sobreBaseline', fator, soma } → baseline × fator + soma
+//               (fator 0,7 é redução de 30%; soma 100000, em R$ mil, é aumento
+//               de R$ 100 milhões)
+//   baseline    o ponto de partida, quando a meta o especifica:
+//               { ano, valor } → o valor regional da série naquele ano, pelo
+//               mesmo método do valor atual; o número declarado só vale quando a
+//               série não tem o ano
+//               { desde, ate } → a média regional do período
+//               Sem `baseline` vale a regra geral: a média dos últimos 10 anos da
+//               série regional, ou dos últimos 5 quando ela é mais curta. Com
+//               menos de 5 anos de série a meta fica sem baseline.
 //   direcao     'maior' | 'menor' | 'categoria'
 //   tipo        'declarada' = o número está escrito na meta; 'inferida' = a meta
-//               é qualitativa ou regional e foi operacionalizada aqui;
-//               'derivada' = calculada por estado a partir de uma baseline
-//   agregacao   como o valor da Amazônia Legal sai dos nove estados
+//               é qualitativa e foi operacionalizada aqui; 'derivada' = o alvo
+//               sai da baseline
+//   agregacao   como o valor da Amazônia Legal sai dos nove estados (ver
+//               ROTULO_AGREGACAO). 'contagem' é a parcela dos estados que atingem
+//               o patamar, para as metas que o pedem em todos eles (CAPAG)
 //   valorDe     de onde vem o valor por estado: ausente = `valores` do catálogo;
 //               'ultimoDaSerie' = último ponto da série; { panorama: chave } =
-//               campo do dashboard (I5.4.1 usa o % do PIB já consolidado)
-//   baselineAno primeiro ano da série considerado como ponto de partida
+//               campo do dashboard (I5.4.1 usa o % do PIB já consolidado);
+//               { arquivo, serie, ateAno } = a série de um arquivo de detalhe de
+//               public/data, até o ano dado — ou o do campo do arquivo com esse
+//               nome (I2.2.1: `anoFinal`, o último ano com dados finais do SIM)
+//   denominador com agregacao 'razaoDenominador': { arquivo, caminho, fator },
+//               o número por UF que divide o valor coletado (I2.2.3: municípios)
 //   unidade     sobrepõe a unidade do catálogo quando o valor confrontado está
 //               em outra (I5.4.1: % do PIB, não R$ milhões)
 //   razao       com agregacao 'razaoCampos': { numerador, denominador, fator }
 //               nomes de dois campos auxiliares do CSV; o regional é
 //               Σ numerador / Σ denominador × fator (I4.2.1, I4.4.2)
 //   categoriasCumpre, nota, notaAgregacao
+//
+// A jornada é o percurso desde a baseline: quanto do caminho entre ela e o alvo
+// já foi andado. Sem baseline — ou com uma que já estava do lado de lá do alvo —,
+// é a posição do valor em relação ao alvo, e o tipo viaja com o número para a
+// página rotular cada caso.
 //
 // `projecoes` (conteudo/projecoes.json) viaja junto de cada meta e de cada
 // indicador fora do quadro: as trajetórias pactuadas até 2050. Não entram na
@@ -39,14 +65,6 @@ function ultimoDaSerie(serie) {
   return anos.at(-1) || null;
 }
 
-function primeiroDaSerie(serie, anoMinimo) {
-  const anos = Object.entries(serie || {})
-    .map(([ano, valor]) => ({ ano: Number(ano), valor }))
-    .filter((item) => Number.isFinite(item.ano) && Number.isFinite(item.valor) && (!anoMinimo || item.ano >= anoMinimo))
-    .sort((a, b) => a.ano - b.ano);
-  return anos[0] || null;
-}
-
 function normalizaCapag(nota) {
   return String(nota || '').trim().toUpperCase();
 }
@@ -58,15 +76,77 @@ function anoDaReferencia(referencia) {
 
 const alvoEhRegra = (parametro) => Boolean(parametro.alvo && typeof parametro.alvo === 'object');
 
-function alvoPorEstado(parametro, serie) {
-  const regra = parametro.alvo;
-  if (regra.tipo === 'reducaoSobreMedia') {
-    const anos = Object.entries(serie || {}).filter(([ano, valor]) => Number(ano) >= (regra.desde || 0) && Number.isFinite(valor));
-    if (!anos.length) return null;
-    const media = anos.reduce((soma, [, valor]) => soma + valor, 0) / anos.length;
-    return media * regra.fator;
+const media = (pontos) => pontos.reduce((soma, ponto) => soma + ponto.valor, 0) / pontos.length;
+
+function caminhoEm(objeto, caminho) {
+  return String(caminho || '').split('.').filter(Boolean).reduce((atual, chave) => atual?.[chave], objeto);
+}
+
+// Número de uma célula, ou null. `Number(null)` daria zero, e um estado sem
+// valor entraria na soma como se não tivesse nada.
+function numeroOuNulo(bruto) {
+  if (bruto === null || bruto === undefined || bruto === '') return null;
+  const numero = Number(bruto);
+  return Number.isFinite(numero) ? numero : null;
+}
+
+/** Arquivos de detalhe de public/data que as metas leem: o build carrega só estes. */
+export function arquivosDasMetas(config) {
+  const nomes = new Set();
+  for (const parametro of config?.parametros || []) {
+    if (parametro.valorDe?.arquivo) nomes.add(parametro.valorDe.arquivo);
+    if (parametro.denominador?.arquivo) nomes.add(parametro.denominador.arquivo);
   }
-  throw new Error(`metas.json: regra de alvo desconhecida "${regra.tipo}" em ${parametro.codigo}`);
+  return [...nomes];
+}
+
+function detalheDe(detalhes, nome, codigo) {
+  const dados = detalhes[nome];
+  if (!dados) throw new Error(`metas.json: ${codigo} lê public/data/${nome}, que o build não carregou`);
+  return dados;
+}
+
+// A série de um arquivo de detalhe no lugar da do catálogo. O valor atual de
+// cada estado passa a ser o último ponto dela até o ano-limite.
+function comSerieDoArquivo(indicador, parametro, detalhes, ufs) {
+  const origem = parametro.valorDe;
+  if (!origem?.arquivo) return indicador;
+  const dados = detalheDe(detalhes, origem.arquivo, parametro.codigo);
+  const porUf = caminhoEm(dados, origem.serie || 'serie') || {};
+  const limite = numeroOuNulo(typeof origem.ateAno === 'string' ? dados[origem.ateAno] : origem.ateAno) ?? Infinity;
+  const serieAnual = {};
+  const valores = {};
+  for (const uf of ufs) {
+    const pontos = Object.entries(porUf[uf] || {})
+      .map(([ano, valor]) => [Number(ano), numeroOuNulo(valor)])
+      .filter(([ano, valor]) => Number.isFinite(ano) && ano <= limite && valor !== null)
+      .sort((a, b) => a[0] - b[0]);
+    serieAnual[uf] = Object.fromEntries(pontos.map(([ano, valor]) => [String(ano), valor]));
+    valores[uf] = pontos.at(-1)?.[1] ?? null;
+  }
+  return { ...indicador, serieAnual, valores };
+}
+
+function denominadorPorUf(parametro, detalhes) {
+  if (parametro.agregacao !== 'razaoDenominador') return null;
+  const origem = parametro.denominador || {};
+  const porUf = caminhoEm(detalheDe(detalhes, origem.arquivo, parametro.codigo), origem.caminho);
+  if (!porUf || typeof porUf !== 'object') throw new Error(`metas.json: ${parametro.codigo} não achou "${origem.caminho}" em ${origem.arquivo}`);
+  return porUf;
+}
+
+// O valor que se confronta com o alvo. Na razão por denominador o dado coletado
+// é o numerador (municípios com telessaúde) e a meta fala da parcela (50% dos
+// municípios).
+function valorConfrontado(parametro, contexto, uf, valor) {
+  if (parametro.agregacao !== 'razaoDenominador' || valor === null) return valor;
+  const base = numeroOuNulo(contexto.denominador?.[uf]);
+  return base ? valor / base * (parametro.denominador.fator ?? 100) : null;
+}
+
+function atingeNoEstado(parametro, valor) {
+  if (parametro.direcao === 'categoria') return parametro.categoriasCumpre.includes(valor);
+  return parametro.direcao === 'menor' ? valor <= parametro.alvo : valor >= parametro.alvo;
 }
 
 // Σ numerador / Σ denominador dos estados presentes, com os campos auxiliares
@@ -84,30 +164,46 @@ function razaoDeCampos(parametro, indicador, entradas, ano = null, maisRecente =
   return base ? soma(numerador) / base * fator : null;
 }
 
-function agregaHistorico(parametro, indicador, valores, contexto, ano = null, maisRecente = true) {
+/**
+ * Valor da Amazônia Legal a partir dos valores de um ano (`valores`: UF → valor
+ * já confrontável). O mesmo cálculo serve ao valor atual e a cada ano da série.
+ */
+function agregaValores(parametro, indicador, valores, contexto, ano = null, maisRecente = true) {
+  if (parametro.agregacao === 'contagem') {
+    const lidos = Object.values(valores).filter((valor) => valor !== null && valor !== undefined && valor !== '');
+    return lidos.length ? lidos.filter((valor) => atingeNoEstado(parametro, valor)).length / lidos.length * 100 : null;
+  }
   const entradas = Object.entries(valores).filter(([, valor]) => Number.isFinite(valor));
-  if (!entradas.length || parametro.agregacao === 'contagem') return null;
+  if (!entradas.length) return null;
   const soma = (fn) => entradas.reduce((total, entrada) => total + (fn(entrada) || 0), 0);
+  const { populacaoPorUf, cvliPorUf, denominador } = contexto;
 
   if (parametro.agregacao === 'soma') return soma(([, valor]) => valor);
   if (parametro.agregacao === 'media') return soma(([, valor]) => valor) / entradas.length;
   if (parametro.agregacao === 'populacao') {
-    const peso = soma(([uf]) => contexto.populacaoPorUf[uf]);
-    return peso ? soma(([uf, valor]) => valor * (contexto.populacaoPorUf[uf] || 0)) / peso : null;
+    const peso = soma(([uf]) => populacaoPorUf[uf]);
+    return peso ? soma(([uf, valor]) => valor * (populacaoPorUf[uf] || 0)) / peso : null;
   }
   if (parametro.agregacao === 'razaoUc') {
     const total = soma(([uf]) => indicador.extra?.[uf]?.total);
     return total ? soma(([uf]) => indicador.extra?.[uf]?.comAmbos) / total * 100 : null;
   }
   if (parametro.agregacao === 'razaoCvli') {
-    const peso = soma(([uf]) => contexto.populacaoPorUf[uf]);
-    return peso ? soma(([uf, valor]) => valor * (contexto.populacaoPorUf[uf] || 0)) / peso : null;
+    const peso = soma(([uf]) => populacaoPorUf[uf]);
+    if (!peso) return null;
+    // No valor atual, o total de CVLI de cada estado vem do Panorama; na série,
+    // a taxa de cada ano já veio convertida e o regional é a média ponderada.
+    return ano === null ? soma(([uf]) => cvliPorUf[uf]) / peso * 100000 : soma(([uf, valor]) => valor * (populacaoPorUf[uf] || 0)) / peso;
   }
   if (parametro.agregacao === 'razaoCampos') return razaoDeCampos(parametro, indicador, entradas, ano, maisRecente);
+  if (parametro.agregacao === 'razaoDenominador') {
+    const peso = soma(([uf]) => numeroOuNulo(denominador?.[uf]));
+    return peso ? soma(([uf, valor]) => valor * (numeroOuNulo(denominador?.[uf]) || 0)) / peso : null;
+  }
   return null;
 }
 
-function montaHistorico(parametro, indicador, estados, ufs, contexto) {
+function montaHistorico(parametro, indicador, atuais, ufs, contexto) {
   const porAno = new Map();
   // Quando o valor vem do Panorama (I5.4.1, % do PIB), a série do catálogo está
   // em outra unidade e não pode ser misturada ao valor exibido.
@@ -116,11 +212,12 @@ function montaHistorico(parametro, indicador, estados, ufs, contexto) {
   if (serieCompativel) {
     for (const uf of ufs) {
       for (const [ano, valorBruto] of Object.entries(serieCompativel[uf] || {})) {
-        let valor = parametro.direcao === 'categoria' ? normalizaCapag(valorBruto) : Number(valorBruto);
-        if (parametro.agregacao === 'razaoCvli' && Number.isFinite(valor)) {
+        let valor = parametro.direcao === 'categoria' ? normalizaCapag(valorBruto) : numeroOuNulo(valorBruto);
+        if (parametro.agregacao === 'razaoCvli' && valor !== null) {
           const populacao = contexto.populacaoPorUf[uf];
           valor = populacao ? valor / populacao * 100000 : null;
         }
+        if (parametro.direcao !== 'categoria') valor = valorConfrontado(parametro, contexto, uf, valor);
         const valido = parametro.direcao === 'categoria'
           ? Boolean(valor && valor !== 'SUSPENSA')
           : Number.isFinite(valor);
@@ -136,7 +233,7 @@ function montaHistorico(parametro, indicador, estados, ufs, contexto) {
     if (ano) {
       const valores = {};
       for (const uf of ufs) {
-        if (estados[uf]) valores[uf] = estados[uf].valor;
+        if (atuais[uf] !== null && atuais[uf] !== undefined) valores[uf] = atuais[uf];
       }
       if (Object.keys(valores).length) porAno.set(ano, valores);
     }
@@ -147,9 +244,91 @@ function montaHistorico(parametro, indicador, estados, ufs, contexto) {
     .map(([ano, valores]) => ({
       ano,
       valores,
-      regional: agregaHistorico(parametro, indicador, valores, contexto, ano, Number(ano) === ultimoAno)
+      regional: agregaValores(parametro, indicador, valores, contexto, ano, Number(ano) === ultimoAno)
     }))
     .sort((a, b) => Number(a.ano) - Number(b.ano));
+}
+
+// Os anos da série regional que servem de baseline: os que têm todos os estados
+// que o ano mais recente tem. Um estado faltando mudaria a soma, ou a média, sem
+// que nada tivesse mudado na região.
+function serieRegionalCompleta(historico) {
+  const comValor = historico.filter((ponto) => Number.isFinite(ponto.regional));
+  if (!comValor.length) return [];
+  const estados = Object.keys(comValor.at(-1).valores).length;
+  return comValor
+    .filter((ponto) => Object.keys(ponto.valores).length >= estados)
+    .map((ponto) => ({ ano: Number(ponto.ano), valor: ponto.regional }));
+}
+
+export const JANELAS_DA_BASELINE = [10, 5];
+
+// Ano a que o valor atual se refere: o último da série quando é dela que ele
+// sai, senão o ano de referência do catálogo.
+function anoDoValorAtual(parametro, indicador) {
+  if (parametro.valorDe === 'ultimoDaSerie' || parametro.valorDe?.arquivo) {
+    const anos = Object.values(indicador.serieAnual || {}).flatMap((serie) => Object.keys(serie || {}).map(Number));
+    return anos.length ? Math.max(...anos) : null;
+  }
+  const ano = anoDaReferencia(indicador.anoRef);
+  return ano ? Number(ano) : null;
+}
+
+/**
+ * Ponto de partida da região. A declarada na meta vale primeiro; sem ela, a
+ * média dos últimos 10 anos da série regional, ou dos últimos 5 quando a série
+ * não alcança 10. A janela conta o ano mais recente.
+ *
+ * Uma baseline declarada num ano é lida pelo mesmo método do valor de hoje:
+ * se o dado atual é daquele ano, ele é a baseline (a medição de hoje é a da
+ * partida); senão, o valor regional da série naquele ano. O número escrito na
+ * meta só vale quando nenhum dos dois existe — ele pode ter saído de outra
+ * agregação, e compará-lo com a nossa inventaria um avanço que não houve.
+ */
+function baselineRegional(parametro, historico, atual) {
+  const pontos = serieRegionalCompleta(historico);
+  const declarada = parametro.baseline;
+  if (declarada?.desde) {
+    const janela = pontos.filter((ponto) => ponto.ano >= declarada.desde && ponto.ano <= (declarada.ate ?? Infinity));
+    return janela.length ? { valor: media(janela), tipo: 'periodo', desde: janela[0].ano, ate: janela.at(-1).ano } : null;
+  }
+  if (declarada) {
+    const ano = numeroOuNulo(declarada.ano);
+    const doAno = ano !== null ? pontos.find((ponto) => ponto.ano === ano) : null;
+    let valor = numeroOuNulo(declarada.valor);
+    let origem = 'declarado';
+    if (ano !== null && ano === atual.ano && Number.isFinite(atual.valor)) { valor = atual.valor; origem = 'atual'; }
+    else if (doAno) { valor = doAno.valor; origem = 'serie'; }
+    return valor === null ? null : { valor, tipo: 'declarada', ano, declarado: numeroOuNulo(declarada.valor), origem };
+  }
+  if (!pontos.length) return null;
+  const ultimo = pontos.at(-1).ano;
+  const extensao = ultimo - pontos[0].ano + 1;
+  const anos = JANELAS_DA_BASELINE.find((tamanho) => extensao >= tamanho);
+  if (!anos) return null;
+  const janela = pontos.filter((ponto) => ponto.ano > ultimo - anos);
+  return { valor: media(janela), tipo: 'media', janela: anos, desde: janela[0].ano, ate: ultimo };
+}
+
+function alvoRegional(parametro, baseline) {
+  if (parametro.agregacao === 'contagem') return 100;
+  if (!alvoEhRegra(parametro)) return numeroOuNulo(parametro.alvo);
+  const regra = parametro.alvo;
+  if (regra.tipo !== 'sobreBaseline') throw new Error(`metas.json: regra de alvo desconhecida "${regra.tipo}" em ${parametro.codigo}`);
+  return baseline ? baseline.valor * (regra.fator ?? 1) + (regra.soma ?? 0) : null;
+}
+
+// O alvo de um estado só existe como complemento, e quando a meta tem uma parte
+// por estado: o mesmo patamar, ou a mesma redução sobre a média do estado no
+// período da baseline da região. Um acréscimo em valor absoluto (R$ 100
+// milhões) é da região e não se reparte.
+function alvoDoEstado(parametro, serie, baseline) {
+  if (!alvoEhRegra(parametro)) return numeroOuNulo(parametro.alvo);
+  if (parametro.alvo.soma || !baseline?.desde) return null;
+  const pontos = Object.entries(serie || {})
+    .map(([ano, valor]) => ({ ano: Number(ano), valor: numeroOuNulo(valor) }))
+    .filter((ponto) => ponto.ano >= baseline.desde && ponto.ano <= baseline.ate && ponto.valor !== null);
+  return pontos.length ? media(pontos) * (parametro.alvo.fator ?? 1) : null;
 }
 
 function progressoEntre(baseline, atual, alvo) {
@@ -167,7 +346,8 @@ export const ROTULO_AGREGACAO = {
   razaoUc: 'unidades com plano e conselho sobre o total de unidades',
   razaoCvli: 'total de CVLI sobre a população regional',
   razaoCampos: 'soma dos numeradores sobre a soma dos denominadores dos nove estados',
-  contagem: 'sem valor regional: a meta é lida estado a estado'
+  razaoDenominador: 'soma dos nove estados sobre o total de referência dos nove',
+  contagem: 'parcela dos nove estados que atingem o patamar'
 };
 
 // Motivos padrão de um indicador ficar fora do quadro, quando `exclusoes` não
@@ -177,51 +357,29 @@ export const MOTIVO_PADRAO = {
   semValores: 'O indicador ainda não tem valores coletados para os nove estados.'
 };
 
-// Valor da Amazônia Legal como um todo. Devolve null quando a agregação não é
-// defensável — nesse caso a página mostra apenas a contagem de estados.
-function agregaRegional(parametro, indicador, estados, contexto) {
-  const { populacaoPorUf, cvliPorUf } = contexto;
-  const celulas = Object.entries(estados).filter(([, item]) => item && !item.categoria);
-  if (!parametro.agregacao || parametro.agregacao === 'contagem' || !celulas.length) return null;
-
-  const soma = (fn) => celulas.reduce((total, entrada) => total + (fn(entrada) || 0), 0);
-  let valor = null;
-  let alvo = alvoEhRegra(parametro) ? null : (parametro.alvo ?? null);
-
-  if (parametro.agregacao === 'soma') {
-    valor = soma(([, item]) => item.valor);
-    alvo = soma(([, item]) => item.alvo);
-  } else if (parametro.agregacao === 'populacao') {
-    const peso = soma(([uf]) => populacaoPorUf[uf]);
-    if (!peso) return null;
-    valor = soma(([uf, item]) => item.valor * (populacaoPorUf[uf] || 0)) / peso;
-  } else if (parametro.agregacao === 'media') {
-    valor = soma(([, item]) => item.valor) / celulas.length;
-  } else if (parametro.agregacao === 'razaoUc') {
-    const total = soma(([uf]) => indicador.extra?.[uf]?.total);
-    if (!total) return null;
-    valor = soma(([uf]) => indicador.extra?.[uf]?.comAmbos) / total * 100;
-  } else if (parametro.agregacao === 'razaoCvli') {
-    const peso = soma(([uf]) => populacaoPorUf[uf]);
-    if (!peso) return null;
-    valor = soma(([uf]) => cvliPorUf[uf]) / peso * 100000;
-  } else if (parametro.agregacao === 'razaoCampos') {
-    valor = razaoDeCampos(parametro, indicador, celulas);
-  }
-
+/** O resultado da meta: o valor da Amazônia Legal diante do alvo. */
+function avaliaRegional(parametro, indicador, atuais, contexto, baseline) {
+  if (!parametro.agregacao) return null;
+  const valor = agregaValores(parametro, indicador, atuais, contexto);
+  const alvo = alvoRegional(parametro, baseline);
   if (!Number.isFinite(valor) || !Number.isFinite(alvo)) return null;
 
-  const cumpre = parametro.direcao === 'menor' ? valor <= alvo : valor >= alvo;
-  const razao = parametro.direcao === 'menor'
+  // A parcela de estados (CAPAG) é um número que sobe até 100%.
+  const direcao = parametro.direcao === 'menor' ? 'menor' : 'maior';
+  const atinge = (numero) => (direcao === 'menor' ? numero <= alvo : numero >= alvo);
+  const cumpre = atinge(valor);
+  const partida = baseline && !atinge(baseline.valor) ? baseline.valor : null;
+  const posicao = direcao === 'menor'
     ? (alvo > 0 ? Math.min(1, alvo / valor) : null)
     : (alvo > 0 ? Math.min(1, valor / alvo) : null);
   return {
     valor,
     alvo,
     cumpre,
-    distancia: parametro.direcao === 'menor' ? valor - alvo : alvo - valor,
-    escala: cumpre ? 1 : razao,
-    escalaTipo: 'alvo',
+    distancia: direcao === 'menor' ? valor - alvo : alvo - valor,
+    escala: cumpre ? 1 : (partida !== null ? progressoEntre(partida, valor, alvo) : posicao),
+    escalaTipo: partida !== null ? 'baseline' : 'alvo',
+    baseline,
     metodo: parametro.agregacao,
     metodoRotulo: ROTULO_AGREGACAO[parametro.agregacao],
     nota: parametro.notaAgregacao || null
@@ -232,7 +390,7 @@ function agregaRegional(parametro, indicador, estados, contexto) {
 // a página mostra o valor e como ele andou, sem jornada. Viajam os números por
 // estado (atual e série) e, quando `conteudo/metas.json > semMeta` declara que
 // o valor da região é a soma dos estados, a série regional — só nos anos em que
-// os nove têm valor, pelo mesmo motivo do `observadoRegional` acima. Sem essa
+// os nove têm valor, pelo mesmo motivo do `observadoRegional` abaixo. Sem essa
 // declaração (taxas, índices) não há valor regional: somar taxas não é regional.
 // `unidade` em `semMeta` corrige a unidade exibida quando o valor coletado não
 // está na unidade da meta (APS: equipes, não % de cobertura).
@@ -258,7 +416,7 @@ function dadosSemMeta(indicador, config = {}, ufs) {
   return { unidadeValor: config.unidade || indicador.unidade, agregacao, valores, serieAnual, serieRegional, regionalAtual };
 }
 
-export function buildMetas(catalogo, dashboard, config, projecoes = null) {
+export function buildMetas(catalogo, dashboard, config, projecoes = null, detalhes = {}) {
   const { parametros, exclusoes } = config;
   const projecoesDe = (codigo) => (projecoes?.projecoes || []).filter((item) => item.codigo === codigo);
   // Fora do quadro não há histórico regional; a projeção comparável que pede
@@ -281,53 +439,60 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null) {
     }
   }
   const campoDoPanorama = (chave) => Object.fromEntries((dashboard?.states || []).map((estado) => [estado.uf, estado[chave]]));
-  const contexto = {
+  const contextoGeral = {
     populacaoPorUf: campoDoPanorama('population'),
     cvliPorUf: campoDoPanorama(config.contexto?.cvli || 'cvli')
   };
 
   const metas = [];
   for (const parametro of parametros) {
-    const indicador = porCodigo.get(parametro.codigo);
-    if (!indicador) continue;
-
+    const doCatalogo = porCodigo.get(parametro.codigo);
+    if (!doCatalogo) continue;
+    const indicador = comSerieDoArquivo(doCatalogo, parametro, detalhes, ufs);
+    const contexto = { ...contextoGeral, denominador: denominadorPorUf(parametro, detalhes) };
     const valoresDoPanorama = parametro.valorDe?.panorama ? campoDoPanorama(parametro.valorDe.panorama) : null;
+
+    // O valor de hoje de cada estado, já na unidade da meta.
+    const atuais = {};
+    for (const uf of ufs) {
+      const serie = indicador.serieAnual?.[uf] || null;
+      const bruto = valoresDoPanorama
+        ? valoresDoPanorama[uf]
+        : (parametro.valorDe === 'ultimoDaSerie' ? (ultimoDaSerie(serie)?.valor ?? null) : indicador.valores?.[uf]);
+      if (parametro.direcao === 'categoria') {
+        const nota = normalizaCapag(bruto);
+        atuais[uf] = nota && nota !== 'SUSPENSA' ? nota : null;
+      } else {
+        atuais[uf] = valorConfrontado(parametro, contexto, uf, numeroOuNulo(bruto));
+      }
+    }
+
+    const historico = montaHistorico(parametro, indicador, atuais, ufs, contexto);
+    const baseline = baselineRegional(parametro, historico, {
+      ano: anoDoValorAtual(parametro, indicador),
+      valor: agregaValores(parametro, indicador, atuais, contexto)
+    });
+
+    // Os estados diante do mesmo patamar: complemento da leitura regional.
     const estados = {};
     let cumpridas = 0;
     let avaliados = 0;
-
     for (const uf of ufs) {
-      const serie = indicador.serieAnual?.[uf] || null;
-      const valorBruto = valoresDoPanorama
-        ? valoresDoPanorama[uf]
-        : (parametro.valorDe === 'ultimoDaSerie' ? (ultimoDaSerie(serie)?.valor ?? null) : indicador.valores?.[uf]);
-
+      const valor = atuais[uf];
+      if (valor === null || valor === undefined) { estados[uf] = null; continue; }
       if (parametro.direcao === 'categoria') {
-        const nota = normalizaCapag(valorBruto);
-        if (!nota || nota === 'SUSPENSA') { estados[uf] = null; continue; }
-        const cumpre = parametro.categoriasCumpre.includes(nota);
+        const cumpre = atingeNoEstado(parametro, valor);
         avaliados += 1;
         if (cumpre) cumpridas += 1;
-        estados[uf] = { valor: nota, alvo: 'A ou B', cumpre, escala: cumpre ? 1 : 0, escalaTipo: 'categoria', categoria: true };
+        estados[uf] = { valor, alvo: 'A ou B', cumpre, escala: cumpre ? 1 : 0, escalaTipo: 'categoria', categoria: true };
         continue;
       }
-
-      const valor = Number(valorBruto);
-      const alvo = alvoEhRegra(parametro) ? alvoPorEstado(parametro, serie) : parametro.alvo;
-      if (!Number.isFinite(valor) || !Number.isFinite(alvo)) { estados[uf] = null; continue; }
-
+      const alvo = alvoDoEstado(parametro, indicador.serieAnual?.[uf], baseline);
+      if (!Number.isFinite(alvo)) { estados[uf] = null; continue; }
       const cumpre = parametro.direcao === 'menor' ? valor <= alvo : valor >= alvo;
-      const baseline = parametro.baselineAno
-        ? primeiroDaSerie(serie, parametro.baselineAno)?.valor
-        : (alvoEhRegra(parametro) ? primeiroDaSerie(serie)?.valor : null);
       avaliados += 1;
       if (cumpre) cumpridas += 1;
-      // Duas escalas possíveis: quando existe baseline comparável, o avanço percorrido
-      // desde ela; senão, a posição do valor em relação ao alvo. Nunca as duas juntas,
-      // e o tipo viaja com o número para a página poder rotular corretamente.
-      const temBaseline = Number.isFinite(baseline);
-      const avanco = temBaseline ? (cumpre ? 1 : progressoEntre(baseline, valor, alvo)) : null;
-      const razao = parametro.direcao === 'menor'
+      const posicao = parametro.direcao === 'menor'
         ? (alvo > 0 ? Math.min(1, alvo / valor) : null)
         : (alvo > 0 ? Math.min(1, valor / alvo) : null);
       estados[uf] = {
@@ -335,8 +500,8 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null) {
         alvo,
         cumpre,
         distancia: parametro.direcao === 'menor' ? valor - alvo : alvo - valor,
-        escala: avanco ?? (cumpre ? 1 : razao),
-        escalaTipo: temBaseline ? 'baseline' : 'alvo'
+        escala: cumpre ? 1 : posicao,
+        escalaTipo: 'alvo'
       };
     }
 
@@ -357,14 +522,15 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null) {
       direcao: parametro.direcao,
       tipo: parametro.tipo,
       nota: parametro.nota || null,
+      // O patamar escrito na meta, quando é um número; o alvo calculado da
+      // baseline está no regional.
       alvo: alvoEhRegra(parametro) ? null : (parametro.alvo ?? null),
-      alvoPorEstado: alvoEhRegra(parametro),
       estados,
       cumpridas,
       avaliados,
-      regional: agregaRegional(parametro, indicador, estados, contexto),
+      regional: avaliaRegional(parametro, indicador, atuais, contexto, baseline),
       agregacaoRotulo: ROTULO_AGREGACAO[parametro.agregacao] || null,
-      historico: montaHistorico(parametro, indicador, estados, ufs, contexto),
+      historico,
       projecoes: projecoesDe(indicador.codigo)
     };
     // Depende do histórico e do valor regional, por isso vem depois.
@@ -408,14 +574,6 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null) {
     });
   }
 
-  const porEstado = Object.fromEntries(ufs.map((uf) => {
-    const avaliadas = metas.filter((meta) => meta.estados[uf]);
-    return [uf, {
-      cumpridas: avaliadas.filter((meta) => meta.estados[uf].cumpre).length,
-      avaliadas: avaliadas.length
-    }];
-  }));
-
   const comRegional = metas.filter((meta) => meta.regional);
 
   return {
@@ -431,9 +589,9 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null) {
       regional: {
         comValorRegional: comRegional.length,
         cumpridas: comRegional.filter((meta) => meta.regional.cumpre).length,
+        comBaseline: comRegional.filter((meta) => meta.regional.escalaTipo === 'baseline').length,
         semValorRegional: metas.length - comRegional.length
-      },
-      porEstado
+      }
     }
   };
 }

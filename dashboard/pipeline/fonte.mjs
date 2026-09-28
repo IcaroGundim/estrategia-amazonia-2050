@@ -171,6 +171,21 @@ export async function carregaFonte() {
   return fonte;
 }
 
+/**
+ * Arquivos de detalhe de public/data (as coletas versionadas, como a série de
+ * óbitos do SIM) pelo nome. As metas que leem uma série ou um denominador de lá
+ * dizem qual em `conteudo/metas.json`.
+ */
+export async function carregaDetalhes(nomes) {
+  const pares = await Promise.all(nomes.map(async (nome) => {
+    exige(/^[a-z0-9-]+\.json$/.test(nome), `metas.json cita um arquivo de detalhe com nome inválido: "${nome}"`);
+    const texto = await readFile(join(publicRoot, 'data', nome), 'utf8').catch(() => null);
+    exige(texto !== null, `metas.json cita public/data/${nome}, que não existe`);
+    return [nome, JSON.parse(texto)];
+  }));
+  return Object.fromEntries(pares);
+}
+
 export function validaFonte({ catalogo, metas, panorama, painel, projecoes, linhas, ufs, valores, interface: interfaceTextos }) {
   exige(Array.isArray(catalogo.eixos) && catalogo.eixos.length, 'catalogo.json sem eixos');
   if (interfaceTextos) {
@@ -217,9 +232,31 @@ export function validaFonte({ catalogo, metas, panorama, painel, projecoes, linh
   for (const [nome, partes] of Object.entries(panorama.sintese.dimensoes)) {
     for (const parte of partes) exige(chaves.has(parte.chave), `dimensão ${nome} cita métrica inexistente: ${parte.chave}`);
   }
+  const AGREGACOES = ['soma', 'media', 'populacao', 'razaoUc', 'razaoCvli', 'razaoCampos', 'razaoDenominador', 'contagem'];
   for (const parametro of metas.parametros) {
     exige(codigos.has(parametro.codigo), `metas.json parametriza código fora do catálogo: ${parametro.codigo}`);
     exige(['maior', 'menor', 'categoria'].includes(parametro.direcao), `${parametro.codigo}: direção inválida`);
+    exige(AGREGACOES.includes(parametro.agregacao), `${parametro.codigo}: toda meta precisa de um valor regional; agregação "${parametro.agregacao}" desconhecida`);
+    exige(parametro.direcao !== 'categoria' || parametro.agregacao === 'contagem', `${parametro.codigo}: meta por categoria se lê na região como a parcela dos estados (agregação 'contagem')`);
+    if (parametro.alvo && typeof parametro.alvo === 'object') {
+      const regra = parametro.alvo;
+      exige(regra.tipo === 'sobreBaseline', `${parametro.codigo}: regra de alvo desconhecida "${regra.tipo}"`);
+      exige(Number.isFinite(regra.fator ?? 1) && Number.isFinite(regra.soma ?? 0) && (regra.fator !== undefined || regra.soma !== undefined), `${parametro.codigo}: a regra sobre a baseline precisa de fator ou soma numéricos`);
+    } else if (parametro.direcao !== 'categoria') {
+      exige(Number.isFinite(parametro.alvo), `${parametro.codigo}: alvo precisa ser um número ou uma regra sobre a baseline`);
+    }
+    if (parametro.baseline !== undefined) {
+      const base = parametro.baseline;
+      const periodo = Number.isInteger(base?.desde) && (base.ate === undefined || (Number.isInteger(base.ate) && base.ate >= base.desde));
+      const ponto = (base?.ano === undefined || Number.isInteger(base.ano)) && (base?.ano !== undefined || Number.isFinite(base?.valor)) && (base?.valor === undefined || Number.isFinite(base.valor));
+      exige(base && typeof base === 'object' && (base.desde !== undefined ? periodo : ponto), `${parametro.codigo}: baseline precisa ser { ano, valor } ou { desde, ate }`);
+    }
+    if (parametro.agregacao === 'razaoDenominador') {
+      exige(parametro.denominador?.arquivo && parametro.denominador?.caminho, `${parametro.codigo}: razão por denominador sem arquivo ou caminho`);
+    }
+    if (parametro.valorDe && typeof parametro.valorDe === 'object' && !parametro.valorDe.panorama) {
+      exige(parametro.valorDe.arquivo, `${parametro.codigo}: valorDe precisa de panorama ou de arquivo`);
+    }
     if (parametro.trajetoria) {
       const traj = parametro.trajetoria;
       exige(traj.janela === undefined || (Number.isInteger(traj.janela) && traj.janela >= 3), `${parametro.codigo}: a janela da trajetória precisa ser um inteiro de 3 ou mais`);

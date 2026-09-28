@@ -8,16 +8,16 @@
 //
 //   public/data/dashboard.json   Panorama: estados, séries, síntese, resumo
 //   public/data/catalogo.json    catálogo com os números
-//   public/data/metas.json       metas avaliadas por estado
+//   public/data/metas.json       metas avaliadas para a Amazônia Legal
 //   public/data/fichas.json      fichas técnicas
 //   public/downloads/*.xlsx      um workbook por eixo, mais o modelo de importação
 import { mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { carregaFonte, conteudoRoot, publicRoot } from './pipeline/fonte.mjs';
+import { carregaDetalhes, carregaFonte, conteudoRoot, publicRoot } from './pipeline/fonte.mjs';
 import { derivaDashboard } from './pipeline/derivar.mjs';
 import { montaCatalogoPublico } from './pipeline/catalogo.mjs';
-import { buildMetas } from './pipeline/metas.mjs';
+import { arquivosDasMetas, buildMetas } from './pipeline/metas.mjs';
 import { resumeTrajetoria } from './pipeline/trajetoria.mjs';
 import { geraWorkbooks } from './pipeline/workbooks.mjs';
 
@@ -67,7 +67,8 @@ export async function derivaTudo() {
   const fonte = await carregaFonte();
   const dashboard = await derivaDashboard(fonte);
   const catalogo = montaCatalogoPublico(fonte);
-  const metas = buildMetas(catalogo, dashboard, fonte.metas, fonte.projecoes);
+  const detalhes = await carregaDetalhes(arquivosDasMetas(fonte.metas));
+  const metas = buildMetas(catalogo, dashboard, fonte.metas, fonte.projecoes, detalhes);
   // O Panorama lê só o dashboard.json; a trajetória das metas vai resumida nele.
   dashboard.trajetoria = resumeTrajetoria(metas.metas, fonte.ufs);
   return { fonte, dashboard, catalogo, metas };

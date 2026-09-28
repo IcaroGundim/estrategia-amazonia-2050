@@ -23,8 +23,8 @@ const avaliadas = new Set(metas.parametros.map((item) => item.codigo));
 const excluidas = new Set(Object.keys(metas.exclusoes));
 const semNada = indicadores.filter((item) => !avaliadas.has(item.codigo) && !excluidas.has(item.codigo));
 const descreveAlvo = (parametro: Parametro) => {
-  if (parametro.direcao === 'categoria') return 'classificação por categoria';
-  if (parametro.alvo && typeof parametro.alvo === 'object') return 'alvo derivado da série de cada estado';
+  if (parametro.direcao === 'categoria') return 'parcela dos estados na categoria pedida';
+  if (parametro.alvo && typeof parametro.alvo === 'object') return 'alvo calculado sobre a baseline da região';
   return `${parametro.direcao === 'menor' ? 'no máximo' : 'pelo menos'} ${parametro.alvo}`;
 };
 ---
@@ -35,6 +35,7 @@ const descreveAlvo = (parametro: Parametro) => {
     <p class="admin-chapeu"><a href="/admin">Início</a> / Metas</p>
     <h1>Metas confrontáveis</h1>
     <p>Uma meta só entra no quadro quando o patamar pode ser comparado com os valores coletados, na mesma unidade. As demais aparecem na lista pública como "fora do quadro", com o motivo escrito aqui ou com o motivo padrão.</p>
+    <p>As metas são da Amazônia Legal como um todo: o que se confronta com o alvo é o valor da região, e os estados aparecem como complemento. Quando a meta não diz a baseline, vale a média dos últimos 10 anos da série regional, ou dos últimos 5 se ela for mais curta.</p>
     <Busca placeholder="Buscar indicador por código ou nome" />
   </section>
 
