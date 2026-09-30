@@ -686,6 +686,13 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .method-source-block { margin-top: 27px; padding: 21px 23px; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); }
 .method-source-block > span { color: var(--urucum); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .method-source-block p { max-width: 105ch; margin: 9px 0 0; color: var(--tinta-3); font-size: 13.5px; line-height: 1.6; }
+/* Lâmina 5: a citação dos governadores sobre o IPAM, no bloco que era das fontes. */
+/* O blockquote das lâminas é o bloco verde de destaque; aqui ele é só a fala,
+   sobre a areia do bloco, com um fio de urucum à esquerda. */
+.method-source-block.is-citacao { margin-inline: 0; margin-bottom: 0; }
+.method-section .method-source-block.is-citacao blockquote { margin: 10px 0 0; padding: 0 0 0 16px; border-left: 3px solid var(--urucum); border-radius: 0; background: none; }
+.method-section .method-source-block.is-citacao blockquote p { max-width: 70ch; margin: 0; color: var(--tinta); font-family: var(--display); font-weight: 600; font-style: italic; }
+.method-source-block.is-citacao figcaption { margin: 6px 0 0 19px; color: var(--tinta-3); font-size: 12px; line-height: 1.45; }
 .method-section > h2 + .method-guidance-grid { margin-top: 27px; }
 .method-guidance-grid { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 12px; }
 .method-guidance-grid article { position: relative; padding: 20px 22px; overflow: hidden; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255, 255, 255, 0.28); }
@@ -855,12 +862,12 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    diferentes da mesma matriz: uma tem barra e jornada, a outra tem selo de
    coleta e o motivo de ficar de fora. A faixa é o que impede que a segunda seja
    lida como uma meta sem número. */
-.goals-faixa { margin: 16px 0 2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
+.goals-faixa { margin: 24px 0 2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
 .goals-faixa::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
 /* Metas em cards: a jornada é o número grande à esquerda; nome, patamar, barra
    fina e valor atual ficam ao lado. Duas colunas quando há largura; uma quando
    o painel de detalhe está aberto ou a tela é estreita. */
-.goals-cards { margin-top: 8px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.goals-cards { margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .goals-row { position: relative; width: 100%; min-width: 0; padding: 12px 14px; display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: 2px 12px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); text-align: left; transition: border-color 160ms ease, box-shadow 180ms ease; }
 button.goals-row { cursor: pointer; }
 button.goals-row:hover, button.goals-row:focus-visible { outline: none; border-color: var(--mata-300); }
@@ -898,6 +905,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-row.is-coletado { grid-template-columns: 80px minmax(0, 1fr); }
 .goals-row.is-coletado .goals-row-ler b { font-size: 20px; }
 .goals-row.is-coletado .goals-row-ler b.is-faixa { font-size: 15px; }
+/* A unidade quebra linha na coluna estreita, em vez de invadir o gráfico ao lado. */
+.goals-row.is-coletado .goals-row-ler small { white-space: normal; overflow-wrap: anywhere; }
 .goals-row-lugar { display: block; margin-bottom: 3px; color: var(--tinta-4); font-size: 8.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; white-space: normal; }
 .coletado-calor { height: 12px; margin-top: 8px; display: grid; gap: 1px; }
 .coletado-calor i { display: block; border-radius: 1px; }
@@ -1475,7 +1484,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 /* Cards da trajetória: a borda, o raio e o respiro do card de Metas; dois por
    linha, um no celular. O gráfico segue o vocabulário de .coletado-* (série em
    linha cheia com área, marcador tracejado, dica escura). */
-.traj-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.traj-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .traj-card { min-width: 0; padding: 12px 14px 8px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); }
 .traj-card-topo { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 4px; }
 .traj-card-topo h3 { min-width: 0; margin: 0; color: var(--tinta); font: 500 15px/1.3 var(--text); letter-spacing: 0; }
@@ -1486,6 +1495,22 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .traj-card.is-contrario .traj-card-ano b, .traj-card.is-contrario .traj-card-ano small { color: var(--urucum); }
 .traj-card-nota { margin: 4px 0 2px; color: var(--tinta-3); font-size: 12px; line-height: 1.45; }
 .traj-vazio { grid-column: 1 / -1; margin: 0; color: var(--tinta-3); font-size: 13px; }
+/* Faixas da lista, no mesmo desenho das faixas de Metas: metas com projeção,
+   metas sem série e indicadores sem meta numérica. */
+.traj-faixa { grid-column: 1 / -1; margin: 14px 0 -2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+.traj-faixa:first-child { margin-top: 0; }
+.traj-faixa::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
+/* Sem meta não há ritmo: o valor de 2050 e o tracejado ficam em cinza. */
+.traj-card.is-tendencia .traj-card-ano b { color: var(--tinta-2); font-size: 22px; }
+.traj-projecao.is-tendencia { stroke: var(--tinta-3); }
+/* Cards sem gráfico: valor atual (e meta), e o aviso de série curta. */
+.traj-card.is-semSerie { padding-bottom: 12px; }
+.traj-card-valores { margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.traj-card-valores dt { color: var(--tinta-4); font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.traj-card-valores dd { margin: 2px 0 0; color: var(--mata); font: 800 20px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.traj-card-valores dd small { color: var(--tinta-4); font: 500 11px var(--text); }
+.traj-card-valores dd.is-unidade { padding-top: 4px; color: var(--tinta-2); font: 500 13px/1.3 var(--text); }
+.traj-card-aviso { margin: 10px 0 0; color: var(--tinta-3); font-size: 12px; font-style: italic; }
 
 .traj-graf { position: relative; border-radius: 6px; }
 .traj-graf:focus-visible { outline: 2px solid var(--mata-300); outline-offset: 3px; }

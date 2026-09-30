@@ -51,7 +51,7 @@
         "Detalhes e comparação estadual",
         "Conteúdo da coluna lateral",
         "Visão geral",
-        "Comparação estadual",
+        "Entre estados",
         "Visão geral da região ou do estado selecionado",
         "Carregando painel…",
         "Síntese comparativa",
@@ -287,7 +287,6 @@
       "chaves": [
         "O indicador ainda não tem valores coletados para os nove estados.",
         "A meta não define um patamar numérico comparável aos valores coletados.",
-        "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
         "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
         "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
         "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
@@ -338,7 +337,7 @@
         "Visão 2050",
         "Transição energética",
         "Implementação",
-        "Painel",
+        "IPAM",
         "Ver o cumprimento das metas",
         "Explorar metas e indicadores",
         "Estratégia",
@@ -466,7 +465,7 @@
         "Trajetória",
         "Onde a Amazônia Legal está no caminho até 2050",
         "Onde {estado} está no caminho até 2050",
-        "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.",
+        "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
         "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
         "Ver o quadro de metas",
         "Como a trajetória é calculada",
@@ -507,8 +506,19 @@
         "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.",
         "Já cumpridas:",
         "Trajetória desligada:",
-        "1 meta ainda sem série para projetar",
-        "{n} metas ainda sem série para projetar"
+        "Metas com projeção",
+        "Metas com série insuficiente para projetar",
+        "Indicadores sem meta numérica: tendência até 2050",
+        "Indicadores sem meta numérica: valor atual",
+        "Sem dado neste recorte:",
+        "Atual",
+        "até {ano}",
+        "{n} anos com dado: série insuficiente para projetar",
+        "Um ano com dado: série insuficiente para projetar",
+        "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.",
+        "chega a zero em {ano}",
+        "tendência em {ano}",
+        "Trajetória desligada."
       ],
       "alvo": ".trajetoria"
     },
@@ -761,9 +771,9 @@
       "pt": "Visão geral",
       "en": "Overview"
     },
-    "Comparação estadual": {
-      "pt": "Comparação estadual",
-      "en": "State comparison"
+    "Entre estados": {
+      "pt": "Entre estados",
+      "en": "Across states"
     },
     "Visão geral da região ou do estado selecionado": {
       "pt": "Visão geral da região ou do estado selecionado",
@@ -1413,10 +1423,6 @@
       "pt": "A meta não define um patamar numérico comparável aos valores coletados.",
       "en": "The target sets no numerical threshold that the collected figures can be measured against."
     },
-    "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.": {
-      "pt": "A meta é de cobertura de 100% da população, mas os valores coletados são o número de equipes de atenção primária, não o percentual de cobertura.",
-      "en": "The target is 100% population coverage, but what was collected is the number of primary care teams, not the coverage rate."
-    },
     "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.": {
       "pt": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
       "en": "The technical sheet defines value-chain development in qualitative terms, with no numerical threshold."
@@ -1512,10 +1518,6 @@
     "Implementação": {
       "pt": "Implementação",
       "en": "Implementation"
-    },
-    "Painel": {
-      "pt": "Painel",
-      "en": "Dashboard"
     },
     "Ver o cumprimento das metas": {
       "pt": "Ver o cumprimento das metas",
@@ -1865,9 +1867,9 @@
       "pt": "Onde {estado} está no caminho até 2050",
       "en": "Where {estado} stands on the way to 2050"
     },
-    "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.": {
-      "pt": "Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.",
-      "en": "The pace of recent years for each target, set against its agreed deadline. A mechanical projection from the series, not a forecast."
+    "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
+      "pt": "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
+      "en": "Recent pace of each goal against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
     },
     "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.": {
       "pt": "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
@@ -2028,14 +2030,6 @@
     "Trajetória desligada:": {
       "pt": "Trajetória desligada:",
       "en": "Trajectory switched off:"
-    },
-    "1 meta ainda sem série para projetar": {
-      "pt": "1 meta ainda sem série para projetar",
-      "en": "1 target without a series to project yet"
-    },
-    "{n} metas ainda sem série para projetar": {
-      "pt": "{n} metas ainda sem série para projetar",
-      "en": "{n} targets without a series to project yet"
     },
     "atual": {
       "pt": "atual",
@@ -2444,6 +2438,62 @@
     "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.": {
       "pt": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.",
       "en": "The target is to mobilise the equivalent of 0.1% of the Legal Amazon's GDP a year, while the technical sheet speaks of R$ 100 million a year: the two thresholds do not match, and the dashboard's data does not include the region's GDP for the year of the funds. The value per state is what each government received from the Amazon Fund and REM Acre, two components of the indicator."
+    },
+    "Metas com projeção": {
+      "pt": "Metas com projeção",
+      "en": "Goals with a projection"
+    },
+    "Metas com série insuficiente para projetar": {
+      "pt": "Metas com série insuficiente para projetar",
+      "en": "Goals with too short a series to project"
+    },
+    "Indicadores sem meta numérica: tendência até 2050": {
+      "pt": "Indicadores sem meta numérica: tendência até 2050",
+      "en": "Indicators without a numeric target: trend to 2050"
+    },
+    "Indicadores sem meta numérica: valor atual": {
+      "pt": "Indicadores sem meta numérica: valor atual",
+      "en": "Indicators without a numeric target: latest value"
+    },
+    "Sem dado neste recorte:": {
+      "pt": "Sem dado neste recorte:",
+      "en": "No data for this selection:"
+    },
+    "Atual": {
+      "pt": "Atual",
+      "en": "Latest"
+    },
+    "até {ano}": {
+      "pt": "até {ano}",
+      "en": "by {ano}"
+    },
+    "{n} anos com dado: série insuficiente para projetar": {
+      "pt": "{n} anos com dado: série insuficiente para projetar",
+      "en": "{n} years of data: too short a series to project"
+    },
+    "Um ano com dado: série insuficiente para projetar": {
+      "pt": "Um ano com dado: série insuficiente para projetar",
+      "en": "One year of data: too short a series to project"
+    },
+    "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.": {
+      "pt": "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.",
+      "en": "{nome}: {valor} in {ano}; trend reaches {final} in {fim}. Use the arrow keys to move through the years."
+    },
+    "chega a zero em {ano}": {
+      "pt": "chega a zero em {ano}",
+      "en": "reaches zero in {ano}"
+    },
+    "tendência em {ano}": {
+      "pt": "tendência em {ano}",
+      "en": "trend in {ano}"
+    },
+    "Trajetória desligada.": {
+      "pt": "Trajetória desligada.",
+      "en": "Trajectory switched off."
+    },
+    "IPAM": {
+      "pt": "IPAM",
+      "en": "IPAM"
     }
   }
 }

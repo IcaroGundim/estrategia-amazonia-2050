@@ -500,6 +500,104 @@ function cardDaTrajetoria(meta, item, fim) {
   </article>`;
 }
 
+// Valor de um card sem gráfico: número com a unidade curta, ou a própria nota
+// quando a meta é de categoria (CAPAG).
+function valorDoCard(valor, unidade) {
+  return typeof valor === 'number' ? valorDaTrajetoria(valor, unidade) : String(valor ?? '—');
+}
+
+// Meta com menos de três anos: o valor medido e a meta, sem projeção.
+function cardSemSerie(meta, item) {
+  const unidade = campo(meta.codigo, 'unidade', meta.unidade);
+  const ano = item.atual.ano ? ` <small>${item.atual.ano}</small>` : '';
+  const alvo = item.alvo !== null && item.alvo !== undefined
+    ? `<div><dt>${t('Meta')}</dt><dd>${escape(valorDoCard(item.alvo, unidade))} <small>${escape(tp('até {ano}', { ano: meta.prazo }))}</small></dd></div>`
+    : '';
+  return `<article class="traj-card is-semSerie">
+    <div class="traj-card-topo"><h3>${escape(campo(meta.codigo, 'nome', meta.nome))}</h3></div>
+    <dl class="traj-card-valores">
+      <div><dt>${t('Atual')}</dt><dd>${escape(valorDoCard(item.atual.valor, unidade))}${ano}</dd></div>
+      ${alvo}
+    </dl>
+    <p class="traj-card-aviso">${item.pontos > 1 ? escape(tp('{n} anos com dado: série insuficiente para projetar', { n: item.pontos })) : t('Um ano com dado: série insuficiente para projetar')}</p>
+  </article>`;
+}
+
+// Indicador sem meta numérica, com série: a medida em linha cheia e a reta até
+// o ano-limite em tracejado cinza — não há meta, então não há cor de ritmo.
+function graficoDaTendencia(ind, item, fim) {
+  const { largura: W, altura: H } = tamanhoDaTrajetoria();
+  const unidade = campo(ind.codigo, 'unidade', ind.unidade);
+  const serie = item.serie;
+  const ultimo = serie.at(-1);
+  const xFinal = item.anoZero ?? fim;
+  const marcas = marcasDaTrajetoria(Math.min(...serie.map((p) => p.valor), item.valorFinal), Math.max(...serie.map((p) => p.valor), item.valorFinal));
+  const compacto = Math.max(...marcas.map((v) => Math.abs(v))) >= 10000;
+  const rotuloY = (v) => (v !== 0 && compacto ? compactNumber(v) : numeroCurto(v));
+  const y0 = 10, y1 = H - 24;
+  const x0 = Math.max(26, Math.max(...marcas.map((v) => rotuloY(v).length)) * 6.4 + 10);
+  const x1 = W - 6;
+  const primeiroAno = serie[0].ano;
+  const px = (ano) => x0 + (ano - primeiroAno) / ((fim - primeiroAno) || 1) * (x1 - x0);
+  const vMin = marcas[0], vMax = marcas.at(-1);
+  const py = (v) => y1 - (v - vMin) / ((vMax - vMin) || 1) * (y1 - y0);
+  const f = (n) => n.toFixed(1);
+  const grade = marcas.map((v) => `<line x1="${f(x0)}" x2="${x1}" y1="${f(py(v))}" y2="${f(py(v))}"${v === 0 ? ' class="is-zero"' : ''}/><text x="${f(x0 - 6)}" y="${f(py(v) + 4)}" text-anchor="end">${escape(rotuloY(v))}</text>`).join('');
+  const pontos = serie.map((p) => `${f(px(p.ano))},${f(py(p.valor))}`).join(' ');
+  const base = f(py(Math.max(vMin, 0)));
+  const anos = [...new Set([primeiroAno, fim])].map((ano) => `<text x="${f(px(ano))}" y="${H - 6}" text-anchor="${ano === fim ? 'end' : 'start'}">${ano}</text>`).join('');
+  const leitura = serie.map((p) => ({ ano: p.ano, valor: p.valor, projetado: false }));
+  for (let ano = ultimo.ano + 1; ano <= Math.floor(xFinal); ano += 1) leitura.push({ ano, valor: Math.max(item.anoZero ? 0 : -Infinity, ultimo.valor + item.ritmo * (ano - ultimo.ano)), projetado: true });
+  const alvos = leitura.map((ponto, indice) => {
+    const x = px(ponto.ano);
+    const antes = indice ? (px(leitura[indice - 1].ano) + x) / 2 : x0 - 4;
+    const depois = indice < leitura.length - 1 ? (x + px(leitura[indice + 1].ano)) / 2 : x1 + 4;
+    return `<rect class="traj-alvo" x="${f(antes)}" y="0" width="${f(depois - antes)}" height="${y1 + 4}" data-x="${f(x)}" data-y="${f(py(ponto.valor))}" data-cor="${ponto.projetado ? 'var(--tinta-3)' : 'var(--mata)'}" data-dica="${escape(`${ponto.ano} · ${valorDaTrajetoria(ponto.valor, unidade)}`)}"${ponto.projetado ? ' data-projetado' : ''}/>`;
+  }).join('');
+  const descricao = tp('{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.', {
+    nome: campo(ind.codigo, 'nome', ind.nome), valor: valorDaTrajetoria(ultimo.valor, unidade), ano: ultimo.ano, final: valorDaTrajetoria(item.valorFinal, unidade), fim
+  });
+  return `<div class="traj-graf" tabindex="0" role="group" aria-label="${escape(descricao)}">
+    <svg viewBox="0 0 ${W} ${H}" aria-hidden="true">
+      <g class="traj-grade">${grade}</g>
+      <polygon class="traj-area" points="${f(px(primeiroAno))},${base} ${pontos} ${f(px(ultimo.ano))},${base}"/>
+      <polyline class="traj-medida" points="${pontos}"/>
+      <polyline class="traj-projecao is-tendencia" points="${f(px(ultimo.ano))},${f(py(ultimo.valor))} ${f(px(xFinal))},${f(py(item.valorFinal))}"/>
+      <circle class="traj-ultimo" cx="${f(px(ultimo.ano))}" cy="${f(py(ultimo.valor))}" r="3.5"/>
+      <g>${anos}</g>
+      <g class="traj-marcador"><line y1="${y0 - 2}" y2="${y1}"/><circle r="4.5"/></g>
+      ${alvos}
+    </svg>
+    <div class="traj-dica" role="status" hidden></div>
+  </div>`;
+}
+
+function cardDaTendencia(ind, item, fim) {
+  const unidade = campo(ind.codigo, 'unidade', ind.unidade);
+  return `<article class="traj-card is-tendencia">
+    <div class="traj-card-topo">
+      <h3>${escape(campo(ind.codigo, 'nome', ind.nome))}</h3>
+      <p class="traj-card-ano"><b>${escape(valorDaTrajetoria(item.valorFinal, unidade))}</b><small>${escape(item.anoZero ? tp('chega a zero em {ano}', { ano: Math.ceil(item.anoZero) }) : tp('tendência em {ano}', { ano: fim }))}</small></p>
+    </div>
+    ${graficoDaTendencia(ind, item, fim)}
+    <p class="traj-card-nota">${escape(unidade)}</p>
+  </article>`;
+}
+
+// Indicador sem meta e sem série: só o valor medido.
+function cardSemSerieIndicador(ind, item) {
+  const unidade = campo(ind.codigo, 'unidade', ind.unidade);
+  const ano = item.atual.ano ? ` <small>${item.atual.ano}</small>` : '';
+  return `<article class="traj-card is-semSerie">
+    <div class="traj-card-topo"><h3>${escape(campo(ind.codigo, 'nome', ind.nome))}</h3></div>
+    <dl class="traj-card-valores">
+      <div><dt>${t('Atual')}</dt><dd>${escape(valorDoCard(item.atual.valor, unidade))}${ano}</dd></div>
+      <div><dt>${t('Unidade')}</dt><dd class="is-unidade">${escape(unidade)}</dd></div>
+    </dl>
+    <p class="traj-card-aviso">${item.classe === 'desligada' ? escape(item.nota || t('Trajetória desligada.')) : item.pontos > 1 ? escape(tp('{n} anos com dado: série insuficiente para projetar', { n: item.pontos })) : t('Um ano com dado: série insuficiente para projetar')}</p>
+  </article>`;
+}
+
 function renderTrajetoria() {
   const dados = state.data.trajetoria;
   const lista = document.querySelector('[data-trajetoria-lista]');
@@ -514,28 +612,44 @@ function renderTrajetoria() {
   larguraDaTrajetoria = mede(lista);
   const fim = dados.anoLimite;
   const cards = [];
+  const semSerieMetas = [];
   const cumpridas = [];
   const desligadas = [];
-  const semSerie = [];
+  const semDado = [];
   for (const meta of dados.metas) {
     const item = meta.escopos[escopo];
     if (item && ORDEM_TRAJETORIA[item.classe] !== undefined && item.serie?.length) cards.push({ meta, item });
     else if (item?.classe === 'cumprida') cumpridas.push(meta);
     else if (item?.classe === 'desligada') desligadas.push(meta);
-    else semSerie.push(meta);
+    else if (item?.classe === 'semSerie' && item.atual) semSerieMetas.push({ meta, item });
+    else semDado.push(meta);
   }
-  cards.sort((a, b) => ORDEM_TRAJETORIA[a.item.classe] - ORDEM_TRAJETORIA[b.item.classe] || a.meta.codigo.localeCompare(b.meta.codigo));
+  const porCodigo = (a, b) => a.meta.codigo.localeCompare(b.meta.codigo);
+  cards.sort((a, b) => ORDEM_TRAJETORIA[a.item.classe] - ORDEM_TRAJETORIA[b.item.classe] || porCodigo(a, b));
+  semSerieMetas.sort(porCodigo);
 
-  lista.innerHTML = cards.map(({ meta, item }) => cardDaTrajetoria(meta, item, fim)).join('')
-    || `<p class="traj-vazio">${t('Nenhuma meta com trajetória neste recorte.')}</p>`;
-  const nomes = (metas) => metas.map((meta) => escape(campo(meta.codigo, 'nome', meta.nome))).join(' · ');
-  const resumoSemSerie = semSerie.length === 1
-    ? t('1 meta ainda sem série para projetar')
-    : tp('{n} metas ainda sem série para projetar', { n: semSerie.length });
+  // Indicadores sem meta numérica: os com série primeiro, depois os de um ano.
+  const tendencias = [];
+  const semSerieIndicadores = [];
+  for (const ind of dados.indicadores || []) {
+    const item = ind.escopos[escopo];
+    if (item?.classe === 'tendencia') tendencias.push({ ind, item });
+    else if (item?.classe === 'semSerie' || item?.classe === 'desligada') semSerieIndicadores.push({ ind, item });
+    else semDado.push(ind);
+  }
+
+  const faixa = (titulo, html) => (html ? `<p class="traj-faixa">${titulo}</p>${html}` : '');
+  lista.innerHTML = [
+    faixa(t('Metas com projeção'), cards.map(({ meta, item }) => cardDaTrajetoria(meta, item, fim)).join('')),
+    faixa(t('Metas com série insuficiente para projetar'), semSerieMetas.map(({ meta, item }) => cardSemSerie(meta, item)).join('')),
+    faixa(t('Indicadores sem meta numérica: tendência até 2050'), tendencias.map(({ ind, item }) => cardDaTendencia(ind, item, fim)).join('')),
+    faixa(t('Indicadores sem meta numérica: valor atual'), semSerieIndicadores.map(({ ind, item }) => cardSemSerieIndicador(ind, item)).join(''))
+  ].join('') || `<p class="traj-vazio">${t('Nenhuma meta com trajetória neste recorte.')}</p>`;
+  const nomes = (itens) => itens.map((item) => escape(campo(item.codigo, 'nome', item.nome))).join(' · ');
   fecho.innerHTML = [
     cumpridas.length ? `<p><b>${t('Já cumpridas:')}</b> ${nomes(cumpridas)}</p>` : '',
     desligadas.length ? `<p><b>${t('Trajetória desligada:')}</b> ${nomes(desligadas)}</p>` : '',
-    semSerie.length ? `<details><summary>${escape(resumoSemSerie)}</summary><p>${nomes(semSerie)}</p></details>` : ''
+    semDado.length ? `<p><b>${t('Sem dado neste recorte:')}</b> ${nomes(semDado)}</p>` : ''
   ].join('');
 }
 

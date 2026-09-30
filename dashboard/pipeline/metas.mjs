@@ -44,6 +44,8 @@
 //   razao       com agregacao 'razaoCampos': { numerador, denominador, fator }
 //               nomes de dois campos auxiliares do CSV; o regional é
 //               Σ numerador / Σ denominador × fator (I4.2.1, I4.4.2)
+//   alvoSoRegional  true quando o alvo é um total da região e não se repete
+//               em cada estado (I3.3.2: 10 mil pessoas)
 //   categoriasCumpre, nota, notaAgregacao
 //
 // A jornada é o percurso desde a baseline: quanto do caminho entre ela e o alvo
@@ -185,8 +187,13 @@ function agregaValores(parametro, indicador, valores, contexto, ano = null, mais
     return peso ? soma(([uf, valor]) => valor * (populacaoPorUf[uf] || 0)) / peso : null;
   }
   if (parametro.agregacao === 'razaoUc') {
-    const total = soma(([uf]) => indicador.extra?.[uf]?.total);
-    return total ? soma(([uf]) => indicador.extra?.[uf]?.comAmbos) / total * 100 : null;
+    // Cada ano da série tem os seus totais (total2018, comAmbos2018...); sem
+    // eles, só o ano mais recente usa os campos sem ano.
+    const doAno = ano && entradas.some(([uf]) => indicador.extra?.[uf]?.[`total${ano}`] !== undefined);
+    if (ano && !doAno && !maisRecente) return null;
+    const campo = (nome) => (doAno ? `${nome}${ano}` : nome);
+    const total = soma(([uf]) => indicador.extra?.[uf]?.[campo('total')]);
+    return total ? soma(([uf]) => indicador.extra?.[uf]?.[campo('comAmbos')]) / total * 100 : null;
   }
   if (parametro.agregacao === 'razaoCvli') {
     const peso = soma(([uf]) => populacaoPorUf[uf]);
@@ -206,8 +213,9 @@ function agregaValores(parametro, indicador, valores, contexto, ano = null, mais
 function montaHistorico(parametro, indicador, atuais, ufs, contexto) {
   const porAno = new Map();
   // Quando o valor vem do Panorama (I5.4.1, % do PIB), a série do catálogo está
-  // em outra unidade e não pode ser misturada ao valor exibido.
-  const serieCompativel = parametro.valorDe?.panorama ? null : indicador.serieAnual;
+  // em outra unidade e não pode ser misturada ao valor exibido: vale a série da
+  // própria métrica do Panorama, que está na unidade da meta.
+  const serieCompativel = parametro.valorDe?.panorama ? contexto.seriePanorama : indicador.serieAnual;
 
   if (serieCompativel) {
     for (const uf of ufs) {
@@ -323,6 +331,8 @@ function alvoRegional(parametro, baseline) {
 // período da baseline da região. Um acréscimo em valor absoluto (R$ 100
 // milhões) é da região e não se reparte.
 function alvoDoEstado(parametro, serie, baseline) {
+  // Um total da região (10 mil pessoas) não é patamar de cada estado.
+  if (parametro.alvoSoRegional) return null;
   if (!alvoEhRegra(parametro)) return numeroOuNulo(parametro.alvo);
   if (parametro.alvo.soma || !baseline?.desde) return null;
   const pontos = Object.entries(serie || {})
@@ -413,7 +423,7 @@ function dadosSemMeta(indicador, config = {}, ufs) {
     if (serieRegional.length) regionalAtual = serieRegional.at(-1);
     else if (atuais.every((valor) => valor !== null)) regionalAtual = { ano: Number(anoDaReferencia(indicador.anoRef)) || null, valor: atuais.reduce((a, b) => a + b, 0) };
   }
-  return { unidadeValor: config.unidade || indicador.unidade, agregacao, valores, serieAnual, serieRegional, regionalAtual };
+  return { unidadeValor: config.unidade || indicador.unidade, agregacao, valores, serieAnual, serieRegional, regionalAtual, trajetoria: config.trajetoria || null };
 }
 
 export function buildMetas(catalogo, dashboard, config, projecoes = null, detalhes = {}) {
@@ -449,7 +459,13 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null, detalh
     const doCatalogo = porCodigo.get(parametro.codigo);
     if (!doCatalogo) continue;
     const indicador = comSerieDoArquivo(doCatalogo, parametro, detalhes, ufs);
-    const contexto = { ...contextoGeral, denominador: denominadorPorUf(parametro, detalhes) };
+    const contexto = {
+      ...contextoGeral,
+      denominador: denominadorPorUf(parametro, detalhes),
+      seriePanorama: parametro.valorDe?.panorama
+        ? Object.fromEntries((dashboard?.states || []).map((estado) => [estado.uf, estado.series?.[parametro.valorDe.panorama] || {}]))
+        : null
+    };
     const valoresDoPanorama = parametro.valorDe?.panorama ? campoDoPanorama(parametro.valorDe.panorama) : null;
 
     // O valor de hoje de cada estado, já na unidade da meta.

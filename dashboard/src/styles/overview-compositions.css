@@ -210,12 +210,12 @@
 #calculo .slide-contribuicao > span { color: var(--mata-500); font-size: clamp(10px, 1.2vh, 12px); font-weight: 600; text-transform: uppercase; letter-spacing: .16em; line-height: 1.5; }
 #calculo .slide-contribuicao a { color: var(--mata-700); font: 600 var(--slide-label) var(--display); text-decoration: underline; text-underline-offset: 3px; }
 #calculo .slide-copy { grid-column: 2; grid-row: 1; display: block; width: 100%; max-width: none; padding: clamp(26px,3vw,48px); }
-#calculo .slide-copy h2 { max-width: 22ch; }
+#calculo .slide-copy h2 { max-width: none; }
 #calculo .slide-copy > h2 + p { max-width: 78ch; }
-#calculo .method-guidance-grid, #calculo .method-source-block { margin-top: clamp(10px, 3vh, 34px); }
+#calculo .method-guidance-grid, #calculo .method-source-block { margin-top: clamp(10px, 2.4vh, 28px); }
 #calculo .method-source-block { padding: clamp(11px, 2.2vh, 24px) clamp(16px, 2.6vh, 30px); background: var(--areia); border: 0; }
-#calculo .method-guidance-grid { grid-template-columns: 1fr; }
-#calculo .method-actions { justify-content: start; margin-top: clamp(10px, 3vh, 34px); }
+#calculo .method-guidance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#calculo .method-actions { justify-content: start; margin-top: clamp(10px, 2.4vh, 28px); }
 /* Este painel: pouco texto e um terço da coluna vazio em telas altas. Texto e
    espaços seguem a altura da tela; abaixo de ~800px encolhem um pouco para caber. */
 @media (min-width: 921px) {
@@ -268,6 +268,18 @@
   #calculo .slide-contribuicao > span { font-size: 10px; }
   #calculo .slide-contribuicao a { font-size: 12px; }
   #calculo .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
+}
+/* Telas baixas (notebook de 720px): menos respiro para a lâmina do IPAM caber
+   sem rolagem interna. */
+@media (min-width: 921px) and (max-height: 800px) {
+  #calculo .slide-copy { padding-block: 24px; }
+  #calculo .method-guidance-grid article { padding: 14px 18px; }
+  #calculo .method-source-block { padding-block: 10px; }
+  #calculo .method-guidance-grid, #calculo .method-source-block, #calculo .method-actions { margin-top: 14px; }
+}
+/* No celular os dois itens do IPAM voltam a uma coluna. */
+@media (max-width: 620px) {
+  #calculo .method-guidance-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 700px) {
   .methodology-page .method-section { height: max(560px, calc(100dvh - 235px)); grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,1fr) 140px; }

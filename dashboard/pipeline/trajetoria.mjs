@@ -102,10 +102,28 @@ export function calculaTrajetoria({ pontos, alvo, prazo, direcao, cumpre, parame
   return { ...comum, classe, base, ritmo, ritmoNecessario, anoAlcance, aceleracao };
 }
 
+// Meta de categoria (CAPAG): o estado tem uma nota, não um número, e não há o
+// que projetar nele; a região é a parcela dos estados que atingem a nota, e
+// essa parcela tem série e alvo numéricos como qualquer outra meta.
+function trajetoriaDeCategoria(meta, config, ufs) {
+  const escopos = {};
+  for (const uf of ufs) {
+    const estado = meta.estados[uf];
+    const ponto = [...(meta.historico || [])].reverse().find((item) => item.valores?.[uf] !== undefined);
+    if (!estado || !ponto) { escopos[uf] = null; continue; }
+    const atual = { ano: Number(ponto.ano), valor: estado.valor };
+    escopos[uf] = { atual, alvo: estado.alvo, prazo: Number(meta.prazo), metodo: 'linear', janela: null, pontos: 1, serie: [atual], nota: config.nota || null, classe: estado.cumpre ? 'cumprida' : 'semSerie', base: null, ritmo: null, ritmoNecessario: null, anoAlcance: estado.cumpre ? atual.ano : null, aceleracao: null };
+  }
+  const regional = meta.regional
+    ? calculaTrajetoria({ pontos: pontosDe(meta.historico, 'regional'), alvo: meta.regional.alvo, prazo: Number(meta.prazo), direcao: 'maior', cumpre: meta.regional.cumpre, parametro: config })
+    : null;
+  return { regional, estados: escopos };
+}
+
 /** Trajetória de uma meta já montada pelo buildMetas, em todos os escopos. */
 export function trajetoriaDaMeta(meta, parametro, ufs) {
-  if (meta.direcao === 'categoria') return null;
   const config = parametro.trajetoria || {};
+  if (meta.direcao === 'categoria') return trajetoriaDeCategoria(meta, config, ufs);
   const prazo = Number(meta.prazo);
   const escopos = {};
   for (const uf of ufs) {
@@ -123,7 +141,7 @@ export function trajetoriaDaMeta(meta, parametro, ufs) {
  * Resumo para o Panorama: por escopo, a contagem por classe e a lista das
  * metas com o essencial de cada uma. É o que dashboard.json carrega.
  */
-export function resumeTrajetoria(metas, ufs) {
+export function resumeTrajetoria(metas, ufs, semMeta = []) {
   const escopos = ['regional', ...ufs];
   const contagem = Object.fromEntries(escopos.map((escopo) => [escopo, { cumprida: 0, noRitmo: 0, acelerar: 0, contrario: 0, semSerie: 0, desligada: 0, naoAvaliada: 0 }]));
   const lista = [];
@@ -161,5 +179,60 @@ export function resumeTrajetoria(metas, ufs) {
       escopos: porEscopo
     });
   }
-  return { anoLimite: ANO_LIMITE, contagem, metas: lista };
+  return { anoLimite: ANO_LIMITE, contagem, metas: lista, indicadores: resumeTendencias(semMeta, ufs) };
+}
+
+/**
+ * Tendência de um indicador sem meta numérica: a mesma reta de mínimos
+ * quadrados das metas, levada do último valor até o ano-limite. Sem alvo não há
+ * ano de alcance nem classe de ritmo; o card mostra só para onde a série vai.
+ * Com menos de três pontos fica o valor atual, sem projeção.
+ */
+export function calculaTendencia(pontos, parametro = {}) {
+  if (!pontos.length) return null;
+  const atual = pontos.at(-1);
+  const janela = Math.max(PONTOS_MINIMOS, Number(parametro.janela) || JANELA_PADRAO);
+  const comum = { atual, serie: pontos, pontos: pontos.length, janela, metodo: 'linear', nota: parametro.nota || null };
+  // Série com quebra ou em rampa de implantação: mostra o valor, não projeta.
+  if (parametro.desligada) return { ...comum, classe: 'desligada', base: null, ritmo: null, valorFinal: null, anoZero: null };
+  if (pontos.length < PONTOS_MINIMOS || !Number.isFinite(atual.ano)) return { ...comum, classe: 'semSerie', base: null, ritmo: null, valorFinal: null, anoZero: null };
+  const recentes = pontos.slice(-janela);
+  const ritmo = inclinacao(recentes);
+  let valorFinal = atual.valor + ritmo * (ANO_LIMITE - atual.ano);
+  let anoZero = null;
+  // Uma série que nunca foi negativa não ganha projeção abaixo de zero.
+  if (valorFinal < 0 && pontos.every((ponto) => ponto.valor >= 0)) {
+    anoZero = atual.ano - atual.valor / ritmo;
+    valorFinal = 0;
+  }
+  return { ...comum, classe: 'tendencia', base: recentes[0], ritmo, valorFinal, anoZero };
+}
+
+// Pontos de um indicador fora do quadro. A região só existe quando a soma dos
+// estados é declarada (serieRegional); um estado sem série anual entra com o
+// valor atual no ano de referência do catálogo.
+function pontosSemMeta(item, escopo) {
+  const anoRef = Number(String(item.anoRef || '').match(/(?:19|20)\d{2}/)?.[0]) || null;
+  if (escopo === 'regional') {
+    if (item.serieRegional?.length) return item.serieRegional.map(({ ano, valor }) => ({ ano: Number(ano), valor }));
+    return item.regionalAtual && Number.isFinite(item.regionalAtual.valor) ? [{ ano: item.regionalAtual.ano ?? anoRef, valor: item.regionalAtual.valor }] : [];
+  }
+  const serie = Object.entries(item.serieAnual?.[escopo] || {})
+    .map(([ano, valor]) => ({ ano: Number(ano), valor }))
+    .filter((ponto) => Number.isFinite(ponto.ano) && Number.isFinite(ponto.valor))
+    .sort((a, b) => a.ano - b.ano);
+  if (serie.length) return serie;
+  const valor = item.valores?.[escopo];
+  return Number.isFinite(valor) ? [{ ano: anoRef, valor }] : [];
+}
+
+export function resumeTendencias(semMeta, ufs) {
+  const escopos = ['regional', ...ufs];
+  return semMeta.filter((item) => item.temValores).map((item) => ({
+    codigo: item.codigo,
+    eixo: item.eixo,
+    nome: item.nome,
+    unidade: item.unidadeValor || item.unidade,
+    escopos: Object.fromEntries(escopos.map((escopo) => [escopo, calculaTendencia(pontosSemMeta(item, escopo), item.trajetoria || {})]))
+  }));
 }

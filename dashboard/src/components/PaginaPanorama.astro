@@ -54,17 +54,17 @@ const t = traduzirCom(lang, Astro.locals.interface);
       <aside class="dashboard-sidebar card" aria-label={t('Detalhes e comparação estadual')}>
         <div class="sidebar-tabs" role="tablist" aria-label={t('Conteúdo da coluna lateral')}>
           <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="state-panel" data-panel-view="state">{t('Visão geral')}</button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="ranking" data-panel-view="ranking">{t('Comparação estadual')}</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="ranking" data-panel-view="ranking">{t('Entre estados')}</button>
         </div>
 
         <section id="state-panel" class="state-panel sidebar-panel" role="tabpanel" aria-live="polite" aria-label={t('Visão geral da região ou do estado selecionado')}>
           <div class="state-panel-loading">{t('Carregando painel…')}</div>
         </section>
 
-        <section id="ranking" class="ranking-card sidebar-panel" role="tabpanel" aria-label={t('Comparação estadual')} hidden>
+        <section id="ranking" class="ranking-card sidebar-panel" role="tabpanel" aria-label={t('Entre estados')} hidden>
           <div class="ranking-panel-head">
             <div>
-              <p class="eyebrow">{t('Comparação estadual')}</p>
+              <p class="eyebrow">{t('Entre estados')}</p>
               <h2 data-ranking-title>{t('Síntese comparativa')}</h2>
               <small data-ranking-subtitle>{t('maior pontuação = melhor posição')}</small>
             </div>
@@ -80,7 +80,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
         <div class="trajetoria-texto">
           <p class="eyebrow">{t('Trajetória')}</p>
           <h2 id="trajetoria-titulo" data-trajetoria-titulo>{t('Onde a Amazônia Legal está no caminho até 2050')}</h2>
-          <p class="trajetoria-lead">{t('Ritmo dos últimos anos de cada meta contra o prazo pactuado. Projeção mecânica a partir da série, não é previsão.')}</p>
+          <p class="trajetoria-lead">{t('Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.')}</p>
         </div>
         {/* A caixa ocupa sempre o tamanho fechado no cabeçalho; aberta, cresce por
             cima da lista em vez de empurrá-la. Abre com o mouse e também com foco

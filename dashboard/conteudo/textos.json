@@ -1,5 +1,5 @@
 {
-  "_leia": "Textos do painel que não são dados. Cada texto é um par { pt, en }; quando en está vazio, a página em inglês mostra o português. visaoGeral: as cinco lâminas. panorama.metodologia: a síntese comparativa; sources aparece na lâmina 5 (fontes consolidadas) e o restante vai para dashboard.json e para a nota técnica em PDF.",
+  "_leia": "Textos do painel que não são dados. Cada texto é um par { pt, en }; quando en está vazio, a página em inglês mostra o português. visaoGeral: as cinco lâminas. panorama.metodologia: a síntese comparativa; sources e o restante vão para dashboard.json e para a nota técnica em PDF.",
   "panorama": {
     "metodologia": {
       "title": {
@@ -328,32 +328,52 @@
     },
     "estePainel": {
       "chapeu": {
-        "pt": "Este painel",
-        "en": "This dashboard"
+        "pt": "Parceria técnica e científica",
+        "en": "Technical and scientific partner"
       },
       "titulo": {
-        "pt": "Como os dados são lidos aqui",
-        "en": "How the data is read here"
+        "pt": "O IPAM na construção da Estratégia",
+        "en": "IPAM’s part in building the Strategy"
       },
       "abertura": {
-        "pt": "O painel organiza indicadores de fontes públicas para comparar os nove estados. Ele antecipa uma leitura enquanto a metodologia de monitoramento da Estratégia não é definida.",
-        "en": "The dashboard draws indicators from public sources so the nine states can be compared. It is a first reading, standing in until the Strategy’s own monitoring methodology is settled."
+        "pt": "O Instituto de Pesquisa Ambiental da Amazônia (IPAM) foi o parceiro técnico e científico do Consórcio da Amazônia Legal na elaboração da Estratégia.",
+        "en": "The Amazon Environmental Research Institute (IPAM) was the Legal Amazon Consortium’s technical and scientific partner in drawing up the Strategy."
       },
       "itens": [
         {
           "titulo": {
-            "pt": "Períodos diferentes",
-            "en": "Different reference years"
+            "pt": "Construção em parceria",
+            "en": "Built in partnership"
           },
           "texto": {
-            "pt": "Cada base entra com seu período mais recente, então os anos de referência não são uniformes entre indicadores.",
-            "en": "Each source comes in at its own most recent period, so reference years are not uniform across indicators."
+            "pt": "Um processo participativo, que começou com uma consulta aos nove estados e chegou a uma visão de futuro unificada.",
+            "en": "A participatory process that began with a consultation across the nine states and arrived at a single shared vision."
+          }
+        },
+        {
+          "titulo": {
+            "pt": "Equipe dedicada",
+            "en": "A dedicated team"
+          },
+          "texto": {
+            "pt": "Onze profissionais do IPAM assinam o documento, entre direção, pesquisadoras e analistas.",
+            "en": "Eleven IPAM staff are credited in the document, from its leadership to its researchers and analysts."
           }
         }
       ],
-      "fontesRotulo": {
-        "pt": "Fontes consolidadas",
-        "en": "Consolidated sources"
+      "citacao": {
+        "rotulo": {
+          "pt": "O agradecimento dos governadores",
+          "en": "The governors’ thanks"
+        },
+        "texto": {
+          "pt": "“[…] ao Instituto de Pesquisa Ambiental da Amazônia (IPAM) pelo apoio técnico e científico essencial à consolidação desta Estratégia.”",
+          "en": "“[…] to the Amazon Environmental Research Institute (IPAM) for the technical and scientific support that was essential to consolidating this Strategy.”"
+        },
+        "autor": {
+          "pt": "Helder Barbalho, presidente do Consórcio da Amazônia Legal, em nome dos nove governadores",
+          "en": "Helder Barbalho, President of the Legal Amazon Consortium, on behalf of the nine governors"
+        }
       },
       "contribuicao": {
         "rotulo": {

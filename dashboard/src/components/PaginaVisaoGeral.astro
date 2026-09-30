@@ -23,16 +23,15 @@ const { estrategia, visao2050, eixos, governanca, estePainel } = textos.visaoGer
 // O rascunho da administração pode ainda não ter o crédito, se a mescla com a
 // main falhou; aí vale o publicado.
 const contribuicao = estePainel.contribuicao ?? textosPublicados.visaoGeral.estePainel.contribuicao;
-// As fontes consolidadas vêm do mesmo arquivo (panorama.metodologia), e por
-// isso a prévia da administração as mostra como qualquer outro texto.
-const fontes = textos.panorama.metodologia.sources;
+// Idem para a citação dos governadores sobre o IPAM.
+const citacao = estePainel.citacao ?? textosPublicados.visaoGeral.estePainel.citacao;
 
 const INDICE = [
   { href: '#a-estrategia', rotulo: 'Estratégia' },
   { href: '#visao-2050', rotulo: 'Visão 2050' },
   { href: '#eixos-de-implementacao', rotulo: 'Eixos' },
   { href: '#governanca', rotulo: 'Governança' },
-  { href: '#calculo', rotulo: 'Painel' }
+  { href: '#calculo', rotulo: 'IPAM' }
 ];
 
 const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
@@ -136,10 +135,11 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
             ))}
           </div>
 
-          <div class="method-source-block">
-            <span>{tx(estePainel.fontesRotulo)}</span>
-            <p data-method-sources>{tx(fontes)}</p>
-          </div>
+          <figure class="method-source-block is-citacao">
+            <span>{tx(citacao.rotulo)}</span>
+            <blockquote><p>{tx(citacao.texto)}</p></blockquote>
+            <figcaption>{tx(citacao.autor)}</figcaption>
+          </figure>
 
           <div class="method-actions">
             <a class="primary-link" href={rotaMetas}>{t('Ver o cumprimento das metas')}</a>
