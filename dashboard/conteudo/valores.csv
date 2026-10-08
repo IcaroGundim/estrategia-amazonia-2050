@@ -2193,59 +2193,59 @@ I3.5.2,projetos,AM,,1,script,2026-09-30,pesquisa-eixo3,projetos habilitados no C
 I3.5.2,projetos,AP,,1,script,2026-09-30,pesquisa-eixo3,projetos habilitados no CTAPME
 I3.5.2,projetos,PA,,9,script,2026-09-30,pesquisa-eixo3,projetos habilitados no CTAPME
 I4.1.1,,AC,,52.12,migracao,2026-09-13,migracao,
-I4.1.1,,AC,2021,33.41,migracao,2026-09-13,migracao,
-I4.1.1,,AC,2022,41.62,migracao,2026-09-13,migracao,
-I4.1.1,,AC,2023,41.71,migracao,2026-09-13,migracao,
-I4.1.1,,AC,2024,51.32,migracao,2026-09-13,migracao,
-I4.1.1,,AC,2025,52.43,migracao,2026-09-13,migracao,
+I4.1.1,,AC,2021,54.89,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AC,2022,58.28,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AC,2023,58.1,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AC,2024,50.97,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AC,2025,52.12,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,AM,,48.8,migracao,2026-09-13,migracao,
-I4.1.1,,AM,2021,30.94,migracao,2026-09-13,migracao,
-I4.1.1,,AM,2022,32.89,migracao,2026-09-13,migracao,
-I4.1.1,,AM,2023,34.2,migracao,2026-09-13,migracao,
-I4.1.1,,AM,2024,44.92,migracao,2026-09-13,migracao,
-I4.1.1,,AM,2025,46.74,migracao,2026-09-13,migracao,
+I4.1.1,,AM,2021,54.01,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AM,2022,53.87,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AM,2023,53.66,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AM,2024,47.79,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AM,2025,48.8,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,AP,,56.95,migracao,2026-09-13,migracao,
-I4.1.1,,AP,2021,39.14,migracao,2026-09-13,migracao,
-I4.1.1,,AP,2022,53.11,migracao,2026-09-13,migracao,
-I4.1.1,,AP,2023,58.67,migracao,2026-09-13,migracao,
-I4.1.1,,AP,2024,54.74,migracao,2026-09-13,migracao,
-I4.1.1,,AP,2025,54.89,migracao,2026-09-13,migracao,
+I4.1.1,,AP,2021,57.51,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AP,2022,62.68,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AP,2023,63.18,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AP,2024,56.37,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,AP,2025,56.95,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,MA,,52.56,migracao,2026-09-13,migracao,
-I4.1.1,,MA,2021,26.88,migracao,2026-09-13,migracao,
-I4.1.1,,MA,2022,25.28,migracao,2026-09-13,migracao,
-I4.1.1,,MA,2023,25.59,migracao,2026-09-13,migracao,
-I4.1.1,,MA,2024,52.36,migracao,2026-09-13,migracao,
-I4.1.1,,MA,2025,55.56,migracao,2026-09-13,migracao,
+I4.1.1,,MA,2021,51.73,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MA,2022,52.43,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MA,2023,53.06,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MA,2024,50.14,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MA,2025,52.56,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,MT,,60.42,migracao,2026-09-13,migracao,
-I4.1.1,,MT,2021,63.62,migracao,2026-09-13,migracao,
-I4.1.1,,MT,2022,61.12,migracao,2026-09-13,migracao,
-I4.1.1,,MT,2023,62.59,migracao,2026-09-13,migracao,
-I4.1.1,,MT,2024,57.56,migracao,2026-09-13,migracao,
-I4.1.1,,MT,2025,61.31,migracao,2026-09-13,migracao,
+I4.1.1,,MT,2021,60.66,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MT,2022,62.09,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MT,2023,62.23,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MT,2024,57.92,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,MT,2025,60.42,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,PA,,53.1,migracao,2026-09-13,migracao,
-I4.1.1,,PA,2021,32.13,migracao,2026-09-13,migracao,
-I4.1.1,,PA,2022,36.25,migracao,2026-09-13,migracao,
-I4.1.1,,PA,2023,36.28,migracao,2026-09-13,migracao,
-I4.1.1,,PA,2024,50.52,migracao,2026-09-13,migracao,
-I4.1.1,,PA,2025,53.05,migracao,2026-09-13,migracao,
+I4.1.1,,PA,2021,52.73,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,PA,2022,54.29,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,PA,2023,54.99,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,PA,2024,51.65,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,PA,2025,53.1,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,RO,,56.13,migracao,2026-09-13,migracao,
-I4.1.1,,RO,2021,43.02,migracao,2026-09-13,migracao,
-I4.1.1,,RO,2022,49.24,migracao,2026-09-13,migracao,
-I4.1.1,,RO,2023,51.43,migracao,2026-09-13,migracao,
-I4.1.1,,RO,2024,55.6,migracao,2026-09-13,migracao,
-I4.1.1,,RO,2025,58.45,migracao,2026-09-13,migracao,
+I4.1.1,,RO,2021,57.03,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RO,2022,60.37,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RO,2023,60.26,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RO,2024,53.38,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RO,2025,56.13,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,RR,,49.19,migracao,2026-09-13,migracao,
-I4.1.1,,RR,2021,33.94,migracao,2026-09-13,migracao,
-I4.1.1,,RR,2022,31.76,migracao,2026-09-13,migracao,
-I4.1.1,,RR,2023,27.92,migracao,2026-09-13,migracao,
-I4.1.1,,RR,2024,43.74,migracao,2026-09-13,migracao,
-I4.1.1,,RR,2025,46.53,migracao,2026-09-13,migracao,
+I4.1.1,,RR,2021,55.19,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RR,2022,55.15,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RR,2023,53.65,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RR,2024,45.96,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,RR,2025,49.19,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,,TO,,53.92,migracao,2026-09-13,migracao,
-I4.1.1,,TO,2021,41.59,migracao,2026-09-13,migracao,
-I4.1.1,,TO,2022,46.17,migracao,2026-09-13,migracao,
-I4.1.1,,TO,2023,47.32,migracao,2026-09-13,migracao,
-I4.1.1,,TO,2024,51.18,migracao,2026-09-13,migracao,
-I4.1.1,,TO,2025,53.73,migracao,2026-09-13,migracao,
+I4.1.1,,TO,2021,53.89,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,TO,2022,55.78,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,TO,2023,56.02,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,TO,2024,52.26,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
+I4.1.1,,TO,2025,53.92,script,2026-10-07,eixo4_series_ibc,"IBC municipal ponderado pela população do Censo 2022; regra v1 da ANATEL até 2023, v2 a partir de 2024"
 I4.1.1,ponderado2024,AC,,50.97,migracao,2026-09-13,migracao,
 I4.1.1,ponderado2024,AM,,47.79,migracao,2026-09-13,migracao,
 I4.1.1,ponderado2024,AP,,56.37,migracao,2026-09-13,migracao,
@@ -2283,14 +2283,68 @@ I4.2.1,kmFisico,RO,,3883.1,script,2026-09-25,estrategia_set2026,
 I4.2.1,kmFisico,RR,,1535.8,script,2026-09-25,estrategia_set2026,
 I4.2.1,kmFisico,TO,,1036.2,script,2026-09-25,estrategia_set2026,
 I4.3.2,,AC,,1.6,migracao,2026-09-13,migracao,
+I4.3.2,,AC,2011,1.1,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AC,2015,0.77,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AC,2022,3.02,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AC,2024,1.55,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AC,2025,1.55,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AC,2026,1.55,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,AM,,11.8,migracao,2026-09-13,migracao,
+I4.3.2,,AM,2011,13.05,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AM,2015,12.48,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AM,2022,12.37,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AM,2024,13.6,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AM,2025,13.44,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AM,2026,11.78,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,AP,,97.3,migracao,2026-09-13,migracao,
+I4.3.2,,AP,2011,26.4,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AP,2015,74.84,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AP,2022,97.33,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AP,2024,97.33,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AP,2025,97.33,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,AP,2026,97.33,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,MA,,40.7,migracao,2026-09-13,migracao,
+I4.3.2,,MA,2011,48.65,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MA,2015,44.86,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MA,2022,44.97,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MA,2024,41.18,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MA,2025,40.73,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MA,2026,40.73,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,MT,,86.5,migracao,2026-09-13,migracao,
+I4.3.2,,MT,2011,72.83,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MT,2015,78.46,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MT,2022,85.16,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MT,2024,86.28,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MT,2025,86.46,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,MT,2026,86.53,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,PA,,98.6,migracao,2026-09-13,migracao,
+I4.3.2,,PA,2011,96.14,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,PA,2015,95.8,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,PA,2022,98.38,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,PA,2024,98.62,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,PA,2025,98.58,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,PA,2026,98.57,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,RO,,95,migracao,2026-09-13,migracao,
+I4.3.2,,RO,2011,35.94,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RO,2015,91.65,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RO,2022,93.26,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RO,2024,94.17,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RO,2025,94.18,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RO,2026,94.98,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,RR,,17.9,migracao,2026-09-13,migracao,
+I4.3.2,,RR,2011,7.99,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RR,2015,3.72,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RR,2022,10.36,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RR,2024,15.02,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RR,2025,17.42,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,RR,2026,17.91,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,,TO,,99.1,migracao,2026-09-13,migracao,
+I4.3.2,,TO,2011,99.93,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 12/08/2011 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,TO,2015,99.46,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 15/03/2016 (ANEEL BIG, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,TO,2022,99.07,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 01/08/2022 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,TO,2024,99.07,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 06/01/2025 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,TO,2025,99.07,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 16/01/2026 (ANEEL SIGA, cópia do Wayback): % renovável da potência fiscalizada em operação"
+I4.3.2,,TO,2026,99.07,script,2026-10-07,eixo4_series_renovaveis,"Fotografia de 25/08/2026 (ANEEL SIGA, a mesma base do valor atual do painel): % renovável da potência fiscalizada em operação"
 I4.3.2,potenciaFiscalizadaMW,AC,,142.9,migracao,2026-09-13,migracao,
 I4.3.2,potenciaFiscalizadaMW,AM,,2509.4,migracao,2026-09-13,migracao,
 I4.3.2,potenciaFiscalizadaMW,AP,,973.7,migracao,2026-09-13,migracao,

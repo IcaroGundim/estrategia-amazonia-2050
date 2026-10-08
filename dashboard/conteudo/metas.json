@@ -260,7 +260,11 @@
         "ano": 2025,
         "valor": 53.52
       },
-      "agregacao": "populacao"
+      "agregacao": "populacao",
+      "trajetoria": {
+        "desligada": true,
+        "nota": "Sem projeção: a ANATEL mudou a metodologia do IBC em 2024 (escala relativa até 2023, fixa depois) e não recalculou 2021–2023. A queda de 2023 para 2024 é da troca de método; a projeção volta quando houver três anos na regra nova."
+      }
     },
     {
       "codigo": "I4.2.1",
@@ -290,7 +294,10 @@
         "valor": 65.24
       },
       "agregacao": "media",
-      "notaAgregacao": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada."
+      "notaAgregacao": "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
+      "trajetoria": {
+        "nota": "Cada ano é uma fotografia da potência fiscalizada em operação (ANEEL), a mais próxima do fim do ano: 2011 é de agosto de 2011, 2015 é de março de 2016 e 2026 é a base do valor atual, de 25/08/2026. Mede potência instalada, não oferta de energia."
+      }
     },
     {
       "codigo": "I4.4.1",

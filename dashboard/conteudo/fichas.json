@@ -1,5 +1,5 @@
 {
-  "fonte": "Fichas Técnicas Indicadores - Amazonia2050.docx (versão de 15/09/2026)",
+  "fonte": "Fichas Técnicas Indicadores - Amazonia2050.docx (versão atualizada recebida em 07/10/2026)",
   "total": 57,
   "fichas": {
     "I1.1.1": {
@@ -664,7 +664,7 @@
       "meta": "Implementação de políticas de agregação de valor mineral em 100% dos estados mineradores.",
       "indicador": "Aumento de 10% ao ano do valor agregado de produtos de transformação industrial",
       "prazo": "2050",
-      "formula": "Valor da renda líquida total de empresas de transformação industrial",
+      "formula": "Valor da renda líquida total de empresas de transformação industrial\nSoma total da Receita líquida de vendas da Indústrias de Transformação (Seção C da CNAE) dos 09 estados da amazônia legal",
       "unidade": "reais",
       "fontes": "IBGE",
       "frequencia": "Anual",

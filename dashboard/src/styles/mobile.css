@@ -156,6 +156,8 @@
   .goals-row-name small { font-size: 11.5px; }
   .goals-row-ler b { font-size: 28px; }
   .goals-row-ler small { font-size: 11px; }
+  /* Com o número em 28px, "100%" mede 79px: a coluna acompanha. */
+  .goals-row { grid-template-columns: 80px minmax(0, 1fr); }
   /* No celular os dois números ao lado do nome espremiam o título; eles
      descem para baixo dele, alinhados à esquerda. */
   .goals-card-topo { display: block; }

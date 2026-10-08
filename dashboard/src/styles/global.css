@@ -566,7 +566,8 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .indicator-formula-notes { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(245, 240, 232, 0.25); }
 .indicator-formula-notes p { margin: 0; color: var(--papel); font-size: clamp(11px, 0.68vw, 13px); line-height: 1.6; }
 
-.indicator-formula-card.is-prose p { margin: 0; color: var(--mata-100); font-size: clamp(11px, 0.68vw, 13px); line-height: 1.6; }
+/* A fórmula sem LaTeX é o texto da ficha: cada linha dela é uma frase própria. */
+.indicator-formula-card.is-prose p { margin: 0; color: var(--mata-100); font-size: clamp(11px, 0.68vw, 13px); line-height: 1.6; white-space: pre-line; }
 .indicator-formula-notes p + p { margin-top: 7px; }
 .indicator-formula-notes p::before { margin-right: 7px; content: "—"; color: var(--ocre); }
 
@@ -868,7 +869,9 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    fina e valor atual ficam ao lado. Duas colunas quando há largura; uma quando
    o painel de detalhe está aberto ou a tela é estreita. */
 .goals-cards { margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.goals-row { position: relative; width: 100%; min-width: 0; padding: 12px 14px; display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: 2px 12px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); text-align: left; transition: border-color 160ms ease, box-shadow 180ms ease; }
+/* A coluna da jornada cabe "100%" (73px no corpo de 26px) com folga; com 64px o
+   número transbordava e encostava no nome. */
+.goals-row { position: relative; width: 100%; min-width: 0; padding: 12px 14px; display: grid; grid-template-columns: 74px minmax(0, 1fr); align-items: start; gap: 2px 12px; border: 1px solid var(--linha-2); border-radius: 10px; background: var(--papel); text-align: left; transition: border-color 160ms ease, box-shadow 180ms ease; }
 button.goals-row { cursor: pointer; }
 button.goals-row:hover, button.goals-row:focus-visible { outline: none; border-color: var(--mata-300); }
 button.goals-row:focus-visible { z-index: 1; box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
@@ -951,7 +954,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 }
 .goals-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .goals-detail-head > div { min-width: 0; }
-.goals-detail-head h2 { margin: 0; max-width: 27ch; font-size: clamp(16px, 1.15vw, 19px); line-height: 1.22; text-wrap: balance; }
+/* O título usa a largura do painel; nomes longos quebram em linhas equilibradas. */
+.goals-detail-head h2 { margin: 0; font-size: clamp(16px, 1.15vw, 19px); line-height: 1.22; text-wrap: balance; }
 /* --- as duas faces de um indicador -----------------------------------------
    Resultado é a jornada até o patamar; ficha técnica é como o número é
    apurado. Eram páginas diferentes, e cada uma repetia o nome, o eixo, a meta

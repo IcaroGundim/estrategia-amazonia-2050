@@ -43,10 +43,17 @@ function Normalize-Label([string]$Value) {
 }
 
 function Cell-Text($Cell, $NamespaceManager) {
+  # Uma quebra de linha manual (w:br) dentro do paragrafo vale como linha nova: na
+  # versao de 07/10/2026 a formula do F3.5 ganhou a segunda linha assim, e sem isso
+  # as duas frases saiam coladas ("industrialSoma").
   $paragraphs = foreach ($paragraph in $Cell.SelectNodes('.//w:p', $NamespaceManager)) {
-    $parts = $paragraph.SelectNodes('.//w:t | .//m:t', $NamespaceManager) | ForEach-Object { $_.InnerText }
-    $line = (($parts -join '') -replace '\s+', ' ').Trim()
-    if ($line) { $line }
+    $parts = $paragraph.SelectNodes('.//w:t | .//m:t | .//w:br', $NamespaceManager) | ForEach-Object {
+      if ($_.LocalName -eq 'br') { "`n" } else { $_.InnerText }
+    }
+    foreach ($segment in (($parts -join '') -split "`n")) {
+      $line = ($segment -replace '\s+', ' ').Trim()
+      if ($line) { $line }
+    }
   }
   return ($paragraphs -join "`n").Trim()
 }

@@ -46,9 +46,9 @@ const FORMULAS = {
   'I1.1.2': { equations: [String.raw`\mathrm{IUCs}=\left(\frac{N_{\mathrm{conformes}}}{N_{\mathrm{total}}}\right)\times100`], skip: 1 },
   'I1.3.1': { equations: [
     String.raw`\mathrm{IIVCM}_{m}=100\left(0{,}60\,V_{\mathrm{geral},m}+0{,}40\,V_{\mathrm{piores25},m}\right)`,
-    String.raw`V_t=\operatorname{média}_{m\in M_{\mathrm{prioritários}}}\left(\mathrm{IIVCM}_m\right)`
+    String.raw`V_t=\operatorname{\text{média}}_{m\in M_{\text{prioritários}}}\left(\mathrm{IIVCM}_m\right)`
   ], skip: 3 },
-  'I1.3.2': { equations: [String.raw`D_{\mathrm{ilegal}}=D_{\mathrm{total}}-A_{\mathrm{supressão}}`], skip: 1, notes: [
+  'I1.3.2': { equations: [String.raw`D_{\mathrm{ilegal}}=D_{\mathrm{total}}-A_{\text{supressão}}`], skip: 1, notes: [
     "Dilegal = área desmatada sem autorização, em hectares.",
     "Dtotal = área total desmatada no ano, medida pelo PRODES/INPE.",
     "Asupressão = área com autorização de supressão vegetal emitida no Sinaflor/IBAMA."
@@ -58,18 +58,18 @@ const FORMULAS = {
     "Fu = focos detectados no estado u pelo satélite de referência do programa Queimadas/INPE.",
     "u = cada um dos nove estados da região."
   ] },
-  'I2.1.1': { equations: [String.raw`\mathrm{Taxa\ de\ pobreza}=\frac{N_{\mathrm{pessoas\ em\ pobreza}}}{P_{\mathrm{população\ do\ ano}}}\times100`], skip: 1, notes: [
+  'I2.1.1': { equations: [String.raw`\mathrm{Taxa\ de\ pobreza}=\frac{N_{\mathrm{pessoas\ em\ pobreza}}}{P_{\text{população\ do\ ano}}}\times100`], skip: 1, notes: [
     "Npessoas em pobreza = população em situação de pobreza no ano de referência (IBGE/SIS).",
     "Ppopulação do ano = população total da mesma unidade, no mesmo ano."
   ] },
-  'I2.2.1': { equations: [String.raw`\mathrm{Taxa}_{\mathrm{evitáveis}}=\frac{O_{\mathrm{causas\ evitáveis}}}{P_{\mathrm{residente}}}\times100\,000`], skip: 1 },
+  'I2.2.1': { equations: [String.raw`\mathrm{Taxa}_{\text{evitáveis}}=\frac{O_{\text{causas\ evitáveis}}}{P_{\mathrm{residente}}}\times100\,000`], skip: 1 },
   'I2.2.2': { equations: [String.raw`\mathrm{Cobertura}_{\mathrm{APS}}=\frac{3\,500n_{\mathrm{eSF}}+1\,750n_{\mathrm{eAP20}}+2\,625n_{\mathrm{eAP30}}+P_{\mathrm{equipes\ especiais}}}{P_{\mathrm{IBGE}}}\times100`], skip: 1, notes: [
     "neSF = equipes de Saúde da Família do estado, com parâmetro de 3.500 pessoas por equipe.",
     "neAP20 e neAP30 = equipes de Atenção Primária de 20h e 30h, com parâmetros de 1.750 e 2.625 pessoas.",
     "Pequipes especiais = população com cadastro vinculado a equipes eCR, eSFR e eAPP, informada no Sisab.",
     "PIBGE = estimativa populacional do IBGE para o conjunto dos municípios do estado."
   ] },
-  'I2.2.3': { equations: [String.raw`\mathrm{Cobertura}_{\mathrm{telessaúde}}=\frac{M_{\mathrm{com\ serviço\ ativo}}}{M_{\mathrm{total\ da\ AL}}}\times100`], skip: 1, notes: [
+  'I2.2.3': { equations: [String.raw`\mathrm{Cobertura}_{\text{telessaúde}}=\frac{M_{\text{com\ serviço\ ativo}}}{M_{\mathrm{total\ da\ AL}}}\times100`], skip: 1, notes: [
     "Mcom serviço ativo = municípios com estabelecimento de telessaúde ativo no CNES.",
     "Mtotal da AL = os 808 municípios da Amazônia Legal."
   ] },
@@ -85,16 +85,16 @@ const FORMULAS = {
     "VCVLI = vítimas de crimes violentos letais intencionais registradas pelo Sinesp/MJ.",
     "Presidente = população residente estimada pelo IBGE para o mesmo ano."
   ] },
-  'I3.4.1': { equations: [String.raw`R_{\mathrm{por\ beneficiário}}=\frac{R_{\mathrm{total}}}{N_{\mathrm{beneficiários}}}`], skip: 1, notes: [
+  'I3.4.1': { equations: [String.raw`R_{\text{por\ beneficiário}}=\frac{R_{\mathrm{total}}}{N_{\text{beneficiários}}}`], skip: 1, notes: [
     "Rtotal = recursos aplicados nos programas de pagamento por serviços ambientais, em reais.",
     "Nbeneficiários = pessoas ou famílias atendidas pelos programas no mesmo período."
   ] },
-  'I3.4.2': { equations: [String.raw`\mathrm{Execução}=\frac{R_{\mathrm{executado}}}{R_{\mathrm{previsto}}}\times100`], skip: 1, notes: [
+  'I3.4.2': { equations: [String.raw`\text{Execução}=\frac{R_{\mathrm{executado}}}{R_{\mathrm{previsto}}}\times100`], skip: 1, notes: [
     "Rexecutado = recursos efetivamente pagos no exercício.",
     "Rprevisto = recursos autorizados no orçamento do mesmo exercício."
   ] },
   'I4.1.1': { equations: [String.raw`\mathrm{IBC}_{\mathrm{ponderado}}=\frac{\sum_m \mathrm{IBC}_m\,P_m}{\sum_m P_m}`], skip: 1 },
-  'I4.2.1': { equations: [String.raw`\mathrm{Taxa}_{\mathrm{adequação}}=\frac{E_{\mathrm{efetiva\ ponderada}}}{E_{\mathrm{física\ total}}}\times100`], skip: 1 },
+  'I4.2.1': { equations: [String.raw`\mathrm{Taxa}_{\text{adequação}}=\frac{E_{\mathrm{efetiva\ ponderada}}}{E_{\text{física\ total}}}\times100`], skip: 1 },
   'I4.3.1': { equations: [
     String.raw`\mathrm{ITEQ}_m=\left(\frac{P_{\mathrm{SIN},m}}{P_{\mathrm{total},m}}R_{\mathrm{SIN,Amz}}+\frac{P_{\mathrm{isolado},m}}{P_{\mathrm{total},m}}R_{\mathrm{isolado},m}\right)F_{\mathrm{dist},m}F_{\mathrm{iso},m}`,
     String.raw`\mathrm{ITEQ}_{\mathrm{regional}}=\frac{\sum_m P_{\mathrm{total},m}\,\mathrm{ITEQ}_m}{\sum_m P_{\mathrm{total},m}}\times100`
@@ -103,23 +103,23 @@ const FORMULAS = {
     "O valor publicado usa a potência fiscalizada das usinas em operação (SIGA/ANEEL) como proxy da oferta de energia — por isso fica acima do baseline oficial de 65,24%."
   ] },
   'I4.4.1': { equations: [
-    String.raw`\mathrm{DOM}_{\mathrm{efetivo},m}=\min\!\left(\mathrm{DOM}_{\mathrm{água},m},\mathrm{DOM}_{\mathrm{esgoto},m}\right)F_{\mathrm{clima},m}F_{\mathrm{gov},m}`,
+    String.raw`\mathrm{DOM}_{\mathrm{efetivo},m}=\min\!\left(\mathrm{DOM}_{\text{água},m},\mathrm{DOM}_{\mathrm{esgoto},m}\right)F_{\mathrm{clima},m}F_{\mathrm{gov},m}`,
     String.raw`\mathrm{DOM}_{\mathrm{efetivo},R}=\sum_{m\in\mathrm{AMZ}}\mathrm{DOM}_{\mathrm{efetivo},m}`,
     String.raw`\mathrm{DOM}_{\mathrm{total},R}=\sum_{m\in\mathrm{AMZ}}\mathrm{DOM}_{\mathrm{total},m}`,
     String.raw`\mathrm{ISGR}=\frac{\mathrm{DOM}_{\mathrm{efetivo},R}}{\mathrm{DOM}_{\mathrm{total},R}}\times100`
   ], skip: 4, notes: [
     "O fator FHidro não é publicado pelo IBGE e foi assumido igual a 1 na coleta, o que eleva o resultado frente ao baseline oficial de 41,52%."
   ] },
-  'I5.2.1': { equations: [String.raw`\mathrm{Taxa}_{\mathrm{alavancagem}}=\frac{R_{\mathrm{privado\ mobilizado}}}{R_{\mathrm{público\ aportado}}}`], skip: 1, notes: [
+  'I5.2.1': { equations: [String.raw`\mathrm{Taxa}_{\mathrm{alavancagem}}=\frac{R_{\mathrm{privado\ mobilizado}}}{R_{\text{público\ aportado}}}`], skip: 1, notes: [
     "Rprivado mobilizado = capital privado atraído pelos mecanismos regionais de blended finance.",
     "Rpúblico aportado = recursos públicos aportados nesses mesmos mecanismos.",
     "A taxa indica quantos reais privados cada real público mobiliza."
   ] },
   'I5.2.2': { equations: [String.raw`O(A)=6\,120\,000+483\,566\left(A-2026\right)`], skip: 99, note: 'Projeção linear baseada no histórico de execução financeira do Consórcio entre 2019 e 2026.' },
   'I5.5.1': { equations: [
-    String.raw`\mathrm{Endividamento}=\frac{\mathrm{Dívida\ consolidada}}{\mathrm{Receita\ corrente\ líquida}}`,
-    String.raw`\mathrm{Poupança\ corrente}=\frac{\mathrm{Despesas\ correntes}}{\mathrm{Receitas\ correntes\ ajustadas}}`,
-    String.raw`\mathrm{Liquidez}=\frac{\mathrm{Obrigações\ financeiras}}{\mathrm{Disponibilidade\ de\ caixa}}`
+    String.raw`\mathrm{Endividamento}=\frac{\text{Dívida\ consolidada}}{\text{Receita\ corrente\ líquida}}`,
+    String.raw`\text{Poupança\ corrente}=\frac{\mathrm{Despesas\ correntes}}{\mathrm{Receitas\ correntes\ ajustadas}}`,
+    String.raw`\mathrm{Liquidez}=\frac{\text{Obrigações\ financeiras}}{\mathrm{Disponibilidade\ de\ caixa}}`
   ], skip: 99, note: 'A classificação final da CAPAG combina as três dimensões financeiras avaliadas pela STN.' }
 };
 
@@ -248,7 +248,7 @@ function temEquacao(codigo) {
 
 function renderFormula(indicador, ficha, katex) {
   // A fórmula em texto vem da ficha e as equações em LaTeX vêm daqui — e as duas
-  // têm português dentro. `\mathrm{Taxa\ de\ pobreza}` e `\operatorname{média}`
+  // têm português dentro. `\mathrm{Taxa\ de\ pobreza}` e `\operatorname{\text{média}}`
   // são tipografia, não código: numa página em inglês a equação inteira precisa
   // ser outra, e não a mesma com rótulo traduzido por fora.
   const rawFormula = String(campoDaFicha(indicador.codigo, 'formula', ficha?.formula) ?? '').trim();
