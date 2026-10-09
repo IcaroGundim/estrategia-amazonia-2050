@@ -257,7 +257,7 @@
         "nº (0-9)",
         "nº / Sim-Não",
         "pontos (0-100)",
-        "% / ha",
+        "km²",
         "% / dias",
         "nº",
         "Sim-Não / ha",
@@ -1335,9 +1335,9 @@
       "pt": "pontos (0-100)",
       "en": "points (0–100)"
     },
-    "% / ha": {
-      "pt": "% / ha",
-      "en": "% / hectares"
+    "km²": {
+      "pt": "km²",
+      "en": "km²"
     },
     "% / dias": {
       "pt": "% / dias",

@@ -68,7 +68,8 @@ function valor(meta, value) {
   // Reais em escala curta, como nos coletados: "R$ 5,11 bi".
   if (String(meta.unidade || '').trim().startsWith('R$')) return valorColetado({ unidadeValor: meta.unidade }, value);
   if (ehPercentual(meta)) return `${number(value)}%`;
-  if (String(meta.unidade || '').trim() === '% / ha') return `${number(value, decimals(value))} ha`;
+  // Área do PRODES, que o INPE publica em km².
+  if (String(meta.unidade || '').trim() === 'km²') return `${number(value, decimals(value))} km²`;
   return number(value, decimals(value));
 }
 

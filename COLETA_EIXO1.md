@@ -333,4 +333,4 @@ O que ficou de fora, e por quê:
 - **I2.1.1 (pobreza), 2012–2024:** `dados/ibge_ods/pobreza_uf_ano.csv` (SIDRA 10660) é outra tabela que não a do SIS usada no painel. Em PA 2024 dá 15,2 contra 14,8, e a diferença chega a 1,1 p.p. Emendar as duas criaria um degrau no último ano.
 - **Componentes e proxies** (desmatamento do estado inteiro, autorizações, CNFP etc.): não são o indicador do painel.
 
-Observação, sem mudança: a página mostra o desmatamento em "ha" (5.731 ha em 2025), mas a taxa PRODES é em km². 5.731 km² são 573.100 ha.
+Unidade do desmatamento, corrigida em 09/10/2026: a página Metas mostrava o desmatamento em "ha" (5.731 ha em 2025), mas a taxa PRODES é em km², e 5.731 km² são 573.100 ha. Os números não mudaram. A unidade do I1.3.2 no catálogo passou de "% / ha" para "km²", e a página Metas escreve "km²" ao lado do valor. A ficha técnica continua com a definição da Estratégia (% de desmatamento ilegal, em hectares), que o painel só poderá calcular quando houver as autorizações do Sinaflor.

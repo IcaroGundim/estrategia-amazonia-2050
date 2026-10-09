@@ -124,7 +124,7 @@
           "nome": "Desmatamento ilegal",
           "meta": "Desmatamento ilegal zero em todos os estados",
           "descricao": "% de desmatamento ilegal = (ha desmatamento − ha autorizações de supressão)",
-          "unidade": "% / ha",
+          "unidade": "km²",
           "fonte": "INPE (PRODES) + IBAMA (Sinaflor)",
           "prazo": 2030,
           "status": "parcial (PRODES ok até 2025; Sinaflor exige login)",
