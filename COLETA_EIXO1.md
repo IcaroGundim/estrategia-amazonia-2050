@@ -292,3 +292,45 @@ Esta tarefa ficou incompleta por causa do limite de busca.
 - IBAMA: lista de PMIF registrados no Sisfogo.
 - MIR: adesões à PNGTAQ por UF.
 - FUNAI: lista de ACTs com governos estaduais.
+
+---
+
+## Aplicado no painel (08/10/2026, commit em 09/10/2026)
+
+O pedido foi que a trajetória usasse a série inteira que já está coletada no projeto. Entraram só as séries que medem o indicador pelo mesmo método do painel e que conferem célula a célula com os anos que ele já tinha.
+
+As mudanças estão em dois arquivos:
+- `dashboard/conteudo/valores.csv`: +342 linhas, nenhuma removida nem alterada. A ordem (código, campo, UF, ano) e o fim de linha LF foram mantidos.
+- `dashboard/conteudo/catalogo.json`: o status do I1.1.2 deixa de dizer "sem 2023".
+
+Para desfazer, reverta o commit que trouxe esta seção (é o commit `feat: séries longas…` no `git log -- dashboard/conteudo/valores.csv`):
+
+```bash
+git revert <hash do commit>
+```
+
+Depois, rode `npm run build:static`.
+
+**I1.3.2 (desmatamento):** 288 células, a taxa PRODES de 1988 a 2019 nas 9 UFs (`por = eixo1_coleta_I1_3_2_prodes`). A série do painel passa de 2020–2025 para 1988–2025.
+- **Conferência:** a fonte (`dados/prodes/prodes_rates_uf.csv`, igual ao TerraBrasilis em 342 de 342 células) bate com as 54 células de 2020–2025 que o painel já tinha. Em 09/10/2026, baixei de novo o `rates2025.json` do TerraBrasilis e as 342 células do painel continuaram iguais a ele.
+- **1993 e 1994** têm o mesmo valor em todas as UFs: o INPE mediu o biênio junto e publica a média anual. A nota dessas 18 células diz isso.
+- **1988** é o período 1987/88. A soma das UFs dá 21.050 km², a taxa oficial.
+
+**I1.3.4 (focos de calor):** 27 células, 2012 a 2014, do satélite de referência AQUA_M-T (`por = eixo1_coleta_I1_3_4_focos`). A série passa de 2015–2025 para 2012–2025. As 99 células de 2015–2025 batem com o painel. O 2011 ficou de fora: o AQUA só vira referência em 22/08/2011.
+
+**I1.1.2 (UCs com plano e conselho):** 27 células da extração de julho de 2023, sendo o percentual por UF e os campos `comAmbos2023` e `total2023` que a agregação `razaoUc` soma (`por = eixo1_coleta_I1_1_2_cnuc`). A série 2018–2026 fica sem lacuna. As 216 células dos outros anos (percentual e contagens) batem com o painel. A AL de 2023 dá 46 de 191, 24,1%.
+
+**Efeito na página** (comparei o `metas.json` e o `dashboard.json` gerados antes e depois):
+- O ritmo continua medido nos 5 pontos mais recentes, então ritmo, classe e ano de alcance não mudam em nenhuma meta. O que muda é o gráfico, que agora começa em 1988 (desmatamento) e em 2012 (focos).
+- **I1.3.2 muda a baseline.** A meta não declara ano de partida e vale a regra geral: média dos últimos 10 anos quando a série alcança 10, senão dos últimos 5. Com a série longa, a baseline passa de 9.189 (2021–2025) para 8.930 (2016–2025), e a jornada vai de 38% para 36%.
+- I1.1.2 e I1.3.4 declaram a baseline e não mudam.
+- O seletor de ano do detalhe do desmatamento passa a listar 38 anos (o menu tem rolagem).
+- A planilha do Eixo 1 ganha as colunas de ano novas.
+- A contagem do Panorama não muda.
+
+O que ficou de fora, e por quê:
+- **Focos 2003–2011 (AQUA retroativo):** continua sendo decisão da equipe (ver "Séries longas").
+- **I2.1.1 (pobreza), 2012–2024:** `dados/ibge_ods/pobreza_uf_ano.csv` (SIDRA 10660) é outra tabela que não a do SIS usada no painel. Em PA 2024 dá 15,2 contra 14,8, e a diferença chega a 1,1 p.p. Emendar as duas criaria um degrau no último ano.
+- **Componentes e proxies** (desmatamento do estado inteiro, autorizações, CNFP etc.): não são o indicador do painel.
+
+Observação, sem mudança: a página mostra o desmatamento em "ha" (5.731 ha em 2025), mas a taxa PRODES é em km². 5.731 km² são 573.100 ha.
