@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaProjetos from '../components/PaginaProjetos.astro';
+---
+
+<Base
+  title="Projetos — Estratégia 2050"
+  description="A carteira de projetos que os nove estados da Amazônia Legal apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30."
+  ogDescription="Mais de cem projetos dos nove estados da Amazônia Legal, por estado, por eixo da Estratégia e por faixa de orçamento."
+  mainClass="projetos-page"
+  pagina="projetos"
+  lang="pt-BR"
+  dados={['projetos', 'geo']}
+>
+  <PaginaProjetos lang="pt-BR" />
+
+  <script>
+    import '../scripts/projetos.js';
+  </script>
+</Base>

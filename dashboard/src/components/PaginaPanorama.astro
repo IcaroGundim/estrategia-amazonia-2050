@@ -80,7 +80,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
         <div class="trajetoria-texto">
           <p class="eyebrow">{t('Trajetória')}</p>
           <h2 id="trajetoria-titulo" data-trajetoria-titulo>{t('Onde a Amazônia Legal está no caminho até 2050')}</h2>
-          <p class="trajetoria-lead">{t('Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.')}</p>
+          <p class="trajetoria-lead">{t('Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.')}</p>
         </div>
         {/* A caixa ocupa sempre o tamanho fechado no cabeçalho; aberta, cresce por
             cima da lista em vez de empurrá-la. Abre com o mouse e também com foco
@@ -104,7 +104,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
                       {t('em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.')}
                     </dd>
                     <dt>{t('Janela')}</dt>
-                    <dd>{t('Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.')}</dd>
+                    <dd>{t('Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.')}</dd>
                     <dt>{t('Ritmo')}</dt>
                     <dd>{t('É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.')}</dd>
                     <dt>{t('Ano de alcance')}</dt>
@@ -154,7 +154,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
           cumpridas e as que ainda não têm série vêm depois, numa linha cada. */}
       <div class="traj-cards" data-trajetoria-lista aria-live="polite"></div>
       <div class="traj-fecho" data-trajetoria-fecho></div>
-      <p class="trajetoria-rodape">{t('Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.')} <a href={lang === 'en' ? '/en/goals' : '/metas'}>{t('Ver o quadro de metas')}</a></p>
+      <p class="trajetoria-rodape">{t('Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.')} <a href={lang === 'en' ? '/en/goals' : '/metas'}>{t('Ver o quadro de metas')}</a></p>
     </section>
   </div>
 </section>

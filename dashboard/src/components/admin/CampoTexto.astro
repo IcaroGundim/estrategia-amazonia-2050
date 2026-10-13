@@ -1,0 +1,46 @@
+---
+// Um texto do painel na tela de Textos: português e inglês lado a lado (ou
+// empilhados, quando o texto é longo), em áreas que crescem com o conteúdo.
+// O script da tela cuida do resto: marca o que mudou, oferece desfazer, acusa
+// lacuna apagada e liga o campo ao trecho da prévia.
+//
+// `rotulo` aparece acima do campo (lâminas). Nos textos de interface não há
+// rótulo: a chave é a própria frase original, e ela só é mostrada quando o
+// português deixou de ser igual a ela (`original`).
+interface Props {
+  nome: string;
+  valor: string;
+  en?: string | null;
+  rotulo?: string;
+  original?: string;
+  /** O que está gravado, quando difere do que a tela mostra (depois de um erro ao salvar). */
+  salvo?: string;
+  salvoEn?: string | null;
+  lacunas?: string[];
+}
+const { nome, valor, en = '', rotulo, original, salvo, salvoEn, lacunas = [] } = Astro.props;
+const textoEn = en ?? '';
+const gravadoEn = salvoEn ?? '';
+const longo = Math.max(valor.length, textoEn.length) > 44;
+const descricao = rotulo || original || valor;
+---
+
+<div class={`admin-texto${longo ? ' is-longo' : ''}`} data-campo data-chave={original} data-lacunas={lacunas.length ? lacunas.join(' ') : undefined}>
+  {rotulo && <span class="admin-texto-rotulo">{rotulo}</span>}
+  {original !== undefined && <span class="admin-texto-original" data-original hidden={valor.trim() === original.trim()}>Texto original: <q>{original.trim()}</q></span>}
+  <div class="admin-texto-linha">
+    <label class="admin-texto-lingua">
+      <abbr title="Português">PT</abbr>
+      <textarea name={nome} rows="1" lang="pt-BR" spellcheck="true" aria-label={`${descricao}, em português`} data-salvo={salvo !== undefined && salvo !== valor ? salvo : undefined}>{valor}</textarea>
+    </label>
+    <label class="admin-texto-lingua">
+      <abbr title="Inglês">EN</abbr>
+      <textarea name={`${nome}__en`} rows="1" lang="en" spellcheck="true" placeholder="Sem inglês: aparece o português" aria-label={`${descricao}, em inglês`} data-salvo={salvoEn !== undefined && gravadoEn !== textoEn ? gravadoEn : undefined}>{textoEn}</textarea>
+    </label>
+    <button type="button" class="admin-texto-desfaz" data-desfaz hidden aria-label={`Voltar ao texto salvo: ${descricao}`} title="Voltar ao texto salvo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h10a5 5 0 0 1 0 10h-3"/><path d="m8 5-4 4 4 4"/></svg>
+    </button>
+  </div>
+  {lacunas.length > 0 && <small class="admin-texto-lacunas">{lacunas.map((lacuna) => <code>{lacuna}</code>)} {lacunas.length === 1 ? 'vira' : 'viram'} o valor na página; {lacunas.length === 1 ? 'precisa' : 'precisam'} continuar nos dois idiomas.</small>}
+  <small class="admin-texto-problema" data-problema role="alert" hidden></small>
+</div>

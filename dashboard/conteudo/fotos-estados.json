@@ -1,0 +1,626 @@
+{
+  "_leia": "Fotos ilustrativas dos estados, do Wikimedia Commons, para os projetos da carteira que o site do Consórcio publica sem foto (pipeline/projetos.mjs as distribui). São paisagens do estado, não do projeto, e a página avisa isso com o crédito. A escolha é manual: para trocar ou acrescentar, edite `uf` e `commons` e rode scripts/baixar-fotos-estados.mjs, que baixa a imagem e preenche autor, licença e página de origem. Só entram licenças de uso livre (CC BY, CC BY-SA, CC0, domínio público); o crédito é exigência delas.",
+  "fotos": [
+    {
+      "uf": "AC",
+      "commons": "File:Cachoeira Encantada na Serra do Divisor.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-cachoeira-encantada-na-serra-do-divisor-1f31b7.jpg",
+      "autor": "Mário Broering",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Cachoeira_Encantada_na_Serra_do_Divisor.jpg"
+    },
+    {
+      "uf": "AC",
+      "commons": "File:Alto rio Moa, Parque Nacional Serra do Divisor, Acre, Brazil.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-alto-rio-moa-parque-nacional-serra-do-diviso-7d19d5.jpg",
+      "autor": "Hector Bottai",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Alto_rio_Moa,_Parque_Nacional_Serra_do_Divisor,_Acre,_Brazil.jpg"
+    },
+    {
+      "uf": "AC",
+      "commons": "File:Rio Moa in Serra do Divisor National Park.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-rio-moa-in-serra-do-divisor-national-park-81331c.jpg",
+      "autor": "A209",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Moa_in_Serra_do_Divisor_National_Park.jpg"
+    },
+    {
+      "uf": "AC",
+      "commons": "File:Reserva Extrativista Chico Mendes por Alice Leao.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-reserva-extrativista-chico-mendes-por-alice--6343d8.jpg",
+      "autor": "Alliewi",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_Extrativista_Chico_Mendes_por_Alice_Leao.jpg"
+    },
+    {
+      "uf": "AC",
+      "commons": "File:Rio Moa, Serra do Divisor, Acre, Brasil 01.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-rio-moa-serra-do-divisor-acre-brasil-01-0da279.jpg",
+      "autor": "Hector Bottai",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Moa,_Serra_do_Divisor,_Acre,_Brasil_01.jpg"
+    },
+    {
+      "uf": "AC",
+      "commons": "File:Parque Nacional da Serra do Divisor por Vanda Viveiros de Castro.jpg",
+      "arquivo": "/fotos-projetos/estados/ac-parque-nacional-da-serra-do-divisor-por-vand-7005f8.jpg",
+      "autor": "Vanda Viveiros de Castro",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_da_Serra_do_Divisor_por_Vanda_Viveiros_de_Castro.jpg"
+    },
+    {
+      "uf": "AP",
+      "commons": "File:Floresta Nacional do Amapá César Favacho (3).jpg",
+      "arquivo": "/fotos-projetos/estados/ap-floresta-nacional-do-amapa-cesar-favacho-3-3363a8.jpg",
+      "autor": "César Favacho",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_do_Amap%C3%A1_C%C3%A9sar_Favacho_(3).jpg"
+    },
+    {
+      "uf": "AP",
+      "commons": "File:Igarapé do Rego.jpg",
+      "arquivo": "/fotos-projetos/estados/ap-igarape-do-rego-fd36a5.jpg",
+      "autor": "Joao lara mesquita",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Igarap%C3%A9_do_Rego.jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional de Anavilhanas GuilhonAmazônia (3).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-de-anavilhanas-guilhonamazon-58af4b.jpg",
+      "autor": "GuilhonAmazonia",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_de_Anavilhanas_GuilhonAmaz%C3%B4nia_(3).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional do Jaú Dalia McGill (1).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-do-jau-dalia-mcgill-1-24f538.jpg",
+      "autor": "Dalia McGill",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_do_Ja%C3%BA_Dalia_McGill_(1).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional de Anavilhanas GuilhonAmazônia (7).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-de-anavilhanas-guilhonamazon-0b5e13.jpg",
+      "autor": "GuilhonAmazonia",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_de_Anavilhanas_GuilhonAmaz%C3%B4nia_(7).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional do Jaú Meyriane de Mira Teixeira (02).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-do-jau-meyriane-de-mira-teix-067496.jpg",
+      "autor": "Meyriane de Mira Teixeira",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_do_Ja%C3%BA_Meyriane_de_Mira_Teixeira_(02).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional de Anavilhanas GuilhonAmazônia (15).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-de-anavilhanas-guilhonamazon-a113a0.jpg",
+      "autor": "GuilhonAmazonia",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_de_Anavilhanas_GuilhonAmaz%C3%B4nia_(15).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional do Jaú Meyriane de Mira Teixeira (03).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-do-jau-meyriane-de-mira-teix-2cb416.jpg",
+      "autor": "Meyriane de Mira Teixeira",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_do_Ja%C3%BA_Meyriane_de_Mira_Teixeira_(03).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional de Anavilhanas GuilhonAmazônia (23).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-de-anavilhanas-guilhonamazon-1f0bd6.jpg",
+      "autor": "GuilhonAmazonia",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_de_Anavilhanas_GuilhonAmaz%C3%B4nia_(23).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional do Jaú Meyriane de Mira Teixeira (04).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-do-jau-meyriane-de-mira-teix-5e9f39.jpg",
+      "autor": "Meyriane de Mira Teixeira",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_do_Ja%C3%BA_Meyriane_de_Mira_Teixeira_(04).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Reserva Sustentavel Mamiraua ThiagoALacerda (09).jpg",
+      "arquivo": "/fotos-projetos/estados/am-reserva-sustentavel-mamiraua-thiagoalacerda--8673c3.jpg",
+      "autor": "ThiagoALacerda",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_Sustentavel_Mamiraua_ThiagoALacerda_(09).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Florestas na margem do Rio Unini - Parque Nacional do Jaú.jpg",
+      "arquivo": "/fotos-projetos/estados/am-florestas-na-margem-do-rio-unini-parque-naci-7df006.jpg",
+      "autor": "Jecogeo",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Florestas_na_margem_do_Rio_Unini_-_Parque_Nacional_do_Ja%C3%BA.jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Reserva de Desenvolvimento Sustentável Mamirauá e Amanã (51127342655).jpg",
+      "arquivo": "/fotos-projetos/estados/am-reserva-de-desenvolvimento-sustentavel-mamir-be3d9c.jpg",
+      "autor": "Ministério da Ciência, Tecnologia e Inovações",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_de_Desenvolvimento_Sustent%C3%A1vel_Mamirau%C3%A1_e_Aman%C3%A3_(51127342655).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Juma River, Amazonas, Brazil.jpg",
+      "arquivo": "/fotos-projetos/estados/am-juma-river-amazonas-brazil-862e63.jpg",
+      "autor": "Alexey Yakovlev",
+      "licenca": "CC BY-SA 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Juma_River,_Amazonas,_Brazil.jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Reserva de Desenvolvimento Sustentável Mamirauá e Amanã (51126441008).jpg",
+      "arquivo": "/fotos-projetos/estados/am-reserva-de-desenvolvimento-sustentavel-mamir-ade803.jpg",
+      "autor": "Ministério da Ciência, Tecnologia e Inovações",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_de_Desenvolvimento_Sustent%C3%A1vel_Mamirau%C3%A1_e_Aman%C3%A3_(51126441008).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Jau National Park.jpg",
+      "arquivo": "/fotos-projetos/estados/am-jau-national-park-6e4b8d.jpg",
+      "autor": "Diego Lezama",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Jau_National_Park.jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Reservas de desenvolvimento sustentável Mamirauá e Amanã (51128112181).jpg",
+      "arquivo": "/fotos-projetos/estados/am-reservas-de-desenvolvimento-sustentavel-mami-7620c4.jpg",
+      "autor": "Ministério da Ciência, Tecnologia e Inovações",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reservas_de_desenvolvimento_sustent%C3%A1vel_Mamirau%C3%A1_e_Aman%C3%A3_(51128112181).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Parque Nacional do Jaú Meyriane de Mira Teixeira (05).jpg",
+      "arquivo": "/fotos-projetos/estados/am-parque-nacional-do-jau-meyriane-de-mira-teix-de17d2.jpg",
+      "autor": "Meyriane de Mira Teixeira",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_do_Ja%C3%BA_Meyriane_de_Mira_Teixeira_(05).jpg"
+    },
+    {
+      "uf": "AM",
+      "commons": "File:Corredeiras no Parque Nacional do Jaú - Amazônia - Brasil.jpg",
+      "arquivo": "/fotos-projetos/estados/am-corredeiras-no-parque-nacional-do-jau-amazon-c4d3ae.jpg",
+      "autor": "Marcelo85photo",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Corredeiras_no_Parque_Nacional_do_Ja%C3%BA_-_Amaz%C3%B4nia_-_Brasil.jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Lençóis de Areia.JPG",
+      "arquivo": "/fotos-projetos/estados/ma-lencois-de-areia-535f12.jpg",
+      "autor": "Jardelsliumba",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Len%C3%A7%C3%B3is_de_Areia.JPG"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Delta do Parnaiba Daniela Casazza 02.jpg",
+      "arquivo": "/fotos-projetos/estados/ma-delta-do-parnaiba-daniela-casazza-02-c5d37b.jpg",
+      "autor": "Casyphoto",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Delta_do_Parnaiba_Daniela_Casazza_02.jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Lençóis Maranhenses 6 (CEI).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-lencois-maranhenses-6-cei-100d18.jpg",
+      "autor": "Ceiencarelli",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Len%C3%A7%C3%B3is_Maranhenses_6_(CEI).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Delta do Parnaiba Daniela Casazza 01.jpg",
+      "arquivo": "/fotos-projetos/estados/ma-delta-do-parnaiba-daniela-casazza-01-eebd78.jpg",
+      "autor": "Casyphoto",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Delta_do_Parnaiba_Daniela_Casazza_01.jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Parque Nacional dos Lençóis Maranhenses Paulo Cattelan (03).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-parque-nacional-dos-lencois-maranhenses-paul-270970.jpg",
+      "autor": "Paulo Cattelan",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Nacional_dos_Len%C3%A7%C3%B3is_Maranhenses_Paulo_Cattelan_(03).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Rio Preguiças - Barreirinhas.jpg",
+      "arquivo": "/fotos-projetos/estados/ma-rio-preguicas-barreirinhas-cf17b6.jpg",
+      "autor": "Luiza Nunes",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Pregui%C3%A7as_-_Barreirinhas.jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Lençóis Maranhenses Roberto Silva 66.jpg",
+      "arquivo": "/fotos-projetos/estados/ma-lencois-maranhenses-roberto-silva-66-8ed3c1.jpg",
+      "autor": "Rocsilva",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Len%C3%A7%C3%B3is_Maranhenses_Roberto_Silva_66.jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Rio Preguiças-4 (53237380135).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-rio-preguicas-4-53237380135-df368b.jpg",
+      "autor": "Otávio Nogueira",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Pregui%C3%A7as-4_(53237380135).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Chapada das Mesas (3953903687).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-chapada-das-mesas-3953903687-91cd23.jpg",
+      "autor": "Otávio Nogueira",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Chapada_das_Mesas_(3953903687).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Rio Preguiças-5 (53237381685).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-rio-preguicas-5-53237381685-31c0b6.jpg",
+      "autor": "Otávio Nogueira",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Pregui%C3%A7as-5_(53237381685).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Chapada das Mesas - Maranhão (3896344817).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-chapada-das-mesas-maranhao-3896344817-038526.jpg",
+      "autor": "Otávio Nogueira",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Chapada_das_Mesas_-_Maranh%C3%A3o_(3896344817).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Chapada das Mesas - Maranhão (3896926444).jpg",
+      "arquivo": "/fotos-projetos/estados/ma-chapada-das-mesas-maranhao-3896926444-e7c013.jpg",
+      "autor": "Otávio Nogueira",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Chapada_das_Mesas_-_Maranh%C3%A3o_(3896926444).jpg"
+    },
+    {
+      "uf": "MA",
+      "commons": "File:Attalea speciosa Itapecuru 2.JPG",
+      "arquivo": "/fotos-projetos/estados/ma-attalea-speciosa-itapecuru-2-ec6a51.jpg",
+      "autor": "Marcelo Cavallari",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Attalea_speciosa_Itapecuru_2.JPG"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Floresta Amazônica.JPG",
+      "arquivo": "/fotos-projetos/estados/mt-floresta-amazonica-805d43.jpg",
+      "autor": "Carlamoura.amb",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Amaz%C3%B4nica.JPG"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Parque Estadual Cristalino por THEREZA COLLOR HALBREICH (01).jpg",
+      "arquivo": "/fotos-projetos/estados/mt-parque-estadual-cristalino-por-thereza-collo-9531cd.jpg",
+      "autor": "THEREZA COLLOR HALBREICH",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Estadual_Cristalino_por_THEREZA_COLLOR_HALBREICH_(01).jpg"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Cristalino Lodge, Alta Floresta, Mato Grosso, Brazil.jpg",
+      "arquivo": "/fotos-projetos/estados/mt-cristalino-lodge-alta-floresta-mato-grosso-b-257acd.jpg",
+      "autor": "Charles J. Sharp",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Cristalino_Lodge,_Alta_Floresta,_Mato_Grosso,_Brazil.jpg"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Rio Teles Pires.JPG",
+      "arquivo": "/fotos-projetos/estados/mt-rio-teles-pires-bc01fb.jpg",
+      "autor": "Christopher Borges",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Teles_Pires.JPG"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Reserva do Cristalino na sua face sul.jpg",
+      "arquivo": "/fotos-projetos/estados/mt-reserva-do-cristalino-na-sua-face-sul-5a2410.jpg",
+      "autor": "Andrésarmento",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_do_Cristalino_na_sua_face_sul.jpg"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Agb01.jpg",
+      "arquivo": "/fotos-projetos/estados/mt-agb01-9a5433.jpg",
+      "autor": "Aline Gama Baptista",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Agb01.jpg"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Parque Estadual do Cristalino.jpg",
+      "arquivo": "/fotos-projetos/estados/mt-parque-estadual-do-cristalino-f3f77c.jpg",
+      "autor": "Aline Gama Baptista",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Estadual_do_Cristalino.jpg"
+    },
+    {
+      "uf": "MT",
+      "commons": "File:Chapada dos Guimarães 2.jpg",
+      "arquivo": "/fotos-projetos/estados/mt-chapada-dos-guimaraes-2-171da5.jpg",
+      "autor": "Vinicius Brito De Souza",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Chapada_dos_Guimar%C3%A3es_2.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Alter do Chão 487a.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-alter-do-chao-487a-c2699b.jpg",
+      "autor": "idobi",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Alter_do_Ch%C3%A3o_487a.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Ilha de Marajó, Brazil - Brasil, Pará (27216723649).jpg",
+      "arquivo": "/fotos-projetos/estados/pa-ilha-de-marajo-brazil-brasil-para-2721672364-744250.jpg",
+      "autor": "Jorge Brazilian",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Ilha_de_Maraj%C3%B3,_Brazil_-_Brasil,_Par%C3%A1_(27216723649).jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Rio Tapajós, visto da base do PN da Amazônia.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-rio-tapajos-visto-da-base-do-pn-da-amazonia-e14e95.jpg",
+      "autor": "Aimberesena",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Tapaj%C3%B3s,_visto_da_base_do_PN_da_Amaz%C3%B4nia.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Ilha de Marajó, Brazil - Brasil, Pará (38107137555).jpg",
+      "arquivo": "/fotos-projetos/estados/pa-ilha-de-marajo-brazil-brasil-para-3810713755-15e273.jpg",
+      "autor": "Jorge Brazilian",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Ilha_de_Maraj%C3%B3,_Brazil_-_Brasil,_Par%C3%A1_(38107137555).jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:RIO TAPAJÓS COSMO 3027.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-rio-tapajos-cosmo-3027-d565d0.jpg",
+      "autor": "Cosmoroncon",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:RIO_TAPAJ%C3%93S_COSMO_3027.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Ilha de Marajó, Brazil - Brasil, Pará (27216643139).jpg",
+      "arquivo": "/fotos-projetos/estados/pa-ilha-de-marajo-brazil-brasil-para-2721664313-228f55.jpg",
+      "autor": "Jorge Brazilian",
+      "licenca": "CC BY 2.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Ilha_de_Maraj%C3%B3,_Brazil_-_Brasil,_Par%C3%A1_(27216643139).jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Floresta Nacional do Tapajós PA-BR.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-floresta-nacional-do-tapajos-pa-br-74d56c.jpg",
+      "autor": "Mariana Cenedesi",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_do_Tapaj%C3%B3s_PA-BR.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Floresta Nacional dos Tapajós - Julia Bimi (01).jpg",
+      "arquivo": "/fotos-projetos/estados/pa-floresta-nacional-dos-tapajos-julia-bimi-01-1f3230.jpg",
+      "autor": "Julia Bimi",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_dos_Tapaj%C3%B3s_-_Julia_Bimi_(01).jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Floresta Nacional do Tapajós Gui Falcão-3.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-floresta-nacional-do-tapajos-gui-falcao-3-6e8fd9.jpg",
+      "autor": "Gpfbcbc",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_do_Tapaj%C3%B3s_Gui_Falc%C3%A3o-3.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Rio Xingu, Vitória do Xingu - Pará.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-rio-xingu-vitoria-do-xingu-para-5441c0.jpg",
+      "autor": "Fred Almeida2016",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Xingu,_Vit%C3%B3ria_do_Xingu_-_Par%C3%A1.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Floresta Nacional do Tapajós André de Souza 01.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-floresta-nacional-do-tapajos-andre-de-souza--c26e4a.jpg",
+      "autor": "André de Castro Souza",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_do_Tapaj%C3%B3s_Andr%C3%A9_de_Souza_01.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Açaí debulhado.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-acai-debulhado-f5bf39.jpg",
+      "autor": "Marajonida",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:A%C3%A7a%C3%AD_debulhado.jpg"
+    },
+    {
+      "uf": "PA",
+      "commons": "File:Floresta Nacional do Tapajós André de Souza 04.jpg",
+      "arquivo": "/fotos-projetos/estados/pa-floresta-nacional-do-tapajos-andre-de-souza--272909.jpg",
+      "autor": "André de Castro Souza",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Nacional_do_Tapaj%C3%B3s_Andr%C3%A9_de_Souza_04.jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Rio Madeira 09072007.jpg",
+      "arquivo": "/fotos-projetos/estados/ro-rio-madeira-09072007-063113.jpg",
+      "autor": "Wilson Dias/ABr",
+      "licenca": "CC BY 3.0 br",
+      "licencaUrl": "https://creativecommons.org/licenses/by/3.0/br/deed.en",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Madeira_09072007.jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Eserva Extrativista Rio Pacaás Novos de nível Estadual Foto Andréia Mara Costa Fortini em setembro de 2021 (4).jpg",
+      "arquivo": "/fotos-projetos/estados/ro-eserva-extrativista-rio-pacaas-novos-de-nive-aa149e.jpg",
+      "autor": "AndreiaFortini",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Eserva_Extrativista_Rio_Paca%C3%A1s_Novos_de_n%C3%ADvel_Estadual_Foto_Andr%C3%A9ia_Mara_Costa_Fortini_em_setembro_de_2021_(4).jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Rio Madeira 3.JPG",
+      "arquivo": "/fotos-projetos/estados/ro-rio-madeira-3-7b8200.jpg",
+      "autor": "Vinicius Matsumoto",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Rio_Madeira_3.JPG"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Eserva Extrativista Rio Pacaás Novos de nível Estadual Foto Andréia Mara Costa Fortini em setembro de 2021 (24).jpg",
+      "arquivo": "/fotos-projetos/estados/ro-eserva-extrativista-rio-pacaas-novos-de-nive-eff6f8.jpg",
+      "autor": "AndreiaFortini",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Eserva_Extrativista_Rio_Paca%C3%A1s_Novos_de_n%C3%ADvel_Estadual_Foto_Andr%C3%A9ia_Mara_Costa_Fortini_em_setembro_de_2021_(24).jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Floresta Amazônica Espigão do Oeste.jpg",
+      "arquivo": "/fotos-projetos/estados/ro-floresta-amazonica-espigao-do-oeste-b72781.jpg",
+      "autor": "Christopher Krause",
+      "licenca": "Public domain",
+      "licencaUrl": null,
+      "pagina": "https://commons.wikimedia.org/wiki/File:Floresta_Amaz%C3%B4nica_Espig%C3%A3o_do_Oeste.jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Costa Marques Vale do Guaporé (52264452187).jpg",
+      "arquivo": "/fotos-projetos/estados/ro-costa-marques-vale-do-guapore-52264452187-bb385b.jpg",
+      "autor": "Imagens de Rondônia",
+      "licenca": "Public domain",
+      "licencaUrl": null,
+      "pagina": "https://commons.wikimedia.org/wiki/File:Costa_Marques_Vale_do_Guapor%C3%A9_(52264452187).jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:TRACAJÁS - RIO GUAPORÉ - panoramio.jpg",
+      "arquivo": "/fotos-projetos/estados/ro-tracajas-rio-guapore-panoramio-8c35de.jpg",
+      "autor": "JL MACHADO",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:TRACAJ%C3%81S_-_RIO_GUAPOR%C3%89_-_panoramio.jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Margens do Rio Guaporé - Cabixi - RO - panoramio.jpg",
+      "arquivo": "/fotos-projetos/estados/ro-margens-do-rio-guapore-cabixi-ro-panoramio-ba59bd.jpg",
+      "autor": "JL MACHADO",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Margens_do_Rio_Guapor%C3%A9_-_Cabixi_-_RO_-_panoramio.jpg"
+    },
+    {
+      "uf": "RO",
+      "commons": "File:Reserva Extrativista Rio Pacaás Novos - Jefferson Macurap (01).jpg",
+      "arquivo": "/fotos-projetos/estados/ro-reserva-extrativista-rio-pacaas-novos-jeffer-4d5e91.jpg",
+      "autor": "Makurap",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Reserva_Extrativista_Rio_Paca%C3%A1s_Novos_-_Jefferson_Macurap_(01).jpg"
+    },
+    {
+      "uf": "RR",
+      "commons": "File:Serra do Tepequem - Cachoeira do Paiva.JPG",
+      "arquivo": "/fotos-projetos/estados/rr-serra-do-tepequem-cachoeira-do-paiva-69a864.jpg",
+      "autor": "Jeovanevs",
+      "licenca": "CC BY-SA 3.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Serra_do_Tepequem_-_Cachoeira_do_Paiva.JPG"
+    }
+  ]
+}

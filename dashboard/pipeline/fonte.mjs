@@ -21,6 +21,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validaFotosDosEstados, validaProjetos } from './projetos.mjs';
 
 export const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const conteudoRoot = join(appRoot, 'conteudo');
@@ -153,7 +154,7 @@ function exige(condicao, mensagem) {
 }
 
 export async function carregaFonte() {
-  const [catalogo, metas, panorama, textos, interfaceTextos, painel, fichas, projecoes, valoresTexto] = await Promise.all([
+  const [catalogo, metas, panorama, textos, interfaceTextos, painel, fichas, projecoes, projetos, fotosEstados, valoresTexto] = await Promise.all([
     leJson('catalogo.json'),
     leJson('metas.json'),
     leJson('panorama.json'),
@@ -162,11 +163,13 @@ export async function carregaFonte() {
     leJson('painel.json'),
     leJson('fichas.json'),
     leJson('projecoes.json'),
+    leJson('projetos.json'),
+    leJson('fotos-estados.json'),
     readFile(join(conteudoRoot, 'valores.csv'), 'utf8')
   ]);
   const linhas = parseCsv(valoresTexto);
   const ufs = Object.keys(panorama.estados);
-  const fonte = { catalogo, metas, panorama, textos, interface: interfaceTextos, painel, fichas, projecoes, linhas, ufs, valores: indexaValores(linhas) };
+  const fonte = { catalogo, metas, panorama, textos, interface: interfaceTextos, painel, fichas, projecoes, projetos, fotosEstados, linhas, ufs, valores: indexaValores(linhas) };
   validaFonte(fonte);
   return fonte;
 }
@@ -186,8 +189,11 @@ export async function carregaDetalhes(nomes) {
   return Object.fromEntries(pares);
 }
 
-export function validaFonte({ catalogo, metas, panorama, painel, projecoes, linhas, ufs, valores, interface: interfaceTextos }) {
+export function validaFonte({ catalogo, metas, panorama, painel, projecoes, projetos, fotosEstados, linhas, ufs, valores, interface: interfaceTextos }) {
   exige(Array.isArray(catalogo.eixos) && catalogo.eixos.length, 'catalogo.json sem eixos');
+  // A carteira não é editada pela administração; quem valida uma gravação de lá não a traz.
+  if (projetos) validaProjetos(projetos, ufs, exige);
+  if (fotosEstados) validaFotosDosEstados(fotosEstados, ufs, exige);
   if (interfaceTextos) {
     exige(interfaceTextos.textos && typeof interfaceTextos.textos === 'object', 'interface.json sem textos');
     for (const [chave, par] of Object.entries(interfaceTextos.textos)) {
@@ -195,6 +201,8 @@ export function validaFonte({ catalogo, metas, panorama, painel, projecoes, linh
     }
     for (const grupo of interfaceTextos.grupos || []) {
       exige(grupo.titulo && Array.isArray(grupo.chaves), `interface.json: grupo sem título ou chaves`);
+      // Sem página, o grupo não entra em nenhuma aba da tela de Textos e os textos dele ficam sem ter onde editar.
+      exige(['index', 'metas', 'metodologia', 'projetos'].includes(grupo.pagina), `interface.json: o grupo "${grupo.titulo}" precisa de "pagina" (index, metas, metodologia ou projetos)`);
       for (const chave of grupo.chaves) exige(chave in interfaceTextos.textos, `interface.json: o grupo "${grupo.titulo}" cita um texto que não existe: ${chave}`);
     }
   }

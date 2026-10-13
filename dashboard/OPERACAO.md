@@ -86,22 +86,43 @@ o painel sozinhos: cada execução vira uma **proposta**, listada em
   direção e forma de calcular o valor regional), se fica fora do quadro com um
   motivo próprio, ou fora com o motivo padrão.
 - **Textos**: todo texto do painel, em português e inglês. Escolha a
-  página no seletor (Visão Geral, Panorama, Metas e indicadores): o quadro
+  página no seletor (Visão Geral, Panorama, Metas e indicadores, Projetos): o quadro
   mostra essa página como ela vai ficar e a lista traz só os textos que
   aparecem nela, das lâminas da Visão Geral à barra superior, legendas do
-  mapa e fichas. O quadro se refaz enquanto você digita, antes de salvar;
-  nas lâminas, ele pula para a lâmina do campo em edição. Um inglês vazio
-  faz a versão em inglês mostrar o português naquele ponto. Use o filtro
-  para achar um texto pelo que se lê na tela. Na Visão Geral há também o grupo
-  **Nota técnica**: são os textos da síntese comparativa que vão para o PDF
-  de "Baixar nota técnica", gerado à parte; nenhuma página os mostra, e por
-  isso o quadro não muda ao editá-los.
+  mapa e fichas. Cada texto tem o português (PT) e o inglês (EN) lado a
+  lado; um inglês vazio faz a versão em inglês mostrar o português naquele
+  ponto.
+  - **Achar um texto**: clique nele na prévia e a lista vai ao campo. O
+    caminho contrário também vale: o campo em que você está acende o trecho
+    na prévia. Se o texto só aparece depois de um clique na página (uma
+    aba, um aviso), a tela avisa embaixo do quadro. Para usar a prévia como
+    a página (abrir um eixo, trocar de aba), desligue **Apontar texto**. A
+    busca procura nas três páginas de uma vez e mostra, em cada uma, quantos
+    textos casam.
+  - **Enquanto edita**: o quadro acompanha o que você digita, antes de
+    salvar. O texto alterado ganha um fio amarelo à esquerda e uma seta para
+    voltar ao que estava salvo; **Alterados** mostra só eles, e
+    **Descartar** desfaz todos. Nada vai para o rascunho até **Salvar no
+    rascunho** (ou Ctrl+S; ⌘S no Mac). Sair da tela com texto por salvar
+    pede confirmação.
+  - **Trechos entre chaves**, como `{ano}` ou `{total}`, são trocados pelo
+    valor na página. Podem mudar de lugar na frase, mas precisam continuar
+    nos dois idiomas: se um deles some, o campo fica vermelho e a tela não
+    salva até ele voltar.
+  - **Ampliar** põe a prévia na largura toda, com os campos embaixo, para
+    ler o texto no tamanho real.
+  - Na Visão Geral há também o grupo **Nota técnica**: são os textos da
+    síntese comparativa que vão para o PDF de "Baixar nota técnica", gerado
+    à parte; nenhuma página os mostra, e por isso o quadro não muda ao
+    editá-los.
 - **Trajetória** (na mesma tela da meta): o Panorama mostra, para cada meta
-  confrontável, o ritmo dos últimos anos e o ano em que o alvo seria alcançado
-  se o ritmo se mantivesse. É uma projeção mecânica a partir da série, sem
-  previsão. Dá para escolher quantos anos entram no ritmo (padrão 5, mínimo
-  3), o método (linear ou composto) e desligar a trajetória numa meta cuja
-  série tem quebra, com uma nota explicando.
+  confrontável, o ritmo da série e o ano em que o alvo seria alcançado se o
+  ritmo se mantivesse. É uma projeção mecânica a partir da série, sem
+  previsão. O ritmo sai dos últimos 10 anos da série (ou da série inteira,
+  quando ela é mais curta), e cada gráfico marca o trecho usado. Na tela da
+  meta dá para escolher o método (linear ou composto), fixar a janela numa
+  série com quebra (aí a meta usa sempre os últimos N pontos, em vez dos 10
+  anos) e desligar a trajetória, com uma nota explicando.
 - **Trajetória pactuada até 2050** (lista no fim da tela de Metas, só
   leitura): as metas intermediárias regionais das planilhas de projeção da
   Estratégia, com todos os cenários. Na página de Metas aparecem na aba
@@ -127,7 +148,10 @@ aqui com orientação técnica: mudar pesos muda o ranking dos estados.
 
 Em **Contas**, quem tem conta pode criar outra (a senha temporária aparece
 uma única vez), gerar senha nova para alguém que esqueceu, e desativar ou
-reativar contas. Contas mudam de imediato no rascunho, mas só valem no site
+reativar contas. Ao criar, escolha o **acesso**: a administração inteira ou
+**só a tela de Textos**. A conta de só Textos é para quem revisa a redação:
+ela abre Textos, a Ajuda e Minha senha, salva no rascunho e não publica — a
+publicação continua com quem tem a conta completa. Contas mudam de imediato no rascunho, mas só valem no site
 depois do próximo deploy, em 1 a 2 minutos.
 
 ## 8. Quando aparece um aviso
@@ -145,6 +169,13 @@ depois do próximo deploy, em 1 a 2 minutos.
 ## 9. O que fica por conta da equipe técnica
 
 - Rodar os scripts de coleta e enviar as propostas ao repositório.
+- Atualizar a página **Projetos** quando o Consórcio mudar a carteira no
+  site dele: a equipe técnica roda `scripts/coletar-projetos.mjs`. O eixo de
+  cada projeto é uma leitura do painel e se corrige em
+  `conteudo/projetos.json`. No mesmo arquivo fica a tradução de cada projeto
+  (`traducao`), para o cartão aparecer na língua da página; projeto novo
+  chega só na língua em que o órgão o escreveu, e a coleta lista os que
+  ainda precisam dela.
 - Atualizar `conteudo/projecoes.json` (trajetórias pactuadas) quando a
   Estratégia publicar planilhas de projeção novas.
 - Gerar a nota técnica em PDF.

@@ -9,6 +9,7 @@
 // Para cada meta e escopo (Amazônia Legal e cada estado):
 //   atual            último ponto da série (ano, valor)
 //   base             primeiro ponto da janela usada para o ritmo
+//   janela           quantos pontos entraram no ritmo
 //   ritmo            variação média por ano na janela: linear = inclinação da
 //                    reta de mínimos quadrados; composto = taxa geométrica
 //   ritmoNecessario  variação por ano que levaria do valor atual ao alvo no prazo
@@ -16,15 +17,43 @@
 //   aceleracao       ritmoNecessario / ritmo, quando os dois apontam para o alvo
 //   classe           cumprida | noRitmo | acelerar | contrario | semSerie | desligada
 //
+// O ritmo sai dos últimos dez anos da série (HORIZONTE_ANOS). Cinco anos
+// acompanhavam bem uma virada recente, mas bastava um ano fora da curva para
+// mudar a leitura: a mortalidade evitável, em queda contínua desde 2000, ia
+// para depois de 2200 só pelo repique de 2021 a 2023. Dez anos mostram a
+// tendência de fundo; o preço é demorar a reconhecer uma mudança de rumo, como
+// a queda do desmatamento desde 2021, que ainda divide a janela com a alta de
+// 2016 a 2021.
+//
+// A janela é contada em anos, e não em pontos: numa série com buracos (uma
+// medição em 2011, outra em 2015, outra em 2022), "os dez últimos pontos"
+// atravessariam décadas. Série mais curta que o horizonte entra inteira;
+// quando o horizonte tem menos de três pontos, entram os três mais recentes,
+// que é o mínimo para haver uma reta.
+//
 // Parâmetros por meta em conteudo/metas.json (`trajetoria`, opcional):
-//   janela     quantos pontos mais recentes entram no ritmo (padrão 5, mínimo 3)
+//   janela     número fixo de pontos mais recentes no ritmo (mínimo 3). É para
+//              série com quebra: o que vem antes não vale, então a meta usa
+//              esses pontos em vez dos dez anos.
 //   metodo     'linear' (padrão) | 'composto'
 //   desligada  true tira a meta da trajetória (série com quebra, por exemplo)
 //   nota       explicação exibida junto
 
 export const ANO_LIMITE = 2050;
-export const JANELA_PADRAO = 5;
 export const PONTOS_MINIMOS = 3;
+export const HORIZONTE_ANOS = 10;
+
+/**
+ * Os pontos que entram no ritmo: os dos últimos HORIZONTE_ANOS anos, contados
+ * a partir do último, ou a janela fixa da meta (`fixa`).
+ */
+export function janelaDoRitmo(pontos, parametro = {}) {
+  const fixa = Number(parametro.janela);
+  if (fixa) return { recentes: pontos.slice(-Math.max(PONTOS_MINIMOS, fixa)), fixa: true };
+  const ultimo = pontos.at(-1).ano;
+  const noHorizonte = pontos.filter((ponto) => ponto.ano > ultimo - HORIZONTE_ANOS);
+  return { recentes: noHorizonte.length >= PONTOS_MINIMOS ? noHorizonte : pontos.slice(-PONTOS_MINIMOS), fixa: false };
+}
 
 function pontosDe(historico, escopo) {
   return (historico || [])
@@ -57,9 +86,9 @@ function taxaComposta(pontos) {
 export function calculaTrajetoria({ pontos, alvo, prazo, direcao, cumpre, parametro = {} }) {
   if (!pontos.length) return null;
   const atual = pontos.at(-1);
-  const janela = Math.max(PONTOS_MINIMOS, Number(parametro.janela) || JANELA_PADRAO);
+  const { recentes, fixa } = janelaDoRitmo(pontos, parametro);
   const metodo = parametro.metodo === 'composto' ? 'composto' : 'linear';
-  const comum = { atual, alvo, prazo, metodo, janela, pontos: pontos.length, serie: pontos, nota: parametro.nota || null };
+  const comum = { atual, alvo, prazo, metodo, janela: recentes.length, janelaFixa: fixa, pontos: pontos.length, serie: pontos, nota: parametro.nota || null };
 
   if (parametro.desligada) return { ...comum, classe: 'desligada', base: null, ritmo: null, ritmoNecessario: null, anoAlcance: null, aceleracao: null };
   if (cumpre) return { ...comum, classe: 'cumprida', base: null, ritmo: null, ritmoNecessario: null, anoAlcance: atual.ano, aceleracao: null };
@@ -71,7 +100,6 @@ export function calculaTrajetoria({ pontos, alvo, prazo, direcao, cumpre, parame
     return { ...comum, classe: 'semSerie', base: null, ritmo: null, ritmoNecessario, anoAlcance: null, aceleracao: null };
   }
 
-  const recentes = pontos.slice(-janela);
   const base = recentes[0];
   let ritmo;
   let anoAlcance = null;
@@ -164,6 +192,7 @@ export function resumeTrajetoria(metas, ufs, semMeta = []) {
         pontos: item.pontos,
         serie: item.serie,
         janela: item.janela,
+        janelaFixa: item.janelaFixa || false,
         metodo: item.metodo,
         nota: item.nota
       };
@@ -179,7 +208,7 @@ export function resumeTrajetoria(metas, ufs, semMeta = []) {
       escopos: porEscopo
     });
   }
-  return { anoLimite: ANO_LIMITE, contagem, metas: lista, indicadores: resumeTendencias(semMeta, ufs) };
+  return { anoLimite: ANO_LIMITE, horizonteAnos: HORIZONTE_ANOS, contagem, metas: lista, indicadores: resumeTendencias(semMeta, ufs) };
 }
 
 /**
@@ -191,12 +220,11 @@ export function resumeTrajetoria(metas, ufs, semMeta = []) {
 export function calculaTendencia(pontos, parametro = {}) {
   if (!pontos.length) return null;
   const atual = pontos.at(-1);
-  const janela = Math.max(PONTOS_MINIMOS, Number(parametro.janela) || JANELA_PADRAO);
-  const comum = { atual, serie: pontos, pontos: pontos.length, janela, metodo: 'linear', nota: parametro.nota || null };
+  const { recentes, fixa } = janelaDoRitmo(pontos, parametro);
+  const comum = { atual, serie: pontos, pontos: pontos.length, janela: recentes.length, janelaFixa: fixa, metodo: 'linear', nota: parametro.nota || null };
   // Série com quebra ou em rampa de implantação: mostra o valor, não projeta.
   if (parametro.desligada) return { ...comum, classe: 'desligada', base: null, ritmo: null, valorFinal: null, anoZero: null };
   if (pontos.length < PONTOS_MINIMOS || !Number.isFinite(atual.ano)) return { ...comum, classe: 'semSerie', base: null, ritmo: null, valorFinal: null, anoZero: null };
-  const recentes = pontos.slice(-janela);
   const ritmo = inclinacao(recentes);
   let valorFinal = atual.valor + ritmo * (ANO_LIMITE - atual.ano);
   let anoZero = null;

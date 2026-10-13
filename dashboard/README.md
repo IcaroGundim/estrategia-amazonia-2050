@@ -32,6 +32,7 @@ pipeline/derivar.mjs     Panorama: estados, séries, síntese e resumo a partir 
 pipeline/catalogo.mjs    catálogo público (texto + números)
 pipeline/metas.mjs       avaliação das metas a partir de conteudo/metas.json
 pipeline/workbooks.mjs   os cinco XLSX de download, um por eixo
+pipeline/projetos.mjs    carteira de projetos da COP30, no formato da página /projetos
 build-static.mjs         orquestra o pipeline e grava public/data/* e public/downloads/*.xlsx
 ```
 
@@ -349,6 +350,8 @@ Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são ex
 | `painel.json` | Data de atualização exibida e constantes sem fonte por estado. |
 | `fichas.json` | Fichas técnicas extraídas do `.docx` (`scripts/extract-fichas.ps1`), com equações e notas de fórmula em inglês em `en`. |
 | `usuarios.json` | Contas da administração: usuário, nome, hash bcrypt, ativo, senha temporária. |
+| `projetos.json` | Carteira de projetos que o Consórcio publica para a COP30, lida do site dele por `scripts/coletar-projetos.mjs`, mais a tradução do texto de cada ficha para a outra língua (`traducao`), escrita à mão. Não é editada pela administração. |
+| `fotos-estados.json` | Fotos ilustrativas dos estados (Wikimedia Commons) para os projetos sem foto, com autor, licença e origem. Escolha manual; `scripts/baixar-fotos-estados.mjs` baixa e preenche. |
 
 O inglês do conteúdo dos indicadores (nome, meta, descrição, fonte de cada indicador; nome dos eixos; linhas de ação) vive nos campos `en` de `catalogo.json`; o build monta `public/data/i18n/en.json` a partir deles, no formato que `src/scripts/conteudo.js` sobrepõe ao português. Os textos de interface (botões, menus, rótulos, legendas) ficam em `conteudo/interface.json`, `{ chave: { pt, en } }` com o português original do código como chave, editável em `/admin/textos`; `src/i18n/index.js` só traduz.
 
@@ -385,13 +388,58 @@ Uma conta nova ou uma senha trocada valem a partir do deploy seguinte ao commit 
 
 **Dois editores ao mesmo tempo** (`src/lib/admin/mesclar.ts`). Cada formulário carrega a versão do arquivo que leu. Ao salvar, se o arquivo mudou no meio, a gravação mescla a três vias — chave a chave nos JSONs, célula a célula no CSV — e só recusa quando os dois lados mudaram a mesma coisa, dizendo quem foi e quando. Toda gravação passa pela validação do build (`validaFonte`) antes do commit.
 
-**Telas**: valores e propostas (abaixo), catálogo (texto de cada indicador, situação da coleta, criar indicador), metas (parametrização e exclusões), textos (Visão Geral e metodologia, pt/en), fichas técnicas, data e constantes, configuração do Panorama (métricas do mapa, ordem do seletor, síntese com pesos e dimensões — a validação exige que os pesos somem 1), contas e a troca da própria senha. O manual para quem edita, sem jargão, está em [`OPERACAO.md`](OPERACAO.md) e dentro da administração, em Ajuda.
+**Telas**: valores e propostas (abaixo), catálogo (texto de cada indicador, situação da coleta, criar indicador), metas (parametrização e exclusões), textos (as lâminas da Visão Geral, a nota técnica e todo texto de interface, pt/en, com a prévia ligada aos campos — abaixo), fichas técnicas, data e constantes, configuração do Panorama (métricas do mapa, ordem do seletor, síntese com pesos e dimensões — a validação exige que os pesos somem 1), contas e a troca da própria senha. O manual para quem edita, sem jargão, está em [`OPERACAO.md`](OPERACAO.md) e dentro da administração, em Ajuda.
 
-**Contas pela tela** (`src/lib/admin/contas.ts`). Criar, redefinir senha, desativar e reativar, e "Minha senha", gravam `usuarios.json` **direto na branch principal**, fora do rascunho — uma conta não deve esperar uma publicação de dados. Como o arquivo entra no pacote da função, a mudança vale no deploy seguinte (1 a 2 minutos); até lá a senha antiga ainda abre a tela. A última conta ativa não pode ser desativada, nem a própria.
+**Contas pela tela** (`src/lib/admin/contas.ts`). Criar, redefinir senha, desativar e reativar, e "Minha senha", gravam `usuarios.json` **direto na branch principal**, fora do rascunho — uma conta não deve esperar uma publicação de dados. Como o arquivo entra no pacote da função, a mudança vale no deploy seguinte (1 a 2 minutos); até lá a senha antiga ainda abre a tela. A última conta ativa com acesso completo não pode ser desativada, nem a própria.
+
+**Acesso restrito** (`acesso` em `usuarios.json`, `src/lib/admin/usuarios.ts`). Sem o campo, a conta abre a administração inteira. Com `"acesso": "textos"` ela abre só `/admin/textos` (e a prévia), `/admin/ajuda` e `/admin/senha`: é a conta de quem revisa a redação. Quem aplica é o `src/middleware.ts`, em todo pedido — as outras telas redirecionam para Textos e as rotas de `/api/admin/*` (atualizar prévia, publicar, valores) respondem 403 —, e a barra só mostra o que a conta abre. O acesso é lido da conta, não do cookie, então mudá-lo vale no deploy seguinte. A conta restrita salva no rascunho e não publica. Pela linha de comando: `npm run usuario -- criar maria "Maria Silva" --acesso textos`.
+
+**Textos** (`/admin/textos`, `src/lib/admin/textos.ts`, `src/components/admin/CampoTexto.astro`). Uma tela para os dois arquivos de texto: `textos.json` (lâminas e nota técnica) e `interface.json` (o dicionário de interface, organizado pelos `grupos` dele). Cada grupo de `interface.json` declara a `pagina` em que aparece — sem ela o grupo não entra em aba nenhuma, e a validação do build recusa —, o `alvo` (seletor do trecho na página) e, quando o trecho só existe depois de um clique, o `abre`. A prévia é a própria página pública, servida por `/admin/textos/previa` com o que está no formulário. O vínculo entre campo e prévia é por texto: a tela procura na página o que o campo mostra na língua do quadro (frases com lacuna viram uma expressão regular), acende o trecho do campo em foco e, no sentido contrário, leva ao campo o texto clicado. Texto sem lacuna e sem repetição é trocado direto no quadro a cada tecla; os demais recarregam o quadro. O formulário apara as pontas, então a borda da chave é reposta ao gravar: `"Panorama - "` termina em espaço porque o código cola outra palavra depois.
 
 **Propostas** (`/admin/propostas`, `src/lib/admin/propostas.ts`, `scripts/proposta.py`). Os scripts de coleta não escrevem mais nos números do painel. `scripts/gerar_propostas.py` lê os JSONs de detalhe que os coletores gravam em `public/data/` (IDEB, focos, frequência escolar, atenção primária, P&D, PEVS, PIA) e grava uma proposta em `conteudo/propostas/`; um coletor novo pode montar a própria proposta com `from proposta import Proposta`. A tela compara a proposta com `valores.csv` célula a célula e oferece aceitar tudo, aceitar só as marcadas ou rejeitar. Aceitar grava as células com `origem = script` e move o arquivo para `propostas/aplicadas/` no mesmo commit; rejeitar move para `propostas/rejeitadas/`, com o motivo. Na Vercel, a proposta gerada na máquina do dev precisa de commit e push (na branch `rascunho` ou na `main`) para aparecer na tela.
 
 **Valores** (`/admin/valores`, `src/lib/admin/valores.ts`). Cada código — os 59 do catálogo e as métricas do Panorama (`prodesKm2`, `focos`, `cvli`, `POP`, `AREA`…) — tem uma grade estados × colunas: "Atual" (valor sem ano), os anos da série e os campos auxiliares (`campo` do CSV). Dá para digitar, colar um bloco copiado do Excel (tabs e quebras de linha espalham pelas células à direita e abaixo) e acrescentar um ano ou um campo. Célula vazia apaga a linha, salvo se ela já existia vazia (nulo registrado). Vírgula decimal é aceita. Para lotes, a importação recebe uma planilha (aba `Modelo_importacao` ou a primeira com a coluna `codigo`, lida no navegador com SheetJS) ou uma lista em JSON, mostra a prévia célula a célula — nova, alterada, igual, com aviso quando o valor varia mais de 50% contra o ano anterior — e só grava as células que mudam. O build gera `public/downloads/modelo-importacao.xlsx` com a tabela inteira, além da aba `Modelo_importacao` em cada workbook por eixo.
+
+## Projetos: a carteira da COP30
+
+`/projetos` apresenta a carteira que o Consórcio publica em <https://www.brazilianamazonprojects.com>: 113 fichas dos nove estados, com recorte por estado, por eixo da Estratégia e por faixa de orçamento, e busca. Os recortes ficam numa coluna à esquerda e os projetos aparecem em páginas de quatro, dois por dois, num quadro da altura da janela; as setas do teclado passam as páginas. O recorte e a página vivem no endereço (`/projetos?uf=PA&eixo=3&p=2`), então outra página pode apontar para uma seleção. O cartão mostra a foto, o título, o órgão, um resumo e os dois números; o projeto completo abre no site do Consórcio.
+
+Só 38 das 113 fichas têm foto no site, e elas vêm primeiro na lista. As fotos são baixadas pelo coletor já recortadas em 800×450 para `public/fotos-projetos/` (3 MB ao todo) — o servidor de imagens do Wix faz o recorte pelo próprio endereço —, e a página não busca nada fora do painel.
+
+Os demais projetos levam uma **foto ilustrativa do estado**: uma paisagem de floresta, rio ou fauna daquele estado, do Wikimedia Commons (que reúne também o que foi importado do Flickr, com a licença conferida). São 69, escolhidas à mão e listadas em `conteudo/fotos-estados.json`; `scripts/baixar-fotos-estados.mjs` baixa cada uma, recorta em 800×450 em `public/fotos-projetos/estados/` (4,4 MB) e grava no JSON o autor, a licença e a página de origem. Só entram licenças de uso livre — CC BY, CC BY-SA, CC0 ou domínio público —, e o script recusa as outras. Essas licenças exigem o crédito, então o cartão mostra "Foto ilustrativa · autor · licença", com link para a página da foto; o rótulo também diz ao leitor que a imagem é do estado, e não do projeto. `pipeline/projetos.mjs` distribui as fotos: cada estado tem a sua fila, na ordem da lista, e uma foto só se repete se o estado tiver mais projetos sem foto do que fotos. Para trocar uma, edite `uf` e `commons` na lista e rode o script. A busca no Commons devolve homônimos de outros lugares (Alter do Chão em Portugal, o Kukenán na Venezuela, o Guaporé em Mato Grosso): conferir o título antes de incluir.
+
+Se um projeto ficar sem foto nenhuma — um estado novo sem fotos na lista —, o cartão mostra o mapa da região com o estado aceso, desenhado com a mesma malha do Panorama (`geo.json`).
+
+A fonte é `conteudo/projetos.json`, escrita por `scripts/coletar-projetos.mjs`. O site é um Wix sem API aberta nem planilha, então a leitura é pelas páginas, em três passos: o sitemap dá o endereço de cada projeto; `/projetoscop30?estado=UF` dá os cartões de cada estado; a página do projeto dá o texto, de onde sai o resumo (o parágrafo depois de "Objetivo"), e a foto (a imagem de compartilhamento, `og:image`). O segundo passo precisa de um navegador, porque o filtro por estado é aplicado no cliente: o HTML do servidor traz sempre os cem primeiros. O playwright não é dependência do projeto e entra por `PLAYWRIGHT_PATH`, como em `conferir-mobile.mjs`.
+
+```bash
+PLAYWRIGHT_PATH=… node scripts/coletar-projetos.mjs
+```
+
+Três coisas que custaram tempo e ficaram resolvidas no script:
+
+- **O endereço vai como o sitemap o publica.** Recodificá-lo estraga os que têm vírgula ou dois-pontos (33 dos 113), e o site responde 200 com a página sem o projeto. O coletor recusa página sem o corpo, em vez de gravar resumo vazio.
+- **O site responde 429 a rajadas.** Vai um pedido por vez, com folga, respeitando o `Retry-After`. `COLETA_CACHE=pasta` guarda o que já foi lido, para ajustar a leitura sem voltar ao site.
+- **Os campos são texto livre.** "Beneficiários" tem 45 grafias e a faixa de orçamento 44, com erros de digitação ("$3,5000,000"). A UF vem do recorte por estado, que é estruturado; a faixa é lida pelo piso quando há dois números e pelo teto quando há um; a duração é o primeiro número do campo. O que o site diz ao pé da letra fica em `beneficiarios`, `orcamentoOriginal` e `duracaoOriginal`.
+
+Duas leituras são do painel, não do Consórcio, e estão no JSON para serem corrigidas à mão — rodar a coleta de novo as preserva:
+
+- **`eixo`**: o site organiza os projetos em doze temas, mas o tema de cada projeto não chega a página nenhuma (o clique num tema abre o mapa, e o mapa filtra só por estado). O eixo da Estratégia foi atribuído projeto a projeto. Segurança pública e educação caem no Eixo 2, e por isso ele concentra metade da carteira.
+- **`par`**: oito projetos foram cadastrados duas vezes, uma em cada língua. O par liga as duas fichas, e a página mostra só a da língua em que está — daí 105 projetos na tela para 113 fichas.
+
+**O cartão fala a língua da página.** O site traz cada ficha numa língua só (44 em português, 69 em inglês), e várias misturam as duas: título em inglês com resumo em português, órgão escrito nas duas. Na página o cartão inteiro segue o seletor de idioma. O que o site não escreveu numa língua está em `traducao`, no próprio `projetos.json`:
+
+```json
+"idioma": "en",
+"traducao": {
+  "pt": { "titulo": "…", "resumo": "…" },
+  "en": { "entidade": "…" }
+}
+```
+
+Cada língua traz só os campos que faltam nela (`titulo`, `entidade`, `resumo`); o resto é o texto do site. No exemplo, a ficha é em inglês mas o órgão veio em português, então o inglês também tem o que refazer. `pipeline/projetos.mjs` junta os dois e entrega `textos.pt` e `textos.en` completos a cada cartão. A tradução é do painel, e a nota de fonte no pé da página diz isso; o "projeto completo" abre no site do Consórcio, na língua original. A tradução acompanha a forma do original (título em maiúsculas continua em maiúsculas) e o nome do órgão é traduzido com a sigla mantida.
+
+Rodar a coleta de novo preserva a tradução campo a campo, enquanto o texto do site for o mesmo; projeto novo ou texto alterado ficam sem ela, e o coletor lista quais. Até a tradução ser escrita, esse cartão aparece na língua do site com o aviso "texto em inglês" (ou "em português"), em vez de sumir. A busca procura nas duas línguas.
 
 ## Duas línguas
 
@@ -402,6 +450,7 @@ O painel responde em português e em inglês, em endereços diferentes:
 | `/` (Visão Geral) | `/en` |
 | `/panorama` | `/en/panorama` |
 | `/metas` | `/en/goals` |
+| `/projetos` | `/en/projects` |
 
 Os endereços antigos `/metodologia` e `/en/overview` redirecionam para a raiz.
 
@@ -414,8 +463,12 @@ o buscador indexa. Ele leva `data-astro-reload` porque o ClientRouter trocaria s
 o `<body>`, e o `lang` do `<html>` — que é quem decide o idioma no cliente —
 ficaria o da página anterior.
 
-O seletor mostra a bandeira do idioma de destino ao lado da sigla: "PT" e "EN" só
-se distinguem depois de lidos, e quem procura a troca varre a barra de olho. O
+O seletor é uma chave: um trilho da altura do botão de ação, com as duas línguas
+dentro, cada uma com a bandeira e a sigla. A da página fica preenchida e a outra
+é o link. A sigla diz a língua; a bandeira é o que se acha varrendo a barra de
+olho, porque "PT" e "EN" só se distinguem depois de lidos. As duas bandeiras
+ficam em cores: quando a da outra língua era apagada, lia como desligada. Os
+desenhos estudados estão em `mockups/idioma-opcoes*.html`. O
 inglês não tem bandeira própria, então a dele é mesclada de Estados Unidos e
 Reino Unido, dividida na diagonal — a convenção dos seletores de idioma para esse
 caso, que evita dizer de qual dos dois ingleses o painel fala. As duas são

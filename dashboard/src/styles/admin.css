@@ -6,40 +6,45 @@
   --adm-fundo: #efeae2;
   --adm-filete: #d9d0c3;
   --adm-filete-forte: #1a1613;
+  /* Altura da barra superior, que fica presa no topo: é de onde pendura o que
+     também gruda ao rolar (a barra de ações e a prévia da tela de Textos). O
+     layout a mede e corrige, para o caso de a linha quebrar em tela estreita. */
+  --adm-cabecalho: 56px;
 }
 
 /* ---------- esqueleto ---------- */
 .admin-body { margin: 0; min-height: 100dvh; background: var(--adm-fundo); color: var(--tinta); }
-.admin-app { display: grid; grid-template-columns: 236px minmax(0, 1fr); min-height: 100dvh; }
-.admin-corpo { display: flex; flex-direction: column; min-width: 0; }
-.admin-main { width: 100%; margin: 0; padding: 30px clamp(24px, 3vw, 48px) 80px; box-sizing: border-box; }
+.admin-app { display: flex; flex-direction: column; min-height: 100dvh; }
+.admin-main { width: 100%; margin: 0; padding: 14px clamp(20px, 2.4vw, 44px) 80px; box-sizing: border-box; }
 .admin-main.is-solta { padding-top: 10vh; display: flex; flex-direction: column; align-items: center; gap: 30px; }
 
-/* ---------- barra lateral ---------- */
-.admin-lateral { position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; padding: 26px 22px 22px; background: var(--mata); color: var(--areia, #f5f0e8); box-sizing: border-box; }
-.admin-marca { display: flex; flex-direction: column; gap: 4px; padding: 0 4px 30px; color: inherit; text-decoration: none; }
+/* ---------- barra superior ----------
+   A marca, as seções e a conta numa linha só, no verde do painel público. Fica
+   presa no topo e acompanha a rolagem, com as seções sempre à mão. Os grupos
+   de seções não levam título aqui — um fio os separa; o título volta quando a
+   lista recolhe, em tela estreita. */
+.admin-cabecalho { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 8px 22px; min-height: 56px; padding: 0 clamp(20px, 2.4vw, 44px); background: var(--mata); color: var(--areia, #f5f0e8); box-sizing: border-box; }
+.admin-marca { flex: none; display: flex; flex-direction: column; gap: 4px; color: inherit; text-decoration: none; }
 .admin-marca.is-escura { color: var(--mata); padding: 0; align-items: center; text-align: center; }
-.admin-marca-nome { font: 800 19px/1.1 var(--display); letter-spacing: -0.01em; }
+.admin-marca-nome { font: 800 17px/1.1 var(--display); letter-spacing: -0.01em; white-space: nowrap; }
+.admin-marca.is-escura .admin-marca-nome { font-size: 19px; }
 .admin-marca-nome b { color: var(--ocre); }
-.admin-lateral nav { display: flex; flex-direction: column; gap: 22px; flex: 1; }
-.admin-nav-grupo { display: flex; flex-direction: column; }
-.admin-nav-titulo { padding: 0 4px 8px; font: 600 9.5px var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-300); }
-.admin-nav-grupo a { position: relative; padding: 8px 12px; border-radius: 8px; color: rgba(245, 240, 232, .8); font: 500 13.5px var(--text); text-decoration: none; transition: background .15s, color .15s; }
-.admin-nav-grupo a:hover { color: #fff; background: rgba(245, 240, 232, .06); }
-.admin-nav-grupo a.is-ativo { color: #fff; background: rgba(245, 240, 232, .12); font-weight: 600; }
-.admin-lateral-rodape { padding: 18px 4px 0; border-top: 1px solid rgba(245, 240, 232, .14); font-size: 12px; }
-.admin-lateral-rodape a { color: var(--mata-100); text-decoration: none; }
-.admin-lateral-rodape a:hover { color: #fff; }
-
-/* ---------- cabeçalho ---------- */
-.admin-topo { display: flex; align-items: center; gap: 16px; width: 100%; margin: 0; padding: 14px clamp(24px, 3vw, 48px) 0; box-sizing: border-box; }
-.admin-topo-titulo { font: 600 10px var(--text); letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-4); }
-.admin-menu-botao { display: none; min-height: 32px; padding: 0 10px; border: 1px solid var(--mata-300); border-radius: 8px; background: transparent; color: var(--mata); font: 600 11px var(--text); letter-spacing: .06em; text-transform: uppercase; }
-.admin-sessao { margin-left: auto; display: flex; align-items: center; gap: 18px; font-size: 12.5px; }
-.admin-sessao-nome { color: var(--tinta-3); }
-.admin-sessao a, .admin-sessao button { padding: 0; border: 0; background: none; color: var(--mata-700); font: 500 12.5px var(--text); text-decoration: none; cursor: pointer; }
-.admin-sessao a:hover, .admin-sessao button:hover { color: var(--urucum); }
+.admin-cabecalho nav { min-width: 0; display: flex; align-items: center; }
+.admin-nav-grupo { display: flex; align-items: center; gap: 2px; }
+.admin-nav-grupo + .admin-nav-grupo { margin-left: 9px; padding-left: 9px; border-left: 1px solid rgba(245, 240, 232, .16); }
+.admin-nav-titulo { display: none; font: 600 9.5px var(--text); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mata-300); }
+.admin-nav-grupo a { padding: 7px 10px; border-radius: 8px; color: rgba(245, 240, 232, .8); font: 500 13px var(--text); text-decoration: none; white-space: nowrap; transition: background .15s, color .15s; }
+.admin-nav-grupo a:hover { color: #fff; background: rgba(245, 240, 232, .07); }
+.admin-nav-grupo a.is-ativo { color: #fff; background: rgba(245, 240, 232, .14); font-weight: 600; }
+.admin-nav-grupo a:focus-visible, .admin-sessao a:focus-visible, .admin-sessao button:focus-visible, .admin-menu-botao:focus-visible { outline: 2px solid var(--ocre); outline-offset: 2px; }
+.admin-menu-botao { display: none; min-height: 34px; padding: 0 12px; border: 1px solid rgba(245, 240, 232, .34); border-radius: 8px; background: transparent; color: inherit; font: 600 11px var(--text); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.admin-sessao { margin-left: auto; flex: none; display: flex; align-items: center; gap: 16px; font-size: 12.5px; white-space: nowrap; }
+.admin-sessao-nome { color: var(--mata-100); }
+.admin-sessao a, .admin-sessao button { padding: 0; border: 0; background: none; color: rgba(245, 240, 232, .86); font: 500 12.5px var(--text); text-decoration: none; cursor: pointer; }
+.admin-sessao a:hover, .admin-sessao button:hover { color: var(--ocre); }
 .admin-sessao form { margin: 0; }
+/* O atalho do site fica à parte da conta, separado por um fio. */
+.admin-sessao a.admin-sessao-publico { padding-right: 16px; border-right: 1px solid rgba(245, 240, 232, .16); }
 
 /* ---------- seções ---------- */
 .admin-cartao { padding: 24px 26px 26px; border: 1px solid var(--adm-filete); border-radius: 14px; background: var(--papel); }
@@ -154,6 +159,7 @@
 .admin-botao.is-perigo:hover { background: transparent; border-color: var(--urucum); }
 .admin-botao.is-mini { min-height: 32px; padding: 0 11px; font-size: 11px; }
 .admin-botao:disabled { opacity: .4; cursor: not-allowed; }
+.admin-botao[hidden] { display: none; }
 
 /* ---------- tabelas ---------- */
 .admin-tabela-rolagem { overflow-x: auto; margin-top: 16px; border: 1px solid var(--adm-filete); border-radius: 12px; background: var(--papel); }
@@ -185,46 +191,143 @@
 .admin-manual ul, .admin-manual ol { padding-left: 22px; }
 .admin-manual li { margin: 4px 0; }
 
-/* ---------- telas estreitas ---------- */
-@media (max-width: 900px) {
-  .admin-app { grid-template-columns: minmax(0, 1fr); }
-  .admin-lateral { position: fixed; inset: 0 auto 0 0; width: 250px; z-index: 20; transform: translateX(-100%); transition: transform .2s; }
-  .is-nav-aberta .admin-lateral { transform: none; }
-  .admin-menu-botao { display: inline-flex; align-items: center; }
+/* ---------- telas estreitas ----------
+   A linha da barra precisa de uns 1400px com tudo. Primeiro sai o que é
+   redundante (o nome de quem entrou, o atalho do painel público); depois as
+   seções recolhem atrás do botão e abrem como um painel sob a barra. */
+@media (max-width: 1420px) {
   .admin-sessao-nome { display: none; }
+}
+@media (max-width: 1300px) {
+  .admin-cabecalho { gap: 8px 14px; }
+  .admin-nav-grupo a { padding: 7px 8px; }
+  .admin-nav-grupo + .admin-nav-grupo { margin-left: 6px; padding-left: 6px; }
+  .admin-sessao-publico { display: none; }
+}
+@media (max-width: 1120px) {
+  .admin-menu-botao { display: inline-flex; align-items: center; }
+  .admin-cabecalho nav { position: absolute; top: 100%; left: 0; right: 0; display: none; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px 24px; align-items: start; padding: 16px clamp(20px, 2.4vw, 44px) 22px; background: var(--mata); border-top: 1px solid rgba(245, 240, 232, .14); box-shadow: 0 18px 30px rgba(14, 43, 34, .22); }
+  .is-nav-aberta .admin-cabecalho nav { display: grid; }
+  .admin-nav-grupo { flex-direction: column; align-items: stretch; gap: 2px; }
+  .admin-nav-grupo + .admin-nav-grupo { margin-left: 0; padding-left: 0; border-left: 0; }
+  .admin-nav-titulo { display: block; padding: 0 10px 6px; }
+  .admin-nav-grupo a { padding: 9px 10px; font-size: 13.5px; }
+}
+@media (max-width: 900px) {
   .admin-numero { border-right: 0; margin-right: 0; padding: 8px 0; }
   .admin-campo.is-bilingue .admin-campo-controles { grid-template-columns: 1fr; }
+}
+/* Celular: a marca perde a primeira palavra, e a linha pode quebrar antes de
+   empurrar a página para o lado. */
+@media (max-width: 560px) {
+  .admin-cabecalho { flex-wrap: wrap; gap: 6px 12px; padding-block: 8px; }
+  .admin-cabecalho .admin-marca-nome { font-size: 15px; }
+  .admin-cabecalho .admin-marca-nome span { display: none; }
+  .admin-sessao { gap: 12px; }
 }
 
 /* ---------- transição entre seções ---------- */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; animation-timing-function: ease; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
 
-/* ---------- textos: seletor de página, lista e prévia grande ---------- */
-.admin-textos { display: grid; gap: 16px; margin-top: 16px; }
-.admin-textos-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
-.admin-textos-barra .admin-busca { margin: 0 0 0 auto; max-width: 300px; flex: 1 1 200px; }
-.admin-textos-barra .admin-busca input { min-height: 36px; }
-.admin-textos-barra .admin-busca small { position: absolute; right: 0; top: 100%; margin-top: 2px; }
+/* ---------- textos: barra fixa, lista de campos e prévia ---------- */
+/* A barra de cima e a navegação dos grupos ficam presas ao topo enquanto a
+   lista rola, logo abaixo da barra superior da administração; `--textos-topo`
+   é a altura das duas faixas somadas, de onde as duas colunas
+   penduram. */
+.admin-textos { --textos-topo: calc(var(--adm-cabecalho) + 60px); display: grid; gap: 14px; margin-top: 8px; }
+/* A barra de ações já traz o próprio respiro; a margem geral dos formulários sobraria entre ela e o cabeçalho. */
+.admin-main > .admin-textos { margin-top: 0; }
+.admin-textos-barra { position: sticky; top: var(--adm-cabecalho); z-index: 6; display: flex; align-items: flex-start; gap: 10px 12px; padding: 10px 0; box-sizing: border-box; background: var(--adm-fundo); }
+/* Página, busca e recortes quebram entre si; os botões de salvar ficam sempre
+   na primeira linha, à direita. */
+.admin-textos-barra-lado { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.admin-textos-barra .admin-busca { margin: 0; max-width: 340px; flex: 1 1 190px; }
+.admin-textos-barra .admin-busca input { min-height: 38px; }
+.admin-textos-barra .admin-busca svg { top: 11px; }
+.admin-textos-barra .admin-busca small { position: absolute; right: 2px; top: 100%; margin-top: 1px; font-size: 11px; white-space: nowrap; }
+.admin-textos-barra .admin-botao { flex: none; min-height: 38px; }
+/* O que falta salvar já está nos recortes; aqui fica só o anúncio para leitor de tela. */
+.admin-textos-pendencias { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 .admin-seletor { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--adm-filete); border-radius: 9px; background: var(--papel); }
-.admin-seletor button { min-height: 30px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--tinta-3); font: 500 13px var(--text); cursor: pointer; }
+.admin-seletor button { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--tinta-3); font: 500 13px var(--text); cursor: pointer; }
+.admin-seletor button:hover { color: var(--tinta); }
 .admin-seletor button.is-ativo { background: var(--mata); color: #fff; }
-.admin-previa-estado { display: inline-flex; align-items: center; gap: 7px; min-height: 20px; font-size: 12.5px; color: var(--tinta-3); }
-.admin-previa-estado:empty { display: none; }
-/* Enquanto a prévia se refaz: um anel fino girando e o texto respirando. */
-.admin-previa-estado.is-ocupado { color: var(--mata-700); animation: admin-respira 1.2s ease-in-out infinite; }
-.admin-previa-estado.is-ocupado::before { content: ""; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--mata-100); border-top-color: var(--mata-700); box-sizing: border-box; animation: admin-gira .8s linear infinite; }
-@keyframes admin-gira { to { transform: rotate(360deg); } }
-@keyframes admin-respira { 50% { opacity: .55; } }
-@media (prefers-reduced-motion: reduce) { .admin-previa-estado.is-ocupado { animation: none; } .admin-previa-estado.is-ocupado::before { animation: none; border-top-color: var(--mata-100); } }
-.admin-textos-corpo { display: grid; grid-template-columns: minmax(360px, 1fr) minmax(600px, 2fr); gap: 16px; align-items: start; }
-.admin-textos-lista { min-width: 0; display: grid; gap: 16px; }
-.admin-textos-lista > .admin-cartao { margin-top: 0; min-width: 0; }
-/* Os controles têm largura intrínseca; sem isto o cartão cresce além da coluna e some sob a prévia. */
-.admin-textos-lista .admin-campo-controles > * { min-width: 0; }
+.admin-seletor button:focus-visible, .admin-chave:focus-visible, .admin-recortes button:focus-visible, .admin-texto-desfaz:focus-visible { outline: 2px solid var(--urucum); outline-offset: 2px; }
+.admin-seletor.is-mini button { min-height: 26px; padding: 0 10px; font-size: 12.5px; }
+/* Com busca ligada, cada página diz quantos textos dela casam; o ponto ocre
+   avisa que a página tem texto alterado por salvar. */
+.admin-seletor small { min-width: 18px; padding: 1px 5px; border-radius: 9px; background: var(--adm-fundo); color: var(--tinta-3); font: 600 11px var(--text); font-variant-numeric: tabular-nums; text-align: center; box-sizing: border-box; }
+.admin-seletor .is-ativo small { background: rgba(255, 255, 255, .16); color: #fff; }
+.admin-seletor i { width: 6px; height: 6px; border-radius: 50%; background: var(--ocre); }
+.admin-seletor small[hidden], .admin-seletor i[hidden] { display: none; }
+
+/* Recortes da lista: só os alterados, só os sem inglês, só os com problema. */
+.admin-recortes { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.admin-recortes[hidden] { display: none; }
+.admin-recortes button { min-height: 28px; padding: 0 10px; border: 1px solid var(--adm-filete); border-radius: 14px; background: transparent; color: var(--tinta-3); font: 500 12px var(--text); cursor: pointer; }
+.admin-recortes button b { font-weight: 600; color: var(--tinta); font-variant-numeric: tabular-nums; }
+.admin-recortes button:hover { border-color: var(--mata-300); }
+.admin-recortes button[aria-pressed="true"] { border-color: var(--mata); background: var(--mata); color: #fff; }
+.admin-recortes button[aria-pressed="true"] b { color: #fff; }
+.admin-recortes button[data-recorte="problemas"]:not([aria-pressed="true"]) b { color: var(--urucum); }
+
+.admin-textos-corpo { display: grid; grid-template-columns: minmax(380px, 2fr) minmax(520px, 3fr); gap: 16px; align-items: start; }
+/* A coluna única é explícita: num grid sem colunas declaradas a faixa cresce até
+   o conteúdo mais largo (o rótulo do menu, que não quebra) e o cartão escorria
+   para baixo da prévia. */
+.admin-textos-lista { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; scroll-margin-top: var(--textos-topo); }
+.admin-textos-lista > .admin-cartao { margin-top: 0; min-width: 0; padding: 20px 28px 22px 20px; }
+.admin-textos-lista > .admin-cartao > p { font-size: 13.5px; }
 .admin-textos-lista > .admin-cartao.is-entrando { animation: admin-entra .28s ease; }
 @keyframes admin-entra { from { opacity: 0; } to { opacity: 1; } }
-.admin-grupos-nav { display: flex; align-items: center; gap: 8px; }
+.admin-textos-vazio { padding: 22px 20px; border: 1px dashed var(--mata-300); border-radius: 14px; display: grid; gap: 8px; justify-items: start; font-size: 13.5px; color: var(--tinta-3); }
+.admin-textos-vazio[hidden] { display: none; }
+.admin-textos-vazio p { margin: 0; }
+
+/* ---- um texto: português e inglês ---- */
+.admin-textos-campos { display: grid; gap: 10px; margin-top: 16px; }
+.admin-cartao > p + .admin-textos-campos { margin-top: 18px; }
+.admin-texto { position: relative; display: grid; gap: 5px; padding-left: 10px; margin-left: -10px; border-left: 2px solid transparent; }
+.admin-texto[hidden] { display: none; }
+.admin-texto-rotulo { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-3); }
+.admin-texto-original { font-size: 12px; line-height: 1.4; color: var(--tinta-4); }
+.admin-texto-original[hidden] { display: none; }
+.admin-texto-original q { color: var(--tinta-3); }
+/* O desfazer fica na margem direita do cartão, fora da grade, para não roubar
+   largura dos dois campos. */
+.admin-texto-linha { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; align-items: start; }
+.admin-texto.is-longo .admin-texto-linha { grid-template-columns: minmax(0, 1fr); }
+.admin-texto-lingua { position: relative; display: block; min-width: 0; }
+.admin-texto-lingua abbr { position: absolute; top: 9px; left: 9px; font: 600 9.5px/1.6 var(--text); letter-spacing: .08em; color: var(--tinta-4); text-decoration: none; pointer-events: none; }
+.admin-texto-lingua textarea { display: block; width: 100%; min-height: 36px; padding: 7px 9px 7px 32px; border: 1px solid var(--mata-100); border-radius: 8px; background: var(--papel); color: var(--tinta); font: 400 14px/1.45 var(--text); box-sizing: border-box; resize: none; overflow: hidden; field-sizing: content; }
+.admin-texto-lingua textarea::placeholder { color: #b5ada3; font-style: italic; }
+.admin-texto-lingua textarea:hover { border-color: var(--mata-300); }
+.admin-texto-lingua textarea:focus-visible { outline: none; border-color: var(--urucum); box-shadow: 0 0 0 3px rgba(192, 69, 31, .1); }
+.admin-texto-lingua:focus-within abbr { color: var(--urucum); }
+.admin-texto-desfaz { position: absolute; top: 0; right: -27px; display: inline-grid; place-items: center; width: 26px; height: 36px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--tinta-4); cursor: pointer; }
+.admin-texto-desfaz[hidden] { display: none; }
+.admin-texto-desfaz svg { width: 16px; height: 16px; }
+.admin-texto-desfaz:hover { background: var(--adm-fundo); color: var(--urucum); }
+/* A explicação das lacunas só aparece no texto em edição: repetida em todos,
+   ela afogava a lista. */
+.admin-texto-lacunas { display: none; color: var(--tinta-4); font-size: 11.5px; line-height: 1.45; }
+.admin-texto:focus-within .admin-texto-lacunas { display: block; }
+.admin-texto-lacunas code { margin-right: 4px; padding: 0 4px; border: 1px solid var(--adm-filete); border-radius: 3px; font-size: 11px; color: var(--tinta-3); }
+.admin-texto-problema { color: var(--urucum); font-size: 12px; line-height: 1.4; }
+.admin-texto-problema[hidden] { display: none; }
+/* O que mudou e ainda não foi salvo leva um fio ocre à esquerda. */
+.admin-texto.is-alterado { border-left-color: var(--ocre); }
+.admin-texto.is-alterado .admin-texto-lingua textarea { background: #fdf9ee; }
+.admin-texto.is-sem-ingles .admin-texto-lingua:nth-of-type(2) textarea { border-style: dashed; }
+.admin-texto.is-invalido { border-left-color: var(--urucum); }
+.admin-texto.is-invalido .admin-texto-lingua textarea { border-color: rgba(192, 69, 31, .55); }
+/* O campo que um clique na prévia acabou de abrir. */
+.admin-texto.is-achado .admin-texto-linha { animation: admin-achado 1.4s ease; border-radius: 8px; }
+@keyframes admin-achado { 0%, 35% { box-shadow: 0 0 0 4px rgba(224, 168, 60, .45); } 100% { box-shadow: 0 0 0 4px rgba(224, 168, 60, 0); } }
+
+.admin-grupos-nav { position: sticky; top: var(--textos-topo); z-index: 5; display: flex; align-items: center; gap: 8px; padding-bottom: 2px; background: var(--adm-fundo); }
 /* Menu dos grupos: botão no lugar do select nativo; a lista abre como um cartão,
    com o número da lâmina, o nome e quantos campos o grupo tem. */
 .admin-grupos-menu { position: relative; flex: 1; min-width: 0; }
@@ -233,6 +336,7 @@
 .admin-grupos-gatilho:focus-visible { outline: none; border-color: var(--urucum); box-shadow: 0 0 0 3px rgba(192, 69, 31, 0.1); }
 .admin-grupos-gatilho svg { flex: none; width: 16px; height: 16px; margin-left: auto; color: var(--tinta-4); transition: transform .15s; }
 .admin-grupos-gatilho[aria-expanded="true"] svg { transform: rotate(180deg); }
+.admin-grupos-gatilho.is-pendente .admin-grupos-rotulo::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 8px; border-radius: 50%; background: var(--ocre); vertical-align: middle; }
 .admin-grupos-rotulo { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-grupos-num { display: inline-grid; place-items: center; flex: none; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 5px; background: var(--adm-fundo); color: var(--mata-700); font: 700 11.5px var(--display); box-sizing: border-box; }
 .admin-grupos-num[hidden] { display: none; }
@@ -248,20 +352,56 @@
 .admin-grupos-lista [role="option"][aria-selected="true"] .admin-grupos-num { background: rgba(255, 255, 255, .14); color: #fff; }
 .admin-grupos-lista [role="option"][aria-selected="true"] .admin-grupos-num.is-vazio { background: transparent; }
 .admin-grupos-nome { min-width: 0; flex: 1; }
-.admin-grupos-lista small { flex: none; color: var(--tinta-4); font-size: 12px; }
+.admin-grupos-lista small { flex: none; color: var(--tinta-4); font-size: 12px; white-space: nowrap; }
+.admin-grupos-lista small.admin-grupos-pendente { color: #9a7220; font-weight: 600; }
 .admin-grupos-lista [role="option"][aria-selected="true"] small { color: rgba(255, 255, 255, .7); }
+.admin-grupos-lista [role="option"][aria-selected="true"] small.admin-grupos-pendente { color: var(--ocre); }
 .admin-grupos-contador { font-size: 12.5px; color: var(--tinta-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.admin-grupos-seta { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--adm-filete); border-radius: 9px; background: var(--papel); color: var(--tinta); cursor: pointer; }
+.admin-grupos-seta { display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; padding: 0; border: 1px solid var(--adm-filete); border-radius: 9px; background: var(--papel); color: var(--tinta); cursor: pointer; }
 .admin-grupos-seta svg { width: 18px; height: 18px; }
 .admin-grupos-seta:hover:not(:disabled) { background: var(--adm-fundo); }
 .admin-grupos-seta:disabled { opacity: .35; cursor: default; }
-@media (prefers-reduced-motion: reduce) { .admin-textos-lista > .admin-cartao.is-entrando { animation: none; } }
-.admin-previa { position: sticky; top: 16px; min-width: 0; }
+
+/* ---- a prévia ---- */
+.admin-previa { position: sticky; top: var(--textos-topo); min-width: 0; display: grid; gap: 8px; }
+.admin-previa-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 36px; }
+.admin-previa-estado { display: inline-flex; align-items: center; gap: 7px; min-height: 20px; font-size: 12.5px; color: var(--tinta-3); }
+.admin-previa-estado:empty { display: none; }
+/* Enquanto a prévia se refaz: um anel fino girando e o texto respirando. */
+.admin-previa-estado.is-ocupado { color: var(--mata-700); animation: admin-respira 1.2s ease-in-out infinite; }
+.admin-previa-estado.is-ocupado::before { content: ""; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--mata-100); border-top-color: var(--mata-700); box-sizing: border-box; animation: admin-gira .8s linear infinite; }
+@keyframes admin-gira { to { transform: rotate(360deg); } }
+@keyframes admin-respira { 50% { opacity: .55; } }
+/* Chave de liga e desliga da barra da prévia: um ponto que acende. */
+.admin-chave { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 11px; border: 1px solid var(--adm-filete); border-radius: 9px; background: var(--papel); color: var(--tinta-3); font: 500 12.5px var(--text); cursor: pointer; }
+.admin-chave::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--mata-300); box-sizing: border-box; }
+.admin-chave[aria-pressed="true"] { border-color: var(--mata-300); color: var(--mata); }
+.admin-chave[aria-pressed="true"]::before { border-color: var(--mata-500); background: var(--mata-500); }
+.admin-chave:hover { border-color: var(--mata-700); }
+.admin-previa-barra .admin-chave:first-of-type { margin-left: auto; }
 .admin-previa-moldura { position: relative; overflow: hidden; border: 1px solid var(--adm-filete); border-radius: 14px; background: #fff; }
 .admin-previa iframe { display: block; width: 1280px; height: 820px; border: 0; transform-origin: 0 0; }
-@media (max-width: 1240px) {
-  .admin-textos-corpo { grid-template-columns: 1fr; }
+.admin-previa-dica { margin: 0; min-height: 18px; font-size: 12px; line-height: 1.45; color: var(--tinta-4); }
+/* Prévia ampliada (ou tela estreita): quadro em cima, na largura toda, e os
+   campos embaixo. */
+.admin-textos-corpo.is-previa-ampla { grid-template-columns: minmax(0, 1fr); }
+.admin-textos-corpo.is-previa-ampla .admin-previa { order: -1; position: static; }
+.admin-textos-corpo.is-previa-ampla .admin-textos-lista { max-width: 860px; }
+@media (max-width: 980px) {
+  .admin-textos-corpo { grid-template-columns: minmax(0, 1fr); }
   .admin-textos-corpo .admin-previa { order: -1; position: static; }
+  [data-ampliar] { display: none; }
+}
+@media (max-width: 620px) {
+  .admin-textos-barra { position: static; flex-wrap: wrap; }
+  .admin-textos-barra-lado { flex-basis: 100%; }
+  .admin-textos { --textos-topo: var(--adm-cabecalho); }
+  .admin-texto-linha { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-previa-estado.is-ocupado { animation: none; }
+  .admin-previa-estado.is-ocupado::before { animation: none; border-top-color: var(--mata-100); }
+  .admin-textos-lista > .admin-cartao.is-entrando, .admin-texto.is-achado .admin-texto-linha { animation: none; }
 }
 
 /* ---------- valores: barra, importação em faixa e cards por eixo ---------- */

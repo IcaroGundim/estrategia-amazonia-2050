@@ -3,16 +3,17 @@
 // (conteudo/textos.json) e os textos fixos de interface de cada página
 // (conteudo/interface.json). Um seletor escolhe a página pública; o quadro
 // mostra essa página com o que está no formulário e a lista ao lado traz só
-// os grupos de texto que aparecem nela.
+// os grupos de texto que aparecem nela. Campo e quadro andam juntos: o campo
+// em foco acende o trecho na prévia, e clicar num texto da prévia leva ao
+// campo dele.
 export const prerender = false;
 
 import Admin from '../../../layouts/Admin.astro';
-import Campo from '../../../components/admin/Campo.astro';
+import CampoTexto from '../../../components/admin/CampoTexto.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
 import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
-import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, nomeDeInterface, pertenceAoGrupo, type Arvore, type Interface } from '../../../lib/admin/textos';
+import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, mudancasDeInterface, mudancasDeTextos, nomeDeInterface, pertenceAoGrupo, rotuloDoCaminho, type Arvore, type Interface, type Pagina } from '../../../lib/admin/textos';
 
-type Pagina = keyof typeof NOME_DA_PAGINA;
 const PAGINAS = Object.keys(NOME_DA_PAGINA) as Pagina[];
 
 const sessao = Astro.locals.sessao!;
@@ -20,9 +21,12 @@ const [textosLidos, interfaceLida] = await Promise.all([leJson<Arvore>('textos')
 let erro: string | null = null;
 let versaoTextos = textosLidos.versao;
 let versaoInterface = interfaceLida.versao;
-const salvo = Astro.url.searchParams.get('salvo');
-const pedida = Astro.url.searchParams.get('pagina');
-const paginaInicial: Pagina = PAGINAS.includes(pedida as Pagina) ? (pedida as Pagina) : 'metodologia';
+const parametros = Astro.url.searchParams;
+const pedida = parametros.get('pagina');
+let paginaInicial: Pagina = PAGINAS.includes(pedida as Pagina) ? (pedida as Pagina) : 'metodologia';
+// Depois de salvar, a tela volta ao grupo e à língua em que a pessoa estava.
+let grupoInicial = parametros.get('grupo') || '';
+let langInicial = parametros.get('lang') === 'en' ? 'en' : 'pt-BR';
 
 // O que o formulário mostra: o rascunho gravado ou, se a gravação falhou, o
 // que a pessoa tinha digitado, para não perder a edição junto com o erro.
@@ -33,17 +37,22 @@ if (Astro.request.method === 'POST') {
   const dados = await Astro.request.formData();
   versaoTextos = texto(dados, 'versaoTextos') || versaoTextos;
   versaoInterface = texto(dados, 'versaoInterface') || versaoInterface;
+  if (PAGINAS.includes(texto(dados, 'pagina') as Pagina)) paginaInicial = texto(dados, 'pagina') as Pagina;
+  grupoInicial = texto(dados, 'grupo');
+  langInicial = texto(dados, 'lang') === 'en' ? 'en' : 'pt-BR';
   const autor = { usuario: sessao.usuario, nome: sessao.nome };
-  const mudou = (antes: unknown, depois: unknown) => JSON.stringify(antes) !== JSON.stringify(depois);
   try {
     // Cada arquivo só é gravado se algum campo dele mudou de fato.
-    if (mudou(textosLidos.dados, aplicaFormulario(structuredClone(textosLidos.dados), dados))) {
+    const textosMudados = mudancasDeTextos(textosLidos.dados, aplicaFormulario(structuredClone(textosLidos.dados), dados));
+    const interfaceMudados = mudancasDeInterface(interfaceLida.dados, aplicaFormularioInterface(structuredClone(interfaceLida.dados), dados));
+    if (textosMudados) {
       await salvaJson<Arvore>('textos', versaoTextos, (textos) => aplicaFormulario(textos, dados), 'edita os textos do painel', autor);
     }
-    if (mudou(interfaceLida.dados, aplicaFormularioInterface(structuredClone(interfaceLida.dados), dados))) {
+    if (interfaceMudados) {
       await salvaJson<Interface>('interface', versaoInterface, (dicionario) => aplicaFormularioInterface(dicionario, dados), 'edita os textos de interface', autor);
     }
-    return Astro.redirect(`/admin/textos?salvo=1&pagina=${texto(dados, 'pagina') || paginaInicial}`, 303);
+    const volta = new URLSearchParams({ salvo: String(textosMudados + interfaceMudados), pagina: paginaInicial, grupo: grupoInicial, lang: langInicial });
+    return Astro.redirect(`/admin/textos?${volta}`, 303);
   } catch (falha) {
     erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
     textosNaTela = aplicaFormulario(structuredClone(textosLidos.dados), dados, { estrito: false });
@@ -51,41 +60,49 @@ if (Astro.request.method === 'POST') {
   }
 }
 
+const salvos = parametros.has('salvo') ? Number(parametros.get('salvo')) || 0 : null;
+// Quem só revisa texto não publica: o aviso diz que a publicação é de outra pessoa.
+const comoPublica = Astro.locals.acesso ? 'O site público só muda quando a equipe do painel publicar.' : 'O site público só muda depois de publicar, em Início.';
+const avisoDeSalvo = salvos ? `Salvo no rascunho: ${salvos} ${salvos === 1 ? 'texto alterado' : 'textos alterados'}. ${comoPublica}` : null;
+const avisoDeNada = salvos === 0 ? 'Nenhum texto mudou desde a última gravação; nada foi salvo.' : null;
+
 const todas = folhas(textosNaTela);
-const rotuloDe = (caminho: string) => caminho.split('.').slice(-2).map((parte) => (/^\d+$/.test(parte) ? `item ${Number(parte) + 1}` : parte)).join(' / ');
-const rotuloDeChave = (chave: string) => (chave.length > 64 ? `${chave.slice(0, 61)}...` : chave);
+const gravadas = new Map(folhas(textosLidos.dados).map(({ caminho, par }) => [caminho, par]));
 const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
+const interfaceGravada = interfaceLida.dados.textos;
 ---
 
 <Admin title="Textos" sessao={sessao}>
-  <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+  <Mensagens erro={erro} salvo={avisoDeSalvo} aviso={avisoDeNada} />
 
-  <form method="post" class="admin-textos" data-textos-form data-com-erro={erro ? '' : undefined} data-astro-reload>
+  <form method="post" class="admin-textos" data-textos-form data-com-erro={erro ? '' : undefined} data-grupo-inicial={grupoInicial || undefined} data-lang-inicial={langInicial} data-astro-reload novalidate>
     <input type="hidden" name="versaoTextos" value={versaoTextos} />
     <input type="hidden" name="versaoInterface" value={versaoInterface} />
     <input type="hidden" name="pagina" value={paginaInicial} data-pagina-atual />
-    <button type="submit" hidden tabindex="-1" formnovalidate formtarget="previa-quadro" formaction={`/admin/textos/previa?pagina=${paginaInicial}`} data-botao-previa>Atualizar a prévia</button>
+    <input type="hidden" name="grupo" value={grupoInicial} data-grupo-atual />
+    <input type="hidden" name="lang" value={langInicial} data-lang-atual />
+    <button type="submit" hidden tabindex="-1" formnovalidate formtarget="previa-quadro" formaction={`/admin/textos/previa?pagina=${paginaInicial}&lang=${langInicial}`} data-botao-previa>Atualizar a prévia</button>
 
-    <div class="admin-textos-barra">
+    <div class="admin-textos-barra" data-barra>
+      <div class="admin-textos-barra-lado">
       <span class="admin-seletor" role="group" aria-label="Página do painel">
         {PAGINAS.map((pagina) => (
-          <button type="button" class={pagina === paginaInicial ? 'is-ativo' : undefined} aria-pressed={pagina === paginaInicial ? 'true' : 'false'} data-escolhe-pagina={pagina}>{NOME_DA_PAGINA[pagina]}</button>
+          <button type="button" class={pagina === paginaInicial ? 'is-ativo' : undefined} aria-pressed={pagina === paginaInicial ? 'true' : 'false'} data-escolhe-pagina={pagina}>{NOME_DA_PAGINA[pagina]}<small data-conta-pagina hidden></small><i data-marca-pagina hidden title="Tem texto alterado e ainda não salvo"></i></button>
         ))}
       </span>
-      <span class="admin-seletor" role="group" aria-label="Idioma">
-        <button type="button" class="is-ativo" data-previa-lang="pt-BR" aria-pressed="true">Português</button>
-        <button type="button" data-previa-lang="en" aria-pressed="false">English</button>
-      </span>
-      <span class="admin-previa-estado" data-previa-estado aria-live="polite"></span>
       <div class="admin-busca">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
-        <input type="search" placeholder="Filtrar textos" autocomplete="off" aria-label="Filtrar os textos" data-filtro />
+        <input type="search" placeholder="Buscar em todos os textos" autocomplete="off" aria-label="Buscar nos textos das três páginas" data-filtro />
         <small data-filtro-resumo></small>
       </div>
-      <button type="submit" class="admin-botao">Salvar no rascunho</button>
+      <span class="admin-recortes" role="group" aria-label="Mostrar só" data-recortes hidden></span>
+      </div>
+      <span class="admin-textos-pendencias" data-pendencias aria-live="polite"></span>
+      <button type="button" class="admin-botao is-secundario" data-descartar hidden>Descartar</button>
+      <button type="submit" class="admin-botao" data-salvar title="Salvar no rascunho (Ctrl+S ou ⌘S)">Salvar no rascunho</button>
     </div>
 
-    <div class="admin-textos-corpo">
+    <div class="admin-textos-corpo" data-corpo>
       <div class="admin-textos-lista">
         <div class="admin-grupos-nav">
           <button type="button" class="admin-grupos-seta" data-grupo-anterior aria-label="Grupo anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
@@ -103,58 +120,194 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
         {GRUPOS.map((grupo) => {
           const campos = todas.filter((folha) => pertenceAoGrupo(grupo, folha.caminho));
           return (
-            <section class="admin-cartao" data-grupo data-pagina="metodologia" data-secao={grupo.secao} data-ancora={grupo.ancora} data-fonte="textos" hidden={paginaInicial !== 'metodologia'}>
+            <section class="admin-cartao" data-grupo data-id={`t-${grupo.id}`} data-pagina="metodologia" data-secao={grupo.secao} data-ancora={grupo.ancora} data-fonte="textos" hidden={paginaInicial !== 'metodologia'}>
               <h2>{grupo.titulo}</h2>
               <p>{grupo.descricao}</p>
-              <div class="admin-form">
+              <div class="admin-textos-campos">
                 {campos.map(({ caminho, par }) => (
-                  <Campo nome={`t:${caminho}`} rotulo={rotuloDe(caminho)} valor={par.pt} en={par.en} comEn tipo={par.pt.length > 90 ? 'area' : 'texto'} linhas={Math.min(8, Math.ceil(par.pt.length / 110) + 1)} largo />
+                  <CampoTexto nome={`t:${caminho}`} rotulo={rotuloDoCaminho(grupo, caminho)} valor={par.pt} en={par.en} salvo={gravadas.get(caminho)?.pt} salvoEn={gravadas.get(caminho)?.en} />
                 ))}
               </div>
             </section>
           );
         })}
-        {gruposInterface.map((grupo) => (
-          <section class="admin-cartao" data-grupo data-pagina={grupo.pagina} data-secao="Textos de interface" data-fonte="interface" data-alvo={grupo.alvo} data-abre={grupo.abre} hidden={paginaInicial !== grupo.pagina}>
+        {gruposInterface.map((grupo, indice) => (
+          <section class="admin-cartao" data-grupo data-id={`i-${indice}`} data-pagina={grupo.pagina} data-secao="Textos de interface" data-fonte="interface" data-alvo={grupo.alvo} data-abre={grupo.abre} hidden={paginaInicial !== grupo.pagina}>
             <h2>{grupo.titulo}</h2>
-            <div class="admin-form">
+            <div class="admin-textos-campos">
               {grupo.chaves.map((chave) => {
                 const par = interfaceTextos[chave];
-                const longo = par.pt.length > 80 || (par.en || '').length > 80;
-                const lacunas = lacunasDe(chave);
-                const ajuda = lacunas.length ? `${lacunas.join(', ')} ${lacunas.length === 1 ? 'é trocado' : 'são trocados'} pelo valor na página. Mantenha nos dois idiomas; a posição na frase pode mudar.` : undefined;
                 return (
-                  <Campo nome={nomeDeInterface(chave)} rotulo={rotuloDeChave(chave)} valor={par.pt} en={par.en} comEn tipo={longo ? 'area' : 'texto'} linhas={Math.min(6, Math.ceil(par.pt.length / 90) + 1)} ajuda={ajuda} largo />
+                  <CampoTexto nome={nomeDeInterface(chave)} original={chave} valor={par.pt} en={par.en} salvo={interfaceGravada[chave]?.pt} salvoEn={interfaceGravada[chave]?.en} lacunas={lacunasDe(chave)} />
                 );
               })}
             </div>
           </section>
         ))}
+        <div class="admin-textos-vazio" data-vazio hidden></div>
       </div>
 
       <aside class="admin-previa" aria-label="Prévia da página">
-        <div class="admin-previa-moldura" data-previa-moldura>
-          <iframe name="previa-quadro" src={`/admin/textos/previa?pagina=${paginaInicial}`} width="1280" height="820" title="Prévia da página com os textos do rascunho" data-previa-quadro></iframe>
+        <div class="admin-previa-barra">
+          <span class="admin-seletor is-mini" role="group" aria-label="Idioma da prévia">
+            <button type="button" class={langInicial === 'pt-BR' ? 'is-ativo' : undefined} data-previa-lang="pt-BR" aria-pressed={langInicial === 'pt-BR' ? 'true' : 'false'}>Português</button>
+            <button type="button" class={langInicial === 'en' ? 'is-ativo' : undefined} data-previa-lang="en" aria-pressed={langInicial === 'en' ? 'true' : 'false'}>English</button>
+          </span>
+          <span class="admin-previa-estado" data-previa-estado aria-live="polite"></span>
+          <button type="button" class="admin-chave" aria-pressed="true" data-apontar title="Ligado: clicar num texto da prévia leva ao campo dele. Desligado: a prévia funciona como a página (abrir um eixo, trocar de aba).">Apontar texto</button>
+          <button type="button" class="admin-chave" aria-pressed="false" data-ampliar title="Prévia na largura toda, com os campos embaixo">Ampliar</button>
         </div>
+        <div class="admin-previa-moldura" data-previa-moldura>
+          <iframe name="previa-quadro" src={`/admin/textos/previa?pagina=${paginaInicial}&lang=${langInicial}`} width="1280" height="820" title="Prévia da página com os textos do rascunho" data-previa-quadro></iframe>
+        </div>
+        <p class="admin-previa-dica" data-previa-dica></p>
       </aside>
     </div>
   </form>
 </Admin>
 
 <script>
+  type Controle = HTMLTextAreaElement;
+  interface Campo {
+    el: HTMLElement;
+    grupo: HTMLElement;
+    pt: Controle;
+    en: Controle;
+    salvoPt: string;
+    salvoEn: string;
+    /** A frase original de um texto de interface; é também a chave no dicionário. */
+    chave: string | undefined;
+    lacunas: string[];
+    problema: string;
+  }
+  type Recorte = '' | 'alterados' | 'sem-ingles' | 'problemas';
+
   function inicia() {
     const form = document.querySelector<HTMLFormElement>('[data-textos-form]');
     const botao = document.querySelector<HTMLButtonElement>('[data-botao-previa]');
     const quadro = document.querySelector<HTMLIFrameElement>('[data-previa-quadro]');
     const estado = document.querySelector<HTMLElement>('[data-previa-estado]');
     const campoPagina = document.querySelector<HTMLInputElement>('[data-pagina-atual]');
-    if (!form || !botao || !quadro || !estado || !campoPagina) return;
+    const campoGrupo = document.querySelector<HTMLInputElement>('[data-grupo-atual]');
+    const campoLang = document.querySelector<HTMLInputElement>('[data-lang-atual]');
+    const salvar = document.querySelector<HTMLButtonElement>('[data-salvar]');
+    if (!form || !botao || !quadro || !estado || !campoPagina || !campoGrupo || !campoLang || !salvar) return;
 
-    let lang = 'pt-BR';
+    // Tudo o que esta tela pendura no documento e na janela sai junto com ela.
+    const fim = new AbortController();
+    const { signal } = fim;
+    document.addEventListener('astro:before-swap', () => fim.abort(), { once: true });
+
+    let lang = form.dataset.langInicial === 'en' ? 'en' : 'pt-BR';
     let pagina = campoPagina.value;
     let temporizador: number | undefined;
     let pedido = 0;
+    let atual: HTMLElement | null = null;
+    let candidatos: HTMLElement[] = [];
+    let recorte: Recorte = '';
+    let saindo = false; // a pessoa mandou salvar, ou confirmou que sai sem salvar
     const grupos = [...form.querySelectorAll<HTMLElement>('[data-grupo]')];
+    const NOME_DA_PAGINA: Record<string, string> = { index: 'Panorama', metas: 'Metas e indicadores', metodologia: 'Visão Geral', projetos: 'Projetos' };
+    const semAcento = (valor: string) => valor.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const apara = (valor: string) => valor.replace(/\s+/g, ' ').trim();
+    const plural = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um : varios}`;
+
+    // ---- os campos ----
+    const campos: Campo[] = [];
+    const campoDe = new Map<HTMLElement, Campo>();
+    for (const grupo of grupos) {
+      for (const el of grupo.querySelectorAll<HTMLElement>('[data-campo]')) {
+        const [pt, en] = el.querySelectorAll<Controle>('textarea');
+        if (!pt || !en) continue;
+        const campo: Campo = {
+          el, grupo, pt, en,
+          salvoPt: (pt.dataset.salvo ?? pt.defaultValue).trim(),
+          salvoEn: (en.dataset.salvo ?? en.defaultValue).trim(),
+          chave: el.dataset.chave,
+          lacunas: el.dataset.lacunas?.split(' ') || [],
+          problema: ''
+        };
+        campos.push(campo);
+        campoDe.set(el, campo);
+      }
+    }
+    const daPagina = () => campos.filter((campo) => campo.grupo.dataset.pagina === pagina);
+    const alterado = (campo: Campo) => campo.pt.value.trim() !== campo.salvoPt || campo.en.value.trim() !== campo.salvoEn;
+    const semIngles = (campo: Campo) => !campo.en.value.trim();
+    function problemaDe(campo: Campo) {
+      const pt = campo.pt.value.trim();
+      const en = campo.en.value.trim();
+      if (!pt) return 'O português não pode ficar vazio.';
+      const faltaPt = campo.lacunas.filter((lacuna) => !pt.includes(lacuna));
+      if (faltaPt.length) return `Falta ${faltaPt.join(', ')} no português: sem isso o valor não aparece na página.`;
+      const faltaEn = en ? campo.lacunas.filter((lacuna) => !en.includes(lacuna)) : [];
+      if (faltaEn.length) return `Falta ${faltaEn.join(', ')} no inglês: sem isso o valor não aparece na página.`;
+      return '';
+    }
+
+    // As áreas crescem com o texto. Onde o navegador já faz isso sozinho
+    // (field-sizing), o estilo resolve; nos demais a altura é medida aqui.
+    const cresceSozinha = CSS.supports('field-sizing', 'content');
+    function ajustaAltura(controle: Controle) {
+      if (cresceSozinha || !controle.offsetParent) return;
+      controle.style.height = 'auto';
+      controle.style.height = `${controle.scrollHeight + 2}px`;
+    }
+
+    function atualizaCampo(campo: Campo) {
+      campo.problema = problemaDe(campo);
+      campo.el.classList.toggle('is-alterado', alterado(campo));
+      campo.el.classList.toggle('is-invalido', Boolean(campo.problema));
+      campo.el.classList.toggle('is-sem-ingles', semIngles(campo));
+      const desfaz = campo.el.querySelector<HTMLButtonElement>('[data-desfaz]');
+      if (desfaz) desfaz.hidden = !alterado(campo);
+      const aviso = campo.el.querySelector<HTMLElement>('[data-problema]');
+      if (aviso) { aviso.textContent = campo.problema; aviso.hidden = !campo.problema; }
+      const original = campo.el.querySelector<HTMLElement>('[data-original]');
+      if (original && campo.chave !== undefined) original.hidden = campo.pt.value.trim() === campo.chave.trim();
+    }
+
+    // ---- o que falta salvar ----
+    const pendencias = document.querySelector<HTMLElement>('[data-pendencias]');
+    const descartar = document.querySelector<HTMLButtonElement>('[data-descartar]');
+    const recortes = document.querySelector<HTMLElement>('[data-recortes]');
+    const ROTULO_DO_RECORTE: Record<Exclude<Recorte, ''>, string> = { alterados: 'Alterados', 'sem-ingles': 'Sem inglês', problemas: 'Com problema' };
+    const noRecorte = (campo: Campo) =>
+      recorte === 'alterados' ? alterado(campo) : recorte === 'sem-ingles' ? semIngles(campo) : recorte === 'problemas' ? Boolean(campo.problema) : true;
+
+    function atualizaResumo() {
+      const mudados = campos.filter(alterado);
+      const comProblema = campos.filter((campo) => campo.problema);
+      const total: Record<Exclude<Recorte, ''>, number> = { alterados: mudados.length, 'sem-ingles': campos.filter(semIngles).length, problemas: comProblema.length };
+      if (pendencias) {
+        pendencias.textContent = comProblema.length ? `${plural(comProblema.length, 'texto', 'textos')} a corrigir` : mudados.length ? plural(mudados.length, 'texto alterado', 'textos alterados') : '';
+        pendencias.classList.toggle('is-problema', comProblema.length > 0);
+      }
+      salvar.disabled = !mudados.length;
+      if (descartar) descartar.hidden = !mudados.length;
+      // Os recortes só aparecem quando há o que recortar.
+      if (recortes) {
+        recortes.innerHTML = '';
+        (Object.keys(total) as Exclude<Recorte, ''>[]).forEach((chave) => {
+          if (!total[chave] && recorte !== chave) return;
+          const opcao = document.createElement('button');
+          opcao.type = 'button';
+          opcao.dataset.recorte = chave;
+          opcao.setAttribute('aria-pressed', String(recorte === chave));
+          opcao.textContent = `${ROTULO_DO_RECORTE[chave]} `;
+          const conta = document.createElement('b');
+          conta.textContent = String(total[chave]);
+          opcao.append(conta);
+          recortes.append(opcao);
+        });
+        recortes.hidden = !recortes.childElementCount;
+      }
+      document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
+        const marca = opcao.querySelector<HTMLElement>('[data-marca-pagina]');
+        if (marca) marca.hidden = !mudados.some((campo) => campo.grupo.dataset.pagina === opcao.dataset.escolhePagina);
+      });
+      montaMenu();
+    }
 
     // ---- prévia: a própria página pública, no quadro ----
     // O aviso ao lado da barra: enquanto o quadro se refaz, um anel gira antes
@@ -163,32 +316,57 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
       estado.textContent = texto;
       estado.classList.toggle('is-ocupado', ocupado);
     }
+    const dica = document.querySelector<HTMLElement>('[data-previa-dica]');
+    let apontando = true;
+    const DICA_PADRAO = () => (apontando ? 'Clique num texto da prévia para ir ao campo dele.' : 'A prévia está funcionando como a página. Ligue "Apontar texto" para clicar num texto e ir ao campo.');
+    function mostraDica(texto = '') {
+      if (dica) dica.textContent = texto || DICA_PADRAO();
+    }
+
+    // O que a prévia mostra de um campo na língua do quadro: o inglês vazio
+    // cai no português, como na página.
+    const mostrado = (campo: Campo) => apara(lang === 'en' ? campo.en.value.trim() || campo.pt.value : campo.pt.value);
+    // O que o quadro tem desenhado de cada campo, para achar o texto antigo
+    // na hora de trocá-lo pelo novo.
+    const noQuadro = new Map<Campo, string>();
+    function fotografa() {
+      for (const campo of campos) noQuadro.set(campo, mostrado(campo));
+    }
+
     // Recarrega o quadro enviando o formulário para ele (botão escondido).
     // O endereço vai sem `#lâmina`: carregar o quadro numa âncora faz o
     // navegador rolar também a página de fora até o quadro. A lâmina aberta é
     // reposta depois do carregamento, em `mostraNoQuadro`, que não rola nada.
     function recarrega() {
+      window.clearTimeout(temporizador);
+      pedido += 1;
       botao.formAction = `/admin/textos/previa?pagina=${pagina}&lang=${lang}`;
       mostraEstado('atualizando', true);
+      fotografa();
       form.requestSubmit(botao);
     }
     quadro.addEventListener('load', () => {
       mostraEstado('');
+      ligaQuadro();
       // Ao recarregar o quadro, volta ao trecho do grupo aberto (as páginas
       // com script precisam de um instante para montar o conteúdo).
-      window.setTimeout(() => mostraNoQuadro(atual), 400);
+      window.setTimeout(() => {
+        const foco = campoEmFoco();
+        if (foco && foco.grupo === atual) mostraCampoNoQuadro(foco); else mostraNoQuadro(atual);
+      }, 400);
     });
 
-    // Nas lâminas da Visão Geral dá para trocar só o texto, sem recarregar:
-    // a lâmina aberta e a rolagem ficam como estão. Os textos da nota técnica
-    // não aparecem em página nenhuma, então nem vale a ida ao servidor.
+    // Nas lâminas dá para trocar só o texto, sem recarregar: a lâmina aberta e
+    // a rolagem ficam como estão.
     async function trocaTextoDasLaminas() {
       const doc = quadro.contentDocument;
       if (!doc || !doc.querySelector('.method-section')) return recarrega();
       const meu = ++pedido;
       mostraEstado('atualizando', true);
       try {
-        const resposta = await fetch(`/admin/textos/previa?pagina=metodologia&lang=${lang}`, { method: 'POST', body: new FormData(form) });
+        const corpo = new FormData(form);
+        const enviados = new Map(campos.map((campo) => [campo, mostrado(campo)] as const));
+        const resposta = await fetch(`/admin/textos/previa?pagina=metodologia&lang=${lang}`, { method: 'POST', body: corpo });
         if (!resposta.ok) throw new Error(String(resposta.status));
         const novo = new DOMParser().parseFromString(await resposta.text(), 'text/html');
         if (meu !== pedido) return;
@@ -198,53 +376,111 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
           const para = atuais[indice]?.querySelector('.slide-copy');
           if (de && para) para.innerHTML = de.innerHTML;
         });
-        valorNoQuadro.clear();
-        for (const campo of form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-fonte="textos"] input, [data-fonte="textos"] textarea')) valorNoQuadro.set(campo.name, campo.value.trim());
+        for (const [campo, texto] of enviados) if (campo.grupo.dataset.fonte === 'textos') noQuadro.set(campo, texto);
         mostraEstado('');
+        const foco = campoEmFoco();
+        if (foco) realcaNoQuadro(foco, false);
       } catch {
         if (meu === pedido) mostraEstado('a prévia não respondeu');
       }
     }
 
-    // Nas lâminas, a tecla aparece no quadro na hora, sem servidor: o texto que
-    // o campo tinha antes é procurado na lâmina do grupo e trocado pelo novo.
-    // O servidor confirma logo depois (inglês vazio caindo no português, etc.).
-    const valorNoQuadro = new Map<string, string>();
-    function trocaNaHora(campo: HTMLInputElement | HTMLTextAreaElement, grupo: HTMLElement) {
+    // ---- casar texto de campo com texto da prévia ----
+    // Uma frase com lacunas ("{total} indicadores") vira uma expressão que
+    // casa com a frase já preenchida ("59 indicadores").
+    const escapa = (valor: string) => valor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    function moldeDe(frase: string): RegExp | null {
+      const partes = frase.split(/\{\w+\}/);
+      // Sem um trecho fixo razoável, o molde casaria com qualquer coisa.
+      if (partes.length < 2 || partes.join('').replace(/\s/g, '').length < 3) return null;
+      return new RegExp(`^${partes.map(escapa).join('(.+?)')}$`);
+    }
+    const raizDoQuadro = (campo: Campo) => {
       const doc = quadro.contentDocument;
-      const ancora = grupo.dataset.ancora;
-      if (!doc || !ancora) return false;
-      const emIngles = campo.name.endsWith('__en');
-      if (emIngles !== (lang === 'en')) return false;
-      const antes = (valorNoQuadro.get(campo.name) ?? campo.defaultValue).trim();
-      const depois = campo.value.trim();
-      if (!antes || !depois) return false;
-      const secao = doc.querySelector(`#${ancora} .slide-copy`);
-      if (!secao) return false;
-      const passeio = doc.createTreeWalker(secao, NodeFilter.SHOW_TEXT);
+      if (!doc) return null;
+      const ancora = pagina === 'metodologia' ? campo.grupo.dataset.ancora : undefined;
+      return (ancora && doc.getElementById(ancora)) || doc.body;
+    };
+    function* textosDe(raiz: Node) {
+      const passeio = raiz.ownerDocument!.createTreeWalker(raiz, NodeFilter.SHOW_TEXT);
       let no: Text | null;
       while ((no = passeio.nextNode() as Text | null)) {
-        if (no.nodeValue?.trim() === antes) {
-          no.nodeValue = no.nodeValue.replace(antes, depois);
-          valorNoQuadro.set(campo.name, depois);
-          return true;
-        }
+        const pai = no.parentElement;
+        if (!pai || pai.closest('script, style, noscript, template')) continue;
+        const texto = apara(no.nodeValue || '');
+        if (texto) yield { no, pai, texto };
       }
-      return false;
+    }
+    const aVista = (elemento: Element) => elemento.getClientRects().length > 0;
+
+    /** O elemento da prévia que mostra o texto do campo, se ele estiver à vista. */
+    function achaNoQuadro(campo: Campo): HTMLElement | null {
+      const raiz = raizDoQuadro(campo);
+      const alvo = mostrado(campo);
+      if (!raiz || !alvo) return null;
+      const molde = campo.lacunas.length ? moldeDe(alvo) : null;
+      let contem: HTMLElement | null = null;
+      for (const { pai, texto } of textosDe(raiz)) {
+        if (!aVista(pai)) continue;
+        if (texto === alvo || molde?.test(texto)) return pai;
+        if (!contem && alvo.length >= 12 && texto.includes(alvo)) contem = pai;
+      }
+      return contem;
     }
 
-    let ultimaFonte = 'interface';
-    form.addEventListener('input', (evento) => {
-      const campo = evento.target as HTMLInputElement | HTMLTextAreaElement;
-      const grupo = campo.closest<HTMLElement>('[data-grupo]');
-      if (!grupo) return;
-      ultimaFonte = grupo.dataset.fonte || 'interface';
+    // Troca na hora, sem servidor: o texto que o quadro mostrava é procurado
+    // e substituído pelo novo. Só vale para frase sem lacuna e que nenhum outro
+    // campo da página repete; fora disso, quem refaz o quadro é o servidor.
+    function trocaNoQuadro(campo: Campo, antes: string, depois: string) {
+      const raiz = raizDoQuadro(campo);
+      if (!raiz || !antes || !depois || campo.lacunas.length) return false;
+      if (daPagina().some((outro) => outro !== campo && noQuadro.get(outro) === antes)) return false;
+      let trocou = false;
+      for (const { no, texto } of textosDe(raiz)) {
+        if (texto !== antes) continue;
+        const bruto = no.nodeValue || '';
+        no.nodeValue = `${bruto.match(/^\s*/)![0]}${depois}${bruto.match(/\s*$/)![0]}`;
+        trocou = true;
+      }
+      if (trocou) noQuadro.set(campo, depois);
+      return trocou;
+    }
+
+    function aoDigitar(campo: Campo) {
+      atualizaCampo(campo);
+      atualizaResumo();
+      indice = null;
+      const grupo = campo.grupo;
+      const fonte = grupo.dataset.fonte || 'interface';
+      // Os textos da nota técnica não aparecem em página nenhuma.
       if (grupo.dataset.secao === 'Nota técnica') return;
-      const laminas = ultimaFonte === 'textos' && pagina === 'metodologia';
-      const jaTrocou = laminas && trocaNaHora(campo, grupo);
+      const janela = quadro.contentWindow as (Window & { __interfaceRascunho?: Record<string, { pt: string; en: string | null }> }) | null;
+      // Os scripts da página leem o dicionário a cada desenho; com ele em dia,
+      // o que for redesenhado depois (uma aba, um eixo) já sai com o texto novo.
+      if (fonte === 'interface' && campo.chave !== undefined && janela?.__interfaceRascunho) {
+        janela.__interfaceRascunho[campo.chave] = { pt: campo.pt.value.trim(), en: campo.en.value.trim() || null };
+      }
+      const antes = noQuadro.get(campo) ?? '';
+      const depois = mostrado(campo);
+      // Mexer no inglês com a prévia em português não muda nada à vista.
+      if (antes === depois) return;
+      pedido += 1;
       window.clearTimeout(temporizador);
-      // Com a troca feita na hora, a confirmação pelo servidor pode esperar mais.
-      temporizador = window.setTimeout(() => (laminas ? trocaTextoDasLaminas() : recarrega()), jaTrocou ? 900 : (laminas ? 250 : 400));
+      const laminas = fonte === 'textos' && pagina === 'metodologia';
+      const jaTrocou = trocaNoQuadro(campo, antes, depois);
+      if (jaTrocou) realcaNoQuadro(campo, false);
+      // Nas lâminas o servidor confirma depois (com a troca feita, sem pressa).
+      // Nas outras páginas, o texto trocado na hora dispensa recarregar.
+      if (laminas) temporizador = window.setTimeout(trocaTextoDasLaminas, jaTrocou ? 900 : 250);
+      else if (!jaTrocou) temporizador = window.setTimeout(recarrega, 500);
+    }
+
+    form.addEventListener('input', (evento) => {
+      const controle = evento.target as HTMLElement;
+      const campo = campoDe.get(controle.closest<HTMLElement>('[data-campo]')!);
+      if (!campo) return;
+      ajustaAltura(controle as Controle);
+      aoDigitar(campo);
     });
 
     // Leva o quadro à lâmina pedida. Não muda location.hash: a navegação
@@ -254,64 +490,257 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     function vaiParaLamina(ancora: string | undefined) {
       const janela = quadro.contentWindow;
       if (!ancora || !janela || pagina !== 'metodologia') return;
+      // Com o quadro ainda vazio, ou já descarregando (a pessoa saiu ou
+      // salvou), não há lâmina para onde ir.
+      if (!janela.document.querySelector('.method-section')) return;
       if (janela.location.hash === `#${ancora}`) return;
       // Com a rota já trocada, o clique no índice das lâminas anda suave e
       // não empilha entrada no histórico.
       janela.history.replaceState(null, '', `#${ancora}`);
       const link = janela.document.querySelector<HTMLAnchorElement>(`.methodology-index nav a[href="#${ancora}"]`);
-      if (link) link.click(); else janela.dispatchEvent(new Event('hashchange'));
+      if (link) { deDentro = true; link.click(); deDentro = false; } else janela.dispatchEvent(new Event('hashchange'));
     }
 
-    // Nas outras páginas, rola o quadro até o trecho onde o grupo aparece e o
-    // realça por um instante. A rolagem é da janela do quadro, e não
-    // scrollIntoView, para não arrastar a página de fora junto.
-    let realce: number | undefined;
-    function vaiParaTrecho(grupo: HTMLElement | null) {
-      const janela = quadro.contentWindow;
+    // Abre o que for preciso para o trecho do grupo existir na página (nas
+    // Metas, um eixo ou a ficha de um indicador) e devolve esse trecho.
+    function abreTrecho(grupo: HTMLElement | null) {
+      const doc = quadro.contentDocument;
       const seletor = grupo?.dataset.alvo;
-      if (!janela || !seletor || pagina === 'metodologia') return;
-      const doc = janela.document;
+      if (!doc || !seletor || pagina === 'metodologia') return null;
       let alvo = doc.querySelector<HTMLElement>(seletor);
       // O alvo pode estar escondido por um ancestral (nas Metas, a vista do
       // eixo aberto inteira), não só por ele mesmo.
       if ((!alvo || alvo.closest('[hidden]')) && grupo?.dataset.abre) {
+        deDentro = true;
         doc.querySelector<HTMLElement>(grupo.dataset.abre)?.click();
+        deDentro = false;
         alvo = doc.querySelector<HTMLElement>(seletor);
       }
-      if (!alvo) return;
+      return alvo;
+    }
+
+    // Rola o quadro até o trecho onde o grupo aparece e o realça por um
+    // instante. A rolagem é da janela do quadro, e não scrollIntoView, para
+    // não arrastar a página de fora junto.
+    let realce: number | undefined;
+    function vaiParaTrecho(grupo: HTMLElement | null) {
+      const janela = quadro.contentWindow;
+      const alvo = abreTrecho(grupo);
+      if (!janela || !alvo) return;
+      const doc = janela.document;
       const topo = alvo.getBoundingClientRect().top + janela.scrollY - 88;
       janela.scrollTo({ top: Math.max(0, topo), behavior: 'smooth' });
       doc.querySelectorAll('.is-realce-previa').forEach((outro) => outro.classList.remove('is-realce-previa'));
       alvo.classList.add('is-realce-previa');
       window.clearTimeout(realce);
-      realce = window.setTimeout(() => alvo?.classList.remove('is-realce-previa'), 1600);
+      realce = window.setTimeout(() => alvo.classList.remove('is-realce-previa'), 1600);
     }
 
     function mostraNoQuadro(grupo: HTMLElement | null) {
+      // Um temporizador pode disparar depois de a pessoa sair desta tela.
+      if (signal.aborted) return;
       if (pagina === 'metodologia') vaiParaLamina(grupo?.dataset.ancora);
       else vaiParaTrecho(grupo);
     }
 
-    // O campo em foco leva o quadro ao trecho certo.
+    // Acende na prévia o texto do campo. `rola` traz o texto para a vista; a
+    // rolagem é feita no quadro e a da página de fora é reposta, porque
+    // scrollIntoView dentro de um quadro arrasta as duas.
+    function apagaRealce() {
+      quadro.contentDocument?.querySelectorAll('.is-texto-previa').forEach((outro) => outro.classList.remove('is-texto-previa'));
+    }
+    function realcaNoQuadro(campo: Campo, rola: boolean) {
+      apagaRealce();
+      const elemento = achaNoQuadro(campo);
+      if (!elemento) return false;
+      elemento.classList.add('is-texto-previa');
+      const janela = quadro.contentWindow;
+      if (rola && janela && pagina !== 'metodologia') {
+        const caixa = elemento.getBoundingClientRect();
+        if (caixa.top < 90 || caixa.bottom > janela.innerHeight - 30) {
+          const x = window.scrollX;
+          const y = window.scrollY;
+          elemento.scrollIntoView({ block: 'center', behavior: 'instant' });
+          window.scrollTo({ left: x, top: y, behavior: 'instant' });
+        }
+      }
+      return true;
+    }
+    function mostraCampoNoQuadro(campo: Campo) {
+      if (campo.grupo.dataset.secao === 'Nota técnica') { apagaRealce(); return mostraDica('Este texto vai para a nota técnica em PDF; nenhuma página o mostra.'); }
+      if (pagina === 'metodologia') vaiParaLamina(campo.grupo.dataset.ancora); else abreTrecho(campo.grupo);
+      if (realcaNoQuadro(campo, true)) return mostraDica();
+      // O texto pode só existir depois de um clique (uma aba, um aviso de erro).
+      if (pagina !== 'metodologia') vaiParaTrecho(campo.grupo);
+      mostraDica('Este texto não está à vista na prévia agora: aparece em outro estado da página (uma aba, um aviso, um menu).');
+    }
+    const campoEmFoco = () => campoDe.get((document.activeElement as HTMLElement | null)?.closest<HTMLElement>('[data-campo]') as HTMLElement) || null;
+
+    // O campo em foco leva o quadro ao trecho certo e acende o texto nele.
+    let deDentro = false; // um clique na prévia já escolheu o campo: o quadro não se mexe
     form.addEventListener('focusin', (evento) => {
-      mostraNoQuadro((evento.target as HTMLElement).closest<HTMLElement>('[data-grupo]'));
+      const campo = campoDe.get((evento.target as HTMLElement).closest<HTMLElement>('[data-campo]')!);
+      if (!campo || deDentro) return;
+      mostraCampoNoQuadro(campo);
+    });
+    form.addEventListener('focusout', (evento) => {
+      const para = (evento as FocusEvent).relatedTarget as HTMLElement | null;
+      if (!para?.closest('[data-campo]')) { apagaRealce(); mostraDica(); }
+    });
+
+    // ---- da prévia para o campo ----
+    // Índice dos textos da página aberta, pelo que cada um mostra na língua do
+    // quadro. Refeito depois de qualquer digitação, troca de página ou língua.
+    let indice: { exatos: Map<string, Campo[]>; moldes: { campo: Campo; molde: RegExp }[]; longos: { campo: Campo; texto: string }[] } | null = null;
+    function indiceDaPagina() {
+      if (indice) return indice;
+      indice = { exatos: new Map(), moldes: [], longos: [] };
+      for (const campo of daPagina()) {
+        if (campo.grupo.dataset.secao === 'Nota técnica') continue;
+        const texto = mostrado(campo);
+        if (!texto) continue;
+        const molde = campo.lacunas.length ? moldeDe(texto) : null;
+        if (molde) { indice.moldes.push({ campo, molde }); continue; }
+        if (campo.lacunas.length) continue;
+        indice.exatos.set(texto, [...(indice.exatos.get(texto) || []), campo]);
+        if (texto.length >= 12) indice.longos.push({ campo, texto });
+      }
+      return indice;
+    }
+    // Quando dois campos mostram a mesma frase, vale o do grupo cujo trecho
+    // contém o elemento clicado.
+    function desempata(lista: Campo[], elemento: Element) {
+      return lista.find((campo) => campo.grupo.dataset.alvo && elemento.closest(campo.grupo.dataset.alvo)) || lista.find((campo) => campo.grupo === atual) || lista[0];
+    }
+    function campoDoTexto(bruto: string, elemento: Element, porInclusao = false): Campo | null {
+      const texto = apara(bruto);
+      if (!texto || texto.length > 700) return null;
+      const { exatos, moldes, longos } = indiceDaPagina();
+      const iguais = exatos.get(texto);
+      if (iguais) return desempata(iguais, elemento);
+      const comLacuna = moldes.filter(({ molde }) => molde.test(texto)).map(({ campo }) => campo);
+      if (comLacuna.length) return desempata(comLacuna, elemento);
+      if (!porInclusao) return null;
+      // Um parágrafo partido em vários nós (um trecho em itálico, uma seta
+      // colada no fim) casa por inclusão; ganha o texto mais longo.
+      let melhor: { campo: Campo; texto: string } | null = null;
+      for (const item of longos) {
+        if (!(texto.includes(item.texto) || (texto.length >= 12 && item.texto.includes(texto)))) continue;
+        if (!melhor || item.texto.length > melhor.texto.length) melhor = item;
+      }
+      return melhor?.campo || null;
+    }
+    /** O campo do texto sob o ponteiro, com o elemento que o mostra. */
+    function campoSob(alvo: Element | null): { campo: Campo; elemento: Element } | null {
+      let elemento = alvo;
+      for (let nivel = 0; elemento && nivel < 3 && elemento !== elemento.ownerDocument.body; nivel += 1, elemento = elemento.parentElement) {
+        for (const no of elemento.childNodes) {
+          if (no.nodeType !== Node.TEXT_NODE) continue;
+          const campo = campoDoTexto(no.nodeValue || '', elemento, true);
+          if (campo) return { campo, elemento };
+        }
+        const inteiro = campoDoTexto(elemento.textContent || '', elemento);
+        if (inteiro) return { campo: inteiro, elemento };
+        for (const atributo of ['aria-label', 'title', 'placeholder', 'alt']) {
+          const campo = campoDoTexto(elemento.getAttribute(atributo) || '', elemento);
+          if (campo) return { campo, elemento };
+        }
+      }
+      return null;
+    }
+
+    function vaiAoCampo(campo: Campo, controle: Controle = lang === 'en' ? campo.en : campo.pt) {
+      const outraPagina = campo.grupo.dataset.pagina || pagina;
+      if (outraPagina !== pagina) mostraPagina(outraPagina, campo.grupo);
+      if (campo.el.hidden || !candidatos.includes(campo.grupo)) {
+        if (filtro) filtro.value = '';
+        recorte = '';
+        atualizaResumo();
+        filtra();
+      }
+      if (campo.grupo !== atual) mostraGrupo(campo.grupo, false);
+      ajustaAlturas(campo.grupo);
+      controle.focus({ preventScroll: true });
+      campo.el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      campo.el.classList.remove('is-achado');
+      void campo.el.offsetWidth;
+      campo.el.classList.add('is-achado');
+    }
+
+    // Os ouvintes moram no documento do quadro, que é outro a cada carga.
+    let apontado: Element | null = null;
+    function desaponta() {
+      apontado?.classList.remove('is-apontavel');
+      apontado = null;
+    }
+    const ligados = new WeakSet<Document>();
+    function ligaQuadro() {
+      const doc = quadro.contentDocument;
+      if (!doc || ligados.has(doc)) return;
+      ligados.add(doc);
+      doc.addEventListener('mouseover', (evento) => {
+        if (!apontando) return;
+        const achado = campoSob(evento.target as Element);
+        if (achado?.elemento === apontado) return;
+        desaponta();
+        if (achado) { apontado = achado.elemento; apontado.classList.add('is-apontavel'); }
+      });
+      doc.documentElement.addEventListener('mouseleave', desaponta);
+      doc.addEventListener('click', (evento) => {
+        // `deDentro`: o clique veio desta tela (abrir um eixo, trocar de lâmina).
+        if (!apontando || deDentro) return;
+        const achado = campoSob(evento.target as Element);
+        if (!achado) {
+          // Sem campo, o clique segue para a página: é assim que se abre um eixo ou uma aba.
+          if (!(evento.target as Element).closest('a, button, [role="tab"], [role="button"], select, input, summary')) {
+            mostraDica('Esse trecho não é editado aqui: vem dos dados, do Catálogo ou das Metas.');
+          }
+          return;
+        }
+        evento.preventDefault();
+        evento.stopPropagation();
+        desaponta();
+        deDentro = true;
+        vaiAoCampo(achado.campo);
+        deDentro = false;
+        apagaRealce();
+        achado.elemento.classList.add('is-texto-previa');
+        mostraDica();
+      }, true);
+    }
+
+    const chaveApontar = document.querySelector<HTMLButtonElement>('[data-apontar]');
+    chaveApontar?.addEventListener('click', () => {
+      apontando = !apontando;
+      chaveApontar.setAttribute('aria-pressed', String(apontando));
+      desaponta();
+      mostraDica();
+    });
+    const corpo = document.querySelector<HTMLElement>('[data-corpo]');
+    const chaveAmpliar = document.querySelector<HTMLButtonElement>('[data-ampliar]');
+    chaveAmpliar?.addEventListener('click', () => {
+      const ampla = corpo?.classList.toggle('is-previa-ampla') ?? false;
+      chaveAmpliar.setAttribute('aria-pressed', String(ampla));
+      chaveAmpliar.textContent = ampla ? 'Reduzir' : 'Ampliar';
+      escala();
     });
 
     // ---- seletor de página ----
-    function mostraPagina(nova: string) {
+    function mostraPagina(nova: string, grupo: HTMLElement | null = null) {
       pagina = nova;
       campoPagina.value = nova;
+      indice = null;
       document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
         const ativa = opcao.dataset.escolhePagina === nova;
         opcao.classList.toggle('is-ativo', ativa);
         opcao.setAttribute('aria-pressed', String(ativa));
       });
+      if (grupo) atual = grupo;
       filtra();
       escala();
       const url = new URL(location.href);
       url.searchParams.set('pagina', nova);
-      url.searchParams.delete('salvo');
-      history.replaceState(null, '', url);
+      history.replaceState(history.state, '', url);
       recarrega();
     }
     document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
@@ -321,6 +750,8 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     document.querySelectorAll<HTMLButtonElement>('[data-previa-lang]').forEach((opcao) => {
       opcao.addEventListener('click', () => {
         lang = opcao.dataset.previaLang || 'pt-BR';
+        campoLang.value = lang;
+        indice = null;
         document.querySelectorAll<HTMLButtonElement>('[data-previa-lang]').forEach((outra) => {
           const ativa = outra === opcao;
           outra.classList.toggle('is-ativo', ativa);
@@ -332,22 +763,44 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
 
     // ---- quadro desenhado em 1280px e reduzido para caber ----
     const moldura = quadro.parentElement as HTMLElement;
-    // As lâminas têm altura fixa; as outras páginas rolam dentro do quadro.
+    // As lâminas têm altura fixa; as outras páginas rolam dentro do quadro, que
+    // por isso aproveita a altura que sobrar na janela.
     function escala() {
       const fator = moldura.clientWidth / 1280;
-      const altura = pagina === 'metodologia' ? 690 : 820;
+      if (!fator) return;
+      // A folga embaixo cobre a dica e o respiro do fim da página: num grupo
+      // curto, sem ela, a prévia presa não cabia e subia para baixo da barra de ações.
+      const livre = window.innerHeight - moldura.getBoundingClientRect().top - (corpo?.classList.contains('is-previa-ampla') ? 120 : 92);
+      const altura = pagina === 'metodologia' ? 690 : Math.round(Math.min(1180, Math.max(820, livre / fator)));
       quadro.height = String(altura);
+      quadro.style.height = `${altura}px`;
       quadro.style.transform = `scale(${fator})`;
       moldura.style.height = `${Math.round(altura * fator)}px`;
     }
     escala();
-    new ResizeObserver(escala).observe(moldura);
+    const observador = new ResizeObserver(escala);
+    observador.observe(moldura);
+    // A navegação dos grupos e a prévia penduram logo abaixo da barra, que
+    // pode ganhar uma segunda linha quando os recortes aparecem.
+    const barra = document.querySelector<HTMLElement>('[data-barra]');
+    // Acima dela fica a barra superior da administração, também presa.
+    const cabecalho = document.querySelector<HTMLElement>('.admin-cabecalho');
+    const medeBarra = new ResizeObserver(() => {
+      if (!barra) return;
+      const presa = getComputedStyle(barra).position === 'sticky';
+      form.style.setProperty('--textos-topo', `${(cabecalho?.offsetHeight || 0) + (presa ? barra.offsetHeight : 0)}px`);
+    });
+    if (barra) medeBarra.observe(barra);
+    if (cabecalho) medeBarra.observe(cabecalho);
+    signal.addEventListener('abort', () => { observador.disconnect(); medeBarra.disconnect(); });
+    window.addEventListener('resize', escala, { signal });
 
     // ---- um grupo por vez, como lâminas ----
-    // O filtro esconde os campos que não casam; a navegação anda só pelos
-    // grupos da página escolhida que ainda têm algum campo à mostra.
+    // A busca e os recortes escondem os campos que não casam; a navegação anda
+    // só pelos grupos da página escolhida que ainda têm algum campo à mostra.
     const filtro = document.querySelector<HTMLInputElement>('[data-filtro]');
     const resumo = document.querySelector<HTMLElement>('[data-filtro-resumo]');
+    const vazio = document.querySelector<HTMLElement>('[data-vazio]');
     const menu = document.querySelector<HTMLElement>('[data-grupo-menu]');
     const gatilho = document.querySelector<HTMLButtonElement>('[data-grupo-gatilho]');
     const listaMenu = document.querySelector<HTMLUListElement>('[data-grupo-lista]');
@@ -356,78 +809,122 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     const contador = document.querySelector<HTMLElement>('[data-grupo-contador]');
     const anterior = document.querySelector<HTMLButtonElement>('[data-grupo-anterior]');
     const proximo = document.querySelector<HTMLButtonElement>('[data-grupo-proximo]');
-    const semAcento = (valor: string) => valor.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-    let atual: HTMLElement | null = null;
-    let candidatos: HTMLElement[] = [];
 
-    function mostraGrupo(grupo: HTMLElement | null) {
+    function ajustaAlturas(grupo: HTMLElement | null) {
+      if (cresceSozinha || !grupo) return;
+      grupo.querySelectorAll<Controle>('textarea').forEach(ajustaAltura);
+    }
+
+    function mostraGrupo(grupo: HTMLElement | null, moveQuadro = true) {
       if (grupo && grupo !== atual) {
         grupo.classList.remove('is-entrando');
         void grupo.offsetWidth;
         grupo.classList.add('is-entrando');
       }
       atual = grupo;
+      campoGrupo.value = atual?.dataset.id || '';
       grupos.forEach((item) => { item.hidden = item !== atual; });
-      const indice = atual ? candidatos.indexOf(atual) : -1;
+      ajustaAlturas(atual);
+      const posicao = atual ? candidatos.indexOf(atual) : -1;
       const descrito = atual ? descreve(atual) : null;
       if (numGatilho) { numGatilho.textContent = descrito?.num || ''; numGatilho.hidden = !descrito?.num; }
       if (rotuloGatilho) rotuloGatilho.textContent = descrito?.nome || 'Nenhum grupo';
       listaMenu?.querySelectorAll<HTMLElement>('[role="option"]').forEach((opcao) => {
-        opcao.setAttribute('aria-selected', String(Number(opcao.dataset.indice) === indice));
+        opcao.setAttribute('aria-selected', String(Number(opcao.dataset.indice) === posicao));
       });
-      if (contador) contador.textContent = candidatos.length ? `${indice + 1} / ${candidatos.length}` : '0 / 0';
-      if (anterior) anterior.disabled = indice <= 0;
-      if (proximo) proximo.disabled = indice < 0 || indice >= candidatos.length - 1;
-      mostraNoQuadro(atual);
-      // Se a barra de navegação dos grupos ficou acima da tela, volta até ela.
-      const nav = document.querySelector<HTMLElement>('.admin-grupos-nav');
-      if (nav && nav.getBoundingClientRect().top < 0) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (contador) contador.textContent = candidatos.length ? `${posicao + 1} / ${candidatos.length}` : '0 / 0';
+      if (anterior) anterior.disabled = posicao <= 0;
+      if (proximo) proximo.disabled = posicao < 0 || posicao >= candidatos.length - 1;
+      if (moveQuadro) mostraNoQuadro(atual);
+    }
+    // Ao trocar de grupo pela navegação, a lista volta ao começo do cartão.
+    function trocaGrupo(grupo: HTMLElement | null) {
+      mostraGrupo(grupo);
+      const barra = document.querySelector<HTMLElement>('.admin-textos-barra');
+      const lista = document.querySelector<HTMLElement>('.admin-textos-lista');
+      if (barra && lista && lista.getBoundingClientRect().top < barra.getBoundingClientRect().bottom - 1) lista.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
 
     function filtra() {
       const termo = semAcento(filtro?.value.trim() || '');
-      let visiveis = 0;
-      let total = 0;
-      candidatos = [];
-      grupos.forEach((grupo) => {
-        if (grupo.dataset.pagina !== pagina) return;
-        let algum = false;
-        grupo.querySelectorAll<HTMLElement>('.admin-campo').forEach((campo) => {
-          total += 1;
-          const conteudo = semAcento([campo.querySelector('span')?.textContent || '', ...[...campo.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')].map((controle) => controle.value)].join(' '));
-          const mostra = !termo || conteudo.includes(termo);
-          campo.hidden = !mostra;
-          if (mostra) { algum = true; visiveis += 1; }
-        });
-        if (algum) candidatos.push(grupo);
+      const ativo = Boolean(termo || recorte);
+      const porPagina: Record<string, { visiveis: number; total: number }> = {};
+      const comAlgum = new Set<HTMLElement>();
+      for (const campo of campos) {
+        const daqui = campo.grupo.dataset.pagina || '';
+        const conta = (porPagina[daqui] ??= { visiveis: 0, total: 0 });
+        conta.total += 1;
+        const conteudo = semAcento([campo.el.querySelector('.admin-texto-rotulo')?.textContent || '', campo.chave || '', campo.pt.value, campo.en.value].join(' '));
+        const mostra = (!termo || conteudo.includes(termo)) && noRecorte(campo);
+        campo.el.hidden = !mostra;
+        if (mostra) { conta.visiveis += 1; comAlgum.add(campo.grupo); }
+      }
+      candidatos = grupos.filter((grupo) => grupo.dataset.pagina === pagina && comAlgum.has(grupo));
+      const aqui = porPagina[pagina] || { visiveis: 0, total: 0 };
+      if (resumo) resumo.textContent = ativo ? `${aqui.visiveis} de ${aqui.total} nesta página` : '';
+      // Com busca ou recorte, cada página mostra quantos textos dela casam.
+      document.querySelectorAll<HTMLButtonElement>('[data-escolhe-pagina]').forEach((opcao) => {
+        const conta = opcao.querySelector<HTMLElement>('[data-conta-pagina]');
+        if (!conta) return;
+        conta.hidden = !ativo;
+        conta.textContent = String(porPagina[opcao.dataset.escolhePagina || '']?.visiveis ?? 0);
       });
-      if (resumo) resumo.textContent = termo ? `${visiveis} de ${total}` : '';
+      if (vazio) {
+        vazio.hidden = candidatos.length > 0;
+        vazio.innerHTML = '';
+        if (!candidatos.length) {
+          const frase = document.createElement('p');
+          frase.textContent = `Nenhum texto de ${NOME_DA_PAGINA[pagina]} casa com ${termo ? 'a busca' : 'o recorte'}.`;
+          vazio.append(frase);
+          for (const [outra, conta] of Object.entries(porPagina)) {
+            if (outra === pagina || !conta.visiveis) continue;
+            const atalho = document.createElement('button');
+            atalho.type = 'button';
+            atalho.className = 'admin-link';
+            atalho.dataset.irPagina = outra;
+            atalho.textContent = `Ver ${plural(conta.visiveis, 'texto', 'textos')} em ${NOME_DA_PAGINA[outra]}`;
+            vazio.append(atalho);
+          }
+        }
+      }
       montaMenu();
       mostraGrupo(atual && candidatos.includes(atual) ? atual : candidatos[0] || null);
     }
+    vazio?.addEventListener('click', (evento) => {
+      const destino = (evento.target as HTMLElement).closest<HTMLElement>('[data-ir-pagina]')?.dataset.irPagina;
+      if (destino) mostraPagina(destino);
+    });
+    recortes?.addEventListener('click', (evento) => {
+      const escolhido = (evento.target as HTMLElement).closest<HTMLElement>('[data-recorte]')?.dataset.recorte as Recorte | undefined;
+      if (!escolhido) return;
+      recorte = recorte === escolhido ? '' : escolhido;
+      atualizaResumo();
+      filtra();
+    });
 
     // ---- menu dos grupos ----
     // "Lâmina 3: Eixos" vira número + nome; nos demais sai o prefixo com o nome
     // da seção ou da própria página ("Nota técnica: ...", "Panorama: ..."), que
     // ali só repete. A seção vem do cartão (data-secao).
-    const NOME_DA_PAGINA: Record<string, string> = { index: 'Panorama', metas: 'Metas e indicadores', metodologia: 'Visão Geral' };
     const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);
     function descreve(grupo: HTMLElement) {
       const titulo = grupo.querySelector('h2')?.textContent?.trim() || '';
       const secao = grupo.dataset.secao || 'Textos de interface';
       const lamina = titulo.match(/^Lâmina (\d+):\s*(.*)$/);
       if (lamina) return { secao, num: lamina[1], nome: maiuscula(lamina[2]) };
-      const prefixo = [secao, NOME_DA_PAGINA[pagina] || ''].map((parte) => `${parte}: `).find((parte) => titulo.startsWith(parte));
+      const prefixo = [secao, NOME_DA_PAGINA[pagina] || '', 'Metas', 'Visão Geral', 'Projetos'].map((parte) => `${parte}: `).find((parte) => titulo.startsWith(parte));
       const nome = prefixo ? maiuscula(titulo.slice(prefixo.length)) : titulo;
       return { secao, num: '', nome };
     }
 
     function montaMenu() {
       if (!listaMenu) return;
+      const aberto = !listaMenu.hidden;
+      const focado = aberto ? (document.activeElement as HTMLElement | null)?.dataset.indice : undefined;
       listaMenu.innerHTML = '';
       const secoes = new Set(candidatos.map((grupo) => descreve(grupo).secao));
       let ultima = '';
-      candidatos.forEach((grupo, indice) => {
+      candidatos.forEach((grupo, posicao) => {
         const { secao, num, nome } = descreve(grupo);
         if (secoes.size > 1 && secao !== ultima) {
           const titulo = document.createElement('li');
@@ -437,11 +934,14 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
           listaMenu.append(titulo);
           ultima = secao;
         }
-        const campos = [...grupo.querySelectorAll<HTMLElement>('.admin-campo')].filter((campo) => !campo.hidden).length;
+        const doGrupo = campos.filter((campo) => campo.grupo === grupo);
+        const aMostra = doGrupo.filter((campo) => !campo.el.hidden).length;
+        const mudados = doGrupo.filter(alterado).length;
         const opcao = document.createElement('li');
         opcao.setAttribute('role', 'option');
+        opcao.setAttribute('aria-selected', String(grupo === atual));
         opcao.tabIndex = -1;
-        opcao.dataset.indice = String(indice);
+        opcao.dataset.indice = String(posicao);
         const marca = document.createElement('span');
         marca.className = 'admin-grupos-num';
         marca.textContent = num;
@@ -450,10 +950,20 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
         texto.className = 'admin-grupos-nome';
         texto.textContent = nome;
         const conta = document.createElement('small');
-        conta.textContent = `${campos} ${campos === 1 ? 'campo' : 'campos'}`;
-        opcao.append(marca, texto, conta);
+        conta.textContent = plural(aMostra, 'texto', 'textos');
+        opcao.append(marca, texto);
+        if (mudados) {
+          const pendente = document.createElement('small');
+          pendente.className = 'admin-grupos-pendente';
+          pendente.textContent = plural(mudados, 'alterado', 'alterados');
+          opcao.append(pendente);
+        }
+        opcao.append(conta);
         listaMenu.append(opcao);
       });
+      if (focado !== undefined) listaMenu.querySelector<HTMLElement>(`[data-indice="${focado}"]`)?.focus();
+      // O gatilho avisa quando o grupo aberto tem texto por salvar.
+      gatilho?.classList.toggle('is-pendente', Boolean(atual && campos.some((campo) => campo.grupo === atual && alterado(campo))));
     }
 
     const opcoes = () => [...(listaMenu?.querySelectorAll<HTMLElement>('[role="option"]') || [])];
@@ -472,7 +982,7 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     function escolhe(opcao: HTMLElement | null) {
       if (!opcao) return;
       fechaMenu();
-      mostraGrupo(candidatos[Number(opcao.dataset.indice)] || null);
+      trocaGrupo(candidatos[Number(opcao.dataset.indice)] || null);
     }
     gatilho?.addEventListener('click', () => (listaMenu?.hidden ? abreMenu() : fechaMenu()));
     gatilho?.addEventListener('keydown', (evento) => {
@@ -492,12 +1002,98 @@ const { grupos: gruposInterface, textos: interfaceTextos } = interfaceNaTela;
     });
     document.addEventListener('click', (evento) => {
       if (menu && !menu.contains(evento.target as Node)) fechaMenu(false);
-    });
+    }, { signal });
 
     filtro?.addEventListener('input', filtra);
-    anterior?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : 0; if (i > 0) mostraGrupo(candidatos[i - 1]); });
-    proximo?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : -1; if (i < candidatos.length - 1) mostraGrupo(candidatos[i + 1]); });
+    anterior?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : 0; if (i > 0) trocaGrupo(candidatos[i - 1]); });
+    proximo?.addEventListener('click', () => { const i = atual ? candidatos.indexOf(atual) : -1; if (i < candidatos.length - 1) trocaGrupo(candidatos[i + 1]); });
+
+    // ---- desfazer, descartar e salvar ----
+    function repoe(campo: Campo) {
+      campo.pt.value = campo.salvoPt;
+      campo.en.value = campo.salvoEn;
+      ajustaAltura(campo.pt);
+      ajustaAltura(campo.en);
+    }
+    form.addEventListener('click', (evento) => {
+      const desfaz = (evento.target as HTMLElement).closest<HTMLElement>('[data-desfaz]');
+      const campo = desfaz && campoDe.get(desfaz.closest<HTMLElement>('[data-campo]')!);
+      if (!campo) return;
+      repoe(campo);
+      aoDigitar(campo);
+      campo.pt.focus({ preventScroll: true });
+    });
+    descartar?.addEventListener('click', () => {
+      const mudados = campos.filter(alterado);
+      if (!mudados.length || !window.confirm(`Descartar ${plural(mudados.length, 'texto alterado', 'textos alterados')} e voltar ao que está salvo?`)) return;
+      mudados.forEach(repoe);
+      campos.forEach(atualizaCampo);
+      indice = null;
+      recorte = '';
+      atualizaResumo();
+      filtra();
+      recarrega();
+    });
+
+    // Enter não quebra linha: nenhum destes textos tem parágrafo dentro, e a
+    // quebra sumiria na página. Ctrl+Enter e Ctrl+S (⌘ no Mac) salvam.
+    form.addEventListener('keydown', (evento) => {
+      if (evento.key !== 'Enter' || evento.isComposing || !(evento.target as HTMLElement).matches('[data-campo] textarea')) return;
+      if (evento.shiftKey) return;
+      evento.preventDefault();
+      if (evento.ctrlKey || evento.metaKey) form.requestSubmit(salvar);
+    });
+    document.addEventListener('keydown', (evento) => {
+      if ((evento.ctrlKey || evento.metaKey) && !evento.altKey && evento.key.toLowerCase() === 's') {
+        evento.preventDefault();
+        if (!salvar.disabled) form.requestSubmit(salvar);
+      }
+    }, { signal });
+
+    form.addEventListener('submit', (evento) => {
+      // O botão escondido só manda o formulário para o quadro da prévia.
+      if ((evento as SubmitEvent).submitter === botao) return;
+      const errado = campos.find((campo) => campo.problema);
+      if (errado) {
+        evento.preventDefault();
+        vaiAoCampo(errado, errado.problema.includes('inglês') ? errado.en : errado.pt);
+        return;
+      }
+      saindo = true;
+      salvar.textContent = 'Salvando…';
+      // Desligado só depois do envio: um botão desligado não manda o formulário.
+      window.setTimeout(() => { salvar.disabled = true; });
+    });
+
+    // Sair com texto por salvar pede confirmação. Fechar a aba ou recarregar
+    // caem no aviso do navegador. Um link da administração troca de tela sem
+    // descarregar a página, e aí esse aviso não aparece: a pergunta é feita
+    // no clique, antes de o roteador ver o link.
+    const haPendencia = () => !saindo && campos.some(alterado);
+    window.addEventListener('beforeunload', (evento) => { if (haPendencia()) evento.preventDefault(); }, { signal });
+    document.addEventListener('click', (evento) => {
+      const link = (evento.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+      if (!link || link.target === '_blank' || evento.metaKey || evento.ctrlKey || evento.shiftKey || !haPendencia()) return;
+      if (window.confirm('Há textos alterados que ainda não foram salvos. Sair mesmo assim?')) { saindo = true; return; }
+      evento.preventDefault();
+      evento.stopImmediatePropagation();
+    }, { capture: true, signal });
+
+    // ---- arranque ----
+    // O aviso de "salvo" vale para esta carga; recarregar a tela não o repete.
+    const url = new URL(location.href);
+    if (url.searchParams.has('salvo')) {
+      for (const sobra of ['salvo', 'grupo', 'lang']) url.searchParams.delete(sobra);
+      history.replaceState(history.state, '', url);
+    }
+    campos.forEach(atualizaCampo);
+    fotografa();
+    atual = grupos.find((grupo) => grupo.dataset.id === form.dataset.grupoInicial && grupo.dataset.pagina === pagina) || null;
+    atualizaResumo();
     filtra();
+    mostraDica();
+    // O quadro pode ter terminado de carregar antes deste script.
+    if (quadro.contentDocument?.readyState === 'complete') ligaQuadro();
     // Depois de um erro ao salvar, o formulário guarda o que foi digitado; o
     // quadro, que abre com o rascunho gravado, é refeito para acompanhar.
     if ('comErro' in form.dataset) recarrega();

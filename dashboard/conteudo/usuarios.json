@@ -4,10 +4,19 @@
     {
       "usuario": "icaro",
       "nome": "Ícaro Gundim",
-      "hash": "$2b$11$osomMpckDXPrUbbc5l28y.aR93vcoptXR71TY9BI4gwXUL/CyDYPm",
+      "hash": "$2b$11$32aExOzUAs7Mjv.SN3qNV.3q4LFmqBklphzz/WjWQQitEWn.5FnJa",
       "ativo": true,
-      "trocarSenha": false,
+      "trocarSenha": true,
       "criadoEm": "2026-09-13"
+    },
+    {
+      "usuario": "revisao",
+      "nome": "Revisão de textos",
+      "hash": "$2b$11$/.qX9730A5PfgFAZlsGl/.2DoZ17NKdYqSfbkUkfwFb9N8z3KSbuK",
+      "ativo": true,
+      "trocarSenha": true,
+      "criadoEm": "2026-10-13",
+      "acesso": "textos"
     }
   ]
 }

@@ -41,6 +41,7 @@ Thumbs.db
 /dashboard/public/data/catalogo.json
 /dashboard/public/data/metas.json
 /dashboard/public/data/fichas.json
+/dashboard/public/data/projetos.json
 /dashboard/public/data/i18n/en.json
 /dashboard/public/downloads/*.xlsx
 /.tmp-oraculo/

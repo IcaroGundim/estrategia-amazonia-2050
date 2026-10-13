@@ -10,6 +10,7 @@
 //   public/data/catalogo.json    catálogo com os números
 //   public/data/metas.json       metas avaliadas para a Amazônia Legal
 //   public/data/fichas.json      fichas técnicas
+//   public/data/projetos.json    carteira de projetos da COP30, para /projetos
 //   public/downloads/*.xlsx      um workbook por eixo, mais o modelo de importação
 import { mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -20,6 +21,7 @@ import { montaCatalogoPublico } from './pipeline/catalogo.mjs';
 import { arquivosDasMetas, buildMetas } from './pipeline/metas.mjs';
 import { resumeTrajetoria } from './pipeline/trajetoria.mjs';
 import { geraWorkbooks } from './pipeline/workbooks.mjs';
+import { montaProjetosPublicos } from './pipeline/projetos.mjs';
 
 const dataOut = join(publicRoot, 'data');
 const downloadsOut = join(publicRoot, 'downloads');
@@ -83,6 +85,7 @@ async function main() {
   await writeJson('dashboard.json', dashboard);
   await writeJson('catalogo.json', catalogo);
   await writeJson('metas.json', metas);
+  await writeJson('projetos.json', montaProjetosPublicos(fonte));
   await copyFile(join(conteudoRoot, 'fichas.json'), join(dataOut, 'fichas.json'));
   console.log('  data/fichas.json (copiado de conteudo/)');
   await mkdir(join(dataOut, 'i18n'), { recursive: true });

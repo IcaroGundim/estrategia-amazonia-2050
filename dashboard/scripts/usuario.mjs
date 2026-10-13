@@ -2,6 +2,8 @@
 // fase 7). Grava em conteudo/usuarios.json; o hash é bcrypt com custo 11.
 //
 //   node scripts/usuario.mjs criar <usuario> "<Nome>"     cria com senha temporária
+//   node scripts/usuario.mjs criar <usuario> "<Nome>" --acesso textos
+//                                                         conta que só abre a tela de Textos
 //   node scripts/usuario.mjs senha <usuario>              gera senha nova
 //   node scripts/usuario.mjs senha <usuario> "<senha>"    define a senha dada
 //   node scripts/usuario.mjs desativar <usuario>
@@ -39,13 +41,18 @@ function senhaAleatoria(tamanho = 14) {
   return [...bytes].map((byte) => alfabeto[byte % alfabeto.length]).join('');
 }
 
-const [comando, nomeBruto, extra] = process.argv.slice(2);
+// `--acesso textos` restringe a conta (ver src/lib/admin/usuarios.ts); sem ele, ela abre tudo.
+const argumentos = process.argv.slice(2);
+const posicaoDoAcesso = argumentos.indexOf('--acesso');
+const acesso = posicaoDoAcesso >= 0 ? argumentos.splice(posicaoDoAcesso, 2)[1] : null;
+if (posicaoDoAcesso >= 0 && acesso !== 'textos') throw new Error('--acesso aceita só: textos');
+const [comando, nomeBruto, extra] = argumentos;
 const usuario = String(nomeBruto || '').trim().toLowerCase();
 const dados = await le();
 const acha = () => dados.usuarios.find((item) => item.usuario === usuario);
 
 if (comando === 'listar') {
-  for (const item of dados.usuarios) console.log(`${item.usuario.padEnd(16)} ${item.nome.padEnd(28)} ${item.ativo ? 'ativo' : 'inativo'}${item.trocarSenha ? '  (senha temporária)' : ''}`);
+  for (const item of dados.usuarios) console.log(`${item.usuario.padEnd(16)} ${item.nome.padEnd(28)} ${item.ativo ? 'ativo' : 'inativo'}${item.acesso ? `  [só ${item.acesso}]` : ''}${item.trocarSenha ? '  (senha temporária)' : ''}`);
   if (!dados.usuarios.length) console.log('nenhuma conta');
 } else if (comando === 'criar') {
   if (!/^[a-z0-9._-]{3,32}$/.test(usuario)) throw new Error('usuário: 3 a 32 caracteres, só letras minúsculas, números, ponto, hífen ou sublinhado');
@@ -57,10 +64,11 @@ if (comando === 'listar') {
     hash: bcrypt.hashSync(senha, CUSTO),
     ativo: true,
     trocarSenha: true,
-    criadoEm: new Date().toISOString().slice(0, 10)
+    criadoEm: new Date().toISOString().slice(0, 10),
+    ...(acesso ? { acesso } : {})
   });
   await grava(dados);
-  console.log(`conta criada: ${usuario}\nsenha temporária: ${senha}`);
+  console.log(`conta criada: ${usuario}${acesso ? ` (acesso: só ${acesso})` : ''}\nsenha temporária: ${senha}`);
 } else if (comando === 'senha') {
   const conta = acha();
   if (!conta) throw new Error(`não existe: ${usuario}`);

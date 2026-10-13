@@ -30,6 +30,8 @@ const state = {
   animarDetalhe: false,
   anosGrafico: {},
   busca: '',
+  // Eixos em que a pessoa abriu ou fechou à mão a caixa dos indicadores sem valores.
+  demais: new Map(),
   dossie: null,
   katex: null
 };
@@ -1221,6 +1223,9 @@ function abrirItem(codigo, { aba = null, animar = true } = {}) {
     renderEixos();
     renderCabecalhoDoEixo();
   }
+  // Abrir um indicador sem valores (por um link, pela busca) abre a caixa dele,
+  // mesmo que a pessoa a tenha fechado antes.
+  if (!item.temMeta && !item.temValores) state.demais.set(item.eixo, true);
   state.codigo = codigo;
   state.detalhesAbertos = true;
   state.animarDetalhe = animar;
@@ -1322,7 +1327,7 @@ function renderList() {
 
   // O nome e os números do eixo estão no cabeçalho acima do quadro; aqui ficam
   // só as faixas. Elas são rótulos, não contadores: o total já está no resumo.
-  alvo.innerHTML = [...grupos.values()].sort((a, b) => a.eixo - b.eixo).map(({ metas, coletados, catalogo }) => {
+  alvo.innerHTML = [...grupos.values()].sort((a, b) => a.eixo - b.eixo).map(({ eixo, metas, coletados, catalogo }) => {
     const faixaMetas = metas.length
       ? `<p class="goals-faixa">${t('Metas com patamar mensurável')}</p>
          <div class="goals-cards">${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}</div>`
@@ -1331,10 +1336,26 @@ function renderList() {
       ? `<p class="goals-faixa">${t('Coletados, sem meta numérica')}</p>
          <div class="goals-cards">${coletados.map(linhaDeColetado).join('')}</div>`
       : '';
-    const faixaCatalogo = catalogo.length
-      ? `<p class="goals-faixa">${metas.length || coletados.length ? t('Demais indicadores do eixo') : t('Indicadores do eixo')}</p>
-         <div class="goals-cards">${catalogo.map(linhaDeCatalogo).join('')}</div>`
-      : '';
+    // Os indicadores ainda sem valores ficam numa caixa recolhida, com a
+    // contagem no cabeçalho: são muitos, e empurravam para longe o que o eixo
+    // já tem para mostrar. Num eixo que só tem esses, a caixa não existe — ali
+    // eles são a lista. A busca e o indicador aberto no detalhe abrem a caixa;
+    // depois disso vale o que a pessoa escolher.
+    const cartoesDoCatalogo = `<div class="goals-cards">${catalogo.map(linhaDeCatalogo).join('')}</div>`;
+    let faixaCatalogo = '';
+    if (catalogo.length && !(metas.length || coletados.length)) {
+      faixaCatalogo = `<p class="goals-faixa">${t('Indicadores do eixo')}</p>${cartoesDoCatalogo}`;
+    } else if (catalogo.length) {
+      const selecionado = state.detalhesAbertos && catalogo.some((item) => item.codigo === state.codigo);
+      const aberta = Boolean(state.busca) || (state.demais.has(eixo) ? state.demais.get(eixo) : selecionado);
+      const situacao = { coletado: 0, parcial: 0, pendente: 0 };
+      for (const item of catalogo) situacao[statusOf(item)] += 1;
+      const conta = Object.entries(situacao).filter(([, n]) => n).map(([chave, n]) => tp(ROTULO_SITUACAO[chave][n === 1 ? 0 : 1], { n })).join(' · ');
+      faixaCatalogo = `<details class="goals-recolhe" data-demais="${eixo}"${aberta ? ' open' : ''}>
+        <summary><span class="goals-recolhe-titulo">${t('Demais indicadores do eixo')}</span><span class="goals-recolhe-conta">${escape(conta)}</span><span class="dropdown-chevron" aria-hidden="true"></span></summary>
+        ${cartoesDoCatalogo}
+      </details>`;
+    }
     return `<section class="goals-eixo">
       ${faixaMetas}
       ${faixaColetados}
@@ -1436,6 +1457,17 @@ function bindEvents() {
   });
 
   document.querySelector('#goals-list').addEventListener('click', (event) => {
+    // A caixa dos indicadores sem valores: abrir e fechar à mão passa a valer
+    // para o eixo, e a próxima renderização respeita.
+    const cabeca = event.target.closest('.goals-recolhe > summary');
+    if (cabeca) {
+      const caixa = cabeca.parentElement;
+      event.preventDefault();
+      caixa.open = !caixa.open;
+      state.demais.set(Number(caixa.dataset.demais), caixa.open);
+      posicionaDetalhe();
+      return;
+    }
     const button = event.target.closest('button[data-codigo]');
     if (!button) return;
     const mesmoItem = state.codigo === button.dataset.codigo;

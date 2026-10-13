@@ -136,7 +136,8 @@ export function escalaDe(idioma = idiomaAtual()) {
 export const ROTAS = [
   { chave: 'metodologia', 'pt-BR': '/', en: '/en' },
   { chave: 'index', 'pt-BR': '/panorama', en: '/en/panorama' },
-  { chave: 'metas', 'pt-BR': '/metas', en: '/en/goals' }
+  { chave: 'metas', 'pt-BR': '/metas', en: '/en/goals' },
+  { chave: 'projetos', 'pt-BR': '/projetos', en: '/en/projects' }
 ];
 
 export function rota(chave, idioma = IDIOMA_PADRAO) {

@@ -97,22 +97,25 @@ html:not([data-navegado]) .brand-product-ano { animation: marca-entrada 1.1s cub
 .menu-button { display: none; margin-left: auto; padding: 8px 0; border: 0; background: none; color: var(--areia); font-weight: 600; }
 /* Alternância de vista: escondida no desktop, onde não faz sentido. Só um dos
    dois rótulos aparece, conforme o modo em vigor no <html>. */
-/* Troca de língua: as duas bandeiras lado a lado, separadas por um fio, sem caixa
-   em volta. A da página fica acesa e sublinhada em ocre, com o mesmo traço da aba
-   ativa da navegação; a da outra língua fica apagada e é o link. A bandeira é o
-   que se acha varrendo a barra de olho, sem ler. */
-.idioma-toggle { display: inline-flex; align-items: center; gap: 8px; align-self: stretch; margin-left: 18px; }
-.idioma-fio { width: 1px; height: 16px; background: rgba(245, 240, 232, 0.28); }
-.idioma-atual, .idioma-toggle a { position: relative; display: flex; align-items: center; padding: 10px 4px; }
-.idioma-atual::after { content: ""; position: absolute; right: 4px; bottom: 3px; left: 4px; height: 2px; border-radius: 2px; background: var(--ocre); }
+/* Troca de língua: uma chave. O trilho tem os 40px do botão de ação ao lado e
+   leva as duas línguas, cada uma com a bandeira e a sigla; a da página fica
+   preenchida e a outra é o link. As duas bandeiras ficam em cores: apagada, a
+   da outra língua lia como desligada. */
+.idioma-toggle { display: inline-flex; align-items: center; gap: 2px; margin-left: 18px; padding: 3px; border: 1px solid rgba(245, 240, 232, 0.3); border-radius: 10px; }
+.idioma-atual, .idioma-toggle a { position: relative; display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 10px; border-radius: 7px; font: 700 11px var(--text); letter-spacing: 0.08em; }
+.idioma-atual { background: rgba(245, 240, 232, 0.16); color: var(--areia); }
+.idioma-toggle a { color: rgba(245, 240, 232, 0.66); transition: color 140ms ease, background 140ms ease; }
 /* A moldura fina existe porque as duas bandeiras encostam branco na borda — a
    faixa de cima da mesclada, as pontas do losango da brasileira — e sem ela o
    desenho sangraria no verde da barra. */
-.idioma-toggle img { height: 14px; width: auto; display: block; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 2px; }
-/* A da outra língua acende com o mouse ou o foco: é o sinal de que ela é o link. */
-.idioma-toggle a img { opacity: 0.45; filter: saturate(0.4); transition: opacity 0.2s, filter 0.2s; }
-.idioma-toggle a:hover img, .idioma-toggle a:focus-visible img { opacity: 1; filter: none; }
-.idioma-toggle a:focus-visible { outline: 2px solid var(--ocre); outline-offset: -2px; border-radius: 4px; }
+.idioma-toggle img { height: 15px; width: auto; display: block; border: 1px solid rgba(245, 240, 232, 0.34); border-radius: 2px; }
+.idioma-toggle a img { opacity: 0.85; transition: opacity 140ms ease; }
+/* A outra língua acende com o mouse ou o foco: é o sinal de que ela é o link. */
+.idioma-toggle a:hover, .idioma-toggle a:focus-visible { color: var(--ocre); background: rgba(245, 240, 232, 0.07); }
+.idioma-toggle a:hover img, .idioma-toggle a:focus-visible img { opacity: 1; }
+.idioma-toggle a:focus-visible { outline: 2px solid var(--ocre); outline-offset: 2px; }
+/* No dedo, a área sensível do link chega a 44px de altura sem crescer o trilho. */
+@media (pointer: coarse) { .idioma-toggle a::after { content: ""; position: absolute; inset: -6px 0; } }
 /* No computador o idioma encosta no botão de ação, e os dois formam um grupo à
    direita. Antes os dois tinham `margin-left: auto` e a sobra da barra se dividia
    entre eles, deixando um vão largo no meio. O vão da barra é de 34px; a margem
@@ -865,6 +868,17 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
    lida como uma meta sem número. */
 .goals-faixa { margin: 24px 0 2px; display: flex; align-items: baseline; gap: 7px; color: var(--tinta-4); font-size: 9.5px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
 .goals-faixa::after { content: ""; flex: 1; height: 1px; background: var(--linha-2); }
+/* Os indicadores ainda sem valores: uma caixa recolhida, com o nome da faixa e
+   a contagem no cabeçalho. Aberta, mostra os mesmos cartões de sempre. */
+.goals-recolhe { margin-top: 24px; border: 1px solid var(--linha); border-radius: 12px; background: var(--areia); }
+.goals-recolhe > summary { min-height: 46px; padding: 0 16px; display: flex; align-items: center; gap: 12px; border-radius: 12px; list-style: none; cursor: pointer; }
+.goals-recolhe > summary::-webkit-details-marker { display: none; }
+.goals-recolhe > summary:hover .goals-recolhe-titulo { color: var(--tinta-2); }
+.goals-recolhe > summary:focus-visible { outline: 2px solid var(--mata); outline-offset: 2px; }
+.goals-recolhe-titulo { color: var(--tinta-3); font-size: 10px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+.goals-recolhe-conta { margin-left: auto; color: var(--tinta-3); font-size: 12px; font-weight: 600; }
+.goals-recolhe[open] .dropdown-chevron { margin-top: 4px; transform: rotate(-135deg); }
+.goals-recolhe > .goals-cards { margin-top: 0; padding: 4px 14px 14px; }
 /* Metas em cards: a jornada é o número grande à esquerda; nome, patamar, barra
    fina e valor atual ficam ao lado. Duas colunas quando há largura; uma quando
    o painel de detalhe está aberto ou a tela é estreita. */
@@ -1304,6 +1318,8 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 
 @media (max-width: 620px) {
   .topbar-inner { padding-inline: 16px; }
+  /* A chave de língua aperta: no celular ela divide a barra com o logo e o botão de vista. */
+  .idioma-atual, .idioma-toggle a { gap: 5px; padding: 0 7px; }
   /* `min-width: max-content` e o nome em uma linha só empurravam a topbar para
      além da viewport em 320px, e a rolagem horizontal contaminava a página
      inteira. Aqui a marca cede: o logo já identifica o painel. */
@@ -1398,6 +1414,14 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .method-guidance-grid { grid-template-columns: 1fr; }
 }
 
+/* Nos aparelhos mais estreitos a chave fica só com as siglas: com as bandeiras
+   ela, o logo e o botão de vista somavam mais que a barra e a página ganhava
+   rolagem lateral. A sigla é a que diz a língua. */
+@media (max-width: 380px) {
+  .idioma-toggle img { display: none; }
+  .idioma-atual, .idioma-toggle a { padding: 0 9px; }
+}
+
 /* Celulares estreitos (iPhone SE e semelhantes). A barra tem quatro peças e o
    botão de vista precisa de duas linhas para o rótulo; sem apertá-lo, o logo era
    comprimido a metade da largura declarada para abrir espaço. */
@@ -1444,6 +1468,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .trajetoria-texto { max-width: 62ch; }
 .trajetoria h2 { margin: 0 0 8px; color: var(--mata); font: 800 clamp(22px, 1.6vw, 28px)/1.1 var(--display); letter-spacing: -0.03em; }
 .trajetoria-lead { margin: 0; color: var(--tinta-3); font-size: 14px; line-height: 1.55; }
+/* De que anos saiu o ritmo do card, em letra miúda sob o gráfico. */
+.traj-card-periodo { margin: 4px 0 0; color: var(--tinta-4); font-size: 11px; font-variant-numeric: tabular-nums; }
+.traj-card-periodo:empty { display: none; }
 /* Metodologia: caixa fechada no canto; no hover ou foco ela se alarga e desce
    por cima da lista. O invólucro guarda o tamanho fechado para nada se mexer. */
 .traj-metodo { position: relative; align-self: flex-start; width: 270px; height: 42px; }
@@ -1528,6 +1555,9 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .traj-projecao { fill: none; stroke-width: 2; stroke-dasharray: 5 4; stroke-linecap: round; stroke-linejoin: round; }
 .traj-meta { stroke: var(--tinta-3); stroke-width: 1; }
 .traj-prazo { stroke: var(--tinta-3); stroke-width: 1; stroke-dasharray: 2 3; }
+/* O trecho da série que entrou no ritmo: um traço no pé do gráfico. */
+.traj-janela { stroke-width: 3; stroke-linecap: round; opacity: 0.9; }
+.traj-janela.is-tendencia { stroke: var(--tinta-3); opacity: 0.7; }
 .traj-ultimo { fill: var(--mata); }
 .traj-chega { stroke: var(--papel); stroke-width: 2; }
 .traj-marcador { opacity: 0; pointer-events: none; transition: opacity 120ms ease; }
@@ -1557,4 +1587,139 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 }
 @media (max-width: 620px) {
   .trajetoria { padding: 20px 16px 16px; }
+}
+
+/* ---------- Projetos: a carteira da COP30 ----------
+   Duas colunas, como o Panorama: à esquerda o título e os recortes; à direita
+   os projetos em páginas de quatro, dois por dois. O quadro tem a altura da
+   janela, para as quatro fichas caberem sem rolar, e cada cartão divide a sua
+   entre a foto (ou o mapa do estado) e o texto. */
+.projetos-page { padding: 28px 0 48px; background: var(--areia); }
+.projetos-board { --projetos-altura: max(660px, calc(100dvh - 160px)); display: grid; grid-template-columns: minmax(280px, 336px) minmax(0, 1fr); gap: 16px; align-items: start; }
+/* A coluna dos recortes é de apoio: tudo nela é pequeno, para caber inteira na
+   altura do quadro e deixar a largura para os projetos. */
+.projetos-lateral { padding: 18px 18px 18px; }
+.projetos-lateral .eixos-titulo { font-size: 23px; line-height: 1.05; }
+.projetos-lateral .lead { margin-top: 8px; font-size: 12.5px; line-height: 1.45; }
+.projetos-numeros { margin: 12px 0 0; padding: 10px 0; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 8px 14px; border-block: 1px solid var(--linha); }
+.projetos-numeros div { display: flex; align-items: baseline; gap: 6px; }
+.projetos-numeros dt { order: 2; color: var(--tinta-4); font-size: 11px; line-height: 1.2; }
+.projetos-numeros dd { margin: 0; font: 800 19px/1 var(--display); letter-spacing: -0.03em; color: var(--mata); }
+.projetos-filtros { margin-top: 12px; display: grid; gap: 12px; }
+.projetos-filtro { min-width: 0; }
+.projetos-filtro .select-wrap-label { display: block; margin-bottom: 6px; }
+.projetos-busca { min-height: 36px; padding: 0 12px; }
+/* As dez bandeiras (a região e os nove estados) numa linha só. */
+.projetos-estados { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; }
+.projetos-estado { min-width: 0; padding: 0; display: grid; justify-items: center; gap: 3px; border: 0; background: none; cursor: pointer; }
+.projetos-estado .goals-flag { width: 100%; height: auto; aspect-ratio: 3 / 2; }
+.projetos-estado small { color: var(--tinta-4); font: 600 10px/1 var(--text); font-variant-numeric: tabular-nums; }
+.projetos-estado:hover .goals-flag { border-color: var(--mata-500); }
+.projetos-estado.is-active .goals-flag { border-color: var(--urucum); box-shadow: 0 0 0 1px var(--urucum); }
+.projetos-estado.is-active small { color: var(--urucum); }
+.projetos-estado:focus-visible { outline: 2px solid var(--mata); outline-offset: 3px; border-radius: 4px; }
+.projetos-estado:disabled { opacity: 0.35; cursor: default; }
+.projetos-opcoes { display: flex; flex-wrap: wrap; gap: 5px; }
+.projetos-opcao { min-height: 28px; padding: 0 10px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta-2); font: 500 12px var(--text); text-align: left; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+.projetos-opcao small { color: var(--tinta-4); font: 600 11px var(--text); font-variant-numeric: tabular-nums; }
+.projetos-opcao:hover { border-color: var(--mata-300); }
+.projetos-opcao:focus-visible { outline: 2px solid var(--mata); outline-offset: 2px; }
+.projetos-opcao.is-active { border-color: var(--mata); background: var(--mata); color: var(--areia); }
+.projetos-opcao.is-active small { color: var(--mata-100); }
+.projetos-opcao:disabled { opacity: 0.4; cursor: default; }
+/* Os eixos têm nome comprido: viram uma lista de linhas inteiras, com a
+   contagem alinhada à direita. */
+.projetos-opcoes.is-lista { display: grid; gap: 3px; }
+.projetos-opcoes.is-lista .projetos-opcao { min-height: 29px; padding: 4px 10px; justify-content: space-between; border-radius: 8px; line-height: 1.2; }
+
+.projetos-quadro { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; height: var(--projetos-altura); }
+.projetos-quadro-topo { min-height: 36px; display: flex; align-items: center; gap: 16px; }
+.projetos-resumo { margin: 0; color: var(--tinta-3); font-size: 13px; font-weight: 600; }
+.projetos-limpar { padding: 0; border: 0; background: none; color: var(--urucum); font: 600 12.5px var(--text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.projetos-paginas { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--tinta-3); font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.projetos-paginas[hidden], .projetos-paginas.is-rodape { display: none; }
+.projetos-paginas button { width: 36px; height: 36px; padding: 0; display: grid; place-items: center; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); color: var(--mata); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+.projetos-paginas button:hover:not(:disabled) { border-color: var(--mata); background: #e7ede8; }
+.projetos-paginas button:focus-visible { outline: 2px solid var(--mata); outline-offset: 2px; }
+.projetos-paginas button:disabled { opacity: 0.35; cursor: default; }
+.projetos-paginas svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.projetos-lista { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.projetos-lista.is-trocando { animation: projetos-entra 220ms ease; }
+@keyframes projetos-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.projetos-aviso { grid-column: 1 / -1; grid-row: 1 / -1; margin: 0; padding: 34px 20px; display: grid; place-items: center; border: 1px dashed var(--linha); border-radius: 14px; color: var(--tinta-3); text-align: center; }
+
+.projeto-cartao { min-width: 0; min-height: 0; display: flex; flex-direction: column; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); overflow: hidden; transition: border-color 150ms ease, box-shadow 150ms ease; }
+.projeto-cartao:hover { border-color: var(--mata-300); box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
+/* A foto fica com o que sobra da altura do cartão; o texto tem altura própria. */
+.projeto-cartao-foto { position: relative; flex: 1 1 0; min-height: 96px; background: var(--mata); overflow: hidden; }
+.projeto-cartao-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Um véu embaixo, só o bastante para o nome do estado se ler sobre qualquer foto. */
+.projeto-cartao-foto::after { content: ""; position: absolute; inset: auto 0 0; height: 58%; background: linear-gradient(to top, rgba(14, 43, 34, 0.72), rgba(14, 43, 34, 0)); pointer-events: none; }
+.projeto-cartao.is-sem-foto .projeto-cartao-foto::after { content: none; }
+.projeto-cartao-mapa { position: absolute; inset: 0; width: 100%; height: 100%; }
+.projeto-cartao-mapa path { fill: var(--mata-700); stroke: var(--mata); stroke-width: 0.8; stroke-linejoin: round; }
+.projeto-cartao-mapa path.is-destaque { fill: var(--ocre); }
+.projeto-cartao-estado { position: absolute; z-index: 1; left: 14px; bottom: 11px; max-width: 46%; display: flex; align-items: center; gap: 7px; color: var(--areia); font-size: 12px; font-weight: 600; }
+.projeto-cartao-estado b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.projeto-cartao-estado i { flex: none; width: 24px; height: 16px; border: 1px solid rgba(245, 240, 232, 0.5); border-radius: 3px; overflow: hidden; }
+.projeto-cartao-estado img { position: static; }
+/* Crédito da foto ilustrativa: a licença pede autor e licença à vista, e o
+   link leva à página da foto no Commons. */
+/* Num nome comprido quem encolhe é o autor: a licença fica sempre à vista. */
+.projeto-cartao-credito { position: absolute; z-index: 1; right: 12px; bottom: 11px; max-width: 50%; display: flex; gap: 3px; color: rgba(245, 240, 232, 0.86); font-size: 10px; line-height: 1.3; white-space: nowrap; }
+.projeto-cartao-credito span { flex: none; }
+.projeto-cartao-credito b { min-width: 0; font-weight: 400; overflow: hidden; text-overflow: ellipsis; }
+.projeto-cartao-credito:hover, .projeto-cartao-credito:focus-visible { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+.projeto-cartao-corpo { flex: none; padding: 14px 18px 14px; display: grid; gap: 7px; }
+/* Os títulos chegam do site em caixas diferentes, vários em maiúsculas e alguns
+   com três linhas; o corte em duas mantém os quatro cartões na mesma grade, e
+   o título inteiro fica no `title`. */
+.projeto-cartao-titulo { margin: 0; font-size: 16.5px; line-height: 1.22; letter-spacing: -0.015em; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.projeto-cartao-entidade { margin: 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.projeto-cartao-resumo { margin: 0; color: var(--tinta-2); font-size: 12.5px; line-height: 1.5; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.projeto-cartao-pe { margin-top: 3px; padding-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; border-top: 1px solid var(--linha-2); }
+.projeto-cartao-fatos { margin: 0; display: flex; gap: 6px 20px; }
+.projeto-cartao-fatos div { display: grid; gap: 2px; }
+.projeto-cartao-fatos dt { color: var(--tinta-4); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.projeto-cartao-fatos dd { margin: 0; color: var(--tinta); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.projeto-cartao-link { margin-left: auto; display: grid; justify-items: end; gap: 2px; }
+.projeto-cartao-link a { color: var(--urucum); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.projeto-cartao-link a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.projeto-cartao-link small { color: var(--tinta-4); font-size: 10.5px; }
+.projetos-fonte { max-width: 900px; margin: 22px 0 0; color: var(--tinta-4); font-size: 12px; line-height: 1.55; }
+.projetos-fonte a { color: var(--mata-700); text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .projetos-lista.is-trocando { animation: none; } }
+/* Tablet: os recortes sobem para cima do quadro, em duas colunas, e os cartões
+   passam a ter altura própria, com a foto em proporção fixa. */
+@media (max-width: 1180px) {
+  .projetos-board { grid-template-columns: minmax(0, 1fr); }
+  .projetos-filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
+  .projetos-busca { grid-column: 1 / -1; max-width: 520px; }
+  /* Estado e orçamento empilham à esquerda; os eixos, que são a lista mais alta, ocupam a direita inteira. */
+  .projetos-filtro:nth-of-type(2) { grid-column: 2; grid-row: 2 / span 2; }
+  .projetos-numeros { justify-content: start; gap: 8px 32px; }
+  .projetos-estados { grid-template-columns: repeat(10, 38px); gap: 6px; }
+  .projetos-quadro { height: auto; grid-template-rows: none; scroll-margin-top: 96px; }
+  .projetos-lista { grid-template-rows: none; }
+  .projetos-paginas.is-rodape:not([hidden]) { margin: 4px 0 0; display: flex; justify-content: center; }
+  .projeto-cartao-foto { flex: none; aspect-ratio: 16 / 7; }
+}
+@media (max-width: 920px) {
+  .projetos-page { padding-top: 16px; }
+  .projetos-lateral { padding: 18px 16px 18px; }
+  .projetos-filtros { grid-template-columns: minmax(0, 1fr); }
+  .projetos-filtro:nth-of-type(2) { grid-column: auto; grid-row: auto; }
+  .projetos-numeros { gap: 8px 22px; }
+  .projetos-estados { grid-template-columns: repeat(auto-fill, 38px); }
+  /* Os recortes de eixo e de orçamento viram trilhos que deslizam: empilhados,
+     ocupavam uma tela inteira antes do primeiro projeto. O trilho sangra até a
+     borda do cartão, para se ler como deslizável. */
+  .projetos-opcoes, .projetos-opcoes.is-lista { display: flex; flex-wrap: nowrap; margin-inline: -16px; padding-inline: 16px; overflow-x: auto; scrollbar-width: none; }
+  .projetos-opcoes::-webkit-scrollbar { display: none; }
+  .projetos-opcao, .projetos-opcoes.is-lista .projetos-opcao { flex: none; min-height: 34px; padding: 0 12px; border-radius: 17px; white-space: nowrap; }
+}
+@media (max-width: 700px) {
+  .projetos-lista { grid-template-columns: minmax(0, 1fr); }
+  .projeto-cartao-foto { aspect-ratio: 16 / 8; }
+  .projetos-quadro-topo { flex-wrap: wrap; gap: 8px 16px; }
 }

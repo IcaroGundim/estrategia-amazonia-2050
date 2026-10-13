@@ -321,6 +321,15 @@ function renderAll() {
 // Cada informação aparece uma vez: o que o gráfico já mostra não se repete em
 // texto, e o valor de cada ano, medido ou projetado, sai ao passar o mouse.
 // ---------------------------------------------------------------------------
+// De que anos saiu o ritmo do card: os últimos dez da série, ou menos quando
+// ela é mais curta. A meta com janela fixa (série com quebra) usa os pontos
+// que a parametrização manda, e o card diz isso.
+function periodoDoRitmo(item) {
+  if (!item.base) return '';
+  const periodo = tp('ritmo de {desde} a {ate}', { desde: item.base.ano, ate: item.atual.ano });
+  return item.janelaFixa ? `${periodo} · ${t('janela fixa desta meta')}` : periodo;
+}
+
 const COR_CLASSE = { noRitmo: '#3e6e57', acelerar: '#e0a83c', contrario: '#c0451f' };
 const ORDEM_TRAJETORIA = { contrario: 0, acelerar: 1, noRitmo: 2 };
 // O viewBox acompanha a largura em que o gráfico é desenhado, para o texto sair
@@ -434,6 +443,8 @@ function graficoDaTrajetoria(meta, item, fim) {
   const yMeta = py(item.alvo);
   const linhaDaMeta = `<line class="traj-meta" x1="${f(x0)}" x2="${x1}" y1="${f(yMeta)}" y2="${f(yMeta)}"/><text class="is-forte" x="${x1}" y="${f(yMeta > y0 + 14 ? yMeta - 5 : yMeta + 13)}" text-anchor="end">${escape(tp('meta {valor}', { valor: valorDaTrajetoria(item.alvo, unidade) }))}</text>`;
   const prazo = meta.prazo < fim ? `<line class="traj-prazo" x1="${f(px(meta.prazo))}" x2="${f(px(meta.prazo))}" y1="${y0}" y2="${y1}"/>` : '';
+  // O trecho da série que entrou no ritmo, marcado no pé do gráfico na cor da projeção.
+  const janela = item.base ? `<line class="traj-janela" x1="${f(px(item.base.ano))}" x2="${f(px(ultimo.ano))}" y1="${y1 + 3}" y2="${y1 + 3}" stroke="${cor}"/>` : '';
   const anos = [...new Set([primeiroAno, meta.prazo, fim])].map((ano) => {
     const ancora = ano === primeiroAno ? 'start' : ano === fim ? 'end' : 'middle';
     const rotulo = ano === meta.prazo ? tp('prazo {ano}', { ano }) : String(ano);
@@ -471,6 +482,7 @@ function graficoDaTrajetoria(meta, item, fim) {
       <g class="traj-grade">${grade}</g>
       ${prazo}
       <polygon class="traj-area" points="${f(px(primeiroAno))},${base} ${pontos} ${f(px(ultimo.ano))},${base}"/>
+      ${janela}
       ${linhaDaMeta}
       <polyline class="traj-medida" points="${pontos}"/>
       <polyline class="traj-projecao" stroke="${cor}" points="${tracejado.map(([ano, v]) => `${f(px(ano))},${f(py(v))}`).join(' ')}"/>
@@ -496,6 +508,7 @@ function cardDaTrajetoria(meta, item, fim) {
       <p class="traj-card-ano"><b>${ano}</b><small>${rotulo}</small></p>
     </div>
     ${graficoDaTrajetoria(meta, item, fim)}
+    <p class="traj-card-periodo">${escape(periodoDoRitmo(item))}</p>
     ${item.nota ? `<p class="traj-card-nota">${escape(item.nota)}</p>` : ''}
   </article>`;
 }
@@ -561,6 +574,7 @@ function graficoDaTendencia(ind, item, fim) {
     <svg viewBox="0 0 ${W} ${H}" aria-hidden="true">
       <g class="traj-grade">${grade}</g>
       <polygon class="traj-area" points="${f(px(primeiroAno))},${base} ${pontos} ${f(px(ultimo.ano))},${base}"/>
+      ${item.base ? `<line class="traj-janela is-tendencia" x1="${f(px(item.base.ano))}" x2="${f(px(ultimo.ano))}" y1="${y1 + 3}" y2="${y1 + 3}"/>` : ''}
       <polyline class="traj-medida" points="${pontos}"/>
       <polyline class="traj-projecao is-tendencia" points="${f(px(ultimo.ano))},${f(py(ultimo.valor))} ${f(px(xFinal))},${f(py(item.valorFinal))}"/>
       <circle class="traj-ultimo" cx="${f(px(ultimo.ano))}" cy="${f(py(ultimo.valor))}" r="3.5"/>
@@ -580,6 +594,7 @@ function cardDaTendencia(ind, item, fim) {
       <p class="traj-card-ano"><b>${escape(valorDaTrajetoria(item.valorFinal, unidade))}</b><small>${escape(item.anoZero ? tp('chega a zero em {ano}', { ano: Math.ceil(item.anoZero) }) : tp('tendência em {ano}', { ano: fim }))}</small></p>
     </div>
     ${graficoDaTendencia(ind, item, fim)}
+    <p class="traj-card-periodo">${escape(periodoDoRitmo(item))}</p>
     <p class="traj-card-nota">${escape(unidade)}</p>
   </article>`;
 }

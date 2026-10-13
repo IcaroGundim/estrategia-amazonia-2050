@@ -1,0 +1,71 @@
+---
+// Corpo da página de projetos, comum às duas línguas: a carteira que o
+// Consórcio publica para a COP30 (conteudo/projetos.json). À esquerda, o
+// título e os recortes (estado, eixo da Estratégia, faixa de orçamento e
+// busca); à direita, os projetos em páginas de quatro, dois por dois, cada um
+// com a foto do site ou, quando não há, o mapa com o estado em destaque. O
+// texto de cada projeto é o do órgão que o propôs, na língua da página (com a
+// tradução do painel, quando o órgão escreveu na outra); o "projeto completo"
+// abre no site do Consórcio. Quem desenha a lista é src/scripts/projetos.js.
+import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = IDIOMA_PADRAO } = Astro.props;
+const t = traduzirCom(lang, Astro.locals.interface);
+---
+
+<div class="section-shell">
+  <div class="projetos-board">
+    <aside class="projetos-lateral card" aria-labelledby="projetos-titulo">
+      <h1 id="projetos-titulo" class="eixos-titulo">{t('Projetos -')} <em>{t('Amazônia Legal.')}</em></h1>
+      <p class="lead">{t('A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.')}</p>
+      <dl id="projetos-numeros" class="projetos-numeros" aria-live="polite"></dl>
+
+      <div class="projetos-filtros">
+        <label class="indicator-search projetos-busca">
+          <span aria-hidden="true">⌕</span>
+          <input id="projetos-busca" type="search" placeholder={t('Buscar projeto ou órgão')} autocomplete="off" />
+        </label>
+        <div class="projetos-filtro">
+          <span class="select-wrap-label">{t('Estado')}</span>
+          <div id="projetos-estados" class="projetos-estados" role="group" aria-label={t('Filtrar por estado')}></div>
+        </div>
+        <div class="projetos-filtro">
+          <span class="select-wrap-label">{t('Eixo da Estratégia')}</span>
+          <div id="projetos-eixos" class="projetos-opcoes is-lista" role="group" aria-label={t('Filtrar por eixo da Estratégia')}></div>
+        </div>
+        <div class="projetos-filtro">
+          <span class="select-wrap-label">{t('Orçamento (US$)')}</span>
+          <div id="projetos-faixas" class="projetos-opcoes" role="group" aria-label={t('Filtrar por faixa de orçamento')}></div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="projetos-quadro" aria-labelledby="projetos-titulo">
+      <div class="projetos-quadro-topo">
+        <p id="projetos-resumo" class="projetos-resumo" aria-live="polite"></p>
+        <button id="projetos-limpar" class="projetos-limpar" type="button" hidden>{t('Limpar filtros')}</button>
+        <nav class="projetos-paginas" aria-label={t('Páginas de projetos')} hidden>
+          <button type="button" data-pagina="-1" aria-label={t('Página anterior')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg></button>
+          <span data-pagina-atual aria-live="polite"></span>
+          <button type="button" data-pagina="1" aria-label={t('Próxima página')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg></button>
+        </nav>
+      </div>
+      <div id="projetos-lista" class="projetos-lista" role="list">
+        <p class="projetos-aviso">{t('Carregando projetos…')}</p>
+      </div>
+      {/* A mesma paginação, de novo, para quem chegou ao fim dos cartões
+          empilhados (tablet e celular); no computador o CSS a esconde. */}
+      <nav class="projetos-paginas is-rodape" aria-label={t('Páginas de projetos')} hidden>
+        <button type="button" data-pagina="-1" aria-label={t('Página anterior')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg></button>
+        <span data-pagina-atual></span>
+        <button type="button" data-pagina="1" aria-label={t('Próxima página')}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg></button>
+      </nav>
+    </section>
+  </div>
+
+  <p id="projetos-fonte" class="projetos-fonte"></p>
+</div>

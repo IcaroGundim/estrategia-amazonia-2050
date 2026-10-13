@@ -279,7 +279,7 @@ const baselineModo = base?.desde !== undefined ? 'periodo' : base ? 'ponto' : 'r
         <Campo nome="nota" rotulo="Nota da parametrização" tipo="area" valor={parametro?.nota ?? ''} ajuda="Aparece na página de Metas explicando a escolha" largo />
         <Campo nome="notaAgregacao" rotulo="Nota do valor regional" tipo="area" valor={parametro?.notaAgregacao ?? ''} linhas={2} largo />
         <div class="admin-form-linha">
-          <Campo nome="trajJanela" rotulo="Trajetória: pontos no ritmo" tipo="numero" valor={parametro?.trajetoria?.janela ?? ''} ajuda="Quantos anos mais recentes entram no ritmo. Vazio = 5, mínimo 3." />
+          <Campo nome="trajJanela" rotulo="Trajetória: janela fixa (pontos)" tipo="numero" valor={parametro?.trajetoria?.janela ?? ''} ajuda="Deixe vazio: o ritmo sai dos últimos 10 anos da série. Preencha só quando a série tem quebra e apenas os últimos N pontos valem; mínimo 3." />
           <Campo nome="trajMetodo" rotulo="Trajetória: método" tipo="select" valor={parametro?.trajetoria?.metodo || 'linear'} opcoes={[
             { valor: 'linear', rotulo: 'Linear (variação constante por ano)' },
             { valor: 'composto', rotulo: 'Composto (variação percentual por ano)' }

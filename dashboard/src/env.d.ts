@@ -3,6 +3,8 @@
 declare namespace App {
   interface Locals {
     sessao?: import('./lib/admin/sessao').Sessao;
+    /** Acesso restrito da conta que entrou (`null`: a administração inteira). Definido pelo middleware. */
+    acesso?: import('./lib/admin/usuarios').Acesso | null;
     /** Textos de interface do rascunho, definidos só pela prévia da administração. */
     interface?: Record<string, { pt: string; en?: string | null }>;
   }

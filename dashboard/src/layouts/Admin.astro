@@ -1,10 +1,11 @@
 ---
-// Moldura da administração: barra lateral verde-mata com a navegação em
-// texto, cabeçalho fino com a conta, conteúdo em colunas de texto separadas
-// por filetes. Mesmo vocabulário visual do painel público.
+// Moldura da administração: barra superior verde-mata com a marca, as seções
+// e a conta, e o conteúdo na largura toda da janela, em colunas de texto
+// separadas por filetes. Mesmo vocabulário visual do painel público.
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import '../styles/admin.css';
+import { caminhoLiberado, inicioDe } from '../lib/admin/usuarios';
 
 interface Props {
   title: string;
@@ -14,7 +15,11 @@ interface Props {
 const { title, sessao = null } = Astro.props;
 const caminho = Astro.url.pathname;
 
-const NAVEGACAO: { grupo: string; itens: { href: string; nome: string; prefixos?: string[] }[] }[] = [
+// Uma conta de acesso restrito só vê na barra o que ela abre.
+const acesso = Astro.locals.acesso ?? null;
+const inicio = inicioDe(acesso);
+
+const TODAS: { grupo: string; itens: { href: string; nome: string; prefixos?: string[] }[] }[] = [
   { grupo: 'Painel', itens: [{ href: '/admin', nome: 'Início' }] },
   { grupo: 'Dados', itens: [
     { href: '/admin/valores', nome: 'Valores' },
@@ -32,6 +37,10 @@ const NAVEGACAO: { grupo: string; itens: { href: string; nome: string; prefixos?
     { href: '/admin/ajuda', nome: 'Ajuda' }
   ] }
 ];
+
+const NAVEGACAO = TODAS
+  .map((grupo) => ({ ...grupo, itens: grupo.itens.filter((item) => caminhoLiberado(acesso, item.href)) }))
+  .filter((grupo) => grupo.itens.length);
 
 const ativo = (item: { href: string; prefixos?: string[] }) =>
   item.href === '/admin' ? caminho === '/admin' : [item.href, ...(item.prefixos || [])].some((prefixo) => caminho.startsWith(prefixo));
@@ -57,38 +66,33 @@ const ativo = (item: { href: string; prefixos?: string[] }) =>
   <body class="admin-body">
     {sessao ? (
       <div class="admin-app">
-        <aside class="admin-lateral" aria-label="Seções da administração" transition:persist="lateral">
-          <a class="admin-marca" href="/admin">
-            <span class="admin-marca-nome">Estratégia Amazônia <b>2050</b></span>
+        {/* A barra persiste entre as telas: só o conteúdo troca, e o item ativo
+            é recalculado a cada navegação (ver o script no fim). */}
+        <header class="admin-cabecalho" transition:persist="cabecalho">
+          <a class="admin-marca" href={inicio} aria-label="Estratégia Amazônia 2050, início da administração">
+            <span class="admin-marca-nome"><span>Estratégia </span>Amazônia <b>2050</b></span>
           </a>
-          <nav>
+          <button type="button" class="admin-menu-botao" aria-expanded="false" aria-controls="admin-nav" data-abre-nav>Seções</button>
+          <nav id="admin-nav" aria-label="Seções da administração">
             {NAVEGACAO.map((grupo) => (
-              <div class="admin-nav-grupo">
-                <span class="admin-nav-titulo">{grupo.grupo}</span>
+              <div class="admin-nav-grupo" role="group" aria-label={grupo.grupo}>
+                <span class="admin-nav-titulo" aria-hidden="true">{grupo.grupo}</span>
                 {grupo.itens.map((item) => (
                   <a href={item.href} class={ativo(item) ? 'is-ativo' : undefined} aria-current={ativo(item) ? 'page' : undefined} data-prefixos={item.href === '/admin' ? undefined : [item.href, ...(item.prefixos || [])].join(' ')}>{item.nome}</a>
                 ))}
               </div>
             ))}
           </nav>
-          <div class="admin-lateral-rodape">
-            <a href="/" target="_blank" rel="noopener">Painel público</a>
+          <div class="admin-sessao">
+            <a class="admin-sessao-publico" href="/" target="_blank" rel="noopener">Painel público ↗</a>
+            <span class="admin-sessao-nome">{sessao.nome}</span>
+            <a href="/admin/senha">Minha senha</a>
+            <form method="post" action="/api/admin/sair"><button type="submit">Sair</button></form>
           </div>
-        </aside>
-        <div class="admin-corpo">
-          <header class="admin-topo">
-            <button type="button" class="admin-menu-botao" aria-label="Abrir seções" data-abre-nav>Seções</button>
-            <span class="admin-topo-titulo">{title}</span>
-            <div class="admin-sessao">
-              <span class="admin-sessao-nome">{sessao.nome}</span>
-              <a href="/admin/senha">Minha senha</a>
-              <form method="post" action="/api/admin/sair"><button type="submit">Sair</button></form>
-            </div>
-          </header>
-          <main class="admin-main" transition:animate="fade">
-            <slot />
-          </main>
-        </div>
+        </header>
+        <main class="admin-main" transition:animate="fade">
+          <slot />
+        </main>
       </div>
     ) : (
       <main class="admin-main is-solta">
@@ -109,15 +113,29 @@ const ativo = (item: { href: string; prefixos?: string[] }) =>
       })();
     </script>
     <script>
-      function inicia() {
-        const botao = document.querySelector('[data-abre-nav]');
-        botao?.addEventListener('click', () => document.body.classList.toggle('is-nav-aberta'));
-        document.querySelector('.admin-corpo')?.addEventListener('click', (evento) => {
-          if (document.body.classList.contains('is-nav-aberta') && !(evento.target as HTMLElement).closest('[data-abre-nav]')) document.body.classList.remove('is-nav-aberta');
-        });
+      // A barra persiste entre as telas, então os ouvintes dela são postos uma
+      // vez só, no documento: presos ao botão, se acumulariam a cada navegação.
+      // Em tela estreita as seções recolhem atrás do botão; clicar fora fecha.
+      function fechaNav() {
+        document.body.classList.remove('is-nav-aberta');
+        document.querySelector('[data-abre-nav]')?.setAttribute('aria-expanded', 'false');
       }
-      document.addEventListener('astro:page-load', inicia);
-      // A barra lateral persiste entre as telas; o item ativo é recalculado a cada troca.
+      document.addEventListener('click', (evento) => {
+        const alvo = evento.target as HTMLElement;
+        const botao = alvo.closest('[data-abre-nav]');
+        if (botao) {
+          const aberta = document.body.classList.toggle('is-nav-aberta');
+          botao.setAttribute('aria-expanded', String(aberta));
+        } else if (!alvo.closest('#admin-nav')) fechaNav();
+      });
+      document.addEventListener('keydown', (evento) => { if (evento.key === 'Escape') fechaNav(); });
+      // A barra fica presa no topo; o que gruda abaixo dela precisa saber a
+      // altura que ela tem agora (em tela estreita a linha pode quebrar).
+      const cabecalho = document.querySelector<HTMLElement>('.admin-cabecalho');
+      if (cabecalho) {
+        new ResizeObserver(() => document.documentElement.style.setProperty('--adm-cabecalho', `${cabecalho.offsetHeight}px`)).observe(cabecalho);
+      }
+      // O item ativo é recalculado a cada troca de tela.
       function marcaAtivo() {
         const caminho = location.pathname;
         document.querySelectorAll<HTMLAnchorElement>('.admin-nav-grupo a').forEach((link) => {
@@ -128,7 +146,7 @@ const ativo = (item: { href: string; prefixos?: string[] }) =>
         });
       }
       document.addEventListener('astro:after-swap', () => {
-        document.body.classList.remove('is-nav-aberta');
+        fechaNav();
         marcaAtivo();
       });
     </script>

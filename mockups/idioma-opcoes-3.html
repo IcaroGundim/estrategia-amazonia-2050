@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troca de língua · terceira rodada — Estratégia 2050</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mata:#0e2b22;--mata-500:#3e6e57;--mata-100:#c6d2c7;--urucum:#c0451f;--ocre:#e0a83c;--areia:#f5f0e8;--papel:#fff;
+  --linha:#ddd3c6;--linha-2:#ede6dc;--tinta:#1a1613;--tinta-2:#3a342e;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--text:'Libre Franklin',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.55 var(--text)}
+h1,h2,p{margin:0}
+h1,h2{font-family:var(--display);letter-spacing:-.03em;line-height:1.1}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+main{max-width:1320px;margin:auto;padding:34px 34px 70px}
+.cabeca{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;margin-bottom:30px;border-bottom:1px solid var(--linha)}
+.eyebrow{color:var(--urucum);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.cabeca h1{margin:8px 0 10px;font-size:32px}
+.cabeca p{max-width:78ch;color:var(--tinta-3);font-size:14px}
+.chave-pagina{display:flex;align-items:center;gap:10px;color:var(--tinta-3);font-size:12px}
+.chave-pagina div{display:flex;padding:3px;border:1px solid var(--linha);border-radius:9px;background:var(--papel)}
+.chave-pagina button{min-height:32px;padding:0 12px;border:0;border-radius:6px;background:none;font-size:12px;font-weight:600;color:var(--tinta-3)}
+.chave-pagina button[aria-pressed="true"]{background:var(--mata);color:var(--areia)}
+
+.opcao{margin-bottom:38px}
+.opcao-cabeca{display:flex;align-items:baseline;gap:14px;padding:0 4px 10px;flex-wrap:wrap}
+.opcao-cabeca b{font:600 13px var(--display);color:var(--urucum);letter-spacing:.06em}
+.opcao-cabeca h2{font-size:20px}
+.opcao-cabeca p{flex:1 1 380px;color:var(--tinta-3);font-size:13px}
+.rec{padding:1px 6px;border-radius:4px;background:#e7ede8;color:var(--mata-500);font:600 9.5px var(--text);letter-spacing:.06em;text-transform:uppercase;font-style:normal}
+.palco{display:grid;gap:10px}
+/* Segunda linha: a faixa do celular e, ao lado, o seletor ampliado duas vezes. */
+.palco-linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.palco-linha .mob{flex:0 1 390px;min-width:0}
+.lupa{flex:1 1 300px;align-self:stretch;min-height:64px;padding:14px 24px;display:flex;align-items:center;justify-content:center;gap:26px;border-radius:12px;background:var(--mata);color:var(--areia)}
+.lupa small{color:var(--mata-100);font:600 9.5px var(--text);letter-spacing:.14em;text-transform:uppercase}
+.lupa-zoom{zoom:2;display:flex;align-items:center}
+.tags{display:flex;gap:6px;flex-wrap:wrap;padding:10px 4px 0}
+.tag{padding:3px 8px;border-radius:5px;background:var(--linha-2);color:var(--tinta-3);font-size:10.5px}
+.tag.ok{background:#e7ede8;color:var(--mata-500)}
+.tag.alerta{background:#f7e9e4;color:var(--urucum)}
+
+/* ==== Barra do topo, com as medidas de global.css ====================== */
+.topbar{border-radius:12px;background:var(--mata);color:var(--areia);box-shadow:0 4px 20px rgba(14,43,34,.16)}
+.topbar-inner{min-height:84px;padding:10px 26px;display:flex;align-items:center;gap:30px}
+.brand{display:flex;align-items:center;gap:18px;min-width:max-content}
+.brand-logo{flex:none;width:172px;height:60px;display:block;object-fit:contain}
+.brand-product{display:flex;align-items:center;padding-left:18px;border-left:1px solid rgba(245,240,232,.2);white-space:nowrap}
+.brand-product-nome{display:grid;gap:5px}
+.brand-product-nome small{font:600 10px/1 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--mata-100)}
+.brand-product-palavra{display:flex;align-items:baseline;gap:.24em;font:800 30px/.86 var(--display);letter-spacing:-.035em}
+.brand-product-ano{font:inherit;color:var(--ocre)}
+.topnav{display:flex;align-self:stretch;align-items:center;gap:25px;margin-left:6px}
+.topnav a{position:relative;padding:10px 0;color:rgba(245,240,232,.7);font-size:13px;white-space:nowrap}
+.topnav .is-active{color:var(--ocre);font-weight:600}
+.topnav .is-active::after{content:"";position:absolute;right:0;bottom:3px;left:0;height:2px;border-radius:2px;background:var(--ocre)}
+.topbar-actions{margin-left:auto}
+.outline-button{min-height:40px;padding:0 15px;display:inline-flex;align-items:center;border:1px solid rgba(245,240,232,.34);border-radius:9px;color:var(--areia);font-size:12px;font-weight:600;white-space:nowrap}
+/* Faixa de 390 px: o logo menor e o botão de vista, como no celular. */
+.mob .topbar-inner{min-height:64px;padding:8px 16px;gap:10px}
+.mob .brand-logo{width:104px;height:38px}
+.mob .brand-product,.mob .topnav,.mob .topbar-actions{display:none}
+.vista{margin-left:auto;max-width:140px;min-height:40px;display:inline-flex;align-items:center;color:var(--areia);font-size:11.5px;font-weight:600;line-height:1.25;text-decoration:underline;text-underline-offset:3px}
+/* O seletor encosta no botão de ação, a 12 px, como no site. */
+.desk .idioma{margin-left:-18px}
+.mob .idioma{margin-left:auto}
+.mob .idioma + .vista{margin-left:0}
+
+/* ==== O seletor ======================================================= */
+/* Base comum. A área de toque chega a 44 px com um ::before invisível. */
+.idioma{position:relative;display:inline-flex;align-items:center;gap:6px}
+.idioma a,.idioma .atual,.idioma button{position:relative;display:flex;align-items:center}
+.idioma a::before,.idioma button::before{content:"";position:absolute;inset:50% auto auto 50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
+.idioma a:focus-visible,.idioma button:focus-visible{outline:2px solid var(--ocre);outline-offset:3px;border-radius:6px}
+.fio{width:1px;height:18px;background:rgba(245,240,232,.28)}
+.idioma img{display:block;border:1px solid rgba(245,240,232,.34)}
+.idioma .br{aspect-ratio:10/7}
+.idioma .en{aspect-ratio:3/2}
+
+/* Hoje: 14 px, a outra bandeira a 45 % e dessaturada. */
+.s0 .idioma{gap:8px}
+.s0 .idioma a,.s0 .idioma .atual{padding:10px 4px}
+.s0 .idioma img{height:14px;border-radius:2px}
+.s0 .idioma a img{opacity:.45;filter:saturate(.4);transition:opacity .2s,filter .2s}
+.s0 .idioma a:hover img,.s0 .idioma a:focus-visible img{opacity:1;filter:none}
+.s0 .idioma .atual::after{content:"";position:absolute;right:4px;bottom:3px;left:4px;height:2px;border-radius:2px;background:var(--ocre)}
+
+/* A · Chave com bandeira e sigla: um trilho da altura do botão vizinho (40 px), com a
+   língua da página preenchida. As duas bandeiras em cores. */
+.sA .idioma{gap:2px;padding:3px;border:1px solid rgba(245,240,232,.3);border-radius:10px}
+.sA .idioma a,.sA .idioma .atual{gap:7px;height:32px;padding:0 10px;border-radius:7px;font:700 11px var(--text);letter-spacing:.08em}
+.sA .idioma img{height:15px;border-radius:2px}
+.sA .idioma .atual{background:rgba(245,240,232,.16);color:var(--areia)}
+.sA .idioma a{color:rgba(245,240,232,.66);transition:color 140ms ease,background 140ms ease}
+.sA .idioma a img{opacity:.85;transition:opacity 140ms ease}
+.sA .idioma a:hover,.sA .idioma a:focus-visible{color:var(--ocre);background:rgba(245,240,232,.07)}
+.sA .idioma a:hover img,.sA .idioma a:focus-visible img{opacity:1}
+.sA .fio{display:none}
+.mob.sA-aperta .idioma a,.mob.sA-aperta .idioma .atual{padding:0 7px;gap:5px}
+
+/* B · Botão da outra língua: irmão do botão de ação, com a bandeira e o nome
+   por extenso de para onde ele leva. */
+.sB .idioma a{gap:8px;min-height:40px;padding:0 13px;border:1px solid rgba(245,240,232,.34);border-radius:9px;color:var(--areia);font-size:12px;font-weight:600;white-space:nowrap;transition:border-color 140ms ease,color 140ms ease}
+.sB .idioma img{height:15px;border-radius:2px}
+.sB .idioma a:hover,.sB .idioma a:focus-visible{border-color:var(--ocre);color:var(--ocre)}
+
+/* C · Menu de línguas: a língua da página num botão com seta; a lista abre
+   embaixo. É o único desenho que recebe uma terceira língua sem mudar. */
+.sC .idioma button{gap:7px;min-height:40px;padding:0 10px 0 11px;border:1px solid rgba(245,240,232,.3);border-radius:9px;background:none;color:var(--areia);font:700 11px var(--text);letter-spacing:.08em;transition:border-color 140ms ease}
+.sC .idioma button:hover,.sC .idioma button[aria-expanded="true"]{border-color:var(--ocre)}
+.sC .idioma img{height:15px;border-radius:2px}
+.seta{width:7px;height:7px;margin:-3px 2px 0 3px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform 140ms ease,margin 140ms ease}
+.sC .idioma button[aria-expanded="true"] .seta{margin-top:4px;transform:rotate(-135deg)}
+.menu{position:absolute;z-index:5;top:calc(100% + 7px);right:0;min-width:176px;padding:5px;display:grid;gap:1px;border:1px solid var(--linha);border-radius:10px;background:var(--papel);color:var(--tinta);box-shadow:0 14px 34px rgba(14,43,34,.22)}
+.menu[hidden]{display:none}
+.menu a,.menu .atual{gap:9px;min-height:36px;padding:0 10px;border-radius:6px;font:500 13px var(--text);letter-spacing:0}
+.menu a::before{content:none}
+.menu img{height:14px;border-color:var(--linha)}
+.menu .atual{font-weight:600}
+.menu .atual::after{content:"✓";margin-left:auto;padding-left:14px;color:var(--mata-500);font-weight:700}
+.menu a:hover,.menu a:focus-visible{background:var(--areia);outline:none}
+
+/* D · Nomes por extenso: sem bandeira. A língua da página em ocre e
+   sublinhada, como a aba ativa da navegação; a outra é o link. */
+.sD .idioma{gap:11px}
+.sD .idioma a,.sD .idioma .atual{padding:10px 0;font-size:12.5px;font-weight:600;white-space:nowrap}
+.sD .idioma .atual{color:var(--ocre)}
+.sD .idioma .atual::after{content:"";position:absolute;right:0;bottom:3px;left:0;height:2px;border-radius:2px;background:var(--ocre)}
+.sD .idioma a{color:rgba(245,240,232,.7);transition:color 140ms ease}
+.sD .idioma a:hover,.sD .idioma a:focus-visible{color:var(--areia)}
+.sD .fio{height:14px}
+.mob.sD .idioma{gap:9px}
+
+@media (max-width:1240px){.topnav{display:none}}
+@media (max-width:700px){main{padding:22px 16px 50px}.desk{display:none}.lupa{flex-basis:100%;flex-direction:column;gap:12px;padding:16px 12px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <div class="cabeca">
+    <div>
+      <p class="eyebrow">Barra do topo · troca de língua · terceira rodada</p>
+      <h1>Um seletor que pareça seletor</h1>
+      <p>Hoje são duas bandeiras de 14 px: a da página, sublinhada, e a outra, cinza. A cinza lê como desligada, a mesclada do inglês não se distingue nesse tamanho e nada diz que aquilo é clicável. As quatro opções abaixo mostram cada uma no computador, no celular e ampliada. Troque a língua da página para ver os dois estados; os links das barras também trocam.</p>
+    </div>
+    <div class="chave-pagina">Página em
+      <div role="group" aria-label="Língua da página"><button type="button" data-lingua="pt" aria-pressed="true">Português</button><button type="button" data-lingua="en" aria-pressed="false">English</button></div>
+    </div>
+  </div>
+  <div data-opcoes></div>
+</main>
+
+<script>
+const BANDEIRA = { pt: '../dashboard/public/idiomas/Bandeira_do_Brasil.svg', en: '../dashboard/public/idiomas/Bandeira_EUA_Reino_Unido.svg' };
+const CLASSE = { pt: 'br', en: 'en' };
+const SIGLA = { pt: 'PT', en: 'EN' };
+const NOME = { pt: 'Português', en: 'English' };
+const ROTULO = { pt: 'Ler esta página em português', en: 'Read this page in English' };
+const TEXTOS = {
+  pt: { regional: 'Estratégia Regional', nav: ['Visão Geral', 'Metas e indicadores', 'Panorama', 'Projetos'], acao: 'Site da carteira', vista: 'Ver como no computador', lupa: 'ampliado 2×' },
+  en: { regional: 'Regional Strategy', nav: ['The Strategy', 'Goals & indicators', 'Explore', 'Projects'], acao: 'Portfolio website', vista: 'Desktop view', lupa: 'enlarged 2×' }
+};
+
+const OPCOES = [
+  { n: 'Hoje', titulo: 'Como está', classe: 's0', hoje: true,
+    texto: 'Duas bandeiras de 14 px, a da página sublinhada e a outra apagada até passar o mouse.', tags: [] },
+  { n: 'A', titulo: 'Chave com bandeira e sigla', classe: 'sA', rec: true,
+    texto: 'Um trilho da altura do botão vizinho, com as duas línguas dentro. A da página fica preenchida; a outra é o link, em cores, e acende ao passar o mouse. A sigla diz a língua e a bandeira ajuda a achar.',
+    tags: [['ok', 'Lê como controle, não como enfeite'], ['ok', 'Mostra as duas línguas e qual está ativa'], ['ok', 'A outra não parece desligada'], ['alerta', 'No celular, o botão de vista quebra em duas linhas'], ['alerta', 'Volta a ter moldura e sigla, que o design system tirou']] },
+  { n: 'B', titulo: 'Botão da outra língua', classe: 'sB',
+    texto: 'Um botão só, irmão do botão de ação ao lado: a bandeira e o nome por extenso de para onde ele leva, “English” ou “Português”. A língua da página não aparece; ela já está na tela.',
+    tags: [['ok', 'A ação fica escrita'], ['ok', 'Mesmo desenho do botão vizinho'], ['ok', 'O mais simples de entender'], ['alerta', 'Não mostra a língua atual'], ['alerta', 'Dois botões lado a lado disputam atenção'], ['alerta', 'No celular, o botão de vista quebra em duas linhas']] },
+  { n: 'C', titulo: 'Menu de línguas', classe: 'sC',
+    texto: 'A língua da página num botão com seta; um clique abre a lista com os nomes por extenso e a marca na atual. Clique no botão para ver a lista.',
+    tags: [['ok', 'Recebe uma terceira língua sem mudar'], ['ok', 'Nomes por extenso na lista'], ['ok', 'Ocupa pouca largura'], ['alerta', 'Dois cliques para trocar'], ['alerta', 'Com só duas línguas, o menu é cerimônia']] },
+  { n: 'D', titulo: 'Nomes por extenso', classe: 'sD',
+    texto: 'Sem bandeira: “Português” e “English” escritos, separados por um fio. A da página em ocre e sublinhada, como a aba ativa da navegação. No celular, onde não cabem, viram as siglas.',
+    tags: [['ok', 'Diz a língua, não o país'], ['ok', 'Dispensa a bandeira mesclada do inglês'], ['ok', 'Mesmo vocabulário da navegação'], ['alerta', 'Largo no computador: cerca de 130 px'], ['alerta', 'Pode ser lido como mais duas abas']] }
+];
+
+let lingua = 'pt';
+// Em qual barra o menu da opção C está aberto (computador, celular ou lupa).
+let menuAberto = null;
+
+function seletor(o, onde) {
+  const outra = lingua === 'pt' ? 'en' : 'pt';
+  const img = (l) => `<img class="${CLASSE[l]}" src="${BANDEIRA[l]}" alt="">`;
+  const link = (l, conteudo) => `<a href="#" data-trocar lang="${l}" hreflang="${l}" aria-label="${ROTULO[l]}" title="${ROTULO[l]}">${conteudo}</a>`;
+  if (o.classe === 'sB') return `<span class="idioma">${link(outra, `${img(outra)}<span>${NOME[outra]}</span>`)}</span>`;
+  if (o.classe === 'sC') {
+    const aberto = menuAberto === onde;
+    const item = (l) => l === lingua ? `<span class="atual">${img(l)}${NOME[l]}</span>` : link(l, `${img(l)}${NOME[l]}`);
+    return `<span class="idioma"><button type="button" data-menu="${onde}" aria-haspopup="true" aria-expanded="${aberto}" aria-label="${lingua === 'pt' ? 'Língua da página: português. Trocar' : 'Page language: English. Change'}">${img(lingua)}${SIGLA[lingua]}<span class="seta" aria-hidden="true"></span></button><span class="menu"${aberto ? '' : ' hidden'}>${item('pt')}${item('en')}</span></span>`;
+  }
+  const conteudo = (l) => {
+    if (o.classe === 'sA') return `${img(l)}${SIGLA[l]}`;
+    if (o.classe === 'sD') return onde === 'mob' ? SIGLA[l] : NOME[l];
+    return img(l);
+  };
+  const item = (l) => l === lingua ? `<span class="atual" aria-hidden="true">${conteudo(l)}</span>` : link(l, conteudo(l));
+  return `<span class="idioma">${item('pt')}<span class="fio" aria-hidden="true"></span>${item('en')}</span>`;
+}
+
+function barra(o) {
+  const t = TEXTOS[lingua];
+  return `<div class="topbar desk"><div class="topbar-inner">
+      <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt="Consórcio Interestadual Amazônia Legal"><span class="brand-product"><span class="brand-product-nome"><small>${t.regional}</small><strong class="brand-product-palavra"><span>Amazônia</span> <b class="brand-product-ano">2050</b></strong></span></span></span>
+      <nav class="topnav" aria-label="Navegação"><a href="#">${t.nav[0]}</a><a href="#">${t.nav[1]}</a><a href="#">${t.nav[2]}</a><a href="#" class="is-active">${t.nav[3]}</a></nav>
+      <div class="topbar-actions"><a class="outline-button" href="#">${t.acao}</a></div>
+      ${seletor(o, 'desk')}
+    </div></div>
+    <div class="palco-linha">
+      <div class="topbar mob ${o.classe}${o.classe === 'sA' ? ' sA-aperta' : ''}"><div class="topbar-inner">
+        <span class="brand"><img class="brand-logo" src="../dashboard/public/logo-consorcio-clara.avif" alt=""></span>
+        ${seletor(o, 'mob')}
+        <span class="vista">${t.vista}</span>
+      </div></div>
+      <div class="lupa"><small>${t.lupa}</small><span class="lupa-zoom">${seletor(o, 'lupa')}</span></div>
+    </div>`;
+}
+
+function render() {
+  document.querySelector('[data-opcoes]').innerHTML = OPCOES.map((o) => `
+    <section class="opcao ${o.classe}${o.hoje ? ' hoje' : ''}">
+      <div class="opcao-cabeca"><b>${o.n}</b><h2>${o.titulo}${o.rec ? ' <em class="rec">recomendada</em>' : ''}</h2><p>${o.texto}</p></div>
+      <div class="palco">${barra(o)}</div>
+      ${o.tags.length ? `<div class="tags">${o.tags.map(([c, t]) => `<span class="tag ${c}">${t}</span>`).join('')}</div>` : ''}
+    </section>`).join('');
+  document.querySelectorAll('[data-lingua]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lingua === lingua)));
+  document.documentElement.lang = lingua === 'pt' ? 'pt-BR' : 'en';
+}
+
+// No site o link recarrega a página na outra língua. Aqui ele só troca o
+// estado de todas as barras, para comparar as duas páginas.
+document.addEventListener('click', (event) => {
+  const trocar = event.target.closest('[data-trocar]');
+  const chave = event.target.closest('[data-lingua]');
+  const menu = event.target.closest('[data-menu]');
+  if (trocar) { event.preventDefault(); lingua = lingua === 'pt' ? 'en' : 'pt'; menuAberto = null; render(); }
+  else if (chave) { lingua = chave.dataset.lingua; menuAberto = null; render(); }
+  else if (menu) { menuAberto = menuAberto === menu.dataset.menu ? null : menu.dataset.menu; render(); document.querySelector(`[data-menu="${menu.dataset.menu}"]`)?.focus(); }
+  else {
+    if (event.target.closest('.topbar a')) event.preventDefault();
+    if (menuAberto && !event.target.closest('.menu')) { menuAberto = null; render(); }
+  }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && menuAberto) { menuAberto = null; render(); }
+});
+
+render();
+</script>
+</body>
+</html>

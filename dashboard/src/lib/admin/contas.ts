@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 import { deposito, type Autor } from './deposito';
 import { ARQUIVOS, ErroDeEdicao } from './edicao';
-import type { Usuario } from './usuarios';
+import type { Acesso, Usuario } from './usuarios';
 
 interface Arquivo { _leia?: string; usuarios: Usuario[] }
 
@@ -33,13 +33,14 @@ export function validaNomeDeUsuario(usuario: string): string {
   return limpo;
 }
 
-export async function criaConta(usuario: string, nome: string, autor: Autor): Promise<string> {
+/** `acesso` vazio cria uma conta que abre a administração inteira. */
+export async function criaConta(usuario: string, nome: string, autor: Autor, acesso: Acesso | null = null): Promise<string> {
   const limpo = validaNomeDeUsuario(usuario);
   const { dados } = await leContas();
   if (dados.usuarios.some((item) => item.usuario === limpo)) throw new ErroDeEdicao(`Já existe a conta ${limpo}.`);
   const senha = senhaAleatoria();
-  dados.usuarios.push({ usuario: limpo, nome: nome.trim() || limpo, hash: bcrypt.hashSync(senha, CUSTO), ativo: true, trocarSenha: true, criadoEm: new Date().toISOString().slice(0, 10) });
-  await grava(dados, `cria a conta ${limpo}`, autor);
+  dados.usuarios.push({ usuario: limpo, nome: nome.trim() || limpo, hash: bcrypt.hashSync(senha, CUSTO), ativo: true, trocarSenha: true, criadoEm: new Date().toISOString().slice(0, 10), ...(acesso ? { acesso } : {}) });
+  await grava(dados, `cria a conta ${limpo}${acesso ? ` (acesso: ${acesso})` : ''}`, autor);
   return senha;
 }
 
@@ -59,7 +60,8 @@ export async function ativaConta(usuario: string, ativo: boolean, autor: Autor):
   const conta = dados.usuarios.find((item) => item.usuario === usuario);
   if (!conta) throw new ErroDeEdicao(`Não existe a conta ${usuario}.`);
   if (!ativo && usuario === autor.usuario) throw new ErroDeEdicao('Você não pode desativar a própria conta.');
-  if (!ativo && dados.usuarios.filter((item) => item.ativo && item.usuario !== usuario).length === 0) throw new ErroDeEdicao('Não dá para desativar a última conta ativa.');
+  // Conta de acesso restrito não cria nem reativa ninguém: tem de sobrar uma que abra tudo.
+  if (!ativo && dados.usuarios.filter((item) => item.ativo && !item.acesso && item.usuario !== usuario).length === 0) throw new ErroDeEdicao('Não dá para desativar a última conta ativa com acesso completo.');
   conta.ativo = ativo;
   await grava(dados, `${ativo ? 'reativa' : 'desativa'} a conta ${usuario}`, autor);
 }

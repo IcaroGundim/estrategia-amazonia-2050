@@ -9,6 +9,7 @@ import Campo from '../../components/admin/Campo.astro';
 import Mensagens from '../../components/admin/Mensagens.astro';
 import { ErroDeEdicao, texto } from '../../lib/admin/edicao';
 import { ativaConta, criaConta, leContas, redefineSenha } from '../../lib/admin/contas';
+import { NOME_DO_ACESSO, type Acesso } from '../../lib/admin/usuarios';
 
 const sessao = Astro.locals.sessao!;
 const autor = { usuario: sessao.usuario, nome: sessao.nome };
@@ -22,7 +23,9 @@ if (Astro.request.method === 'POST') {
   const usuario = texto(dados, 'usuario');
   try {
     if (acao === 'criar') {
-      const senha = await criaConta(usuario, texto(dados, 'nome'), autor);
+      const acesso = texto(dados, 'acesso');
+      if (acesso && !(acesso in NOME_DO_ACESSO)) throw new ErroDeEdicao(`Acesso desconhecido: ${acesso}.`);
+      const senha = await criaConta(usuario, texto(dados, 'nome'), autor, (acesso || null) as Acesso | null);
       senhaMostrada = { usuario: usuario.trim().toLowerCase(), senha };
     } else if (acao === 'redefinir') {
       senhaMostrada = { usuario, senha: await redefineSenha(usuario, autor) };
@@ -56,6 +59,7 @@ const { dados } = await leContas();
       <div class="admin-form-linha">
         <Campo nome="usuario" rotulo="Usuário" ajuda="Letras minúsculas, números, ponto, hífen ou sublinhado. Ex.: maria.silva" obrigatorio />
         <Campo nome="nome" rotulo="Nome" ajuda="Como aparece no histórico de alterações" obrigatorio />
+        <Campo nome="acesso" rotulo="Acesso" tipo="select" opcoes={[{ valor: '', rotulo: 'Administração inteira' }, { valor: 'textos', rotulo: 'Só a tela de Textos' }]} ajuda="Só Textos: revisa e salva textos no rascunho; não vê dados nem contas, e não publica." />
       </div>
       <div class="admin-acoes"><button type="submit" class="admin-botao">Criar e gerar senha</button></div>
     </form>
@@ -66,7 +70,7 @@ const { dados } = await leContas();
     <ul class="admin-lista">
       {dados.usuarios.map((conta) => (
         <li>
-          <div><b>{conta.nome}</b> <small>{conta.usuario}, desde {conta.criadoEm}{conta.trocarSenha ? ', senha temporária' : ''}</small></div>
+          <div><b>{conta.nome}</b> <small>{conta.usuario}, desde {conta.criadoEm}{conta.acesso ? `, acesso: ${NOME_DO_ACESSO[conta.acesso] ?? conta.acesso}` : ''}{conta.trocarSenha ? ', senha temporária' : ''}</small></div>
           <div class="admin-acoes" style="margin: 0">
             <span class={`admin-etiqueta${conta.ativo ? ' is-coletado' : ' is-manual'}`}>{conta.ativo ? 'ativa' : 'inativa'}</span>
             <form method="post" onsubmit={`return confirm('Gerar senha nova para ${conta.usuario}? A atual deixa de valer no próximo deploy.')`}><input type="hidden" name="acao" value="redefinir" /><input type="hidden" name="usuario" value={conta.usuario} /><button type="submit" class="admin-botao is-secundario is-mini">Redefinir senha</button></form>

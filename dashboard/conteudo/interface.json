@@ -24,7 +24,9 @@
         "Como ler os dados",
         "Sobre a Estratégia",
         "Baixar nota técnica",
-        "English is a courtesy translation. The official wording is the Portuguese one."
+        "English is a courtesy translation. The official wording is the Portuguese one.",
+        "Projetos",
+        "Site da carteira"
       ],
       "alvo": ".topbar"
     },
@@ -465,8 +467,8 @@
         "Trajetória",
         "Onde a Amazônia Legal está no caminho até 2050",
         "Onde {estado} está no caminho até 2050",
-        "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
-        "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
+        "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
+        "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
         "Ver o quadro de metas",
         "Como a trajetória é calculada",
         "Modelo",
@@ -474,7 +476,7 @@
         "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:",
         "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
         "Janela",
-        "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.",
+        "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.",
         "Ritmo",
         "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.",
         "Ano de alcance",
@@ -518,12 +520,15 @@
         "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.",
         "chega a zero em {ano}",
         "tendência em {ano}",
-        "Trajetória desligada."
+        "Trajetória desligada.",
+        "ritmo de {desde} a {ate}",
+        "janela fixa desta meta"
       ],
       "alvo": ".trajetoria"
     },
     {
       "titulo": "Metas: trajetória pactuada até 2050",
+      "pagina": "metas",
       "chaves": [
         "Trajetória 2050",
         "Metas intermediárias pactuadas na Estratégia, para a região. Não são previsão nem o ritmo atual calculado no Panorama.",
@@ -587,10 +592,13 @@
         "Rateio contratado dos estados com o Consórcio",
         "A ficha parte de R$ 6,12 mi em 2026, o rateio ordinário dos nove estados fixado pela Res. 001/2026 (a ficha o chama de executado; é orçamento). A série medida soma os contratos de rateio de cada estado com o Consórcio: valor contratado, não arrecadado. Em 2019 e 2020 a receita arrecadada (R$ 0,70 mi e R$ 3,11 mi) ficou abaixo do contratado; 2024 e 2025 incluem aportes extras (HUB e COP30). Recursos de terceiros e a execução estão nas tabelas cal_instrumentos e cal_orcamento_execucao.",
         "A projeção parte de R$ 578,1 bi de receita líquida da indústria, e nenhum recorte da tabela SIDRA 10457 de 2024 reproduz esse número: receita de atividades industriais de R$ 584,3 bi (indústria total) ou R$ 475,0 bi (transformação, campo receitaLiquida2024); receita total de vendas de R$ 598,4 bi ou R$ 489,1 bi. O valor principal do painel é outra variável, o valor da transformação industrial da indústria total (R$ 215,4 bi)."
-      ]
+      ],
+      "alvo": "#goals-detail",
+      "abre": "#goals-list button[data-codigo]"
     },
     {
       "titulo": "Metas: coletados sem meta numérica",
+      "pagina": "metas",
       "chaves": [
         "Coletados, sem meta numérica",
         "A região e o momento de cada estado",
@@ -611,7 +619,62 @@
         "{variacao} desde {ano}",
         "vínculos",
         "equipes"
-      ]
+      ],
+      "alvo": ".goals-list-card",
+      "abre": ".eixo-cartao"
+    },
+    {
+      "titulo": "Projetos: título, números e filtros",
+      "pagina": "projetos",
+      "chaves": [
+        "Projetos -",
+        "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.",
+        "Estado",
+        "Filtrar por estado",
+        "Eixo da Estratégia",
+        "Filtrar por eixo da Estratégia",
+        "Orçamento (US$)",
+        "Filtrar por faixa de orçamento",
+        "Buscar projeto ou órgão",
+        "Todos os estados",
+        "{estado}: {n} projetos",
+        "Todas",
+        "projetos",
+        "órgãos"
+      ],
+      "alvo": ".projetos-lateral"
+    },
+    {
+      "titulo": "Projetos: quadro e cartão do projeto",
+      "pagina": "projetos",
+      "chaves": [
+        "{n} de {total} projetos",
+        "{total} projetos",
+        "Limpar filtros",
+        "Páginas de projetos",
+        "Página anterior",
+        "Próxima página",
+        "Página {n} de {total}",
+        "Carregando projetos…",
+        "Nenhum projeto com esse recorte.",
+        "Orçamento",
+        "Duração",
+        "{n} meses",
+        "Ver o projeto completo",
+        "texto em inglês",
+        "texto em português",
+        "até 500 mil",
+        "500 mil a 1 milhão",
+        "1 a 3,5 milhões",
+        "3,5 a 5 milhões",
+        "5 a 10 milhões",
+        "acima de 10 milhões",
+        "Mapa da Amazônia Legal com {estado} em destaque",
+        "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.",
+        "Foto ilustrativa",
+        "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons."
+      ],
+      "alvo": ".projetos-quadro"
     }
   ],
   "textos": {
@@ -704,8 +767,8 @@
       "en": "Nine states, 59 indicators and the evidence to follow the Legal Amazon."
     },
     "Panorama - ": {
-      "pt": "Panorama -",
-      "en": "At a glance -"
+      "pt": "Panorama - ",
+      "en": "At a glance - "
     },
     "Amazônia Legal.": {
       "pt": "Amazônia Legal.",
@@ -1867,14 +1930,6 @@
       "pt": "Onde {estado} está no caminho até 2050",
       "en": "Where {estado} stands on the way to 2050"
     },
-    "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
-      "pt": "Ritmo dos últimos anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
-      "en": "Recent pace of each goal against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
-    },
-    "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.": {
-      "pt": "Ritmo = variação média por ano nos pontos mais recentes da série. Metas sem série anual suficiente ficam sem projeção.",
-      "en": "Pace = average change per year over the most recent points of the series. Targets without enough yearly data get no projection."
-    },
     "Ver o quadro de metas": {
       "pt": "Ver o quadro de metas",
       "en": "See the goals board"
@@ -1902,10 +1957,6 @@
     "Janela": {
       "pt": "Janela",
       "en": "Window"
-    },
-    "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.": {
-      "pt": "Só entram os anos mais recentes com dado disponível: em geral, os cinco últimos, com mínimo de três. Anos sem valor ficam de fora.",
-      "en": "Only the most recent years with available data are used: usually the last five, with a minimum of three. Years without a value are left out."
     },
     "Ritmo": {
       "pt": "Ritmo",
@@ -2494,6 +2545,190 @@
     "IPAM": {
       "pt": "IPAM",
       "en": "IPAM"
+    },
+    "Projetos": {
+      "pt": "Projetos",
+      "en": "Projects"
+    },
+    "Site da carteira": {
+      "pt": "Site da carteira",
+      "en": "Portfolio website"
+    },
+    "Projetos -": {
+      "pt": "Projetos -",
+      "en": "Projects -"
+    },
+    "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.": {
+      "pt": "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.",
+      "en": "The portfolio of projects the nine states put before investors and partners, gathered by the Consortium for COP30."
+    },
+    "Estado": {
+      "pt": "Estado",
+      "en": "State"
+    },
+    "Filtrar por estado": {
+      "pt": "Filtrar por estado",
+      "en": "Filter by state"
+    },
+    "Eixo da Estratégia": {
+      "pt": "Eixo da Estratégia",
+      "en": "Strategy pillar"
+    },
+    "Filtrar por eixo da Estratégia": {
+      "pt": "Filtrar por eixo da Estratégia",
+      "en": "Filter by Strategy pillar"
+    },
+    "Orçamento (US$)": {
+      "pt": "Orçamento (US$)",
+      "en": "Budget (US$)"
+    },
+    "Filtrar por faixa de orçamento": {
+      "pt": "Filtrar por faixa de orçamento",
+      "en": "Filter by budget range"
+    },
+    "Buscar projeto ou órgão": {
+      "pt": "Buscar projeto ou órgão",
+      "en": "Search project or agency"
+    },
+    "Limpar filtros": {
+      "pt": "Limpar filtros",
+      "en": "Clear filters"
+    },
+    "Carregando projetos…": {
+      "pt": "Carregando projetos…",
+      "en": "Loading projects…"
+    },
+    "Todos os estados": {
+      "pt": "Todos os estados",
+      "en": "All states"
+    },
+    "{estado}: {n} projetos": {
+      "pt": "{estado}: {n} projetos",
+      "en": "{estado}: {n} projects"
+    },
+    "Todas": {
+      "pt": "Todas",
+      "en": "All"
+    },
+    "até 500 mil": {
+      "pt": "até 500 mil",
+      "en": "up to 500K"
+    },
+    "500 mil a 1 milhão": {
+      "pt": "500 mil a 1 milhão",
+      "en": "500K to 1M"
+    },
+    "1 a 3,5 milhões": {
+      "pt": "1 a 3,5 milhões",
+      "en": "1M to 3.5M"
+    },
+    "3,5 a 5 milhões": {
+      "pt": "3,5 a 5 milhões",
+      "en": "3.5M to 5M"
+    },
+    "5 a 10 milhões": {
+      "pt": "5 a 10 milhões",
+      "en": "5M to 10M"
+    },
+    "acima de 10 milhões": {
+      "pt": "acima de 10 milhões",
+      "en": "above 10M"
+    },
+    "Orçamento": {
+      "pt": "Orçamento",
+      "en": "Budget"
+    },
+    "Duração": {
+      "pt": "Duração",
+      "en": "Duration"
+    },
+    "{n} meses": {
+      "pt": "{n} meses",
+      "en": "{n} months"
+    },
+    "Ver o projeto completo": {
+      "pt": "Ver o projeto completo",
+      "en": "See the full project"
+    },
+    "texto em inglês": {
+      "pt": "texto em inglês",
+      "en": "text in English"
+    },
+    "texto em português": {
+      "pt": "texto em português",
+      "en": "text in Portuguese"
+    },
+    "{n} de {total} projetos": {
+      "pt": "{n} de {total} projetos",
+      "en": "{n} of {total} projects"
+    },
+    "{total} projetos": {
+      "pt": "{total} projetos",
+      "en": "{total} projects"
+    },
+    "Nenhum projeto com esse recorte.": {
+      "pt": "Nenhum projeto com esse recorte.",
+      "en": "No project matches this selection."
+    },
+    "projetos": {
+      "pt": "projetos",
+      "en": "projects"
+    },
+    "Páginas de projetos": {
+      "pt": "Páginas de projetos",
+      "en": "Project pages"
+    },
+    "Página anterior": {
+      "pt": "Página anterior",
+      "en": "Previous page"
+    },
+    "Próxima página": {
+      "pt": "Próxima página",
+      "en": "Next page"
+    },
+    "Página {n} de {total}": {
+      "pt": "Página {n} de {total}",
+      "en": "Page {n} of {total}"
+    },
+    "Mapa da Amazônia Legal com {estado} em destaque": {
+      "pt": "Mapa da Amazônia Legal com {estado} em destaque",
+      "en": "Map of the Legal Amazon with {estado} highlighted"
+    },
+    "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.": {
+      "pt": "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.",
+      "en": "Source: {site}, by the Interstate Consortium of the Legal Amazon, read on {data}. Each project’s text comes from the agency that proposed it; where it was written in another language, the translation is this dashboard’s, and the full project opens on the Consortium’s site in the original language. State, budget range and duration were standardised, and the Strategy pillar is this dashboard’s own reading. Where a project has no photo, the image is a landscape of the state from Wikimedia Commons, with author and licence shown on the card."
+    },
+    "Foto ilustrativa": {
+      "pt": "Foto ilustrativa",
+      "en": "Illustrative photo"
+    },
+    "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons.": {
+      "pt": "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons.",
+      "en": "Illustrative photo of the state, not of the project. Author: {autor}. Licence: {licenca}. Source: Wikimedia Commons."
+    },
+    "órgãos": {
+      "pt": "órgãos",
+      "en": "agencies"
+    },
+    "ritmo de {desde} a {ate}": {
+      "pt": "ritmo de {desde} a {ate}",
+      "en": "pace from {desde} to {ate}"
+    },
+    "janela fixa desta meta": {
+      "pt": "janela fixa desta meta",
+      "en": "fixed window for this goal"
+    },
+    "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.": {
+      "pt": "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.",
+      "en": "The last 10 years of the series are used, counted back from the most recent year with data; a shorter series is used in full. Ten years show the underlying trend and are not swayed by one unusual year, but they are slow to recognise a recent change of course. At least three years with data are needed, and years without a value are left out. A goal with a break in its series uses a fixed window, shown on the card."
+    },
+    "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.": {
+      "pt": "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
+      "en": "Pace = average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
+    },
+    "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
+      "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
+      "en": "Each goal’s pace over the last 10 years against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
     }
   }
 }
