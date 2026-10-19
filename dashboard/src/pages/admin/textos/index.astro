@@ -11,6 +11,7 @@ export const prerender = false;
 import Admin from '../../../layouts/Admin.astro';
 import CampoTexto from '../../../components/admin/CampoTexto.astro';
 import Mensagens from '../../../components/admin/Mensagens.astro';
+import { deposito, type Estado } from '../../../lib/admin/deposito';
 import { ErroDeEdicao, leJson, salvaJson, texto } from '../../../lib/admin/edicao';
 import { GRUPOS, NOME_DA_PAGINA, aplicaFormulario, aplicaFormularioInterface, folhas, lacunasDe, mudancasDeInterface, mudancasDeTextos, nomeDeInterface, pertenceAoGrupo, rotuloDoCaminho, type Arvore, type Interface, type Pagina } from '../../../lib/admin/textos';
 
@@ -60,11 +61,30 @@ if (Astro.request.method === 'POST') {
   }
 }
 
+// O rascunho como um todo, para o botão de publicar: quantas alterações
+// esperam e se este endereço publica (a prévia não publica). Sem ler o
+// depósito, o botão fica de fora e a tela de edição segue de pé.
+let estado: Estado | null = null;
+try {
+  estado = await deposito().estado();
+} catch {
+  estado = null;
+}
+const pendentes = estado?.pendentes.length ?? 0;
+const tituloPublicar = !estado
+  ? ''
+  : !estado.podePublicar
+    ? estado.aviso || 'Este endereço não publica.'
+    : pendentes
+      ? `Leva ao site o rascunho inteiro (${pendentes === 1 ? '1 alteração' : `${pendentes} alterações`}), inclusive o que foi salvo em outras telas.`
+      : 'Nada pendente: o site está igual ao rascunho.';
+
 const salvos = parametros.has('salvo') ? Number(parametros.get('salvo')) || 0 : null;
-// Quem só revisa texto não publica: o aviso diz que a publicação é de outra pessoa.
-const comoPublica = Astro.locals.acesso ? 'O site público só muda quando a equipe do painel publicar.' : 'O site público só muda depois de publicar, em Início.';
-const avisoDeSalvo = salvos ? `Salvo no rascunho: ${salvos} ${salvos === 1 ? 'texto alterado' : 'textos alterados'}. ${comoPublica}` : null;
+const avisoDeSalvo = salvos ? `Salvo no rascunho: ${salvos} ${salvos === 1 ? 'texto alterado' : 'textos alterados'}. O site público só muda depois de "Publicar no site".` : null;
 const avisoDeNada = salvos === 0 ? 'Nenhum texto mudou desde a última gravação; nada foi salvo.' : null;
+// O resultado de publicar volta por query string, como no Início.
+const publicado = parametros.get('msg');
+const erroAoPublicar = parametros.get('erro');
 
 const todas = folhas(textosNaTela);
 const gravadas = new Map(folhas(textosLidos.dados).map(({ caminho, par }) => [caminho, par]));
@@ -73,7 +93,15 @@ const interfaceGravada = interfaceLida.dados.textos;
 ---
 
 <Admin title="Textos" sessao={sessao}>
-  <Mensagens erro={erro} salvo={avisoDeSalvo} aviso={avisoDeNada} />
+  <Mensagens erro={erro || erroAoPublicar} salvo={avisoDeSalvo || publicado} aviso={avisoDeNada} />
+
+  {/* Fora do formulário dos textos (formulário não vai dentro de formulário);
+      o botão da barra o envia pelo atributo `form`. */}
+  {estado && (
+    <form id="textos-publicar" method="post" action="/api/admin/publicar" data-publicar data-pendentes={pendentes} data-astro-reload hidden>
+      <input type="hidden" name="volta" value={`/admin/textos?pagina=${paginaInicial}&lang=${langInicial}`} data-volta />
+    </form>
+  )}
 
   <form method="post" class="admin-textos" data-textos-form data-com-erro={erro ? '' : undefined} data-grupo-inicial={grupoInicial || undefined} data-lang-inicial={langInicial} data-astro-reload novalidate>
     <input type="hidden" name="versaoTextos" value={versaoTextos} />
@@ -100,6 +128,11 @@ const interfaceGravada = interfaceLida.dados.textos;
       <span class="admin-textos-pendencias" data-pendencias aria-live="polite"></span>
       <button type="button" class="admin-botao is-secundario" data-descartar hidden>Descartar</button>
       <button type="submit" class="admin-botao" data-salvar title="Salvar no rascunho (Ctrl+S ou ⌘S)">Salvar no rascunho</button>
+      {estado && (
+        <button type="submit" form="textos-publicar" class="admin-botao is-secundario" disabled={!estado.podePublicar || !pendentes} title={tituloPublicar} data-botao-publicar>
+          Publicar no site{pendentes > 0 && <small>{pendentes}</small>}
+        </button>
+      )}
     </div>
 
     <div class="admin-textos-corpo" data-corpo>
@@ -1065,6 +1098,33 @@ const interfaceGravada = interfaceLida.dados.textos;
       window.setTimeout(() => { salvar.disabled = true; });
     });
 
+    // Publicar leva o que está gravado no rascunho, não o que está nos campos:
+    // com texto por salvar, a tela pede para salvar antes, em vez de publicar
+    // sem ele. A confirmação lembra que vai junto o que outras telas salvaram.
+    const formPublicar = document.querySelector<HTMLFormElement>('[data-publicar]');
+    const botaoPublicar = document.querySelector<HTMLButtonElement>('[data-botao-publicar]');
+    formPublicar?.addEventListener('submit', (evento) => {
+      const mudados = campos.filter(alterado);
+      if (mudados.length) {
+        evento.preventDefault();
+        window.alert(`${mudados.length === 1 ? 'Há 1 texto alterado que ainda não foi salvo' : `Há ${mudados.length} textos alterados que ainda não foram salvos`} e não iria junto. Salve no rascunho antes de publicar.`);
+        return;
+      }
+      const total = Number(formPublicar.dataset.pendentes) || 0;
+      if (!window.confirm(`Publicar no site ${total === 1 ? 'a alteração' : `as ${total} alterações`} do rascunho? Vai tudo o que está salvo, inclusive o que outras pessoas salvaram em outras telas.`)) {
+        evento.preventDefault();
+        return;
+      }
+      // Volta para a página e a língua em que a pessoa está agora.
+      const volta = formPublicar.querySelector<HTMLInputElement>('[data-volta]');
+      if (volta) volta.value = `/admin/textos?pagina=${pagina}&lang=${lang}`;
+      saindo = true;
+      if (botaoPublicar) {
+        botaoPublicar.textContent = 'Publicando…';
+        window.setTimeout(() => { botaoPublicar.disabled = true; });
+      }
+    }, { signal });
+
     // Sair com texto por salvar pede confirmação. Fechar a aba ou recarregar
     // caem no aviso do navegador. Um link da administração troca de tela sem
     // descarregar a página, e aí esse aviso não aparece: a pergunta é feita
@@ -1080,10 +1140,11 @@ const interfaceGravada = interfaceLida.dados.textos;
     }, { capture: true, signal });
 
     // ---- arranque ----
-    // O aviso de "salvo" vale para esta carga; recarregar a tela não o repete.
+    // O aviso de "salvo" ou de "publicado" vale para esta carga; recarregar a
+    // tela não o repete.
     const url = new URL(location.href);
-    if (url.searchParams.has('salvo')) {
-      for (const sobra of ['salvo', 'grupo', 'lang']) url.searchParams.delete(sobra);
+    if (['salvo', 'msg', 'erro'].some((chave) => url.searchParams.has(chave))) {
+      for (const sobra of ['salvo', 'grupo', 'lang', 'msg', 'erro']) url.searchParams.delete(sobra);
       history.replaceState(history.state, '', url);
     }
     campos.forEach(atualizaCampo);

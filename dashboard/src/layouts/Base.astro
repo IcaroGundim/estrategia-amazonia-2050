@@ -57,13 +57,11 @@ const NAVEGACAO = [
 ];
 
 // O atalho da topbar leva a uma âncora da Visão Geral, que é a mesma dos dois
-// lados: só o caminho da rota muda de língua. A nota técnica é um PDF gerado por
-// `npm run nota-tecnica` a partir dos mesmos dados do painel e só existe em
-// português — o rótulo em inglês avisa isso.
-const ACOES = {
+// lados: só o caminho da rota muda de língua. A Visão Geral não tem atalho: o
+// "Baixar nota técnica" que ficava ali saiu do painel.
+const ACOES: Partial<Record<string, { destino: string; rotulo: string }>> = {
   index: { destino: rota('metodologia', lang), rotulo: 'Como ler os dados' },
   metas: { destino: `${rota('metodologia', lang)}#a-estrategia`, rotulo: 'Sobre a Estratégia' },
-  metodologia: { destino: '/downloads/nota-tecnica-painel-amazonia-2050.pdf', rotulo: 'Baixar nota técnica' },
   // A carteira é do Consórcio e mora no site dele; o painel só a apresenta.
   projetos: { destino: 'https://www.brazilianamazonprojects.com', rotulo: 'Site da carteira' }
 };
@@ -163,8 +161,12 @@ const acao = ACOES[pagina];
           ))}
         </nav>
 
+        {/* O contêiner fica mesmo sem atalho: é a margem automática dele que
+            empurra o idioma para a direita da barra (ver global.css). */}
         <div class="topbar-actions">
-          <a class="outline-button action-link" href={acao.destino} target={acao.destino.startsWith('http') ? '_blank' : undefined} rel={acao.destino.startsWith('http') ? 'noopener' : undefined}>{t(acao.rotulo)}</a>
+          {acao && (
+            <a class="outline-button action-link" href={acao.destino} target={acao.destino.startsWith('http') ? '_blank' : undefined} rel={acao.destino.startsWith('http') ? 'noopener' : undefined}>{t(acao.rotulo)}</a>
+          )}
         </div>
 
         {/* Seletor de idioma: um link para o mesmo lugar na outra língua, e não

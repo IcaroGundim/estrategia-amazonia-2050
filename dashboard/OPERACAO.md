@@ -31,6 +31,11 @@ alguém **publicar**. Isso permite conferir antes.
 A página inicial lista as alterações salvas e ainda não publicadas, com quem
 fez e quando. Publicar leva todas elas de uma vez.
 
+A tela de **Textos** tem o mesmo **Publicar no site** na barra, ao lado de
+**Salvar no rascunho**, com o número de alterações esperando. Ele leva o
+rascunho inteiro, inclusive o que foi salvo em outras telas; com texto ainda
+não salvo, a tela pede para salvar antes.
+
 ## 3. Atualizar valores
 
 Em **Valores** cada indicador é um card, agrupado por eixo; os sem valores
@@ -112,9 +117,9 @@ o painel sozinhos: cada execução vira uma **proposta**, listada em
   - **Ampliar** põe a prévia na largura toda, com os campos embaixo, para
     ler o texto no tamanho real.
   - Na Visão Geral há também o grupo **Nota técnica**: são os textos da
-    síntese comparativa que vão para o PDF de "Baixar nota técnica", gerado
-    à parte; nenhuma página os mostra, e por isso o quadro não muda ao
-    editá-los.
+    síntese comparativa que vão para o PDF da nota técnica, gerado à parte
+    pela equipe técnica; nenhuma página os mostra (o painel não tem mais o
+    botão de baixar a nota), e por isso o quadro não muda ao editá-los.
 - **Trajetória** (na mesma tela da meta): o Panorama mostra, para cada meta
   confrontável, o ritmo da série e o ano em que o alvo seria alcançado se o
   ritmo se mantivesse. É uma projeção mecânica a partir da série, sem
@@ -150,8 +155,8 @@ Em **Contas**, quem tem conta pode criar outra (a senha temporária aparece
 uma única vez), gerar senha nova para alguém que esqueceu, e desativar ou
 reativar contas. Ao criar, escolha o **acesso**: a administração inteira ou
 **só a tela de Textos**. A conta de só Textos é para quem revisa a redação:
-ela abre Textos, a Ajuda e Minha senha, salva no rascunho e não publica — a
-publicação continua com quem tem a conta completa. Contas mudam de imediato no rascunho, mas só valem no site
+ela abre Textos, a Ajuda e Minha senha, salva no rascunho e publica pelo
+botão da tela de Textos. Contas mudam de imediato no rascunho, mas só valem no site
 depois do próximo deploy, em 1 a 2 minutos.
 
 ## 8. Quando aparece um aviso

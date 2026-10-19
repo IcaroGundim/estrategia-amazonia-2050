@@ -59,7 +59,7 @@ const { dados } = await leContas();
       <div class="admin-form-linha">
         <Campo nome="usuario" rotulo="Usuário" ajuda="Letras minúsculas, números, ponto, hífen ou sublinhado. Ex.: maria.silva" obrigatorio />
         <Campo nome="nome" rotulo="Nome" ajuda="Como aparece no histórico de alterações" obrigatorio />
-        <Campo nome="acesso" rotulo="Acesso" tipo="select" opcoes={[{ valor: '', rotulo: 'Administração inteira' }, { valor: 'textos', rotulo: 'Só a tela de Textos' }]} ajuda="Só Textos: revisa e salva textos no rascunho; não vê dados nem contas, e não publica." />
+        <Campo nome="acesso" rotulo="Acesso" tipo="select" opcoes={[{ valor: '', rotulo: 'Administração inteira' }, { valor: 'textos', rotulo: 'Só a tela de Textos' }]} ajuda="Só Textos: revisa e salva textos no rascunho e publica pela tela de Textos; não vê dados nem contas." />
       </div>
       <div class="admin-acoes"><button type="submit" class="admin-botao">Criar e gerar senha</button></div>
     </form>

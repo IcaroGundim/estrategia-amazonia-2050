@@ -30,7 +30,10 @@
 //               sai da baseline
 //   agregacao   como o valor da Amazônia Legal sai dos nove estados (ver
 //               ROTULO_AGREGACAO). 'contagem' é a parcela dos estados que atingem
-//               o patamar, para as metas que o pedem em todos eles (CAPAG)
+//               o patamar, para as metas que o pedem em todos eles (CAPAG).
+//               'ritmoDaSoma' é para as metas de ritmo (F3.5: crescer 10% ao
+//               ano): o valor confrontado é o crescimento médio composto dos
+//               últimos JANELA_DO_RITMO anos, em % ao ano, e não há baseline
 //   valorDe     de onde vem o valor por estado: ausente = `valores` do catálogo;
 //               'ultimoDaSerie' = último ponto da série; { panorama: chave } =
 //               campo do dashboard (I5.4.1 usa o % do PIB já consolidado);
@@ -129,6 +132,36 @@ function comSerieDoArquivo(indicador, parametro, detalhes, ufs) {
   return { ...indicador, serieAnual, valores };
 }
 
+export const JANELA_DO_RITMO = 10;
+
+// Crescimento médio composto, em % ao ano, entre dois níveis separados pela
+// janela do ritmo. Nulo sem um dos dois, ou com um ponto de partida que não é
+// positivo (de zero não há crescimento composto).
+function ritmoComposto(inicio, fim) {
+  if (!(inicio > 0) || !(fim >= 0)) return null;
+  return ((fim / inicio) ** (1 / JANELA_DO_RITMO) - 1) * 100;
+}
+
+// Meta de ritmo: cada ponto da série passa a ser o ritmo da janela que termina
+// nele, e o valor atual de cada estado, o último desses ritmos. A série em nível
+// fica em `serieNivel`, de onde a região tira o ritmo da soma.
+function comRitmo(indicador, parametro, ufs) {
+  if (parametro.agregacao !== 'ritmoDaSoma') return indicador;
+  const serieNivel = indicador.serieAnual || {};
+  const serieAnual = {};
+  const valores = {};
+  for (const uf of ufs) {
+    const nivel = serieNivel[uf] || {};
+    const pontos = Object.keys(nivel).map(Number).sort((a, b) => a - b).flatMap((ano) => {
+      const ritmo = ritmoComposto(numeroOuNulo(nivel[ano - JANELA_DO_RITMO]), numeroOuNulo(nivel[ano]));
+      return ritmo === null ? [] : [[String(ano), ritmo]];
+    });
+    serieAnual[uf] = Object.fromEntries(pontos);
+    valores[uf] = pontos.at(-1)?.[1] ?? null;
+  }
+  return { ...indicador, serieAnual, valores, serieNivel };
+}
+
 function denominadorPorUf(parametro, detalhes) {
   if (parametro.agregacao !== 'razaoDenominador') return null;
   const origem = parametro.denominador || {};
@@ -203,6 +236,17 @@ function agregaValores(parametro, indicador, valores, contexto, ano = null, mais
     return ano === null ? soma(([uf]) => cvliPorUf[uf]) / peso * 100000 : soma(([uf, valor]) => valor * (populacaoPorUf[uf] || 0)) / peso;
   }
   if (parametro.agregacao === 'razaoCampos') return razaoDeCampos(parametro, indicador, entradas, ano, maisRecente);
+  if (parametro.agregacao === 'ritmoDaSoma') {
+    // O ritmo da região é o da soma dos estados, não a média dos ritmos: um
+    // estado pequeno que dobra não pesa como um grande que dobra.
+    const nivel = indicador.serieNivel || {};
+    const fim = ano !== null ? Number(ano) : Math.max(...entradas.flatMap(([uf]) => Object.keys(nivel[uf] || {}).map(Number)));
+    const somaDoAno = (doAno) => {
+      const lidos = entradas.map(([uf]) => numeroOuNulo(nivel[uf]?.[doAno]));
+      return lidos.includes(null) ? null : lidos.reduce((total, valor) => total + valor, 0);
+    };
+    return ritmoComposto(somaDoAno(fim - JANELA_DO_RITMO), somaDoAno(fim));
+  }
   if (parametro.agregacao === 'razaoDenominador') {
     const peso = soma(([uf]) => numeroOuNulo(denominador?.[uf]));
     return peso ? soma(([uf, valor]) => valor * (numeroOuNulo(denominador?.[uf]) || 0)) / peso : null;
@@ -294,6 +338,9 @@ function anoDoValorAtual(parametro, indicador) {
  * agregação, e compará-lo com a nossa inventaria um avanço que não houve.
  */
 function baselineRegional(parametro, historico, atual) {
+  // Uma meta de ritmo não parte de um ponto: a jornada é o ritmo de hoje diante
+  // do pedido.
+  if (parametro.agregacao === 'ritmoDaSoma') return null;
   const pontos = serieRegionalCompleta(historico);
   const declarada = parametro.baseline;
   if (declarada?.desde) {
@@ -357,7 +404,8 @@ export const ROTULO_AGREGACAO = {
   razaoCvli: 'total de CVLI sobre a população regional',
   razaoCampos: 'soma dos numeradores sobre a soma dos denominadores dos nove estados',
   razaoDenominador: 'soma dos nove estados sobre o total de referência dos nove',
-  contagem: 'parcela dos nove estados que atingem o patamar'
+  contagem: 'parcela dos nove estados que atingem o patamar',
+  ritmoDaSoma: 'crescimento médio anual da soma dos nove estados nos últimos 10 anos'
 };
 
 // Motivos padrão de um indicador ficar fora do quadro, quando `exclusoes` não
@@ -381,7 +429,7 @@ function avaliaRegional(parametro, indicador, atuais, contexto, baseline) {
   const partida = baseline && !atinge(baseline.valor) ? baseline.valor : null;
   const posicao = direcao === 'menor'
     ? (alvo > 0 ? Math.min(1, alvo / valor) : null)
-    : (alvo > 0 ? Math.min(1, valor / alvo) : null);
+    : (alvo > 0 ? Math.max(0, Math.min(1, valor / alvo)) : null);
   return {
     valor,
     alvo,
@@ -458,7 +506,7 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null, detalh
   for (const parametro of parametros) {
     const doCatalogo = porCodigo.get(parametro.codigo);
     if (!doCatalogo) continue;
-    const indicador = comSerieDoArquivo(doCatalogo, parametro, detalhes, ufs);
+    const indicador = comRitmo(comSerieDoArquivo(doCatalogo, parametro, detalhes, ufs), parametro, ufs);
     const contexto = {
       ...contextoGeral,
       denominador: denominadorPorUf(parametro, detalhes),
@@ -510,7 +558,7 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null, detalh
       if (cumpre) cumpridas += 1;
       const posicao = parametro.direcao === 'menor'
         ? (alvo > 0 ? Math.min(1, alvo / valor) : null)
-        : (alvo > 0 ? Math.min(1, valor / alvo) : null);
+        : (alvo > 0 ? Math.max(0, Math.min(1, valor / alvo)) : null);
       estados[uf] = {
         valor,
         alvo,
@@ -549,6 +597,11 @@ export function buildMetas(catalogo, dashboard, config, projecoes = null, detalh
       historico,
       projecoes: projecoesDe(indicador.codigo)
     };
+    // A janela do ritmo, para a página dizer de que anos sai o número.
+    if (parametro.agregacao === 'ritmoDaSoma' && meta.regional) {
+      const ate = Number(historico.at(-1)?.ano);
+      meta.regional.ritmo = { janela: JANELA_DO_RITMO, desde: ate - JANELA_DO_RITMO, ate };
+    }
     // Depende do histórico e do valor regional, por isso vem depois.
     meta.trajetoria = trajetoriaDaMeta(meta, parametro, ufs);
     metas.push(meta);

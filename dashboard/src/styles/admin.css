@@ -160,6 +160,8 @@
 .admin-botao.is-mini { min-height: 32px; padding: 0 11px; font-size: 11px; }
 .admin-botao:disabled { opacity: .4; cursor: not-allowed; }
 .admin-botao[hidden] { display: none; }
+/* Contagem dentro do botão (alterações esperando publicação). */
+.admin-botao small { min-width: 18px; padding: 2px 6px; box-sizing: border-box; border-radius: 9px; background: var(--mata); color: var(--areia, #f5f0e8); font: 600 10px/1.2 var(--text); text-align: center; }
 
 /* ---------- tabelas ---------- */
 .admin-tabela-rolagem { overflow-x: auto; margin-top: 16px; border: 1px solid var(--adm-filete); border-radius: 12px; background: var(--papel); }

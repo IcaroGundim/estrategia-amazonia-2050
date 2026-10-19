@@ -240,7 +240,7 @@ export function validaFonte({ catalogo, metas, panorama, painel, projecoes, proj
   for (const [nome, partes] of Object.entries(panorama.sintese.dimensoes)) {
     for (const parte of partes) exige(chaves.has(parte.chave), `dimensão ${nome} cita métrica inexistente: ${parte.chave}`);
   }
-  const AGREGACOES = ['soma', 'media', 'populacao', 'razaoUc', 'razaoCvli', 'razaoCampos', 'razaoDenominador', 'contagem'];
+  const AGREGACOES = ['soma', 'media', 'populacao', 'razaoUc', 'razaoCvli', 'razaoCampos', 'razaoDenominador', 'contagem', 'ritmoDaSoma'];
   for (const parametro of metas.parametros) {
     exige(codigos.has(parametro.codigo), `metas.json parametriza código fora do catálogo: ${parametro.codigo}`);
     exige(['maior', 'menor', 'categoria'].includes(parametro.direcao), `${parametro.codigo}: direção inválida`);
