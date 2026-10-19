@@ -163,7 +163,7 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
         <nav>
           {INDICE.map(({ href, rotulo }, indice) => (
             <a class={indice === 0 ? 'is-active' : undefined} href={href}>
-              <span><b aria-hidden="true">{String(indice + 1).padStart(2, '0')}</b><strong>{t(rotulo)}</strong></span>
+              <span><strong>{t(rotulo)}</strong></span>
             </a>
           ))}
         </nav>

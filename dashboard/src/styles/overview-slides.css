@@ -8,7 +8,6 @@
 .methodology-page .methodology-index nav a { padding: 12px 14px; border: 1px solid var(--linha); border-radius: 9px; background: rgba(255,255,255,.5); align-items: center; transition: background 160ms ease, border-color 160ms ease; }
 .methodology-page .methodology-index nav a::before { display: none; }
 .methodology-page .methodology-index nav a.is-active { background: var(--mata); border-color: var(--mata); color: var(--areia); }
-.methodology-page .methodology-index nav a.is-active b { color: var(--ocre); }
 .methodology-page .methodology-index nav a.is-active small { color: var(--mata-100); }
 .overview-deck { overflow: hidden; border: 1px solid var(--linha); border-radius: 15px; background: var(--papel); box-shadow: 0 12px 35px rgba(14,43,34,.045); }
 .methodology-page .methodology-article { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
