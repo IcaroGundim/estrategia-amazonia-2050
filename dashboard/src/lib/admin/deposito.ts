@@ -213,6 +213,18 @@ class DepositoGitHub implements Deposito {
   private garantidaEm = 0;
   private static readonly VALIDADE_MS = 60_000;
 
+  // Toda gravação move a ponta do rascunho, e a promessa guardada ainda
+  // devolveria a anterior. Quem precisa da ponta exata (publicar, prévia) lê
+  // fresco com `pontaDoRascunho`; esquecer aqui só evita servir a velha.
+  private esqueceRascunho() {
+    this.garantia = null;
+  }
+
+  private async pontaDoRascunho(): Promise<string> {
+    const garantida = await this.garanteRascunho();
+    return (await this.shaDaBranch(this.config.rascunho)) || garantida;
+  }
+
   private garanteRascunho(): Promise<string> {
     if (this.garantia && Date.now() - this.garantidaEm > DepositoGitHub.VALIDADE_MS) {
       this.garantia = null;
@@ -250,7 +262,9 @@ class DepositoGitHub implements Deposito {
       aceita: [201, 204, 409],
       corpo: { base: this.config.rascunho, head: this.config.main, commit_message: 'admin: traz para o rascunho o que chegou à main' }
     });
-    return status === 201 && mescla ? mescla.sha : rascunho;
+    if (status === 201 && mescla) return mescla.sha;
+    // 204: outra instância já mesclou — o sha lido antes ficou para trás.
+    return (await this.shaDaBranch(this.config.rascunho)) || rascunho;
   }
 
   // A prévia dos textos lê os mesmos dois arquivos a cada tecla, e cada leitura
@@ -306,7 +320,7 @@ class DepositoGitHub implements Deposito {
           aceita: [200, 201, 409],
           corpo: { message: texto, content: Buffer.from(conteudo).toString('base64'), sha: atual.versao, branch, committer: this.committer(autor), author: this.committer(autor) }
         });
-        if (status !== 409) return dados.content.sha;
+        if (status !== 409) { this.esqueceRascunho(); return dados.content.sha; }
       }
       throw new ErroDeDeposito('o repositório mudou três vezes seguidas durante a gravação; tente de novo');
     }
@@ -323,7 +337,7 @@ class DepositoGitHub implements Deposito {
       const { dados: novaTree } = await this.api<{ sha: string }>('/git/trees', { metodo: 'POST', corpo: { base_tree: commitBase.tree.sha, tree } });
       const { dados: commit } = await this.api<{ sha: string }>('/git/commits', { metodo: 'POST', corpo: { message: texto, tree: novaTree.sha, parents: [head], author: this.committer(autor), committer: this.committer(autor) } });
       const { status } = await this.api(`/git/refs/heads/${branch}`, { metodo: 'PATCH', aceita: [200, 422], corpo: { sha: commit.sha, force: false } });
-      if (status === 200) return commit.sha;
+      if (status === 200) { this.esqueceRascunho(); return commit.sha; }
     }
     throw new ErroDeDeposito('o repositório mudou três vezes seguidas durante a gravação; tente de novo');
   }
@@ -346,18 +360,22 @@ class DepositoGitHub implements Deposito {
 
   async atualizarPrevia(autor: Autor): Promise<void> {
     const branch = this.config.rascunho;
-    const head = await this.garanteRascunho();
+    const head = await this.pontaDoRascunho();
     const { dados: commitBase } = await this.api<{ tree: { sha: string } }>(`/git/commits/${head}`);
     const { dados: commit } = await this.api<{ sha: string }>('/git/commits', {
       metodo: 'POST',
       corpo: { message: `admin(${autor.usuario}): atualiza a prévia [previa]`, tree: commitBase.tree.sha, parents: [head], author: this.committer(autor), committer: this.committer(autor) }
     });
     await this.api(`/git/refs/heads/${branch}`, { metodo: 'PATCH', corpo: { sha: commit.sha, force: false } });
+    this.esqueceRascunho();
   }
 
   async publicar(autor: Autor): Promise<string> {
     if (!this.config.producao) throw new ErroDeDeposito('publicar só é permitido no endereço de produção');
-    const rascunho = await this.garanteRascunho();
+    // A ponta lida agora, e não a guardada: com uma ponta velha a main avançava
+    // para um commit anterior à última edição, ou nem avançava, e o realinhamento
+    // do rascunho no fim era recusado como "not a fast forward".
+    const rascunho = await this.pontaDoRascunho();
     // Primeiro tenta avançar a main direto; se ela andou por fora, mescla.
     const { status } = await this.api(`/git/refs/heads/${this.config.main}`, { metodo: 'PATCH', aceita: [200, 422], corpo: { sha: rascunho, force: false } });
     let novaMain = rascunho;
@@ -365,11 +383,21 @@ class DepositoGitHub implements Deposito {
       const { dados } = await this.api<{ sha: string }>('/merges', {
         metodo: 'POST',
         aceita: [201, 204],
-        corpo: { base: this.config.main, head: this.config.rascunho, commit_message: `admin(${autor.usuario}): publica as edições do rascunho` }
+        corpo: { base: this.config.main, head: rascunho, commit_message: `admin(${autor.usuario}): publica as edições do rascunho` }
       });
       novaMain = dados?.sha || (await this.shaDaBranch(this.config.main))!;
     }
-    await this.api(`/git/refs/heads/${this.config.rascunho}`, { metodo: 'PATCH', corpo: { sha: novaMain, force: false } });
+    // O que importa é a main conter a ponta publicada; se não contiver, nada
+    // foi publicado e as edições continuam no rascunho.
+    const { dados: comparacao } = await this.api<{ ahead_by: number }>(`/compare/${this.config.main}...${rascunho}`);
+    if (comparacao.ahead_by) {
+      this.esqueceRascunho();
+      throw new ErroDeDeposito('a main não recebeu as edições do rascunho. Elas continuam lá; publique de novo.');
+    }
+    // Realinhar o rascunho com a main é arrumação: se alguém gravou no meio,
+    // ele já está à frente e segue assim até a próxima publicação.
+    await this.api(`/git/refs/heads/${this.config.rascunho}`, { metodo: 'PATCH', aceita: [200, 422], corpo: { sha: novaMain, force: false } });
+    this.esqueceRascunho();
     return novaMain;
   }
 }

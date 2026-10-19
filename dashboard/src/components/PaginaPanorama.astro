@@ -31,22 +31,24 @@ const t = traduzirCom(lang, Astro.locals.interface);
                 <span class="select-wrap-label">{t('Ano exibido')}</span>
                 <div id="year-select"></div>
               </div>
+              <button id="scope-regional" class="map-scope is-active" type="button" aria-pressed="true" title={t('Amazônia Legal — visão regional')}><span class="goals-flag" aria-hidden="true"><img src="/flags/Bandeira_da_Amazonia_Legal.svg" style="aspect-ratio:3 / 2" alt=""></span><span>{t('Ver a região inteira')}</span></button>
             </div>
           </div>
           <div class="map-body">
-            <aside id="map-indicator-card" class="map-indicator-card" aria-live="polite">
-              <p>{t('Carregando indicador…')}</p>
-            </aside>
+            <div class="map-side">
+              <aside id="map-indicator-card" class="map-indicator-card" aria-live="polite">
+                <p>{t('Carregando indicador…')}</p>
+              </aside>
+              <div class="map-legend" aria-label={t('Escala de desempenho relativo')}>
+                <span>{t('menor desempenho')}</span>
+                <i class="legend-ramp" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></i>
+                <span>{t('maior desempenho')}</span>
+              </div>
+            </div>
             <div class="map-canvas">
-              <button id="scope-regional" class="goals-flag map-scope is-active" type="button" aria-pressed="true" aria-label={t('Amazônia Legal, visão regional')} title={t('Amazônia Legal — visão regional')}><img src="/flags/Bandeira_da_Amazonia_Legal.svg" style="aspect-ratio:3 / 2" alt=""></button>
               <svg id="map" viewBox="0 0 720 500" role="img" aria-label={t('Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.')}></svg>
               <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
             </div>
-          </div>
-          <div class="map-legend" aria-label={t('Escala de desempenho relativo')}>
-            <span>{t('menor desempenho')}</span>
-            <i class="legend-ramp" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></i>
-            <span>{t('maior desempenho')}</span>
           </div>
         </article>
       </div>

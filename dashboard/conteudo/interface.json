@@ -41,8 +41,8 @@
         "Indicador exibido",
         "Ano exibido",
         "Carregando indicador…",
-        "Amazônia Legal, visão regional",
         "Amazônia Legal — visão regional",
+        "Ver a região inteira",
         "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.",
         "Escala de desempenho relativo",
         "menor desempenho",
@@ -778,13 +778,13 @@
       "pt": "Carregando indicador…",
       "en": "Loading the indicator…"
     },
-    "Amazônia Legal, visão regional": {
-      "pt": "Amazônia Legal, visão regional",
-      "en": "The Legal Amazon, regional view"
-    },
     "Amazônia Legal — visão regional": {
       "pt": "Amazônia Legal — visão regional",
       "en": "The Legal Amazon — regional view"
+    },
+    "Ver a região inteira": {
+      "pt": "Ver a região inteira",
+      "en": "View the whole region"
     },
     "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.": {
       "pt": "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.",
