@@ -229,6 +229,23 @@
       "nota": "Aumento de 100% sobre 2025, primeiro ano da Estratégia. Proxy: famílias com pagamento do Bolsa Verde (MMA) nos municípios da Amazônia Legal; não inclui os programas estaduais (Guardiões da Floresta no AM, REM no AC e no MT)."
     },
     {
+      "codigo": "I3.4.2",
+      "alvo": {
+        "tipo": "sobreBaseline",
+        "fator": 2
+      },
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "soma",
+      "unidade": "tCO2e aposentados",
+      "alvoSoRegional": true,
+      "nota": "A meta é consolidar mercados regionais de serviços ecossistêmicos financeiramente sustentáveis, sem número. Adotamos dobrar até 2050 o volume desses mercados, o mesmo aumento de 100% que a Estratégia pede para os beneficiários de PSA (I3.4.1). Proxy: créditos de carbono voluntário (VCS/ACR) aposentados de projetos na Amazônia Legal; mede volume de créditos, não receita.",
+      "trajetoria": {
+        "desligada": true,
+        "nota": "Sem projeção: série errática, que depende de grandes aposentadorias em anos isolados."
+      }
+    },
+    {
       "codigo": "I3.5.1",
       "alvo": 1,
       "direcao": "maior",
@@ -250,6 +267,30 @@
         "fator": 100
       },
       "nota": "Projetos habilitados no CTAPME (lista federal de minerais estratégicos) que atendem os 7 critérios eliminatórios de uma matriz de 13 critérios com evidência pública. Estados sem projeto habilitado ficam sem valor."
+    },
+    {
+      "codigo": "F3.2",
+      "alvo": {
+        "tipo": "sobreBaseline",
+        "fator": 2
+      },
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "soma",
+      "nota": "A ficha pede aumento do valor da produção, do número de empregos e do número de empresas nas cadeias produtivas, sem dizer quanto. Adotamos dobrar até 2050, o mesmo aumento de 100% que a Estratégia pede para os beneficiários de PSA (I3.4.1). Proxy: vínculos ativos na RAIS; 2022 fica de fora, edição com defeito."
+    },
+    {
+      "codigo": "F3.5",
+      "alvo": 10,
+      "direcao": "maior",
+      "tipo": "declarada",
+      "agregacao": "ritmoDaSoma",
+      "unidade": "% ao ano",
+      "nota": "A meta é crescer 10% ao ano. O painel confronta com ela o crescimento médio composto dos últimos 10 anos do valor da transformação industrial (PIA-Empresa), e não a variação de um único ano, que diria mais sobre a inflação e a base de comparação do que sobre a meta. Valores nominais, como na meta.",
+      "trajetoria": {
+        "desligada": true,
+        "nota": "Sem projeção: o valor já é o ritmo de 10 anos, e projetar a tendência de um ritmo não diz quando a meta seria alcançada."
+      }
     },
     {
       "codigo": "I4.1.1",
@@ -326,6 +367,28 @@
       "nota": "Os indicadores que compõem o escore têm anos de referência entre 2015 e 2020, os mais recentes publicados pelo AdaptaBrasil."
     },
     {
+      "codigo": "I5.1.1",
+      "alvo": 100000000,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "soma",
+      "alvoSoRegional": true,
+      "nota": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano; a ficha técnica fala em R$ 100 milhões anuais, e é esse o patamar adotado, porque a base do painel não traz o PIB da região no ano dos recursos. O valor é o que os governos estaduais receberam no ano do Fundo Amazônia e do REM Acre, dois componentes do indicador, sem separar recurso novo de continuidade de contratos antigos."
+    },
+    {
+      "codigo": "I5.2.2",
+      "alvo": 17740000,
+      "direcao": "maior",
+      "tipo": "inferida",
+      "agregacao": "soma",
+      "alvoSoRegional": true,
+      "baseline": {
+        "ano": 2026,
+        "valor": 6120000
+      },
+      "nota": "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem número. Adotamos como patamar o ponto de chegada da trajetória pactuada para o orçamento do Consórcio, R$ 17,7 mi em 2050, a partir de R$ 6,12 mi em 2026. O valor é a soma dos contratos de rateio de cada estado com o CAL: valor contratado, não executado."
+    },
+    {
       "codigo": "I5.4.1",
       "alvo": 1,
       "direcao": "maior",
@@ -363,33 +426,8 @@
       "nota": "A meta é atender 90% dos critérios da principal avaliação nacional de transparência; na escala de 0 a 10 da EBT 360, a avaliação que a ficha cita, isso é a nota 9,0. A última edição da EBT 360 é de 2020; o PNTP, que a Atricon e os Tribunais de Contas fazem todo ano, está nos campos auxiliares."
     }
   ],
-  "exclusoes": {
-    "F3.2": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
-    "F3.5": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
-    "I5.2.2": "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
-    "I5.1.1": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador."
-  },
+  "exclusoes": {},
   "semMeta": {
-    "_leia": "Como a página mostra os indicadores coletados que ficam fora do quadro. agregacao 'soma' diz que o valor da Amazônia Legal é a soma dos nove estados (só vale para quantidades: reais, vínculos, municípios); sem ela não há valor regional (taxas, índices). unidade corrige a unidade exibida quando o valor coletado não está na unidade da meta.",
-    "F3.2": {
-      "agregacao": "soma"
-    },
-    "F3.5": {
-      "agregacao": "soma"
-    },
-    "I5.1.1": {
-      "agregacao": "soma"
-    },
-    "I5.2.2": {
-      "agregacao": "soma"
-    },
-    "I3.4.2": {
-      "agregacao": "soma",
-      "unidade": "tCO2e aposentados",
-      "trajetoria": {
-        "desligada": true,
-        "nota": "Sem projeção: série errática e sem meta numérica; mede volume de créditos, não receita."
-      }
-    }
+    "_leia": "Como a página mostra os indicadores coletados que ficam fora do quadro. agregacao 'soma' diz que o valor da Amazônia Legal é a soma dos nove estados (só vale para quantidades: reais, vínculos, municípios); sem ela não há valor regional (taxas, índices). unidade corrige a unidade exibida quando o valor coletado não está na unidade da meta."
   }
 }

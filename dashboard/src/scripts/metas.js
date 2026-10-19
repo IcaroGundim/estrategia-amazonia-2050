@@ -69,9 +69,13 @@ function valor(meta, value) {
   if (!Number.isFinite(value)) return '—';
   // Reais em escala curta, como nos coletados: "R$ 5,11 bi".
   if (String(meta.unidade || '').trim().startsWith('R$')) return valorColetado({ unidadeValor: meta.unidade }, value);
+  // Meta de ritmo (F3.5): "10% ao ano", senão o 10% se lê como o total até 2050.
+  if (String(meta.unidade || '').trim() === '% ao ano') return `${number(value)}% ${t('ao ano')}`;
   if (ehPercentual(meta)) return `${number(value)}%`;
   // Área do PRODES, que o INPE publica em km².
   if (String(meta.unidade || '').trim() === 'km²') return `${number(value, decimals(value))} km²`;
+  // Milhões em escala curta, como os reais: "6,19 mi" cabe no cartão, "6.189.078" não.
+  if (Math.abs(value) >= 1e6) return numeroCurto({ unidadeValor: meta.unidade }, value);
   return number(value, decimals(value));
 }
 
@@ -125,6 +129,8 @@ function dadosDaMeta(meta) {
 // citado na meta ou o ponto declarado nela.
 function textoDaBaseline(meta, regional) {
   const base = regional?.baseline;
+  // A meta de ritmo (F3.5) não parte de um ponto: o valor já é o crescimento da janela.
+  if (regional?.ritmo) return tp('não se aplica: a meta é um ritmo, e o valor é o crescimento médio anual de {desde} a {ate}', { desde: regional.ritmo.desde, ate: regional.ritmo.ate });
   if (!base) return t('não calculada: a série tem menos de 5 anos');
   const numero = valor(meta, base.valor);
   if (base.tipo === 'media') {
@@ -137,6 +143,7 @@ function textoDaBaseline(meta, regional) {
 }
 
 function textoDaJornada(regional) {
+  if (regional.ritmo) return t('o ritmo atual da região diante do ritmo pedido na meta.');
   if (regional.escalaTipo === 'baseline') return t('quanto do caminho entre a baseline e a meta a região já percorreu.');
   if (!regional.cumpre && !Number.isFinite(regional.escala)) return t('sem escala: não há baseline para medir o caminho até uma meta zero.');
   if (regional.baseline) return t('a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.');
@@ -150,7 +157,10 @@ function rotuloTipo(tipo) {
 
 // ---------- gráfico por estado ----------
 
-function renderGrafico(meta) {
+// O mesmo gráfico serve às metas e aos coletados sem meta numérica. Estes
+// chegam sem alvo (sem marcador nem legenda dele) e com o próprio formato de
+// número, em `formata`.
+function renderGrafico(meta, { formata = (v) => valor(meta, v) } = {}) {
   const historico = Array.isArray(meta.historico) ? meta.historico : [];
   if (!historico.length) return `<p class="goals-chart-empty">${t('Não há valores anuais disponíveis para este indicador.')}</p>`;
 
@@ -229,19 +239,20 @@ function renderGrafico(meta) {
       ? (meta.direcao === 'menor' ? item.valor <= item.alvo : item.valor >= item.alvo)
       : false;
     const regional = item.regional ? ' is-regional' : '';
-    return `<div class="goals-chart-row${regional}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(valor(meta, item.valor))}">
+    return `<div class="goals-chart-row${regional}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(formata(item.valor))}">
       <span class="goals-chart-uf">${escape(item.uf)}</span>
       <span class="goals-chart-track" aria-hidden="true">
         <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
         ${posicaoAlvo === null ? '' : `<i class="goals-chart-target" style="left:${posicaoAlvo.toFixed(2)}%"></i>`}
       </span>
-      <b>${escape(valor(meta, item.valor))}</b>
+      <b>${escape(formata(item.valor))}</b>
     </div>`;
   }).join('');
+  const temAlvo = linhas.some((item) => Number.isFinite(item.alvo));
 
   return `<div class="goals-detail-chart-head"><h3>${t('Amazônia Legal e estados')}</h3>${seletor}</div>
     <div class="goals-chart-bars" role="list" aria-label="${tp('Valor da Amazônia Legal e dos estados em {ano}', { ano: escape(ano) })}">${barras}</div>
-    <p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('marcador da meta')}</p>`;
+    ${temAlvo ? `<p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('marcador da meta')}</p>` : ''}`;
 }
 
 // ---------- os cinco eixos ----------
@@ -493,11 +504,12 @@ function corpoResultado(meta) {
 // ---------- coletados sem meta numérica ----------
 //
 // Têm valores, mas a meta não tem patamar para confrontar (o motivo de cada um
-// está em `exclusoes`, conteudo/metas.json). Sem jornada, o cartão e a aba
-// Resultado contam o que o dado diz sozinho: quanto a Amazônia Legal soma hoje,
-// como chegou até aqui e em que momento cada estado cresceu. O valor regional
-// só existe quando `semMeta` declara que ele é a soma dos estados; taxas e
-// índices ficam com os nove lado a lado.
+// está em `exclusoes`, conteudo/metas.json). Cartão e painel têm o mesmo
+// desenho das metas; onde a meta teria jornada, eles mostram o que o dado diz
+// sozinho: no cartão, a variação desde o início da série e a linha dela; no
+// painel, o ritmo ao ano e o mesmo gráfico da região e dos estados, sem o
+// marcador da meta. O valor regional só existe quando `semMeta` declara que
+// ele é a soma dos estados; taxas e índices ficam com os nove lado a lado.
 
 const ROTULO_UNIDADE = {
   'nº de vínculos': 'vínculos',
@@ -543,20 +555,15 @@ function valorColetado(item, bruto) {
   return ehReais(item) ? `R$ ${numeroCurto(item, bruto)}` : `${numeroCurto(item, bruto)} ${rotuloUnidade(item)}`;
 }
 
-function nomeDoEstado(uf) {
-  return state.data.estados.find((estado) => estado.uf === uf)?.name || uf;
+// Só o real leva a unidade junto do número ("R$ 215 bi", "6,19 mi"): é o
+// formato das barras do gráfico e do "atual" do cartão, como nas metas.
+function numeroColetado(item, bruto) {
+  return ehReais(item) && Number.isFinite(bruto) ? `R$ ${numeroCurto(item, bruto)}` : numeroCurto(item, bruto);
 }
 
-function serieDe(porAno) {
-  return Object.entries(porAno || {})
-    .map(([ano, v]) => ({ ano: Number(ano), valor: v }))
-    .filter((ponto) => Number.isFinite(ponto.valor))
-    .sort((a, b) => a.ano - b.ano);
-}
-
-// A série em foco é a da região, como nas metas; os estados vêm nas faixas.
+// A série em foco é a da região, como nas metas; os estados vêm no gráfico.
 function focoColetado(item) {
-  return { lugar: t('Amazônia Legal'), serie: item.serieRegional || [], atual: item.regionalAtual || null };
+  return { serie: item.serieRegional || [], atual: item.regionalAtual || null };
 }
 
 // Variação do primeiro ao último ano e ritmo composto ao ano. Sem sentido
@@ -578,30 +585,37 @@ function textoVariacao(percentual) {
   return `${percentual >= 0 ? '+' : '−'}${number(Math.abs(percentual), 0)}%`;
 }
 
+// No lugar da jornada cabe um número curto: acima de +999% a variação vira
+// quantas vezes a série cresceu ("×48 mil" em vez de "+4.845.117%").
+function variacaoCurta(percentual) {
+  if (percentual === null) return '—';
+  if (percentual < 1000) return textoVariacao(percentual);
+  const vezes = 1 + percentual / 100;
+  const { divisor, sufixo } = escalaCurta(vezes);
+  const escalado = vezes / divisor;
+  return `×${number(escalado, escalado >= 10 || divisor === 1 ? 0 : 1)}${sufixo ? ` ${sufixo}` : ''}`;
+}
+
 function textoRitmo(percentual) {
   if (percentual === null) return '—';
   return `${percentual < 0 ? '−' : ''}${number(Math.abs(percentual), 1)}%`;
 }
 
-function anosEntre(series) {
-  const anos = series.flatMap((serie) => serie.map((ponto) => ponto.ano));
-  if (!anos.length) return [];
-  const primeiro = Math.min(...anos);
-  return Array.from({ length: Math.max(...anos) - primeiro + 1 }, (_, indice) => primeiro + indice);
-}
-
-// Uma célula por ano, do primeiro ao último do eixo, e o ano sem valor fica em
-// branco: é o que mantém a faixa da região e as dos estados alinhadas coluna a
-// coluna. Cada faixa tem a própria escala — mais escuro, maior valor dela.
-function celulasDeCalor(serie, anos, dica = null) {
-  const porAno = new Map(serie.map((ponto) => [ponto.ano, ponto.valor]));
-  const maximo = Math.max(0, ...serie.map((ponto) => ponto.valor));
-  return anos.map((ano) => {
-    const v = porAno.get(ano);
-    if (!Number.isFinite(v)) return `<i class="is-vazio" data-ano="${ano}"></i>`;
-    const fracao = maximo > 0 ? Math.max(0, v) / maximo : 0;
-    return `<i data-ano="${ano}" style="background:rgba(14,43,34,${(0.06 + 0.86 * fracao).toFixed(2)})"${dica ? ` data-dica="${escape(dica(ano, v))}"` : ''}></i>`;
-  }).join('');
+// A série da região em linha fina, no lugar da barra das metas: mostra o
+// caminho sem sugerir um progresso que não existe. A escala vai do menor ao
+// maior valor da própria série.
+function linhaDaSerie(serie) {
+  const valores = serie.map((ponto) => ponto.valor);
+  const minimo = Math.min(...valores);
+  const maximo = Math.max(...valores);
+  const primeiro = serie[0].ano, ultimo = serie.at(-1).ano;
+  const px = (ano) => (ano - primeiro) / ((ultimo - primeiro) || 1) * 100;
+  const py = (v) => 18 - (maximo > minimo ? (v - minimo) / (maximo - minimo) : 0.5) * 16;
+  const pontos = serie.map((ponto) => `${px(ponto.ano).toFixed(2)},${py(ponto.valor).toFixed(2)}`).join(' ');
+  return `<svg class="goals-row-linha" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points="0,20 ${pontos} 100,20"/>
+      <polyline points="${pontos}" vector-effect="non-scaling-stroke"/>
+    </svg>`;
 }
 
 // Sem série anual: os nove estados como pontos numa régua, com os extremos nomeados.
@@ -620,269 +634,101 @@ function pontosDosEstados(item) {
   </span>`;
 }
 
+// O valor de hoje: o da região, ou a amplitude entre os estados quando não há
+// valor regional. `nota` é a unidade (fora o real, que já vai no número); o
+// ano fica no painel, como nas metas, que também não o põem no card.
+function atualDoColetado(item) {
+  const { atual } = focoColetado(item);
+  const unidade = ehReais(item) ? '' : rotuloUnidade(item);
+  if (atual) {
+    return { numero: numeroColetado(item, atual.valor), nota: unidade, completo: valorColetado(item, atual.valor) };
+  }
+  const valores = Object.values(item.valores || {}).filter(Number.isFinite);
+  if (!valores.length) return { numero: '—', nota: '', completo: t('Sem dado') };
+  const faixa = `${numeroColetado(item, Math.min(...valores))}–${numeroColetado(item, Math.max(...valores))}`;
+  return { numero: faixa, nota: [t('estados'), unidade].filter(Boolean).join(' · '), completo: `${faixa}${unidade ? ` ${unidade}` : ''}` };
+}
+
 function linhaDeColetado(item) {
   const ativa = state.detalhesAbertos && item.codigo === state.codigo ? ' is-active' : '';
   const expandida = state.detalhesAbertos && item.codigo === state.codigo;
-  const { lugar, serie, atual } = focoColetado(item);
-  const unidade = escape(rotuloUnidade(item));
-  let ler;
-  let sub;
-  let corpo;
-  if (atual) {
-    ler = `<span class="goals-row-lugar">${escape(lugar)}</span><b>${escape(numeroCurto(item, atual.valor))}</b><small>${unidade}${atual.ano ? ` · ${atual.ano}` : ''}</small>`;
-  } else {
-    // Sem valor regional: a amplitude entre os estados.
-    const valores = Object.values(item.valores || {}).filter(Number.isFinite);
-    const faixa = valores.length ? `${numeroCurto(item, Math.min(...valores))}–${numeroCurto(item, Math.max(...valores))}` : '—';
-    ler = `<span class="goals-row-lugar">${t('Estados')}</span><b class="is-faixa">${escape(faixa)}</b><small>${unidade}</small>`;
-  }
-  if (serie.length >= 2) {
-    const percentual = variacao(serie);
-    sub = percentual === null
-      ? tp('série desde {ano}', { ano: serie[0].ano })
-      : tp('{variacao} desde {ano}', { variacao: `<b>${textoVariacao(percentual)}</b>`, ano: serie[0].ano });
-    const anos = anosEntre([serie]);
-    corpo = `<span class="coletado-calor" aria-hidden="true" style="grid-template-columns:repeat(${anos.length},minmax(0,1fr))">${celulasDeCalor(serie, anos)}</span>`;
-  } else {
-    sub = item.agregacao ? t('sem série anual') : t('sem valor regional');
-    corpo = pontosDosEstados(item);
-  }
+  const { serie } = focoColetado(item);
+  const temSerie = serie.length >= 2;
+  const leitura = temSerie ? variacaoCurta(variacao(serie)) : '—';
+  const leituraNota = temSerie ? tp('desde {ano}', { ano: serie[0].ano }) : t('sem série anual');
+  const hoje = atualDoColetado(item);
+  // Mesmo card das metas: o número grande à esquerda, os dois números à
+  // direita do nome e, embaixo, a linha da série no lugar da barra.
   return `<button type="button" data-codigo="${item.codigo}" class="goals-row is-coletado${ativa}" aria-expanded="${expandida}" aria-controls="goals-detail">
-    <span class="goals-row-ler">${ler}</span>
+    <span class="goals-row-ler"><b${leitura.length >= 5 ? ` class="${leitura.length > 5 ? 'is-longo' : 'is-medio'}"` : ''}>${escape(leitura)}</b><small>${escape(leituraNota)}</small></span>
     <span class="goals-card-body">
-      <span class="goals-row-name">${escape(nomeDe(item))}<small>${sub}</small></span>
-      ${corpo}
+      <span class="goals-card-topo">
+        <span class="goals-row-name">${escape(nomeDe(item))}</span>
+        <span class="goals-card-numeros">
+          <span class="goals-card-stat is-atual"><span>${t('atual')}</span><b>${escape(hoje.numero)}</b>${hoje.nota ? `<small>${escape(hoje.nota)}</small>` : ''}</span>
+          <span class="goals-card-stat is-meta is-sem-patamar"><span>${t('Meta')}</span><b>${t('sem patamar')}</b></span>
+        </span>
+      </span>
+      ${temSerie ? linhaDaSerie(serie) : pontosDosEstados(item)}
     </span>
   </button>`;
 }
 
-// Marcas redondas do eixo Y, a partir do zero. Contagens (municípios, vínculos)
-// andam de número inteiro em número inteiro: "12,5 municípios" não existe.
-function marcasDoEixo(minimo, maximo, inteiro) {
-  const baixo = Math.min(0, minimo);
-  const alto = Math.max(0, maximo);
-  const amplitude = alto - baixo || 1;
-  const bruto = amplitude / 4;
-  const ordem = 10 ** Math.floor(Math.log10(bruto));
-  const multiplos = inteiro && ordem < 10 ? [1, 2, 5, 10] : [1, 2, 2.5, 5, 10];
-  let passo = multiplos.map((m) => m * ordem).find((p) => p >= bruto * (1 - 1e-9));
-  if (inteiro) passo = Math.max(1, passo);
-  const inicio = Math.floor(baixo / passo) * passo;
-  const fim = Math.max(inicio + passo, Math.ceil(alto / passo) * passo);
-  const marcas = [];
-  for (let k = 0; inicio + k * passo <= fim + passo * 1e-6; k += 1) marcas.push(Number((inicio + k * passo).toPrecision(12)));
-  return { marcas, passo };
-}
-
-function marcasDeAno(primeiro, ultimo) {
-  const passo = ultimo - primeiro > 20 ? 10 : ultimo - primeiro > 8 ? 5 : 2;
-  const marcas = [primeiro];
-  for (let ano = Math.ceil(primeiro / passo) * passo; ano < ultimo; ano += passo) {
-    // O último ano vai alinhado à direita, então precisa de mais folga à esquerda dele.
-    if (ano - primeiro >= passo / 2 && ultimo - ano > passo / 2) marcas.push(ano);
+// O gráfico das metas lê `historico`: um recorte por ano, com a região e os
+// estados. Sem série anual, o recorte único é o valor atual de cada estado.
+function historicoDoColetado(item) {
+  const regional = new Map((item.serieRegional || []).map((ponto) => [String(ponto.ano), ponto.valor]));
+  const porEstado = Object.entries(item.serieAnual || {});
+  const anos = new Set(regional.keys());
+  for (const [, porAno] of porEstado) for (const ano of Object.keys(porAno || {})) anos.add(String(ano));
+  if (!anos.size) {
+    if (!Object.keys(item.valores || {}).length) return [];
+    return [{ ano: String(item.regionalAtual?.ano || item.anoRef || t('atual')), valores: item.valores, regional: item.regionalAtual?.valor ?? null }];
   }
-  if (ultimo !== primeiro) marcas.push(ultimo);
-  return marcas;
-}
-
-// Linha da série em foco com eixo Y. Cada ano tem uma área de toque que leva a
-// dica e o marcador até ele (ver mostraDica); pelo teclado, as setas percorrem os anos.
-function graficoColetado(item, lugar, serie) {
-  const W = 400, H = 196, y0 = 12, y1 = 162, x1 = W - 12;
-  const valores = serie.map((ponto) => ponto.valor);
-  const { marcas, passo } = marcasDoEixo(Math.min(...valores), Math.max(...valores), valores.every(Number.isInteger));
-  // Um só divisor para o eixo inteiro, escolhido pela maior marca: "900 mi" e
-  // "1 bi" no mesmo eixo obrigariam a ler duas escalas.
-  const { divisor, sufixo } = escalaCurta(Math.max(...marcas.map((v) => Math.abs(emReais(item, v)))));
-  const passoEscalado = emReais(item, passo) / divisor;
-  const redondo = (x) => Math.abs(x - Math.round(x)) < 1e-9;
-  const casas = redondo(passoEscalado) ? 0 : redondo(passoEscalado * 10) ? 1 : 2;
-  const rotulo = (v) => (v === 0 ? '0' : `${number(emReais(item, v) / divisor, casas)}${sufixo ? ` ${sufixo}` : ''}`);
-  const x0 = Math.max(30, Math.max(...marcas.map((v) => rotulo(v).length)) * 7.4 + 10);
-  const primeiro = serie[0].ano, ultimo = serie.at(-1).ano;
-  const px = (ano) => x0 + (ano - primeiro) / ((ultimo - primeiro) || 1) * (x1 - x0);
-  const vMin = marcas[0], vMax = marcas.at(-1);
-  const py = (v) => y1 - (v - vMin) / ((vMax - vMin) || 1) * (y1 - y0);
-  const grade = marcas.map((v) => `<line x1="${x0}" x2="${x1}" y1="${py(v).toFixed(1)}" y2="${py(v).toFixed(1)}"${v === 0 ? ' class="is-zero"' : ''}/><text x="${(x0 - 6).toFixed(1)}" y="${(py(v) + 4.5).toFixed(1)}" text-anchor="end">${escape(rotulo(v))}</text>`).join('');
-  const pontos = serie.map((ponto) => `${px(ponto.ano).toFixed(1)},${py(ponto.valor).toFixed(1)}`).join(' ');
-  const base = py(Math.max(vMin, 0)).toFixed(1);
-  const anos = marcasDeAno(primeiro, ultimo).map((ano) => `<text x="${px(ano).toFixed(1)}" y="${H - 8}" text-anchor="${ano === ultimo && ano !== primeiro ? 'end' : 'middle'}">${ano}</text>`).join('');
-  const alvos = serie.map((ponto, indice) => {
-    const x = px(ponto.ano);
-    const antes = indice ? (px(serie[indice - 1].ano) + x) / 2 : x0 - 6;
-    const depois = indice < serie.length - 1 ? (x + px(serie[indice + 1].ano)) / 2 : W;
-    return `<rect class="coletado-alvo" x="${antes.toFixed(1)}" y="0" width="${(depois - antes).toFixed(1)}" height="${y1 + 6}" data-ano="${ponto.ano}" data-x="${x.toFixed(1)}" data-y="${py(ponto.valor).toFixed(1)}" data-dica="${escape(`${ponto.ano}: ${valorColetado(item, ponto.valor)}`)}"/>`;
-  }).join('');
-  const fim = serie.at(-1);
-  const descricao = tp('{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.', {
-    lugar, inicio: valorColetado(item, serie[0].valor), primeiro, fim: valorColetado(item, fim.valor), ultimo
-  });
-  return `<div class="coletado-interativo coletado-grafico" tabindex="0" role="group" aria-label="${escape(descricao)}">
-      <svg class="coletado-svg" viewBox="0 0 ${W} ${H}" aria-hidden="true">
-        <g class="coletado-grade">${grade}</g>
-        <polygon class="coletado-area" points="${px(primeiro).toFixed(1)},${base} ${pontos} ${px(ultimo).toFixed(1)},${base}"/>
-        <polyline class="coletado-linha" points="${pontos}"/>
-        <circle class="coletado-fim" cx="${px(fim.ano).toFixed(1)}" cy="${py(fim.valor).toFixed(1)}" r="4"/>
-        <g class="coletado-marcador"><line y1="${y0 - 4}" y2="${y1}"/><circle r="4.5"/></g>
-        <g class="coletado-anos-eixo">${anos}</g>
-        ${alvos}
-      </svg>
-      <div class="coletado-dica" role="status" hidden></div>
-    </div>`;
-}
-
-// A região no topo, depois os nove estados do maior para o menor valor atual,
-// todos no mesmo eixo de anos.
-function faixasDosEstados(item) {
-  const regional = item.serieRegional || [];
-  const estados = state.data.estados
-    .map((estado) => ({ uf: estado.uf, serie: serieDe(item.serieAnual?.[estado.uf]), atual: item.valores?.[estado.uf] }))
-    .sort((a, b) => (Number.isFinite(b.atual) ? b.atual : -Infinity) - (Number.isFinite(a.atual) ? a.atual : -Infinity));
-  const anos = anosEntre([regional, ...estados.map((estado) => estado.serie)]);
-  if (anos.length < 2) return '';
-  const colunas = `grid-template-columns:repeat(${anos.length},minmax(0,1fr))`;
-  const linha = (sigla, nome, serie, classe) => `<div class="coletado-faixa${classe}">
-      <span class="uf" title="${escape(nome)}">${escape(sigla)}</span>
-      <span class="coletado-cel" style="${colunas}">${celulasDeCalor(serie, anos, (ano, v) => `${nome} · ${ano}: ${valorColetado(item, v)}`)}</span>
-      <span class="rt">${serie.length >= 2 ? escape(textoRitmo(ritmo(serie))) : '—'}</span>
-    </div>`;
-  const linhas = [
-    regional.length ? linha('AL', t('Amazônia Legal'), regional, ' is-regional') : '',
-    ...estados.map((estado) => linha(estado.uf, nomeDoEstado(estado.uf), estado.serie, ''))
-  ].join('');
-  return `<section class="goals-detail-section coletado-secao">
-      <h3>${regional.length ? t('A região e o momento de cada estado') : t('O momento de cada estado')}<em>${t('ritmo ao ano')}</em></h3>
-      <div class="coletado-interativo">
-        <div class="coletado-faixas">${linhas}</div>
-        <div class="coletado-anos"><span>${anos[0]}</span><span>${anos.at(-1)}</span></div>
-        <div class="coletado-dica" role="status" hidden></div>
-      </div>
-      <p class="goals-detail-method">${t('Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.')}</p>
-    </section>`;
-}
-
-// Sem série anual (mortalidade evitável, equipes da APS): os nove em barras.
-function barrasDosEstados(item) {
-  const lista = state.data.estados
-    .map((estado) => ({ ...estado, v: item.valores?.[estado.uf] }))
-    .filter((estado) => Number.isFinite(estado.v))
-    .sort((a, b) => b.v - a.v);
-  if (!lista.length) return '';
-  const maximo = Math.max(...lista.map((estado) => estado.v), 0);
-  const barras = lista.map((estado) => `<div class="goals-chart-row" role="listitem" aria-label="${escape(estado.name)}: ${escape(valorColetado(item, estado.v))}">
-      <span class="goals-chart-uf">${escape(estado.uf)}</span>
-      <span class="goals-chart-track" aria-hidden="true"><i class="goals-chart-fill" style="width:${(maximo > 0 ? Math.max(0, estado.v) / maximo * 100 : 0).toFixed(2)}%"></i></span>
-      <b>${escape(numeroCurto(item, estado.v))}</b>
-    </div>`).join('');
-  return `<section class="goals-detail-section coletado-secao">
-      <h3>${t('Estados')}<em>${escape(rotuloUnidade(item))}${item.anoRef ? ` · ${escape(tp('ref. {ano}', { ano: item.anoRef }))}` : ''}</em></h3>
-      <div class="goals-chart-bars" role="list">${barras}</div>
-    </section>`;
+  return [...anos].sort((a, b) => Number(a) - Number(b)).map((ano) => ({
+    ano,
+    valores: Object.fromEntries(porEstado.map(([uf, porAno]) => [uf, porAno?.[ano]]).filter(([, v]) => Number.isFinite(v))),
+    regional: regional.get(ano) ?? null
+  }));
 }
 
 function corpoColetado(item) {
-  const { lugar, serie, atual } = focoColetado(item);
-  // A meta pactuada é o primeiro destaque: é ela que o indicador acompanha,
-  // mesmo sem patamar para medir a distância. O motivo vem logo abaixo.
+  const { serie, atual } = focoColetado(item);
+  // A meta pactuada abre o painel, como nas metas, com o motivo de ela não
+  // ter patamar logo abaixo.
   const prazo = item.prazo ? ` · ${tp('até {prazo}', { prazo: item.prazo })}` : '';
-  const metaTopo = `<section class="coletado-meta">
+  const temSerie = serie.length >= 2;
+  const hoje = atualDoColetado(item);
+  const ritmoAnual = temSerie ? ritmo(serie) : null;
+  const grafico = renderGrafico({ codigo: item.codigo, historico: historicoDoColetado(item) }, { formata: (v) => numeroColetado(item, v) });
+  const referencia = atual?.ano || item.anoRef || t('Não informada');
+  const leitura = item.agregacao === 'soma' ? t('soma dos nove estados') : t('sem valor regional');
+
+  return `
+    <section class="coletado-meta">
       <h3>${t('Meta pactuada')}${escape(prazo)}</h3>
       <p class="coletado-meta-texto">${escape(metaTextoDe(item) || t('Meta não informada.'))}</p>
       ${item.motivo ? `<p class="coletado-meta-motivo">${escape(motivoDe(item))}</p>` : ''}
+    </section>
+
+    <dl class="goals-detail-summary">
+      <div><dt>${t('Valor atual')}</dt><dd>${escape(hoje.completo)}</dd></div>
+      <div><dt>${t('Meta')}</dt><dd>${t('Sem patamar')}</dd></div>
+      <div><dt>${t('Ritmo')}</dt><dd>${ritmoAnual === null ? '—' : `${escape(textoRitmo(ritmoAnual))} ${t('ao ano')}`}</dd></div>
+    </dl>
+
+    <section class="goals-detail-chart">
+      ${grafico}
+    </section>
+
+    <section class="goals-detail-section">
+      <h3>${t('Leitura da série')}</h3>
+      <dl class="goals-detail-facts">
+        <div><dt>${t('Referência')}</dt><dd>${escape(String(referencia))}</dd></div>
+        <div><dt>${t('Variação')}</dt><dd>${temSerie ? tp('{variacao} desde {ano}', { variacao: escape(textoVariacao(variacao(serie))), ano: serie[0].ano }) : t('sem série anual')}</dd></div>
+      </dl>
+      <p class="goals-detail-method"><strong>${t('Leitura regional:')}</strong> ${escape(leitura)}.</p>
     </section>`;
-  const reais = ehReais(item);
-  const numero = (v) => (reais ? `R$ ${numeroCurto(item, v)}` : numeroCurto(item, v));
-  const unidadePequena = reais ? '' : `<small>${escape(rotuloUnidade(item))}</small>`;
-  let resumo;
-  if (serie.length >= 2) {
-    resumo = `<div><dt>${escape(lugar)} · ${atual.ano}</dt><dd>${escape(numero(atual.valor))}${unidadePequena}</dd></div>
-      <div><dt>${tp('Desde {ano}', { ano: serie[0].ano })}</dt><dd>${escape(textoVariacao(variacao(serie)))}</dd></div>
-      <div><dt>${t('Ritmo')}</dt><dd>${escape(textoRitmo(ritmo(serie)))}<small>${t('ao ano')}</small></dd></div>`;
-  } else {
-    const estados = state.data.estados
-      .map((estado) => ({ uf: estado.uf, v: item.valores?.[estado.uf] }))
-      .filter((estado) => Number.isFinite(estado.v))
-      .sort((a, b) => b.v - a.v);
-    resumo = `<div><dt>${escape(lugar)}</dt><dd>${atual ? `${escape(numero(atual.valor))}${unidadePequena}` : `—<small>${t('sem valor regional')}</small>`}</dd></div>
-      ${estados.length ? `<div><dt>${t('Maior')}</dt><dd>${escape(estados[0].uf)} ${escape(numeroCurto(item, estados[0].v))}</dd></div>
-      <div><dt>${t('Menor')}</dt><dd>${escape(estados.at(-1).uf)} ${escape(numeroCurto(item, estados.at(-1).v))}</dd></div>` : ''}`;
-  }
-  const grafico = serie.length >= 2
-    ? `<section class="goals-detail-section coletado-secao">
-        <h3>${escape(tp('{lugar} ao longo do tempo', { lugar }))}<em>${escape(rotuloUnidade(item))}</em></h3>
-        ${graficoColetado(item, lugar, serie)}
-      </section>`
-    : '';
-  const temSerie = Object.values(item.serieAnual || {}).some((porAno) => Object.keys(porAno).length);
-  return `${metaTopo}
-    <dl class="coletado-resumo">${resumo}</dl>
-    ${grafico}
-    ${temSerie ? faixasDosEstados(item) : barrasDosEstados(item)}`;
-}
-
-// A dica e o marcador mudam por edição direta: redesenhar o painel a cada
-// movimento do ponteiro refaria o conteúdo e dispararia a animação de troca.
-function mostraDica(alvo) {
-  const caixa = alvo.closest('.coletado-interativo');
-  const dica = caixa?.querySelector('.coletado-dica');
-  if (!dica) return;
-  dica.hidden = false;
-  dica.textContent = alvo.dataset.dica;
-  const quadro = caixa.getBoundingClientRect();
-  let x;
-  let y;
-  const svg = alvo.ownerSVGElement;
-  if (svg && alvo.dataset.x) {
-    const area = svg.getBoundingClientRect();
-    const escala = area.width / svg.viewBox.baseVal.width;
-    x = area.left - quadro.left + Number(alvo.dataset.x) * escala;
-    y = area.top - quadro.top + Number(alvo.dataset.y) * escala;
-    const marcador = svg.querySelector('.coletado-marcador');
-    marcador.querySelector('line').setAttribute('x1', alvo.dataset.x);
-    marcador.querySelector('line').setAttribute('x2', alvo.dataset.x);
-    marcador.querySelector('circle').setAttribute('cx', alvo.dataset.x);
-    marcador.querySelector('circle').setAttribute('cy', alvo.dataset.y);
-    marcador.classList.add('is-visivel');
-  } else {
-    const celula = alvo.getBoundingClientRect();
-    x = celula.left - quadro.left + celula.width / 2;
-    y = celula.top - quadro.top;
-  }
-  const largura = dica.offsetWidth;
-  const altura = dica.offsetHeight;
-  dica.style.left = `${Math.max(0, Math.min(quadro.width - largura, x - largura / 2))}px`;
-  dica.style.top = `${y - altura - 10 < 0 ? y + 12 : y - altura - 10}px`;
-  caixa.dataset.ano = alvo.dataset.ano;
-  marcaAno(alvo.dataset.ano);
-}
-
-function escondeDica(caixa) {
-  if (!caixa) return;
-  const dica = caixa.querySelector('.coletado-dica');
-  if (dica) dica.hidden = true;
-  caixa.querySelector('.coletado-marcador')?.classList.remove('is-visivel');
-  delete caixa.dataset.ano;
-  marcaAno(null);
-}
-
-// O ano apontado no gráfico ou numa faixa ganha contorno em todas as faixas.
-function marcaAno(ano) {
-  const painel = document.querySelector('#goals-detail');
-  painel?.querySelectorAll('.coletado-cel i.is-ano').forEach((celula) => celula.classList.remove('is-ano'));
-  if (ano) painel?.querySelectorAll(`.coletado-cel i[data-ano="${ano}"]`).forEach((celula) => celula.classList.add('is-ano'));
-}
-
-function passoNoGrafico(caixa, tecla) {
-  const alvos = [...caixa.querySelectorAll('.coletado-alvo')];
-  if (!alvos.length) return;
-  const atual = alvos.findIndex((alvo) => alvo.dataset.ano === caixa.dataset.ano);
-  const ultimo = alvos.length - 1;
-  let indice = atual < 0 ? ultimo : atual;
-  if (tecla === 'ArrowLeft') indice = atual < 0 ? ultimo : Math.max(0, atual - 1);
-  else if (tecla === 'ArrowRight') indice = atual < 0 ? ultimo : Math.min(ultimo, atual + 1);
-  else if (tecla === 'Home') indice = 0;
-  else if (tecla === 'End') indice = ultimo;
-  mostraDica(alvos[indice]);
 }
 
 function corpoFicha(item) {
@@ -1492,12 +1338,6 @@ function bindEvents() {
       requestAnimationFrame(() => painelDetalhe.querySelector(`[data-aba="${state.aba}"]`)?.focus({ preventScroll: true }));
       return;
     }
-    // No toque não há "passar por cima": tocar numa célula ou num ano mostra a dica.
-    const comDica = event.target.closest('[data-dica]');
-    if (comDica) {
-      mostraDica(comDica);
-      return;
-    }
     const toggle = event.target.closest('[data-goals-year-toggle]');
     if (toggle) {
       const dropdown = toggle.closest('.goals-year-dropdown');
@@ -1542,18 +1382,6 @@ function bindEvents() {
       requestAnimationFrame(() => destino?.focus({ preventScroll: true }));
       return;
     }
-    const grafico = event.target.closest('.coletado-grafico');
-    if (grafico) {
-      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-        event.preventDefault();
-        passoNoGrafico(grafico, event.key);
-      } else if (event.key === 'Escape' && grafico.dataset.ano) {
-        // O Esc fecha a dica primeiro; o painel fecha no Esc seguinte.
-        event.stopPropagation();
-        escondeDica(grafico);
-      }
-      return;
-    }
     const menu = event.target.closest('.goals-year-dropdown .dropdown-menu');
     if (!menu) return;
     const itens = [...menu.querySelectorAll('[data-goals-chart-year]')];
@@ -1576,31 +1404,6 @@ function bindEvents() {
       toggle.setAttribute('aria-expanded', 'false');
       toggle.focus();
     }
-  });
-
-  // pointerover e pointerout borbulham (pointerenter e pointerleave, não): é o
-  // que deixa um só ouvinte no painel servir às áreas redesenhadas a cada troca.
-  painelDetalhe.addEventListener('pointerover', (event) => {
-    const alvo = event.target.closest?.('[data-dica]');
-    if (alvo) mostraDica(alvo);
-  });
-  painelDetalhe.addEventListener('pointerout', (event) => {
-    if (event.pointerType === 'touch') return;
-    const de = event.target.closest?.('[data-dica]');
-    if (!de) return;
-    const caixa = de.closest('.coletado-interativo');
-    const para = event.relatedTarget?.closest?.('[data-dica]');
-    if (para && para.closest('.coletado-interativo') === caixa) return;
-    if (caixa?.matches(':focus-visible')) return;
-    escondeDica(caixa);
-  });
-  painelDetalhe.addEventListener('focusin', (event) => {
-    const grafico = event.target.closest?.('.coletado-grafico');
-    if (grafico && !grafico.dataset.ano && grafico.matches(':focus-visible')) passoNoGrafico(grafico, 'End');
-  });
-  painelDetalhe.addEventListener('focusout', (event) => {
-    const grafico = event.target.closest?.('.coletado-grafico');
-    if (grafico && !grafico.contains(event.relatedTarget)) escondeDica(grafico);
   });
 
   document.addEventListener('click', (event) => {

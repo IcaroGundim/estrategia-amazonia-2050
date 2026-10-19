@@ -10,7 +10,7 @@ import arquivo from '../../../conteudo/usuarios.json';
 /**
  * Acesso restrito de uma conta. Sem o campo, a conta abre a administração
  * inteira. `textos` é de quem só revisa texto: abre a tela de Textos (com a
- * prévia), a Ajuda e a troca da própria senha, e mais nada.
+ * prévia e o botão de publicar), a Ajuda e a troca da própria senha, e mais nada.
  */
 export type Acesso = 'textos';
 
@@ -27,11 +27,12 @@ export interface Usuario {
 export const NOME_DO_ACESSO: Record<Acesso, string> = { textos: 'só textos' };
 
 // O que cada acesso restrito abre: o caminho exato ou qualquer coisa abaixo
-// dele. Sair vale para todos. Salvar texto grava no rascunho; atualizar a
-// prévia publicada e publicar (/api/admin/*) ficam de fora de propósito.
+// dele. Sair vale para todos. Salvar texto grava no rascunho, e quem revisa
+// texto também publica, pela tela de Textos. Atualizar a prévia publicada
+// (/api/admin/previa) continua de fora. O primeiro caminho é a tela inicial.
 const SEMPRE = ['/api/admin/sair'];
 const LIBERADO: Record<Acesso, string[]> = {
-  textos: ['/admin/textos', '/admin/ajuda', '/admin/senha']
+  textos: ['/admin/textos', '/admin/ajuda', '/admin/senha', '/api/admin/publicar']
 };
 
 /**

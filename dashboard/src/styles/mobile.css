@@ -164,6 +164,8 @@
   .goals-card-numeros { margin-top: 6px; }
   .goals-card-stat { align-items: flex-start; padding-left: 0; padding-right: 14px; }
   .goals-card-stat b { font-size: 17px; }
+  /* Nos coletados, o "sem patamar" e a unidade seguem o alinhamento à esquerda. */
+  .goals-card-stat.is-sem-patamar b, .goals-row.is-coletado .goals-card-stat.is-atual small { max-width: none; text-align: left; }
   .goals-legend, .goals-map-hint { font-size: 11.5px; }
   .goals-detail-head h2 { font-size: 19px; }
   .goals-detail-summary dt, .goals-detail-facts dt { font-size: 10.5px; }

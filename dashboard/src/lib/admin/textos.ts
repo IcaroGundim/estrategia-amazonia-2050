@@ -56,7 +56,7 @@ export const GRUPOS: Grupo[] = [
   { id: 'eixos', caminhos: ['visaoGeral.eixos'], secao: 'Lâminas', titulo: 'Lâmina 3: Eixos', descricao: 'Os cinco eixos.', ancora: 'eixos-de-implementacao', item: 'Eixo' },
   { id: 'governanca', caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.', ancora: 'governanca', item: 'Bloco' },
   { id: 'ipam', caminhos: ['visaoGeral.estePainel'], secao: 'Lâminas', titulo: 'Lâmina 5: IPAM', descricao: 'O papel do IPAM na construção da Estratégia, a citação dos governadores e o crédito ao instituto.', ancora: 'calculo' },
-  { id: 'nota-tecnica', caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions', 'panorama.metodologia.sources'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto, dimensões e fontes consolidadas da síntese comparativa. Vão para a nota técnica em PDF ("Baixar nota técnica"), que é gerada à parte; nenhuma página do painel os mostra, então a prévia não muda.' }
+  { id: 'nota-tecnica', caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions', 'panorama.metodologia.sources'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto, dimensões e fontes consolidadas da síntese comparativa. Vão para a nota técnica em PDF, que é gerada à parte (npm run nota-tecnica); nenhuma página do painel os mostra, então a prévia não muda.' }
 ];
 
 /** Se a folha em `caminho` pertence ao grupo. */

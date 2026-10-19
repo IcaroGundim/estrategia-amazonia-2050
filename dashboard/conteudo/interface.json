@@ -23,7 +23,6 @@
         "Metas e indicadores",
         "Como ler os dados",
         "Sobre a Estratégia",
-        "Baixar nota técnica",
         "English is a courtesy translation. The official wording is the Portuguese one.",
         "Projetos",
         "Site da carteira"
@@ -171,9 +170,11 @@
         "Jornada:",
         "quanto do caminho entre a baseline e a meta a região já percorreu.",
         "sem baseline, é a posição do valor atual em relação à meta.",
+        "o ritmo atual da região diante do ritmo pedido na meta.",
         "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.",
         "sem escala: não há baseline para medir o caminho até uma meta zero.",
         "não calculada: a série tem menos de 5 anos",
+        "não se aplica: a meta é um ritmo, e o valor é o crescimento médio anual de {desde} a {ate}",
         "{valor}, média dos últimos 10 anos ({desde}–{ate})",
         "{valor}, média dos últimos 5 anos ({desde}–{ate})",
         "{valor}, média de {desde} a {ate}, o período citado na meta",
@@ -288,11 +289,7 @@
       "pagina": "metas",
       "chaves": [
         "O indicador ainda não tem valores coletados para os nove estados.",
-        "A meta não define um patamar numérico comparável aos valores coletados.",
-        "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
-        "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
-        "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
-        "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador."
+        "A meta não define um patamar numérico comparável aos valores coletados."
       ],
       "alvo": "#goals-detail",
       "abre": "#goals-list button[data-codigo]"
@@ -383,6 +380,7 @@
         "média simples dos nove estados",
         "soma dos nove estados",
         "unidades com plano e conselho sobre o total de unidades",
+        "crescimento médio anual da soma dos nove estados nos últimos 10 anos",
         "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
         "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece."
       ],
@@ -601,21 +599,15 @@
       "pagina": "metas",
       "chaves": [
         "Coletados, sem meta numérica",
-        "A região e o momento de cada estado",
-        "O momento de cada estado",
-        "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.",
-        "Desde {ano}",
-        "Estados",
-        "Maior",
-        "Menor",
+        "desde {ano}",
+        "sem patamar",
+        "Sem patamar",
+        "Leitura da série",
+        "Variação",
         "ao ano",
-        "ritmo ao ano",
         "bi",
         "mil",
         "sem série anual",
-        "série desde {ano}",
-        "{lugar} ao longo do tempo",
-        "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.",
         "{variacao} desde {ano}",
         "vínculos",
         "equipes"
@@ -749,10 +741,6 @@
     "Sobre a Estratégia": {
       "pt": "Sobre a Estratégia",
       "en": "About the Strategy"
-    },
-    "Baixar nota técnica": {
-      "pt": "Baixar nota técnica",
-      "en": "Technical note (Portuguese)"
     },
     "English is a courtesy translation. The official wording is the Portuguese one.": {
       "pt": "English is a courtesy translation. The official wording is the Portuguese one.",
@@ -1485,14 +1473,6 @@
     "A meta não define um patamar numérico comparável aos valores coletados.": {
       "pt": "A meta não define um patamar numérico comparável aos valores coletados.",
       "en": "The target sets no numerical threshold that the collected figures can be measured against."
-    },
-    "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.": {
-      "pt": "A ficha define estruturação de cadeias produtivas de forma qualitativa, sem patamar numérico.",
-      "en": "The technical sheet defines value-chain development in qualitative terms, with no numerical threshold."
-    },
-    "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.": {
-      "pt": "A meta é de crescimento de 10% ao ano em valores nominais. Avaliar cumprimento por um único ano de variação diria mais sobre inflação e base de comparação do que sobre a meta de 2050.",
-      "en": "The target is 10% growth a year in nominal terms. Judging it on a single year of change would say more about inflation and the comparison base than about the 2050 goal."
     },
     "pontos percentuais": {
       "pt": "pontos percentuais",
@@ -2346,41 +2326,9 @@
       "pt": "Coletados, sem meta numérica",
       "en": "Collected, no numeric target"
     },
-    "A região e o momento de cada estado": {
-      "pt": "A região e o momento de cada estado",
-      "en": "The region and each state's moment"
-    },
-    "O momento de cada estado": {
-      "pt": "O momento de cada estado",
-      "en": "Each state's moment"
-    },
-    "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.": {
-      "pt": "Cada linha na própria escala: o tom mais escuro é o maior valor dela no período.",
-      "en": "Each row has its own scale: the darkest shade is that row's highest value in the period."
-    },
-    "Desde {ano}": {
-      "pt": "Desde {ano}",
-      "en": "Since {ano}"
-    },
-    "Estados": {
-      "pt": "Estados",
-      "en": "States"
-    },
-    "Maior": {
-      "pt": "Maior",
-      "en": "Highest"
-    },
-    "Menor": {
-      "pt": "Menor",
-      "en": "Lowest"
-    },
     "ao ano": {
       "pt": "ao ano",
       "en": "per year"
-    },
-    "ritmo ao ano": {
-      "pt": "ritmo ao ano",
-      "en": "annual pace"
     },
     "bi": {
       "pt": "bi",
@@ -2393,18 +2341,6 @@
     "sem série anual": {
       "pt": "sem série anual",
       "en": "no annual series"
-    },
-    "série desde {ano}": {
-      "pt": "série desde {ano}",
-      "en": "series since {ano}"
-    },
-    "{lugar} ao longo do tempo": {
-      "pt": "{lugar} ao longo do tempo",
-      "en": "{lugar} over time"
-    },
-    "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.": {
-      "pt": "{lugar}: {inicio} em {primeiro} e {fim} em {ultimo}. Use as setas para percorrer os anos.",
-      "en": "{lugar}: {inicio} in {primeiro} and {fim} in {ultimo}. Use the arrow keys to move through the years."
     },
     "{variacao} desde {ano}": {
       "pt": "{variacao} desde {ano}",
@@ -2481,14 +2417,6 @@
     "parcela dos nove estados que atingem o patamar": {
       "pt": "parcela dos nove estados que atingem o patamar",
       "en": "share of the nine states that reach the threshold"
-    },
-    "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.": {
-      "pt": "A meta é institucionalizar um modelo permanente de governança regional coordenado pelo CAL, sem patamar numérico. A projeção do orçamento, R$ 17,7 mi em 2050, é trajetória e não meta: a aba Trajetória 2050 compara a soma das contribuições dos nove estados com ela.",
-      "en": "The target is to institutionalise a permanent regional governance model coordinated by the Consortium, with no numeric threshold. The budget projection, R$ 17.7 million by 2050, is a pathway rather than a target: the Pathway to 2050 tab compares the sum of the nine states' contributions with it."
-    },
-    "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.": {
-      "pt": "A meta é mobilizar o equivalente a 0,1% do PIB da Amazônia Legal ao ano, e a ficha fala em R$ 100 milhões anuais: os dois patamares não coincidem, e a base do painel não traz o PIB da região no ano dos recursos. O valor por estado é o que cada governo recebeu do Fundo Amazônia e do REM Acre, dois componentes do indicador.",
-      "en": "The target is to mobilise the equivalent of 0.1% of the Legal Amazon's GDP a year, while the technical sheet speaks of R$ 100 million a year: the two thresholds do not match, and the dashboard's data does not include the region's GDP for the year of the funds. The value per state is what each government received from the Amazon Fund and REM Acre, two components of the indicator."
     },
     "Metas com projeção": {
       "pt": "Metas com projeção",
@@ -2729,6 +2657,38 @@
     "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
       "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
       "en": "Each goal’s pace over the last 10 years against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
+    },
+    "desde {ano}": {
+      "pt": "desde {ano}",
+      "en": "since {ano}"
+    },
+    "sem patamar": {
+      "pt": "sem patamar",
+      "en": "no threshold"
+    },
+    "Sem patamar": {
+      "pt": "Sem patamar",
+      "en": "No threshold"
+    },
+    "Leitura da série": {
+      "pt": "Leitura da série",
+      "en": "Reading the series"
+    },
+    "Variação": {
+      "pt": "Variação",
+      "en": "Change"
+    },
+    "não se aplica: a meta é um ritmo, e o valor é o crescimento médio anual de {desde} a {ate}": {
+      "pt": "não se aplica: a meta é um ritmo, e o valor é o crescimento médio anual de {desde} a {ate}",
+      "en": "not applicable: the target is a pace, and the value is the average annual growth from {desde} to {ate}"
+    },
+    "o ritmo atual da região diante do ritmo pedido na meta.": {
+      "pt": "o ritmo atual da região diante do ritmo pedido na meta.",
+      "en": "the region’s current pace against the pace the target calls for."
+    },
+    "crescimento médio anual da soma dos nove estados nos últimos 10 anos": {
+      "pt": "crescimento médio anual da soma dos nove estados nos últimos 10 anos",
+      "en": "average annual growth of the nine states’ total over the last 10 years"
     }
   }
 }
