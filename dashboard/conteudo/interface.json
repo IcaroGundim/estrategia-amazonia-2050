@@ -616,57 +616,18 @@
       "abre": ".eixo-cartao"
     },
     {
-      "titulo": "Projetos: título, números e filtros",
+      "titulo": "Projetos: explicação do portal",
       "pagina": "projetos",
       "chaves": [
-        "Projetos -",
-        "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.",
-        "Estado",
-        "Filtrar por estado",
-        "Eixo da Estratégia",
-        "Filtrar por eixo da Estratégia",
-        "Orçamento (US$)",
-        "Filtrar por faixa de orçamento",
-        "Buscar projeto ou órgão",
-        "Todos os estados",
-        "{estado}: {n} projetos",
-        "Todas",
-        "projetos",
-        "órgãos"
+        "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.",
+        "Conhecer o portal",
+        "Portal de projetos",
+        "Investidores",
+        "Parceiros",
+        "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.",
+        "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)"
       ],
-      "alvo": ".projetos-lateral"
-    },
-    {
-      "titulo": "Projetos: quadro e cartão do projeto",
-      "pagina": "projetos",
-      "chaves": [
-        "{n} de {total} projetos",
-        "{total} projetos",
-        "Limpar filtros",
-        "Páginas de projetos",
-        "Página anterior",
-        "Próxima página",
-        "Página {n} de {total}",
-        "Carregando projetos…",
-        "Nenhum projeto com esse recorte.",
-        "Orçamento",
-        "Duração",
-        "{n} meses",
-        "Ver o projeto completo",
-        "texto em inglês",
-        "texto em português",
-        "até 500 mil",
-        "500 mil a 1 milhão",
-        "1 a 3,5 milhões",
-        "3,5 a 5 milhões",
-        "5 a 10 milhões",
-        "acima de 10 milhões",
-        "Mapa da Amazônia Legal com {estado} em destaque",
-        "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.",
-        "Foto ilustrativa",
-        "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons."
-      ],
-      "alvo": ".projetos-quadro"
+      "alvo": ".hub"
     }
   ],
   "textos": {
@@ -2482,101 +2443,9 @@
       "pt": "Site da carteira",
       "en": "Portfolio website"
     },
-    "Projetos -": {
-      "pt": "Projetos -",
-      "en": "Projects -"
-    },
-    "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.": {
-      "pt": "A carteira de projetos que os nove estados apresentam a investidores e parceiros, reunida pelo Consórcio para a COP30.",
-      "en": "The portfolio of projects the nine states put before investors and partners, gathered by the Consortium for COP30."
-    },
-    "Estado": {
-      "pt": "Estado",
-      "en": "State"
-    },
-    "Filtrar por estado": {
-      "pt": "Filtrar por estado",
-      "en": "Filter by state"
-    },
-    "Eixo da Estratégia": {
-      "pt": "Eixo da Estratégia",
-      "en": "Strategy pillar"
-    },
-    "Filtrar por eixo da Estratégia": {
-      "pt": "Filtrar por eixo da Estratégia",
-      "en": "Filter by Strategy pillar"
-    },
-    "Orçamento (US$)": {
-      "pt": "Orçamento (US$)",
-      "en": "Budget (US$)"
-    },
-    "Filtrar por faixa de orçamento": {
-      "pt": "Filtrar por faixa de orçamento",
-      "en": "Filter by budget range"
-    },
-    "Buscar projeto ou órgão": {
-      "pt": "Buscar projeto ou órgão",
-      "en": "Search project or agency"
-    },
-    "Limpar filtros": {
-      "pt": "Limpar filtros",
-      "en": "Clear filters"
-    },
-    "Carregando projetos…": {
-      "pt": "Carregando projetos…",
-      "en": "Loading projects…"
-    },
-    "Todos os estados": {
-      "pt": "Todos os estados",
-      "en": "All states"
-    },
-    "{estado}: {n} projetos": {
-      "pt": "{estado}: {n} projetos",
-      "en": "{estado}: {n} projects"
-    },
-    "Todas": {
-      "pt": "Todas",
-      "en": "All"
-    },
-    "até 500 mil": {
-      "pt": "até 500 mil",
-      "en": "up to 500K"
-    },
-    "500 mil a 1 milhão": {
-      "pt": "500 mil a 1 milhão",
-      "en": "500K to 1M"
-    },
-    "1 a 3,5 milhões": {
-      "pt": "1 a 3,5 milhões",
-      "en": "1M to 3.5M"
-    },
-    "3,5 a 5 milhões": {
-      "pt": "3,5 a 5 milhões",
-      "en": "3.5M to 5M"
-    },
-    "5 a 10 milhões": {
-      "pt": "5 a 10 milhões",
-      "en": "5M to 10M"
-    },
-    "acima de 10 milhões": {
-      "pt": "acima de 10 milhões",
-      "en": "above 10M"
-    },
     "Orçamento": {
       "pt": "Orçamento",
       "en": "Budget"
-    },
-    "Duração": {
-      "pt": "Duração",
-      "en": "Duration"
-    },
-    "{n} meses": {
-      "pt": "{n} meses",
-      "en": "{n} months"
-    },
-    "Ver o projeto completo": {
-      "pt": "Ver o projeto completo",
-      "en": "See the full project"
     },
     "texto em inglês": {
       "pt": "texto em inglês",
@@ -2586,53 +2455,9 @@
       "pt": "texto em português",
       "en": "text in Portuguese"
     },
-    "{n} de {total} projetos": {
-      "pt": "{n} de {total} projetos",
-      "en": "{n} of {total} projects"
-    },
-    "{total} projetos": {
-      "pt": "{total} projetos",
-      "en": "{total} projects"
-    },
-    "Nenhum projeto com esse recorte.": {
-      "pt": "Nenhum projeto com esse recorte.",
-      "en": "No project matches this selection."
-    },
     "projetos": {
       "pt": "projetos",
       "en": "projects"
-    },
-    "Páginas de projetos": {
-      "pt": "Páginas de projetos",
-      "en": "Project pages"
-    },
-    "Página anterior": {
-      "pt": "Página anterior",
-      "en": "Previous page"
-    },
-    "Próxima página": {
-      "pt": "Próxima página",
-      "en": "Next page"
-    },
-    "Página {n} de {total}": {
-      "pt": "Página {n} de {total}",
-      "en": "Page {n} of {total}"
-    },
-    "Mapa da Amazônia Legal com {estado} em destaque": {
-      "pt": "Mapa da Amazônia Legal com {estado} em destaque",
-      "en": "Map of the Legal Amazon with {estado} highlighted"
-    },
-    "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.": {
-      "pt": "Fonte: {site}, do Consórcio Interestadual da Amazônia Legal, lido em {data}. O texto de cada projeto é do órgão que o propôs; onde ele foi escrito em outra língua, a tradução é deste painel, e o projeto completo abre no site do Consórcio na língua original. Estado, faixa de orçamento e duração foram padronizados, e o eixo da Estratégia é a leitura deste painel. Onde o projeto não traz foto, a imagem é uma paisagem do estado, do Wikimedia Commons, com autor e licença indicados no cartão.",
-      "en": "Source: {site}, by the Interstate Consortium of the Legal Amazon, read on {data}. Each project’s text comes from the agency that proposed it; where it was written in another language, the translation is this dashboard’s, and the full project opens on the Consortium’s site in the original language. State, budget range and duration were standardised, and the Strategy pillar is this dashboard’s own reading. Where a project has no photo, the image is a landscape of the state from Wikimedia Commons, with author and licence shown on the card."
-    },
-    "Foto ilustrativa": {
-      "pt": "Foto ilustrativa",
-      "en": "Illustrative photo"
-    },
-    "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons.": {
-      "pt": "Foto ilustrativa do estado, não do projeto. Autor: {autor}. Licença: {licenca}. Origem: Wikimedia Commons.",
-      "en": "Illustrative photo of the state, not of the project. Author: {autor}. Licence: {licenca}. Source: Wikimedia Commons."
     },
     "órgãos": {
       "pt": "órgãos",
@@ -2689,6 +2514,34 @@
     "crescimento médio anual da soma dos nove estados nos últimos 10 anos": {
       "pt": "crescimento médio anual da soma dos nove estados nos últimos 10 anos",
       "en": "average annual growth of the nine states’ total over the last 10 years"
+    },
+    "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.": {
+      "pt": "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.",
+      "en": "The states bring their projects to the Consortium, which publishes them on a single portal open to investors and partners."
+    },
+    "Conhecer o portal": {
+      "pt": "Conhecer o portal",
+      "en": "Visit the portal"
+    },
+    "Portal de projetos": {
+      "pt": "Portal de projetos",
+      "en": "Project portal"
+    },
+    "Investidores": {
+      "pt": "Investidores",
+      "en": "Investors"
+    },
+    "Parceiros": {
+      "pt": "Parceiros",
+      "en": "Partners"
+    },
+    "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.": {
+      "pt": "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.",
+      "en": "The nine states bring their projects to the Legal Amazon Interstate Consortium, which publishes them on a portal for investors and partners."
+    },
+    "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)": {
+      "pt": "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)",
+      "en": "Photo: Ana Claudia Jatahy/MTur · Jaú National Park, Novo Airão (AM)"
     }
   }
 }

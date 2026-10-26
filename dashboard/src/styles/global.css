@@ -1578,137 +1578,53 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
   .trajetoria { padding: 20px 16px 16px; }
 }
 
-/* ---------- Projetos: a carteira da COP30 ----------
-   Duas colunas, como o Panorama: à esquerda o título e os recortes; à direita
-   os projetos em páginas de quatro, dois por dois. O quadro tem a altura da
-   janela, para as quatro fichas caberem sem rolar, e cada cartão divide a sua
-   entre a foto (ou o mapa do estado) e o texto. */
+/* ---------- Projetos: o portal Brazilian Amazon Projects ----------
+   A página explica o portal em vez de listar os projetos: título, uma frase, o
+   botão para o site e o diagrama do caminho (estados → Consórcio → portal →
+   investidores e parceiros). O diagrama tem duas versões, deitada e em pé; o
+   CSS mostra uma de cada vez. A entrada animada só acontece com `.is-anima`,
+   que projetos-hub.js põe, e corre quando ele acrescenta `.is-visivel`. */
 .projetos-page { padding: 28px 0 48px; background: var(--areia); }
-.projetos-board { --projetos-altura: max(660px, calc(100dvh - 160px)); display: grid; grid-template-columns: minmax(280px, 336px) minmax(0, 1fr); gap: 16px; align-items: start; }
-/* A coluna dos recortes é de apoio: tudo nela é pequeno, para caber inteira na
-   altura do quadro e deixar a largura para os projetos. */
-.projetos-lateral { padding: 18px 18px 18px; }
-.projetos-lateral .eixos-titulo { font-size: 23px; line-height: 1.05; }
-.projetos-lateral .lead { margin-top: 8px; font-size: 12.5px; line-height: 1.45; }
-.projetos-numeros { margin: 12px 0 0; padding: 10px 0; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 8px 14px; border-block: 1px solid var(--linha); }
-.projetos-numeros div { display: flex; align-items: baseline; gap: 6px; }
-.projetos-numeros dt { order: 2; color: var(--tinta-4); font-size: 11px; line-height: 1.2; }
-.projetos-numeros dd { margin: 0; font: 800 19px/1 var(--display); letter-spacing: -0.03em; color: var(--mata); }
-.projetos-filtros { margin-top: 12px; display: grid; gap: 12px; }
-.projetos-filtro { min-width: 0; }
-.projetos-filtro .select-wrap-label { display: block; margin-bottom: 6px; }
-.projetos-busca { min-height: 36px; padding: 0 12px; }
-/* As dez bandeiras (a região e os nove estados) numa linha só. */
-.projetos-estados { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; }
-.projetos-estado { min-width: 0; padding: 0; display: grid; justify-items: center; gap: 3px; border: 0; background: none; cursor: pointer; }
-.projetos-estado .goals-flag { width: 100%; height: auto; aspect-ratio: 3 / 2; }
-.projetos-estado small { color: var(--tinta-4); font: 600 10px/1 var(--text); font-variant-numeric: tabular-nums; }
-.projetos-estado:hover .goals-flag { border-color: var(--mata-500); }
-.projetos-estado.is-active .goals-flag { border-color: var(--urucum); box-shadow: 0 0 0 1px var(--urucum); }
-.projetos-estado.is-active small { color: var(--urucum); }
-.projetos-estado:focus-visible { outline: 2px solid var(--mata); outline-offset: 3px; border-radius: 4px; }
-.projetos-estado:disabled { opacity: 0.35; cursor: default; }
-.projetos-opcoes { display: flex; flex-wrap: wrap; gap: 7px 5px; }
-.projetos-opcao { min-height: 28px; padding: 0 10px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta-2); font: 500 12px var(--text); text-align: left; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
-.projetos-opcao small { color: var(--tinta-4); font: 600 11px var(--text); font-variant-numeric: tabular-nums; }
-.projetos-opcao:hover { border-color: var(--mata-300); }
-.projetos-opcao:focus-visible { outline: 2px solid var(--mata); outline-offset: 2px; }
-.projetos-opcao.is-active { border-color: var(--mata); background: var(--mata); color: var(--areia); }
-.projetos-opcao.is-active small { color: var(--mata-100); }
-.projetos-opcao:disabled { opacity: 0.4; cursor: default; }
-/* Os eixos têm nome comprido: viram uma lista de linhas inteiras, com a
-   contagem alinhada à direita. */
-.projetos-opcoes.is-lista { display: grid; gap: 7px; }
-.projetos-opcoes.is-lista .projetos-opcao { min-height: 29px; padding: 4px 10px; justify-content: space-between; border-radius: 8px; line-height: 1.2; }
+.hub { --hub-suave: cubic-bezier(.2, .7, .2, 1); max-width: 1180px; margin-inline: auto; padding: clamp(22px, 3vw, 40px); overflow: hidden; }
+.hub-topo { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 32px; margin-bottom: clamp(18px, 2.4vw, 30px); }
+.hub-sobre { margin: 0 0 6px; color: #8a6416; font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
+.hub-titulo { margin: 0; font: 800 clamp(28px, 3.4vw, 44px)/1.05 var(--display); letter-spacing: -.025em; color: var(--mata); }
+.hub-titulo em { font-style: normal; color: var(--mata-500); }
+.hub-texto { max-width: 620px; margin: 12px 0 0; color: var(--tinta-2); font-size: 15px; line-height: 1.5; }
+.hub-cta { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 22px; border-radius: 99px; background: var(--mata); color: var(--areia); font: 600 14.5px var(--text); text-decoration: none; transition: background .25s, transform .25s var(--hub-suave); }
+.hub-cta:hover { background: var(--mata-700); transform: translateY(-1px); }
+.hub-cta:focus-visible { outline: 2px solid var(--mata); outline-offset: 3px; }
+.hub-cta span { color: var(--ocre); transition: transform .25s var(--hub-suave); }
+.hub-cta:hover span { transform: translate(2px, -2px); }
 
-.projetos-quadro { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; height: var(--projetos-altura); }
-.projetos-quadro-topo { min-height: 36px; display: flex; align-items: center; gap: 16px; }
-.projetos-resumo { margin: 0; color: var(--tinta-3); font-size: 13px; font-weight: 600; }
-.projetos-limpar { padding: 0; border: 0; background: none; color: var(--urucum); font: 600 12.5px var(--text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.projetos-paginas { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--tinta-3); font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.projetos-paginas[hidden], .projetos-paginas.is-rodape { display: none; }
-.projetos-paginas button { width: 36px; height: 36px; padding: 0; display: grid; place-items: center; border: 1px solid var(--linha); border-radius: 9px; background: var(--papel); color: var(--mata); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
-.projetos-paginas button:hover:not(:disabled) { border-color: var(--mata); background: #e7ede8; }
-.projetos-paginas button:focus-visible { outline: 2px solid var(--mata); outline-offset: 2px; }
-.projetos-paginas button:disabled { opacity: 0.35; cursor: default; }
-.projetos-paginas svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.projetos-lista { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.projetos-lista.is-trocando { animation: projetos-entra 220ms ease; }
-@keyframes projetos-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.projetos-aviso { grid-column: 1 / -1; grid-row: 1 / -1; margin: 0; padding: 34px 20px; display: grid; place-items: center; border: 1px dashed var(--linha); border-radius: 14px; color: var(--tinta-3); text-align: center; }
+.hub-fluxo { display: block; width: 100%; max-width: 980px; height: auto; margin-inline: auto; overflow: visible; }
+.hub-fluxo.is-em-pe { display: none; max-width: 420px; }
+.hub-fio { fill: none; stroke: var(--ocre); stroke-width: 1.6; }
+.hub-fio.is-fino { stroke-width: 1; stroke-opacity: .55; }
+.hub-consorcio { fill: var(--mata); }
+.hub-publico { font: 600 12px var(--text); fill: var(--tinta-2); }
+.hub-foto text { font: 700 13px var(--text); fill: var(--areia); }
+.hub-credito { margin: 14px 0 0; color: var(--tinta-4); font-size: 11.5px; }
+.hub-credito a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
-.projeto-cartao { min-width: 0; min-height: 0; display: flex; flex-direction: column; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); overflow: hidden; transition: border-color 150ms ease, box-shadow 150ms ease; }
-.projeto-cartao:hover { border-color: var(--mata-300); box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
-/* A foto fica com o que sobra da altura do cartão; o texto tem altura própria. */
-.projeto-cartao-foto { position: relative; flex: 1 1 0; min-height: 96px; background: var(--mata); overflow: hidden; }
-.projeto-cartao-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Um véu embaixo, só o bastante para o nome do estado se ler sobre qualquer foto. */
-.projeto-cartao-foto::after { content: ""; position: absolute; inset: auto 0 0; height: 58%; background: linear-gradient(to top, rgba(14, 43, 34, 0.72), rgba(14, 43, 34, 0)); pointer-events: none; }
-.projeto-cartao.is-sem-foto .projeto-cartao-foto::after { content: none; }
-.projeto-cartao-mapa { position: absolute; inset: 0; width: 100%; height: 100%; }
-.projeto-cartao-mapa path { fill: var(--mata-700); stroke: var(--mata); stroke-width: 0.8; stroke-linejoin: round; }
-.projeto-cartao-mapa path.is-destaque { fill: var(--ocre); }
-.projeto-cartao-estado { position: absolute; z-index: 1; left: 14px; bottom: 11px; max-width: 46%; display: flex; align-items: center; gap: 7px; color: var(--areia); font-size: 12px; font-weight: 600; }
-.projeto-cartao-estado b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.projeto-cartao-estado i { flex: none; width: 24px; height: 16px; border: 1px solid rgba(245, 240, 232, 0.5); border-radius: 3px; overflow: hidden; }
-.projeto-cartao-estado img { position: static; }
-/* Crédito da foto ilustrativa: a licença pede autor e licença à vista, e o
-   link leva à página da foto no Commons. */
-/* Num nome comprido quem encolhe é o autor: a licença fica sempre à vista. */
-.projeto-cartao-credito { position: absolute; z-index: 1; right: 12px; bottom: 11px; max-width: 50%; display: flex; gap: 3px; color: rgba(245, 240, 232, 0.86); font-size: 10px; line-height: 1.3; white-space: nowrap; }
-.projeto-cartao-credito span { flex: none; }
-.projeto-cartao-credito b { min-width: 0; font-weight: 400; overflow: hidden; text-overflow: ellipsis; }
-.projeto-cartao-credito:hover, .projeto-cartao-credito:focus-visible { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
-.projeto-cartao-corpo { flex: none; padding: 14px 18px 14px; display: grid; gap: 7px; }
-/* Os títulos chegam do site em caixas diferentes, vários em maiúsculas e alguns
-   com três linhas; o corte em duas mantém os quatro cartões na mesma grade, e
-   o título inteiro fica no `title`. */
-.projeto-cartao-titulo { margin: 0; font-size: 16.5px; line-height: 1.22; letter-spacing: -0.015em; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
-.projeto-cartao-entidade { margin: 0; color: var(--tinta-4); font-size: 11.5px; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.projeto-cartao-resumo { margin: 0; color: var(--tinta-2); font-size: 12.5px; line-height: 1.5; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
-.projeto-cartao-pe { margin-top: 3px; padding-top: 10px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; border-top: 1px solid var(--linha-2); }
-.projeto-cartao-fatos { margin: 0; display: flex; gap: 6px 20px; }
-.projeto-cartao-fatos div { display: grid; gap: 2px; }
-.projeto-cartao-fatos dt { color: var(--tinta-4); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-.projeto-cartao-fatos dd { margin: 0; color: var(--tinta); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
-.projeto-cartao-link { margin-left: auto; display: grid; justify-items: end; gap: 2px; }
-.projeto-cartao-link a { color: var(--urucum); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
-.projeto-cartao-link a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.projeto-cartao-link small { color: var(--tinta-4); font-size: 10.5px; }
-.projetos-fonte { max-width: 900px; margin: 22px 0 0; color: var(--tinta-4); font-size: 12px; line-height: 1.55; }
-.projetos-fonte a { color: var(--mata-700); text-decoration: underline; text-underline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { .projetos-lista.is-trocando { animation: none; } }
-/* Tablet: os recortes sobem para cima do quadro, em duas colunas, e os cartões
-   passam a ter altura própria, com a foto em proporção fixa. */
-@media (max-width: 1180px) {
-  .projetos-board { grid-template-columns: minmax(0, 1fr); }
-  .projetos-filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 28px; }
-  .projetos-busca { grid-column: 1 / -1; max-width: 520px; }
-  /* Estado e orçamento empilham à esquerda; os eixos, que são a lista mais alta, ocupam a direita inteira. */
-  .projetos-filtro:nth-of-type(2) { grid-column: 2; grid-row: 2 / span 2; }
-  .projetos-numeros { justify-content: start; gap: 8px 32px; }
-  .projetos-estados { grid-template-columns: repeat(10, 38px); gap: 6px; }
-  .projetos-quadro { height: auto; grid-template-rows: none; scroll-margin-top: 96px; }
-  .projetos-lista { grid-template-rows: none; }
-  .projetos-paginas.is-rodape:not([hidden]) { margin: 4px 0 0; display: flex; justify-content: center; }
-  .projeto-cartao-foto { flex: none; aspect-ratio: 16 / 7; }
-}
+/* A entrada: cada peça tem o seu atraso (--i, --b, --d) e só se move uma vez. */
+.hub.is-anima .hub-surge { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--hub-suave), transform .7s var(--hub-suave); transition-delay: calc(var(--i, 0) * 110ms); }
+.hub.is-anima .hub-estado { opacity: 0; transition: opacity .4s; transition-delay: calc(var(--b) * 60ms); }
+.hub.is-anima .hub-no { opacity: 0; transition: opacity .6s var(--hub-suave); transition-delay: var(--d); }
+.hub.is-anima .hub-fio { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .9s var(--hub-suave); transition-delay: var(--d); }
+.hub.is-anima .hub-foto { opacity: 0; transition: opacity .9s var(--hub-suave); transition-delay: var(--d); }
+.hub.is-anima .hub-foto image { transform-box: fill-box; transform-origin: center; transform: scale(1.08); transition: transform 2.4s var(--hub-suave); transition-delay: var(--d); }
+.hub.is-visivel .hub-surge, .hub.is-visivel .hub-estado, .hub.is-visivel .hub-no, .hub.is-visivel .hub-foto { opacity: 1; transform: none; }
+.hub.is-visivel .hub-fio { stroke-dashoffset: 0; }
+.hub.is-visivel .hub-foto image { transform: scale(1); }
+
 @media (max-width: 920px) {
   .projetos-page { padding-top: 16px; }
-  .projetos-lateral { padding: 18px 16px 18px; }
-  .projetos-filtros { grid-template-columns: minmax(0, 1fr); }
-  .projetos-filtro:nth-of-type(2) { grid-column: auto; grid-row: auto; }
-  .projetos-numeros { gap: 8px 22px; }
-  .projetos-estados { grid-template-columns: repeat(auto-fill, 38px); }
-  /* Os recortes de eixo e de orçamento viram trilhos que deslizam: empilhados,
-     ocupavam uma tela inteira antes do primeiro projeto. O trilho sangra até a
-     borda do cartão, para se ler como deslizável. */
-  .projetos-opcoes, .projetos-opcoes.is-lista { display: flex; flex-wrap: nowrap; margin-inline: -16px; padding-inline: 16px; overflow-x: auto; scrollbar-width: none; }
-  .projetos-opcoes::-webkit-scrollbar { display: none; }
-  .projetos-opcao, .projetos-opcoes.is-lista .projetos-opcao { flex: none; min-height: 34px; padding: 0 12px; border-radius: 17px; white-space: nowrap; }
 }
-@media (max-width: 700px) {
-  .projetos-lista { grid-template-columns: minmax(0, 1fr); }
-  .projeto-cartao-foto { aspect-ratio: 16 / 8; }
-  .projetos-quadro-topo { flex-wrap: wrap; gap: 8px 16px; }
+/* No celular o diagrama deitado deixaria o texto miúdo: entra o em pé. */
+@media (max-width: 620px) {
+  .hub { padding: 22px 16px; }
+  .hub-cta { width: 100%; justify-content: center; }
+  .hub-fluxo.is-deitado { display: none; }
+  .hub-fluxo.is-em-pe { display: block; }
 }

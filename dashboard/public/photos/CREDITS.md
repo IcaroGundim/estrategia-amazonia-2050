@@ -17,3 +17,7 @@ Ambas: [Creative Commons Atribuição-CompartilhaIgual 2.0](https://creativecomm
 - `teatro-amazonas.jpg` (lâmina de Governança, a quarta): **Jaques Sabon**, Teatro Amazonas, Manaus. [Original](https://commons.wikimedia.org/wiki/File:TeatroAmazonas.jpg). [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), uma das licenças oferecidas pelo autor.
 
 Arquivos obtidos das versões de 1280 pixels do Wikimedia Commons, exceto Teatro Amazonas, mantido na resolução original de 683 × 1000. Exibição com recorte por CSS e sobreposição de gradiente; a foto menor também recebe rotação por CSS. Cada adaptação fotográfica segue a mesma licença da respectiva fotografia. Créditos e links de licença também aparecem em cada slide.
+
+## Fotografia da página de Projetos
+
+- `parque-nacional-do-jau.jpg`: **Ana Claudia Jatahy / MTur**, Parque Nacional do Jaú, Novo Airão (AM), 2018. [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/26084876967/). Marcada como [domínio público](https://creativecommons.org/publicdomain/mark/1.0/deed.pt-br), com crédito obrigatório ("Ana Claudia Jatahy - MTUR"), que aparece abaixo do diagrama. Versão de 1024 px do Flickr.

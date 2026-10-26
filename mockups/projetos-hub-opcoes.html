@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projetos · explicação do portal · opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --mata:#0e2b22; --mata-700:#1c4437; --mata-500:#3e6e57; --mata-300:#7fa08c; --ocre:#e0a83c; --ocre-texto:#8a6416; --areia:#f5f0e8; --papel:#fff; --linha:#ddd3c6; --linha-2:#ede6dc; --tinta:#1a1613; --tinta-2:#3a342e; --tinta-3:#5c544c; --tinta-4:#8a8078; --display:"Bricolage Grotesque",system-ui,sans-serif; --text:"Libre Franklin",system-ui,sans-serif; --suave:cubic-bezier(.2,.7,.2,1); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e8e0d6; color:var(--tinta); font:400 14px/1.5 var(--text); padding:28px 16px 64px; }
+  .pagina { max-width:1180px; margin:0 auto; }
+  .pagina > h1 { font:700 26px var(--display); color:var(--mata); margin:0 0 4px; letter-spacing:-.02em; }
+  .pagina > .lead { color:var(--tinta-3); max-width:760px; margin:0 0 22px; }
+
+  .opcao { background:var(--areia); border-radius:14px; padding:18px 18px 20px; margin:0 0 28px; }
+  .opcao-topo { display:flex; align-items:baseline; gap:12px; margin-bottom:12px; }
+  .opcao-topo h2 { font:700 17px var(--display); color:var(--mata); margin:0; letter-spacing:-.01em; }
+  .opcao-topo p { margin:0; color:var(--tinta-3); font-size:13px; flex:1; }
+  .rec { display:inline-block; margin-left:8px; padding:1px 8px; border-radius:99px; background:var(--mata); color:#fff; font:600 10.5px var(--text); letter-spacing:.04em; vertical-align:2px; }
+  .replay { flex:none; height:28px; padding:0 12px; border:1px solid var(--linha); border-radius:99px; background:var(--papel); color:var(--tinta-2); font:600 12px var(--text); cursor:pointer; }
+  .replay:hover { border-color:var(--mata-300); }
+  .quadro { border:1px solid var(--linha); border-radius:14px; background:var(--papel); padding:clamp(20px,3vw,36px); overflow:hidden; }
+
+  /* ---- peças comuns ---- */
+  .sobre { margin:0 0 6px; color:var(--ocre-texto); font:600 10.5px var(--text); letter-spacing:.14em; text-transform:uppercase; }
+  .titulo { margin:0; font:800 clamp(26px,3.4vw,40px)/1.05 var(--display); color:var(--mata); letter-spacing:-.025em; }
+  .titulo em { font-style:normal; color:var(--mata-500); }
+  .texto { margin:12px 0 0; max-width:620px; color:var(--tinta-2); font-size:15px; }
+  .cta { display:inline-flex; align-items:center; gap:10px; margin-top:26px; height:46px; padding:0 22px; border-radius:99px; background:var(--mata); color:var(--areia); font:600 14.5px var(--text); text-decoration:none; transition:background .25s, transform .25s var(--suave); }
+  .cta:hover { background:var(--mata-700); transform:translateY(-1px); }
+  .cta span { color:var(--ocre); transition:transform .25s var(--suave); }
+  .cta:hover span { transform:translate(2px,-2px); }
+  .endereco { display:block; margin-top:8px; color:var(--tinta-4); font-size:12px; }
+
+  .bandeiras { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .bandeiras img { width:34px; height:24px; object-fit:cover; border-radius:3px; box-shadow:0 0 0 1px rgba(14,43,34,.14); }
+
+  /* entrada: tudo que tem .surge aparece quando o quadro recebe .play */
+  .surge { opacity:0; transform:translateY(14px); transition:opacity .7s var(--suave), transform .7s var(--suave); transition-delay:calc(var(--i,0) * 110ms); }
+  .play .surge { opacity:1; transform:none; }
+
+  /* ---- A · três passos ---- */
+  .passos { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:28px; position:relative; }
+  .passos::before { content:""; position:absolute; left:24px; right:24px; top:23px; height:2px; background:var(--linha-2); }
+  .passos::after { content:""; position:absolute; left:24px; right:24px; top:23px; height:2px; background:var(--ocre); transform:scaleX(0); transform-origin:left; transition:transform 1.4s var(--suave) .3s; }
+  .play .passos::after { transform:scaleX(1); }
+  .passo { position:relative; padding:0 6px 0 0; }
+  .passo-n { position:relative; z-index:1; display:grid; place-items:center; width:48px; height:48px; border-radius:50%; background:var(--papel); border:2px solid var(--linha-2); color:var(--mata); font:800 18px var(--display); transition:border-color .4s, background .4s, color .4s; transition-delay:calc(.3s + var(--i) * 450ms); }
+  .play .passo-n { border-color:var(--ocre); background:var(--mata); color:var(--areia); }
+  .passo h3 { margin:16px 0 4px; font:700 17px var(--display); color:var(--mata); }
+  .passo p { margin:0; color:var(--tinta-3); font-size:13.5px; max-width:300px; }
+  .passo .surge { transition-delay:calc(.35s + var(--i) * 450ms); }
+  .passo .bandeiras img { opacity:0; transform:scale(.8); transition:opacity .4s, transform .4s var(--suave); transition-delay:calc(1s + var(--b) * 70ms); }
+  .play .passo .bandeiras img { opacity:1; transform:none; }
+
+  /* ---- B · fluxo ---- */
+  .fluxo { display:grid; grid-template-columns:1.1fr 1.4fr; gap:28px; align-items:center; }
+  .fluxo svg { width:100%; height:auto; display:block; }
+  .fluxo .no rect { fill:var(--papel); stroke:var(--linha); }
+  .fluxo .no.forte rect { fill:var(--mata); stroke:var(--mata); }
+  .fluxo .no text { font:600 12px var(--text); fill:var(--tinta-2); }
+  .fluxo .no.forte text { fill:var(--areia); font-weight:700; }
+  .fluxo .no small, .fluxo .no .sub { font:500 10px var(--text); fill:var(--tinta-4); }
+  .fluxo .no.forte .sub { fill:var(--mata-300); }
+  .fluxo .no { opacity:0; transition:opacity .6s var(--suave); transition-delay:var(--d); }
+  .play .fluxo .no { opacity:1; }
+  .fluxo .fio { fill:none; stroke:var(--ocre); stroke-width:1.6; stroke-dasharray:var(--len); stroke-dashoffset:var(--len); transition:stroke-dashoffset .9s var(--suave); transition-delay:var(--d); }
+  .play .fluxo .fio { stroke-dashoffset:0; }
+  .fluxo .estado { opacity:0; transition:opacity .4s; transition-delay:calc(var(--b) * 60ms); }
+  .play .fluxo .estado { opacity:1; }
+
+  /* ---- C · temas ---- */
+  .temas { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; margin-top:24px; }
+  .tema { display:flex; align-items:center; gap:10px; min-height:58px; padding:10px 14px; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); color:var(--tinta-2); font:500 13.5px/1.3 var(--text); }
+  .tema i { flex:none; width:8px; height:8px; border-radius:50%; background:var(--ocre); }
+  .tema.surge { transition-delay:calc(.2s + var(--i) * 60ms); }
+  .rodape-c { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; padding-top:18px; border-top:1px solid var(--linha-2); }
+  .rodape-c .cta { margin:0; }
+  .rodape-c p { margin:0; color:var(--tinta-3); font-size:13.5px; max-width:520px; }
+
+  /* ---- D · faixa escura ---- */
+  .faixa { background:var(--mata); border-radius:12px; padding:clamp(24px,4vw,44px); color:var(--areia); }
+  .faixa .sobre { color:var(--ocre); }
+  .faixa .titulo { color:var(--areia); }
+  .faixa .titulo em { color:var(--ocre); }
+  .faixa .texto { color:#cfd9d2; }
+  .traco { height:2px; width:120px; margin:20px 0 0; background:var(--ocre); transform:scaleX(0); transform-origin:left; transition:transform 1s var(--suave) .4s; }
+  .play .traco { transform:scaleX(1); }
+  .tres { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+  .card { padding:16px 18px; border:1px solid var(--linha-2); border-radius:10px; background:var(--papel); }
+  .card b { display:block; font:800 34px/1 var(--display); color:var(--mata); font-variant-numeric:tabular-nums; }
+  .card b.palavra { font-size:22px; line-height:1.15; }
+  .card span { display:block; margin-top:6px; color:var(--tinta-3); font-size:13px; }
+  .tres .surge { transition-delay:calc(.6s + var(--i) * 140ms); }
+  .faixa .cta { background:var(--ocre); color:var(--mata); }
+  .faixa .cta span { color:var(--mata); }
+  .faixa .cta:hover { background:#ebb955; }
+
+  @media (max-width:760px) {
+    .passos, .tres, .fluxo { grid-template-columns:1fr; }
+    .passos::before, .passos::after { display:none; }
+    .opcao-topo { flex-wrap:wrap; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *, *::before, *::after { transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <h1>Aba Projetos · explicar o portal em vez de listar os projetos</h1>
+  <p class="lead">Quatro jeitos de apresentar o Brazilian Amazon Projects. Nenhuma opção mostra projetos; só A e C dispensam números. Cada quadro anima uma vez ao entrar na tela, e "Repetir" mostra de novo.</p>
+
+  <!-- ============ A ============ -->
+  <section class="opcao">
+    <div class="opcao-topo">
+      <h2>A · Três passos <span class="rec">RECOMENDADA</span></h2>
+      <p>O que é → quem participa → como chegar. Uma linha ocre liga os passos enquanto eles acendem.</p>
+      <button class="replay" type="button">Repetir</button>
+    </div>
+    <div class="quadro">
+      <p class="sobre surge">Projetos</p>
+      <h3 class="titulo surge" style="--i:1">Brazilian Amazon <em>Projects.</em></h3>
+      <p class="texto surge" style="--i:2">O portal em que os estados da Amazônia Legal apresentam seus projetos a quem quer investir e cooperar na região.</p>
+
+      <div class="passos">
+        <div class="passo" style="--i:0">
+          <div class="passo-n">1</div>
+          <div class="surge" style="--i:0">
+            <h3>Uma vitrine única</h3>
+            <p>Os projetos estaduais prontos para receber investimento e parceria, reunidos num só lugar e organizados por tema.</p>
+          </div>
+        </div>
+        <div class="passo" style="--i:1">
+          <div class="passo-n">2</div>
+          <div class="surge" style="--i:1">
+            <h3>Os nove estados</h3>
+            <p>Reunidos no Consórcio Interestadual da Amazônia Legal.</p>
+            <div class="bandeiras" data-bandeiras></div>
+          </div>
+        </div>
+        <div class="passo" style="--i:2">
+          <div class="passo-n">3</div>
+          <div class="surge" style="--i:2">
+            <h3>Para investidores e parceiros</h3>
+            <p>Governos, agências de desenvolvimento e instituições financeiras encontram ali os projetos e o contato com o Consórcio.</p>
+          </div>
+        </div>
+      </div>
+
+      <a class="cta surge" style="--i:4" href="https://www.brazilianamazonprojects.com" target="_blank" rel="noopener">Conhecer o portal <span>↗</span></a>
+      <small class="endereco surge" style="--i:4">brazilianamazonprojects.com</small>
+    </div>
+  </section>
+
+  <!-- ============ B ============ -->
+  <section class="opcao">
+    <div class="opcao-topo">
+      <h2>B · Fluxo</h2>
+      <p>Um diagrama: os nove estados → Consórcio → portal → investidores e parceiros. Os fios se desenham em sequência.</p>
+      <button class="replay" type="button">Repetir</button>
+    </div>
+    <div class="quadro">
+      <div class="fluxo">
+        <div>
+          <p class="sobre surge">Projetos</p>
+          <h3 class="titulo surge" style="--i:1">Brazilian Amazon <em>Projects.</em></h3>
+          <p class="texto surge" style="--i:2">Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.</p>
+          <a class="cta surge" style="--i:3" href="https://www.brazilianamazonprojects.com" target="_blank" rel="noopener">Conhecer o portal <span>↗</span></a>
+        </div>
+        <svg viewBox="0 0 600 300" role="img" aria-label="Os nove estados alimentam o Consórcio, que publica o portal para investidores e parceiros">
+          <g data-estados></g>
+          <path class="fio" style="--len:90;--d:.7s" d="M120 150 H200" />
+          <path class="fio" style="--len:90;--d:1.3s" d="M300 150 H380" />
+          <path class="fio" style="--len:120;--d:1.9s" d="M472 150 C 492 150 492 90 512 90" />
+          <path class="fio" style="--len:120;--d:1.9s" d="M472 150 C 492 150 492 210 512 210" />
+          <g class="no" style="--d:.9s"><rect x="200" y="122" width="100" height="56" rx="10" /><text x="250" y="146" text-anchor="middle">Consórcio</text><text class="sub" x="250" y="162" text-anchor="middle">Amazônia Legal</text></g>
+          <g class="no forte" style="--d:1.5s"><rect x="380" y="118" width="92" height="64" rx="10" /><text x="426" y="144" text-anchor="middle">Portal</text><text class="sub" x="426" y="160" text-anchor="middle">de projetos</text></g>
+          <g class="no" style="--d:2.4s"><text x="518" y="94">Investidores</text></g>
+          <g class="no" style="--d:2.5s"><text x="518" y="214">Parceiros</text></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ C ============ -->
+  <section class="opcao">
+    <div class="opcao-topo">
+      <h2>C · Temas</h2>
+      <p>Mostra do que o portal trata, pelos temas que ele usa, sem citar projeto nenhum. Os cartões assentam em cascata.</p>
+      <button class="replay" type="button">Repetir</button>
+    </div>
+    <div class="quadro">
+      <p class="sobre surge">Projetos</p>
+      <h3 class="titulo surge" style="--i:1">Brazilian Amazon <em>Projects.</em></h3>
+      <p class="texto surge" style="--i:2">Os estados da Amazônia Legal apresentam ali, pelo Consórcio, projetos nestes temas:</p>
+      <div class="temas" data-temas></div>
+      <div class="rodape-c surge" style="--i:6">
+        <p>Para governos, agências de desenvolvimento e instituições financeiras que queiram investir ou cooperar.</p>
+        <a class="cta" href="https://www.brazilianamazonprojects.com" target="_blank" rel="noopener">Conhecer o portal <span>↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ D ============ -->
+  <section class="opcao">
+    <div class="opcao-topo">
+      <h2>D · Faixa escura</h2>
+      <p>Uma faixa verde-mata com o título e um traço ocre que se desenha; embaixo, três cartões com contagem.</p>
+      <button class="replay" type="button">Repetir</button>
+    </div>
+    <div class="quadro">
+      <div class="faixa">
+        <p class="sobre surge">Projetos</p>
+        <h3 class="titulo surge" style="--i:1">Investir no futuro <em>da Amazônia.</em></h3>
+        <p class="texto surge" style="--i:2">O Brazilian Amazon Projects é o portal em que o Consórcio da Amazônia Legal apresenta os projetos dos estados a investidores e parceiros.</p>
+        <div class="traco"></div>
+        <a class="cta surge" style="--i:4" href="https://www.brazilianamazonprojects.com" target="_blank" rel="noopener">Conhecer o portal <span>↗</span></a>
+      </div>
+      <div class="tres">
+        <div class="card surge" style="--i:0"><b data-conta="9">0</b><span>estados da Amazônia Legal</span></div>
+        <div class="card surge" style="--i:1"><b data-conta="13">0</b><span>temas, da bioeconomia à saúde</span></div>
+        <div class="card surge" style="--i:2"><b class="palavra">Investidores e parceiros</b><span>governos, agências e instituições financeiras</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const BANDEIRAS = ['Bandeira_do_Acre','Bandeira_do_Amapa','Bandeira_do_Amazonas','Bandeira_do_Maranhao','Bandeira_de_Mato_Grosso','Bandeira_do_Para','Bandeira_de_Rondonia','Bandeira_de_Roraima','Bandeira_do_Tocantins'];
+  const SVG = {
+  Bandeira_do_Acre: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMzUwIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM1MCI+CiAgPHBhdGggZD0iTTAsMCBINTAwIFYzNTAgSDAgWiIgZmlsbD0iIzAwOEY0QyIvPgogIDxwYXRoIGQ9Ik0wLDM1MCBMMCwwIEw1MDAsMCBaIiBmaWxsPSIjRkRFQTAyIi8+CiAgPHBvbHlnb24gcG9pbnRzPSI3NiwyNCA4NSw1MiAxMTQsNTIgOTEsNjkgOTksOTcgNzYsODAgNTMsOTcgNjEsNjkgMzgsNTIgNjcsNTIiIGZpbGw9IiNFRDFDMjQiLz4KPC9zdmc+',
+  Bandeira_do_Amapa: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNzAwIiB3aWR0aD0iMTAwMCIgdmVyc2lvbj0iMS4wIj4KICA8cGF0aCBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6I2ZmZjtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MjtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjpiZXZlbDtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2Utb3BhY2l0eToxIiBkPSJNMCAuMDAwMDAzODdoMTAwMHY3MDBIMHoiLz4KICA8cGF0aCBzdHlsZT0ic3Ryb2tlLW9wYWNpdHk6MTtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2Utd2lkdGg6MXB4O3N0cm9rZTpub25lO2ZpbGwtcnVsZTpldmVub2RkO2ZpbGwtb3BhY2l0eToxO2ZpbGw6IzAwOTk0YyIgZD0ibTAgMCAyNTAgMjUwaDc1MHYyMDBIMjUwTDAgNzAwVjB6Ii8+CiAgPHBhdGggc3R5bGU9ImZpbGw6IzAwMjU4MDtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MXB4O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZS1vcGFjaXR5OjEiIGQ9Ik0xMDAwIDIwMEgyNzAuNzEwNjhMNzAuNzEwNjc4IDBIMTAwMHYyMDB6Ii8+CiAgPHBhdGggc3R5bGU9InN0cm9rZS1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLXdpZHRoOjFweDtzdHJva2U6bm9uZTtmaWxsLXJ1bGU6ZXZlbm9kZDtmaWxsLW9wYWNpdHk6MTtmaWxsOiNmM2U3MTgiIGQ9Ik03MC43MTA2NzggNzAwIDI3MC43MTA2OCA1MDBIMTAwMHYyMDBINzAuNzEwNjc4eiIvPgogIDxwYXRoIHN0eWxlPSJmaWxsOiMwMDA7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjFweDtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2Utb3BhY2l0eToxIiBkPSJtMCAwIDI1MCAyNTBoNzUwdi0xN0gyNTcuMDQxNjNMMjQuMDQxNjMxIDBIMHpNMCA3MDBsMjUwLTI1MGg3NTB2MTdIMjU3LjA0MTYzTDI0LjA0MTYzMSA3MDBIMHoiLz4KICA8cGF0aCBzdHlsZT0iZmlsbDojMDAwO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDoxcHg7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlLW9wYWNpdHk6MSIgZD0iTTQ2LjY2OTA0OCAwIDI2My42NjkwNSAyMTdIMTAwMHYtMTdIMjcwLjcxMDY4TDcwLjcxMDY3OCAwaC0yNC4wNDE2M3pNNDYuNjY5MDQ4IDcwMCAyNjMuNjY5MDUgNDgzSDEwMDB2MTdIMjcwLjcxMDY4TDcwLjcxMDY3OCA3MDBoLTI0LjA0MTYzeiIvPgogIDxnIHN0eWxlPSJkaXNwbGF5OmlubGluZSI+CiAgICA8cGF0aCBzdHlsZT0iZmlsbDojZmZmO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpldmVub2RkO3N0cm9rZTojMDAwO3N0cm9rZS13aWR0aDo1O3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLW9wYWNpdHk6MSIgZD0ibTE1MiAzOTgtNiAxMiAxOCAyNCAxOC0yNC02LTEyIDM2LTM2IDEyIDYgMjQtMTgtMjQtMTgtMTIgNi0zNi0zNiA2LTEyLTE4LTI0LTE4IDI0IDYgMTItMzYgMzYtMTItNi0yNCAxOCAyNCAxOCAxMi42LTYgMzUuNCAzNnoiLz4KICAgIDxwYXRoIHN0eWxlPSJzdHJva2Utb3BhY2l0eToxO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlOiMwMDA7ZmlsbC1ydWxlOmV2ZW5vZGQ7ZmlsbC1vcGFjaXR5OjE7ZmlsbDojMDM4MzAxIiBkPSJtMTY0IDM4NiAzNi0zNi0zNi0zNi0zNiAzNiAzNiAzNnoiLz4KICAgIDxwYXRoIHN0eWxlPSJmaWxsOiMwMDA7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjFweDtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2Utb3BhY2l0eToxIiBkPSJtMTE2IDM1MC0xMi02LTggNiA4IDYgMTItNnpNMjEyIDM1MGwxMi02IDggNi04IDYtMTItNnpNMTY0IDMwMmw2LTEyLTYtOC02IDggNiAxMnpNMTY0IDM5OGw2IDEyLTYgOC02LTggNi0xMnoiLz4KICA8L2c+Cjwvc3ZnPgo=',
+  Bandeira_do_Amazonas: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBpZD0ic3ZnNjYiIHZlcnNpb249IjEuMSIgd2lkdGg9IjcwMCIgaGVpZ2h0PSI1MDAiIHZpZXdCb3g9IjAgMCA5ODAgNzAwIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MXtmaWxsOiNmZmZ9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8cGF0aCBpZD0icGF0aDEiIGQ9Ik0wIDcwMFYwaDk4MHY3MDB6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgyIiBmaWxsPSIjZDIwMDAwIiBkPSJNMCA0NjYuNjdWMjMzLjM0aDk4MHYyMzMuMzN6Ii8+CiAgPHBhdGggaWQ9InBhdGgzIiBmaWxsPSIjMDAxZTc4IiBkPSJNMCAyMzMuMzNWMGg0MjB2MjMzLjMzeiIvPgogIDxwYXRoIGlkPSJwYXRoNCIgZD0ibTIxNi43MiAxNTguNTMtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGg1IiBkPSJtMTU2LjIzIDEyNy40Ny02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDYiIGQ9Im0yNzUuOTUgMTI3LjQ3LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoNyIgZD0ibTE5Ny4wNyAxODkuMjQtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMTk3LjA3IDMzLjU5LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoOSIgZD0ibTE1Ny43NyAxODkuMjQtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgxMCIgZD0ibTE1Ny43NyAzMy41OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDExIiBkPSJtMzk2LjEzIDE4OS4yNC02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtMzk2LjEzIDMzLjU5LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMTMiIGQ9Im0zOTYuMTMgMTI3LjU1LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMTQiIGQ9Im0zOTYuMTMgOTYuMjMtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgxNSIgZD0ibTExNy4yNCAxODkuMjQtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgxNiIgZD0ibTExNy4yNCAzMy41OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDE3IiBkPSJtMzU1LjU5IDE4OS4yNC02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDE4IiBkPSJtMzU1LjU5IDMzLjU5LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMTkiIGQ9Im0zNTUuNTkgMTI3LjU1LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im0zNTUuNTkgOTYuMjMtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgyMSIgZD0ibTExNy4yNCAxNTguNTMtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTExNy4yNCAxMjcuMjEtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgyMyIgZD0ibTExNy4yNCA5NS44OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDI0IiBkPSJtNzcuMzIgMTg5LjI0LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMjUiIGQ9Im03Ny4zMiAzMy41OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDI2IiBkPSJtMzE1LjY4IDE4OS4yNC02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDI3IiBkPSJtMzE1LjY4IDMzLjU5LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMjgiIGQ9Im0zMTUuNjggMTI3LjU1LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMjkiIGQ9Im0zMTUuNjggOTYuMjMtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTc3LjMyIDE1OC41My02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDMxIiBkPSJtNzcuMzIgMTI3LjIxLTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMzIiIGQ9Im03Ny4zMiA5NS44OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDMzIiBkPSJtMzcuNCAxODkuMjQtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTM3LjQgMzMuNTktNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgzNSIgZD0ibTI3NS43NiAxODkuMjQtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgzNiIgZD0iTTI3NS43NiAzMy41OSAyNjkgMjguNjhsLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGgzNyIgZD0ibTM3LjQgMTU4LjUzLTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoMzgiIGQ9Im0zNy40IDEyNy4yMS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDM5IiBkPSJtMzcuNCA5NS44OS02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtMTk3LjA3IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQxIiBkPSJNMTk3LjA3IDY0LjkxIDE5MC4zMSA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQyIiBkPSJtMTU3Ljc3IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQzIiBkPSJNMTU3Ljc3IDY0LjkxIDE1MS4wMSA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ0IiBkPSJtMzk2LjEzIDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ1IiBkPSJNMzk2LjEzIDY0LjkxIDM4OS4zNyA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ2IiBkPSJtMzk2LjEzIDE1OC44Ny02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ3IiBkPSJtMTE3LjI0IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ4IiBkPSJNMTE3LjI0IDY0LjkxIDExMC40OCA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDQ5IiBkPSJtMzU1LjU5IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDUwIiBkPSJNMzU1LjU5IDY0LjkxIDM0OC44MyA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDUxIiBkPSJtMzU1LjU5IDE1OC44Ny02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNzcuMzIgMjIwLjU2LTYuNzYtNC45MS02Ljc2IDQuOTEgMi41OC03Ljk1LTYuNzYtNC45MWg4LjM2bDIuNTgtNy45NSAyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoNTMiIGQ9Ik03Ny4zMiA2NC45MSA3MC41NiA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDU0IiBkPSJtMzE1LjY4IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDU1IiBkPSJNMzE1LjY4IDY0LjkxIDMwOC45MiA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDU2IiBkPSJtMzE1LjY4IDE1OC44Ny02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDU3IiBkPSJtMzcuNCAyMjAuNTYtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGg1OCIgZD0iTTM3LjQgNjQuOTEgMzAuNjQgNjBsLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGg1OSIgZD0ibTI3NS43NiAyMjAuNTYtNi43Ni00LjkxLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZsMi41OC03Ljk1IDIuNTggNy45NWg4LjM2bC02Ljc2IDQuOTF6IiBjbGFzcz0ic3QxIi8+CiAgPHBhdGggaWQ9InBhdGg2MCIgZD0iTTI3NS43NiA2NC45MSAyNjkgNjBsLTYuNzYgNC45MSAyLjU4LTcuOTUtNi43Ni00LjkxaDguMzZMMjY5IDQ0LjFsMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDYxIiBkPSJtMjM1Ljc2IDE4OS4yNC02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDYyIiBkPSJNMjM1Ljc2IDMzLjU5IDIyOSAyOC42OGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDYzIiBkPSJtMjM1Ljc2IDIyMC41Ni02Ljc2LTQuOTEtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNmwyLjU4LTcuOTUgMi41OCA3Ljk1aDguMzZsLTYuNzYgNC45MXoiIGNsYXNzPSJzdDEiLz4KICA8cGF0aCBpZD0icGF0aDY0IiBkPSJNMjM1Ljc2IDY0LjkxIDIyOSA2MGwtNi43NiA0LjkxIDIuNTgtNy45NS02Ljc2LTQuOTFoOC4zNkwyMjkgNDQuMWwyLjU4IDcuOTVoOC4zNmwtNi43NiA0LjkxeiIgY2xhc3M9InN0MSIvPgogIDxwYXRoIGlkPSJwYXRoNjUiIGQ9Im0yMjkuOTkgMTM0LjI0LTE5LjgzLTE0LjQxLTE5LjgzIDE0LjQxIDcuNTgtMjMuMzEtMTkuODMtMTQuNDFoMjQuNTFsNy41OC0yMy4zMSA3LjU4IDIzLjMxaDI0LjUxbC0xOS44MyAxNC40MSA3LjU4IDIzLjMxWiIgY2xhc3M9InN0MSIvPgo8L3N2Zz4K',
+  Bandeira_do_Maranhao: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTM1MCIgaGVpZ2h0PSI5MDAiIHZpZXdCb3g9IjAgMCAxMzUwIDkwMCI+Cgk8ZGVmcz4KCQk8ZyBpZD0ic3RhciIgdHJhbnNmb3JtPSJzY2FsZSgxNjguNzUpIj48IS0tID0zLzQgb2YgMjI1IC0tPgoJCQk8ZyBpZD0iY29uZSI+CgkJCQk8cG9seWdvbiBpZD0idHJpYW5nbGUiIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iMCwwIDAsMSAuNSwxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC0xKSByb3RhdGUoMTgpIi8+CgkJCQk8dXNlIHhsaW5rOmhyZWY9IiN0cmlhbmdsZSIgdHJhbnNmb3JtPSJzY2FsZSgtMSwxKSIvPgoJCQk8L2c+CgkJCTx1c2UgeGxpbms6aHJlZj0iI2NvbmUiIHRyYW5zZm9ybT0icm90YXRlKDcyKSIvPgoJCQk8dXNlIHhsaW5rOmhyZWY9IiNjb25lIiB0cmFuc2Zvcm09InJvdGF0ZSgtNzIpIi8+CgkJCTx1c2UgeGxpbms6aHJlZj0iI2NvbmUiIHRyYW5zZm9ybT0icm90YXRlKDE0NCkiLz4KCQkJPHVzZSB4bGluazpocmVmPSIjY29uZSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE0NCkiLz4KCQk8L2c+Cgk8L2RlZnM+Cgk8cmVjdCBmaWxsPSIjRkZGRkZGIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiAvPgoJPHJlY3QgZmlsbD0iI0M1MzQyNSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwIiAvPiAKCTxyZWN0IGZpbGw9IiNDNTM0MjUiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCIgeT0iNDAwIiAvPiAKCTxyZWN0IGZpbGw9IiNDNTM0MjUiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCIgeT0iODAwIiAvPiAKCTxyZWN0IGZpbGw9IiMwMDAwMDAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCIgeT0iMjAwIiAvPiAKCTxyZWN0IGZpbGw9IiMwMDAwMDAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCIgeT0iNjAwIiAvPiAKCTxyZWN0IGZpbGw9IiMyNTI0N0IiIHdpZHRoPSI0NTAiIGhlaWdodD0iNTAlIiAvPgoJPHVzZSB4bGluazpocmVmPSIjc3RhciIgeD0iMjI1IiB5PSIyMjUiLz4KPC9zdmc+Cg==',
+  Bandeira_de_Mato_Grosso: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwMCIgaGVpZ2h0PSIxNDAwIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjgxNjZmIi8+CiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0ibTE3MCA3MDAgODMwIDUzMCA4MzAtNTMwLTgzMC01MzB6Ii8+CiAgPGNpcmNsZSBjeD0iMTAwMCIgY3k9IjcwMCIgcj0iMzUwIiBmaWxsPSIjMDA5MjNmIi8+CiAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMzUwIDAgMCAzNTAgMTAwMCA3MDApIj4KICAgIDxnIGlkPSJiIj4KICAgICAgPHBhdGggaWQ9ImEiIGZpbGw9IiNmOGMzMDAiIGQ9Ik0wIDB2MWguNXoiIHRyYW5zZm9ybT0icm90YXRlKDE4IDMuMTU2ODc1NzYgLS41KSIvPgogICAgICA8dXNlIHhsaW5rOmhyZWY9IiNhIiB0cmFuc2Zvcm09InNjYWxlKC0xIDEpIi8+CiAgICA8L2c+CiAgICA8dXNlIHhsaW5rOmhyZWY9IiNiIiB0cmFuc2Zvcm09InJvdGF0ZSg3MikiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI2IiIHRyYW5zZm9ybT0icm90YXRlKC03MikiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI2IiIHRyYW5zZm9ybT0icm90YXRlKDE0NCkiLz4KICAgIDx1c2UgeGxpbms6aHJlZj0iI2IiIHRyYW5zZm9ybT0icm90YXRlKC0xNDQpIi8+CiAgPC9nPgo8L3N2Zz4=',
+  Bandeira_do_Para: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgo8c3ZnCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgaWQ9InN2ZzIiCiAgIGhlaWdodD0iNjAwLjAwMDAwIgogICB3aWR0aD0iOTAwLjAwMDAwIgogICB5PSIwLjAwMDAwMDAwIgogICB4PSIwLjAwMDAwMDAwIgogICB2ZXJzaW9uPSIxLjAiPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMzIiAvPgogIDxnCiAgICAgaWQ9ImxheWVyMSI+CiAgICA8cmVjdAogICAgICAgaWQ9InJlY3QxMzI5IgogICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MS4wMDAwMDAwO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDo1LjAwMDAwMDA7c3Ryb2tlLW1pdGVybGltaXQ6NC4wMDAwMDAwO3N0cm9rZS1kYXNob2Zmc2V0OjAuMDAwMDAwMDA7c3Ryb2tlLW9wYWNpdHk6MS4wMDAwMDAwIgogICAgICAgeT0iMC4wMDAwMDAwMCIKICAgICAgIHg9IjAuMDAwMDAwMDAiCiAgICAgICBoZWlnaHQ9IjYwMC4wMDAwMCIKICAgICAgIHdpZHRoPSI5MDAuMDAwMDAiIC8+CiAgICA8cmVjdAogICAgICAgaWQ9InJlY3QxMjkxIgogICAgICAgc3R5bGU9ImZpbGw6I0VCMjkzOTtmaWxsLW9wYWNpdHk6MS4wMDAwMDAwO3N0cm9rZTpub25lO3N0cm9rZS1vcGFjaXR5OjEuMDAwMDAwMCIKICAgICAgIHk9IjAuMDAwMDAwMDAiCiAgICAgICB4PSIwLjAwMDAwMDAwIgogICAgICAgaGVpZ2h0PSI2MDAuMDAwMDAiCiAgICAgICB3aWR0aD0iOTAwLjAwMDAwIiAvPgogICAgPHBhdGgKICAgICAgIGlkPSJwYXRoMjA1MiIKICAgICAgIHN0eWxlPSJmaWxsOiNmZmZmZmY7ZmlsbC1vcGFjaXR5OjEuMDAwMDAwMDtmaWxsLXJ1bGU6ZXZlbm9kZDtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MS4wMDAwMDAwcHg7c3Ryb2tlLWxpbmVjYXA6YnV0dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlLW9wYWNpdHk6MS4wMDAwMDAwIgogICAgICAgZD0iTSAwLjAwMDAwMDAwLDAuMDAwMDAwMDAgTCAxODAuMDAwMDAsMC4wMDAwMDAwMCBMIDkwMC4wMDAwMCw1MDcuMDAwMDAgTCA5MDAuMDAwMDAsNjAwLjAwMDAwIEwgNzIwLjAwMDAwLDYwMC4wMDAwMCBMIDAuMDAwMDAwMDAsOTIuNTkwMDAwIEwgMC4wMDAwMDAwMCwwLjAwMDAwMDAwIHogIiAvPgogICAgPHBhdGgKICAgICAgIGlkPSJwYXRoMjgxMiIKICAgICAgIHN0eWxlPSJmaWxsOiMwMDcxY2U7ZmlsbC1vcGFjaXR5OjEuMDAwMDAwMDtzdHJva2U6bm9uZTtzdHJva2Utb3BhY2l0eToxLjAwMDAwMDAiCiAgICAgICBkPSJNIDQ5Ny4wMjI4MiwzNjQuNzIxMzYgTCA0NTAuMDAwMDAsMzMwLjU1NzI4IEwgNDAyLjk3NzE4LDM2NC43MjEzNiBMIDQyMC45MzgzMCwzMDkuNDQyNzIgTCAzNzMuOTE1NDgsMjc1LjI3ODY0IEwgNDMyLjAzODg4LDI3NS4yNzg2NCBMIDQ1MC4wMDAwMCwyMjAuMDAwMDAgTCA0NjcuOTYxMTIsMjc1LjI3ODY0IEwgNTI2LjA4NDUyLDI3NS4yNzg2NCBMIDQ3OS4wNjE3MCwzMDkuNDQyNzIgTCA0OTcuMDIyODIsMzY0LjcyMTM2IHogIiAvPgogIDwvZz4KPC9zdmc+Cg==',
+  Bandeira_de_Rondonia: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwMCIgaGVpZ2h0PSIxNDAwIiB2aWV3Qm94PSItMTAwMCAtNzAwIDIwMDAgMTQwMCI+CjxyZWN0IGZpbGw9IiMwMDI1ODAiIHg9Ii0xMDAwIiB5PSItNzAwIiB3aWR0aD0iMjAwMCIgaGVpZ2h0PSI3MDAiIC8+CjxyZWN0IGZpbGw9IiNmM2U3MTgiIHg9Ii0xMDAwIiB5PSIwIiB3aWR0aD0iMjAwMCIgaGVpZ2h0PSI3MDAiIC8+CjxwYXRoIGZpbGw9IiMwMDk5NGMiIGQ9Ik0gLTEwMDAsNzAwIEwgMCwwIEwgMTAwMCw3MDAgeiIgLz4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwtMTM5LjE0ODU2MTIyKSI+Cgk8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMCwtMzUwIDgxLjc4OTQ3MjE2MywtMTEyLjU3MzU1MDc3IDMzMi44Njk3ODA3MCwtMTA4LjE1NTk0ODAzIDEzMi4zMzgxNDU4OCwgNDIuOTk5MjcwMTYgMjA1LjcyNDgzODMsMjgzLjE1NTk0ODAzIDAsMTM5LjE0ODU2MTIyIC0yMDUuNzI0ODM4MzAsMjgzLjE1NTk0ODAzIC0xMzIuMzM4MTQ1ODgsNDIuOTk5MjcwMTYgLTMzMi44Njk3ODA3LC0xMDguMTU1OTQ4MDMgLTgxLjc4OTQ3MjE2MywgLTExMi41NzM1NTA3N3oiLz4KPC9nPgo8L3N2Zz4=',
+  Bandeira_de_Roraima: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0ic3ZnMTgxMCIgd2lkdGg9IjJlMyIgaGVpZ2h0PSIxNDAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogPGRlZnMgaWQ9ImRlZnMxNzkwIj4KICA8ZyBpZD0ic3RhciIgdHJhbnNmb3JtPSJzY2FsZSg1MDApIj48L2c+CiA8L2RlZnM+CiA8cmVjdCBpZD0icmVjdDE3OTIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNGRkZGRkYiLz4KIDxwYXRoIGlkPSJwYXRoMTc5NCIgZD0ibTAgODAwdi04MDBoMTYwMHoiIGZpbGw9IiMwMGE1ZmYiIHN0cm9rZS13aWR0aD0iLjk0MjgwOSIvPgogPHBhdGggaWQ9InBhdGgxNzk2IiBkPSJtMmUzIDYwMHY4MDBoLTE2MDB6IiBmaWxsPSIjMDA4MjAwIiBzdHJva2Utd2lkdGg9Ii44OTQ0MjciLz4KIDxwYXRoIGlkPSJyZWN0MTc5OCIgZD0ibTAgMTE4MGgyZTN2NDBoLTJlM3oiIGZpbGw9IiNkYzAwMDAiLz4KIDxwYXRoIGlkPSJwb2x5Z29uMjIxMCIgZD0iTSAxMDAwLDIwMCA4ODcuODY2NjksNTQzLjc3MDM1IEggNTI1IEwgODE4LjU2NDcyLDc1Ni4yMjk2NiA3MDYuNDMzMzUsMTEwMCAxMDAwLDg4Ny41Mzg3NyAxMjkzLjU2NjcsMTEwMCAxMTgxLjQzNTMsNzU2LjIzMTYgMTQ3NSw1NDMuNzcwMzUgaCAtMzYyLjg2NjcgeiIgZmlsbD0iI2Y4YzMwMCIgc3Ryb2tlLXdpZHRoPSI0OTguNDc2Ii8+Cjwvc3ZnPgo=',
+  Bandeira_do_Tocantins: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjAgMTQiIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjcwMCIgZmlsbD0iI0ZGOTYwMCI+CiAgPHBhdGggZD0iTTAsMCBIMjAgVjE0IEgwIFoiIGZpbGw9IiNGRkZGRkYiLz4KICA8cGF0aCBkPSJNMTMsMCBIMCBWOSBaIiBmaWxsPSIjMTk0NkI0Ii8+CiAgPHBhdGggZD0iTTcsMTQgSDIwIFY1IFoiLz4KICA8ZyBpZD0iYiI+CiAgICA8ZyBpZD0iYyI+CiAgICAgIDxwYXRoIGlkPSJhIiBkPSJtOS4wOCA1LjY5LS4xOS0uNzEgLjUgLjU0LS4wMy0uNzMgLjM2IC42MyAuMjgtMi40MiAuMjggMi40Mi0uMjggMS42MiIvPgogICAgICA8dXNlIHRyYW5zZm9ybT0icm90YXRlKDQ1IDEwIDcpIiB4bGluazpocmVmPSIjYSIvPgogICAgPC9nPgogICAgPHVzZSB0cmFuc2Zvcm09InJvdGF0ZSg5MCAxMCA3KSIgeGxpbms6aHJlZj0iI2MiLz4KICA8L2c+CiAgPHVzZSB0cmFuc2Zvcm09InJvdGF0ZSgxODAgMTAgNykiIHhsaW5rOmhyZWY9IiNiIi8+Cjwvc3ZnPg=='
+};
+  const flag = (nome) => SVG[nome];
+  document.querySelector('[data-bandeiras]').innerHTML = BANDEIRAS.map((b, i) => `<img src="${flag(b)}" alt="" style="--b:${i}">`).join('');
+
+  // B: as nove bandeiras em coluna, cada uma com um fio até o Consórcio.
+  document.querySelector('[data-estados]').innerHTML = BANDEIRAS.map((b, i) => {
+    const y = 18 + i * 31;
+    return `<g class="estado" style="--b:${i}"><image href="${flag(b)}" x="10" y="${y}" width="32" height="22" preserveAspectRatio="xMidYMid slice"/>`
+      + `<path class="fio" style="--len:110;--d:${.2 + i * .04}s;stroke-opacity:.55;stroke-width:1" d="M46 ${y + 11} C 90 ${y + 11} 90 150 120 150"/></g>`;
+  }).join('');
+
+  const TEMAS = ['Bioeconomia','Meio ambiente e desenvolvimento sustentável','Povos indígenas','Infraestrutura, transporte e logística','Agricultura e economia verde','Governança fundiária','Saúde','Educação','Cultura e economia criativa','Segurança pública','Comunicação','Planejamento e gestão estratégica','Gestão fiscal e tributária'];
+  document.querySelector('[data-temas]').innerHTML = TEMAS.map((t, i) => `<div class="tema surge" style="--i:${i}"><i></i>${t}</div>`).join('');
+
+  function conta(quadro) {
+    for (const el of quadro.querySelectorAll('[data-conta]')) {
+      const alvo = Number(el.dataset.conta);
+      const inicio = performance.now() + 700;
+      const passo = (agora) => {
+        const p = Math.min(1, Math.max(0, (agora - inicio) / 900));
+        el.textContent = Math.round(alvo * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(passo);
+      };
+      requestAnimationFrame(passo);
+    }
+  }
+  function toca(quadro) { quadro.classList.add('play'); conta(quadro); }
+
+  const quadros = document.querySelectorAll('.quadro');
+  const obs = new IntersectionObserver((entradas) => {
+    for (const e of entradas) if (e.isIntersecting) { toca(e.target); obs.unobserve(e.target); }
+  }, { threshold: .3 });
+  quadros.forEach((q) => obs.observe(q));
+
+  document.querySelectorAll('.replay').forEach((botao) => botao.addEventListener('click', () => {
+    const quadro = botao.closest('.opcao').querySelector('.quadro');
+    quadro.classList.remove('play');
+    quadro.querySelectorAll('*').forEach((el) => { el.style.transition = 'none'; });
+    void quadro.offsetWidth;
+    quadro.querySelectorAll('*').forEach((el) => { el.style.transition = ''; });
+    requestAnimationFrame(() => toca(quadro));
+  }));
+</script>
+</body>
+</html>

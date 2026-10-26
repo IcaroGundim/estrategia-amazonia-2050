@@ -43,7 +43,7 @@ const PAGINAS = {
   metodologia: { mainClass: 'methodology-page', dados: [] },
   index: { mainClass: undefined, dados: ['dashboard', 'geo', 'catalogo'] },
   metas: { mainClass: 'goals-page', dados: ['metas'] },
-  projetos: { mainClass: 'projetos-page', dados: ['projetos', 'geo'] }
+  projetos: { mainClass: 'projetos-page', dados: [] }
 } as const;
 ---
 
@@ -68,7 +68,7 @@ const PAGINAS = {
     import '../../../scripts/metodologia.js';
     import '../../../scripts/app.js';
     import '../../../scripts/metas.js';
-    import '../../../scripts/projetos.js';
+    import '../../../scripts/projetos-hub.js';
   </script>
 
   <style is:global>
