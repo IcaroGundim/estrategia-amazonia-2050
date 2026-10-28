@@ -2113,15 +2113,15 @@
     },
     "IDEB anos iniciais: municípios na meta": {
       "pt": "IDEB anos iniciais: municípios na meta",
-      "en": "IDEB early primary: municipalities on target"
+      "en": "Education quality score - early primary: municipalities on target"
     },
     "IDEB anos finais: municípios na meta": {
       "pt": "IDEB anos finais: municípios na meta",
-      "en": "IDEB lower secondary: municipalities on target"
+      "en": "Education quality score - lower secondary: municipalities on target"
     },
     "IDEB ensino médio: municípios na meta": {
       "pt": "IDEB ensino médio: municípios na meta",
-      "en": "IDEB upper secondary: municipalities on target"
+      "en": "Education quality score - upper secondary: municipalities on target"
     },
     "Taxa de escolarização": {
       "pt": "Taxa de escolarização",
@@ -2201,7 +2201,7 @@
     },
     "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.": {
       "pt": "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.",
-      "en": "The projection starts from 6.9% in extreme poverty; the dashboard measures poverty through CadÚnico (14.0% in the Legal Amazon) and extreme poverty through IBGE's SIS (5.5%). Neither is the projection's baseline."
+      "en": "The projection starts from 6.9% extreme poverty. The dashboard measures poverty using the Single Registry for Social Programs (14.0% in the Brazilian Amazon) and extreme poverty using the Synthesis of Social Indicators from the Brazilian Institute of Geography and Statistics (5.5%). Neither is the baseline for the projection."
     },
     "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.": {
       "pt": "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.",
@@ -2217,7 +2217,7 @@
     },
     "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.": {
       "pt": "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.",
-      "en": "The projection starts from 41.5% in 2022; the dashboard's ISGR is 47.2 (adequate water and sewage, population-weighted). Different index composition."
+      "en": "The projection starts from 41.5% in 2022. The dashboard’s sanitation and risk management index is 47.2 (adequate water and sewage, weighted by population). The index is composed differently."
     },
     "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.": {
       "pt": "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.",
@@ -2233,27 +2233,27 @@
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
       "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 30.3% and the dashboard calculates 30.7% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 30.3% and the dashboard calculates 30.7% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.": {
       "pt": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.",
-      "en": "The spreadsheet baseline corresponds to the 2023 IDEB round; the projection's annual series starts in 2026."
+      "en": "The spreadsheet baseline corresponds to the 2023 from the Education quality score; the projection's annual series starts in 2026."
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
       "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 7.7% and the dashboard calculates 7.8% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 7.7% and the dashboard calculates 7.8% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
-      "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 58.1% and the dashboard calculates 61.4% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "pt": "Mesma regra do painel (Education quality score contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 58.1% and the dashboard calculates 61.4% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.": {
       "pt": "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.",
-      "en": "The projection covers all of Brazil: 839,766 avoidable deaths aged 5 to 74 in 2024 (SIM), the baseline cited in the technical sheet. In the Legal Amazon there were 95,901 (field obitos5a74_2024). The dashboard's main value is the under-5 rate."
+      "en": "The projection covers all of Brazil: 839,766 avoidable deaths aged 5 to 74 in 2024 (SIM), the baseline cited in the technical sheet. In the Brazilian Amazon there were 95,901 (field obitos5a74_2024). The dashboard's main value is the under-5 rate."
     },
     "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.": {
       "pt": "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.",
-      "en": "Target: 50% of the Legal Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
+      "en": "Target: 50% of the Brazilian Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
     },
     "R$": {
       "pt": "R$",
@@ -2261,7 +2261,7 @@
     },
     "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.": {
       "pt": "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.",
-      "en": "The projection counts new funds raised starting from zero in 2025; the dashboard adds up what state governments received from the Amazon Fund and REM Acre (R$ 143.3 million in 2025), without separating new money from ongoing older contracts."
+      "en": "The projection counts new funds raised starting from zero in 2025; the dashboard adds up what state governments received from the Amazon Fund and REM Acre - the REDD+ Early Movers program in Acre (R$ 143.3 million in 2025), without separating new money from ongoing older contracts."
     },
     "mi": {
       "pt": "mi",
