@@ -74,7 +74,7 @@
       },
       "abertura": {
         "pt": "O instrumento de planejamento de longo prazo da Amazônia Legal. Define uma visão compartilhada para 2050, organizada por temas e eixos estratégicos, metas, indicadores e uma estrutura de governança para orientar investimentos e políticas públicas nos nove estados.",
-        "en": "The long-term planning instrument for the Brazilian Amazon. It sets out a shared vision for 2050, organised around strategic themes and axes, targets, indicators and a governance structure to guide investment and public policy across the nine states."
+        "en": "The long-term planning instrument for the Brazilian Amazon. It sets out a shared vision for 2050, organized around strategic themes and axes, goals, and indicators, together with a governance structure to guide investments and public policies across the nine states."
       },
       "numeros": [
         {
@@ -95,7 +95,7 @@
           "valor": "2050",
           "rotulo": {
             "pt": "horizonte pactuado",
-            "en": "agreed target year"
+            "en": "Target Year"
           }
         }
       ],
@@ -106,7 +106,7 @@
       "botaoPdf": {
         "rotulo": {
           "pt": "Abrir a Estratégia em PDF",
-          "en": "Open the Strategy as PDF"
+          "en": "Read the Full Strategy"
         },
         "href": "https://7a98d2b3-3159-4136-8ede-0281e5e3b6ee.filesusr.com/ugd/8edb8f_58edf9f14c4f4be6bd8eb47156aa448b.pdf"
       }
