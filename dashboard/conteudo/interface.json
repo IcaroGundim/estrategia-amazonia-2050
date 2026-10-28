@@ -1633,7 +1633,7 @@
     },
     "Amazônia Legal": {
       "pt": "Amazônia Legal",
-      "en": "The Legal Amazon"
+      "en": "The Brazilian Amazon"
     },
     "Bandeira da Amazônia Legal": {
       "pt": "Bandeira da Amazônia Legal",
@@ -1653,7 +1653,7 @@
     },
     "projeção IBGE 2025": {
       "pt": "projeção IBGE 2025",
-      "en": "IBGE projection, 2025"
+      "en": "Brazilian Institute of Geography and Statistics, 2025"
     },
     "Área territorial": {
       "pt": "Área territorial",
@@ -1685,7 +1685,7 @@
     },
     "sem valor regional": {
       "pt": "sem valor regional",
-      "en": "no regional figure"
+      "en": "Regional figure not available"
     },
     "Não se aplica": {
       "pt": "Não se aplica",
@@ -1717,7 +1717,7 @@
     },
     "A Amazônia Legal": {
       "pt": "A Amazônia Legal",
-      "en": "The Legal Amazon"
+      "en": "The Brazilian Amazon"
     },
     "{regiao} registra {valor} em {indicador}{ano}{faixa}.": {
       "pt": "{regiao} registra {valor} em {indicador}{ano}{faixa}.",
@@ -1737,7 +1737,7 @@
     },
     "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.": {
       "pt": "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.",
-      "en": "Year in progress: the series has not closed yet, so this figure is not comparable with earlier years."
+      "en": "Year in progress: data for this year is still incomplete, so this figure is not comparable with previous years."
     },
     "Não foi possível carregar os dados do painel.": {
       "pt": "Não foi possível carregar os dados do painel.",
