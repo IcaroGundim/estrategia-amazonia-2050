@@ -168,7 +168,7 @@
     "eixos": {
       "chapeu": {
         "pt": "Estrutura da Estratégia",
-        "en": "How the Strategy is organised"
+        "en": "How the Strategy is organized"
       },
       "titulo": {
         "pt": "Cinco eixos de implementação",
@@ -176,7 +176,7 @@
       },
       "abertura": {
         "pt": "Os eixos são a espinha dorsal da Estratégia: organizam políticas, programas e investimentos em linhas de ação, e é por eles que este painel agrupa metas e indicadores.",
-        "en": "The axes are the backbone of the Strategy: they organise policies, programmes and investment into lines of action, and they are how this dashboard groups targets and indicators."
+        "en": "The axes are the Strategy’s core framework. They group policies, programs, and investments into lines of action, and this dashboard uses them to organize targets and indicators."
       },
       "itens": [
         {
@@ -187,7 +187,7 @@
           },
           "texto": {
             "pt": "Consolidar a Amazônia Legal como referência mundial em gestão territorial integrada, desmatamento zero e adaptação climática.",
-            "en": "Make the Legal Amazon a world reference in integrated territorial management, zero deforestation and climate adaptation."
+            "en": "Establish the Brazilian Amazon as a global benchmark in integrated territorial management, zero deforestation, and climate adaptation."
           }
         },
         {
@@ -198,7 +198,7 @@
           },
           "texto": {
             "pt": "Reduzir desigualdades e garantir segurança alimentar e nutricional, direitos e bem-estar para todas as populações amazônicas.",
-            "en": "Reduce inequality and secure food and nutrition, rights and well-being for every Amazonian population."
+            "en": "Reduce inequalities and ensure food and nutrition security, rights, and well-being for all Amazonian populations."
           }
         },
         {
@@ -209,7 +209,7 @@
           },
           "texto": {
             "pt": "Promover uma economia amazônica diversificada, com cadeias da sociobiodiversidade, empregos verdes e inovação tecnológica.",
-            "en": "Foster a diversified Amazonian economy, with socio-biodiversity value chains, green jobs and technological innovation."
+            "en": "Promote a diversified Amazonian economy built on socio-biodiversity value chains, green jobs, and technological innovation."
           }
         },
         {
@@ -220,7 +220,7 @@
           },
           "texto": {
             "pt": "Expandir a conectividade física e digital e garantir logística e infraestrutura verde, impulsionando a integração e a competitividade regional.",
-            "en": "Expand physical and digital connectivity and secure green logistics and infrastructure, driving regional integration and competitiveness."
+            "en": "Expand physical and digital connectivity and build green logistics and infrastructure, driving regional integration and competitiveness."
           }
         },
         {
@@ -231,7 +231,7 @@
           },
           "texto": {
             "pt": "Fortalecer a governança regional e a cooperação entre estados, sociedade civil, setor privado e organismos internacionais.",
-            "en": "Strengthen regional governance and cooperation among states, civil society, the private sector and international bodies."
+            "en": "Strengthen regional governance and cooperation among states, civil society, the private sector, and international organizations."
           }
         }
       ]
