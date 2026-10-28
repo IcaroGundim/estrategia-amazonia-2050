@@ -1865,7 +1865,7 @@
     },
     "Onde a Amazônia Legal está no caminho até 2050": {
       "pt": "Onde a Amazônia Legal está no caminho até 2050",
-      "en": "Where the Legal Amazon stands on the way to 2050"
+      "en": "Where the Brazilian Amazon stands on the path to 2050"
     },
     "Onde {estado} está no caminho até 2050": {
       "pt": "Onde {estado} está no caminho até 2050",
@@ -1893,7 +1893,7 @@
     },
     "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.": {
       "pt": "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
-      "en": "where y is the value of the indicator in year t, for the Legal Amazon or the selected state."
+      "en": "where y is the value of the indicator in year t, for the Brazilian Amazon or the selected state."
     },
     "Janela": {
       "pt": "Janela",
@@ -2476,12 +2476,12 @@
       "en": "The last 10 years of the series are used, counted back from the most recent year with data; a shorter series is used in full. Ten years show the underlying trend and are not swayed by one unusual year, but they are slow to recognise a recent change of course. At least three years with data are needed, and years without a value are left out. A goal with a break in its series uses a fixed window, shown on the card."
     },
     "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.": {
-      "pt": "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
-      "en": "Pace = average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
+      "pt": "Ritmo: variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
+      "en": "Pace: average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
     },
     "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
       "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
-      "en": "Each goal’s pace over the last 10 years against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
+      "en": "The pace of the past 10 years for each target, measured against the agreed deadline. For indicators without a numerical target, the trend through 2050. This is a mechanical projection based on the historical series, not a forecast."
     },
     "desde {ano}": {
       "pt": "desde {ano}",
