@@ -817,7 +817,7 @@
     },
     "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.": {
       "pt": "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
-      "en": "Where the Legal Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
+      "en": "Where the Brazilian Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
     },
     "Buscar meta, indicador ou código": {
       "pt": "Buscar meta, indicador ou código",
@@ -2325,15 +2325,15 @@
     },
     "quanto do caminho entre a baseline e a meta a região já percorreu.": {
       "pt": "quanto do caminho entre a baseline e a meta a região já percorreu.",
-      "en": "how much of the way from the baseline to the target the region has already covered."
+      "en": "How far the region has come between the baseline and the target."
     },
     "sem baseline, é a posição do valor atual em relação à meta.": {
       "pt": "sem baseline, é a posição do valor atual em relação à meta.",
-      "en": "with no baseline, it is where the current value stands against the target."
+      "en": "Where no baseline exists, it shows how the current value stands relative to the target."
     },
     "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.": {
       "pt": "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.",
-      "en": "the baseline was already past the target; progress is where the current value stands against it."
+      "en": "The baseline had already surpassed the target; the journey is the current value’s position relative to the target."
     },
     "sem escala: não há baseline para medir o caminho até uma meta zero.": {
       "pt": "sem escala: não há baseline para medir o caminho até uma meta zero.",
