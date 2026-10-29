@@ -17,13 +17,14 @@ import PaginaVisaoGeralEditorial from '../../../components/PaginaVisaoGeralEdito
 import { CLASSE_DO_MAIN, ESTILO_VISAO_GERAL } from '../../../lib/visao-geral';
 import PaginaPanorama from '../../../components/PaginaPanorama.astro';
 import PaginaMetas from '../../../components/PaginaMetas.astro';
-import PaginaProjetos from '../../../components/PaginaProjetos.astro';
+import PaginaPrioridades from '../../../components/PaginaPrioridades.astro';
 import { leJson } from '../../../lib/admin/edicao';
 import { aplicaFormulario, aplicaFormularioInterface, type Arvore, type Interface } from '../../../lib/admin/textos';
 import textosPublicados from '../../../../conteudo/textos.json';
 import '../../../styles/overview-slides.css';
 import '../../../styles/overview-compositions.css';
 import '../../../styles/visao-editorial.css';
+import '../../../styles/prioridades.css';
 
 const lang = Astro.url.searchParams.get('lang') === 'en' ? 'en' : 'pt-BR';
 const pedida = Astro.url.searchParams.get('pagina');
@@ -46,7 +47,7 @@ const PAGINAS = {
   metodologia: { mainClass: CLASSE_DO_MAIN[ESTILO_VISAO_GERAL], dados: [] },
   index: { mainClass: undefined, dados: ['dashboard', 'geo', 'catalogo'] },
   metas: { mainClass: 'goals-page', dados: ['metas'] },
-  projetos: { mainClass: 'projetos-page', dados: [] }
+  projetos: { mainClass: 'pr-main', dados: [] }
 } as const;
 ---
 
@@ -65,7 +66,7 @@ const PAGINAS = {
     : <PaginaVisaoGeral lang={lang} textos={textos as typeof textosPublicados} />)}
   {pagina === 'index' && <PaginaPanorama lang={lang} />}
   {pagina === 'metas' && <PaginaMetas lang={lang} textos={textos as typeof textosPublicados} />}
-  {pagina === 'projetos' && <PaginaProjetos lang={lang} />}
+  {pagina === 'projetos' && <PaginaPrioridades lang={lang} />}
 
   <script>
     // Cada módulo só arranca se a âncora da sua página existir; importar os
@@ -74,7 +75,7 @@ const PAGINAS = {
     import '../../../scripts/visao-editorial.js';
     import '../../../scripts/app.js';
     import '../../../scripts/metas.js';
-    import '../../../scripts/projetos-hub.js';
+    import '../../../scripts/prioridades.js';
   </script>
 
   <style is:global>

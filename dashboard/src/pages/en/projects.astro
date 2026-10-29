@@ -1,19 +1,20 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PaginaProjetos from '../../components/PaginaProjetos.astro';
+import PaginaPrioridades from '../../components/PaginaPrioridades.astro';
+import '../../styles/prioridades.css';
 ---
 
 <Base
   title="Projects — Amazônia 2050"
-  description="Brazilian Amazon Projects is the portal where the Legal Amazon Interstate Consortium presents the projects of the nine states to investors and partners."
-  ogDescription="How the nine states of the Legal Amazon bring their projects to investors and partners through the Consortium's portal."
-  mainClass="projetos-page"
+  description="The projects that the planning departments of the nine Legal Amazon states prioritized in the Strategy, with the status, progress and constraints of each."
+  ogDescription="What each Legal Amazon state prioritized in the 2050 Strategy, and where each project stands."
+  mainClass="pr-main"
   pagina="projetos"
   lang="en"
 >
-  <PaginaProjetos lang="en" />
+  <PaginaPrioridades lang="en" />
 
   <script>
-    import '../../scripts/projetos-hub.js';
+    import '../../scripts/prioridades.js';
   </script>
 </Base>

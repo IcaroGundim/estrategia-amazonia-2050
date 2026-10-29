@@ -1,19 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
-import PaginaProjetos from '../components/PaginaProjetos.astro';
+import PaginaPrioridades from '../components/PaginaPrioridades.astro';
+import '../styles/prioridades.css';
 ---
 
 <Base
   title="Projetos — Estratégia 2050"
-  description="O Brazilian Amazon Projects é o portal em que o Consórcio Interestadual da Amazônia Legal apresenta os projetos dos nove estados a investidores e parceiros."
-  ogDescription="Como os nove estados da Amazônia Legal levam seus projetos a investidores e parceiros pelo portal do Consórcio."
-  mainClass="projetos-page"
+  description="Os projetos que as Secretarias de Planejamento dos nove estados da Amazônia Legal priorizaram na Estratégia, com a situação, os avanços e os entraves de cada um."
+  ogDescription="O que cada estado da Amazônia Legal priorizou na Estratégia 2050, e em que pé está cada projeto."
+  mainClass="pr-main"
   pagina="projetos"
   lang="pt-BR"
 >
-  <PaginaProjetos lang="pt-BR" />
+  <PaginaPrioridades lang="pt-BR" />
 
   <script>
-    import '../scripts/projetos-hub.js';
+    import '../scripts/prioridades.js';
   </script>
 </Base>

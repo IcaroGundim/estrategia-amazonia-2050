@@ -1,0 +1,200 @@
+---
+// Aba Projetos: as Prioridades dos Estados, os projetos que as Secretarias de
+// Planejamento indicaram para a Estratégia (dados em conteudo/prioridades.json,
+// regras de texto e fotos em lib/prioridades.ts).
+//
+// A página: capa com o mapa da Amazônia Legal (o tom de cada estado diz quantas
+// prioridades ele indicou); depois o mapa fica parado à esquerda e acende o
+// estado que passa à direita. Cada estado tem uma foto panorâmica (a mesma da
+// Visão Geral) e os projetos em colunas por situação. O card do projeto abre
+// crescendo até ocupar a área das colunas; o conteúdo aberto já vem pronto num
+// <template> ao lado de cada card, com os textos traduzidos aqui, e
+// src/scripts/prioridades.js só o move, anima e põe os botões de navegação.
+// Sem script, os cards ficam fechados e a página continua legível.
+//
+// Os nomes e as descrições dos projetos ficam em português também em /en: são
+// como os estados os enviaram, e a página diz isso.
+import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
+import { ESTADOS } from '../lib/visao-geral';
+import { COR_SITUACAO, FOTOS_DOS_PROJETOS, PRIORIDADES, SITUACOES, doEstado, fraseDoEntrave, maturidadeCurta, nomeCurto, paragrafos, type Prioridade } from '../lib/prioridades';
+import { ALTURA, LARGURA, MAPA as MAPA_COMPLETO } from '../lib/mapa-prioridades';
+
+interface Props { lang?: string }
+const { lang = IDIOMA_PADRAO } = Astro.props;
+const t = traduzirCom(lang, Astro.locals.interface);
+const tp = (texto: string, valores: Record<string, string | number>) => t(texto).replace(/\{(\w+)\}/g, (_, k) => String(valores[k] ?? ''));
+
+// a ordem alfabética das siglas, a mesma do índice do mapa
+const UFS = ['AC', 'AP', 'AM', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'];
+const estadoDe = (uf: string) => ESTADOS.find((e) => e.uf === uf)!;
+const prioridades = (n: number) => (n === 1 ? t('1 prioridade') : tp('{n} prioridades', { n }));
+
+// ---------- números da capa ----------
+const contaSit = Object.fromEntries(SITUACOES.map((s) => [s, PRIORIDADES.filter((p) => p.situacao === s).length]));
+const eixosUsados = new Set(PRIORIDADES.map((p) => p.eixo)).size;
+const comFinanceiro = PRIORIDADES.filter((p) => p.entraveFinanceiro === 'Sim').length;
+// as barras do "o que trava": a categoria da planilha, ou "descrito pelo estado" quando é texto livre
+const ROTULO_CATEGORIA: Record<string, string> = {
+  'Financeiro (recursos insuficientes)': 'Financeiro', 'Técnico (capacidade ou projeto)': 'Técnico', 'Institucional / político': 'Institucional e político',
+  'Licenciamento / questão fundiária': 'Licenciamento e questão fundiária', 'Sem entraves': 'Sem entraves'
+};
+const categoria = (p: Prioridade) => (p.entrave ? ROTULO_CATEGORIA[p.entrave] : p.entraveTexto ? 'Descrito pelo estado' : 'Sem informação');
+const entraves = Object.entries(PRIORIDADES.reduce<Record<string, number>>((o, p) => ((o[categoria(p)] = (o[categoria(p)] || 0) + 1), o), {})).sort((a, b) => b[1] - a[1]);
+const maiorEntrave = entraves[0][1];
+
+// ---------- mapa (geometria pronta em lib/mapa-prioridades.ts) ----------
+const L = LARGURA, A = ALTURA;
+const MAPA = MAPA_COMPLETO.filter((m) => UFS.includes(m.uf));
+// tons claros sobre o verde da capa: mais prioridades, mais quente (só as faixas que algum estado ocupa entram na legenda)
+const FAIXAS: [number, string, string][] = [[2, '#8fb29f', '2'], [3, '#cddbc9', '3'], [6, '#ead39a', t('4 a 6')], [Infinity, '#e0a83c', t('7 ou mais')]];
+const tom = (n: number) => FAIXAS.find(([lim]) => n <= lim)![1];
+const qtd = (uf: string) => PRIORIDADES.filter((p) => p.uf === uf).length;
+const faixasUsadas = FAIXAS.filter(([, cor]) => UFS.some((uf) => tom(qtd(uf)) === cor));
+const resumoSit = (uf: string) => SITUACOES.map((s) => [s, PRIORIDADES.filter((p) => p.uf === uf && p.situacao === s).length] as const).filter(([, n]) => n).map(([s, n]) => `${n} ${t(s).toLowerCase()}`).join(' · ');
+
+// ---------- estados ----------
+const listaDeNomes = (ps: Prioridade[]) => { const nomes = ps.map(nomeCurto); return nomes.length === 1 ? nomes[0] : tp('{a} e {b}', { a: nomes.slice(0, -1).join(', '), b: nomes.at(-1)! }); };
+const notaRepetida = (r: ReturnType<typeof doEstado>['repetidos'][number], total: number) => {
+  const todos = r.projetos.length === total;
+  const chave = r.campo === 'resultado'
+    ? (todos ? 'Resultado esperado igual nos {n} projetos:' : 'Resultado esperado igual em {projetos}:')
+    : (todos ? 'Avanço igual nos {n} projetos:' : 'Avanço igual em {projetos}:');
+  return tp(chave, { n: r.projetos.length, projetos: listaDeNomes(r.projetos) });
+};
+const ESTADOS_DA_PAGINA = UFS.map((uf, k) => {
+  const e = estadoDe(uf), info = doEstado(uf);
+  return { uf, n: k + 1, nome: e.nome, bandeira: e.bandeira, foto: e.foto, licenca: e.licenca, municipio: e.municipio, ...info,
+    colunas: info.situacoes.map((s) => ({ situacao: s, projetos: info.lista.filter((p) => p.situacao === s) })) };
+});
+const fotoDo = (uf: string, idx: number) => FOTOS_DOS_PROJETOS[uf][idx % FOTOS_DOS_PROJETOS[uf].length];
+const creditosFotos = [...UFS.map((uf) => { const e = estadoDe(uf); return { ...e.foto, lugar: `${e.foto.lugar}, ${e.municipio}`, licenca: e.licenca }; }), ...UFS.flatMap((uf) => FOTOS_DOS_PROJETOS[uf].map((foto) => ({ ...foto, licenca: undefined })))];
+// rótulos dos botões do projeto aberto, para o script
+const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próximo →'), fechar: t('× Todos os projetos'), conta: t('{n} de {total}') });
+---
+
+<div class="pr-pagina" data-prioridades data-rotulos={rotulos}>
+  <!-- capa -->
+  <section class="pr-capa" aria-labelledby="pr-titulo">
+    <div class="pr-capa-texto">
+      <p class="pr-rubrica">{t('Prioridades dos Estados · 2º semestre de 2026')}</p>
+      <h1 id="pr-titulo" class="pr-h1">{t('O que cada estado priorizou na Estratégia')}</h1>
+      <p class="pr-fina">{t('As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.')}</p>
+      <div class="pr-numeros">
+        <div><b>{PRIORIDADES.length}</b><span>{t('projetos prioritários')}</span></div>
+        <div><b>{UFS.length}</b><span>{t('estados do Consórcio')}</span></div>
+        <div><b>{eixosUsados}</b><span>{t('eixos da Estratégia')}</span></div>
+      </div>
+      <div class="pr-barra" role="img" aria-label={SITUACOES.filter((s) => contaSit[s]).map((s) => `${t(s)}: ${contaSit[s]}`).join(', ')}>
+        {SITUACOES.map((s) => contaSit[s] ? <i style={`width:${(contaSit[s] / PRIORIDADES.length) * 100}%; background:${COR_SITUACAO[s]}`}></i> : null)}
+      </div>
+      <div class="pr-legenda">{SITUACOES.map((s) => <span><i class="pr-ponto" data-s={s}></i>{t(s)} · {contaSit[s]}</span>)}</div>
+    </div>
+    <div class="pr-capa-mapa">
+      <div class="pr-mapa" data-pr-mapa-capa>
+        <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={t('Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um')}>
+          {MAPA.map((m, i) => <path d={m.d} data-uf={m.uf} style={`--i:${i}; fill:${tom(qtd(m.uf))}`} data-titulo={`${estadoDe(m.uf).nome} · ${prioridades(qtd(m.uf))}`} data-resumo={resumoSit(m.uf)}><title>{estadoDe(m.uf).nome}: {prioridades(qtd(m.uf))}</title></path>)}
+          {MAPA.map((m) => <><text class="pr-uf" x={m.rot[0].toFixed(1)} y={m.rot[1].toFixed(1)}>{m.uf}</text><text class="pr-qtd" x={m.rot[0].toFixed(1)} y={(m.rot[1] + 7.5).toFixed(1)}>{qtd(m.uf)}</text></>)}
+        </svg>
+        <div class="pr-dica" data-pr-dica hidden></div>
+      </div>
+      <p class="pr-mapa-legenda"><span>{t('prioridades por estado:')}</span>{faixasUsadas.map(([, cor, rot]) => <span><i style={`background:${cor}`}></i>{rot}</span>)}<span>{t('· clique para ver')}</span></p>
+    </div>
+  </section>
+
+  <!-- os estados, com o mapa parado ao lado -->
+  <section class="pr-rolagem">
+    <div class="pr-coluna-mapa">
+      <div class="pr-colado" aria-hidden="true">
+        <svg viewBox={`0 0 ${L} ${A}`} data-pr-mapa-colado>
+          {MAPA.map((m) => <path d={m.d} data-uf={m.uf}></path>)}
+          {MAPA.map((m) => <text class="pr-uf" data-uf={m.uf} x={m.rot[0].toFixed(1)} y={(m.rot[1] + 2.5).toFixed(1)}>{m.uf}</text>)}
+        </svg>
+        <div class="pr-colado-pe"><h2 data-pr-nome>{ESTADOS_DA_PAGINA[0].nome}</h2><span class="pr-passo" data-pr-passo>{tp('{n} de {total}', { n: 1, total: UFS.length })}</span></div>
+      </div>
+    </div>
+
+    <div class="pr-estados">
+      {ESTADOS_DA_PAGINA.map((e) => (
+        <section class="pr-estado" id={`estado-${e.uf.toLowerCase()}`} data-uf={e.uf} data-n={e.n} data-nome={e.nome} aria-labelledby={`pr-nome-${e.uf}`}>
+          <div class="pr-panorama" data-pr-revela>
+            <div class="pr-panorama-foto" style={`background-image:url('${e.foto.arquivo}')`}></div>
+            <span class="pr-cred">{e.foto.lugar}, {e.municipio} · {e.licenca ? <>{e.foto.autor}, <a href={e.licenca.url} target="_blank" rel="noopener">{e.licenca.nome}</a></> : e.foto.autor}</span>
+            <div class="pr-panorama-nome"><img class="pr-bandeira" src={e.bandeira} alt="" /><h2 id={`pr-nome-${e.uf}`}>{e.nome}</h2></div>
+          </div>
+          {e.repetidos.map((r) => <p class="pr-comum" data-pr-revela><b>{notaRepetida(r, e.lista.length)}</b> {r.texto}</p>)}
+          <div class="pr-regiao" data-pr-regiao data-uf={e.uf}>
+            <div class="pr-colunas">
+              {e.colunas.map((c) => (
+                <div class="pr-coluna">
+                  <h3><i class="pr-ponto" data-s={c.situacao}></i>{t(c.situacao)}<em>{c.projetos.length}</em></h3>
+                  <div class="pr-lista">
+                    {c.projetos.map((p, i) => {
+                      const idx = e.ordem.indexOf(p), foto = fotoDo(e.uf, idx), ent = fraseDoEntrave(p), mat = maturidadeCurta(p);
+                      const fatos: [string, string][] = [];
+                      if (ent) fatos.push([t('Principal entrave'), t(ent.frase) + (p.entraveTexto ? `. ${p.entraveTexto}` : '')]);
+                      else if (p.entraveTexto) fatos.push([t('Entraves, nas palavras do estado'), p.entraveTexto]);
+                      if (p.maturidade && p.maturidade !== p.situacao) fatos.push([t('Maturidade'), p.maturidade]);
+                      if (p.financiamento) fatos.push([t('Financiamento'), p.financiamento]);
+                      const avancos = p.avancos && !e.fora.avancos.has(p.avancos) ? paragrafos(p.avancos) : [];
+                      return (
+                        <>
+                          <button type="button" class="pr-card" data-idx={idx} aria-expanded="false" data-pr-revela style={`--i:${i % 4}`}>
+                            <span class="pr-card-foto" style={`background-image:url('${foto.arquivo}')`}></span>
+                            <span class="pr-card-abre" aria-hidden="true">↗</span>
+                            <span class="pr-card-corpo">
+                              <span class="pr-card-titulo">{p.projeto}</span>
+                              {p.resultado && !e.fora.resultado.has(p.resultado) && <span class="pr-card-res">{p.resultado}</span>}
+                              {(ent || mat.curto) && <span class="pr-card-linha">{ent && <span class={ent.financeiro ? 'is-fin' : ''}>{t(ent.frase)}</span>}{ent && mat.curto && ' · '}{mat.curto}</span>}
+                            </span>
+                          </button>
+                          <template data-pr-modelo={idx}>
+                            <div class="pr-aberto-foto" style={`background-image:url('${foto.arquivo}')`}><span class="pr-cred">{foto.lugar} · <a href={foto.url} target="_blank" rel="noopener">{foto.autor}</a></span></div>
+                            <div class="pr-aberto-corpo">
+                              <div class="pr-aberto-topo"><span class="pr-aberto-sit"><i class="pr-ponto" data-s={p.situacao}></i>{t(p.situacao)}</span></div>
+                              <h3 class="pr-aberto-titulo" tabindex="-1">{p.projeto}</h3>
+                              {p.resultado && !e.fora.resultado.has(p.resultado) && <p class="pr-aberto-res">{p.resultado}</p>}
+                              <div class="pr-aberto-grade">
+                                {fatos.length ? <dl class="pr-fatos">{fatos.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl> : <div></div>}
+                                <div class="pr-avancos">
+                                  {avancos.length ? <><h4>{t('Principais avanços')}</h4>{avancos.map((s, j) => <p>{s}{p.cortado && j === avancos.length - 1 ? ' …' : ''}</p>)}</>
+                                    : !p.avancos && <p class="is-vazio">{t('O estado não informou avanços nesta rodada.')}</p>}
+                                </div>
+                              </div>
+                            </div>
+                          </template>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <!-- o que trava -->
+  <section class="pr-trava">
+    <div data-pr-revela>
+      <p class="pr-rubrica">{t('O que trava')}</p>
+      <h2 class="pr-h2">{t('O principal entrave de cada projeto')}</h2>
+      <p class="pr-fin"><b>{comFinanceiro}</b><span>{tp('{n} de {total} projetos relatam entrave financeiro: falta de recursos próprios ou necessidade de apoio externo.', { n: comFinanceiro, total: PRIORIDADES.length })}</span></p>
+    </div>
+    <div class="pr-entraves" data-pr-revela style="--i:2">
+      {entraves.map(([nome, n]) => <div><span>{t(nome)}</span><i style={`width:${(n / maiorEntrave) * 100}%`}></i><em>{n}</em></div>)}
+    </div>
+  </section>
+
+  <!-- sobre os dados -->
+  <footer class="pr-sobre">
+    <h2>{t('Sobre os dados')}</h2>
+    <p>{t('Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.')}</p>
+    {lang === 'en' && <p>{t('Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.')}</p>}
+    <p>{t('Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).')}</p>
+    <ul class="pr-creditos">
+      {creditosFotos.map((c) => <li>{c.lugar} · {c.url ? <a href={c.url} target="_blank" rel="noopener">{c.autor}</a> : c.autor}{c.licenca && <>, <a href={c.licenca.url} target="_blank" rel="noopener">{c.licenca.nome}</a></>}</li>)}
+    </ul>
+  </footer>
+</div>

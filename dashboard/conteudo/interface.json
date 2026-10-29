@@ -615,18 +615,64 @@
       "abre": ".eixo-cartao"
     },
     {
-      "titulo": "Projetos: explicação do portal",
+      "titulo": "Projetos: prioridades dos estados",
       "pagina": "projetos",
       "chaves": [
-        "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.",
-        "Conhecer o portal",
-        "Portal de projetos",
-        "Investidores",
-        "Parceiros",
-        "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.",
-        "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)"
+        "Prioridades dos Estados · 2º semestre de 2026",
+        "O que cada estado priorizou na Estratégia",
+        "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.",
+        "projetos prioritários",
+        "estados do Consórcio",
+        "eixos da Estratégia",
+        "Em conclusão",
+        "Em execução",
+        "Em elaboração",
+        "Não iniciada",
+        "Sem informação",
+        "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um",
+        "prioridades por estado:",
+        "4 a 6",
+        "7 ou mais",
+        "· clique para ver",
+        "1 prioridade",
+        "{n} prioridades",
+        "{n} de {total}",
+        "{a} e {b}",
+        "Resultado esperado igual nos {n} projetos:",
+        "Resultado esperado igual em {projetos}:",
+        "Avanço igual nos {n} projetos:",
+        "Avanço igual em {projetos}:",
+        "Entrave financeiro",
+        "Entrave técnico",
+        "Entrave técnico e financeiro",
+        "Entrave institucional e político",
+        "Entrave institucional, político e financeiro",
+        "Entrave de licenciamento e fundiário",
+        "Entrave de licenciamento, fundiário e financeiro",
+        "Sem entraves",
+        "Principal entrave",
+        "Entraves, nas palavras do estado",
+        "Maturidade",
+        "Financiamento",
+        "Principais avanços",
+        "O estado não informou avanços nesta rodada.",
+        "← Anterior",
+        "Próximo →",
+        "× Todos os projetos",
+        "O que trava",
+        "O principal entrave de cada projeto",
+        "{n} de {total} projetos relatam entrave financeiro: falta de recursos próprios ou necessidade de apoio externo.",
+        "Financeiro",
+        "Técnico",
+        "Institucional e político",
+        "Licenciamento e questão fundiária",
+        "Descrito pelo estado",
+        "Sobre os dados",
+        "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
+        "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.",
+        "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons)."
       ],
-      "alvo": ".hub"
+      "alvo": ".pr-capa"
     }
   ],
   "textos": {
@@ -2510,33 +2556,217 @@
       "pt": "crescimento médio anual da soma dos nove estados nos últimos 10 anos",
       "en": "average annual growth of the nine states’ total over the last 10 years"
     },
-    "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.": {
-      "pt": "Os estados levam seus projetos ao Consórcio, que os publica num portal único aberto a investidores e parceiros.",
-      "en": "The states bring their projects to the Consortium, which publishes them on a single portal open to investors and partners."
+    "Prioridades dos Estados · 2º semestre de 2026": {
+      "pt": "Prioridades dos Estados · 2º semestre de 2026",
+      "en": "State priorities · 2nd half of 2026"
     },
-    "Conhecer o portal": {
-      "pt": "Conhecer o portal",
-      "en": "Visit the portal"
+    "O que cada estado priorizou na Estratégia": {
+      "pt": "O que cada estado priorizou na Estratégia",
+      "en": "What each state prioritized in the Strategy"
     },
-    "Portal de projetos": {
-      "pt": "Portal de projetos",
-      "en": "Project portal"
+    "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.": {
+      "pt": "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.",
+      "en": "The planning departments of the Consortium's nine states named the projects that drive the Strategy in each territory."
     },
-    "Investidores": {
-      "pt": "Investidores",
-      "en": "Investors"
+    "projetos prioritários": {
+      "pt": "projetos prioritários",
+      "en": "priority projects"
     },
-    "Parceiros": {
-      "pt": "Parceiros",
-      "en": "Partners"
+    "estados do Consórcio": {
+      "pt": "estados do Consórcio",
+      "en": "Consortium states"
     },
-    "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.": {
-      "pt": "Os nove estados levam seus projetos ao Consórcio Interestadual da Amazônia Legal, que os publica num portal para investidores e parceiros.",
-      "en": "The nine states bring their projects to the Legal Amazon Interstate Consortium, which publishes them on a portal for investors and partners."
+    "eixos da Estratégia": {
+      "pt": "eixos da Estratégia",
+      "en": "Strategy pillars"
     },
-    "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)": {
-      "pt": "Foto: Ana Claudia Jatahy/MTur · Parque Nacional do Jaú, Novo Airão (AM)",
-      "en": "Photo: Ana Claudia Jatahy/MTur · Jaú National Park, Novo Airão (AM)"
+    "Em conclusão": {
+      "pt": "Em conclusão",
+      "en": "Nearly complete"
+    },
+    "Em execução": {
+      "pt": "Em execução",
+      "en": "Under way"
+    },
+    "Em elaboração": {
+      "pt": "Em elaboração",
+      "en": "Being prepared"
+    },
+    "Não iniciada": {
+      "pt": "Não iniciada",
+      "en": "Not started"
+    },
+    "Sem informação": {
+      "pt": "Sem informação",
+      "en": "No information"
+    },
+    "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um": {
+      "pt": "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um",
+      "en": "Map of the nine Legal Amazon states, with the number of priorities in each"
+    },
+    "prioridades por estado:": {
+      "pt": "prioridades por estado:",
+      "en": "priorities per state:"
+    },
+    "4 a 6": {
+      "pt": "4 a 6",
+      "en": "4 to 6"
+    },
+    "7 ou mais": {
+      "pt": "7 ou mais",
+      "en": "7 or more"
+    },
+    "· clique para ver": {
+      "pt": "· clique para ver",
+      "en": "· click to view"
+    },
+    "1 prioridade": {
+      "pt": "1 prioridade",
+      "en": "1 priority"
+    },
+    "{n} prioridades": {
+      "pt": "{n} prioridades",
+      "en": "{n} priorities"
+    },
+    "{n} de {total}": {
+      "pt": "{n} de {total}",
+      "en": "{n} of {total}"
+    },
+    "{a} e {b}": {
+      "pt": "{a} e {b}",
+      "en": "{a} and {b}"
+    },
+    "Resultado esperado igual nos {n} projetos:": {
+      "pt": "Resultado esperado igual nos {n} projetos:",
+      "en": "Same expected result for all {n} projects:"
+    },
+    "Resultado esperado igual em {projetos}:": {
+      "pt": "Resultado esperado igual em {projetos}:",
+      "en": "Same expected result for {projetos}:"
+    },
+    "Avanço igual nos {n} projetos:": {
+      "pt": "Avanço igual nos {n} projetos:",
+      "en": "Same progress for all {n} projects:"
+    },
+    "Avanço igual em {projetos}:": {
+      "pt": "Avanço igual em {projetos}:",
+      "en": "Same progress for {projetos}:"
+    },
+    "Entrave financeiro": {
+      "pt": "Entrave financeiro",
+      "en": "Financial constraint"
+    },
+    "Entrave técnico": {
+      "pt": "Entrave técnico",
+      "en": "Technical constraint"
+    },
+    "Entrave técnico e financeiro": {
+      "pt": "Entrave técnico e financeiro",
+      "en": "Technical and financial constraint"
+    },
+    "Entrave institucional e político": {
+      "pt": "Entrave institucional e político",
+      "en": "Institutional and political constraint"
+    },
+    "Entrave institucional, político e financeiro": {
+      "pt": "Entrave institucional, político e financeiro",
+      "en": "Institutional, political and financial constraint"
+    },
+    "Entrave de licenciamento e fundiário": {
+      "pt": "Entrave de licenciamento e fundiário",
+      "en": "Licensing and land-tenure constraint"
+    },
+    "Entrave de licenciamento, fundiário e financeiro": {
+      "pt": "Entrave de licenciamento, fundiário e financeiro",
+      "en": "Licensing, land-tenure and financial constraint"
+    },
+    "Sem entraves": {
+      "pt": "Sem entraves",
+      "en": "No constraints"
+    },
+    "Principal entrave": {
+      "pt": "Principal entrave",
+      "en": "Main constraint"
+    },
+    "Entraves, nas palavras do estado": {
+      "pt": "Entraves, nas palavras do estado",
+      "en": "Constraints, in the state's words"
+    },
+    "Maturidade": {
+      "pt": "Maturidade",
+      "en": "Maturity"
+    },
+    "Financiamento": {
+      "pt": "Financiamento",
+      "en": "Funding"
+    },
+    "Principais avanços": {
+      "pt": "Principais avanços",
+      "en": "Main progress"
+    },
+    "O estado não informou avanços nesta rodada.": {
+      "pt": "O estado não informou avanços nesta rodada.",
+      "en": "The state reported no progress this round."
+    },
+    "← Anterior": {
+      "pt": "← Anterior",
+      "en": "← Previous"
+    },
+    "Próximo →": {
+      "pt": "Próximo →",
+      "en": "Next →"
+    },
+    "× Todos os projetos": {
+      "pt": "× Todos os projetos",
+      "en": "× All projects"
+    },
+    "O que trava": {
+      "pt": "O que trava",
+      "en": "What holds them back"
+    },
+    "O principal entrave de cada projeto": {
+      "pt": "O principal entrave de cada projeto",
+      "en": "The main constraint on each project"
+    },
+    "{n} de {total} projetos relatam entrave financeiro: falta de recursos próprios ou necessidade de apoio externo.": {
+      "pt": "{n} de {total} projetos relatam entrave financeiro: falta de recursos próprios ou necessidade de apoio externo.",
+      "en": "{n} of {total} projects report a financial constraint: a lack of their own funds or a need for outside support."
+    },
+    "Financeiro": {
+      "pt": "Financeiro",
+      "en": "Financial"
+    },
+    "Técnico": {
+      "pt": "Técnico",
+      "en": "Technical"
+    },
+    "Institucional e político": {
+      "pt": "Institucional e político",
+      "en": "Institutional and political"
+    },
+    "Licenciamento e questão fundiária": {
+      "pt": "Licenciamento e questão fundiária",
+      "en": "Licensing and land tenure"
+    },
+    "Descrito pelo estado": {
+      "pt": "Descrito pelo estado",
+      "en": "Described by the state"
+    },
+    "Sobre os dados": {
+      "pt": "Sobre os dados",
+      "en": "About the data"
+    },
+    "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.": {
+      "pt": "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
+      "en": "State priorities, compiled by the Legal Amazon Interstate Consortium from information provided by the state planning departments, with the status as of October 2026. Each state named its priorities and reported on their status, progress and constraints."
+    },
+    "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.": {
+      "pt": "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.",
+      "en": "Project names and descriptions appear as the states submitted them, in Portuguese."
+    },
+    "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).": {
+      "pt": "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).",
+      "en": "Photos from Brazil's Ministry of Tourism (Flickr MTur Destinos, public domain), except the Crôa river photo (Wikimedia Commons)."
     }
   }
 }
