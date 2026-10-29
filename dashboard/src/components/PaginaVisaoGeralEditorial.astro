@@ -1,0 +1,460 @@
+---
+// Visão Geral editorial: a mesma Estratégia das lâminas (PaginaVisaoGeral.astro),
+// contada numa página corrida, com as fotografias do MTur incorporadas às seções.
+// Os textos vêm de conteudo/textos.json (visaoGeral), os mesmos das lâminas,
+// mais o território e o "explore o painel", que só este estilo mostra. As fotos
+// e os nove estados estão em lib/visao-geral.ts. Qual dos dois estilos o painel
+// mostra é decidido lá também (ESTILO_VISAO_GERAL).
+//
+// As seções guardam os ids das lâminas (a-estrategia, visao-2050, …) porque a
+// prévia da administração abre cada bloco de textos pela âncora.
+import { IDIOMA_PADRAO, rota, traduzirCom } from '../i18n/index.js';
+import { ESTADOS, FOTOS, FOTOS_DOS_EIXOS, type Foto } from '../lib/visao-geral';
+import textosPublicados from '../../conteudo/textos.json';
+import geo from '../../public/data/geo.json';
+
+interface Props {
+  lang?: string;
+  /** Outra versão dos textos, no mesmo formato do JSON: a prévia da administração passa o rascunho por aqui. */
+  textos?: typeof textosPublicados;
+}
+
+const { lang = IDIOMA_PADRAO, textos = textosPublicados } = Astro.props;
+const t = traduzirCom(lang, Astro.locals.interface);
+const tx = (par: { pt: string; en?: string | null } | string) =>
+  (typeof par === 'string' ? par : (lang === 'en' && par.en) ? par.en : par.pt);
+const idioma = lang === 'en' ? 'en' : 'pt-BR';
+
+// O rascunho da administração pode não ter as partes novas, se a mescla com a
+// main falhou; aí vale o publicado, como nas lâminas.
+const vg = textos.visaoGeral;
+const publicado = textosPublicados.visaoGeral;
+const { estrategia, visao2050, eixos } = vg;
+const territorio = vg.territorio ?? publicado.territorio;
+const explorar = vg.explorar ?? publicado.explorar;
+const estePainel = vg.estePainel;
+const contribuicao = estePainel.contribuicao ?? publicado.estePainel.contribuicao;
+const citacao = estePainel.citacao ?? publicado.estePainel.citacao;
+const gov = 'instancias' in vg.governanca ? vg.governanca : publicado.governanca;
+const verMetas = eixos.verMetas ?? publicado.eixos.verMetas;
+
+// Cada degrau da escada é uma instância principal e, ao lado, a de apoio ligada a ela (ou nada).
+type Instancia = (typeof gov.instancias)[number];
+const degraus: (Instancia | undefined)[][] = gov.instancias
+  .filter((instancia) => !('aoLadoDe' in instancia))
+  .map((principal) => [principal, gov.instancias.find((instancia) => 'aoLadoDe' in instancia && instancia.aoLadoDe === principal.id)]);
+
+// O primeiro parágrafo da visão vai em destaque; os demais, em texto corrido.
+const [visaoDestaque, ...visaoResto] = visao2050.paragrafos;
+
+// ---------- mapa do território ----------
+// Os contornos de public/data/geo.json numa projeção simples, feitos aqui para
+// a ficha já chegar desenhada. Pontos a menos de 0,7 unidade do anterior saem:
+// no tamanho em que o mapa aparece eles não se veem e só pesariam no HTML.
+type Anel = number[][];
+const poligonos = (geometria: { type: string; coordinates: unknown }) =>
+  (geometria.type === 'Polygon' ? [geometria.coordinates] : geometria.coordinates) as Anel[][];
+const pontos = geo.features.flatMap((f: { geometry: { type: string; coordinates: unknown } }) => poligonos(f.geometry).flat(1).flat(1)) as number[][];
+const lons = pontos.map((p) => p[0]);
+const lats = pontos.map((p) => p[1]);
+const [x0, x1, y0, y1] = [Math.min(...lons), Math.max(...lons), Math.min(...lats), Math.max(...lats)];
+const escala = Math.min(284 / (x1 - x0), 224 / (y1 - y0));
+const caminhoDoAnel = (anel: Anel) => {
+  let ultimo: number[] | null = null;
+  const passos: string[] = [];
+  for (const [lon, lat] of anel) {
+    const ponto = [8 + (lon - x0) * escala, 8 + (y1 - lat) * escala];
+    if (ultimo && Math.hypot(ponto[0] - ultimo[0], ponto[1] - ultimo[1]) < 0.7) continue;
+    passos.push(`${ponto[0].toFixed(1)},${ponto[1].toFixed(1)}`);
+    ultimo = ponto;
+  }
+  return passos.length > 2 ? `M${passos.join('L')}Z` : '';
+};
+const MAPA = geo.features.map((f: { properties: { SIGLA_UF?: string; uf?: string; AREA_KM2: number }; geometry: { type: string; coordinates: unknown } }) => ({
+  uf: f.properties.SIGLA_UF || f.properties.uf || '',
+  area: f.properties.AREA_KM2,
+  d: poligonos(f.geometry).map((poligono) => poligono.map(caminhoDoAnel).join('')).join('')
+}));
+const formataArea = (area: number) =>
+  `${Math.round(area / 1000).toLocaleString(lang === 'en' ? 'en-US' : 'pt-BR')} ${tx(territorio.rotulos.milKm2)}`;
+const estadosComArea = ESTADOS.map((estado) => ({ ...estado, area: formataArea(MAPA.find((m: { uf: string }) => m.uf === estado.uf)?.area ?? 0) }));
+const primeiro = estadosComArea[0];
+
+const credito = (foto: Foto) => `${foto.lugar} · ${foto.autor}`;
+const rotaMetas = rota('metas', idioma);
+const CHAMADAS = [
+  { titulo: t('Panorama'), href: rota('index', idioma) },
+  { titulo: t('Metas e indicadores'), href: rotaMetas },
+  { titulo: t('Projetos'), href: rota('projetos', idioma) }
+];
+const arte = explorar.arte ?? publicado.explorar.arte;
+
+// ---------- a arte dos cartões do "explore o painel" ----------
+// Os desenhos têm 560 × 200 e são cortados ao centro (slice): fechado, o cartão
+// mostra o miolo; aberto, aparecem as bordas, com a escala, os rótulos e as
+// demais fichas. O gráfico de metas é a exceção: estica com o cartão e é
+// desenhado na largura real pelo script (visao-editorial.js).
+const CORES_DO_MAPA = ['#1c4437', '#3e6e57', '#7fa08c', '#e0a83c', '#c0451f', '#2a5344', '#a8613a', '#6fa24a', '#157f72'];
+const escalaArte = Math.min(250 / (x1 - x0), 170 / (y1 - y0));
+const origemArte = [(560 - (x1 - x0) * escalaArte) / 2, (200 - (y1 - y0) * escalaArte) / 2];
+const naArte = ([lon, lat]: number[]) => [origemArte[0] + (lon - x0) * escalaArte, origemArte[1] + (y1 - lat) * escalaArte];
+const anelNaArte = (anel: Anel) => {
+  let ultimo: number[] | null = null;
+  const passos: string[] = [];
+  for (const ponto of anel.map(naArte)) {
+    if (ultimo && Math.hypot(ponto[0] - ultimo[0], ponto[1] - ultimo[1]) < 0.5) continue;
+    passos.push(`${ponto[0].toFixed(1)},${ponto[1].toFixed(1)}`);
+    ultimo = ponto;
+  }
+  return passos.length > 2 ? `M${passos.join('L')}Z` : '';
+};
+// A sigla vai no ponto mais folgado do estado, o mais longe das bordas: o centro
+// da caixa caía fora de estados estreitos ou recortados, como Roraima e Amapá.
+const pontoDaSigla = (anel: number[][]) => {
+  const xs = anel.map((p) => p[0]);
+  const ys = anel.map((p) => p[1]);
+  const [ax, bx, ay, by] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const dentro = (x: number, y: number) => {
+    let sim = false;
+    for (let i = 0, j = anel.length - 1; i < anel.length; j = i++) {
+      const [xi, yi] = anel[i];
+      const [xj, yj] = anel[j];
+      if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) sim = !sim;
+    }
+    return sim;
+  };
+  const folga = (x: number, y: number) => {
+    let menor = Infinity;
+    for (let i = 0, j = anel.length - 1; i < anel.length; j = i++) {
+      const [xa, ya] = anel[j];
+      const [xb, yb] = anel[i];
+      const t = Math.max(0, Math.min(1, ((x - xa) * (xb - xa) + (y - ya) * (yb - ya)) / ((xb - xa) ** 2 + (yb - ya) ** 2 || 1)));
+      menor = Math.min(menor, Math.hypot(x - (xa + t * (xb - xa)), y - (ya + t * (yb - ya))));
+    }
+    return menor;
+  };
+  let melhor = [(ax + bx) / 2, (ay + by) / 2];
+  let maior = -1;
+  for (let i = 1; i < 24; i += 1) for (let j = 1; j < 24; j += 1) {
+    const x = ax + ((bx - ax) * i) / 24;
+    const y = ay + ((by - ay) * j) / 24;
+    if (!dentro(x, y)) continue;
+    const f = folga(x, y);
+    if (f > maior) { maior = f; melhor = [x, y]; }
+  }
+  return melhor;
+};
+const MAPA_DA_ARTE = geo.features.map((f: { properties: { SIGLA_UF?: string; uf?: string }; geometry: { type: string; coordinates: unknown } }, i: number) => {
+  const maior = [...poligonos(f.geometry)].sort((a, b) => b[0].length - a[0].length)[0][0].map(naArte);
+  return {
+    uf: f.properties.SIGLA_UF || f.properties.uf || '',
+    cor: CORES_DO_MAPA[i % CORES_DO_MAPA.length],
+    d: poligonos(f.geometry).map((poligono) => poligono.map(anelNaArte).join('')).join(''),
+    sigla: pontoDaSigla(maior)
+  };
+});
+// a onda que acende o mapa corre de oeste para leste
+const deOeste = [...MAPA_DA_ARTE].sort((a, b) => a.sigla[0] - b.sigla[0]).map((m) => m.uf);
+const ESCALA_DA_SINTESE = ['#c0451f', '#e0a83c', '#7fa08c', '#3e6e57', '#1c4437'];
+// a vitrine: doze fichas soltas que se alinham do centro para as bordas; as das pontas só aparecem com o cartão aberto
+const DESVIOS = [[-30, 18, -14], [14, -20, 10], [22, 24, 18], [-18, -16, -8], [26, 10, 12], [-24, 22, -16], [10, -24, 6], [-12, 14, 14], [18, -14, -10], [-20, 18, 8], [12, 20, -12], [-16, -18, 16]];
+const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
+  const coluna = k % 6;
+  const linha = Math.floor(k / 6);
+  return { x: 104 + coluna * 60, y: 44 + linha * 62, dx, dy, r, ordem: Math.round(Math.abs(coluna - 2.5) * 2) + linha, borda: coluna === 0 || coluna === 5, destaque: k === 8, cor: k === 8 ? '#c0451f' : CORES_DO_MAPA[k % 3] };
+});
+---
+
+<div class="ve-pagina">
+  {/* ---------- topo: a capa sobre o rio, o título num bloco areia ---------- */}
+  <section id="a-estrategia" class="ve-topo">
+    <div class="ve-topo-foto">
+      <div class="ve-topo-img" style={`background-image:url('${FOTOS.topo.arquivo}')`}>
+        {/* A correnteza: um canvas WebGL por cima da foto, que só mexe da linha d'água para baixo (visao-editorial.js). */}
+        <canvas data-ve-agua data-foto={FOTOS.topo.arquivo} aria-hidden="true"></canvas>
+      </div>
+    </div>
+    <div class="ve-topo-bloco">
+      <h1 class="ve-surge" style="--i:1"><span>{tx(estrategia.tituloLinha1)}</span> <em>{tx(estrategia.tituloLinha2)}</em></h1>
+      <p class="ve-linha-fina ve-surge" style="--i:2">{tx(estrategia.abertura)}</p>
+      <div class="ve-botoes ve-surge" style="--i:3">
+        <a class="ve-botao" href={rotaMetas}>{t('Explorar metas e indicadores')} <span class="ve-botao-seta" aria-hidden="true">→</span></a>
+        <a class="ve-botao is-claro" href={estrategia.botaoPdf.href} target="_blank" rel="noopener">{tx(estrategia.botaoPdf.rotulo)} <span class="ve-botao-seta" aria-hidden="true">→</span></a>
+      </div>
+      <div class="ve-indice ve-surge" style="--i:4">
+        {estrategia.numeros.map(({ valor, rotulo }) => <div><b>{valor}</b><span>{tx(rotulo)}</span></div>)}
+      </div>
+    </div>
+    <div class="ve-capa ve-surge" style="--i:2">
+      <img
+        src="/photos/capa-estrategia-2050-1241.webp"
+        srcset="/photos/capa-estrategia-2050-900.webp 900w, /photos/capa-estrategia-2050-1241.webp 1241w, /photos/capa-estrategia-2050-2067.webp 2067w"
+        sizes="(max-width: 860px) 220px, 520px"
+        width="1241" height="1754" loading="eager"
+        alt={t('Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.')}
+      />
+    </div>
+    <a class="ve-cred" href={FOTOS.topo.url} target="_blank" rel="noopener">{credito(FOTOS.topo)}</a>
+  </section>
+
+  {/* ---------- 01 · visão: foto limpa e coluna verde-mata ---------- */}
+  <section id="visao-2050" class="ve-visao">
+    <div class="ve-quadro-foto">
+      <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.visao.arquivo}')`}></div>
+      <p class="ve-lema">{t('Floresta em pé, qualidade de vida.')}</p>
+      <a class="ve-cred" href={FOTOS.visao.url} target="_blank" rel="noopener">{credito(FOTOS.visao)}</a>
+    </div>
+    <div class="ve-visao-coluna">
+      <div class="ve-rubrica ve-surge"><b>01</b><span class="ve-chapeu">{tx(visao2050.chapeu)}</span><i></i></div>
+      <h2 class="ve-surge" style="--i:1">{tx(visao2050.titulo)}</h2>
+      <p class="ve-selo ve-surge" style="--i:2">{tx(visao2050.selo)}</p>
+      <blockquote class="ve-surge" style="--i:2">{tx(visaoDestaque)}</blockquote>
+      {visaoResto.map((paragrafo, i) => <p class="ve-visao-texto ve-surge" style={`--i:${3 + i}`}>{tx(paragrafo)}</p>)}
+      <p class="ve-apoios-chapeu ve-surge">{tx(visao2050.subChapeu)}</p>
+      <h3 class="ve-apoios-titulo ve-surge">{tx(visao2050.subTitulo)}</h3>
+      <ol class="ve-apoios">
+        {visao2050.lista.map((item, i) => <li class="ve-surge" style={`--i:${i + 1}`}>{tx(item)}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  {/* ---------- 02 · território: o mapa e os nove painéis andam juntos ---------- */}
+  <section id="territorio" class="ve-secao is-tela" data-ve-territorio>
+    <div class="ve-miolo">
+      <div class="ve-rubrica ve-surge"><b>02</b><span class="ve-chapeu">{tx(territorio.chapeu)}</span><i></i></div>
+      <div class="ve-estados-topo">
+        <h2 class="ve-surge" style="--i:1">{tx(territorio.titulo)}</h2>
+        {/* A ficha do estado aberto: a foto dele no fundo, sob um véu verde, e o mapa pequeno à esquerda. */}
+        <aside class="ve-ficha ve-surge" style={`--i:2; --foto:url('${primeiro.foto.arquivo}')`} data-ve-ficha>
+          <svg viewBox="0 0 300 240" role="img" aria-label={tx(territorio.rotulos.mapa)}>
+            {MAPA.map(({ uf, d }: { uf: string; d: string }) => (
+              <path d={d} data-uf={uf} class={uf === primeiro.uf ? 'is-ativo' : undefined}><title>{ESTADOS.find((e) => e.uf === uf)?.nome ?? uf}</title></path>
+            ))}
+          </svg>
+          <div class="ve-ficha-dados" aria-live="polite">
+            <div class="ve-ficha-nome"><img src={primeiro.bandeira} alt="" data-ve-ficha-bandeira /><b data-ve-ficha-nome>{primeiro.nome}</b></div>
+            <dl>
+              <div><dt>{tx(territorio.rotulos.capital)}</dt><dd data-ve-ficha-capital>{primeiro.capital}</dd></div>
+              <div><dt>{tx(territorio.rotulos.area)}</dt><dd data-ve-ficha-area>{primeiro.area}</dd></div>
+            </dl>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="ve-territorio ve-surge" style="--i:3">
+      <div class="ve-faixa-estados">
+        {estadosComArea.map((estado, i) => (
+          <div class={`ve-painel${i === 0 ? ' is-aberto' : ''}`} tabindex="0" role="button" aria-label={estado.nome}
+            data-uf={estado.uf} data-nome={estado.nome} data-capital={estado.capital} data-area={estado.area} data-bandeira={estado.bandeira} data-foto={estado.foto.arquivo}>
+            <img class="ve-painel-bg" src={estado.foto.arquivo} alt="" loading="lazy" />
+            <p class="ve-local"><strong>{estado.foto.lugar}</strong><span>{estado.municipio}</span></p>
+            <div class="ve-painel-rotulo"><img src={estado.bandeira} alt="" /><b>{estado.nome}</b></div>
+            <span class="ve-cred">
+              <a href={estado.foto.url} target="_blank" rel="noopener">{estado.foto.autor}</a>
+              {estado.licenca && <> · <a href={estado.licenca.url} target="_blank" rel="noopener">{estado.licenca.nome}</a></>}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 03 · eixos: foto e faixa verde formam um cartão só ---------- */}
+  <section id="eixos-de-implementacao" class="ve-secao is-tela">
+    <div class="ve-miolo">
+      <div class="ve-rubrica ve-surge"><b>03</b><span class="ve-chapeu">{tx(eixos.chapeu)}</span><i></i></div>
+      <div class="ve-eixos-topo">
+        <h2 class="ve-surge" style="--i:1">{tx(eixos.titulo)}</h2>
+        <p class="ve-linha-fina ve-surge" style="--i:2">{tx(eixos.abertura)}</p>
+      </div>
+    </div>
+    {/* Os títulos à esquerda; à direita, a foto e o texto do eixo no ar dividem o painel.
+        Cada eixo fica 8 s e passa ao próximo, com uma barra que enche sob o título
+        (visao-editorial.js). Os cinco textos já vêm no HTML e a troca só alterna qual aparece. */}
+    <div class="ve-eixos-lado ve-surge" style="--i:3" data-ve-eixos>
+      <div class="ve-eixos-titulos" role="tablist" aria-label={tx(eixos.titulo)}>
+        {eixos.itens.map(({ numero, titulo }, i) => (
+          <button type="button" class={`ve-eixos-titulo${i === 0 ? ' is-ativo' : ''}`} role="tab" id={`ve-eixo-aba-${i + 1}`} aria-controls={`ve-eixo-${i + 1}`} aria-selected={String(i === 0)} data-eixo={i}>
+            <b>{numero}</b><span>{tx(titulo)}</span><span class="ve-eixos-progresso" aria-hidden="true"><i></i></span>
+          </button>
+        ))}
+      </div>
+      <div class="ve-eixos-painel">
+        <div class="ve-eixos-foto">
+          {eixos.itens.map((_, i) => FOTOS_DOS_EIXOS[i] && (
+            <i class={i === 0 ? 'is-ativo' : undefined} data-eixo-foto={i} style={`background-image:url('${FOTOS_DOS_EIXOS[i].arquivo}')`}></i>
+          ))}
+          {eixos.itens.map((_, i) => FOTOS_DOS_EIXOS[i] && (
+            <a class="ve-cred" href={FOTOS_DOS_EIXOS[i].url} target="_blank" rel="noopener" data-eixo-cred={i} hidden={i !== 0}>{FOTOS_DOS_EIXOS[i].lugar} · {FOTOS_DOS_EIXOS[i].autor}</a>
+          ))}
+        </div>
+        {eixos.itens.map(({ titulo, texto }, i) => (
+          <div class="ve-eixos-texto" role="tabpanel" id={`ve-eixo-${i + 1}`} aria-labelledby={`ve-eixo-aba-${i + 1}`} data-eixo-texto={i} hidden={i !== 0}>
+            <h3>{tx(titulo)}</h3>
+            <p>{tx(texto)}</p>
+            <a class="ve-eixos-link" href={`${rotaMetas}#eixo-${i + 1}`}>{tx(verMetas)} <span aria-hidden="true">→</span></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 04 · governança: a escada sobre a vista aérea do Pantanal ---------- */}
+  <div class="ve-quadro-foto ve-gov-foto">
+    <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.governanca.arquivo}')`}></div>
+    <a class="ve-cred" href={FOTOS.governanca.url} target="_blank" rel="noopener">{credito(FOTOS.governanca)}</a>
+  </div>
+  <section id="governanca" class="ve-gov" data-ve-governanca>
+    <div class="ve-miolo ve-gov-titulo">
+      <div class="ve-gov-caixa ve-surge">
+        <div class="ve-rubrica"><b>04</b><span class="ve-chapeu">{tx(gov.chapeu)}</span><i></i></div>
+        <h2>{tx(gov.titulo)}</h2>
+        <p class="ve-linha-fina">{tx(gov.abertura)}</p>
+      </div>
+    </div>
+    <div class="ve-miolo ve-gov-corpo">
+      <div class="ve-gov-palco" style={`background-image:url('${FOTOS.governancaFundo.arquivo}')`}>
+        <div class="ve-gov-estrutura">
+          <div>
+            <div class="ve-gov-diagrama">
+              <div class="ve-gov-trilho" aria-hidden="true"><span>{tx(gov.trilha)}</span></div>
+              <div class="ve-gov-escada">
+                {degraus.map((degrau, i) => (
+                  <div class="ve-gov-degrau ve-surge" style={`--i:${i}`}>
+                    {degrau.map((instancia) => instancia ? (
+                      <button type="button" class={`ve-gov-instancia is-${instancia.tipo}`} data-instancia={instancia.id} aria-controls={`ve-gov-detalhe-${instancia.id}`} aria-pressed={String(instancia.id === gov.instancias[0].id)}>
+                        <span class="ve-gov-etiqueta">{tx(instancia.etiqueta)}</span>
+                        <span class="ve-gov-nome">{tx(instancia.nome)}</span>
+                        <span class="ve-gov-frequencia">{tx(instancia.frequencia)}</span>
+                        {instancia.selo && <span class="ve-gov-selo">{tx(instancia.selo)}</span>}
+                      </button>
+                    ) : <span class="ve-gov-vazio" />)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p class="ve-gov-legenda">
+              {gov.legenda.map(({ tipo, texto }) => <span><i class={`is-${tipo}`} />{tx(texto)}</span>)}
+            </p>
+          </div>
+          {/* Os sete detalhes já vêm no HTML e o clique só alterna qual aparece. */}
+          <div class="ve-gov-lado">
+            <aside class="ve-gov-detalhe" aria-live="polite">
+              {gov.instancias.map((instancia, indice) => (
+                <div id={`ve-gov-detalhe-${instancia.id}`} data-detalhe={instancia.id} hidden={indice !== 0}>
+                  <p class="ve-gov-natureza">{tx(instancia.natureza)}</p>
+                  <h3>{tx(instancia.nome)}</h3>
+                  <dl>
+                    <div><dt>{tx(gov.rotulos.reune)}</dt><dd>{tx(instancia.frequencia)}</dd></div>
+                    <div><dt>{tx(gov.rotulos.quem)}</dt><dd>{tx(instancia.quem)}</dd></div>
+                    <div><dt>{tx(gov.rotulos.papel)}</dt><dd>{tx(instancia.papel)}</dd></div>
+                    {instancia.limites && <div class="is-limite"><dt>{tx(gov.rotulos.limites)}</dt><dd>{tx(instancia.limites)}</dd></div>}
+                  </dl>
+                </div>
+              ))}
+            </aside>
+          </div>
+        </div>
+        <a class="ve-cred" href={FOTOS.governancaFundo.url} target="_blank" rel="noopener">{credito(FOTOS.governancaFundo)}</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 05 · IPAM: os guarás em cor, sob um véu verde ---------- */}
+  <section id="calculo" class="ve-ipam">
+    <div class="ve-quadro-foto"><div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.ipam.arquivo}')`}></div></div>
+    <div class="ve-miolo">
+      <div class="ve-rubrica ve-surge"><b>05</b><span class="ve-chapeu">{tx(estePainel.chapeu)}</span><i></i></div>
+      <div class="ve-ipam-grade">
+        {/* A marca é verde e cinza sobre transparente: vai numa placa clara, na moldura das lâminas. */}
+        <aside class="ve-ipam-placa ve-surge" aria-label={tx(contribuicao.rotulo)}>
+          <span>{tx(contribuicao.rotulo)}</span>
+          <img src="/logo-ipam-amazonia.png" alt="IPAM Amazônia" width="720" height="844" loading="lazy" />
+          <a href="https://ipam.org.br" target="_blank" rel="noreferrer">ipam.org.br ↗</a>
+        </aside>
+        <div>
+          {/* a abertura vem logo abaixo do título; depois, a citação dos governadores e os dois cartões */}
+          <h2 class="ve-ipam-titulo ve-surge" style="--i:1">{tx(estePainel.titulo)}</h2>
+          <p class="ve-ipam-contexto ve-surge" style="--i:2">{tx(estePainel.abertura)}</p>
+          <figure class="ve-ipam-citacao ve-surge" style="--i:3">
+            <blockquote><p>{tx(citacao.texto)}</p></blockquote>
+            <figcaption><b>{tx(citacao.rotulo)}</b>{tx(citacao.autor)}</figcaption>
+          </figure>
+          <div class="ve-ipam-itens ve-surge" style="--i:4">
+            {estePainel.itens.map(({ titulo, texto }) => <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>)}
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="ve-cred" href={FOTOS.ipam.url} target="_blank" rel="noopener">{credito(FOTOS.ipam)}</a>
+  </section>
+
+  {/* ---------- 06 · explore: os cartões apoiados na borda da foto ---------- */}
+  <div class="ve-quadro-foto ve-explorar-foto">
+    <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.explorar.arquivo}')`}></div>
+    <a class="ve-cred is-no-alto" href={FOTOS.explorar.url} target="_blank" rel="noopener">{credito(FOTOS.explorar)}</a>
+  </div>
+  <section id="explorar" class="ve-miolo ve-explorar">
+    <div class="ve-explorar-titulo ve-surge">
+      <div class="ve-rubrica"><b>06</b><span class="ve-chapeu">{tx(explorar.chapeu)}</span></div>
+      <h2>{tx(explorar.titulo)}</h2>
+    </div>
+    {/* Três cartões lado a lado, cada um com o desenho do que a aba tem. O cartão sob o
+        mouse se alarga, os outros cedem espaço, e o desenho ganha vida (visao-editorial.css). */}
+    <div class="ve-explorar-faixa ve-surge" style="--i:1">
+      {CHAMADAS.map(({ titulo, href }, i) => (
+        <a class="ve-explorar-cartao" href={href}>
+          <div class="ve-explorar-arte" aria-hidden="true">
+            {i === 0 && (
+              <svg class="ve-arte-mapa" viewBox="0 0 560 200" preserveAspectRatio="xMidYMid slice">
+                {MAPA_DA_ARTE.map((m) => <path d={m.d} style={`--k:${deOeste.indexOf(m.uf)}; --c:${m.cor}`} />)}
+                <g class="ve-arte-extra">
+                  {MAPA_DA_ARTE.map((m) => <text class="ve-arte-uf" x={m.sigla[0].toFixed(1)} y={(m.sigla[1] + 3).toFixed(1)}>{m.uf}</text>)}
+                  <text x="40" y="58">{tx(arte.escala)}</text>
+                  <g class="ve-arte-escala">
+                    {ESCALA_DA_SINTESE.map((cor, k) => <rect x={40 + k * 22} y="66" width="20" height="10" rx="2" fill={cor} style={`--k:${k}`} />)}
+                  </g>
+                  <text x="40" y="92">0</text><text x="140" y="92">100</text>
+                  <text x="420" y="150">{tx(arte.estados)}</text><text x="420" y="164">{tx(arte.indicadores)}</text>
+                </g>
+              </svg>
+            )}
+            {i === 1 && (
+              <svg class="ve-arte-grafico" data-ve-grafico>
+                <defs><linearGradient id="ve-area-metas" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22" /><stop offset="1" stop-color="currentColor" stop-opacity="0" /></linearGradient></defs>
+                <polygon class="area" fill="url(#ve-area-metas)" />
+                <line class="grade" /><line class="grade" /><line class="grade" />
+                <line class="eixo eixo-x" /><line class="eixo eixo-y" />
+                <line class="alvo" />
+                <polyline class="linha" pathLength="1" />
+                <g class="pontos">{[0, 1, 2, 3, 4, 5, 6].map((k) => <circle r="3.5" style={`--k:${k}`} />)}</g>
+                <circle class="pulso" r="7" /><circle class="chegada" r="7" />
+                <text class="ano-inicio">2024</text><text class="ano-fim" text-anchor="end">2050</text>
+                <g class="ve-arte-extra"><text class="rotulo-meta" text-anchor="end">{tx(arte.meta)}</text></g>
+              </svg>
+            )}
+            {i === 2 && (
+              <svg class="ve-arte-vitrine" viewBox="0 0 560 200" preserveAspectRatio="xMidYMid slice">
+                {FICHAS.map((ficha) => (
+                  <g class={ficha.borda ? 've-arte-extra' : undefined} style={`--d:${ficha.ordem}`}>
+                    <rect class={ficha.destaque ? 'destaque' : undefined} x={ficha.x} y={ficha.y} width="52" height="52" rx="7" style={`--x:${ficha.dx}px; --y:${ficha.dy}px; --r:${ficha.r}deg; --c:${ficha.cor}`} />
+                    <rect class="linha-ficha" x={ficha.x + 8} y={ficha.y + 34} width="28" height="4" rx="2" />
+                    <rect class="linha-ficha" x={ficha.x + 8} y={ficha.y + 42} width="18" height="4" rx="2" />
+                  </g>
+                ))}
+              </svg>
+            )}
+          </div>
+          <div class="ve-explorar-corpo">
+            <b>{titulo}</b>
+            <div class="ve-explorar-mais">
+              <p>{explorar.cartoes[i] ? tx(explorar.cartoes[i].texto) : ''}</p>
+              <span class="ve-explorar-seta">{tx(explorar.abrir)} <i>→</i></span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+    <p class="ve-credito-fotos">{tx(explorar.creditoFotos)}</p>
+  </section>
+</div>

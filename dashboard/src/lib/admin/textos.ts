@@ -53,9 +53,11 @@ export interface Grupo { id: string; caminhos: string[]; secao: 'Lâminas' | 'No
 export const GRUPOS: Grupo[] = [
   { id: 'estrategia', caminhos: ['visaoGeral.estrategia'], secao: 'Lâminas', titulo: 'Lâmina 1: Estratégia', descricao: 'Título, abertura, os três números e o fechamento.', ancora: 'a-estrategia' },
   { id: 'visao2050', caminhos: ['visaoGeral.visao2050'], secao: 'Lâminas', titulo: 'Lâmina 2: Visão 2050', descricao: 'A visão regional e como a Estratégia auxilia os estados.', ancora: 'visao-2050' },
+  { id: 'territorio', caminhos: ['visaoGeral.territorio'], secao: 'Lâminas', titulo: 'Território', descricao: 'Os nove estados: título e rótulos da ficha. Só aparece na Visão Geral editorial.', ancora: 'territorio' },
   { id: 'eixos', caminhos: ['visaoGeral.eixos'], secao: 'Lâminas', titulo: 'Lâmina 3: Eixos', descricao: 'Os cinco eixos.', ancora: 'eixos-de-implementacao', item: 'Eixo' },
-  { id: 'governanca', caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Os seis blocos e o fluxo de implementação.', ancora: 'governanca', item: 'Bloco' },
+  { id: 'governanca', caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Quem decide: as sete instâncias da governança, a legenda e os rótulos do detalhe.', ancora: 'governanca' },
   { id: 'ipam', caminhos: ['visaoGeral.estePainel'], secao: 'Lâminas', titulo: 'Lâmina 5: IPAM', descricao: 'O papel do IPAM na construção da Estratégia, a citação dos governadores e o crédito ao instituto.', ancora: 'calculo' },
+  { id: 'explorar', caminhos: ['visaoGeral.explorar'], secao: 'Lâminas', titulo: 'Explore o painel', descricao: 'Os três cartões que levam às outras abas e o crédito das fotografias. Só aparece na Visão Geral editorial.', ancora: 'explorar', item: 'Cartão' },
   { id: 'nota-tecnica', caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions', 'panorama.metodologia.sources'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto, dimensões e fontes consolidadas da síntese comparativa. Vão para a nota técnica em PDF, que é gerada à parte (npm run nota-tecnica); nenhuma página do painel os mostra, então a prévia não muda.' }
 ];
 
@@ -69,10 +71,15 @@ const NOME_DO_CAMPO: Record<string, string> = {
   tituloLinha1: 'título, linha 1', tituloLinha2: 'título, linha 2', abertura: 'abertura', fechamento: 'fechamento',
   chapeu: 'chapéu', titulo: 'título', selo: 'selo', subChapeu: 'chapéu da segunda parte', subTitulo: 'título da segunda parte',
   texto: 'texto', rotulo: 'rótulo', autor: 'autor', title: 'título', text: 'texto', sources: 'fontes', name: 'nome', indicators: 'indicadores',
-  citacao: 'citação', botaoPdf: 'botão do PDF', contribuicao: 'crédito'
+  citacao: 'citação', botaoPdf: 'botão do PDF', contribuicao: 'crédito',
+  trilha: 'rótulo da seta', rotulos: 'rótulos do detalhe', reune: 'reúne-se', quem: 'quem', papel: 'o que faz', limites: 'limites',
+  etiqueta: 'etiqueta', nome: 'nome', frequencia: 'frequência', natureza: 'natureza',
+  verMetas: 'link para as metas', capital: 'capital', area: 'área', milKm2: 'unidade da área', mapa: 'descrição do mapa',
+  abrir: 'link de cada cartão', creditoFotos: 'crédito das fotografias',
+  arte: 'desenho', escala: 'escala do mapa', estados: 'nota dos estados', indicadores: 'nota dos indicadores', meta: 'rótulo da meta'
 };
 const NOME_DA_LISTA: Record<string, string> = {
-  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão'
+  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão', instancias: 'Instância', legenda: 'Legenda', cartoes: 'Cartão'
 };
 const emPalavras = (chave: string) => chave.replace(/([a-z])([A-Z0-9])/g, '$1 $2').toLowerCase();
 const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);

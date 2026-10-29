@@ -65,7 +65,7 @@
   "visaoGeral": {
     "estrategia": {
       "tituloLinha1": {
-        "pt": "Estratégia Regional - teste",
+        "pt": "Estratégia Regional",
         "en": "Regional Strategy"
       },
       "tituloLinha2": {
@@ -74,7 +74,7 @@
       },
       "abertura": {
         "pt": "O instrumento de planejamento de longo prazo da Amazônia Legal. Define uma visão compartilhada para 2050, organizada por temas e eixos estratégicos, metas, indicadores e uma estrutura de governança para orientar investimentos e políticas públicas nos nove estados.",
-        "en": "The long-term planning instrument for the Legal Amazon. It sets out a shared vision for 2050, organised around strategic themes and axes, targets, indicators and a governance structure to guide investment and public policy across the nine states."
+        "en": "The long-term planning instrument for the Brazilian Amazon. It sets out a shared vision for 2050, organized around strategic themes and axes, goals, and indicators, together with a governance structure to guide investments and public policies across the nine states."
       },
       "numeros": [
         {
@@ -95,7 +95,7 @@
           "valor": "2050",
           "rotulo": {
             "pt": "horizonte pactuado",
-            "en": "agreed target year"
+            "en": "Target Year"
           }
         }
       ],
@@ -106,7 +106,7 @@
       "botaoPdf": {
         "rotulo": {
           "pt": "Abrir a Estratégia em PDF",
-          "en": "Open the Strategy as PDF"
+          "en": "Read the Full Strategy"
         },
         "href": "https://7a98d2b3-3159-4136-8ede-0281e5e3b6ee.filesusr.com/ugd/8edb8f_58edf9f14c4f4be6bd8eb47156aa448b.pdf"
       }
@@ -127,7 +127,7 @@
       "paragrafos": [
         {
           "pt": "Em 2050, a Amazônia Legal terá alcançado o desenvolvimento regional sustentável e a resiliência climática, conciliando conservação ambiental, crescimento econômico e justiça social. A região será reconhecida pelo equilíbrio entre produção e conservação, pela valorização de seus ativos ambientais e pela melhoria dos indicadores socioeconômicos.",
-          "en": "By 2050 the Legal Amazon will have achieved sustainable regional development and climate resilience, reconciling environmental conservation, economic growth and social justice. The region will be known for the balance it strikes between production and conservation, for the value it places on its environmental assets, and for improvement across its socioeconomic indicators."
+          "en": "By 2050, the Brazilian Amazon will have achieved sustainable regional development and climate resilience, reconciling environmental conservation, economic growth, and social justice. The region will be recognized for its balance between production and conservation, its valuation of environmental assets, and its improved socioeconomic indicators."
         },
         {
           "pt": "Os saberes e modos de vida dos povos e comunidades tradicionais serão preservados, assegurando qualidade de vida, inclusão e contribuição efetiva para a estabilidade climática global.",
@@ -149,11 +149,11 @@
         },
         {
           "pt": "Subsidia a revisão e a formulação de PPAs, LDOs e planos setoriais.",
-          "en": "Informs the drafting and revision of multi-year plans (PPA), budget guidelines (LDO) and sector plans."
+          "en": "Informs the drafting and revision of state multi-year plans, the budget guidelines that shape each year’s budget, and sector plans."
         },
         {
           "pt": "Dá coerência entre as prioridades estaduais e a agenda regional.",
-          "en": "Keeps state priorities and the regional agenda coherent with one another."
+          "en": "Aligns state priorities with the regional agenda."
         },
         {
           "pt": "Fortalece a articulação com a União, organismos multilaterais e financiadores.",
@@ -161,14 +161,42 @@
         },
         {
           "pt": "Qualifica a priorização de investimentos estruturantes.",
-          "en": "Sharpens the case for prioritising structural investment."
+          "en": "Sharpens the prioritization of strategic investments."
         }
       ]
+    },
+    "territorio": {
+      "chapeu": {
+        "pt": "O território",
+        "en": "The territory"
+      },
+      "titulo": {
+        "pt": "Nove estados, uma Amazônia",
+        "en": "Nine states, one Amazon"
+      },
+      "rotulos": {
+        "capital": {
+          "pt": "Capital",
+          "en": "Capital"
+        },
+        "area": {
+          "pt": "Área",
+          "en": "Area"
+        },
+        "milKm2": {
+          "pt": "mil km²",
+          "en": "thousand km²"
+        },
+        "mapa": {
+          "pt": "Mapa da Amazônia Legal: passe o mouse ou toque num estado",
+          "en": "Map of the Legal Amazon: hover over or tap a state"
+        }
+      }
     },
     "eixos": {
       "chapeu": {
         "pt": "Estrutura da Estratégia",
-        "en": "How the Strategy is organised"
+        "en": "How the Strategy is organized"
       },
       "titulo": {
         "pt": "Cinco eixos de implementação",
@@ -176,7 +204,7 @@
       },
       "abertura": {
         "pt": "Os eixos são a espinha dorsal da Estratégia: organizam políticas, programas e investimentos em linhas de ação, e é por eles que este painel agrupa metas e indicadores.",
-        "en": "The axes are the backbone of the Strategy: they organise policies, programmes and investment into lines of action, and they are how this dashboard groups targets and indicators."
+        "en": "The axes are the Strategy’s core framework. They group policies, programs, and investments into lines of action, and this dashboard uses them to organize targets and indicators."
       },
       "itens": [
         {
@@ -187,7 +215,7 @@
           },
           "texto": {
             "pt": "Consolidar a Amazônia Legal como referência mundial em gestão territorial integrada, desmatamento zero e adaptação climática.",
-            "en": "Make the Legal Amazon a world reference in integrated territorial management, zero deforestation and climate adaptation."
+            "en": "Establish the Brazilian Amazon as a global benchmark in integrated territorial management, zero deforestation, and climate adaptation."
           }
         },
         {
@@ -198,7 +226,7 @@
           },
           "texto": {
             "pt": "Reduzir desigualdades e garantir segurança alimentar e nutricional, direitos e bem-estar para todas as populações amazônicas.",
-            "en": "Reduce inequality and secure food and nutrition, rights and well-being for every Amazonian population."
+            "en": "Reduce inequalities and ensure food and nutrition security, rights, and well-being for all Amazonian populations."
           }
         },
         {
@@ -209,7 +237,7 @@
           },
           "texto": {
             "pt": "Promover uma economia amazônica diversificada, com cadeias da sociobiodiversidade, empregos verdes e inovação tecnológica.",
-            "en": "Foster a diversified Amazonian economy, with socio-biodiversity value chains, green jobs and technological innovation."
+            "en": "Promote a diversified Amazonian economy built on socio-biodiversity value chains, green jobs, and technological innovation."
           }
         },
         {
@@ -220,7 +248,7 @@
           },
           "texto": {
             "pt": "Expandir a conectividade física e digital e garantir logística e infraestrutura verde, impulsionando a integração e a competitividade regional.",
-            "en": "Expand physical and digital connectivity and secure green logistics and infrastructure, driving regional integration and competitiveness."
+            "en": "Expand physical and digital connectivity and build green logistics and infrastructure, driving regional integration and competitiveness."
           }
         },
         {
@@ -231,21 +259,286 @@
           },
           "texto": {
             "pt": "Fortalecer a governança regional e a cooperação entre estados, sociedade civil, setor privado e organismos internacionais.",
-            "en": "Strengthen regional governance and cooperation among states, civil society, the private sector and international bodies."
+            "en": "Strengthen regional governance and cooperation among states, civil society, the private sector, and international organizations."
           }
         }
-      ]
+      ],
+      "verMetas": {
+        "pt": "Ver metas",
+        "en": "See the targets"
+      }
     },
     "governanca": {
       "chapeu": {
-        "pt": "Implementação",
-        "en": "Implementation"
+        "pt": "Governança",
+        "en": "Governance"
       },
       "titulo": {
-        "pt": "Governança e próximos passos",
-        "en": "Governance and next steps"
+        "pt": "Governadores decidem. Estados informam. O CAL articula.",
+        "en": "Governors decide. States report. CAL coordinates."
       },
-      "itens": [
+      "abertura": {
+        "pt": "A informação é reunida nos nove estados e sobe, nível a nível, até a Assembleia de Governadores.",
+        "en": "Information is gathered in the nine states and rises through each level to the Governors' Assembly."
+      },
+      "trilha": {
+        "pt": "A informação sobe",
+        "en": "Information rises"
+      },
+      "rotulos": {
+        "reune": {
+          "pt": "Reúne-se",
+          "en": "Meets"
+        },
+        "quem": {
+          "pt": "Quem",
+          "en": "Who"
+        },
+        "papel": {
+          "pt": "O que faz",
+          "en": "What it does"
+        },
+        "limites": {
+          "pt": "Limites",
+          "en": "Limits"
+        }
+      },
+      "legenda": [
+        {
+          "tipo": "decide",
+          "texto": {
+            "pt": "Decisão, coordenação, articulação",
+            "en": "Decision, coordination, articulation"
+          }
+        },
+        {
+          "tipo": "implementa",
+          "texto": {
+            "pt": "Implementação",
+            "en": "Implementation"
+          }
+        },
+        {
+          "tipo": "apoio",
+          "texto": {
+            "pt": "Consultivo ou apoio, sem poder deliberativo",
+            "en": "Advisory or support, no deliberative power"
+          }
+        }
+      ],
+      "instancias": [
+        {
+          "id": "assembleia",
+          "tipo": "decide",
+          "etiqueta": {
+            "pt": "Decide",
+            "en": "Decides"
+          },
+          "nome": {
+            "pt": "Assembleia de Governadores",
+            "en": "Governors' Assembly"
+          },
+          "frequencia": {
+            "pt": "Uma vez por ano",
+            "en": "Once a year"
+          },
+          "natureza": {
+            "pt": "Instância deliberativa",
+            "en": "Decision-making body"
+          },
+          "quem": {
+            "pt": "Os governadores dos nove estados da Amazônia Legal.",
+            "en": "The governors of the nine Legal Amazon states."
+          },
+          "papel": {
+            "pt": "Instância máxima da governança da Estratégia. Delibera sobre ajustes estruturais, aprova o modelo de governança e suas revisões e valida o Relatório Anual de Monitoramento e as prioridades estaduais do ano.",
+            "en": "The highest body of the Strategy's governance. Deliberates on structural adjustments, approves the governance model and its revisions, and validates the Annual Monitoring Report and the state priorities for the year."
+          }
+        },
+        {
+          "id": "camara",
+          "tipo": "coordena",
+          "etiqueta": {
+            "pt": "Coordena",
+            "en": "Coordinates"
+          },
+          "nome": {
+            "pt": "Câmara Setorial de Planejamento",
+            "en": "Planning Sectoral Chamber"
+          },
+          "frequencia": {
+            "pt": "Trimestral",
+            "en": "Quarterly"
+          },
+          "natureza": {
+            "pt": "Instância de coordenação",
+            "en": "Coordination body"
+          },
+          "quem": {
+            "pt": "Secretários e/ou secretários adjuntos de Planejamento dos nove estados.",
+            "en": "Secretaries and/or Deputy Secretaries of Planning of the nine states."
+          },
+          "papel": {
+            "pt": "Aprova as prioridades estaduais definidas pelo Grupo de Trabalho de Planejamento. Faz reuniões semestrais de acompanhamento do monitoramento, das ações prioritárias, das metas e dos indicadores. Alinha as prioridades aos planos estaduais e aos PPAs e valida os relatórios técnicos antes que sigam para a Assembleia.",
+            "en": "Approves the state priorities set by the Planning Working Group. Holds semiannual follow-up meetings on monitoring, priority actions, targets and indicators. Aligns priorities with state plans and PPAs, and validates technical reports before they go to the Assembly."
+          }
+        },
+        {
+          "id": "financiadores",
+          "tipo": "apoio",
+          "aoLadoDe": "camara",
+          "etiqueta": {
+            "pt": "Consultivo",
+            "en": "Advisory"
+          },
+          "nome": {
+            "pt": "Grupo Consultivo de Financiadores",
+            "en": "Funders Advisory Group"
+          },
+          "frequencia": {
+            "pt": "Periodicidade definida na ativação",
+            "en": "Frequency set when activated"
+          },
+          "natureza": {
+            "pt": "Grupo consultivo · ainda não constituído",
+            "en": "Advisory group · not yet constituted"
+          },
+          "selo": {
+            "pt": "Vaga aberta",
+            "en": "Open seat"
+          },
+          "quem": {
+            "pt": "Um ou mais financiadores formalmente comprometidos com a Estratégia.",
+            "en": "One or more funders formally committed to the Strategy."
+          },
+          "papel": {
+            "pt": "Avalia os resultados e a efetividade das ações financiadas, sugere orientações técnicas para a alocação de recursos e propõe melhorias metodológicas.",
+            "en": "Evaluates the results and effectiveness of funded actions, suggests technical guidance for allocating resources, and proposes methodological improvements."
+          },
+          "limites": {
+            "pt": "Não delibera. É criado quando ao menos um financiador tiver memorando de entendimento assinado ou aporte comprometido.",
+            "en": "Not deliberative. Created once at least one funder has a signed MoU or a committed contribution."
+          }
+        },
+        {
+          "id": "cal",
+          "tipo": "articula",
+          "etiqueta": {
+            "pt": "Articula",
+            "en": "Articulates"
+          },
+          "nome": {
+            "pt": "CAL, Secretaria Técnica",
+            "en": "CAL, Technical Secretariat"
+          },
+          "frequencia": {
+            "pt": "Contínua",
+            "en": "Continuous"
+          },
+          "natureza": {
+            "pt": "Instância de articulação",
+            "en": "Articulation body"
+          },
+          "quem": {
+            "pt": "Consórcio Amazônia Legal.",
+            "en": "Consórcio Amazônia Legal."
+          },
+          "papel": {
+            "pt": "Harmoniza as informações enviadas pelos estados, mantém os dados circulando entre os níveis da governança e prepara o relatório anual que subsidia a decisão da Assembleia.",
+            "en": "Harmonizes the information sent by the states, keeps data moving between the levels of governance, and prepares the annual report that informs the Assembly's decision."
+          }
+        },
+        {
+          "id": "parceiros",
+          "tipo": "apoio",
+          "aoLadoDe": "cal",
+          "etiqueta": {
+            "pt": "Apoio técnico",
+            "en": "Technical support"
+          },
+          "nome": {
+            "pt": "Parceiros Técnicos",
+            "en": "Technical Partners"
+          },
+          "frequencia": {
+            "pt": "Contínua e sob demanda",
+            "en": "Continuous and on demand"
+          },
+          "natureza": {
+            "pt": "Apoio técnico",
+            "en": "Technical support"
+          },
+          "quem": {
+            "pt": "Instituições técnicas com atuação contínua na Estratégia, conforme cada eixo.",
+            "en": "Technical institutions with ongoing work on the Strategy, as applicable to each axis."
+          },
+          "papel": {
+            "pt": "Apoiam a elaboração dos instrumentos e documentos técnicos necessários à implementação e a captação de recursos, em papel operacional.",
+            "en": "Support the preparation of the tools and technical documents needed for implementation, and support fundraising in an operational role."
+          },
+          "limites": {
+            "pt": "Sem poder deliberativo e sem validação formal de relatórios.",
+            "en": "No deliberative power and no formal validation of reports."
+          }
+        },
+        {
+          "id": "gt-regional",
+          "tipo": "implementa",
+          "etiqueta": {
+            "pt": "Implementa",
+            "en": "Implements"
+          },
+          "nome": {
+            "pt": "Grupo de Trabalho Regional de Planejamento",
+            "en": "Regional Planning Working Group"
+          },
+          "frequencia": {
+            "pt": "Contínua · reunião anual de definição de prioridades em janeiro",
+            "en": "Continuous · annual priority-setting meeting in January"
+          },
+          "natureza": {
+            "pt": "Instância de implementação",
+            "en": "Implementation body"
+          },
+          "quem": {
+            "pt": "Grupo técnico regional.",
+            "en": "Regional technical group."
+          },
+          "papel": {
+            "pt": "Apoia os Grupos de Trabalho Estaduais na alimentação da estrutura de monitoramento, tira dúvidas metodológicas e consolida as informações antes de enviá-las ao CAL.",
+            "en": "Supports the State Working Groups in feeding the monitoring structure, answers methodological questions, and consolidates the information before sending it to CAL."
+          }
+        },
+        {
+          "id": "gt-estaduais",
+          "tipo": "implementa",
+          "etiqueta": {
+            "pt": "Implementa",
+            "en": "Implements"
+          },
+          "nome": {
+            "pt": "9 Grupos de Trabalho Estaduais",
+            "en": "9 State Working Groups"
+          },
+          "frequencia": {
+            "pt": "Contínua · envio de dados a cada seis meses",
+            "en": "Continuous · data submitted every six months"
+          },
+          "natureza": {
+            "pt": "Instância de implementação",
+            "en": "Implementation body"
+          },
+          "quem": {
+            "pt": "Um representante de cada Câmara Setorial ou setor estratégico do estado, mais um ponto focal do Grupo de Trabalho de Planejamento. São nove grupos ao todo.",
+            "en": "One representative from each Sectoral Chamber or strategic sector of the state, plus a focal point from the Planning Working Group. Nine groups in total."
+          },
+          "papel": {
+            "pt": "Reportam os dados das secretarias estaduais sobre as ações vinculadas à Estratégia.",
+            "en": "Report the data from the state departments on the actions linked to the Strategy."
+          }
+        }
+      ],
+      "_itens": [
         {
           "titulo": {
             "pt": "Priorização e aderência",
@@ -307,7 +600,7 @@
           }
         }
       ],
-      "fluxo": [
+      "_fluxo": [
         {
           "pt": "Definição de prioridades regionais",
           "en": "Set the regional priorities"
@@ -333,11 +626,11 @@
       },
       "titulo": {
         "pt": "O IPAM na construção da Estratégia",
-        "en": "IPAM’s part in building the Strategy"
+        "en": "IPAM in the Strategy"
       },
       "abertura": {
-        "pt": "O Instituto de Pesquisa Ambiental da Amazônia (IPAM) foi o parceiro técnico e científico do Consórcio da Amazônia Legal na elaboração da Estratégia.",
-        "en": "The Amazon Environmental Research Institute (IPAM) was the Legal Amazon Consortium’s technical and scientific partner in drawing up the Strategy."
+        "pt": "O Instituto de Pesquisa Ambiental da Amazônia (IPAM) é o parceiro técnico e científico do Consórcio da Amazônia Legal na Estratégia – desde sua elaboração, lançada na COP30 (Belém, Brasil).",
+        "en": "The Amazon Environmental Research Institute (IPAM) is the technical and scientific partner of the Legal Amazon Consortium in the Strategy — since its development, launched at COP30 (Belém, Brazil)."
       },
       "itens": [
         {
@@ -346,18 +639,18 @@
             "en": "Built in partnership"
           },
           "texto": {
-            "pt": "Um processo participativo, que começou com uma consulta aos nove estados e chegou a uma visão de futuro unificada.",
-            "en": "A participatory process that began with a consultation across the nine states and arrived at a single shared vision."
+            "pt": "Um processo participativo que ouviu os nove estados e as câmaras setoriais do Consórcio, organizado em cinco eixos de implementação e uma visão de futuro unificada.",
+            "en": "A participatory process that consulted the nine states and the Consortium’s sectoral chambers, organized into five implementation pillars and a unified vision for the future."
           }
         },
         {
           "titulo": {
-            "pt": "Equipe dedicada",
-            "en": "A dedicated team"
+            "pt": "Do compromisso à medição",
+            "en": "From commitment to measurement"
           },
           "texto": {
-            "pt": "Onze profissionais do IPAM assinam o documento, entre direção, pesquisadoras e analistas.",
-            "en": "Eleven IPAM staff are credited in the document, from its leadership to its researchers and analysts."
+            "pt": "Cada meta da Estratégia recebeu indicador de impacto, indicador de resultado, fonte de dados, linha de base e ficha técnica, com projeções até 2050 – a estrutura que permite acompanhar o avanço nesta plataforma.",
+            "en": "Every target in the Strategy was given an impact indicator, an outcome indicator, a data source, a baseline and a technical sheet, with projections to 2050 – the structure that makes it possible to track progress on this platform."
           }
         }
       ],
@@ -368,11 +661,11 @@
         },
         "texto": {
           "pt": "“[…] ao Instituto de Pesquisa Ambiental da Amazônia (IPAM) pelo apoio técnico e científico essencial à consolidação desta Estratégia.”",
-          "en": "“[…] to the Amazon Environmental Research Institute (IPAM) for the technical and scientific support that was essential to consolidating this Strategy.”"
+          "en": "“[…] the Amazon Environmental Research Institute (IPAM) for the technical and scientific support that was essential to consolidating this Strategy.”"
         },
         "autor": {
-          "pt": "Helder Barbalho, presidente do Consórcio da Amazônia Legal, em nome dos nove governadores",
-          "en": "Helder Barbalho, President of the Legal Amazon Consortium, on behalf of the nine governors"
+          "pt": "Helder Barbalho, ex-presidente do Consórcio da Amazônia Legal, em nome dos nove governadores",
+          "en": "Helder Barbalho, former President of the Brazilian Amazon Consortium, on behalf of the nine governors"
         }
       },
       "contribuicao": {
@@ -380,6 +673,62 @@
           "pt": "Contribuição técnica e científica",
           "en": "Technical and scientific support"
         }
+      }
+    },
+    "explorar": {
+      "chapeu": {
+        "pt": "Explore o painel",
+        "en": "Explore the dashboard"
+      },
+      "titulo": {
+        "pt": "Onde a Estratégia está hoje",
+        "en": "Where the Strategy stands today"
+      },
+      "abrir": {
+        "pt": "Abrir",
+        "en": "Open"
+      },
+      "cartoes": [
+        {
+          "texto": {
+            "pt": "Os indicadores nos nove estados, no mapa.",
+            "en": "The indicators across the nine states, on the map."
+          }
+        },
+        {
+          "texto": {
+            "pt": "O caminho de cada meta até 2050, por eixo.",
+            "en": "Each target's path to 2050, axis by axis."
+          }
+        },
+        {
+          "texto": {
+            "pt": "O portal em que os estados apresentam seus projetos.",
+            "en": "The portal where the states present their projects."
+          }
+        }
+      ],
+      "arte": {
+        "escala": {
+          "pt": "Síntese, de 0 a 100",
+          "en": "Synthesis, 0 to 100"
+        },
+        "estados": {
+          "pt": "9 estados",
+          "en": "9 states"
+        },
+        "indicadores": {
+          "pt": "8 indicadores",
+          "en": "8 indicators"
+        },
+        "meta": {
+          "pt": "Meta pactuada para 2050",
+          "en": "Target agreed for 2050"
+        }
+      },
+      "creditoFotos": {
+        "pt": "Fotografias: Ministério do Turismo (MTur Destinos, Flickr), em domínio público, e, a do rio Crôa, Leonardo Honorato Santos (Wikimedia Commons, CC BY-SA 4.0). O crédito de cada autor está na própria imagem.",
+        "en": "Photographs: Brazilian Ministry of Tourism (MTur Destinos, Flickr), in the public domain, and, for the Crôa river, Leonardo Honorato Santos (Wikimedia Commons, CC BY-SA 4.0). Each photographer is credited on the image itself."
       }
     }
   }

@@ -189,10 +189,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .dropdown-option.is-selected > i { background: var(--mata); }
 
 .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(430px, 25vw, 540px); align-items: start; gap: clamp(20px, 1.7vw, 34px); }
-/* Sem os números da região embaixo do mapa (a lateral já os traz), o card do
-   mapa ocupa a altura da coluna, e o mapa cresce até o pé do card em vez de
-   ficar centrado com faixas vazias em cima e embaixo. */
-.dashboard-primary { min-width: 0; display: flex; flex-direction: column; gap: 18px; align-self: stretch; }
+/* O card do mapa tem altura própria e não acompanha a lateral: a lateral muda
+   de altura a cada estado escolhido, e o mapa encolhia e crescia junto. */
+.dashboard-primary { min-width: 0; display: flex; flex-direction: column; gap: 18px; align-self: start; }
 .card { border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); }
 .map-card { padding: 22px 22px 20px; flex: 1; display: flex; flex-direction: column; }
 .map-card > .map-body { flex: 1; }
@@ -242,8 +241,8 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .legend-ramp b { flex: 1; }
 /* No computador a legenda fica no pé da coluna de leitura, estreita demais para
    rótulo, rampa e rótulo numa linha: a rampa ocupa a largura e os rótulos marcam
-   as pontas. O mapa cobre o canvas inteiro, que estica até o pé do card; o
-   `min-height` é o piso quando a lateral é mais baixa que o mapa pediria.
+   as pontas. O mapa cobre o canvas inteiro, de altura fixa pela largura da
+   tela — nunca pelo conteúdo da lateral.
    Abaixo de 1441px a coluna do mapa fica estreita demais para dividir com a
    ficha: o mapa encolhia pela largura e sobrava um vão alto em volta dele. Ali
    os dois se empilham, com o mapa primeiro. */
@@ -251,7 +250,7 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
   .map-side .map-legend { margin-top: auto; display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 8px 12px; }
   .map-side .legend-ramp { grid-area: 1 / 1 / 2 / -1; width: auto; height: 9px; }
   .map-side .map-legend > span { grid-row: 2; }
-  .map-canvas { min-height: clamp(360px, 23vw, 470px); }
+  .map-canvas { height: clamp(480px, 32.5vw, 640px); }
   #map { position: absolute; inset: 0; height: 100%; min-height: 0; }
 }
 @media (max-width: 1440px) {
@@ -621,8 +620,9 @@ h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.04; }
 .river-ornament i:last-child { top: 25px; border-color: var(--linha); border-width: 2px; }
 footer { padding: 24px clamp(24px, 3.2vw, 72px); display: flex; justify-content: space-between; gap: 24px; background: var(--mata); color: rgba(245, 240, 232, 0.72); font-size: 11px; }
 footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
-.footer-admin { margin-left: 18px; color: rgba(245, 240, 232, 0.4); font-size: 10px; text-decoration: none; }
+.footer-admin { color: rgba(245, 240, 232, 0.4); font-size: 10px; text-decoration: none; }
 .footer-admin:hover, .footer-admin:focus-visible { color: var(--areia); text-decoration: underline; outline: none; }
+@media (min-width: 621px) { .footer-admin { align-self: center; } }
 /* A ressalva só existe em inglês: o painel publica números oficiais, e a
    redação que vale é a portuguesa. Fica discreta — é nota de rodapé, não aviso. */
 .footer-traducao { max-width: 46ch; color: rgba(245, 240, 232, 0.5); font-size: 10px; line-height: 1.5; }

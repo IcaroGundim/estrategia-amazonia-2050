@@ -244,15 +244,15 @@ const acao = ACOES[pagina];
     <div class="river-ornament" aria-hidden="true"><i></i><i></i></div>
     <footer>
       <span>{t('Estratégia 2050')}</span>
+      {ehTraducao(lang) && (
+        <span class="footer-traducao">English is a courtesy translation. The official wording is the Portuguese one.</span>
+      )}
       {/* Entrada da administração para quem já sabe que ela existe: sem destaque e
           sem pré-carregamento, que acionaria a rota sob demanda a cada visita.
           `data-astro-reload` porque a administração tem layout próprio e passa
           pelo redirecionamento do login: trocada pelo ClientRouter, a navegação
           não acontecia. */}
-      <span>{t('Estratégia Amazônia 2050 · Consórcio da Amazônia Legal')}<a class="footer-admin" href="/admin" data-astro-prefetch="false" data-astro-reload>Admin</a></span>
-      {ehTraducao(lang) && (
-        <span class="footer-traducao">English is a courtesy translation. The official wording is the Portuguese one.</span>
-      )}
+      <a class="footer-admin" href="/admin" data-astro-prefetch="false" data-astro-reload>Admin</a>
     </footer>
   </body>
 </html>

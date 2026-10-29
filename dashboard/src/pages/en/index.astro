@@ -1,21 +1,26 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PaginaVisaoGeral from '../../components/PaginaVisaoGeral.astro';
+import PaginaVisaoGeralEditorial from '../../components/PaginaVisaoGeralEditorial.astro';
+import { CLASSE_DO_MAIN, ESTILO_VISAO_GERAL } from '../../lib/visao-geral';
 import '../../styles/overview-slides.css';
 import '../../styles/overview-compositions.css';
+import '../../styles/visao-editorial.css';
 ---
 
 <Base
   title="The Strategy — Amazônia 2050"
   description="An overview of the Amazônia 2050 Regional Strategy: what it is, what it commits to, and how this dashboard reads the data."
   ogDescription="What the Amazônia 2050 Strategy is, its axes, its governance, and how this dashboard reads the data."
-  mainClass="methodology-page"
+  mainClass={CLASSE_DO_MAIN[ESTILO_VISAO_GERAL]}
   pagina="metodologia"
   lang="en"
 >
-  <PaginaVisaoGeral lang="en" />
+  {ESTILO_VISAO_GERAL === 'editorial' ? <PaginaVisaoGeralEditorial lang="en" /> : <PaginaVisaoGeral lang="en" />}
 
   <script>
+    // Cada módulo só arranca se a âncora do seu estilo existir na página.
     import '../../scripts/metodologia.js';
+    import '../../scripts/visao-editorial.js';
   </script>
 </Base>

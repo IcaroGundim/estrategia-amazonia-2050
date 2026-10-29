@@ -25,6 +25,13 @@ const { estrategia, visao2050, eixos, governanca, estePainel } = textos.visaoGer
 const contribuicao = estePainel.contribuicao ?? textosPublicados.visaoGeral.estePainel.contribuicao;
 // Idem para a citação dos governadores sobre o IPAM.
 const citacao = estePainel.citacao ?? textosPublicados.visaoGeral.estePainel.citacao;
+// Idem para a governança, que trocou de forma (instâncias no lugar de blocos e fluxo).
+const gov = 'instancias' in governanca ? governanca : textosPublicados.visaoGeral.governanca;
+// Cada degrau da escada é uma instância principal e, ao lado, a de apoio ligada a ela (ou nada).
+type Instancia = (typeof gov.instancias)[number];
+const degraus: (Instancia | undefined)[][] = gov.instancias
+  .filter((instancia) => !('aoLadoDe' in instancia))
+  .map((principal) => [principal, gov.instancias.find((instancia) => 'aoLadoDe' in instancia && instancia.aoLadoDe === principal.id)]);
 
 const INDICE = [
   { href: '#a-estrategia', rotulo: 'Estratégia' },
@@ -104,23 +111,53 @@ const rotaMetas = lang === 'en' ? '/en/goals' : '/metas';
         <SlidePhoto variant={3} lang={lang} />
       </section>
 
+      {/* Quem decide: a escada das instâncias, de baixo (estados) para cima
+          (governadores), e o detalhe da instância escolhida ao lado. Os sete
+          detalhes já vêm no HTML e o clique só alterna qual aparece (metodologia.js). */}
       <section id="governanca" class="method-section">
         <div class="slide-copy">
-          <p class="eyebrow">{tx(governanca.chapeu)}</p>
-          <h2>{tx(governanca.titulo)}</h2>
-          <div class="method-guidance-grid is-compacta">
-            {governanca.itens.map(({ titulo, texto }) => (
-              <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>
-            ))}
-          </div>
+          <p class="eyebrow">{tx(gov.chapeu)}</p>
+          <h2>{tx(gov.titulo)}</h2>
+          <p>{tx(gov.abertura)}</p>
 
-          <ol class="method-flow">
-            {governanca.fluxo.map((etapa, indice) => (
-              <li><b>{String(indice + 1).padStart(2, '0')}</b><span>{tx(etapa)}</span></li>
-            ))}
-          </ol>
+          <div class="gov-estrutura">
+            <div class="gov-diagrama">
+              <div class="gov-trilha" aria-hidden="true"><span>{tx(gov.trilha)}</span></div>
+              <div class="gov-escada">
+                {degraus.map((degrau) => (
+                  <div class="gov-degrau">
+                    {degrau.map((instancia) => instancia ? (
+                      <button type="button" class={`gov-instancia is-${instancia.tipo}`} data-instancia={instancia.id} aria-controls={`gov-detalhe-${instancia.id}`} aria-pressed={String(instancia.id === gov.instancias[0].id)}>
+                        <span class="gov-etiqueta">{tx(instancia.etiqueta)}</span>
+                        <span class="gov-nome">{tx(instancia.nome)}</span>
+                        <span class="gov-frequencia">{tx(instancia.frequencia)}</span>
+                        {instancia.selo && <span class="gov-selo">{tx(instancia.selo)}</span>}
+                      </button>
+                    ) : <span class="gov-vazio" />)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p class="gov-legenda">
+              {gov.legenda.map(({ tipo, texto }) => <span><i class={`is-${tipo}`} />{tx(texto)}</span>)}
+            </p>
+
+            <aside class="gov-painel" aria-live="polite">
+              {gov.instancias.map((instancia, indice) => (
+                <div class="gov-detalhe" id={`gov-detalhe-${instancia.id}`} data-detalhe={instancia.id} hidden={indice !== 0}>
+                  <p class="gov-natureza">{tx(instancia.natureza)}</p>
+                  <h3>{tx(instancia.nome)}</h3>
+                  <dl>
+                    <div><dt>{tx(gov.rotulos.reune)}</dt><dd>{tx(instancia.frequencia)}</dd></div>
+                    <div><dt>{tx(gov.rotulos.quem)}</dt><dd>{tx(instancia.quem)}</dd></div>
+                    <div><dt>{tx(gov.rotulos.papel)}</dt><dd>{tx(instancia.papel)}</dd></div>
+                    {instancia.limites && <div class="is-limite"><dt>{tx(gov.rotulos.limites)}</dt><dd>{tx(instancia.limites)}</dd></div>}
+                  </dl>
+                </div>
+              ))}
+            </aside>
+          </div>
         </div>
-        <SlidePhoto variant={4} lang={lang} />
       </section>
 
       <section id="calculo" class="method-section">

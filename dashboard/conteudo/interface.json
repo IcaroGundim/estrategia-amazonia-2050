@@ -8,7 +8,6 @@
         "Estratégia 2050",
         "Estratégia Regional",
         "Estratégia 2050 — Amazônia Legal",
-        "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal",
         "Estratégia 2050 do Consórcio da Amazônia Legal, início",
         "Pular para o conteúdo",
         "Navegação principal",
@@ -641,15 +640,11 @@
     },
     "Estratégia 2050 — Amazônia Legal": {
       "pt": "Estratégia 2050 — Amazônia Legal",
-      "en": "Amazônia 2050 — the Legal Amazon"
-    },
-    "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal": {
-      "pt": "Estratégia Amazônia 2050 · Consórcio da Amazônia Legal",
-      "en": "Amazônia 2050 Strategy · Interstate Consortium for the Legal Amazon"
+      "en": "Amazônia 2050 — the Brazilian Amazon"
     },
     "Estratégia 2050 do Consórcio da Amazônia Legal, início": {
       "pt": "Estratégia 2050 do Consórcio da Amazônia Legal, início",
-      "en": "Amazônia 2050, Interstate Consortium for the Legal Amazon — home"
+      "en": "Amazônia 2050, Brazilian Amazon Consortium — home"
     },
     "Pular para o conteúdo": {
       "pt": "Pular para o conteúdo",
@@ -713,15 +708,15 @@
     },
     "Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal.": {
       "pt": "Nove estados, 59 indicadores e evidências para acompanhar a Amazônia Legal.",
-      "en": "Nine states, 59 indicators and the evidence to follow the Legal Amazon."
+      "en": "Nine states, 59 indicators and the evidence to follow the Brazilian Amazon."
     },
     "Panorama - ": {
       "pt": "Panorama - ",
-      "en": "At a glance - "
+      "en": "The Brazilian Amazon "
     },
     "Amazônia Legal.": {
       "pt": "Amazônia Legal.",
-      "en": "the Legal Amazon."
+      "en": "at a glance"
     },
     "Explore os indicadores oficiais e compare os nove estados": {
       "pt": "Explore os indicadores oficiais e compare os nove estados",
@@ -729,11 +724,11 @@
     },
     "Indicador exibido": {
       "pt": "Indicador exibido",
-      "en": "Indicator shown"
+      "en": "Indicator"
     },
     "Ano exibido": {
       "pt": "Ano exibido",
-      "en": "Year shown"
+      "en": "Year"
     },
     "Carregando indicador…": {
       "pt": "Carregando indicador…",
@@ -741,7 +736,7 @@
     },
     "Amazônia Legal — visão regional": {
       "pt": "Amazônia Legal — visão regional",
-      "en": "The Legal Amazon — regional view"
+      "en": "The Brazilian Amazon — regional view"
     },
     "Ver a região inteira": {
       "pt": "Ver a região inteira",
@@ -749,7 +744,7 @@
     },
     "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.": {
       "pt": "Mapa dos estados da Amazônia Legal. Selecione um estado para atualizar o painel lateral.",
-      "en": "Map of the states of the Legal Amazon. Select a state to update the side panel."
+      "en": "Map of the states of the Brazilian Amazon. Select a state to update the side panel."
     },
     "Escala de desempenho relativo": {
       "pt": "Escala de desempenho relativo",
@@ -789,7 +784,7 @@
     },
     "Visão geral da região ou do estado selecionado": {
       "pt": "Visão geral da região ou do estado selecionado",
-      "en": "Overview of the region or of the selected state"
+      "en": "Overview of the region or the selected state"
     },
     "Carregando painel…": {
       "pt": "Carregando painel…",
@@ -817,7 +812,7 @@
     },
     "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.": {
       "pt": "Onde a Amazônia Legal já cumpre as metas da Estratégia, quanto falta e a ficha técnica de cada indicador.",
-      "en": "Where the Legal Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
+      "en": "Where the Brazilian Amazon already meets the Strategy targets, how far the rest have to go, and the technical sheet behind each indicator."
     },
     "Buscar meta, indicador ou código": {
       "pt": "Buscar meta, indicador ou código",
@@ -1553,7 +1548,7 @@
     },
     "Teatro Amazonas · Manaus": {
       "pt": "Teatro Amazonas · Manaus",
-      "en": "Teatro Amazonas · Manaus"
+      "en": "Amazonas Theatre · Manaus"
     },
     "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.": {
       "pt": "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.",
@@ -1573,7 +1568,7 @@
     },
     "PRODES/INPE": {
       "pt": "PRODES/INPE",
-      "en": "PRODES/INPE"
+      "en": "Deforestation (annual satellite monitoring)"
     },
     "Focos de calor": {
       "pt": "Focos de calor",
@@ -1585,7 +1580,7 @@
     },
     "Sinesp/MJ": {
       "pt": "Sinesp/MJ",
-      "en": "Sinesp/MJ"
+      "en": "Ministry of Justice - National Public Security Information System"
     },
     "Vulnerabilidade climática": {
       "pt": "Vulnerabilidade climática",
@@ -1593,15 +1588,15 @@
     },
     "Conectividade digital (IBC-AMZ)": {
       "pt": "Conectividade digital (IBC-AMZ)",
-      "en": "Digital connectivity (IBC-AMZ)"
+      "en": "Digital connectivity"
     },
     "ANATEL": {
       "pt": "ANATEL",
-      "en": "ANATEL"
+      "en": "National Telecommunications Agency"
     },
     "total de CVLI sobre a população regional": {
       "pt": "total de CVLI sobre a população regional",
-      "en": "total violent deaths over the regional population"
+      "en": "Public safety (intentional violent deaths)"
     },
     "média ponderada pela população": {
       "pt": "média ponderada pela população",
@@ -1633,7 +1628,7 @@
     },
     "Amazônia Legal": {
       "pt": "Amazônia Legal",
-      "en": "The Legal Amazon"
+      "en": "The Brazilian Amazon"
     },
     "Bandeira da Amazônia Legal": {
       "pt": "Bandeira da Amazônia Legal",
@@ -1653,7 +1648,7 @@
     },
     "projeção IBGE 2025": {
       "pt": "projeção IBGE 2025",
-      "en": "IBGE projection, 2025"
+      "en": "Brazilian Institute of Geography and Statistics, 2025"
     },
     "Área territorial": {
       "pt": "Área territorial",
@@ -1685,7 +1680,7 @@
     },
     "sem valor regional": {
       "pt": "sem valor regional",
-      "en": "no regional figure"
+      "en": "Regional figure not available"
     },
     "Não se aplica": {
       "pt": "Não se aplica",
@@ -1717,7 +1712,7 @@
     },
     "A Amazônia Legal": {
       "pt": "A Amazônia Legal",
-      "en": "The Legal Amazon"
+      "en": "The Brazilian Amazon"
     },
     "{regiao} registra {valor} em {indicador}{ano}{faixa}.": {
       "pt": "{regiao} registra {valor} em {indicador}{ano}{faixa}.",
@@ -1737,7 +1732,7 @@
     },
     "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.": {
       "pt": "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.",
-      "en": "Year in progress: the series has not closed yet, so this figure is not comparable with earlier years."
+      "en": "Year in progress: data for this year is still incomplete, so this figure is not comparable with previous years."
     },
     "Não foi possível carregar os dados do painel.": {
       "pt": "Não foi possível carregar os dados do painel.",
@@ -1797,7 +1792,7 @@
     },
     "Mapa comparativo da Amazônia Legal para {indicador}": {
       "pt": "Mapa comparativo da Amazônia Legal para {indicador}",
-      "en": "Comparative map of the Legal Amazon for {indicador}"
+      "en": "Comparative map of the Brazilian Amazon for {indicador}"
     },
     "Detalhamento do estado": {
       "pt": "Detalhamento do estado",
@@ -1845,7 +1840,7 @@
     },
     "Floresta em pé, qualidade de vida.": {
       "pt": "Floresta em pé, qualidade de vida.",
-      "en": "Forest left standing, lives made better."
+      "en": "Standing forests, better lives"
     },
     "Conectar prioridades. Valorizar o território.": {
       "pt": "Conectar prioridades. Valorizar o território.",
@@ -1853,7 +1848,7 @@
     },
     "Cooperação que atravessa fronteiras.": {
       "pt": "Cooperação que atravessa fronteiras.",
-      "en": "Cooperation that crosses borders."
+      "en": "Cooperation across borders."
     },
     "recorte de exibição": {
       "pt": "recorte de exibição",
@@ -1865,7 +1860,7 @@
     },
     "Onde a Amazônia Legal está no caminho até 2050": {
       "pt": "Onde a Amazônia Legal está no caminho até 2050",
-      "en": "Where the Legal Amazon stands on the way to 2050"
+      "en": "Where the Brazilian Amazon stands on the path to 2050"
     },
     "Onde {estado} está no caminho até 2050": {
       "pt": "Onde {estado} está no caminho até 2050",
@@ -1893,7 +1888,7 @@
     },
     "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.": {
       "pt": "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
-      "en": "where y is the value of the indicator in year t, for the Legal Amazon or the selected state."
+      "en": "where y is the value of the indicator in year t, for the Brazilian Amazon or the selected state."
     },
     "Janela": {
       "pt": "Janela",
@@ -2113,15 +2108,15 @@
     },
     "IDEB anos iniciais: municípios na meta": {
       "pt": "IDEB anos iniciais: municípios na meta",
-      "en": "IDEB early primary: municipalities on target"
+      "en": "Education quality score - early primary: municipalities on target"
     },
     "IDEB anos finais: municípios na meta": {
       "pt": "IDEB anos finais: municípios na meta",
-      "en": "IDEB lower secondary: municipalities on target"
+      "en": "Education quality score - lower secondary: municipalities on target"
     },
     "IDEB ensino médio: municípios na meta": {
       "pt": "IDEB ensino médio: municípios na meta",
-      "en": "IDEB upper secondary: municipalities on target"
+      "en": "Education quality score - upper secondary: municipalities on target"
     },
     "Taxa de escolarização": {
       "pt": "Taxa de escolarização",
@@ -2201,7 +2196,7 @@
     },
     "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.": {
       "pt": "A projeção parte de 6,9% em extrema pobreza; o painel mede a pobreza pelo CadÚnico (14,0% na Amazônia Legal) e a extrema pobreza pela SIS/IBGE (5,5%). Nenhum dos dois é a linha de base da projeção.",
-      "en": "The projection starts from 6.9% in extreme poverty; the dashboard measures poverty through CadÚnico (14.0% in the Legal Amazon) and extreme poverty through IBGE's SIS (5.5%). Neither is the projection's baseline."
+      "en": "The projection starts from 6.9% extreme poverty. The dashboard measures poverty using the Single Registry for Social Programs (14.0% in the Brazilian Amazon) and extreme poverty using the Synthesis of Social Indicators from the Brazilian Institute of Geography and Statistics (5.5%). Neither is the baseline for the projection."
     },
     "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.": {
       "pt": "A projeção parte de 75,5%; o atendimento escolar de 4 a 17 anos no painel é 96,4%. Recortes etários diferentes.",
@@ -2217,7 +2212,7 @@
     },
     "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.": {
       "pt": "A projeção parte de 41,5% em 2022; o ISGR do painel é 47,2 (água e esgoto adequados, ponderado pela população). Composição diferente do índice.",
-      "en": "The projection starts from 41.5% in 2022; the dashboard's ISGR is 47.2 (adequate water and sewage, population-weighted). Different index composition."
+      "en": "The projection starts from 41.5% in 2022. The dashboard’s sanitation and risk management index is 47.2 (adequate water and sewage, weighted by population). The index is composed differently."
     },
     "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.": {
       "pt": "A projeção parte de 62,5%; o painel calcula 60,9% (média simples dos estados) ou 85,2% (ponderado pela potência fiscalizada). Nenhum dos dois é a linha de base.",
@@ -2233,27 +2228,27 @@
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
       "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 30,3% e o painel calcula 30,7% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 30.3% and the dashboard calculates 30.7% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 30.3% and the dashboard calculates 30.7% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.": {
       "pt": "A linha de base da planilha corresponde à edição 2023 do IDEB; a série anual da projeção começa em 2026.",
-      "en": "The spreadsheet baseline corresponds to the 2023 IDEB round; the projection's annual series starts in 2026."
+      "en": "The spreadsheet baseline corresponds to the 2023 from the Education quality score; the projection's annual series starts in 2026."
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
       "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 7,7% e o painel calcula 7,8% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 7.7% and the dashboard calculates 7.8% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 7.7% and the dashboard calculates 7.8% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.": {
-      "pt": "Mesma regra do painel (IDEB contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
-      "en": "Same rule as the dashboard (IDEB against the 2021 target), but the projection starts from 58.1% and the dashboard calculates 61.4% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
+      "pt": "Mesma regra do painel (Education quality score contra a meta de 2021), mas a projeção parte de 58,1% e o painel calcula 61,4% para esta etapa em 2023: o universo de municípios difere. O painel mostra as três etapas juntas no valor principal.",
+      "en": "Same rule as the dashboard (Education quality score against the 2021 target), but the projection starts from 58.1% and the dashboard calculates 61.4% for this stage in 2023: the set of municipalities differs. The dashboard shows the three stages together in the main value."
     },
     "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.": {
       "pt": "A projeção é do Brasil inteiro: 839.766 óbitos evitáveis de 5 a 74 anos em 2024 (SIM), a base citada na ficha. Na Amazônia Legal foram 95.901 (campo obitos5a74_2024). O valor principal do painel é a taxa de menores de 5 anos.",
-      "en": "The projection covers all of Brazil: 839,766 avoidable deaths aged 5 to 74 in 2024 (SIM), the baseline cited in the technical sheet. In the Legal Amazon there were 95,901 (field obitos5a74_2024). The dashboard's main value is the under-5 rate."
+      "en": "The projection covers all of Brazil: 839,766 avoidable deaths aged 5 to 74 in 2024 (SIM), the baseline cited in the technical sheet. In the Brazilian Amazon there were 95,901 (field obitos5a74_2024). The dashboard's main value is the under-5 rate."
     },
     "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.": {
       "pt": "Meta: 50% dos 772 municípios da Amazônia Legal (386). A série medida é a soma dos municípios com telessaúde dos nove estados.",
-      "en": "Target: 50% of the Legal Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
+      "en": "Target: 50% of the Brazilian Amazon's 772 municipalities (386). The measured series is the sum of municipalities with telehealth across the nine states."
     },
     "R$": {
       "pt": "R$",
@@ -2261,7 +2256,7 @@
     },
     "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.": {
       "pt": "A projeção conta a captação nova a partir de zero em 2025; o painel soma o que os governos estaduais receberam do Fundo Amazônia e do REM Acre (R$ 143,3 mi em 2025), sem separar recurso novo de continuidade de contratos antigos.",
-      "en": "The projection counts new funds raised starting from zero in 2025; the dashboard adds up what state governments received from the Amazon Fund and REM Acre (R$ 143.3 million in 2025), without separating new money from ongoing older contracts."
+      "en": "The projection counts new funds raised starting from zero in 2025; the dashboard adds up what state governments received from the Amazon Fund and REM Acre - the REDD+ Early Movers program in Acre (R$ 143.3 million in 2025), without separating new money from ongoing older contracts."
     },
     "mi": {
       "pt": "mi",
@@ -2325,15 +2320,15 @@
     },
     "quanto do caminho entre a baseline e a meta a região já percorreu.": {
       "pt": "quanto do caminho entre a baseline e a meta a região já percorreu.",
-      "en": "how much of the way from the baseline to the target the region has already covered."
+      "en": "How far the region has come between the baseline and the target."
     },
     "sem baseline, é a posição do valor atual em relação à meta.": {
       "pt": "sem baseline, é a posição do valor atual em relação à meta.",
-      "en": "with no baseline, it is where the current value stands against the target."
+      "en": "Where no baseline exists, it shows how the current value stands relative to the target."
     },
     "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.": {
       "pt": "a baseline já estava além da meta; a jornada é a posição do valor atual em relação a ela.",
-      "en": "the baseline was already past the target; progress is where the current value stands against it."
+      "en": "The baseline had already surpassed the target; the journey is the current value’s position relative to the target."
     },
     "sem escala: não há baseline para medir o caminho até uma meta zero.": {
       "pt": "sem escala: não há baseline para medir o caminho até uma meta zero.",
@@ -2476,12 +2471,12 @@
       "en": "The last 10 years of the series are used, counted back from the most recent year with data; a shorter series is used in full. Ten years show the underlying trend and are not swayed by one unusual year, but they are slow to recognise a recent change of course. At least three years with data are needed, and years without a value are left out. A goal with a break in its series uses a fixed window, shown on the card."
     },
     "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.": {
-      "pt": "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
-      "en": "Pace = average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
+      "pt": "Ritmo: variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
+      "en": "Pace: average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
     },
     "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
       "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
-      "en": "Each goal’s pace over the last 10 years against its agreed deadline and, for indicators without a numeric target, the trend to 2050. A mechanical projection from the series, not a forecast."
+      "en": "The pace of the past 10 years for each target, measured against the agreed deadline. For indicators without a numerical target, the trend through 2050. This is a mechanical projection based on the historical series, not a forecast."
     },
     "desde {ano}": {
       "pt": "desde {ano}",

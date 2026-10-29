@@ -18,6 +18,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": [".design-sync/tools/servir.mjs", "dashboard/dist/client", "4331"],
       "port": 4331
+    },
+    {
+      "name": "mockups",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".design-sync/tools/servir.mjs", ".", "4332"],
+      "port": 4332
     }
   ]
 }

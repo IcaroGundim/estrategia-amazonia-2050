@@ -19,17 +19,13 @@
 #visao-2050 .method-vision p,
 #visao-2050 .method-list li,
 #eixos-de-implementacao .method-steps.is-eixos p,
-#governanca .method-guidance-grid p,
-#governanca .method-flow span,
 #calculo .method-source-block p,
 #calculo .method-guidance-grid p { font-size: var(--slide-body); line-height: var(--slide-body-lh); }
 #visao-2050 .method-subsection h3,
 #eixos-de-implementacao .method-steps.is-eixos h3,
-#governanca .method-guidance-grid h3,
 #calculo .method-guidance-grid h3 { font-size: var(--slide-h3); line-height: 1.25; }
 .slide-copy .method-facts span,
-#visao-2050 .method-vision > span,
-#governanca .method-flow b { font-size: var(--slide-label); }
+#visao-2050 .method-vision > span { font-size: var(--slide-label); }
 .slide-photo-caption p { font-size: var(--slide-photo-title); }
 .slide-photo figcaption { font-size: 10px; }
 
@@ -146,39 +142,83 @@
   #eixos-de-implementacao .slide-copy { padding-block: 20px; }
 }
 
-/* Governança: foto à esquerda e etapas à direita. Sem o antigo bloco "Próximos
-   passos", os três grupos restantes se distribuem na altura da lâmina em vez de
-   deixarem uma faixa vazia embaixo — `space-between` só reparte o que sobrar. */
-.methodology-page #governanca { grid-template-columns: minmax(0, .65fr) minmax(0, 1.6fr); }
-#governanca .slide-photo { grid-column: 1; grid-row: 1; }
-#governanca .slide-copy { grid-column: 2; grid-row: 1; padding: 32px 38px; display: grid; align-content: space-between; }
-/* O Teatro Amazonas é retrato, como o painel: na horizontal o recorte é pequeno e
-   puxa para a direita, para caber a cúpula e o pórtico. Na faixa baixa das telas
-   estreitas é a vertical que corta, e os 22% seguram a cúpula em vez do calçamento. */
-#governanca .slide-photo-main { object-position: 60% 22%; }
-#governanca .slide-photo-caption { left: 26px; right: 26px; }
-#governanca .slide-photo figcaption { left: 26px; right: 20px; }
-#governanca .method-guidance-grid.is-compacta { grid-template-columns: repeat(3, minmax(0,1fr)); margin-top: clamp(18px, 3.3vh, 30px); gap: clamp(14px, 2.6vh, 24px) 26px; }
-#governanca .method-guidance-grid.is-compacta article { border: 0; border-top: 1px solid var(--linha); border-radius: 0; padding: clamp(10px, 1.7vh, 15px) 0 0; background: none; overflow: visible; }
-#governanca .method-guidance-grid article::before { display: none; }
-/* As quatro etapas como segmentos em seta: o recorte encaixa um no outro e o verde
-   escurece a cada passo, então a sequência se lê sem depender só da numeração. O
-   `gap` fica pequeno porque a ponta de um chevron avança sobre o entalhe do
-   seguinte — separá-los mais desfaria o encaixe. */
-#governanca .method-flow { grid-template-columns: repeat(4, minmax(0,1fr)); margin-top: clamp(14px, 2.6vh, 24px); gap: 4px; }
-#governanca .method-flow li {
-  padding: clamp(12px, 2vh, 18px) clamp(18px, 2vw, 26px) clamp(12px, 2vh, 18px) clamp(26px, 2.6vw, 34px);
-  border: 0; border-radius: 0; color: #eaf1ea;
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%);
+/* Governança: quem decide. Sem fotografia — a escada das instâncias precisa da
+   largura toda. À esquerda, a escada com a seta "a informação sobe"; à direita, o
+   detalhe da instância escolhida. A escada ocupa a altura que sobra depois do
+   título, e os degraus se repartem nela em vez de terem altura fixa. O verde
+   escurece conforme sobe o poder de decisão; tracejado em urucum é o que não
+   delibera. */
+.methodology-page #governanca { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+#governanca .slide-copy { grid-column: 1; grid-row: 1; padding: clamp(18px, 2.6vh, 34px) clamp(28px, 3vw, 48px); display: flex; flex-direction: column; }
+#governanca .slide-copy h2 { max-width: none; }
+#governanca .slide-copy > h2 + p { max-width: 92ch; margin-top: clamp(6px, 1.2vh, 14px); font-size: var(--slide-body); line-height: var(--slide-body-lh); }
+.gov-estrutura { flex: 1 0 auto; margin-top: clamp(14px, 2.6vh, 28px); display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: clamp(8px, 1.2vh, 12px) clamp(24px, 3vw, 44px); }
+.gov-diagrama { grid-column: 1; grid-row: 1; min-height: 0; display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 12px; }
+.gov-trilha { position: relative; display: flex; justify-content: center; }
+.gov-trilha::before { content: ""; position: absolute; top: 12px; bottom: 0; width: 2px; background: var(--mata-500); }
+.gov-trilha::after { content: ""; position: absolute; top: 0; border: 6px solid transparent; border-top: 0; border-bottom: 12px solid var(--mata-500); }
+.gov-trilha span { position: absolute; top: 50%; padding: 8px 0; background: var(--papel); color: var(--tinta-3); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; writing-mode: vertical-rl; transform: rotate(180deg) translateY(50%); }
+.gov-escada { --gov-vao: clamp(28px, 3vw, 44px); min-width: 0; display: grid; grid-auto-rows: auto; gap: clamp(5px, .9vh, 10px); }
+.gov-degrau { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); column-gap: var(--gov-vao); }
+.gov-instancia {
+  position: relative; min-width: 0; width: 100%; margin: 0;
+  padding: clamp(6px, 1.05vh, 13px) clamp(14px, 1.4vw, 18px);
+  display: flex; flex-direction: column; justify-content: center; gap: 1px;
+  border: 2px solid transparent; border-radius: 10px; font: inherit; text-align: left; cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-#governanca .method-flow li:first-child { padding-left: clamp(16px, 1.6vw, 22px); clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); }
-#governanca .method-flow li:last-child { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 16px 50%); }
-#governanca .method-flow li:nth-child(1) { background: var(--mata-500); }
-#governanca .method-flow li:nth-child(2) { background: var(--mata-700); }
-#governanca .method-flow li:nth-child(3) { background: #143529; }
-#governanca .method-flow li:nth-child(4) { background: var(--mata); }
-#governanca .method-flow b { color: var(--ocre); letter-spacing: .1em; }
-#governanca .method-flow span { color: inherit; }
+.gov-instancia:hover { transform: translateY(-1px); }
+.gov-instancia[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--ocre); }
+.gov-instancia:focus-visible { outline: 3px solid var(--ocre); outline-offset: 2px; }
+.gov-etiqueta { font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; opacity: .85; }
+.gov-nome { font: 700 calc(var(--slide-h3) * .92)/1.2 var(--display); letter-spacing: -.01em; }
+.gov-frequencia { font-size: var(--slide-label); line-height: 1.35; opacity: .85; }
+.gov-instancia.is-decide { background: var(--mata); color: #fff; }
+.gov-instancia.is-coordena { background: var(--mata-700); color: #fff; }
+.gov-instancia.is-articula { background: var(--mata-500); color: #fff; }
+.gov-instancia.is-implementa { background: #e3ebe3; color: var(--tinta); }
+.gov-instancia.is-apoio { border: 2px dashed var(--urucum); background: var(--papel); color: var(--tinta); }
+.gov-instancia.is-apoio .gov-etiqueta { color: var(--urucum); opacity: 1; }
+/* O fio tracejado atravessa o vão entre as colunas e liga a instância de apoio à que ela apoia. */
+.gov-instancia.is-apoio::before { content: ""; position: absolute; top: 50%; right: 100%; width: calc(var(--gov-vao) + 2px); border-top: 2px dashed var(--urucum); }
+.gov-selo { position: absolute; top: clamp(6px, 1.05vh, 12px); right: 10px; padding: 1px 10px; border-radius: 999px; background: var(--urucum); color: #fff; font-size: 11px; font-weight: 600; }
+.gov-legenda { grid-column: 1; grid-row: 2; margin: 0 0 0 46px; display: flex; flex-wrap: wrap; gap: 4px 20px; color: var(--tinta-3); font-size: 12.5px; }
+.gov-legenda i { display: inline-block; width: 22px; height: 12px; margin-right: 6px; border-radius: 3px; vertical-align: -1px; }
+.gov-legenda i.is-decide { background: var(--mata-700); }
+.gov-legenda i.is-implementa { background: #e3ebe3; border: 1px solid var(--linha); }
+.gov-legenda i.is-apoio { border: 2px dashed var(--urucum); }
+/* O painel ocupa a coluna inteira sem pesar na altura da grade (`contain: size`):
+   quem manda é a escada. O cartão mede o próprio texto e, se passar, rola por dentro. */
+.gov-painel { grid-column: 2; grid-row: 1 / span 2; min-width: 0; contain: size; }
+.gov-detalhe { max-height: 100%; overflow-y: auto; padding: clamp(16px, 2.6vh, 26px) clamp(18px, 1.8vw, 26px); border: 1px solid var(--linha); border-radius: 14px; background: var(--areia); scrollbar-width: thin; }
+.gov-natureza { margin: 0 0 6px; color: var(--urucum); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.gov-detalhe h3 { margin: 0 0 clamp(10px, 1.8vh, 18px); font: 700 calc(var(--slide-h3) * 1.3)/1.1 var(--display); letter-spacing: -.02em; }
+.gov-detalhe dl { margin: 0; display: grid; gap: clamp(8px, 1.5vh, 14px); }
+.gov-detalhe dt { margin-bottom: 2px; color: var(--tinta-3); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.gov-detalhe dd { margin: 0; font-size: var(--slide-body); line-height: 1.5; }
+.gov-detalhe .is-limite dd { color: var(--urucum); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .gov-instancia { transition: none; } }
+/* Notebook baixo (768px): os cinco degraus não cabem com três linhas cada. A
+   frequência sai das caixas — ela continua no detalhe, em "Reúne-se". */
+@media (min-width: 921px) and (max-height: 820px) {
+  .gov-frequencia { display: none; }
+}
+/* Do tablet em pé para baixo o detalhe desce para baixo da escada. */
+@media (max-width: 920px) {
+  .gov-estrutura { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .gov-painel { grid-column: 1; grid-row: 3; contain: none; }
+  .gov-detalhe { max-height: none; }
+}
+/* No celular cada degrau vira uma coluna: a instância de apoio fica embaixo da
+   principal, recuada, e o fio encolhe para o recuo. */
+@media (max-width: 700px) {
+  .gov-diagrama { grid-template-columns: 26px minmax(0, 1fr); gap: 8px; }
+  .gov-legenda { margin-left: 0; }
+  .gov-escada { --gov-vao: 22px; }
+  .gov-degrau { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
+  .gov-vazio { display: none; }
+  .gov-instancia.is-apoio { width: calc(100% - var(--gov-vao)); margin-left: var(--gov-vao); }
+}
 
 /* Leitura dos dados: no painel, o crédito ao IPAM, que deu apoio técnico e
    científico à Estratégia. */
@@ -245,13 +285,6 @@
 @media (max-width: 1100px) {
   .slide-copy { padding: 28px; }
   #governanca .slide-copy { padding: 28px; }
-  #governanca .method-guidance-grid.is-compacta { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  /* Em duas colunas o encaixe se perde na quebra de linha: os chevrons viram
-     cartões retos, mantendo a escala de verdes que ordena as etapas. */
-  #governanca .method-flow { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
-  #governanca .method-flow li,
-  #governanca .method-flow li:first-child,
-  #governanca .method-flow li:last-child { clip-path: none; border-radius: 7px; padding: 14px 18px; }
   .overview-controls { gap: 14px; }
   .methodology-page .methodology-index nav { gap: 14px; }
 }
@@ -291,10 +324,7 @@
   #eixos-de-implementacao .slide-copy { padding: 24px; }
   #eixos-de-implementacao .method-steps.is-eixos { grid-template-columns: 1fr; }
   #eixos-de-implementacao .slide-photo figcaption { left: 22px; max-width: none; }
-  .methodology-page #governanca { grid-template-columns: 1fr; grid-template-rows: 125px minmax(0,1fr); }
-  #governanca .slide-copy { grid-column: 1; grid-row: 2; padding: 24px; }
-  #governanca .method-guidance-grid.is-compacta { grid-template-columns: 1fr; }
-  #governanca .method-flow { grid-template-columns: 1fr; }
+  #governanca .slide-copy { padding: 24px; }
   .slide-photo-caption { bottom: auto; top: 18px; left: 22px; right: 22px; }
   .slide-photo-caption p { display: none; }
   .slide-photo figcaption { left: 22px; bottom: 16px; right: 22px; width: auto; font-size: 9px; }

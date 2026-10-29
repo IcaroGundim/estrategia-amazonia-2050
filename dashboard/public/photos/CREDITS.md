@@ -21,3 +21,28 @@ Arquivos obtidos das versões de 1280 pixels do Wikimedia Commons, exceto Teatro
 ## Fotografia da página de Projetos
 
 - `parque-nacional-do-jau.jpg`: **Ana Claudia Jatahy / MTur**, Parque Nacional do Jaú, Novo Airão (AM), 2018. [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/26084876967/). Marcada como [domínio público](https://creativecommons.org/publicdomain/mark/1.0/deed.pt-br), com crédito obrigatório ("Ana Claudia Jatahy - MTUR"), que aparece abaixo do diagrama. Versão de 1024 px do Flickr.
+
+## Visão Geral editorial (pasta `visao-geral/`)
+
+Fotografias do Ministério do Turismo (Flickr MTur Destinos), todas marcadas como [domínio público](https://creativecommons.org/publicdomain/mark/1.0/deed.pt-br), com crédito do autor exibido sobre cada imagem. Nenhuma tem a nota de uso limitado a 03/04/2023. Reduzidas para webp (1000 a 2048 px de largura) a partir da versão de 2048 px do Flickr; exibidas com recorte por CSS, véus verdes e, na do topo, a correnteza animada sobre a água.
+
+- `visao-geral/barcelos-parque-nacional-39164465870.webp` (topo, com a correnteza): **Ana Claudia Jatahy / MTur**, Parque Nacional, Barcelos (AM). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/39164465870/).
+- `visao-geral/combu-belem-40163460135.webp` (Visão 2050): **Bruna Brandão / MTur**, casa de palafita entre açaizeiros, Ilha do Combu, Belém (PA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40163460135/).
+- `visao-geral/barcelos-rio-negro-40079605135.webp` (território, Amazonas): **Mário Oliveira / MTur**, Rio Negro, Barcelos (AM). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40079605135/).
+- `visao-geral/alter-do-chao-40958491901.webp` (território, Pará): **Tiago Silveira / MTur**, Alter do Chão, Santarém (PA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40958491901/).
+- `visao-geral/lencois-maranhenses-27050741838.webp` (território, Maranhão): **Biaman Prado / MTur**, Lençóis Maranhenses, Barreirinhas (MA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/27050741838/).
+- `visao-geral/veu-da-noiva-chapada-39184231560.webp` (território, Mato Grosso): **Flávio André / MTur**, Cachoeira Véu de Noiva, Chapada dos Guimarães (MT). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/39184231560/).
+- `visao-geral/jalapao-dunas-40211362765.webp` (território, Tocantins): **Flávio André / MTur**, Dunas do Jalapão, Mateiros (TO). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40211362765/).
+- `visao-geral/macapa-trapiche-27099881288.webp` (território, Amapá): **Márcia do Carmo / MTur**, Trapiche Eliezer Levy, rio Amazonas, Macapá (AP). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/27099881288/).
+- `visao-geral/rio-madeira-abuna-27059000208.webp` (território, Rondônia): **Silva Júnior / MTur**, Rio Madeira, Abunã, Porto Velho (RO). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/27059000208/).
+- `visao-geral/boa-vista-cacari-39266486880.webp` (território, Roraima): **Ederson Brito / MTur**, Praia do Caçari, Boa Vista (RR). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/39266486880/).
+- `visao-geral/manaus-musa-40438924214.webp` (eixo 1): **Mário Oliveira / MTur**, Musa, Manaus (AM). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40438924214/).
+- `visao-geral/santarem-pintura-indigena-40064976735.webp` (eixo 2): **Tiago Silveira / MTur**, Pintura indígena, Santarém (PA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40064976735/).
+- `visao-geral/macapa-acai-40929011292.webp` (eixo 3): **Márcia do Carmo / MTur**, Polpa de açaí, Macapá (AP). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40929011292/).
+- `visao-geral/ponte-rio-madeira-40221863344.webp` (eixo 4): **Silva Júnior / MTur**, Ponte do rio Madeira, entre Rondônia e Amazonas. [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40221863344/).
+- `visao-geral/palmas-palacio-araguaia-41063936792.webp` (eixo 5): **Flávio André / MTur**, Palácio Araguaia, Palmas (TO). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/41063936792/).
+- `visao-geral/chapada-cidade-de-pedra-40993767631.webp` (governança, faixa do título): **Flávio André / MTur**, Cidade de Pedra, Chapada dos Guimarães (MT). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40993767631/).
+- `visao-geral/pantanal-pocone-40064777855.webp` (governança, fundo da escada): **Flávio André / MTur**, Pantanal, vista aérea, Poconé (MT). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40064777855/).
+- `visao-geral/soure-guaras-39167467930.webp` (IPAM): **Bruna Brandão / MTur**, Fazenda Bom Jesus, Soure (PA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/39167467930/).
+- `visao-geral/flona-tapajos-40064981205.webp` (explore o painel): **Tiago Silveira / MTur**, Flona do Tapajós, Belterra (PA). [Original no Flickr MTur Destinos](https://www.flickr.com/photos/mturdestinos/40064981205/).
+- `visao-geral/rio-croa-commons.webp` (território, Acre): **Leonardo Honorato Santos**, rio Crôa, Cruzeiro do Sul (AC). [Original no Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rio_Croa.jpg). [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/); reduzida para 1400 px e recortada por CSS, sob a mesma licença. O Flickr do MTur não tem o rio Crôa, e a foto da Secom-AC usada no mockup não tem licença livre.

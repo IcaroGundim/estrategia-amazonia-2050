@@ -202,10 +202,26 @@ function bindSectionNavigation() {
   }, { once: true });
 }
 
+// Governança: o clique numa instância mostra o detalhe dela no painel. O ouvinte
+// fica na seção, e não nos botões, porque a prévia do admin troca o miolo da
+// lâmina a cada edição e levaria junto ouvintes presos aos botões.
+function bindGovernanca() {
+  const secao = document.getElementById('governanca');
+  if (!secao) return;
+  secao.addEventListener('click', (event) => {
+    const botao = event.target instanceof Element ? event.target.closest('button[data-instancia]') : null;
+    if (!botao) return;
+    const id = botao.dataset.instancia;
+    secao.querySelectorAll('button[data-instancia]').forEach((item) => item.setAttribute('aria-pressed', String(item.dataset.instancia === id)));
+    secao.querySelectorAll('[data-detalhe]').forEach((detalhe) => { detalhe.hidden = detalhe.dataset.detalhe !== id; });
+  }, { signal: sinalDaPagina() });
+}
+
 function init() {
   bindMenu();
   bindVista();
   bindSectionNavigation();
+  bindGovernanca();
 }
 
 // As fontes consolidadas já vêm no HTML (conteudo/textos.json); nada é buscado.
