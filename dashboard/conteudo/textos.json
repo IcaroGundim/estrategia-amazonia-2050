@@ -675,6 +675,24 @@
         }
       }
     },
+    "desenvolvimento": {
+      "chapeu": {
+        "pt": "Quem desenvolveu",
+        "en": "Who built it"
+      },
+      "titulo": {
+        "pt": "Feita no Acre, para a Amazônia Legal",
+        "en": "Made in Acre, for the Legal Amazon"
+      },
+      "texto": {
+        "pt": "Os dados, os indicadores e a página que você está lendo foram construídos por uma equipe acreana, a serviço do Consórcio Interestadual da Amazônia Legal e dos nove estados.",
+        "en": "The data, the indicators and the page you are reading were built by a team from Acre, working for the Legal Amazon Interstate Consortium and its nine states."
+      },
+      "governo": {
+        "pt": "Governo do Estado do Acre",
+        "en": "Government of the State of Acre"
+      }
+    },
     "explorar": {
       "chapeu": {
         "pt": "Explore o painel",

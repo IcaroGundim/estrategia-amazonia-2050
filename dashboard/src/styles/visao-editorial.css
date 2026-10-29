@@ -240,6 +240,24 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-ipam .ve-rubrica i { background: rgba(245, 240, 232, .25); }
 .ve-ipam .ve-chapeu { color: var(--ocre); }
 .ve-ipam-grade { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+
+/* 06 · quem desenvolveu: o rio Crôa sob véu verde, mais fechado à esquerda (onde fica o selo)
+   e à direita (o texto); as marcas direto na foto, sem placa */
+.ve-dev { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(var(--ve-tela), 640px); padding-block: clamp(48px, calc(var(--ve-vh) * 8), 96px); overflow: hidden; color: var(--areia); }
+.ve-dev > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
+.ve-dev > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .86) 0%, rgba(8, 26, 20, .7) 38%, rgba(8, 26, 20, .4) 60%, rgba(8, 26, 20, .8) 100%); }
+.ve-dev .ve-rubrica b { color: var(--areia); }
+.ve-dev .ve-rubrica i { background: rgba(245, 240, 232, .25); }
+.ve-dev .ve-chapeu { color: var(--ocre); }
+.ve-dev-grade { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 96px); align-items: center; }
+.ve-dev-selo { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ve-dev-brasao { width: clamp(110px, calc(var(--ve-vh) * 18), 150px); height: auto; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .35)); }
+.ve-dev-governo { margin-top: 14px; color: var(--areia); font: 700 13px/1.3 var(--text); letter-spacing: .1em; text-transform: uppercase; text-shadow: 0 1px 3px rgba(0, 0, 0, .45); }
+/* o traço amarelo é o mesmo da logo da SEPLAN */
+.ve-dev-traco { width: 56px; height: 3px; margin: 24px 0; border-radius: 2px; background: #ffcc00; }
+.ve-dev .ve-dev-logo { width: 100%; max-width: 380px; height: auto; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .3)); }
+.ve-dev-titulo { margin: 0; color: var(--areia); font: 800 clamp(28px, 3vw, 46px)/1.04 var(--display); letter-spacing: -.025em; text-wrap: balance; text-shadow: 0 2px 14px rgba(0, 0, 0, .25); }
+.ve-dev-texto { max-width: 560px; margin: 16px 0 0; color: #eef2ee; font-size: clamp(15px, calc(var(--ve-vh) * 2.2), 17px); line-height: 1.6; text-shadow: 0 1px 3px rgba(0, 0, 0, .4); }
 /* a moldura das lâminas: perfil verde com a luz do alto, filete dourado, passe-partout claro e sombra na parede;
    sobre o fundo escuro, um fio claro por fora separa o perfil da foto */
 .ve-ipam-placa {
@@ -399,6 +417,8 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   .ve-gov-legenda { margin-left: 0; }
   .ve-ipam-grade { grid-template-columns: minmax(0, 1fr); }
   .ve-ipam-placa { max-width: 300px; }
+  .ve-dev-grade { grid-template-columns: minmax(0, 1fr); }
+  .ve-dev .ve-dev-logo { max-width: 300px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ve-pagina *, .ve-pagina *::before, .ve-pagina *::after { transition: none !important; animation: none !important; }

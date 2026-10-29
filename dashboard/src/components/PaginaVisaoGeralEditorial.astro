@@ -35,6 +35,9 @@ const explorar = vg.explorar ?? publicado.explorar;
 const estePainel = vg.estePainel;
 const contribuicao = estePainel.contribuicao ?? publicado.estePainel.contribuicao;
 const citacao = estePainel.citacao ?? publicado.estePainel.citacao;
+const desenvolvimento = vg.desenvolvimento ?? publicado.desenvolvimento;
+// a foto do reconhecimento é a do Acre no território (rio Crôa)
+const acre = ESTADOS.find((estado) => estado.uf === 'AC')!;
 const gov = 'instancias' in vg.governanca ? vg.governanca : publicado.governanca;
 const verMetas = eixos.verMetas ?? publicado.eixos.verMetas;
 
@@ -389,14 +392,41 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
     <a class="ve-cred" href={FOTOS.ipam.url} target="_blank" rel="noopener">{credito(FOTOS.ipam)}</a>
   </section>
 
-  {/* ---------- 06 · explore: os cartões apoiados na borda da foto ---------- */}
+  {/* ---------- 06 · quem desenvolveu: o rio Crôa, com o selo do governo do Acre e da SEPLAN ----------
+      As marcas ficam direto sobre a foto, empilhadas como um selo (brasão, governo, o traço
+      amarelo da SEPLAN, a logo em versão clara). Os nomes das instituições só aparecem nas
+      marcas: o texto ao lado fala do trabalho, sem repeti-los. */}
+  <section id="desenvolvimento" class="ve-dev">
+    <div class="ve-quadro-foto"><div class="ve-img" data-ve-parallax style={`background-image:url('${acre.foto.arquivo}')`}></div></div>
+    <div class="ve-miolo">
+      <div class="ve-dev-grade">
+        <div class="ve-dev-selo ve-surge">
+          <img class="ve-dev-brasao" src="/brasao-acre.svg" alt="Brasão do Estado do Acre" width="230" height="226" loading="lazy" />
+          <span class="ve-dev-governo">{tx(desenvolvimento.governo)}</span>
+          <i class="ve-dev-traco" aria-hidden="true"></i>
+          <img class="ve-dev-logo" src="/logo-seplan-depo-clara.svg" alt="SEPLAN · Secretaria de Estado de Planejamento · Departamento de Estudos e Planejamento Orçamentário" width="1960" height="292" loading="lazy" />
+        </div>
+        <div>
+          <div class="ve-rubrica ve-surge" style="--i:1"><b>06</b><span class="ve-chapeu">{tx(desenvolvimento.chapeu)}</span><i></i></div>
+          <h2 class="ve-dev-titulo ve-surge" style="--i:2">{tx(desenvolvimento.titulo)}</h2>
+          <p class="ve-dev-texto ve-surge" style="--i:3">{tx(desenvolvimento.texto)}</p>
+        </div>
+      </div>
+    </div>
+    <span class="ve-cred">
+      {acre.foto.lugar}, {acre.municipio} · <a href={acre.foto.url} target="_blank" rel="noopener">{acre.foto.autor}</a>
+      {acre.licenca && <> · <a href={acre.licenca.url} target="_blank" rel="noopener">{acre.licenca.nome}</a></>}
+    </span>
+  </section>
+
+  {/* ---------- 07 · explore: os cartões apoiados na borda da foto ---------- */}
   <div class="ve-quadro-foto ve-explorar-foto">
     <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.explorar.arquivo}')`}></div>
     <a class="ve-cred is-no-alto" href={FOTOS.explorar.url} target="_blank" rel="noopener">{credito(FOTOS.explorar)}</a>
   </div>
   <section id="explorar" class="ve-miolo ve-explorar">
     <div class="ve-explorar-titulo ve-surge">
-      <div class="ve-rubrica"><b>06</b><span class="ve-chapeu">{tx(explorar.chapeu)}</span></div>
+      <div class="ve-rubrica"><b>07</b><span class="ve-chapeu">{tx(explorar.chapeu)}</span></div>
       <h2>{tx(explorar.titulo)}</h2>
     </div>
     {/* Três cartões lado a lado, cada um com o desenho do que a aba tem. O cartão sob o
