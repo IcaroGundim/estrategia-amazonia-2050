@@ -59,7 +59,7 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-topo-foto { position: absolute; inset: 0; overflow: hidden; background: var(--mata); }
 .ve-topo-img { position: absolute; inset: 0; background-size: cover; background-position: center; animation: ve-aproxima 8s var(--ve-suave) both; }
 @keyframes ve-aproxima { from { transform: scale(1.08); } to { transform: scale(1); } }
-.ve-topo-img canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.ve-topo-img canvas, .ve-img canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 /* o texto encosta mais à esquerda: a margem acompanha a tela, sem esperar a coluna de 1200 px */
 .ve-topo-bloco { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; padding: clamp(24px, calc(var(--ve-vh) * 6), 88px) clamp(28px, 4vw, 64px) clamp(20px, calc(var(--ve-vh) * 5), 56px) clamp(24px, 9.5vw, 200px); background: var(--areia); }
 /* o título largo, em duas linhas: "Estratégia Regional" e, em urucum, "Amazônia 2050" */

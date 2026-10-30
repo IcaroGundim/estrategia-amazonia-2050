@@ -174,7 +174,7 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
     <div class="ve-topo-foto">
       <div class="ve-topo-img" style={`background-image:url('${FOTOS.topo.arquivo}')`}>
         {/* A correnteza: um canvas WebGL por cima da foto, que só mexe da linha d'água para baixo (visao-editorial.js). */}
-        <canvas data-ve-agua data-foto={FOTOS.topo.arquivo} aria-hidden="true"></canvas>
+        <canvas data-ve-agua="topo" data-foto={FOTOS.topo.arquivo} aria-hidden="true"></canvas>
       </div>
     </div>
     <div class="ve-topo-bloco">
@@ -421,7 +421,10 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
 
   {/* ---------- 07 · explore: os cartões apoiados na borda da foto ---------- */}
   <div class="ve-quadro-foto ve-explorar-foto">
-    <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.explorar.arquivo}')`}></div>
+    <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.explorar.arquivo}')`}>
+      {/* A mesma correnteza do topo, só no rio à esquerda e no fio d'água atrás do arbusto. */}
+      <canvas data-ve-agua="explorar" data-foto={FOTOS.explorar.arquivo} aria-hidden="true"></canvas>
+    </div>
     <a class="ve-cred is-no-alto" href={FOTOS.explorar.url} target="_blank" rel="noopener">{credito(FOTOS.explorar)}</a>
   </div>
   <section id="explorar" class="ve-miolo ve-explorar">

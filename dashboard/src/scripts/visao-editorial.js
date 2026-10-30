@@ -4,7 +4,7 @@ import { aoEntrarNaPagina, bindMenu, bindVista, sinalDaPagina } from './shared.j
 // Visão Geral editorial (PaginaVisaoGeralEditorial.astro). Todo o conteúdo já
 // vem no HTML; aqui ficam só os movimentos: a entrada dos blocos, o parallax
 // das fotos, o mapa e os painéis do território, a escada da governança e a
-// correnteza da foto do topo. Tudo se desfaz no sinal da página, porque o
+// correnteza das fotos de rio. Tudo se desfaz no sinal da página, porque o
 // ClientRouter troca de aba sem recarregar e um laço de animação esquecido
 // continuaria rodando nas outras abas.
 // ---------------------------------------------------------------------------
@@ -237,17 +237,34 @@ function bindGraficoDeMetas(pagina, signal) {
   signal.addEventListener('abort', () => tamanhos.disconnect(), { once: true });
 }
 
-// ---------- a correnteza da foto do topo ----------
+// ---------- a correnteza das fotos de rio ----------
 // Ondas miúdas deitadas no plano do rio, em perspectiva: miúdas lá no fundo,
 // mais largas embaixo, e a correnteza leva tudo devagar para a direita. O
 // deslocamento é quase todo vertical, o que quebra o reflexo da mata em faixas.
-// O céu e a mata ficam parados. Sem WebGL o canvas sai e fica a foto parada;
-// com movimento reduzido, desenha um quadro só.
-const HORIZONTE = 0.392; // a linha d'água na foto de Barcelos (fração da altura)
+// O céu, a mata e a areia ficam parados. Sem WebGL o canvas sai e fica a foto
+// parada; com movimento reduzido, desenha um quadro só.
+//
+// Cada canvas diz no `data-ve-agua` qual foto é. O horizonte só dá a
+// perspectiva; onde há água diz a máscara: no topo, tudo abaixo da linha
+// d'água; nas outras, os polígonos (em frações da foto) desenhados à mão.
+const AGUAS = {
+  // Barcelos: a linha d'água cai um pouco à direita, onde a mata termina e aparece a outra margem
+  topo: { horizonte: 0.392, degrau: 0.022 },
+  // Flona do Tapajós: o rio à esquerda, entre a mata e a areia, e o fio dourado à direita do
+  // arbusto. O horizonte fica acima do real para as ondas não sumirem de tão miúdas.
+  explorar: {
+    horizonte: 0.4,
+    degrau: 0,
+    poligonos: [
+      [[0, 0.52], [0.15, 0.519], [0.29, 0.512], [0.33, 0.505], [0.4, 0.505], [0.39, 0.513], [0.35, 0.521], [0.3, 0.534], [0.2, 0.567], [0.1, 0.607], [0, 0.647]],
+      [[0.86, 0.499], [1, 0.497], [1, 0.527], [0.93, 0.524], [0.86, 0.528]]
+    ]
+  }
+};
 const FRAG = `
   precision highp float;
-  uniform sampler2D foto; uniform vec2 tela; uniform vec2 imagem; uniform float t; uniform float dpr;
-  const float H = ${HORIZONTE.toFixed(3)};
+  uniform sampler2D foto; uniform sampler2D mascara;
+  uniform vec2 tela; uniform vec2 imagem; uniform float t; uniform float dpr; uniform float H; uniform float degrau;
   float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
   float ruido(vec2 p){
     vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
@@ -259,10 +276,9 @@ const FRAG = `
     vec2 q = vec2(gl_FragCoord.x / tela.x, 1. - gl_FragCoord.y / tela.y);
     float ct = tela.x / tela.y, ci = imagem.x / imagem.y;
     vec2 uv = cobre(q, ct, ci);
-    // a linha d'água cai um pouco à direita, onde a mata termina e aparece a outra margem
-    float h = H - .022 * smoothstep(.86, .92, uv.x);
+    float h = H - degrau * smoothstep(.86, .92, uv.x);
     float d = clamp((uv.y - h) / (1. - h), 0., 1.);
-    float agua = smoothstep(0., .01, d);
+    float agua = smoothstep(0., .01, d) * texture2D(mascara, uv).r;
     // o plano do rio em perspectiva: z cresce para o horizonte, x abre com a distância
     float z = 1. / (d + .06);
     vec2 w = vec2((uv.x - .5) * z, z);
@@ -286,10 +302,32 @@ const FRAG = `
     gl_FragColor = vec4(cor, 1.);
   }`;
 
+// A máscara da água, branca onde o rio mexe. Sem polígonos, é toda branca.
+function desenhaMascara(img, poligonos) {
+  const c = document.createElement('canvas');
+  c.width = 512;
+  c.height = Math.round(512 * img.naturalHeight / img.naturalWidth);
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = poligonos ? '#000' : '#fff';
+  ctx.fillRect(0, 0, c.width, c.height);
+  if (!poligonos) return c;
+  // a borda esmaecida não arrasta a areia para dentro da água
+  ctx.filter = 'blur(1.5px)';
+  ctx.fillStyle = '#fff';
+  for (const pontos of poligonos) {
+    ctx.beginPath();
+    pontos.forEach(([x, y], i) => ctx[i ? 'lineTo' : 'moveTo'](x * c.width, y * c.height));
+    ctx.fill();
+  }
+  return c;
+}
+
 function bindCorrenteza(pagina, signal) {
-  const canvas = pagina.querySelector('[data-ve-agua]');
-  if (!canvas) return;
-  const gl = canvas.getContext('webgl');
+  pagina.querySelectorAll('[data-ve-agua]').forEach((canvas) => animaAgua(canvas, AGUAS[canvas.dataset.veAgua], signal));
+}
+
+function animaAgua(canvas, agua, signal) {
+  const gl = agua && canvas.getContext('webgl');
   if (!gl) { canvas.remove(); return; }
   const imovel = parado();
   const img = new Image();
@@ -308,14 +346,22 @@ function bindCorrenteza(pagina, signal) {
     const local = gl.getAttribLocation(prog, 'p');
     gl.enableVertexAttribArray(local);
     gl.vertexAttribPointer(local, 2, gl.FLOAT, false, 0, 0);
-    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
     const u = (nome) => gl.getUniformLocation(prog, nome);
+    const textura = (unidade, nome, fonte) => {
+      gl.activeTexture(gl.TEXTURE0 + unidade);
+      gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, fonte);
+      gl.uniform1i(u(nome), unidade);
+    };
+    textura(0, 'foto', img);
+    textura(1, 'mascara', desenhaMascara(img, agua.poligonos));
     gl.uniform2f(u('imagem'), img.naturalWidth, img.naturalHeight);
+    gl.uniform1f(u('H'), agua.horizonte);
+    gl.uniform1f(u('degrau'), agua.degrau);
     const desenha = () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     const ajusta = () => {
       const r = Math.min(devicePixelRatio || 1, 1.5);
@@ -331,7 +377,7 @@ function bindCorrenteza(pagina, signal) {
     ajusta();
     signal.addEventListener('abort', () => tamanho.disconnect(), { once: true });
     if (imovel) return;
-    // só anima enquanto o topo aparece na tela
+    // só anima enquanto a foto aparece na tela
     let visivel = true;
     const vista = new IntersectionObserver(([entrada]) => { visivel = entrada.isIntersecting; });
     vista.observe(canvas);
