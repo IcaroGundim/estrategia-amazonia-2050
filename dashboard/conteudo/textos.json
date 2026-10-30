@@ -66,11 +66,11 @@
     "estrategia": {
       "tituloLinha1": {
         "pt": "Estratégia Regional",
-        "en": "Regional Strategy"
+        "en": "Amazônia 2050"
       },
       "tituloLinha2": {
         "pt": "Amazônia 2050",
-        "en": "Amazônia 2050"
+        "en": "Regional Strategy"
       },
       "abertura": {
         "pt": "O instrumento de planejamento de longo prazo da Amazônia Legal. Define uma visão compartilhada para 2050, organizada por temas e eixos estratégicos, metas, indicadores e uma estrutura de governança para orientar investimentos e políticas públicas nos nove estados.",
@@ -275,11 +275,11 @@
       },
       "titulo": {
         "pt": "Governadores decidem. Estados informam. O CAL articula.",
-        "en": "Governors decide. States report. CAL coordinates."
+        "en": "Amazon states report. Governors decide."
       },
       "abertura": {
         "pt": "A informação é reunida nos nove estados e sobe, nível a nível, até a Assembleia de Governadores.",
-        "en": "Information is gathered in the nine states and rises through each level to the Governors' Assembly."
+        "en": "Inputs from the nine states are consolidated step by step across each level of the governance structure and submitted to the Governors’ Assembly."
       },
       "trilha": {
         "pt": "A informação sobe",
@@ -348,7 +348,7 @@
           },
           "quem": {
             "pt": "Os governadores dos nove estados da Amazônia Legal.",
-            "en": "The governors of the nine Legal Amazon states."
+            "en": "The governors of the nine Brazilian Amazon states."
           },
           "papel": {
             "pt": "Instância máxima da governança da Estratégia. Delibera sobre ajustes estruturais, aprova o modelo de governança e suas revisões e valida o Relatório Anual de Monitoramento e as prioridades estaduais do ano.",
@@ -364,7 +364,7 @@
           },
           "nome": {
             "pt": "Câmara Setorial de Planejamento",
-            "en": "Planning Sectoral Chamber"
+            "en": "Amazon Planning Secretaries"
           },
           "frequencia": {
             "pt": "Trimestral",
@@ -380,7 +380,7 @@
           },
           "papel": {
             "pt": "Aprova as prioridades estaduais definidas pelo Grupo de Trabalho de Planejamento. Faz reuniões semestrais de acompanhamento do monitoramento, das ações prioritárias, das metas e dos indicadores. Alinha as prioridades aos planos estaduais e aos PPAs e valida os relatórios técnicos antes que sigam para a Assembleia.",
-            "en": "Approves the state priorities set by the Planning Working Group. Holds semiannual follow-up meetings on monitoring, priority actions, targets and indicators. Aligns priorities with state plans and PPAs, and validates technical reports before they go to the Assembly."
+            "en": "Approves the state priorities defined by the Working Group. Holds semiannual follow-up meetings to review monitoring, priority actions, targets and indicators. Aligns priorities with Multi-Year Plans, and validates technical reports before they are submitted to the Assembly."
           }
         },
         {
@@ -428,8 +428,8 @@
             "en": "Articulates"
           },
           "nome": {
-            "pt": "CAL, Secretaria Técnica",
-            "en": "CAL, Technical Secretariat"
+            "pt": "Consórcio Amazônia Legal",
+            "en": "Brazilian Amazon Consortium"
           },
           "frequencia": {
             "pt": "Contínua",
@@ -441,7 +441,7 @@
           },
           "quem": {
             "pt": "Consórcio Amazônia Legal.",
-            "en": "Consórcio Amazônia Legal."
+            "en": "Brazilian Amazon Consortium"
           },
           "papel": {
             "pt": "Harmoniza as informações enviadas pelos estados, mantém os dados circulando entre os níveis da governança e prepara o relatório anual que subsidia a decisão da Assembleia.",
@@ -530,7 +530,7 @@
           },
           "quem": {
             "pt": "Um representante de cada Câmara Setorial ou setor estratégico do estado, mais um ponto focal do Grupo de Trabalho de Planejamento. São nove grupos ao todo.",
-            "en": "One representative from each Sectoral Chamber or strategic sector of the state, plus a focal point from the Planning Working Group. Nine groups in total."
+            "en": "One representative from each strategic sector of the state for the Strategy, plus a focal point from the Planning Working Group. Nine groups in total."
           },
           "papel": {
             "pt": "Reportam os dados das secretarias estaduais sobre as ações vinculadas à Estratégia.",
@@ -698,19 +698,24 @@
       },
       "equipe": [
         {
-          "pt": "Ícaro Lebre Gundim"
+          "pt": "Ícaro Lebre Gundim",
+          "en": null
         },
         {
-          "pt": "Luísa Nascimento Ribeiro"
+          "pt": "Luísa Nascimento Ribeiro",
+          "en": null
         },
         {
-          "pt": "Vinicius Carneiro de Farias"
+          "pt": "Vinicius Carneiro de Farias",
+          "en": null
         },
         {
-          "pt": "Roseneide Mendonça de Sena"
+          "pt": "Roseneide Mendonça de Sena",
+          "en": null
         },
         {
-          "pt": "Denyscley Oliveira Bandeira"
+          "pt": "Denyscley Oliveira Bandeira",
+          "en": null
         }
       ]
     },
