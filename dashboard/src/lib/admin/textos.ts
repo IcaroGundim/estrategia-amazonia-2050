@@ -57,7 +57,7 @@ export const GRUPOS: Grupo[] = [
   { id: 'eixos', caminhos: ['visaoGeral.eixos'], secao: 'Lâminas', titulo: 'Lâmina 3: Eixos', descricao: 'Os cinco eixos.', ancora: 'eixos-de-implementacao', item: 'Eixo' },
   { id: 'governanca', caminhos: ['visaoGeral.governanca'], secao: 'Lâminas', titulo: 'Lâmina 4: Governança', descricao: 'Quem decide: as sete instâncias da governança, a legenda e os rótulos do detalhe.', ancora: 'governanca' },
   { id: 'ipam', caminhos: ['visaoGeral.estePainel'], secao: 'Lâminas', titulo: 'Lâmina 5: IPAM', descricao: 'O papel do IPAM na construção da Estratégia, a citação dos governadores e o crédito ao instituto.', ancora: 'calculo' },
-  { id: 'desenvolvimento', caminhos: ['visaoGeral.desenvolvimento'], secao: 'Lâminas', titulo: 'Quem desenvolveu', descricao: 'O reconhecimento à equipe que fez a plataforma, com o brasão do Acre e a logo da SEPLAN. Os nomes das instituições ficam só nas marcas; o texto não os repete. Só aparece na Visão Geral editorial.', ancora: 'desenvolvimento' },
+  { id: 'desenvolvimento', caminhos: ['visaoGeral.desenvolvimento'], secao: 'Lâminas', titulo: 'Quem desenvolveu', descricao: 'O reconhecimento à equipe que fez a plataforma, com o brasão do Acre e a logo da SEPLAN. Os nomes das instituições ficam só nas marcas; o texto não os repete. Os nomes da equipe aparecem abaixo do texto, ao lado do fio amarelo, na ordem da lista. Só aparece na Visão Geral editorial.', ancora: 'desenvolvimento' },
   { id: 'explorar', caminhos: ['visaoGeral.explorar'], secao: 'Lâminas', titulo: 'Explore o painel', descricao: 'Os três cartões que levam às outras abas e o crédito das fotografias. Só aparece na Visão Geral editorial.', ancora: 'explorar', item: 'Cartão' },
   { id: 'nota-tecnica', caminhos: ['panorama.metodologia.title', 'panorama.metodologia.text', 'panorama.metodologia.dimensions', 'panorama.metodologia.sources'], secao: 'Nota técnica', titulo: 'Nota técnica: síntese comparativa', descricao: 'Título, texto, dimensões e fontes consolidadas da síntese comparativa. Vão para a nota técnica em PDF, que é gerada à parte (npm run nota-tecnica); nenhuma página do painel os mostra, então a prévia não muda.' }
 ];
@@ -78,10 +78,10 @@ const NOME_DO_CAMPO: Record<string, string> = {
   verMetas: 'link para as metas', capital: 'capital', area: 'área', milKm2: 'unidade da área', mapa: 'descrição do mapa',
   abrir: 'link de cada cartão', creditoFotos: 'crédito das fotografias',
   arte: 'desenho', escala: 'escala do mapa', estados: 'nota dos estados', indicadores: 'nota dos indicadores', meta: 'rótulo da meta',
-  governo: 'nome ao lado do brasão'
+  governo: 'nome ao lado do brasão', equipeRotulo: 'rótulo da equipe'
 };
 const NOME_DA_LISTA: Record<string, string> = {
-  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão', instancias: 'Instância', legenda: 'Legenda', cartoes: 'Cartão'
+  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão', instancias: 'Instância', legenda: 'Legenda', cartoes: 'Cartão', equipe: 'Nome da equipe'
 };
 const emPalavras = (chave: string) => chave.replace(/([a-z])([A-Z0-9])/g, '$1 $2').toLowerCase();
 const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);

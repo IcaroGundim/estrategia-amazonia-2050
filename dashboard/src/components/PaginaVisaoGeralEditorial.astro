@@ -36,6 +36,9 @@ const estePainel = vg.estePainel;
 const contribuicao = estePainel.contribuicao ?? publicado.estePainel.contribuicao;
 const citacao = estePainel.citacao ?? publicado.estePainel.citacao;
 const desenvolvimento = vg.desenvolvimento ?? publicado.desenvolvimento;
+// um rascunho salvo antes da lista de nomes não a tem
+const equipe = desenvolvimento.equipe ?? publicado.desenvolvimento.equipe ?? [];
+const equipeRotulo = desenvolvimento.equipeRotulo ?? publicado.desenvolvimento.equipeRotulo;
 // a foto do reconhecimento é a do Acre no território (rio Crôa)
 const acre = ESTADOS.find((estado) => estado.uf === 'AC')!;
 const gov = 'instancias' in vg.governanca ? vg.governanca : publicado.governanca;
@@ -410,6 +413,13 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
           <div class="ve-rubrica ve-surge" style="--i:1"><b>06</b><span class="ve-chapeu">{tx(desenvolvimento.chapeu)}</span><i></i></div>
           <h2 class="ve-dev-titulo ve-surge" style="--i:2">{tx(desenvolvimento.titulo)}</h2>
           <p class="ve-dev-texto ve-surge" style="--i:3">{tx(desenvolvimento.texto)}</p>
+          {/* os créditos repetem o fio amarelo da logo da SEPLAN: rótulo, fio e os nomes em duas colunas */}
+          {equipe.length > 0 && (
+            <div class="ve-dev-creditos ve-surge" style="--i:4">
+              <span class="ve-dev-rotulo">{tx(equipeRotulo)}</span>
+              <ul class="ve-dev-equipe">{equipe.map((nome) => <li>{tx(nome)}</li>)}</ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

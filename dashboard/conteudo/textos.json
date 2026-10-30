@@ -681,8 +681,8 @@
         "en": "Who built it"
       },
       "titulo": {
-        "pt": "Feita no Acre, para a Amazônia Legal",
-        "en": "Made in Acre, for the Legal Amazon"
+        "pt": "Feita na Amazônia, por amazônidas",
+        "en": "Made in the Amazon, by Amazonians"
       },
       "texto": {
         "pt": "Os dados, os indicadores e a página que você está lendo foram construídos por uma equipe acreana, a serviço do Consórcio Interestadual da Amazônia Legal e dos nove estados.",
@@ -691,7 +691,28 @@
       "governo": {
         "pt": "Governo do Estado do Acre",
         "en": "Government of the State of Acre"
-      }
+      },
+      "equipeRotulo": {
+        "pt": "Equipe técnica",
+        "en": "Technical team"
+      },
+      "equipe": [
+        {
+          "pt": "Ícaro Lebre Gundim"
+        },
+        {
+          "pt": "Luísa Nascimento Ribeiro"
+        },
+        {
+          "pt": "Vinicius Carneiro de Farias"
+        },
+        {
+          "pt": "Roseneide Mendonça de Sena"
+        },
+        {
+          "pt": "Denyscley Oliveira Bandeira"
+        }
+      ]
     },
     "explorar": {
       "chapeu": {

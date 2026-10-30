@@ -245,7 +245,8 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
    e à direita (o texto); as marcas direto na foto, sem placa */
 .ve-dev { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(var(--ve-tela), 640px); padding-block: clamp(48px, calc(var(--ve-vh) * 8), 96px); overflow: hidden; color: var(--areia); }
 .ve-dev > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
-.ve-dev > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .86) 0%, rgba(8, 26, 20, .7) 38%, rgba(8, 26, 20, .4) 60%, rgba(8, 26, 20, .8) 100%); }
+/* o véu fica mais escuro no meio, onde a canoa clara passa atrás do texto */
+.ve-dev > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .88) 0%, rgba(8, 26, 20, .8) 38%, rgba(8, 26, 20, .74) 60%, rgba(8, 26, 20, .86) 100%); }
 .ve-dev .ve-rubrica b { color: var(--areia); }
 .ve-dev .ve-rubrica i { background: rgba(245, 240, 232, .25); }
 .ve-dev .ve-chapeu { color: var(--ocre); }
@@ -257,7 +258,13 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-dev-traco { width: 56px; height: 3px; margin: 24px 0; border-radius: 2px; background: #ffcc00; }
 .ve-dev .ve-dev-logo { width: 100%; max-width: 380px; height: auto; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .3)); }
 .ve-dev-titulo { margin: 0; color: var(--areia); font: 800 clamp(28px, 3vw, 46px)/1.04 var(--display); letter-spacing: -.025em; text-wrap: balance; text-shadow: 0 2px 14px rgba(0, 0, 0, .25); }
-.ve-dev-texto { max-width: 560px; margin: 16px 0 0; color: #eef2ee; font-size: clamp(15px, calc(var(--ve-vh) * 2.2), 17px); line-height: 1.6; text-shadow: 0 1px 3px rgba(0, 0, 0, .4); }
+/* a regra geral dos h2 (.ve-pagina h2, verde-mata) venceria a cor clara */
+.ve-pagina .ve-dev-titulo { color: var(--areia); }
+.ve-dev-texto { max-width: 620px; margin: 18px 0 0; color: #fff; font-size: clamp(16px, min(1.45vw, calc(var(--ve-vh) * 2.6)), 20px); line-height: 1.6; text-shadow: 0 1px 2px rgba(0, 0, 0, .7), 0 0 14px rgba(0, 0, 0, .45); }
+/* os nomes passam por cima da canoa clara da foto: branco, um pouco mais de peso e sombra dupla para ler em qualquer trecho */
+.ve-dev-creditos { display: grid; grid-template-columns: auto auto; justify-content: start; align-items: center; gap: 0 16px; margin-top: clamp(20px, calc(var(--ve-vh) * 3.6), 30px); }
+.ve-dev-rotulo { width: min-content; color: var(--areia); font: 700 12px/1.3 var(--text); letter-spacing: .12em; text-align: right; text-transform: uppercase; text-shadow: 0 1px 3px rgba(0, 0, 0, .7); }
+.ve-dev-equipe { display: grid; grid-template-columns: auto auto; grid-auto-flow: column; grid-template-rows: repeat(3, auto); column-gap: 28px; margin: 0; padding: 3px 0 3px 16px; border-left: 2px solid #ffcc00; list-style: none; color: #fff; font: 600 clamp(15px, 1.25vw, 18px)/1.6 var(--text); white-space: nowrap; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 14px rgba(0, 0, 0, .55); }
 /* a moldura das lâminas: perfil verde com a luz do alto, filete dourado, passe-partout claro e sombra na parede;
    sobre o fundo escuro, um fio claro por fora separa o perfil da foto */
 .ve-ipam-placa {
@@ -365,6 +372,8 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   /* com os eixos em duas colunas eles não cabem numa tela: a seção cresce e a foto volta à proporção */
   .ve-gov-estrutura { grid-template-columns: minmax(0, 1fr); }
   .ve-gov-lado { position: static; }
+  /* a coluna do texto fica estreita demais para os nomes em duas colunas */
+  .ve-dev-equipe { grid-template-columns: auto; grid-auto-flow: row; grid-template-rows: none; }
 }
 @media (max-width: 860px) {
   .ve-topo { grid-template-columns: minmax(0, 1fr); }
@@ -419,6 +428,9 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   .ve-ipam-placa { max-width: 300px; }
   .ve-dev-grade { grid-template-columns: minmax(0, 1fr); }
   .ve-dev .ve-dev-logo { max-width: 300px; }
+  .ve-dev-creditos { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ve-dev-rotulo { width: auto; text-align: left; }
+  .ve-dev-equipe { grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; grid-template-rows: none; white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ve-pagina *, .ve-pagina *::before, .ve-pagina *::after { transition: none !important; animation: none !important; }
