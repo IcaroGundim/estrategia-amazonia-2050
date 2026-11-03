@@ -34,37 +34,46 @@
 .pr-cred a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .pr-bandeira { width: 46px; height: 31px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px rgba(255, 255, 255, .5); }
 
-/* ---------- capa ---------- */
-.pr-capa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: clamp(24px, 4vw, 64px); min-height: var(--pr-tela); padding: 40px var(--pr-margem); background: var(--mata); color: var(--areia); }
-.pr-capa .pr-fina, .pr-capa .pr-legenda { color: #e6ece7; }
+/* ---------- capa ----------
+   Na areia, como o resto da aba. O mapa tem cada estado coberto pela própria
+   bandeira (o enquadramento sai do PaginaPrioridades.astro), como peças de
+   papel recortado: um fio de areia entre os estados e uma sombra curta. */
+.pr-capa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: clamp(24px, 4vw, 64px); min-height: var(--pr-tela); padding: 40px var(--pr-margem); }
+.pr-capa .pr-h1 { color: var(--mata); }
+.pr-capa .pr-h1 em { font-style: normal; color: var(--mata-500); }
+.pr-capa .pr-fina { color: var(--tinta-2); }
 .pr-numeros { display: flex; flex-wrap: wrap; gap: clamp(22px, 3.4vw, 56px); margin-top: clamp(28px, 5vh, 52px); }
-.pr-numeros b { display: block; color: var(--ocre); font: 800 clamp(42px, 4.6vw, 68px)/1 var(--display); letter-spacing: -.03em; }
-.pr-numeros span { display: block; margin-top: 6px; font-size: 14.5px; opacity: .9; }
-.pr-barra { display: flex; max-width: 520px; height: 12px; margin-top: 32px; overflow: hidden; border-radius: 99px; background: rgba(245, 240, 232, .12); }
+.pr-numeros b { display: block; color: var(--mata); font: 800 clamp(42px, 4.6vw, 68px)/1 var(--display); letter-spacing: -.03em; }
+.pr-numeros span { display: block; margin-top: 6px; color: var(--tinta-3); font-size: 14.5px; }
+.pr-barra { display: flex; max-width: 520px; height: 10px; margin-top: 32px; overflow: hidden; border-radius: 99px; background: var(--pr-areia-2); }
 .pr-barra i { display: block; height: 100%; }
-.pr-legenda { display: flex; flex-wrap: wrap; gap: 8px 18px; max-width: 560px; margin-top: 12px; font-size: 13.5px; }
+.pr-legenda { display: flex; flex-wrap: wrap; gap: 8px 18px; max-width: 560px; margin-top: 12px; color: var(--tinta-3); font-size: 13.5px; }
 .pr-legenda span { display: inline-flex; align-items: center; gap: 7px; }
-.pr-capa .pr-ponto[data-s="Em conclusão"] { background: #fff; box-shadow: none; }
 .pr-mapa { position: relative; }
 .pr-mapa svg, .pr-colado svg { display: block; width: 100%; height: auto; overflow: visible; }
-.pr-mapa path, .pr-colado path { stroke-linejoin: round; cursor: pointer; transform-box: fill-box; transform-origin: center; transition: fill .35s, transform .35s var(--pr-suave), filter .2s; }
-.pr-mapa path { stroke: var(--mata); stroke-width: .8; }
-.pr-mapa path:hover { filter: brightness(1.1); transform: scale(1.025); }
-.pr-mapa text, .pr-colado text { font-family: var(--display); text-anchor: middle; pointer-events: none; }
-.pr-uf { font-size: 8.5px; font-weight: 800; fill: var(--mata); }
-.pr-qtd { font-size: 6.4px; font-weight: 600; fill: var(--mata); }
-.pr-anima .pr-mapa path { opacity: 0; animation: pr-surge .6s var(--pr-suave) forwards; animation-delay: calc(var(--i) * 70ms + .2s); }
-@keyframes pr-surge { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
-.pr-dica { position: absolute; z-index: 3; padding: 8px 12px; border-radius: 8px; background: var(--areia); color: var(--mata); font-size: 13px; line-height: 1.35; white-space: nowrap; pointer-events: none; transform: translate(-50%, calc(-100% - 10px)); box-shadow: 0 8px 24px rgba(0, 0, 0, .25); }
-.pr-dica b { font-family: var(--display); }
-.pr-mapa-legenda { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 14px; margin: 12px 0 0; color: rgba(245, 240, 232, .7); font-size: 12.5px; }
-.pr-mapa-legenda span { display: inline-flex; align-items: center; gap: 6px; }
-.pr-mapa-legenda i { width: 12px; height: 12px; border-radius: 3px; }
+.pr-pecas { filter: drop-shadow(0 10px 14px rgba(43, 31, 23, .18)) drop-shadow(0 1px 1px rgba(43, 31, 23, .25)); }
+.pr-peca { cursor: pointer; outline: none; transform-box: fill-box; transform-origin: center; transition: transform .45s var(--pr-suave), opacity .45s var(--pr-suave), filter .35s; }
+.pr-peca:hover, .pr-peca:focus-visible { transform: scale(1.045); filter: drop-shadow(0 8px 10px rgba(43, 31, 23, .3)); }
+.pr-mapa svg:has(.pr-peca:hover) .pr-peca:not(:hover) { opacity: .55; }
+.pr-peca-borda { fill: none; stroke: var(--areia); stroke-width: 1.3; stroke-linejoin: round; pointer-events: none; }
+.pr-sigla-fundo { fill: rgba(245, 240, 232, .94); pointer-events: none; }
+.pr-sigla { font: 700 6.6px var(--display); letter-spacing: .06em; text-anchor: middle; dominant-baseline: central; fill: var(--mata); pointer-events: none; }
+/* a entrada mexe no translate, e não no transform, para não brigar com o do mouse; e só segura o
+   quadro inicial (backwards), para depois a opacidade voltar a ser a do CSS (os outros estados esmaecem) */
+.pr-anima .pr-peca, .pr-anima .pr-sigla, .pr-anima .pr-sigla-fundo { animation: pr-surge .6s var(--pr-suave) backwards; animation-delay: calc(var(--i) * 70ms + .2s); }
+@keyframes pr-surge { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: none; } }
+.pr-dica { position: absolute; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 9px 14px 9px 10px; border-radius: 10px; background: var(--mata); color: var(--areia); font: 700 14px/1.25 var(--display); white-space: nowrap; pointer-events: none; transform: translate(-50%, calc(-100% - 14px)); box-shadow: 0 12px 28px -12px rgba(0, 0, 0, .55); }
+.pr-dica[hidden] { display: none; }
+.pr-dica img { width: 30px; height: 21px; object-fit: cover; border-radius: 3px; }
+.pr-dica small { display: block; color: var(--mata-100); font: 400 12px var(--text); }
+.pr-mapa-legenda { margin: 14px 0 0; color: var(--tinta-4); font-size: 13px; text-align: right; }
 
 /* ---------- rolagem: mapa parado + estados ---------- */
 .pr-rolagem { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(24px, 4vw, 64px); padding: 0 var(--pr-margem); }
 .pr-colado { position: sticky; top: var(--pr-barra); display: flex; flex-direction: column; justify-content: center; height: var(--pr-tela); }
-.pr-colado path { fill: #ddd3c3; stroke: var(--areia); stroke-width: .8; }
+.pr-colado path { stroke-linejoin: round; cursor: pointer; transform-box: fill-box; transform-origin: center; transition: fill .35s, transform .35s var(--pr-suave), filter .2s; fill: #ddd3c3; stroke: var(--areia); stroke-width: .8; }
+.pr-colado text { font-family: var(--display); text-anchor: middle; pointer-events: none; }
+.pr-uf { font-size: 8.5px; font-weight: 800; fill: var(--mata); }
 .pr-colado path:hover { fill: #cfc3ae; }
 .pr-colado path.is-atual { fill: var(--mata-500); }
 .pr-colado .pr-uf { fill: var(--tinta-3); font-size: 7.5px; transition: fill .35s; }

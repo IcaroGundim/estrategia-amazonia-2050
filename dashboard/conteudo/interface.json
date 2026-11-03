@@ -619,7 +619,8 @@
       "pagina": "projetos",
       "chaves": [
         "Prioridades dos Estados · 2º semestre de 2026",
-        "O que cada estado priorizou na Estratégia",
+        "Os projetos prioritários",
+        "dos estados",
         "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.",
         "projetos prioritários",
         "estados do Consórcio",
@@ -629,13 +630,9 @@
         "Em elaboração",
         "Não iniciada",
         "Sem informação",
-        "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um",
-        "prioridades por estado:",
-        "4 a 6",
-        "7 ou mais",
-        "· clique para ver",
-        "1 prioridade",
-        "{n} prioridades",
+        "Mapa dos nove estados da Amazônia Legal, cada um com a sua bandeira",
+        "ver os projetos ↓",
+        "clique num estado para ver os projetos dele",
         "{n} de {total}",
         "{a} e {b}",
         "Resultado esperado igual nos {n} projetos:",
@@ -1900,169 +1897,9 @@
       "pt": "recorte de exibição",
       "en": "cropped for display"
     },
-    "Trajetória": {
-      "pt": "Trajetória",
-      "en": "Trajectory"
-    },
-    "Onde a Amazônia Legal está no caminho até 2050": {
-      "pt": "Onde a Amazônia Legal está no caminho até 2050",
-      "en": "Where the Brazilian Amazon stands on the path to 2050"
-    },
-    "Onde {estado} está no caminho até 2050": {
-      "pt": "Onde {estado} está no caminho até 2050",
-      "en": "Where {estado} stands on the way to 2050"
-    },
-    "Ver o quadro de metas": {
-      "pt": "Ver o quadro de metas",
-      "en": "See the goals board"
-    },
-    "Como a trajetória é calculada": {
-      "pt": "Como a trajetória é calculada",
-      "en": "How the trajectory is calculated"
-    },
-    "Modelo": {
-      "pt": "Modelo",
-      "en": "Model"
-    },
-    "Extrapolação de tendência linear": {
-      "pt": "Extrapolação de tendência linear",
-      "en": "Linear trend extrapolation"
-    },
-    "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:": {
-      "pt": "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:",
-      "en": "Linear regression by ordinary least squares (OLS), with time as the only explanatory variable:"
-    },
-    "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.": {
-      "pt": "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
-      "en": "where y is the value of the indicator in year t, for the Brazilian Amazon or the selected state."
-    },
-    "Janela": {
-      "pt": "Janela",
-      "en": "Window"
-    },
     "Ritmo": {
       "pt": "Ritmo",
       "en": "Pace"
-    },
-    "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.": {
-      "pt": "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.",
-      "en": "It is the estimated slope β, in the indicator’s unit per year. The intercept α is not used."
-    },
-    "Ano de alcance": {
-      "pt": "Ano de alcance",
-      "en": "Year reached"
-    },
-    "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:": {
-      "pt": "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:",
-      "en": "The pace is applied from the latest observed value, not from the value fitted by the line:"
-    },
-    "último ano + (meta − último valor) ÷ β": {
-      "pt": "último ano + (meta − último valor) ÷ β",
-      "en": "latest year + (target − latest value) ÷ β"
-    },
-    "arredondado para cima.": {
-      "pt": "arredondado para cima.",
-      "en": "rounded up."
-    },
-    "Método composto": {
-      "pt": "Método composto",
-      "en": "Compound method"
-    },
-    "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.": {
-      "pt": "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.",
-      "en": "For targets configured this way, the pace is the compound growth rate between the first and last year of the window, and the year reached follows that rate."
-    },
-    "Leituras": {
-      "pt": "Leituras",
-      "en": "Readings"
-    },
-    "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.": {
-      "pt": "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.",
-      "en": "Diagram: on pace before the deadline, below pace after the deadline, not reached never getting to the target."
-    },
-    "último ano": {
-      "pt": "último ano",
-      "en": "latest year"
-    },
-    "prazo": {
-      "pt": "prazo",
-      "en": "deadline"
-    },
-    "abaixo do ritmo": {
-      "pt": "abaixo do ritmo",
-      "en": "below pace"
-    },
-    "o ano de alcance é igual ou anterior ao prazo da meta.": {
-      "pt": "o ano de alcance é igual ou anterior ao prazo da meta.",
-      "en": "the year reached is on or before the target deadline."
-    },
-    "a inclinação é nula ou tem sentido contrário ao da meta.": {
-      "pt": "a inclinação é nula ou tem sentido contrário ao da meta.",
-      "en": "the slope is zero or points away from the target."
-    },
-    "o último valor já atende à meta.": {
-      "pt": "o último valor já atende à meta.",
-      "en": "the latest value already meets the target."
-    },
-    "menos de três anos com dado.": {
-      "pt": "menos de três anos com dado.",
-      "en": "fewer than three years with data."
-    },
-    "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.": {
-      "pt": "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.",
-      "en": "This projection is based solely on the historical series and does not account for public policy, budget or climate factors; it therefore does not constitute a forecast."
-    },
-    "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.": {
-      "pt": "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.",
-      "en": "The fit does not compute standard errors, confidence intervals or significance tests."
-    },
-    "no ritmo": {
-      "pt": "no ritmo",
-      "en": "on track"
-    },
-    "Nenhuma meta com trajetória neste recorte.": {
-      "pt": "Nenhuma meta com trajetória neste recorte.",
-      "en": "No target with a trajectory in this view."
-    },
-    "cumprida": {
-      "pt": "cumprida",
-      "en": "met"
-    },
-    "não alcança": {
-      "pt": "não alcança",
-      "en": "not reached"
-    },
-    "sem série": {
-      "pt": "sem série",
-      "en": "no series"
-    },
-    "o ano de alcance é posterior ao prazo.": {
-      "pt": "o ano de alcance é posterior ao prazo.",
-      "en": "the year reached is after the deadline."
-    },
-    "meta {valor}": {
-      "pt": "meta {valor}",
-      "en": "target {valor}"
-    },
-    "prazo {ano}": {
-      "pt": "prazo {ano}",
-      "en": "deadline {ano}"
-    },
-    "projeção": {
-      "pt": "projeção",
-      "en": "projection"
-    },
-    "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.": {
-      "pt": "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.",
-      "en": "{nome}: {valor} in {ano}; target {alvo} by {prazo}. Use the arrow keys to move through the years."
-    },
-    "Já cumpridas:": {
-      "pt": "Já cumpridas:",
-      "en": "Already met:"
-    },
-    "Trajetória desligada:": {
-      "pt": "Trajetória desligada:",
-      "en": "Trajectory switched off:"
     },
     "atual": {
       "pt": "atual",
@@ -2420,58 +2257,6 @@
       "pt": "parcela dos nove estados que atingem o patamar",
       "en": "share of the nine states that reach the threshold"
     },
-    "Metas com projeção": {
-      "pt": "Metas com projeção",
-      "en": "Goals with a projection"
-    },
-    "Metas com série insuficiente para projetar": {
-      "pt": "Metas com série insuficiente para projetar",
-      "en": "Goals with too short a series to project"
-    },
-    "Indicadores sem meta numérica: tendência até 2050": {
-      "pt": "Indicadores sem meta numérica: tendência até 2050",
-      "en": "Indicators without a numeric target: trend to 2050"
-    },
-    "Indicadores sem meta numérica: valor atual": {
-      "pt": "Indicadores sem meta numérica: valor atual",
-      "en": "Indicators without a numeric target: latest value"
-    },
-    "Sem dado neste recorte:": {
-      "pt": "Sem dado neste recorte:",
-      "en": "No data for this selection:"
-    },
-    "Atual": {
-      "pt": "Atual",
-      "en": "Latest"
-    },
-    "até {ano}": {
-      "pt": "até {ano}",
-      "en": "by {ano}"
-    },
-    "{n} anos com dado: série insuficiente para projetar": {
-      "pt": "{n} anos com dado: série insuficiente para projetar",
-      "en": "{n} years of data: too short a series to project"
-    },
-    "Um ano com dado: série insuficiente para projetar": {
-      "pt": "Um ano com dado: série insuficiente para projetar",
-      "en": "One year of data: too short a series to project"
-    },
-    "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.": {
-      "pt": "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.",
-      "en": "{nome}: {valor} in {ano}; trend reaches {final} in {fim}. Use the arrow keys to move through the years."
-    },
-    "chega a zero em {ano}": {
-      "pt": "chega a zero em {ano}",
-      "en": "reaches zero in {ano}"
-    },
-    "tendência em {ano}": {
-      "pt": "tendência em {ano}",
-      "en": "trend in {ano}"
-    },
-    "Trajetória desligada.": {
-      "pt": "Trajetória desligada.",
-      "en": "Trajectory switched off."
-    },
     "IPAM": {
       "pt": "IPAM",
       "en": "IPAM"
@@ -2503,26 +2288,6 @@
     "órgãos": {
       "pt": "órgãos",
       "en": "agencies"
-    },
-    "ritmo de {desde} a {ate}": {
-      "pt": "ritmo de {desde} a {ate}",
-      "en": "pace from {desde} to {ate}"
-    },
-    "janela fixa desta meta": {
-      "pt": "janela fixa desta meta",
-      "en": "fixed window for this goal"
-    },
-    "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.": {
-      "pt": "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.",
-      "en": "The last 10 years of the series are used, counted back from the most recent year with data; a shorter series is used in full. Ten years show the underlying trend and are not swayed by one unusual year, but they are slow to recognise a recent change of course. At least three years with data are needed, and years without a value are left out. A goal with a break in its series uses a fixed window, shown on the card."
-    },
-    "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.": {
-      "pt": "Ritmo: variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
-      "en": "Pace: average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
-    },
-    "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
-      "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
-      "en": "The pace of the past 10 years for each target, measured against the agreed deadline. For indicators without a numerical target, the trend through 2050. This is a mechanical projection based on the historical series, not a forecast."
     },
     "desde {ano}": {
       "pt": "desde {ano}",
@@ -2560,10 +2325,6 @@
       "pt": "Prioridades dos Estados · 2º semestre de 2026",
       "en": "State priorities · 2nd half of 2026"
     },
-    "O que cada estado priorizou na Estratégia": {
-      "pt": "O que cada estado priorizou na Estratégia",
-      "en": "What each state prioritized in the Strategy"
-    },
     "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.": {
       "pt": "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.",
       "en": "The planning departments of the Consortium's nine states named the projects that drive the Strategy in each territory."
@@ -2599,34 +2360,6 @@
     "Sem informação": {
       "pt": "Sem informação",
       "en": "No information"
-    },
-    "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um": {
-      "pt": "Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um",
-      "en": "Map of the nine Legal Amazon states, with the number of priorities in each"
-    },
-    "prioridades por estado:": {
-      "pt": "prioridades por estado:",
-      "en": "priorities per state:"
-    },
-    "4 a 6": {
-      "pt": "4 a 6",
-      "en": "4 to 6"
-    },
-    "7 ou mais": {
-      "pt": "7 ou mais",
-      "en": "7 or more"
-    },
-    "· clique para ver": {
-      "pt": "· clique para ver",
-      "en": "· click to view"
-    },
-    "1 prioridade": {
-      "pt": "1 prioridade",
-      "en": "1 priority"
-    },
-    "{n} prioridades": {
-      "pt": "{n} prioridades",
-      "en": "{n} priorities"
     },
     "{n} de {total}": {
       "pt": "{n} de {total}",
@@ -2767,6 +2500,258 @@
     "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).": {
       "pt": "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).",
       "en": "Photos from Brazil's Ministry of Tourism (Flickr MTur Destinos, public domain), except the Crôa river photo (Wikimedia Commons)."
+    },
+    "Os projetos prioritários": {
+      "pt": "Os projetos prioritários",
+      "en": "Priority projects"
+    },
+    "dos estados": {
+      "pt": "dos estados",
+      "en": "of the states"
+    },
+    "Mapa dos nove estados da Amazônia Legal, cada um com a sua bandeira": {
+      "pt": "Mapa dos nove estados da Amazônia Legal, cada um com a sua bandeira",
+      "en": "Map of the nine Legal Amazon states, each shown with its flag"
+    },
+    "ver os projetos ↓": {
+      "pt": "ver os projetos ↓",
+      "en": "see the projects ↓"
+    },
+    "clique num estado para ver os projetos dele": {
+      "pt": "clique num estado para ver os projetos dele",
+      "en": "click a state to see its projects"
+    },
+    "Trajetória": {
+      "pt": "Trajetória",
+      "en": "Trajectory"
+    },
+    "Onde a Amazônia Legal está no caminho até 2050": {
+      "pt": "Onde a Amazônia Legal está no caminho até 2050",
+      "en": "Where the Brazilian Amazon stands on the path to 2050"
+    },
+    "Onde {estado} está no caminho até 2050": {
+      "pt": "Onde {estado} está no caminho até 2050",
+      "en": "Where {estado} stands on the way to 2050"
+    },
+    "Ver o quadro de metas": {
+      "pt": "Ver o quadro de metas",
+      "en": "See the goals board"
+    },
+    "Como a trajetória é calculada": {
+      "pt": "Como a trajetória é calculada",
+      "en": "How the trajectory is calculated"
+    },
+    "Modelo": {
+      "pt": "Modelo",
+      "en": "Model"
+    },
+    "Extrapolação de tendência linear": {
+      "pt": "Extrapolação de tendência linear",
+      "en": "Linear trend extrapolation"
+    },
+    "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:": {
+      "pt": "Regressão linear por mínimos quadrados ordinários (MQO), com o tempo como única variável explicativa:",
+      "en": "Linear regression by ordinary least squares (OLS), with time as the only explanatory variable:"
+    },
+    "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.": {
+      "pt": "em que y é o valor do indicador no ano t, na Amazônia Legal ou no estado selecionado.",
+      "en": "where y is the value of the indicator in year t, for the Brazilian Amazon or the selected state."
+    },
+    "Janela": {
+      "pt": "Janela",
+      "en": "Window"
+    },
+    "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.": {
+      "pt": "É a inclinação β estimada, na unidade do indicador por ano. O intercepto α não é usado.",
+      "en": "It is the estimated slope β, in the indicator’s unit per year. The intercept α is not used."
+    },
+    "Ano de alcance": {
+      "pt": "Ano de alcance",
+      "en": "Year reached"
+    },
+    "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:": {
+      "pt": "O ritmo é aplicado a partir do último valor observado, e não do valor ajustado pela reta:",
+      "en": "The pace is applied from the latest observed value, not from the value fitted by the line:"
+    },
+    "último ano + (meta − último valor) ÷ β": {
+      "pt": "último ano + (meta − último valor) ÷ β",
+      "en": "latest year + (target − latest value) ÷ β"
+    },
+    "arredondado para cima.": {
+      "pt": "arredondado para cima.",
+      "en": "rounded up."
+    },
+    "Método composto": {
+      "pt": "Método composto",
+      "en": "Compound method"
+    },
+    "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.": {
+      "pt": "Em metas assim configuradas, o ritmo é a taxa de crescimento composta entre o primeiro e o último ano da janela, e o ano de alcance segue essa taxa.",
+      "en": "For targets configured this way, the pace is the compound growth rate between the first and last year of the window, and the year reached follows that rate."
+    },
+    "Leituras": {
+      "pt": "Leituras",
+      "en": "Readings"
+    },
+    "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.": {
+      "pt": "Esquema: no ritmo antes do prazo, abaixo do ritmo depois do prazo, não alcança sem chegar à meta.",
+      "en": "Diagram: on pace before the deadline, below pace after the deadline, not reached never getting to the target."
+    },
+    "último ano": {
+      "pt": "último ano",
+      "en": "latest year"
+    },
+    "prazo": {
+      "pt": "prazo",
+      "en": "deadline"
+    },
+    "abaixo do ritmo": {
+      "pt": "abaixo do ritmo",
+      "en": "below pace"
+    },
+    "o ano de alcance é igual ou anterior ao prazo da meta.": {
+      "pt": "o ano de alcance é igual ou anterior ao prazo da meta.",
+      "en": "the year reached is on or before the target deadline."
+    },
+    "a inclinação é nula ou tem sentido contrário ao da meta.": {
+      "pt": "a inclinação é nula ou tem sentido contrário ao da meta.",
+      "en": "the slope is zero or points away from the target."
+    },
+    "o último valor já atende à meta.": {
+      "pt": "o último valor já atende à meta.",
+      "en": "the latest value already meets the target."
+    },
+    "menos de três anos com dado.": {
+      "pt": "menos de três anos com dado.",
+      "en": "fewer than three years with data."
+    },
+    "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.": {
+      "pt": "Trata-se de uma projeção baseada exclusivamente na série histórica, sem considerar políticas públicas, orçamento ou fatores climáticos; portanto, não constitui previsão.",
+      "en": "This projection is based solely on the historical series and does not account for public policy, budget or climate factors; it therefore does not constitute a forecast."
+    },
+    "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.": {
+      "pt": "O ajuste não calcula erro-padrão, intervalo de confiança nem teste de significância.",
+      "en": "The fit does not compute standard errors, confidence intervals or significance tests."
+    },
+    "no ritmo": {
+      "pt": "no ritmo",
+      "en": "on track"
+    },
+    "Nenhuma meta com trajetória neste recorte.": {
+      "pt": "Nenhuma meta com trajetória neste recorte.",
+      "en": "No target with a trajectory in this view."
+    },
+    "cumprida": {
+      "pt": "cumprida",
+      "en": "met"
+    },
+    "não alcança": {
+      "pt": "não alcança",
+      "en": "not reached"
+    },
+    "sem série": {
+      "pt": "sem série",
+      "en": "no series"
+    },
+    "o ano de alcance é posterior ao prazo.": {
+      "pt": "o ano de alcance é posterior ao prazo.",
+      "en": "the year reached is after the deadline."
+    },
+    "meta {valor}": {
+      "pt": "meta {valor}",
+      "en": "target {valor}"
+    },
+    "prazo {ano}": {
+      "pt": "prazo {ano}",
+      "en": "deadline {ano}"
+    },
+    "projeção": {
+      "pt": "projeção",
+      "en": "projection"
+    },
+    "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.": {
+      "pt": "{nome}: {valor} em {ano}; meta {alvo} até {prazo}. Use as setas para percorrer os anos.",
+      "en": "{nome}: {valor} in {ano}; target {alvo} by {prazo}. Use the arrow keys to move through the years."
+    },
+    "Já cumpridas:": {
+      "pt": "Já cumpridas:",
+      "en": "Already met:"
+    },
+    "Trajetória desligada:": {
+      "pt": "Trajetória desligada:",
+      "en": "Trajectory switched off:"
+    },
+    "Metas com projeção": {
+      "pt": "Metas com projeção",
+      "en": "Goals with a projection"
+    },
+    "Metas com série insuficiente para projetar": {
+      "pt": "Metas com série insuficiente para projetar",
+      "en": "Goals with too short a series to project"
+    },
+    "Indicadores sem meta numérica: tendência até 2050": {
+      "pt": "Indicadores sem meta numérica: tendência até 2050",
+      "en": "Indicators without a numeric target: trend to 2050"
+    },
+    "Indicadores sem meta numérica: valor atual": {
+      "pt": "Indicadores sem meta numérica: valor atual",
+      "en": "Indicators without a numeric target: latest value"
+    },
+    "Sem dado neste recorte:": {
+      "pt": "Sem dado neste recorte:",
+      "en": "No data for this selection:"
+    },
+    "Atual": {
+      "pt": "Atual",
+      "en": "Latest"
+    },
+    "até {ano}": {
+      "pt": "até {ano}",
+      "en": "by {ano}"
+    },
+    "{n} anos com dado: série insuficiente para projetar": {
+      "pt": "{n} anos com dado: série insuficiente para projetar",
+      "en": "{n} years of data: too short a series to project"
+    },
+    "Um ano com dado: série insuficiente para projetar": {
+      "pt": "Um ano com dado: série insuficiente para projetar",
+      "en": "One year of data: too short a series to project"
+    },
+    "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.": {
+      "pt": "{nome}: {valor} em {ano}; tendência de {final} em {fim}. Use as setas para percorrer os anos.",
+      "en": "{nome}: {valor} in {ano}; trend reaches {final} in {fim}. Use the arrow keys to move through the years."
+    },
+    "chega a zero em {ano}": {
+      "pt": "chega a zero em {ano}",
+      "en": "reaches zero in {ano}"
+    },
+    "tendência em {ano}": {
+      "pt": "tendência em {ano}",
+      "en": "trend in {ano}"
+    },
+    "Trajetória desligada.": {
+      "pt": "Trajetória desligada.",
+      "en": "Trajectory switched off."
+    },
+    "ritmo de {desde} a {ate}": {
+      "pt": "ritmo de {desde} a {ate}",
+      "en": "pace from {desde} to {ate}"
+    },
+    "janela fixa desta meta": {
+      "pt": "janela fixa desta meta",
+      "en": "fixed window for this goal"
+    },
+    "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.": {
+      "pt": "Entram os últimos 10 anos da série, contados a partir do ano mais recente com dado; série mais curta entra inteira. Dez anos mostram a tendência de fundo e não se deixam levar por um ano fora da curva, mas demoram a reconhecer uma mudança de rumo recente. São precisos ao menos três anos com dado, e anos sem valor ficam de fora. Meta com quebra na série usa uma janela fixa, indicada no card.",
+      "en": "The last 10 years of the series are used, counted back from the most recent year with data; a shorter series is used in full. Ten years show the underlying trend and are not swayed by one unusual year, but they are slow to recognise a recent change of course. At least three years with data are needed, and years without a value are left out. A goal with a break in its series uses a fixed window, shown on the card."
+    },
+    "Ritmo = variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.": {
+      "pt": "Ritmo: variação média por ano nos últimos 10 anos da série, trecho marcado no pé de cada gráfico. Metas sem série anual suficiente ficam sem projeção.",
+      "en": "Pace: average change per year over the last 10 years of the series, the stretch marked at the foot of each chart. Goals without enough annual data get no projection."
+    },
+    "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.": {
+      "pt": "Ritmo dos últimos 10 anos de cada meta contra o prazo pactuado e, nos indicadores sem meta numérica, a tendência até 2050. Projeção mecânica a partir da série, não é previsão.",
+      "en": "The pace of the past 10 years for each target, measured against the agreed deadline. For indicators without a numerical target, the trend through 2050. This is a mechanical projection based on the historical series, not a forecast."
     }
   }
 }

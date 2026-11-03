@@ -3,8 +3,8 @@
 // Planejamento indicaram para a Estratégia (dados em conteudo/prioridades.json,
 // regras de texto e fotos em lib/prioridades.ts).
 //
-// A página: capa com o mapa da Amazônia Legal (o tom de cada estado diz quantas
-// prioridades ele indicou); depois o mapa fica parado à esquerda e acende o
+// A página: capa na areia com o mapa da Amazônia Legal, cada estado coberto
+// pela própria bandeira; depois o mapa fica parado à esquerda e acende o
 // estado que passa à direita. Cada estado tem uma foto panorâmica (a mesma da
 // Visão Geral) e os projetos em colunas por situação. O card do projeto abre
 // crescendo até ocupar a área das colunas; o conteúdo aberto já vem pronto num
@@ -27,7 +27,6 @@ const tp = (texto: string, valores: Record<string, string | number>) => t(texto)
 // a ordem alfabética das siglas, a mesma do índice do mapa
 const UFS = ['AC', 'AP', 'AM', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'];
 const estadoDe = (uf: string) => ESTADOS.find((e) => e.uf === uf)!;
-const prioridades = (n: number) => (n === 1 ? t('1 prioridade') : tp('{n} prioridades', { n }));
 
 // ---------- números da capa ----------
 const contaSit = Object.fromEntries(SITUACOES.map((s) => [s, PRIORIDADES.filter((p) => p.situacao === s).length]));
@@ -45,12 +44,31 @@ const maiorEntrave = entraves[0][1];
 // ---------- mapa (geometria pronta em lib/mapa-prioridades.ts) ----------
 const L = LARGURA, A = ALTURA;
 const MAPA = MAPA_COMPLETO.filter((m) => UFS.includes(m.uf));
-// tons claros sobre o verde da capa: mais prioridades, mais quente (só as faixas que algum estado ocupa entram na legenda)
-const FAIXAS: [number, string, string][] = [[2, '#8fb29f', '2'], [3, '#cddbc9', '3'], [6, '#ead39a', t('4 a 6')], [Infinity, '#e0a83c', t('7 ou mais')]];
-const tom = (n: number) => FAIXAS.find(([lim]) => n <= lim)![1];
-const qtd = (uf: string) => PRIORIDADES.filter((p) => p.uf === uf).length;
-const faixasUsadas = FAIXAS.filter(([, cor]) => UFS.some((uf) => tom(qtd(uf)) === cor));
-const resumoSit = (uf: string) => SITUACOES.map((s) => [s, PRIORIDADES.filter((p) => p.uf === uf && p.situacao === s).length] as const).filter(([, n]) => n).map(([s, n]) => `${n} ${t(s).toLowerCase()}`).join(' · ');
+// Na capa, cada estado é coberto pela própria bandeira, recortada no contorno.
+// A bandeira tem o menor tamanho que cobre o estado e fica centrada nele. Nos
+// estados altos e estreitos ela sobra dos lados e o desenho principal pode
+// ficar de fora: no Amapá ela cresce um pouco e leva a fortaleza para dentro do
+// estado, e no Maranhão sobe ao canto de cima, para o quadro azul com a estrela
+// aparecer (foco = ponto do desenho na bandeira; alvo = deslocamento a partir do
+// lugar da sigla). Em todos os casos a bandeira continua cobrindo o estado.
+const PROPORCAO: Record<string, number> = { AM: 1.4, MA: 1.5, PA: 1.5 }; // as demais são 10 × 7
+const AJUSTE: Record<string, { escala: number; foco: [number, number]; alvo: [number, number] }> = {
+  AP: { escala: 1.2, foco: [.12, .5], alvo: [-8, 4] },
+  MA: { escala: 1, foco: [.15, .2], alvo: [-12, -14] }
+};
+// a sigla do Amapá sobe, para não cobrir a fortaleza
+const SIGLA_Y: Record<string, number> = { AP: -9 };
+const prende = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
+const bandeiraNo = (m: (typeof MAPA)[number]) => {
+  const n = m.d.match(/-?\d+(?:\.\d+)?/g)!.map(Number);
+  const xs = n.filter((_, i) => i % 2 === 0), ys = n.filter((_, i) => i % 2 === 1);
+  const x0 = Math.min(...xs), y0 = Math.min(...ys), w = Math.max(...xs) - x0, h = Math.max(...ys) - y0;
+  const ar = PROPORCAO[m.uf] ?? 10 / 7, aj = AJUSTE[m.uf];
+  const W = Math.max(w, h * ar) * (aj?.escala ?? 1), H = W / ar;
+  const x = aj ? prende(m.rot[0] + aj.alvo[0] - aj.foco[0] * W, x0 + w - W, x0) : x0 + (w - W) / 2;
+  const y = aj ? prende(m.rot[1] + aj.alvo[1] - aj.foco[1] * H, y0 + h - H, y0) : y0 + (h - H) / 2;
+  return { x: x.toFixed(1), y: y.toFixed(1), width: W.toFixed(1), height: H.toFixed(1) };
+};
 
 // ---------- estados ----------
 const listaDeNomes = (ps: Prioridade[]) => { const nomes = ps.map(nomeCurto); return nomes.length === 1 ? nomes[0] : tp('{a} e {b}', { a: nomes.slice(0, -1).join(', '), b: nomes.at(-1)! }); };
@@ -69,7 +87,7 @@ const ESTADOS_DA_PAGINA = UFS.map((uf, k) => {
 const fotoDo = (uf: string, idx: number) => FOTOS_DOS_PROJETOS[uf][idx % FOTOS_DOS_PROJETOS[uf].length];
 const creditosFotos = [...UFS.map((uf) => { const e = estadoDe(uf); return { ...e.foto, lugar: `${e.foto.lugar}, ${e.municipio}`, licenca: e.licenca }; }), ...UFS.flatMap((uf) => FOTOS_DOS_PROJETOS[uf].map((foto) => ({ ...foto, licenca: undefined })))];
 // rótulos dos botões do projeto aberto, para o script
-const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próximo →'), fechar: t('× Todos os projetos'), conta: t('{n} de {total}') });
+const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próximo →'), fechar: t('× Todos os projetos'), conta: t('{n} de {total}'), verProjetos: t('ver os projetos ↓') });
 ---
 
 <div class="pr-pagina" data-prioridades data-rotulos={rotulos}>
@@ -77,7 +95,7 @@ const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próxi
   <section class="pr-capa" aria-labelledby="pr-titulo">
     <div class="pr-capa-texto">
       <p class="pr-rubrica">{t('Prioridades dos Estados · 2º semestre de 2026')}</p>
-      <h1 id="pr-titulo" class="pr-h1">{t('O que cada estado priorizou na Estratégia')}</h1>
+      <h1 id="pr-titulo" class="pr-h1">{t('Os projetos prioritários')} <em>{t('dos estados')}</em></h1>
       <p class="pr-fina">{t('As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.')}</p>
       <div class="pr-numeros">
         <div><b>{PRIORIDADES.length}</b><span>{t('projetos prioritários')}</span></div>
@@ -91,13 +109,24 @@ const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próxi
     </div>
     <div class="pr-capa-mapa">
       <div class="pr-mapa" data-pr-mapa-capa>
-        <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={t('Mapa dos nove estados da Amazônia Legal, com o número de prioridades de cada um')}>
-          {MAPA.map((m, i) => <path d={m.d} data-uf={m.uf} style={`--i:${i}; fill:${tom(qtd(m.uf))}`} data-titulo={`${estadoDe(m.uf).nome} · ${prioridades(qtd(m.uf))}`} data-resumo={resumoSit(m.uf)}><title>{estadoDe(m.uf).nome}: {prioridades(qtd(m.uf))}</title></path>)}
-          {MAPA.map((m) => <><text class="pr-uf" x={m.rot[0].toFixed(1)} y={m.rot[1].toFixed(1)}>{m.uf}</text><text class="pr-qtd" x={m.rot[0].toFixed(1)} y={(m.rot[1] + 7.5).toFixed(1)}>{qtd(m.uf)}</text></>)}
+        <svg viewBox={`0 0 ${L} ${A}`} role="img" aria-label={t('Mapa dos nove estados da Amazônia Legal, cada um com a sua bandeira')}>
+          <defs>{MAPA.map((m) => <clipPath id={`pr-recorte-${m.uf}`}><path d={m.d} /></clipPath>)}</defs>
+          <g class="pr-pecas">
+            {MAPA.map((m, i) => (
+              <g class="pr-peca" data-uf={m.uf} data-nome={estadoDe(m.uf).nome} data-bandeira={estadoDe(m.uf).bandeira} tabindex="0" role="link" aria-label={`${estadoDe(m.uf).nome}: ${t('ver os projetos ↓')}`} style={`--i:${i}`}>
+                <image href={estadoDe(m.uf).bandeira} {...bandeiraNo(m)} preserveAspectRatio="none" clip-path={`url(#pr-recorte-${m.uf})`} />
+                <path class="pr-peca-borda" d={m.d} />
+              </g>
+            ))}
+          </g>
+          {MAPA.map((m, i) => {
+            const y = m.rot[1] + (SIGLA_Y[m.uf] ?? 2);
+            return <><rect class="pr-sigla-fundo" x={(m.rot[0] - 9).toFixed(1)} y={(y - 4.4).toFixed(1)} width="18" height="8.8" rx="4.4" style={`--i:${i}`} /><text class="pr-sigla" x={m.rot[0].toFixed(1)} y={(y + .3).toFixed(1)} style={`--i:${i}`}>{m.uf}</text></>;
+          })}
         </svg>
         <div class="pr-dica" data-pr-dica hidden></div>
       </div>
-      <p class="pr-mapa-legenda"><span>{t('prioridades por estado:')}</span>{faixasUsadas.map(([, cor, rot]) => <span><i style={`background:${cor}`}></i>{rot}</span>)}<span>{t('· clique para ver')}</span></p>
+      <p class="pr-mapa-legenda">{t('clique num estado para ver os projetos dele')}</p>
     </div>
   </section>
 

@@ -6,7 +6,8 @@ import { aoEntrarNaPagina, bindMenu, bindVista, sinalDaPagina } from './shared.j
 //   - a entrada suave dos blocos ao rolar (só com `pr-anima`, que ele põe: sem
 //     script, ou com movimento reduzido, tudo aparece pronto);
 //   - o mapa parado que acende o estado que está passando, e o mapa da capa,
-//     que mostra os números ao passar o mouse e leva até o estado no clique;
+//     que mostra a bandeira e o nome ao passar o mouse e leva até o estado no
+//     clique (ou no Enter);
 //   - o card que abre: ele cresce do lugar até ocupar a área das colunas, com
 //     o conteúdo que veio num <template> ao lado, e ganha anterior, próximo e
 //     fechar (também ← → e Esc). A área acompanha a altura do conteúdo aberto
@@ -54,22 +55,32 @@ function init() {
   const vaiPara = (uf) => document.getElementById(`estado-${uf.toLowerCase()}`)?.scrollIntoView({ behavior: reduz ? 'auto' : 'smooth' });
   colado.addEventListener('click', (evento) => { const p = evento.target.closest('path'); if (p) vaiPara(p.dataset.uf); }, { signal: sinal });
 
-  // ---------- mapa da capa: números ao passar o mouse, clique leva ao estado ----------
+  // ---------- mapa da capa: bandeira e nome ao passar o mouse, clique (ou Enter) leva ao estado ----------
   const capa = raiz.querySelector('[data-pr-mapa-capa]');
   const dica = capa.querySelector('[data-pr-dica]');
-  capa.addEventListener('click', (evento) => { const p = evento.target.closest('path'); if (p) vaiPara(p.dataset.uf); }, { signal: sinal });
-  capa.addEventListener('mousemove', (evento) => {
-    const p = evento.target.closest('path');
-    if (!p) { dica.hidden = true; return; }
+  const pecaDe = (evento) => evento.target.closest('.pr-peca');
+  const mostra = (peca, x, y) => {
     const caixa = capa.getBoundingClientRect();
-    dica.replaceChildren(Object.assign(document.createElement('b'), { textContent: p.dataset.titulo }), document.createElement('br'), p.dataset.resumo);
-    dica.style.left = `${evento.clientX - caixa.left}px`;
-    dica.style.top = `${evento.clientY - caixa.top}px`;
+    const texto = document.createElement('span');
+    texto.append(peca.dataset.nome, Object.assign(document.createElement('small'), { textContent: rotulos.verProjetos }));
+    dica.replaceChildren(Object.assign(document.createElement('img'), { src: peca.dataset.bandeira, alt: '' }), texto);
+    dica.style.left = `${x - caixa.left}px`;
+    dica.style.top = `${y - caixa.top}px`;
     dica.hidden = false;
+  };
+  capa.addEventListener('click', (evento) => { const p = pecaDe(evento); if (p) vaiPara(p.dataset.uf); }, { signal: sinal });
+  capa.addEventListener('keydown', (evento) => {
+    const p = pecaDe(evento);
+    if (p && (evento.key === 'Enter' || evento.key === ' ')) { evento.preventDefault(); vaiPara(p.dataset.uf); }
+  }, { signal: sinal });
+  capa.addEventListener('mousemove', (evento) => {
+    const p = pecaDe(evento);
+    if (p) mostra(p, evento.clientX, evento.clientY); else dica.hidden = true;
   }, { signal: sinal });
   capa.addEventListener('mouseleave', () => { dica.hidden = true; }, { signal: sinal });
-  // as <title> do SVG viram a dica nativa do navegador por cima da nossa; tira, já que a nossa diz o mesmo
-  capa.querySelectorAll('path > title').forEach((titulo) => titulo.remove());
+  // no teclado, a dica fica sobre o meio do estado em foco
+  capa.addEventListener('focusin', (evento) => { const p = pecaDe(evento); if (!p) return; const r = p.getBoundingClientRect(); mostra(p, r.left + r.width / 2, r.top + r.height / 2); }, { signal: sinal });
+  capa.addEventListener('focusout', () => { dica.hidden = true; }, { signal: sinal });
 
   // ---------- o card que cresce ----------
   let aberto = null;   // { regiao, placa, idx, ordem, observador }
