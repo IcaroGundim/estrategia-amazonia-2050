@@ -353,15 +353,108 @@ function textosDosEixos(alvo) {
   }
 }
 
+// ---------- a arte de cada eixo ----------
+
+// Um desenho por eixo no topo do cartão, em 300 × 90: em cinza parado, e que
+// acende peça por peça sob o mouse (global.css, "a arte dos eixos"). `--k` é a
+// ordem de cada peça no acender; `--c`, a cor dela acesa.
+const CORES_DA_MATA = ['var(--mata-700)', 'var(--mata-500)', 'var(--folha)', 'var(--mata-300)'];
+const CORES_VIVAS = ['var(--urucum)', 'var(--ocre)', 'var(--mata-500)', 'var(--rio)', 'var(--acai)', 'var(--barro)', 'var(--ceu)', 'var(--folha)', 'var(--mata-700)'];
+
+function desenhoDoEixo(eixo) {
+  // Território: árvores que crescem e o rio que corre embaixo.
+  if (eixo === 1) {
+    const arvores = [30, 46, 38, 56, 42, 52, 36, 48, 40].map((h, k) => {
+      const x = 26 + k * 31;
+      return `<path class="arte-arvore" style="--k:${k};--c:${CORES_DA_MATA[k % 4]}" d="M${x - 12},72 L${x},${72 - h} L${x + 12},72 Z M${x - 2},72 h4 v6 h-4 Z"/>`;
+    }).join('');
+    const rio = 'M-10,84 C50,76 100,92 160,83 S250,74 310,84';
+    return `<path class="arte-rio-base" d="${rio}"/><path class="arte-rio" pathLength="1" d="${rio}"/>${arvores}`;
+  }
+  // Pessoas: sete pessoas de alturas diferentes, que pulam uma depois da outra.
+  if (eixo === 2) {
+    return [1, 0.78, 1.1, 0.85, 1, 0.72, 1.05].map((s, k) => {
+      const x = 42 + k * 36;
+      const r = 7 * s, w = 12 * s, base = 80;
+      const topo = base - 16 * s - w;
+      return `<g class="arte-pessoa" style="--k:${k};--c:${CORES_VIVAS[k]}"><circle cx="${x}" cy="${topo - r - 3}" r="${r}"/><path d="M${x - w},${base} V${topo + w} a${w},${w} 0 0 1 ${2 * w},0 V${base} Z"/></g>`;
+    }).join('');
+  }
+  // Economia: colunas que sobem, a linha da tendência e um broto no fim.
+  if (eixo === 3) {
+    const alturas = [14, 20, 18, 28, 34, 32, 44, 52, 60];
+    const colunas = alturas.map((h, k) => `<rect class="arte-coluna" style="--k:${k};--c:${CORES_DA_MATA[k < 3 ? 3 : k < 6 ? 1 : 0]}" x="${30 + k * 28}" y="${80 - h}" width="18" height="${h}" rx="3"/>`).join('');
+    const pontos = alturas.map((h, k) => `${39 + k * 28},${80 - h - 7}`).join(' ');
+    const [ux, uy] = [39 + 8 * 28, 80 - 60 - 7];
+    return `${colunas}<polyline class="arte-tendencia" pathLength="1" points="${pontos}"/><path class="arte-broto" d="M${ux},${uy} q2,-12 14,-14 q-2,12 -14,14 Z M${ux},${uy} q-3,-9 -11,-9 q2,8 11,9 Z"/>`;
+  }
+  // Infraestrutura: a estrada que se desenha, as cidades e um ponto que a percorre.
+  // As cidades entram depois, sobre a estrada já medida (arteDaEstrada).
+  if (eixo === 4) {
+    const via = 'M-10,66 C50,66 70,26 140,30 S220,74 310,40';
+    return `<path class="arte-estrada-base" d="${via}"/><path class="arte-estrada" pathLength="1" d="${via}"/><path class="arte-faixa" d="${via}"/><g class="arte-cidades"></g><circle class="arte-viajante" r="5"/>`;
+  }
+  // Governança: um centro ligado a nove parceiros em volta.
+  const [cx, cy] = [150, 46];
+  const nos = Array.from({ length: 9 }, (_, k) => {
+    const a = -Math.PI / 2 + (k * 2 * Math.PI) / 9;
+    return [(cx + Math.cos(a) * 118).toFixed(1), (cy + Math.sin(a) * 31).toFixed(1)];
+  });
+  const ligacoes = nos.map(([x, y], k) => `<path class="arte-ligacao" pathLength="1" style="--k:${k}" d="M${cx},${cy} L${x},${y}"/>`).join('');
+  const bolas = nos.map(([x, y], k) => `<circle class="arte-no" style="--k:${k};--c:${CORES_VIVAS[k]}" cx="${x}" cy="${y}" r="6.5"/>`).join('');
+  return `${ligacoes}<circle class="arte-anel" cx="${cx}" cy="${cy}" r="11"/><circle class="arte-centro" cx="${cx}" cy="${cy}" r="11"/>${bolas}`;
+}
+
+function arteDoEixo(eixo) {
+  if (eixo < 1 || eixo > 5) return '';
+  return `<div class="eixo-arte" aria-hidden="true"><svg viewBox="0 0 300 90" preserveAspectRatio="xMidYMid slice">${desenhoDoEixo(eixo)}</svg></div>`;
+}
+
+// O ponto que percorre a estrada da Infraestrutura enquanto o mouse está no
+// cartão. As cidades ficam em cinco pontos da própria estrada.
+function arteDaEstrada(alvo) {
+  const via = alvo.querySelector('.arte-estrada-base');
+  if (!via) return;
+  const cartao = via.closest('.eixo-cartao');
+  const ponto = cartao.querySelector('.arte-viajante');
+  const comprimento = via.getTotalLength();
+  cartao.querySelector('.arte-cidades').innerHTML = [0.12, 0.32, 0.52, 0.72, 0.9].map((f, k) => {
+    const p = via.getPointAtLength(f * comprimento);
+    return `<circle class="arte-cidade" style="--k:${k};--c:var(--barro)" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="5.5"/>`;
+  }).join('');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let quadro = 0;
+  const vai = () => {
+    cancelAnimationFrame(quadro);
+    const inicio = performance.now() + 250;
+    const passo = (agora) => {
+      const t = Math.min(1, Math.max(0, (agora - inicio) / 1500));
+      const p = via.getPointAtLength((1 - Math.pow(1 - t, 3)) * comprimento);
+      ponto.setAttribute('cx', p.x);
+      ponto.setAttribute('cy', p.y);
+      ponto.style.opacity = 1;
+      if (t < 1) quadro = requestAnimationFrame(passo);
+    };
+    quadro = requestAnimationFrame(passo);
+  };
+  const volta = () => { cancelAnimationFrame(quadro); ponto.style.opacity = 0; };
+  cartao.addEventListener('mouseenter', vai);
+  cartao.addEventListener('focus', vai);
+  cartao.addEventListener('mouseleave', volta);
+  cartao.addEventListener('blur', volta);
+}
+
 function renderEixos() {
   const alvo = document.querySelector('#eixos-cartoes');
   if (!alvo) return;
   const textos = textosDosEixos(alvo);
   alvo.innerHTML = eixosDoAcervo().map((eixo) => {
     const resumo = resumoDoEixo(eixo);
-    // Nome e texto dividem a primeira faixa do cartão: é ela que se alinha entre
-    // os vizinhos da mesma fileira (subgrade), então o percentual fica na mesma altura.
+    // Nome e texto dividem a segunda faixa do cartão, depois da arte: é ela que se
+    // alinha entre os vizinhos da mesma fileira (subgrade), então o percentual
+    // fica na mesma altura.
     return `<a class="eixo-cartao" href="#eixo-${eixo}" data-ir-eixo="${eixo}">
+      ${arteDoEixo(eixo)}
       <div class="eixo-cartao-cabeca">
         <h3 class="eixo-cartao-nome">${escape(resumo.nome)}</h3>
         ${textos[eixo] ? `<p class="eixo-cartao-texto">${escape(textos[eixo])}</p>` : ''}
@@ -371,9 +464,10 @@ function renderEixos() {
         <span class="eixo-contagem"><span><b>${resumo.total}</b> ${t('indicadores')}</span><span><b>${resumo.metas}</b> ${t('com meta')}</span></span>
         ${situacaoDaColeta(resumo)}
       </span>
-      <span class="eixo-cartao-ver">${escape(tp('Ver os {n} indicadores', { n: resumo.total }))} ›</span>
+      <span class="eixo-cartao-ver">${escape(tp('Ver os {n} indicadores', { n: resumo.total }))} <i>›</i></span>
     </a>`;
   }).join('');
+  arteDaEstrada(alvo);
 }
 
 function renderCabecalhoDoEixo() {

@@ -762,29 +762,79 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .eixos-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 18px; border-bottom: 1px solid var(--linha); }
 .eixos-titulo { margin: 0; font-size: clamp(26px, 2.2vw, 40px); line-height: 0.96; }
 .eixos-titulo em { color: var(--urucum); font-style: normal; }
-/* Cada cartão ocupa quatro linhas da grade (nome e texto, jornada, coleta, link)
-   como subgrade: um nome de três linhas empurra as quatro partes dos vizinhos
+/* Cada cartão ocupa cinco linhas da grade (arte, nome e texto, jornada, coleta,
+   link) como subgrade: um nome de três linhas empurra as partes dos vizinhos
    junto, e os números ficam na mesma altura.
    Três eixos em cima e dois embaixo, desencontrados: a grade tem seis colunas,
    cada cartão ocupa duas, e o 4 e o 5 entram nos vãos entre o 1 e o 2 e entre o
    2 e o 3. */
 .eixos-cartoes { margin-top: 22px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
-.eixos-cartoes > .eixo-cartao:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 4; }
-.eixos-cartoes > .eixo-cartao:nth-child(2) { grid-column: 3 / span 2; grid-row: 1 / span 4; }
-.eixos-cartoes > .eixo-cartao:nth-child(3) { grid-column: 5 / span 2; grid-row: 1 / span 4; }
-.eixos-cartoes > .eixo-cartao:nth-child(4) { grid-column: 2 / span 2; grid-row: 5 / span 4; }
-.eixos-cartoes > .eixo-cartao:nth-child(5) { grid-column: 4 / span 2; grid-row: 5 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 5; }
+.eixos-cartoes > .eixo-cartao:nth-child(2) { grid-column: 3 / span 2; grid-row: 1 / span 5; }
+.eixos-cartoes > .eixo-cartao:nth-child(3) { grid-column: 5 / span 2; grid-row: 1 / span 5; }
+.eixos-cartoes > .eixo-cartao:nth-child(4) { grid-column: 2 / span 2; grid-row: 6 / span 5; }
+.eixos-cartoes > .eixo-cartao:nth-child(5) { grid-column: 4 / span 2; grid-row: 6 / span 5; }
 
-.eixo-cartao { min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 16px; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 150ms ease, box-shadow 150ms ease; }
-.eixo-cartao:hover { border-color: var(--mata-300); box-shadow: 0 4px 14px rgba(14, 43, 34, 0.09); }
-.eixo-cartao:focus-visible { border-color: var(--mata); box-shadow: 0 0 0 3px rgba(14, 43, 34, 0.12); outline: none; }
+.eixo-cartao { --abre: cubic-bezier(0.22, 1, 0.36, 1); --salta: cubic-bezier(0.34, 1.45, 0.64, 1); position: relative; min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 16px; overflow: hidden; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s var(--abre); }
+.eixo-cartao:hover { border-color: var(--mata-300); box-shadow: 0 10px 26px rgba(14, 43, 34, 0.1); transform: translateY(-4px); }
+.eixo-cartao:focus-visible { border-color: var(--mata); box-shadow: 0 0 0 3px var(--ocre); transform: translateY(-4px); outline: none; }
 .eixo-cartao-cabeca { display: grid; align-content: start; gap: 8px; }
 .eixo-cartao-nome { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
 .eixo-cartao-texto { margin: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.45; }
 .eixo-cartao-jornada, .eixo-cartao-coleta { display: grid; align-content: start; gap: 9px; }
 .eixo-cartao-coleta { padding-top: 14px; border-top: 1px solid var(--linha-2); }
 .eixo-cartao-ver { align-self: end; padding-top: 4px; color: var(--urucum); font-size: 12px; font-weight: 600; }
-.eixo-cartao:hover .eixo-cartao-ver { text-decoration: underline; text-underline-offset: 3px; }
+.eixo-cartao-ver i { display: inline-block; font-style: normal; transition: transform 0.3s; }
+.eixo-cartao:is(:hover, :focus-visible) .eixo-cartao-ver i { transform: translateX(5px); transition: transform 0.4s var(--abre) 0.15s; }
+.eixo-cartao:is(:hover, :focus-visible) .eixo-barra .feito { animation: eixo-enche 0.9s var(--abre) 0.2s backwards; }
+@keyframes eixo-enche { from { width: 0; } }
+
+/* A arte dos eixos: uma faixa no topo do cartão, encostada nas bordas, com um
+   desenho por eixo (metas.js, desenhoDoEixo). Parado, o desenho fica em cinza;
+   sob o mouse, cada peça acende na sua cor, uma depois da outra pela ordem `--k`. */
+.eixo-arte { --cinza: #dcd4c6; position: relative; height: 92px; margin: -20px -20px 0; overflow: hidden; border-bottom: 1px solid var(--linha-2); background: linear-gradient(180deg, #f4efe6, #ebe4d7); }
+.eixo-arte svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.eixo-arte * { transform-box: fill-box; }
+.arte-arvore { fill: var(--cinza); transform-origin: bottom; transform: scaleY(0.5); transition: transform 0.35s var(--abre), fill 0.3s; }
+.arte-rio-base { fill: none; stroke: var(--cinza); stroke-width: 4; stroke-linecap: round; opacity: 0.6; }
+.arte-rio { fill: none; stroke: var(--cinza); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.3s; }
+.arte-pessoa { fill: var(--cinza); transition: fill 0.3s; }
+.arte-coluna { fill: var(--cinza); transform-origin: bottom; transform: scaleY(0.3); transition: transform 0.35s var(--abre), fill 0.3s; }
+.arte-tendencia { fill: none; stroke: var(--urucum); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.2s; }
+.arte-broto { fill: var(--folha); transform-origin: bottom left; transform: scale(0) rotate(-30deg); transition: transform 0.15s; }
+.arte-estrada-base { fill: none; stroke: var(--cinza); stroke-width: 5; stroke-linecap: round; }
+.arte-estrada { fill: none; stroke: var(--barro); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.25s; }
+.arte-faixa { fill: none; stroke: #fff; stroke-width: 1.2; stroke-dasharray: 4 5; opacity: 0; transition: opacity 0.2s; }
+.arte-cidade { fill: #fff; stroke: var(--cinza); stroke-width: 3; transform-origin: center; transition: stroke 0.3s; }
+.arte-viajante { fill: var(--urucum); opacity: 0; }
+.arte-ligacao { fill: none; stroke: var(--cinza); stroke-width: 1.6; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke 0.3s; }
+.arte-no { fill: var(--cinza); transform-origin: center; transition: fill 0.3s; }
+.arte-centro { fill: var(--cinza); transition: fill 0.3s; }
+.arte-anel { fill: none; stroke: var(--mata-500); stroke-width: 2; transform-origin: center; opacity: 0; }
+
+.eixo-cartao:is(:hover, :focus-visible) .arte-arvore { transform: none; fill: var(--c); transition: transform 0.55s var(--salta) calc(0.06s + var(--k) * 55ms), fill 0.35s calc(0.06s + var(--k) * 55ms); }
+.eixo-cartao:is(:hover, :focus-visible) .arte-rio { stroke: var(--rio); stroke-dashoffset: 0; transition: stroke-dashoffset 1s cubic-bezier(0.45, 0, 0.2, 1) 0.25s; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-pessoa { fill: var(--c); transition: fill 0.35s calc(0.06s + var(--k) * 60ms); animation: arte-pula 0.55s var(--abre) calc(0.06s + var(--k) * 60ms) both; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-coluna { transform: none; fill: var(--c); transition: transform 0.6s var(--salta) calc(0.05s + var(--k) * 55ms), fill 0.35s calc(0.05s + var(--k) * 55ms); }
+.eixo-cartao:is(:hover, :focus-visible) .arte-tendencia { stroke-dashoffset: 0; transition: stroke-dashoffset 0.7s ease-out 0.55s; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-broto { transform: none; transition: transform 0.5s var(--salta) 1.1s; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-estrada { stroke-dashoffset: 0; transition: stroke-dashoffset 1s cubic-bezier(0.45, 0, 0.2, 1) 0.05s; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-faixa { opacity: 0.9; transition: opacity 0.4s 1s; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-cidade { stroke: var(--c); animation: arte-salto 0.45s var(--salta) calc(0.1s + var(--k) * 230ms) both; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-ligacao { stroke: var(--mata-300); animation: arte-liga 0.5s ease-out calc(0.1s + var(--k) * 60ms) both; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-no { fill: var(--c); animation: arte-salto 0.45s var(--salta) calc(0.35s + var(--k) * 60ms) both; }
+.eixo-cartao:is(:hover, :focus-visible) .arte-centro { fill: var(--mata); }
+.eixo-cartao:is(:hover, :focus-visible) .arte-anel { animation: arte-pulso 1s ease-out 1s 2; }
+@keyframes arte-pula { 0% { translate: 0 0; } 45% { translate: 0 -9px; } 100% { translate: 0 0; } }
+@keyframes arte-salto { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+@keyframes arte-liga { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes arte-pulso { from { opacity: 0.7; transform: scale(1); } to { opacity: 0; transform: scale(2.6); } }
+
+/* Sem movimento: o cartão não sobe e a arte só troca de cor, sem crescer nem pular. */
+@media (prefers-reduced-motion: reduce) {
+  .eixo-cartao, .eixo-cartao *, .eixo-arte * { transition-duration: 0s !important; transition-delay: 0s !important; animation: none !important; }
+  .eixo-cartao:hover, .eixo-cartao:focus-visible { transform: none; }
+}
 
 /* O número grande e o rótulo de duas linhas ao lado, alinhados pela base. */
 .eixo-leitura { display: flex; align-items: flex-end; gap: 10px; }
@@ -846,7 +896,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
   .eixos-visao, .eixo-cabeca { padding: 18px 18px 20px; }
   /* Em duas colunas os cartões voltam à ordem corrida: 1 e 2, 3 e 4, 5. */
   .eixos-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .eixos-cartoes > .eixo-cartao:nth-child(n) { grid-column: auto; grid-row: span 4; }
+  .eixos-cartoes > .eixo-cartao:nth-child(n) { grid-column: auto; grid-row: span 5; }
   .eixo-cabeca .goals-toolbar { flex-basis: 100%; margin-left: 0; }
   .eixo-cabeca .goals-toolbar .indicator-search { max-width: none; }
   .eixo-cabeca-corpo { grid-template-columns: minmax(0, 1fr); gap: 20px; }
