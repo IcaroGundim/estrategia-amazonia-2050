@@ -681,16 +681,23 @@
         "en": "Who built this page"
       },
       "titulo": {
-        "pt": "Feita na Amazônia, por amazônidas",
+        "pt": "Feito na Amazônia, por amazônidas",
         "en": "Made in the Amazon, by Amazonians"
       },
       "texto": {
-        "pt": "Os dados, os indicadores e a página que você está lendo foram construídos por uma equipe acreana, a serviço do Consórcio Interestadual da Amazônia Legal e dos nove estados.",
-        "en": "The page you are reading was built by a team from the state of Acre, working on behalf of the Brazilian Amazon Interstate Consortium."
+        "pt": "A Plataforma que você está lendo foi construída por uma equipe acreana, a serviço do Consórcio Interestadual da Amazônia Legal e dos nove estados.",
+        "en": "The Platform you are reading was built by a team from the state of Acre, working on behalf of the Brazilian Amazon Interstate Consortium and its nine states."
       },
       "governo": {
         "pt": "Governo do Estado do Acre",
         "en": "Government of the State of Acre"
+      },
+      "coordenacaoRotulo": {
+        "pt": "Coordenador da Equipe Técnica",
+        "en": "Technical Team Coordinator"
+      },
+      "coordenacao": {
+        "pt": "Denyscley Oliveira Bandeira"
       },
       "equipeRotulo": {
         "pt": "Equipe técnica",
@@ -711,10 +718,6 @@
         },
         {
           "pt": "Roseneide Mendonça de Sena",
-          "en": null
-        },
-        {
-          "pt": "Denyscley Oliveira Bandeira",
           "en": null
         }
       ]

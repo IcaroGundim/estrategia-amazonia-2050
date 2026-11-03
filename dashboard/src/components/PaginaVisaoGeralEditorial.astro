@@ -34,11 +34,12 @@ const territorio = vg.territorio ?? publicado.territorio;
 const explorar = vg.explorar ?? publicado.explorar;
 const estePainel = vg.estePainel;
 const contribuicao = estePainel.contribuicao ?? publicado.estePainel.contribuicao;
-const citacao = estePainel.citacao ?? publicado.estePainel.citacao;
 const desenvolvimento = vg.desenvolvimento ?? publicado.desenvolvimento;
 // um rascunho salvo antes da lista de nomes não a tem
 const equipe = desenvolvimento.equipe ?? publicado.desenvolvimento.equipe ?? [];
 const equipeRotulo = desenvolvimento.equipeRotulo ?? publicado.desenvolvimento.equipeRotulo;
+const coordenacao = desenvolvimento.coordenacao ?? publicado.desenvolvimento.coordenacao;
+const coordenacaoRotulo = desenvolvimento.coordenacaoRotulo ?? publicado.desenvolvimento.coordenacaoRotulo;
 // a foto do reconhecimento é a do Acre no território (rio Crôa)
 const acre = ESTADOS.find((estado) => estado.uf === 'AC')!;
 const gov = 'instancias' in vg.governanca ? vg.governanca : publicado.governanca;
@@ -379,14 +380,10 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
           <a href="https://ipam.org.br" target="_blank" rel="noreferrer">ipam.org.br ↗</a>
         </aside>
         <div>
-          {/* a abertura vem logo abaixo do título; depois, a citação dos governadores e os dois cartões */}
+          {/* a abertura vem logo abaixo do título; depois, os dois cartões */}
           <h2 class="ve-ipam-titulo ve-surge" style="--i:1">{tx(estePainel.titulo)}</h2>
           <p class="ve-ipam-contexto ve-surge" style="--i:2">{tx(estePainel.abertura)}</p>
-          <figure class="ve-ipam-citacao ve-surge" style="--i:3">
-            <blockquote><p>{tx(citacao.texto)}</p></blockquote>
-            <figcaption><b>{tx(citacao.rotulo)}</b>{tx(citacao.autor)}</figcaption>
-          </figure>
-          <div class="ve-ipam-itens ve-surge" style="--i:4">
+          <div class="ve-ipam-itens ve-surge" style="--i:3">
             {estePainel.itens.map(({ titulo, texto }) => <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>)}
           </div>
         </div>
@@ -413,11 +410,18 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
           <div class="ve-rubrica ve-surge" style="--i:1"><b>06</b><span class="ve-chapeu">{tx(desenvolvimento.chapeu)}</span><i></i></div>
           <h2 class="ve-dev-titulo ve-surge" style="--i:2">{tx(desenvolvimento.titulo)}</h2>
           <p class="ve-dev-texto ve-surge" style="--i:3">{tx(desenvolvimento.texto)}</p>
-          {/* os créditos repetem o fio amarelo da logo da SEPLAN: rótulo, fio e os nomes em duas colunas */}
-          {equipe.length > 0 && (
+          {/* os créditos repetem o fio amarelo da logo da SEPLAN: o rótulo e, junto ao fio, o coordenador com o cargo e depois os nomes */}
+          {(coordenacao?.pt || equipe.length > 0) && (
             <div class="ve-dev-creditos ve-surge" style="--i:4">
               <span class="ve-dev-rotulo">{tx(equipeRotulo)}</span>
-              <ul class="ve-dev-equipe">{equipe.map((nome) => <li>{tx(nome)}</li>)}</ul>
+              <div class="ve-dev-nomes">
+                {coordenacao?.pt && (
+                  <p class="ve-dev-coord">{tx(coordenacao)}<span>{tx(coordenacaoRotulo)}</span></p>
+                )}
+                {equipe.length > 0 && (
+                  <ul class="ve-dev-equipe" style={`--linhas:${Math.ceil(equipe.length / 2)}`}>{equipe.map((nome) => <li>{tx(nome)}</li>)}</ul>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -234,7 +234,7 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
    e o texto ganha um fundo mais escuro e uniforme para ler */
 .ve-ipam > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(14, 43, 34, 0) 22%, rgba(14, 43, 34, .5) 45%, rgba(14, 43, 34, .62) 100%); }
 /* com a foto aberta, o texto ganha uma sombra curta para ler sobre o campo claro */
-.ve-ipam .ve-rubrica, .ve-ipam-titulo, .ve-ipam-citacao, .ve-ipam-contexto, .ve-ipam-itens { text-shadow: 0 1px 3px rgba(0, 0, 0, .7), 0 0 22px rgba(14, 43, 34, .85); }
+.ve-ipam .ve-rubrica, .ve-ipam-titulo, .ve-ipam-contexto, .ve-ipam-itens { text-shadow: 0 1px 3px rgba(0, 0, 0, .7), 0 0 22px rgba(14, 43, 34, .85); }
 .ve-ipam .ve-miolo { max-width: 1120px; }
 .ve-ipam .ve-rubrica b { color: var(--areia); }
 .ve-ipam .ve-rubrica i { background: rgba(245, 240, 232, .25); }
@@ -264,7 +264,11 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 /* os nomes passam por cima da canoa clara da foto: branco, um pouco mais de peso e sombra dupla para ler em qualquer trecho */
 .ve-dev-creditos { display: grid; grid-template-columns: auto auto; justify-content: start; align-items: center; gap: 0 16px; margin-top: clamp(20px, calc(var(--ve-vh) * 3.6), 30px); }
 .ve-dev-rotulo { width: min-content; color: var(--areia); font: 700 12px/1.3 var(--text); letter-spacing: .12em; text-align: right; text-transform: uppercase; text-shadow: 0 1px 3px rgba(0, 0, 0, .7); }
-.ve-dev-equipe { display: grid; grid-template-columns: auto auto; grid-auto-flow: column; grid-template-rows: repeat(3, auto); column-gap: 28px; margin: 0; padding: 3px 0 3px 16px; border-left: 2px solid #ffcc00; list-style: none; color: #fff; font: 600 clamp(15px, 1.25vw, 18px)/1.6 var(--text); white-space: nowrap; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 14px rgba(0, 0, 0, .55); }
+.ve-dev-nomes { padding: 3px 0 3px 16px; border-left: 2px solid #ffcc00; color: #fff; font: 600 clamp(15px, 1.25vw, 18px)/1.6 var(--text); white-space: nowrap; text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 14px rgba(0, 0, 0, .55); }
+/* o coordenador abre a lista: o nome um pouco mais forte, o cargo em versalete abaixo e um filete antes da equipe */
+.ve-dev-coord { display: flex; flex-direction: column; margin: 0 0 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(245, 240, 232, .22); font-weight: 700; }
+.ve-dev-coord span { color: var(--areia); font: 700 11px/1.4 var(--text); letter-spacing: .12em; text-transform: uppercase; }
+.ve-dev-equipe { margin: 0; padding: 0; display: grid; grid-template-columns: auto auto; grid-auto-flow: column; grid-template-rows: repeat(var(--linhas, 3), auto); column-gap: 28px; list-style: none; }
 /* a moldura das lâminas: perfil verde com a luz do alto, filete dourado, passe-partout claro e sombra na parede;
    sobre o fundo escuro, um fio claro por fora separa o perfil da foto */
 .ve-ipam-placa {
@@ -283,11 +287,6 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-ipam-placa img { width: clamp(110px, calc(var(--ve-vh) * 19), 170px); height: auto; }
 .ve-ipam-placa a { color: var(--mata-700); font: 600 13px var(--display); text-decoration: underline; text-underline-offset: 3px; }
 .ve-pagina .ve-ipam-titulo { color: var(--areia); font-size: clamp(22px, min(2.6vw, calc(var(--ve-vh) * 4.2)), 36px); line-height: 1.1; }
-.ve-ipam-citacao { margin: clamp(12px, calc(var(--ve-vh) * 2.6), 22px) 0 0; }
-.ve-ipam-citacao blockquote { margin: 0; }
-.ve-ipam-citacao blockquote p { margin: 0; color: var(--areia); font: 700 clamp(18px, min(2.2vw, calc(var(--ve-vh) * 3.4)), 30px)/1.28 var(--display); letter-spacing: -.012em; }
-.ve-ipam-citacao figcaption { margin-top: 18px; color: #f5f0e8; font-size: 14px; }
-.ve-ipam-citacao figcaption b { display: block; margin-bottom: 4px; color: var(--ocre); font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
 .ve-ipam-contexto { max-width: 640px; margin: clamp(10px, calc(var(--ve-vh) * 1.8), 16px) 0 0; color: #f5f0e8; font-size: clamp(14.5px, calc(var(--ve-vh) * 2.1), 17px); line-height: 1.55; }
 .ve-ipam-itens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; max-width: 680px; margin-top: clamp(14px, calc(var(--ve-vh) * 2.6), 24px); }
 .ve-ipam-itens article { padding-top: 14px; border-top: 1px solid rgba(245, 240, 232, .45); }
@@ -429,6 +428,7 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   .ve-dev-grade { grid-template-columns: minmax(0, 1fr); }
   .ve-dev .ve-dev-logo { max-width: 300px; }
   .ve-dev-creditos { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .ve-dev-nomes { white-space: normal; }
   .ve-dev-rotulo { width: auto; text-align: left; }
   .ve-dev-equipe { grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; grid-template-rows: none; white-space: normal; }
 }
