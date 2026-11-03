@@ -71,8 +71,6 @@
         "média de {n} metas",
         "{n} sem escala",
         "{n} de {total} indicadores já têm valores",
-        "indicadores",
-        "com meta",
         "Ver os {n} indicadores",
         "{n} coletado",
         "{n} coletados",
@@ -462,21 +460,18 @@
       "titulo": "Panorama: projeções até 2050",
       "pagina": "index",
       "chaves": [
-        "Projeções · 2026–2050",
         "O caminho de cada eixo até",
         "Quanto da distância entre a linha de base e a meta final a Estratégia pactua percorrer a cada ano, na média dos indicadores de cada eixo que têm trajetória.",
         "linha de base",
         "meta final",
         "Carregando as trajetórias…",
-        "Trajetórias pactuadas das planilhas de projeção da Estratégia (set/2026). São metas intermediárias, não previsões nem o ritmo atual calculado no Panorama.",
         "{n} de {total} indicadores com trajetória",
         "em {ano}",
-        "Passe o mouse num eixo para vê-lo; parados, eles se alternam sozinhos.",
         "Pausar",
         "Retomar",
         "hoje",
         "Trajetória do eixo {nome}",
-        "do caminho percorrido",
+        "já passa da metade",
         "Metade do caminho",
         "Meta final",
         "Indicadores",
@@ -907,14 +902,6 @@
     "{n} de {total} indicadores já têm valores": {
       "pt": "{n} de {total} indicadores já têm valores",
       "en": "{n} of {total} indicators already have values"
-    },
-    "indicadores": {
-      "pt": "indicadores",
-      "en": "indicators"
-    },
-    "com meta": {
-      "pt": "com meta",
-      "en": "with a target"
     },
     "Ver os {n} indicadores": {
       "pt": "Ver os {n} indicadores",
@@ -2508,10 +2495,6 @@
       "pt": "clique num estado para ver os projetos dele",
       "en": "click a state to see its projects"
     },
-    "Projeções · 2026–2050": {
-      "pt": "Projeções · 2026–2050",
-      "en": "Projections · 2026–2050"
-    },
     "O caminho de cada eixo até": {
       "pt": "O caminho de cada eixo até",
       "en": "Each pillar's path to"
@@ -2532,10 +2515,6 @@
       "pt": "Carregando as trajetórias…",
       "en": "Loading the pathways…"
     },
-    "Trajetórias pactuadas das planilhas de projeção da Estratégia (set/2026). São metas intermediárias, não previsões nem o ritmo atual calculado no Panorama.": {
-      "pt": "Trajetórias pactuadas das planilhas de projeção da Estratégia (set/2026). São metas intermediárias, não previsões nem o ritmo atual calculado no Panorama.",
-      "en": "Agreed pathways from the Strategy's projection spreadsheets (Sep/2026). They are interim targets, not forecasts or the current pace computed in Explore."
-    },
     "{n} de {total} indicadores com trajetória": {
       "pt": "{n} de {total} indicadores com trajetória",
       "en": "{n} of {total} indicators with a pathway"
@@ -2543,10 +2522,6 @@
     "em {ano}": {
       "pt": "em {ano}",
       "en": "in {ano}"
-    },
-    "Passe o mouse num eixo para vê-lo; parados, eles se alternam sozinhos.": {
-      "pt": "Passe o mouse num eixo para vê-lo; parados, eles se alternam sozinhos.",
-      "en": "Hover over a pillar to see it; left alone, they take turns."
     },
     "Pausar": {
       "pt": "Pausar",
@@ -2564,9 +2539,9 @@
       "pt": "Trajetória do eixo {nome}",
       "en": "Pathway for {nome}"
     },
-    "do caminho percorrido": {
-      "pt": "do caminho percorrido",
-      "en": "of the way covered"
+    "já passa da metade": {
+      "pt": "já passa da metade",
+      "en": "already past halfway"
     },
     "Metade do caminho": {
       "pt": "Metade do caminho",

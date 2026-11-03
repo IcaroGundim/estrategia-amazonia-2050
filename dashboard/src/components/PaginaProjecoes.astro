@@ -29,7 +29,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
       abre), eles deixariam de pintar nos outros. */}
   <svg class="pj-defs" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
-      <linearGradient id="pj-ouro" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e0a83c" stop-opacity=".32" /><stop offset="1" stop-color="#e0a83c" stop-opacity="0" /></linearGradient>
+      <linearGradient id="pj-urucum" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c0451f" stop-opacity=".26" /><stop offset="1" stop-color="#c0451f" stop-opacity="0" /></linearGradient>
       <linearGradient id="pj-mata" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3e6e57" stop-opacity=".2" /><stop offset="1" stop-color="#3e6e57" stop-opacity="0" /></linearGradient>
     </defs>
   </svg>
@@ -37,7 +37,6 @@ const t = traduzirCom(lang, Astro.locals.interface);
     <div class="pj-bloco">
       <div class="pj-topo">
         <div>
-          <span class="pj-sobre">{t('Projeções · 2026–2050')}</span>
           <h2 class="pj-manchete" id="pj-manchete">{t('O caminho de cada eixo até')} <em>2050.</em></h2>
         </div>
         <div class="pj-topo-dir">
@@ -48,7 +47,6 @@ const t = traduzirCom(lang, Astro.locals.interface);
       <div class="pj-lado" data-pj-lado>
         <p class="pj-carregando">{t('Carregando as trajetórias…')}</p>
       </div>
-      <p class="pj-fonte">{t('Trajetórias pactuadas das planilhas de projeção da Estratégia (set/2026). São metas intermediárias, não previsões nem o ritmo atual calculado no Panorama.')}</p>
     </div>
   </div>
   <div class="pj-eixo" data-pj-eixo hidden></div>

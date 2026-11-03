@@ -1,7 +1,7 @@
 /* Projeções no Panorama, depois do mapa (PaginaProjecoes.astro,
    src/scripts/projecoes.js). A vista dos eixos segue "Cinco eixos de implementação" da Visão Geral: os
    títulos numerados à esquerda, com a barra urucum que corre no eixo no ar, e
-   o painel verde-escuro com a foto à direita. O eixo aberto tem a foto no topo
+   o cartão branco com a foto e a linha do tempo à direita. O eixo aberto tem a foto no topo
    e os cartões dos indicadores; o indicador abre num painel lateral. */
 
 .pj { --pj-abre: cubic-bezier(.22, 1, .36, 1); position: relative; margin-top: clamp(20px, 1.7vw, 34px); overflow: hidden; border: 1px solid var(--linha); border-radius: 18px; background: var(--areia); }
@@ -19,8 +19,7 @@
 .pj-lead { margin: 0; max-width: 58ch; color: var(--tinta-3); font-size: 15.5px; line-height: 1.55; }
 .pj-escala { display: flex; align-items: center; gap: 8px; color: var(--tinta-4); font-size: 11.5px; }
 .pj-escala b { color: var(--tinta-2); font-weight: 600; }
-.pj-escala i { width: 120px; height: 4px; margin: 0 4px; border-radius: 2px; background: linear-gradient(90deg, var(--linha), var(--ocre)); }
-.pj-fonte { margin: 22px 0 0; color: var(--tinta-4); font-size: 11.5px; }
+.pj-escala i { width: 120px; height: 4px; margin: 0 4px; border-radius: 2px; background: linear-gradient(90deg, var(--linha), var(--urucum)); }
 .pj-carregando { grid-column: 1 / -1; color: var(--tinta-4); }
 
 .pj-lado { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 32px; min-height: 620px; }
@@ -43,16 +42,18 @@
 .pj-lado.is-rodando .pj-titulo.is-ativo .pj-prog i { animation: pj-enche 8s linear forwards; }
 .pj-lado.is-pausado .pj-prog i, .pj-lado.is-fora .pj-prog i { animation-play-state: paused !important; }
 @keyframes pj-enche { to { width: 100%; } }
-.pj-titulos-pe { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 2px 0; color: var(--tinta-4); font-size: 11.5px; }
+.pj-titulos-pe { display: flex; align-items: center; justify-content: flex-end; padding: 12px 2px 0; }
 .pj-pausa { padding: 4px 0; border: 0; background: none; color: var(--tinta-3); font: 600 11.5px var(--text); cursor: pointer; }
 .pj-pausa:hover, .pj-pausa:focus-visible { color: var(--urucum); outline: none; }
 
-.pj-painel { position: relative; display: grid; grid-template-rows: 230px minmax(0, 1fr) auto; min-width: 0; overflow: hidden; border-radius: 20px; background: var(--mata); color: #e6ece7; }
+/* O painel é um cartão branco: a foto em cima, que cresce com a altura da lista,
+   e embaixo a linha do tempo do eixo. */
+.pj-painel { position: relative; display: grid; grid-template-rows: minmax(230px, 1fr) auto auto; min-width: 0; overflow: hidden; border: 1px solid var(--linha); border-radius: 20px; background: var(--papel); color: var(--tinta); }
 .pj-painel .pj-sobre { color: var(--ocre); }
 .pj-foto { position: relative; overflow: hidden; }
 .pj-foto i { position: absolute; inset: 0; background: center / cover; opacity: 0; transform: scale(1.06); transition: opacity .9s, transform 8.6s linear; }
 .pj-foto i.is-ativo { opacity: 1; transform: scale(1); transition: opacity .9s, transform 8s linear; }
-.pj-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 43, 34, .05) 20%, rgba(14, 43, 34, .55) 60%, var(--mata) 100%); pointer-events: none; }
+.pj-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 16, 12, .04) 15%, rgba(20, 16, 12, .66) 100%); pointer-events: none; }
 .pj-foto-txt { position: absolute; z-index: 1; left: 30px; right: 30px; bottom: 18px; }
 .pj-foto-txt h2 { margin: 8px 0 0; max-width: 24ch; color: var(--areia); font: 800 26px/1.1 var(--display); letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; }
 .pj-cred { position: absolute; z-index: 2; top: 12px; right: 14px; padding: 3px 8px; border-radius: 4px; background: rgba(14, 43, 34, .45); color: rgba(245, 240, 232, .85); font-size: 10.5px; text-decoration: none; }
@@ -60,30 +61,41 @@
 .pj-entra { animation: pj-entra .7s var(--pj-abre) both; }
 @keyframes pj-entra { from { opacity: 0; transform: translateY(10px); } }
 
-.pj-dados { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 0 26px; padding: 16px 30px 6px; }
-.pj-graf { position: relative; min-width: 0; }
-.pj-graf svg { display: block; width: 100%; height: auto; overflow: visible; }
+/* A linha do tempo: as paradas (2030, metade, meta final) em HTML, em cima, e a
+   faixa com a curva em SVG, desenhada na largura real (projecoes.js,
+   linhaDoTempo). Quando as paradas não cabem lado a lado, ficam em fileira e
+   as guias somem (is-empilhado). */
+.pj-dados { padding: 22px 30px 8px; }
+.pj-tempo { position: relative; min-width: 0; }
+.pj-paradas { position: relative; height: 50px; }
+.pj-parada { position: absolute; top: 0; left: 0; white-space: nowrap; }
+.pj-parada.is-fim { text-align: right; }
+.pj-parada b { display: block; color: var(--tinta); font: 800 24px/1 var(--display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pj-parada.is-urucum b { color: var(--urucum); }
+.pj-parada small { display: block; margin-top: 5px; color: var(--tinta-4); font: 600 10px var(--text); letter-spacing: .13em; text-transform: uppercase; }
+.pj-tempo.is-empilhado .pj-paradas { display: flex; flex-wrap: wrap; gap: 12px 24px; height: auto; margin-bottom: 10px; }
+.pj-tempo.is-empilhado .pj-parada { position: static; text-align: left; }
+.pj-tempo.is-empilhado .pj-guia { display: none; }
+.pj-tempo svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pj-guia { fill: none; stroke: var(--tinta-4); stroke-dasharray: 2 3; }
+.pj-tempo-eixo line { stroke: var(--linha); }
+.pj-tempo-eixo text { fill: var(--tinta-4); font: 600 10.5px var(--text); }
+.pj-tempo .pj-area { fill: url(#pj-urucum); }
+.pj-tempo .pj-linha { stroke: var(--urucum); stroke-width: 2.6; }
+.pj-tempo .pj-marco { fill: var(--papel); stroke: var(--urucum); stroke-width: 2; }
+.pj-tempo .pj-hoje line { stroke: var(--tinta-4); }
+.pj-tempo .pj-hoje text { fill: var(--tinta-3); }
 .pj-mira { opacity: 0; transition: opacity .15s; pointer-events: none; }
-.pj-graf.is-mirando .pj-mira { opacity: 1; }
-.pj-mira line { stroke: rgba(245, 240, 232, .5); }
-.pj-mira circle { fill: var(--ocre); stroke: var(--mata); stroke-width: 2; }
-.pj-mira rect { fill: var(--areia); }
-.pj-mira text { fill: var(--mata); font: 600 11px var(--text); font-variant-numeric: tabular-nums; }
-.pj-marcos { display: grid; gap: 16px; align-content: center; padding-left: 24px; border-left: 1px solid rgba(255, 255, 255, .1); }
-.pj-marcos small { display: block; color: var(--mata-300); font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
-.pj-marcos b { display: block; margin-top: 2px; color: var(--areia); font: 800 36px/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.pj-marcos b.is-ocre { color: var(--ocre); }
-.pj-marcos span { display: block; margin-top: 3px; color: var(--mata-100); font-size: 11.5px; }
+.pj-tempo.is-mirando .pj-mira { opacity: 1; }
+.pj-mira line { stroke: var(--tinta-4); }
+.pj-mira circle { fill: var(--urucum); stroke: var(--papel); stroke-width: 2; }
+.pj-mira rect { fill: var(--tinta); }
+.pj-mira text { fill: var(--papel); font: 600 11px var(--text); font-variant-numeric: tabular-nums; }
 
-.pj-rodape { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; margin: 0 30px; padding: 16px 0 22px; border-top: 1px solid rgba(255, 255, 255, .1); }
-.pj-inds { flex: 1; min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.pj-inds > span { margin-right: 4px; color: var(--mata-300); font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
-.pj-chip { max-width: 260px; overflow: hidden; padding: 6px 12px; border: 1px solid rgba(245, 240, 232, .18); border-radius: 999px; background: rgba(255, 255, 255, .04); color: var(--mata-100); font: 500 12px var(--text); text-overflow: ellipsis; white-space: nowrap; cursor: pointer; transition: border-color .3s, color .3s, background .3s; }
-.pj-chip:hover, .pj-chip:focus-visible { border-color: var(--ocre); background: rgba(224, 168, 60, .1); color: var(--areia); outline: none; }
-.pj-chip.is-mais { color: var(--mata-300); }
-.pj-abrir { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: 0; border-radius: 999px; background: var(--ocre); color: var(--mata); font: 600 13px var(--text); white-space: nowrap; cursor: pointer; transition: background .3s; }
+.pj-rodape { display: flex; align-items: center; justify-content: flex-end; margin: 0 30px; padding: 16px 0 22px; border-top: 1px solid var(--linha-2); }
+.pj-abrir { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: 0; border-radius: 999px; background: var(--urucum); color: var(--papel); font: 600 13px var(--text); white-space: nowrap; cursor: pointer; transition: background .3s; }
 .pj-abrir span { display: inline-block; transition: transform .45s var(--pj-abre); }
-.pj-abrir:hover, .pj-abrir:focus-visible { background: #ecbb55; outline: none; }
+.pj-abrir:hover, .pj-abrir:focus-visible { background: #a63a18; outline: none; }
 .pj-abrir:focus-visible { box-shadow: 0 0 0 3px rgba(245, 240, 232, .6); }
 .pj-abrir:hover span, .pj-abrir:focus-visible span { transform: translateX(5px); }
 
@@ -96,17 +108,6 @@
 .pj-linha { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .pj-hoje line { stroke-dasharray: 2 4; }
 .pj-hoje text { font: 600 9.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
-
-/* no painel escuro */
-.pj-escuro .pj-grade line { stroke: rgba(255, 255, 255, .08); }
-.pj-escuro .pj-grade text, .pj-escuro .pj-anos text { fill: var(--mata-300); font: 600 10.5px var(--text); }
-.pj-escuro .pj-hoje line { stroke: rgba(245, 240, 232, .45); }
-.pj-escuro .pj-hoje text { fill: var(--areia); }
-.pj-escuro .pj-area { fill: url(#pj-ouro); }
-.pj-escuro .pj-linha { stroke: var(--ocre); stroke-width: 2.8; }
-.pj-escuro .pj-fino { fill: none; stroke: rgba(245, 240, 232, .22); stroke-width: 1.1; }
-.pj-escuro .pj-marco { fill: var(--mata); stroke: var(--ocre); stroke-width: 2; }
-.pj-escuro .pj-marco-txt { fill: var(--areia); font: 600 11.5px var(--text); }
 
 /* no fundo claro */
 .pj-claro { display: block; width: 100%; height: auto; overflow: visible; }
@@ -251,13 +252,10 @@ html.pj-sem-rolagem { overflow: hidden; }
   .pj-bloco { padding: 24px 16px 20px; }
   .pj-heroi-in, .pj-corpo { padding-inline: 16px; }
   .pj-titulo { flex-basis: 230px; padding: 12px; }
-  .pj-painel { grid-template-rows: 190px minmax(0, 1fr) auto; }
+  .pj-painel { grid-template-rows: 190px auto auto; }
   .pj-foto-txt { left: 18px; right: 18px; }
   .pj-foto-txt h2 { font-size: 21px; }
-  .pj-dados { grid-template-columns: minmax(0, 1fr); padding: 14px 18px 6px; }
-  .pj-marcos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 8px 0 12px; padding-left: 0; border-left: 0; }
-  .pj-marcos b { font-size: 26px; }
-  .pj-marcos span { display: none; }
+  .pj-dados { padding: 16px 18px 6px; }
   .pj-rodape { margin: 0 18px; }
   .pj-abrir { width: 100%; justify-content: center; }
   .pj-abas { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none; }

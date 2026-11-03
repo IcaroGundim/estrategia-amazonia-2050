@@ -762,27 +762,26 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .eixos-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-bottom: 18px; border-bottom: 1px solid var(--linha); }
 .eixos-titulo { margin: 0; font-size: clamp(26px, 2.2vw, 40px); line-height: 0.96; }
 .eixos-titulo em { color: var(--urucum); font-style: normal; }
-/* Cada cartão ocupa cinco linhas da grade (arte, nome e texto, jornada, coleta,
-   link) como subgrade: um nome de três linhas empurra as partes dos vizinhos
-   junto, e os números ficam na mesma altura.
+/* Cada cartão ocupa quatro linhas da grade (arte, nome e texto, jornada, link)
+   como subgrade: um nome de três linhas empurra as partes dos vizinhos junto, e
+   os números ficam na mesma altura. A situação da coleta fica só dentro do eixo.
    Três eixos em cima e dois embaixo, desencontrados: a grade tem seis colunas,
    cada cartão ocupa duas, e o 4 e o 5 entram nos vãos entre o 1 e o 2 e entre o
    2 e o 3. */
 .eixos-cartoes { margin-top: 22px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
-.eixos-cartoes > .eixo-cartao:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 5; }
-.eixos-cartoes > .eixo-cartao:nth-child(2) { grid-column: 3 / span 2; grid-row: 1 / span 5; }
-.eixos-cartoes > .eixo-cartao:nth-child(3) { grid-column: 5 / span 2; grid-row: 1 / span 5; }
-.eixos-cartoes > .eixo-cartao:nth-child(4) { grid-column: 2 / span 2; grid-row: 6 / span 5; }
-.eixos-cartoes > .eixo-cartao:nth-child(5) { grid-column: 4 / span 2; grid-row: 6 / span 5; }
+.eixos-cartoes > .eixo-cartao:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(2) { grid-column: 3 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(3) { grid-column: 5 / span 2; grid-row: 1 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(4) { grid-column: 2 / span 2; grid-row: 5 / span 4; }
+.eixos-cartoes > .eixo-cartao:nth-child(5) { grid-column: 4 / span 2; grid-row: 5 / span 4; }
 
-.eixo-cartao { --abre: cubic-bezier(0.22, 1, 0.36, 1); --salta: cubic-bezier(0.34, 1.45, 0.64, 1); position: relative; min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 16px; overflow: hidden; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s var(--abre); }
+.eixo-cartao { --abre: cubic-bezier(0.22, 1, 0.36, 1); --salta: cubic-bezier(0.34, 1.45, 0.64, 1); position: relative; min-width: 0; padding: 20px 20px 18px; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 16px; overflow: hidden; border: 1px solid var(--linha); border-radius: 14px; background: var(--papel); color: var(--tinta); transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s var(--abre); }
 .eixo-cartao:hover { border-color: var(--mata-300); box-shadow: 0 10px 26px rgba(14, 43, 34, 0.1); transform: translateY(-4px); }
 .eixo-cartao:focus-visible { border-color: var(--mata); box-shadow: 0 0 0 3px var(--ocre); transform: translateY(-4px); outline: none; }
 .eixo-cartao-cabeca { display: grid; align-content: start; gap: 8px; }
 .eixo-cartao-nome { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
 .eixo-cartao-texto { margin: 0; color: var(--tinta-3); font-size: 12.5px; line-height: 1.45; }
-.eixo-cartao-jornada, .eixo-cartao-coleta { display: grid; align-content: start; gap: 9px; }
-.eixo-cartao-coleta { padding-top: 14px; border-top: 1px solid var(--linha-2); }
+.eixo-cartao-jornada { display: grid; align-content: start; gap: 9px; }
 .eixo-cartao-ver { align-self: end; padding-top: 4px; color: var(--urucum); font-size: 12px; font-weight: 600; }
 .eixo-cartao-ver i { display: inline-block; font-style: normal; transition: transform 0.3s; }
 .eixo-cartao:is(:hover, :focus-visible) .eixo-cartao-ver i { transform: translateX(5px); transition: transform 0.4s var(--abre) 0.15s; }
@@ -847,8 +846,6 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
 .eixo-barra .resta { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 5px, rgba(192, 69, 31, 0.12) 5px 10px); }
 .eixo-barra .feito { position: absolute; inset: 0 auto 0 0; border-radius: 4px 2px 2px 4px; background: var(--mata-500); }
 .eixo-nota { margin: 0; color: var(--tinta-4); font-size: 10px; }
-.eixo-contagem { display: flex; justify-content: space-between; gap: 8px; color: var(--tinta-3); font-size: 12px; }
-.eixo-contagem b { color: var(--mata); font-variant-numeric: tabular-nums; }
 /* Coleta em três tons: coletado em verde, parcial em ocre, pendente no mesmo
    hachurado neutro do que ainda falta. */
 .eixo-coleta-barra { display: flex; gap: 2px; height: 6px; overflow: hidden; border-radius: 3px; }
@@ -896,7 +893,7 @@ footer span:first-child { color: var(--areia); font: 800 14px var(--display); }
   .eixos-visao, .eixo-cabeca { padding: 18px 18px 20px; }
   /* Em duas colunas os cartões voltam à ordem corrida: 1 e 2, 3 e 4, 5. */
   .eixos-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .eixos-cartoes > .eixo-cartao:nth-child(n) { grid-column: auto; grid-row: span 5; }
+  .eixos-cartoes > .eixo-cartao:nth-child(n) { grid-column: auto; grid-row: span 4; }
   .eixo-cabeca .goals-toolbar { flex-basis: 100%; margin-left: 0; }
   .eixo-cabeca .goals-toolbar .indicator-search { max-width: none; }
   .eixo-cabeca-corpo { grid-template-columns: minmax(0, 1fr); gap: 20px; }

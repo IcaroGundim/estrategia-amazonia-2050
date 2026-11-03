@@ -460,10 +460,6 @@ function renderEixos() {
         ${textos[eixo] ? `<p class="eixo-cartao-texto">${escape(textos[eixo])}</p>` : ''}
       </div>
       <span class="eixo-cartao-jornada">${leituraDaJornada(resumo)}</span>
-      <span class="eixo-cartao-coleta">
-        <span class="eixo-contagem"><span><b>${resumo.total}</b> ${t('indicadores')}</span><span><b>${resumo.metas}</b> ${t('com meta')}</span></span>
-        ${situacaoDaColeta(resumo)}
-      </span>
       <span class="eixo-cartao-ver">${escape(tp('Ver os {n} indicadores', { n: resumo.total }))} <i>›</i></span>
     </a>`;
   }).join('');

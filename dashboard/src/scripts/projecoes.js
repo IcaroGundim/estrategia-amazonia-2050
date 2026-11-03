@@ -138,6 +138,67 @@ function marcosNoGrafico(eixo, s, anos) {
   return anos.map((a, k) => `<g class="pj-surge" style="animation-delay:${0.7 + k * 0.1}s"><circle class="pj-marco" cx="${s.px(a)}" cy="${s.py(eixo.em(a))}" r="4.5"/><text class="pj-marco-txt" x="${s.px(a)}" y="${s.py(eixo.em(a)) - 12}" text-anchor="${a === ANO1 ? 'end' : 'middle'}">${pct(eixo.em(a))}</text></g>`).join('');
 }
 
+// A linha do tempo do painel: uma faixa baixa com o caminho do eixo e, em cima,
+// as paradas (2030, metade do caminho, meta final), cada uma ligada por uma guia
+// ao ponto em que acontece. É desenhada na largura real do painel, para texto e
+// guias saírem no tamanho de tela; quando as paradas não cabem lado a lado
+// (celular), ficam em fileira e as guias somem.
+function linhaDoTempo(alvo, e) {
+  const w = Math.max(280, Math.round(alvo.clientWidth));
+  const h = 112;
+  const m = { l: 6, r: 6 };
+  const topo = 30;
+  const base = 92;
+  const s = {
+    px: (ano) => m.l + ((ano - ANO0) / (ANO1 - ANO0)) * (w - m.l - m.r),
+    py: (fracao) => base - fracao * (base - topo)
+  };
+  const paradas = [
+    { ano: 2030, f: e.em(2030), valor: pct(e.em(2030)), rotulo: tp('em {ano}', { ano: 2030 }), urucum: true },
+    { ano: e.metade, f: 0.5, valor: e.metade, rotulo: t('Metade do caminho') },
+    { ano: e.chega, f: 1, valor: e.chega, rotulo: t('Meta final') }
+  ];
+  // A metade que já cai em 2030 entra na parada de 2030.
+  if (e.metade <= 2030) {
+    paradas[0].rotulo = `${paradas[0].rotulo} · ${t('já passa da metade')}`;
+    paradas.splice(1, 1);
+  }
+  const caixa = alvo.querySelector('.pj-paradas');
+  caixa.innerHTML = paradas.map((p) => `<div class="pj-parada${p.urucum ? ' is-urucum' : ''}"><b>${escape(String(p.valor))}</b><small>${escape(p.rotulo)}</small></div>`).join('');
+  const rotulos = [...caixa.children];
+  // Cada parada começa no próprio ano, empurrada pela anterior; a última não
+  // passa da borda e puxa as anteriores de volta.
+  const VAO = 24;
+  paradas.forEach((p, k) => {
+    p.larg = rotulos[k].offsetWidth;
+    p.x = Math.max(s.px(p.ano), k ? paradas[k - 1].x + paradas[k - 1].larg + VAO : 0);
+  });
+  for (let k = paradas.length - 1; k >= 0; k -= 1) {
+    const limite = k === paradas.length - 1 ? w : paradas[k + 1].x - VAO;
+    paradas[k].x = Math.min(paradas[k].x, limite - paradas[k].larg);
+  }
+  const cabe = paradas[0].x >= 0;
+  alvo.classList.toggle('is-empilhado', !cabe);
+  const guias = paradas.map((p, k) => {
+    // A guia desce do ponto do rótulo mais perto do ano; se ele é a borda
+    // direita, o rótulo se alinha por ela.
+    const pino = Math.min(p.x + p.larg, Math.max(p.x, s.px(p.ano)));
+    if (cabe) {
+      rotulos[k].style.left = `${p.x}px`;
+      rotulos[k].classList.toggle('is-fim', pino >= p.x + p.larg - 0.5);
+    }
+    return `<path class="pj-guia" d="M${pino},0 L${pino},6 L${s.px(p.ano)},${topo - 8} L${s.px(p.ano)},${s.py(p.f)}"/><circle class="pj-marco" cx="${s.px(p.ano)}" cy="${s.py(p.f)}" r="4.5"/>`;
+  }).join('');
+  const anos = [ANO0, ...MARCOS].map((a) => `<line x1="${s.px(a)}" x2="${s.px(a)}" y1="${base}" y2="${base + 5}"/><text x="${s.px(a)}" y="${h - 4}" text-anchor="${a === ANO0 ? 'start' : a === ANO1 ? 'end' : 'middle'}">${a}</text>`).join('');
+  alvo.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória do eixo {nome}', { nome: e.nome }))}">
+    <g class="pj-hoje"><line x1="${s.px(HOJE)}" x2="${s.px(HOJE)}" y1="${topo - 6}" y2="${base}"/><text x="${s.px(HOJE) + 5}" y="${topo + 2}">${escape(t('hoje'))}</text></g>
+    ${caminhoComArea(e.caminho, s)}
+    <g class="pj-tempo-eixo"><line x1="${m.l}" x2="${w - m.r}" y1="${base}" y2="${base}"/>${anos}</g>
+    <g class="pj-surge" style="animation-delay:.7s">${guias}</g>
+    <g class="pj-mira"><line y1="${topo - 6}" y2="${base}"/><circle r="5"/><rect rx="4" height="20" width="80"/><text text-anchor="middle"></text></g></svg>`);
+  return { s, w, m };
+}
+
 
 function creditoDa(foto) {
   if (!foto) return '';
@@ -158,7 +219,7 @@ function htmlDaLista(eixos) {
         <span class="pj-titulo-valor"><strong>${pct(e.em(2030))}</strong>${escape(tp('em {ano}', { ano: 2030 }))}</span>
         <span class="pj-prog" aria-hidden="true"><i></i></span>
       </button>`).join('')}</div>
-      <div class="pj-titulos-pe"><span>${escape(t('Passe o mouse num eixo para vê-lo; parados, eles se alternam sozinhos.'))}</span><button type="button" class="pj-pausa" data-pausa>${escape(t('Pausar'))}</button></div>
+      <div class="pj-titulos-pe"><button type="button" class="pj-pausa" data-pausa>${escape(t('Pausar'))}</button></div>
     </div>
     <div class="pj-painel" id="pj-painel" role="tabpanel">
       <div class="pj-foto">${eixos.map((e, i) => (e.foto ? `<i class="${i === 0 ? 'is-ativo' : ''}" data-foto="${e.n}" style="background-image:url('${escape(e.foto.arquivo)}')"></i>` : '')).join('')}<span data-cred></span><div class="pj-foto-txt" data-foto-txt></div></div>
@@ -198,31 +259,13 @@ function ligaVisao(raiz, eixos, sinal) {
     lado.querySelector('[data-cred]').innerHTML = creditoDa(e.foto);
     lado.querySelector('[data-foto-txt]').innerHTML = `<div class="pj-entra"><span class="pj-sobre">${escape(rotuloDoEixo(e.n))}</span><h2>${escape(e.nome)}</h2></div>`;
 
-    const w = 600;
-    const h = 250;
-    const m = { t: 26, r: 18, b: 24, l: 40 };
-    const s = escala(w, h, m);
-    const f = moldura(w, h, m, s);
-    const finos = e.inds.length > 1 ? e.inds.map((p) => `<polyline class="pj-fino pj-surge" points="${pontos(p.caminho, s.px, s.py)}"/>`).join('') : '';
-    lado.querySelector('[data-dados]').innerHTML = `
-      <div class="pj-graf" data-graf><svg class="pj-escuro" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória do eixo {nome}', { nome: e.nome }))}">${f.grade}${f.hoje}${finos}${caminhoComArea(e.caminho, s)}${marcosNoGrafico(e, s, [2030, 2035, 2040])}${f.anos}
-        <g class="pj-mira"><line y1="${m.t}" y2="${h - m.b}"/><circle r="5"/><rect rx="4" height="20" width="80"/><text text-anchor="middle"></text></g></svg></div>
-      <div class="pj-marcos pj-entra">
-        <div><small>${escape(tp('em {ano}', { ano: 2030 }))}</small><b class="is-ocre">${pct(e.em(2030))}</b><span>${escape(t('do caminho percorrido'))}</span></div>
-        <div><small>${escape(t('Metade do caminho'))}</small><b>${e.metade}</b></div>
-        <div><small>${escape(t('Meta final'))}</small><b>${e.chega}</b></div>
-      </div>`;
-    const visiveis = e.inds.slice(0, 3);
+    const dados = lado.querySelector('[data-dados]');
+    dados.innerHTML = '<div class="pj-tempo" data-graf><div class="pj-paradas pj-entra"></div></div>';
+    const tempo = linhaDoTempo(dados.firstElementChild, e);
     lado.querySelector('[data-rodape]').innerHTML = `
-      <div class="pj-inds pj-entra"><span>${escape(t('Indicadores'))}</span>${visiveis.map((p) => `<button type="button" class="pj-chip" data-chip="${escape(p.id)}" title="${escape(t(p.nome))}">${escape(t(p.nome))}</button>`).join('')}${e.inds.length > 3 ? `<button type="button" class="pj-chip is-mais" data-todos>+${e.inds.length - 3}</button>` : ''}</div>
       <button type="button" class="pj-abrir" data-todos>${escape(e.inds.length === 1 ? t('Ver o indicador do eixo') : tp('Ver os {n} indicadores', { n: e.inds.length }))} <span aria-hidden="true">→</span></button>`;
-    lado.querySelectorAll('[data-todos]').forEach((b) => b.addEventListener('click', () => abreEixo(raiz, eixos, e.n, sinal)));
-    lado.querySelectorAll('[data-chip]').forEach((b) => b.addEventListener('click', () => {
-      abreEixo(raiz, eixos, e.n, sinal);
-      const p = e.inds.find((x) => x.id === b.dataset.chip);
-      abreIndicador(raiz, e, p, raiz.querySelector(`[data-ind="${CSS.escape(p.id)}"]`), sinal);
-    }));
-    ligaMira(lado.querySelector('[data-graf]'), e, s, w, m);
+    lado.querySelector('[data-todos]').addEventListener('click', () => abreEixo(raiz, eixos, e.n, sinal));
+    ligaMira(lado.querySelector('[data-graf]'), e, tempo.s, tempo.w, tempo.m);
   };
 
   // Troca sozinha, como na Visão Geral; o mouse sobre a lista, o foco ou o
