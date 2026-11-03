@@ -8,10 +8,10 @@ import { carregaConteudo, nomeDoEixo } from './conteudo.js';
 //     à direita. O eixo sob o mouse entra no painel; parados, eles se alternam
 //     a cada 8 s, com a barra urucum correndo embaixo, como em "Cinco eixos"
 //     da Visão Geral;
-//   - o eixo aberto (`#eixo-2`): foto, marcos, a trajetória do eixo com a de
-//     cada indicador atrás e um cartão por indicador;
-//   - o painel lateral de um indicador, com a série ano a ano e a tabela dos
-//     marcos.
+//   - o eixo aberto (`#eixo-2`): o topo escuro com a trajetória do eixo, a de
+//     cada indicador atrás, e um cartão por indicador;
+//   - o indicador aberto: o cartão cresce no lugar, como em Projetos, com a
+//     série ano a ano e a tabela dos marcos.
 //
 // Tudo o que este script liga sai na troca de página (sinalDaPagina).
 const ANCORA = '[data-projecoes]';
@@ -390,41 +390,42 @@ function textoDoEixo(e) {
     : tp('{n} indicadores do eixo têm trajetória ano a ano até a meta.', { n: e.inds.length });
 }
 
+// As etiquetas do indicador: cenários e "só referência". No cartão e no aberto.
+function etiquetasDe(p) {
+  return `${p.cenarios.length > 1 ? `<span class="pj-tag">${escape(tp('{n} cenários', { n: p.cenarios.length }))}</span>` : ''}${p.comparavel ? '' : `<span class="pj-tag is-ref">${escape(t('Só referência'))}</span>`}`;
+}
+
+// O topo escuro do eixo, sem foto: o título à esquerda e, à direita, a
+// trajetória do eixo com cada marco (2030 a 2050) rotulado no ponto, e a
+// linha de cada indicador atrás, que acende quando o mouse passa no cartão dele.
 function htmlDoEixo(eixos, e) {
-  const w = 820;
-  const h = 300;
-  const m = { t: 30, r: 20, b: 26, l: 42 };
+  const w = 640;
+  const h = 270;
+  const m = { t: 30, r: 22, b: 26, l: 42 };
   const s = escala(w, h, m);
   const f = moldura(w, h, m, s);
   const finos = e.inds.length > 1 ? e.inds.map((p) => `<polyline class="pj-fino" data-fino="${escape(p.id)}" points="${pontos(p.caminho, s.px, s.py)}"/>`).join('') : '';
   return `<div class="pj-heroi">
-      ${e.foto ? `<div class="pj-heroi-foto" style="background-image:url('${escape(e.foto.arquivo)}')"></div>` : ''}
       <div class="pj-heroi-in">
         <div class="pj-nav"><button type="button" class="pj-voltar" data-volta><span aria-hidden="true">←</span> ${escape(t('Todos os eixos'))}</button>
           <nav class="pj-abas" aria-label="${escape(t('Eixos'))}">${eixos.map((x) => `<a class="pj-aba" href="#eixo-${x.n}" data-aba="${x.n}" title="${escape(x.nome)}"${x.n === e.n ? ' aria-current="page"' : ''}>${dois(x.n)} · ${escape(x.nome)}</a>`).join('')}</nav></div>
         <div class="pj-heroi-grade">
           <div class="pj-entra"><span class="pj-sobre">${escape(tp('{eixo} · trajetória pactuada', { eixo: rotuloDoEixo(e.n) }))}</span><h2 tabindex="-1" data-titulo-eixo>${escape(e.nome)}</h2><p>${escape(textoDoEixo(e))}</p></div>
-          <div>
-            <div class="pj-heroi-marcos">${MARCOS.map((a, k) => `<div><small>${a}</small><b>${pct(e.em(a))}</b><span class="pj-br"><i style="--v:${(e.em(a) * 100).toFixed(1)}%;--k:${k}"></i></span></div>`).join('')}</div>
-            <p class="pj-heroi-legenda">${escape(t('Parte do caminho entre a linha de base e a meta final, na média dos indicadores.'))}</p>
+          <div class="pj-heroi-graf">
+            <svg class="pj-escuro" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória do eixo {nome}', { nome: e.nome }))}">${f.grade}${f.hoje}${finos}${caminhoComArea(e.caminho, s)}${marcosNoGrafico(e, s, MARCOS)}${f.anos}</svg>
+            <div class="pj-leg"><span><i></i>${escape(t('Média do eixo'))}</span>${finos ? `<span><i class="is-fino"></i>${escape(t('Cada indicador'))}</span>` : ''}<span><i class="is-hoje"></i>${escape(tp('Hoje ({ano})', { ano: HOJE }))}</span></div>
           </div>
         </div>
       </div>
-      ${creditoDa(e.foto)}
     </div>
     <div class="pj-corpo">
-      <div class="pj-graf-bloco">
-        <div><span class="pj-sobre">${escape(t('A trajetória do eixo'))}</span><h3>${escape(t('Do hoje à meta final, ano a ano'))}</h3><p>${escape(e.inds.length > 1 ? t('Passe o mouse num indicador abaixo para ver o caminho dele no gráfico.') : t('Com um só indicador, a trajetória do eixo é a dele.'))}</p>
-          <div class="pj-leg"><span><i></i>${escape(t('Média do eixo'))}</span>${finos ? `<span><i class="is-fino"></i>${escape(t('Cada indicador'))}</span>` : ''}<span><i class="is-hoje"></i>${escape(tp('Hoje ({ano})', { ano: HOJE }))}</span></div></div>
-        <svg class="pj-claro" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória do eixo {nome}', { nome: e.nome }))}">${f.grade}${f.hoje}${finos}${caminhoComArea(e.caminho, s)}${marcosNoGrafico(e, s, MARCOS)}${f.anos}</svg>
-      </div>
       <div class="pj-inds-topo"><div><span class="pj-sobre">${escape(t('Indicadores'))}</span><h3>${escape(e.inds.length === 1 ? t('O indicador com trajetória') : tp('Os {n} indicadores com trajetória', { n: e.inds.length }))}</h3></div><p>${escape(t('Clique num indicador para ver ano a ano.'))}</p></div>
-      <div class="pj-cartoes">${e.inds.map((p, k) => `<button type="button" class="pj-ind" data-ind="${escape(p.id)}" style="--k:${k}">
-        <span class="pj-ind-topo"><span class="pj-ind-cod">${escape(p.codigo)}</span>${p.cenarios.length > 1 ? `<span class="pj-tag">${escape(tp('{n} cenários', { n: p.cenarios.length }))}</span>` : ''}${p.comparavel ? '' : `<span class="pj-tag is-ref">${escape(t('Só referência'))}</span>`}</span>
+      <div class="pj-regiao" data-regiao><div class="pj-cartoes">${e.inds.map((p, k) => `<button type="button" class="pj-ind" data-ind="${escape(p.id)}" data-idx="${k}" aria-expanded="false" style="--k:${k}">
+        <span class="pj-ind-topo"><span class="pj-ind-cod">${escape(p.codigo)}</span>${etiquetasDe(p)}</span>
         <span class="pj-ind-nome"><strong>${escape(t(p.nome))}</strong><small>${escape(t(p.unidade))} · ${escape(t('Amazônia Legal'))}</small></span>
         ${miniGrafico(p)}
         <span class="pj-ind-num"><span><small>${p.central[0][0]}</small><b>${escape(comUnidade(p.central[0][1], p.unidade))}</b></span><span class="pj-seta" aria-hidden="true">→</span><span class="is-meta"><small>${p.central.at(-1)[0]}</small><b>${escape(comUnidade(p.central.at(-1)[1], p.unidade))}</b></span><span class="pj-ver">${escape(t('Ver ano a ano'))} <span aria-hidden="true">→</span></span></span>
-      </button>`).join('')}</div>
+      </button>`).join('')}</div></div>
     </div>`;
 }
 
@@ -435,6 +436,7 @@ function abreEixo(raiz, eixos, n, sinal, { rola = true } = {}) {
   if (`${location.pathname}${location.search}${location.hash}` !== destino) history.replaceState(history.state, '', destino);
   raiz.querySelector('[data-pj-visao]').hidden = true;
   const vista = raiz.querySelector('[data-pj-eixo]');
+  esqueceIndicador();
   vista.hidden = false;
   vista.innerHTML = htmlDoEixo(eixos, e);
   vista.querySelector('[data-volta]').addEventListener('click', () => fechaEixo(raiz));
@@ -445,10 +447,11 @@ function abreEixo(raiz, eixos, n, sinal, { rola = true } = {}) {
   vista.querySelectorAll('[data-ind]').forEach((b) => {
     const fino = vista.querySelector(`[data-fino="${CSS.escape(b.dataset.ind)}"]`);
     if (fino) {
-      b.addEventListener('mouseenter', () => { fino.classList.add('is-ativo'); fino.parentNode.insertBefore(fino, vista.querySelector('.pj-graf-bloco .pj-area')); });
+      // A linha do indicador sobe para a frente da área, logo atrás da média.
+      b.addEventListener('mouseenter', () => { fino.classList.add('is-ativo'); fino.parentNode.insertBefore(fino, vista.querySelector('.pj-heroi .pj-linha')); });
       b.addEventListener('mouseleave', () => fino.classList.remove('is-ativo'));
     }
-    b.addEventListener('click', () => abreIndicador(raiz, e, e.inds.find((p) => p.id === b.dataset.ind), b, sinal));
+    b.addEventListener('click', () => abreIndicador(vista, e, Number(b.dataset.idx)));
   });
   if (rola) {
     window.scrollTo({ top: Math.max(0, raiz.getBoundingClientRect().top + scrollY - 70), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
@@ -459,6 +462,7 @@ function abreEixo(raiz, eixos, n, sinal, { rola = true } = {}) {
 function fechaEixo(raiz) {
   history.replaceState(history.state, '', `${location.pathname}${location.search}`);
   const vista = raiz.querySelector('[data-pj-eixo]');
+  esqueceIndicador();
   vista.hidden = true;
   vista.innerHTML = '';
   raiz.querySelector('[data-pj-visao]').hidden = false;
@@ -467,15 +471,20 @@ function fechaEixo(raiz) {
   raiz.querySelector('.pj-titulo.is-ativo')?.focus({ preventScroll: true });
 }
 
-// ---------- o painel lateral de um indicador ----------
+// ---------- o indicador aberto: o cartão cresce no lugar ----------
+//
+// O mesmo movimento do card de Projetos (prioridades.js): a placa nasce do
+// tamanho e do lugar do cartão, igual a ele (o "rosto", uma cópia do cartão por
+// cima), e cresce até ocupar a área dos cartões; dentro dela, a série ano a ano,
+// a tabela dos marcos e anterior, próximo e fechar (também ← → e Esc). A área
+// acompanha a altura do conteúdo enquanto ele está aberto (ResizeObserver).
+const DURACAO = 620; // os mesmos tempos do projecoes.css (.pj-placa)
+const DURACAO_FECHA = 480;
+let aberto = null; // { vista, e, placa, idx, card, observador, pronto, fechando }
 
-let devolveFoco = null;
-
-function abreIndicador(raiz, e, p, origem, sinal) {
-  if (!p) return;
-  devolveFoco = origem;
-  const w = 560;
-  const h = 260;
+function htmlDoIndicador(e, p, idx) {
+  const w = 620;
+  const h = 270;
   const m = { t: 30, r: 20, b: 26, l: 54 };
   const series = p.cenarios.map(serieDe);
   const valores = series.flat().map(([, v]) => v);
@@ -501,51 +510,159 @@ function abreIndicador(raiz, e, p, origem, sinal) {
     return `<g class="pj-surge" style="animation-delay:${0.5 + k * 0.1}s"><circle class="pj-ponto${classe}" cx="${px(a)}" cy="${py(v)}" r="${a === a1 ? 6 : 4.5}"/><text class="pj-valor" x="${px(a)}" y="${py(v) - 12}" text-anchor="${k === 0 ? 'start' : a === a1 ? 'end' : 'middle'}">${escape(comUnidade(v, p.unidade))}</text></g>`;
   }).join('');
   const hoje = HOJE > a0 && HOJE < a1 ? `<g class="pj-hoje"><line x1="${px(HOJE)}" x2="${px(HOJE)}" y1="${m.t - 10}" y2="${h - m.b}"/><text x="${px(HOJE) + 5}" y="${m.t - 14}">${escape(t('hoje'))}</text></g>` : '';
-  const linhas = p.cenarios.map((cenario) => {
-    const serie = serieDe(cenario);
-    return `<tr><th scope="row">${escape(multi ? t(cenario.nome) : t('Meta do ano'))}${cenario.central ? ' ●' : ''}</th>${anosMarco.map((a) => `<td>${a >= serie[0][0] && a <= serie.at(-1)[0] ? escape(numeroProjecao(valorEm(serie, a))) : '–'}</td>`).join('')}</tr>`;
-  }).join('');
+  // Na coluna ao lado do gráfico a tabela vai em pé: um marco por linha, um
+  // cenário por coluna.
+  const cabeca = `<tr><th scope="col">${escape(t('Ano'))}</th>${p.cenarios.map((cenario) => `<th scope="col">${escape(multi ? t(cenario.nome) : t('Meta do ano'))}${cenario.central ? ' ●' : ''}</th>`).join('')}</tr>`;
+  const linhas = anosMarco.map((a) => `<tr><th scope="row">${a}</th>${series.map((serie) => `<td>${a >= serie[0][0] && a <= serie.at(-1)[0] ? escape(numeroProjecao(valorEm(serie, a))) : '–'}</td>`).join('')}</tr>`).join('');
   const nomeCentral = multi ? (p.cenarios.find((x) => x.central)?.nome ? t(p.cenarios.find((x) => x.central).nome) : t('Média dos cenários')) : t('Trajetória pactuada');
-
-  const gaveta = raiz.querySelector('[data-pj-gaveta]');
-  gaveta.innerHTML = `
-    <div class="pj-g-topo">
-      ${e.foto ? `<i class="pj-g-foto" style="background-image:url('${escape(e.foto.arquivo)}')"></i>` : ''}
-      <div class="pj-g-linha"><span class="pj-sobre">${escape(p.codigo)} · ${escape(rotuloDoEixo(e.n))}</span><button type="button" class="pj-fechar" data-fechar aria-label="${escape(t('Fechar'))}">×</button></div>
-      <h2 id="pj-gaveta-titulo">${escape(t(p.nome))}</h2>
-      <p>${escape(t(p.unidade))} · ${escape(t('Amazônia Legal'))}</p>
-      <div class="pj-g-num"><div><small>${escape(tp('Linha de base · {ano}', { ano: c[0][0] }))}</small><b>${escape(comUnidade(c[0][1], p.unidade))}</b></div><div><small>${escape(tp('Meta · {ano}', { ano: c.at(-1)[0] }))}</small><b>${escape(comUnidade(c.at(-1)[1], p.unidade))}</b></div></div>
-    </div>
-    <div class="pj-g-corpo">
-      <div class="pj-g-cartao">
-        <svg class="pj-claro" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória pactuada de {nome}', { nome: t(p.nome) }))}"><g class="pj-grade">${grade}</g>${hoje}<polygon class="pj-area pj-surge" points="${px(a0)},${h - m.b} ${pontos(c, px, py)} ${px(a1)},${h - m.b}"/>${faixa}${outros}<polyline class="pj-linha pj-desenha" pathLength="1" points="${pontos(c, px, py)}"/>${marcos}<g class="pj-anos">${anosMarco.map((a) => `<text x="${px(a)}" y="${h - 4}" text-anchor="middle">${a}</text>`).join('')}</g></svg>
-        <div class="pj-g-legenda"><span><i class="is-bola"></i>${escape(t('Linha de base'))}</span><span><i></i>${escape(nomeCentral)}</span>${multi ? `<span><i class="is-tracejado"></i>${escape(t('Outros cenários'))}</span>` : ''}</div>
+  const total = e.inds.length;
+  return `<div class="pj-placa-corpo">
+      <div class="pj-ind-topo"><span class="pj-sobre">${escape(p.codigo)} · ${escape(rotuloDoEixo(e.n))}</span>${etiquetasDe(p)}</div>
+      <h3 class="pj-placa-titulo" tabindex="-1">${escape(t(p.nome))}</h3>
+      <p class="pj-placa-sub">${escape(t(p.unidade))} · ${escape(t('Amazônia Legal'))}</p>
+      <div class="pj-placa-grade">
+        <div>
+          <svg class="pj-claro" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escape(tp('Trajetória pactuada de {nome}', { nome: t(p.nome) }))}"><g class="pj-grade">${grade}</g>${hoje}<polygon class="pj-area pj-surge" points="${px(a0)},${h - m.b} ${pontos(c, px, py)} ${px(a1)},${h - m.b}"/>${faixa}${outros}<polyline class="pj-linha pj-desenha" pathLength="1" points="${pontos(c, px, py)}"/>${marcos}<g class="pj-anos">${anosMarco.map((a) => `<text x="${px(a)}" y="${h - 4}" text-anchor="middle">${a}</text>`).join('')}</g></svg>
+          <div class="pj-placa-legenda"><span><i class="is-bola"></i>${escape(t('Linha de base'))}</span><span><i></i>${escape(nomeCentral)}</span>${multi ? `<span><i class="is-tracejado"></i>${escape(t('Outros cenários'))}</span>` : ''}</div>
+        </div>
+        <div>
+          <div class="pj-placa-num"><div><small>${escape(tp('Linha de base · {ano}', { ano: c[0][0] }))}</small><b>${escape(comUnidade(c[0][1], p.unidade))}</b></div><div><small>${escape(tp('Meta · {ano}', { ano: c.at(-1)[0] }))}</small><b>${escape(comUnidade(c.at(-1)[1], p.unidade))}</b></div></div>
+          <table class="pj-tabela"><thead>${cabeca}</thead><tbody>${linhas}</tbody></table>
+          ${p.cenarios.some((x) => x.central) ? `<p class="pj-nota">● ${escape(t('cenário que corresponde à meta do catálogo.'))}</p>` : ''}
+          ${p.comparavel ? '' : `<p class="pj-aviso"><strong>${escape(t('Só referência:'))}</strong> ${escape(t(p.motivo || ''))}</p>`}
+          ${p.nota ? `<p class="pj-nota">${escape(t(p.nota))}</p>` : ''}
+          <a class="pj-ir" href="${rota('metas', idiomaAtual())}#${encodeURIComponent(p.codigo)}">${escape(t('Ver o indicador em Metas e indicadores'))} <span aria-hidden="true">→</span></a>
+        </div>
       </div>
-      <div class="pj-tabela-rolagem"><table class="pj-tabela"><thead><tr><th></th>${anosMarco.map((a) => `<th scope="col">${a}</th>`).join('')}</tr></thead><tbody>${linhas}</tbody></table></div>
-      ${p.cenarios.some((x) => x.central) ? `<p class="pj-nota">● ${escape(t('cenário que corresponde à meta do catálogo.'))}</p>` : ''}
-      ${p.comparavel ? '' : `<p class="pj-aviso"><strong>${escape(t('Só referência:'))}</strong> ${escape(t(p.motivo || ''))}</p>`}
-      ${p.nota ? `<p class="pj-nota">${escape(t(p.nota))}</p>` : ''}
-      <a class="pj-ir" href="${rota('metas', idiomaAtual())}#${encodeURIComponent(p.codigo)}">${escape(t('Ver o indicador em Metas e indicadores'))} <span aria-hidden="true">→</span></a>
+      <div class="pj-placa-nav">
+        <button type="button" data-passo="-1"${idx === 0 ? ' disabled' : ''}>${escape(t('← Anterior'))}</button>
+        <span>${escape(tp('{n} de {total}', { n: idx + 1, total }))}</span>
+        <button type="button" data-passo="1"${idx === total - 1 ? ' disabled' : ''}>${escape(t('Próximo →'))}</button>
+        <button type="button" class="pj-placa-fechar" data-fecha>${escape(t('Fechar'))} <span aria-hidden="true">×</span></button>
+      </div>
     </div>`;
-  gaveta.hidden = false;
-  gaveta.scrollTop = 0;
-  requestAnimationFrame(() => {
-    gaveta.classList.add('is-aberta');
-    raiz.querySelector('[data-pj-veu]').classList.add('is-aberto');
-  });
-  document.documentElement.classList.add('pj-sem-rolagem');
-  gaveta.querySelector('[data-fechar]').addEventListener('click', () => fechaIndicador(raiz));
-  gaveta.querySelector('[data-fechar]').focus({ preventScroll: true });
 }
 
-function fechaIndicador(raiz) {
-  const gaveta = raiz.querySelector('[data-pj-gaveta]');
-  if (!gaveta.classList.contains('is-aberta')) return;
-  gaveta.classList.remove('is-aberta');
-  raiz.querySelector('[data-pj-veu]').classList.remove('is-aberto');
-  document.documentElement.classList.remove('pj-sem-rolagem');
-  setTimeout(() => { if (!gaveta.classList.contains('is-aberta')) gaveta.hidden = true; }, 500);
-  devolveFoco?.focus({ preventScroll: true });
+const cartoesDe = (vista) => [...vista.querySelectorAll('.pj-ind')];
+
+// A placa: o conteúdo aberto e, por cima, o rosto, uma cópia do cartão na
+// largura dele, que é o que se vê no primeiro e no último quadro.
+function preencheIndicador(placa, vista, e, idx) {
+  const card = cartoesDe(vista)[idx];
+  const rosto = Object.assign(document.createElement('div'), { className: 'pj-rosto', innerHTML: card.innerHTML });
+  rosto.setAttribute('aria-hidden', 'true');
+  rosto.style.width = `${card.offsetWidth}px`;
+  placa.innerHTML = htmlDoIndicador(e, e.inds[idx], idx);
+  placa.append(rosto);
+  placa.setAttribute('aria-label', t(e.inds[idx].nome));
+  placa.querySelectorAll('[data-passo]').forEach((b) => b.addEventListener('click', () => abreIndicador(vista, e, idx + Number(b.dataset.passo))));
+  placa.querySelector('[data-fecha]').addEventListener('click', () => fechaIndicador());
+}
+
+function noLugarDoCartao(placa, regiao, card) {
+  const caixa = regiao.getBoundingClientRect();
+  const doCard = card.getBoundingClientRect();
+  Object.assign(placa.style, { top: `${doCard.top - caixa.top}px`, left: `${doCard.left - caixa.left}px`, width: `${doCard.width}px`, height: `${doCard.height}px` });
+}
+
+// Só depois que a placa terminou de crescer: durante o crescimento a largura muda a cada quadro.
+function ajustaIndicador() {
+  if (!aberto?.pronto || aberto.fechando) return;
+  const altura = aberto.placa.querySelector('.pj-placa-corpo').offsetHeight + 2;
+  aberto.vista.querySelector('[data-regiao]').style.height = `${altura}px`;
+  aberto.placa.style.height = `${altura}px`;
+}
+
+function abreIndicador(vista, e, idx) {
+  const regiao = vista.querySelector('[data-regiao]');
+  const cards = cartoesDe(vista);
+  if (idx < 0 || idx >= cards.length || aberto?.fechando) return;
+  const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const card = cards[idx];
+  if (!aberto) {
+    const placa = document.createElement('div');
+    placa.className = 'pj-placa';
+    placa.setAttribute('role', 'region');
+    preencheIndicador(placa, vista, e, idx);
+    noLugarDoCartao(placa, regiao, card);
+    regiao.append(placa);
+    regiao.style.height = `${regiao.offsetHeight}px`;
+    // O conteúdo fica na largura final durante o movimento (a placa é uma janela
+    // que se abre sobre ele, sem o texto se rearrumar); a altura sai daí.
+    const corpo = placa.querySelector('.pj-placa-corpo');
+    corpo.style.width = `${regiao.getBoundingClientRect().width}px`;
+    const altura = corpo.offsetHeight + 2;
+    placa.getBoundingClientRect();
+    card.classList.add('is-na-placa');
+    regiao.classList.add('is-aberta');
+    regiao.querySelector('.pj-cartoes').inert = true;
+    regiao.style.height = `${altura}px`;
+    Object.assign(placa.style, { top: '0px', left: '0px', width: '100%', height: `${altura}px` });
+    placa.classList.add('is-cheia');
+    const observador = new ResizeObserver(ajustaIndicador);
+    observador.observe(corpo);
+    aberto = { vista, e, placa, idx, card, observador, pronto: reduz };
+    setTimeout(() => {
+      if (aberto?.placa !== placa) return;
+      corpo.style.width = '';
+      aberto.pronto = true;
+      ajustaIndicador();
+      placa.querySelector('.pj-placa-titulo').focus({ preventScroll: true });
+    }, reduz ? 0 : DURACAO);
+  } else {
+    // Troca o conteúdo dentro da placa já aberta: ele some e volta.
+    const { placa } = aberto;
+    placa.classList.add('is-trocando');
+    setTimeout(() => {
+      if (aberto?.placa !== placa) return;
+      aberto.observador.disconnect();
+      preencheIndicador(placa, vista, e, idx);
+      aberto.observador.observe(placa.querySelector('.pj-placa-corpo'));
+      placa.classList.remove('is-trocando');
+      ajustaIndicador();
+      placa.querySelector('.pj-placa-titulo').focus({ preventScroll: true });
+    }, reduz ? 0 : 200);
+    // O cartão escondido passa a ser o do indicador aberto: é para ele que a placa volta.
+    aberto.card.classList.remove('is-na-placa');
+    card.classList.add('is-na-placa');
+    Object.assign(aberto, { card, idx });
+  }
+  cards.forEach((c, k) => c.setAttribute('aria-expanded', String(k === idx)));
+  const topo = regiao.getBoundingClientRect().top;
+  if (topo < 70 || topo > innerHeight * 0.5) scrollBy({ top: topo - 90, behavior: reduz ? 'auto' : 'smooth' });
+}
+
+// Fechar é o caminho de volta: o conteúdo some, o rosto reaparece e a placa
+// volta ao lugar do cartão; no fim o cartão real toma o lugar dela.
+function fechaIndicador() {
+  if (!aberto || aberto.fechando) return;
+  const { vista, placa, card, observador } = aberto;
+  const regiao = vista.querySelector('[data-regiao]');
+  const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  observador.disconnect();
+  aberto.fechando = true;
+  cartoesDe(vista).forEach((c) => c.setAttribute('aria-expanded', 'false'));
+  regiao.querySelector('.pj-cartoes').inert = false;
+  const corpo = placa.querySelector('.pj-placa-corpo');
+  corpo.style.width = `${corpo.getBoundingClientRect().width}px`;
+  placa.classList.add('is-fechando');
+  placa.classList.remove('is-cheia');
+  regiao.classList.remove('is-aberta');
+  regiao.style.height = `${regiao.querySelector('.pj-cartoes').offsetHeight}px`;
+  noLugarDoCartao(placa, regiao, card);
+  setTimeout(() => {
+    placa.remove();
+    regiao.style.height = '';
+    card.classList.remove('is-na-placa');
+    card.focus({ preventScroll: true });
+    aberto = null;
+  }, reduz ? 0 : DURACAO_FECHA);
+}
+
+// Ao trocar de eixo ou voltar aos cinco, a placa sai junto com a vista.
+function esqueceIndicador() {
+  aberto?.observador.disconnect();
+  aberto = null;
 }
 
 // ---------- entrada ----------
@@ -561,9 +678,13 @@ async function init() {
   const eixos = montaEixos(dados, fotos);
   ligaVisao(raiz, eixos, sinal);
 
-  raiz.querySelector('[data-pj-veu]').addEventListener('click', () => fechaIndicador(raiz));
-  document.addEventListener('keydown', (evento) => { if (evento.key === 'Escape') fechaIndicador(raiz); }, { signal: sinal });
-  sinal.addEventListener('abort', () => document.documentElement.classList.remove('pj-sem-rolagem'));
+  // Com um indicador aberto: Esc fecha, as setas passam ao anterior e ao próximo.
+  document.addEventListener('keydown', (evento) => {
+    if (!aberto || evento.target.closest('input, textarea, select')) return;
+    if (evento.key === 'Escape') fechaIndicador();
+    else if (evento.key === 'ArrowLeft' || evento.key === 'ArrowRight') abreIndicador(aberto.vista, aberto.e, aberto.idx + (evento.key === 'ArrowLeft' ? -1 : 1));
+  }, { signal: sinal });
+  sinal.addEventListener('abort', esqueceIndicador);
 
   // `#eixo-3` abre o terceiro eixo, como em Metas.
   const doEndereco = Number(location.hash.match(/^#eixo-(\d+)$/)?.[1]);

@@ -7,8 +7,8 @@
 // O bloco abre nos cinco eixos, no molde de "Cinco eixos de implementação" da
 // Visão Geral: os títulos numerados à esquerda e, à direita, um painel com a
 // foto e a trajetória do eixo escolhido. O eixo aberto (`#eixo-2`) mostra a
-// trajetória maior e um cartão por indicador; cada cartão abre o painel lateral
-// do indicador, com a série ano a ano.
+// trajetória maior no topo escuro e um cartão por indicador; cada cartão cresce
+// no lugar, como em Projetos, com a série ano a ano.
 //
 // A trajetória de um eixo é a média do "caminho" dos indicadores dele: 0 na
 // linha de base, 1 na meta final de cada um. Assim indicadores em unidades
@@ -29,6 +29,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
       abre), eles deixariam de pintar nos outros. */}
   <svg class="pj-defs" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
+      <linearGradient id="pj-ouro" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e0a83c" stop-opacity=".32" /><stop offset="1" stop-color="#e0a83c" stop-opacity="0" /></linearGradient>
       <linearGradient id="pj-urucum" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c0451f" stop-opacity=".26" /><stop offset="1" stop-color="#c0451f" stop-opacity="0" /></linearGradient>
       <linearGradient id="pj-mata" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3e6e57" stop-opacity=".2" /><stop offset="1" stop-color="#3e6e57" stop-opacity="0" /></linearGradient>
     </defs>
@@ -50,6 +51,4 @@ const t = traduzirCom(lang, Astro.locals.interface);
     </div>
   </div>
   <div class="pj-eixo" data-pj-eixo hidden></div>
-  <div class="pj-veu" data-pj-veu></div>
-  <aside class="pj-gaveta" data-pj-gaveta role="dialog" aria-modal="true" aria-labelledby="pj-gaveta-titulo" hidden></aside>
 </section>

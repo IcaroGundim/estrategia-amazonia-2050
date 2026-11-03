@@ -481,11 +481,6 @@
         "{n} indicadores do eixo têm trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.",
         "{n} indicadores do eixo têm trajetória ano a ano até a meta.",
         "{eixo} · trajetória pactuada",
-        "Parte do caminho entre a linha de base e a meta final, na média dos indicadores.",
-        "A trajetória do eixo",
-        "Do hoje à meta final, ano a ano",
-        "Passe o mouse num indicador abaixo para ver o caminho dele no gráfico.",
-        "Com um só indicador, a trajetória do eixo é a dele.",
         "Média do eixo",
         "Cada indicador",
         "Hoje ({ano})",
@@ -2578,26 +2573,6 @@
     "{eixo} · trajetória pactuada": {
       "pt": "{eixo} · trajetória pactuada",
       "en": "{eixo} · agreed pathway"
-    },
-    "Parte do caminho entre a linha de base e a meta final, na média dos indicadores.": {
-      "pt": "Parte do caminho entre a linha de base e a meta final, na média dos indicadores.",
-      "en": "Share of the way from the baseline to the final target, averaged across the indicators."
-    },
-    "A trajetória do eixo": {
-      "pt": "A trajetória do eixo",
-      "en": "The pillar's pathway"
-    },
-    "Do hoje à meta final, ano a ano": {
-      "pt": "Do hoje à meta final, ano a ano",
-      "en": "From today to the final target, year by year"
-    },
-    "Passe o mouse num indicador abaixo para ver o caminho dele no gráfico.": {
-      "pt": "Passe o mouse num indicador abaixo para ver o caminho dele no gráfico.",
-      "en": "Hover over an indicator below to see its path on the chart."
-    },
-    "Com um só indicador, a trajetória do eixo é a dele.": {
-      "pt": "Com um só indicador, a trajetória do eixo é a dele.",
-      "en": "With a single indicator, the pillar's pathway is that indicator's."
     },
     "Média do eixo": {
       "pt": "Média do eixo",
