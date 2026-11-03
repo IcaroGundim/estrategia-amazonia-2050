@@ -45,7 +45,7 @@ Astro.locals.interface = interfaceTextos.textos;
 
 const PAGINAS = {
   metodologia: { mainClass: CLASSE_DO_MAIN[ESTILO_VISAO_GERAL], dados: [] },
-  index: { mainClass: undefined, dados: ['dashboard', 'geo', 'catalogo'] },
+  index: { mainClass: undefined, dados: ['dashboard', 'geo', 'catalogo', 'metas'] },
   metas: { mainClass: 'goals-page', dados: ['metas'] },
   projetos: { mainClass: 'pr-main', dados: [] }
 } as const;
@@ -74,6 +74,7 @@ const PAGINAS = {
     import '../../../scripts/metodologia.js';
     import '../../../scripts/visao-editorial.js';
     import '../../../scripts/app.js';
+    import '../../../scripts/projecoes.js';
     import '../../../scripts/metas.js';
     import '../../../scripts/prioridades.js';
   </script>
