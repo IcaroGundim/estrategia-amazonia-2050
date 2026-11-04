@@ -79,10 +79,11 @@ const NOME_DO_CAMPO: Record<string, string> = {
   abrir: 'link de cada cartão', creditoFotos: 'crédito das fotografias',
   arte: 'desenho', escala: 'escala do mapa', estados: 'nota dos estados', indicadores: 'nota dos indicadores', meta: 'rótulo da meta',
   governo: 'nome ao lado do brasão', equipeRotulo: 'rótulo da equipe',
-  coordenacaoRotulo: 'cargo do coordenador', coordenacao: 'nome do coordenador'
+  coordenacaoRotulo: 'cargo do coordenador', coordenacao: 'nome do coordenador',
+  gestaoRotulo: 'rótulo da gestão', cargo: 'cargo'
 };
 const NOME_DA_LISTA: Record<string, string> = {
-  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão', instancias: 'Instância', legenda: 'Legenda', cartoes: 'Cartão', equipe: 'Nome da equipe'
+  numeros: 'Número', itens: 'Item', paragrafos: 'Parágrafo', lista: 'Item da lista', fluxo: 'Etapa do fluxo', dimensions: 'Dimensão', instancias: 'Instância', legenda: 'Legenda', cartoes: 'Cartão', equipe: 'Nome da equipe', gestao: 'Pessoa da gestão'
 };
 const emPalavras = (chave: string) => chave.replace(/([a-z])([A-Z0-9])/g, '$1 $2').toLowerCase();
 const maiuscula = (valor: string) => valor.charAt(0).toUpperCase() + valor.slice(1);

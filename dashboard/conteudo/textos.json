@@ -692,6 +692,39 @@
         "pt": "Governo do Estado do Acre",
         "en": "Government of the State of Acre"
       },
+      "gestaoRotulo": {
+        "pt": "Gestão",
+        "en": "Leadership"
+      },
+      "gestao": [
+        {
+          "nome": {
+            "pt": "Ricardo Brandão dos Santos"
+          },
+          "cargo": {
+            "pt": "Secretário de Estado de Planejamento",
+            "en": "State Secretary of Planning"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Kelly Cristina Lacerda"
+          },
+          "cargo": {
+            "pt": "Secretária Adjunta de Planejamento",
+            "en": "Deputy Secretary of Planning"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Regiani Cristina de Oliveira"
+          },
+          "cargo": {
+            "pt": "Diretora de Planejamento Estratégico e Governança",
+            "en": "Director of Strategic Planning and Governance"
+          }
+        }
+      ],
       "coordenacaoRotulo": {
         "pt": "Coordenador da Equipe Técnica",
         "en": "Technical Team Coordinator"
