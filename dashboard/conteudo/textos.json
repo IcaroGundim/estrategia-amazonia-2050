@@ -619,6 +619,58 @@
         }
       ]
     },
+    "consorcio": {
+      "chapeu": {
+        "pt": "Organização",
+        "en": "Organization"
+      },
+      "titulo": {
+        "pt": "Quem organiza a Estratégia",
+        "en": "Who organizes the Strategy"
+      },
+      "texto": {
+        "pt": "A equipe da Secretaria Executiva conduz a Estratégia de ponta a ponta: articula os nove estados e as câmaras setoriais, organiza as rodadas de pactuação das metas, reúne as prioridades de cada governo e coordena o trabalho com os parceiros técnicos, até o acompanhamento que este painel publica.",
+        "en": "The Executive Secretariat team runs the Strategy from start to finish: it brings together the nine states and the sectoral chambers, organizes the rounds in which the targets are agreed, gathers each government’s priorities and coordinates the work with technical partners, all the way to the monitoring this platform publishes."
+      },
+      "pessoas": [
+        {
+          "nome": {
+            "pt": "Vanessa Duarte Emenergildo"
+          },
+          "cargo": {
+            "pt": "Secretária Executiva",
+            "en": "Executive Secretary"
+          }
+        },
+        {
+          "nome": {
+            "pt": "João André Fernandes Costa Vilela"
+          },
+          "cargo": {
+            "pt": "Diretor Executivo",
+            "en": "Executive Director"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Cicília Prado de Sales"
+          },
+          "cargo": {
+            "pt": "Assessora",
+            "en": "Advisor"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Mariana Bertelli Pagotto"
+          },
+          "cargo": {
+            "pt": "Assessora",
+            "en": "Advisor"
+          }
+        }
+      ]
+    },
     "estePainel": {
       "chapeu": {
         "pt": "Parceria técnica e científica",
@@ -651,6 +703,84 @@
           "texto": {
             "pt": "Cada meta da Estratégia recebeu indicador de impacto, indicador de resultado, fonte de dados, linha de base e ficha técnica, com projeções até 2050 – a estrutura que permite acompanhar o avanço nesta plataforma.",
             "en": "Every target in the Strategy was given an impact indicator, an outcome indicator, a data source, a baseline and a technical sheet, with projections to 2050 – the structure that makes it possible to track progress on this platform."
+          }
+        }
+      ],
+      "equipeRotulo": {
+        "pt": "Equipe técnica do IPAM",
+        "en": "IPAM technical team"
+      },
+      "pessoas": [
+        {
+          "nome": {
+            "pt": "Gabriela Canto Pires Santos Savian"
+          },
+          "cargo": {
+            "pt": "Diretora de Políticas Públicas",
+            "en": "Director of Public Policy"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Clarisse Touguinha Guerreiro"
+          },
+          "cargo": {
+            "pt": "Coordenadora de Projetos e Pesquisadora",
+            "en": "Project Coordinator and Researcher"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Jarlene Gomes de Lima Viana"
+          },
+          "cargo": {
+            "pt": "Coordenadora de Projetos e Pesquisadora",
+            "en": "Project Coordinator and Researcher"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Raquel Rodrigues da Poça"
+          },
+          "cargo": {
+            "pt": "Coordenadora de Projetos e Pesquisadora",
+            "en": "Project Coordinator and Researcher"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Victoria Vasconcelos Freitas"
+          },
+          "cargo": {
+            "pt": "Pesquisadora",
+            "en": "Researcher"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Saulo de Tarso Vale Bentes"
+          },
+          "cargo": {
+            "pt": "Analista de Pesquisa",
+            "en": "Research Analyst"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Valentina Passador"
+          },
+          "cargo": {
+            "pt": "Analista de Pesquisa",
+            "en": "Research Analyst"
+          }
+        },
+        {
+          "nome": {
+            "pt": "Melissa Maria Santos Braga"
+          },
+          "cargo": {
+            "pt": "Consultora",
+            "en": "Consultant"
           }
         }
       ],

@@ -225,7 +225,24 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-gov-detalhe dd { margin: 0; color: var(--tinta-2); font-size: clamp(13.5px, calc(var(--ve-vh) * 1.9), 15px); line-height: 1.5; }
 .ve-gov-detalhe .is-limite dd { color: var(--urucum); font-weight: 500; }
 
-/* ---------- 05 · IPAM: os guarás em cor, tingidos de verde sem sumir ---------- */
+/* ---------- 05 · consórcio: o arquipélago de Mariuá sob véu verde, no molde das lâminas 06 e 07 ----------
+   a água azul vai para o verde (multiply) e o véu fecha mais à esquerda (a logo) e à direita (o texto) */
+.ve-cons { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(var(--ve-tela), 680px); padding-block: clamp(48px, calc(var(--ve-vh) * 8), 104px); overflow: hidden; color: var(--areia); }
+.ve-cons > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
+.ve-cons::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--mata); mix-blend-mode: multiply; opacity: .35; }
+.ve-cons > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .72) 0%, rgba(8, 26, 20, .42) 36%, rgba(8, 26, 20, .66) 58%, rgba(8, 26, 20, .82) 100%); }
+.ve-cons .ve-rubrica b { color: var(--areia); }
+.ve-cons .ve-rubrica i { background: rgba(245, 240, 232, .25); }
+.ve-cons .ve-chapeu { color: var(--ocre); }
+.ve-cons-grade { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 96px); align-items: center; }
+.ve-cons-logo { justify-self: center; width: min(100%, 340px); height: auto; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .35)); }
+.ve-pagina .ve-cons-titulo { margin: 0; color: var(--areia); font: 800 clamp(28px, 3vw, 46px)/1.04 var(--display); letter-spacing: -.025em; text-wrap: balance; text-shadow: 0 2px 14px rgba(0, 0, 0, .25); }
+.ve-cons-texto { max-width: 620px; margin: 18px 0 0; color: #fff; font-size: clamp(16px, min(1.45vw, calc(var(--ve-vh) * 2.6)), 19px); line-height: 1.6; text-shadow: 0 1px 2px rgba(0, 0, 0, .7), 0 0 14px rgba(0, 0, 0, .45); }
+/* os nomes junto ao fio ocre, em duas colunas, cada um com o cargo em versalete abaixo, como nos créditos da SEPLAN */
+.ve-cons-nomes { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; gap: 14px 40px; margin: clamp(20px, calc(var(--ve-vh) * 3.6), 30px) 0 0; padding: 3px 0 3px 16px; border-left: 2px solid var(--ocre); list-style: none; }
+.ve-cons-nomes li { display: flex; flex-direction: column; color: #fff; font: 600 clamp(15px, 1.25vw, 18px)/1.4 var(--text); text-shadow: 0 1px 2px rgba(0, 0, 0, .8), 0 0 14px rgba(0, 0, 0, .55); }
+.ve-cons-nomes span { color: var(--areia); font: 700 11px/1.4 var(--text); letter-spacing: .12em; text-transform: uppercase; }
+/* ---------- 06 · IPAM: os guarás em cor, tingidos de verde sem sumir ---------- */
 .ve-ipam { position: relative; isolation: isolate; display: flex; align-items: center; min-height: var(--ve-tela); padding-block: clamp(28px, calc(var(--ve-vh) * 6), 96px); overflow: hidden; }
 .ve-ipam > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
 .ve-ipam .ve-img { filter: saturate(.95) contrast(1.05); }
@@ -241,7 +258,7 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-ipam .ve-chapeu { color: var(--ocre); }
 .ve-ipam-grade { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
 
-/* 06 · quem desenvolveu: o rio Crôa sob véu verde, mais fechado à esquerda (onde fica o selo)
+/* 07 · quem desenvolveu: o rio Crôa sob véu verde, mais fechado à esquerda (onde fica o selo)
    e à direita (o texto); as marcas direto na foto, sem placa */
 .ve-dev { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(var(--ve-tela), 640px); padding-block: clamp(48px, calc(var(--ve-vh) * 8), 96px); overflow: hidden; color: var(--areia); }
 .ve-dev > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
@@ -297,8 +314,14 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-ipam-itens article { padding-top: 14px; border-top: 1px solid rgba(245, 240, 232, .45); }
 .ve-pagina .ve-ipam-itens h3 { color: var(--areia); font-size: clamp(16px, calc(var(--ve-vh) * 2.3), 18px); line-height: 1.25; }
 .ve-ipam-itens p { margin: 6px 0 0; color: #eef2ee; font-size: clamp(14px, calc(var(--ve-vh) * 2), 15.5px); line-height: 1.55; }
+/* a equipe do IPAM fecha a lâmina com o mesmo filete dos cartões: duas colunas, o nome e o cargo em versalete abaixo */
+.ve-ipam-equipe { max-width: 680px; margin-top: clamp(16px, calc(var(--ve-vh) * 3), 28px); padding-top: 14px; border-top: 1px solid rgba(245, 240, 232, .45); text-shadow: 0 1px 3px rgba(0, 0, 0, .7), 0 0 22px rgba(14, 43, 34, .85); }
+.ve-pagina .ve-ipam-equipe h3 { color: var(--areia); font-size: clamp(16px, calc(var(--ve-vh) * 2.3), 18px); line-height: 1.25; }
+.ve-ipam-equipe ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: column; grid-template-rows: repeat(var(--linhas, 4), auto); gap: clamp(6px, calc(var(--ve-vh) * 1.2), 10px) 28px; margin: 10px 0 0; padding: 0; list-style: none; }
+.ve-ipam-equipe li { display: flex; flex-direction: column; color: #fff; font: 600 clamp(14px, calc(var(--ve-vh) * 2), 15.5px)/1.4 var(--text); }
+.ve-ipam-equipe span { color: var(--ocre); font: 700 10.5px/1.4 var(--text); letter-spacing: .1em; text-transform: uppercase; }
 
-/* ---------- 06 · explore: os cartões apoiados na borda da foto ---------- */
+/* ---------- 08 · explore: os cartões apoiados na borda da foto ---------- */
 .ve-explorar-foto { height: clamp(280px, 36vw, 460px); }
 .ve-explorar { padding-bottom: clamp(72px, 9vw, 112px); margin-top: clamp(-120px, -9vw, -70px); }
 .ve-explorar-titulo { display: inline-block; margin-bottom: 14px; padding: 14px 22px; border-radius: 12px; background: var(--areia); }
@@ -394,6 +417,10 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   .ve-secao.is-tela { display: block; height: auto; padding-block: 56px; }
   .ve-estados-topo, .ve-eixos-topo { grid-template-columns: minmax(0, 1fr); }
   .ve-ipam-itens { grid-template-columns: minmax(0, 1fr); }
+  .ve-cons-grade { grid-template-columns: minmax(0, 1fr); }
+  .ve-cons-logo { justify-self: start; width: min(100%, 220px); }
+  .ve-cons-nomes { grid-template-columns: minmax(0, 1fr); }
+  .ve-ipam-equipe ul { grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; grid-template-rows: none; }
   /* no celular a lista vem em cima e o painel embaixo, com a foto sobre o texto */
   .ve-eixos-lado, .ve-eixos-painel { grid-template-columns: minmax(0, 1fr); }
   .ve-eixos-titulo { flex: none; padding: 14px 12px; }

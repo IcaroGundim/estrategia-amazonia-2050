@@ -32,8 +32,11 @@ const publicado = textosPublicados.visaoGeral;
 const { estrategia, visao2050, eixos } = vg;
 const territorio = vg.territorio ?? publicado.territorio;
 const explorar = vg.explorar ?? publicado.explorar;
+const consorcio = vg.consorcio ?? publicado.consorcio;
 const estePainel = vg.estePainel;
 const contribuicao = estePainel.contribuicao ?? publicado.estePainel.contribuicao;
+const equipeIpam = estePainel.pessoas ?? publicado.estePainel.pessoas ?? [];
+const equipeIpamRotulo = estePainel.equipeRotulo ?? publicado.estePainel.equipeRotulo;
 const desenvolvimento = vg.desenvolvimento ?? publicado.desenvolvimento;
 // um rascunho salvo antes da lista de nomes não a tem
 const equipe = desenvolvimento.equipe ?? publicado.desenvolvimento.equipe ?? [];
@@ -369,11 +372,35 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
     </div>
   </section>
 
-  {/* ---------- 05 · IPAM: os guarás em cor, sob um véu verde ---------- */}
+  {/* ---------- 05 · consórcio: a equipe que organiza a Estratégia, sobre o arquipélago de Mariuá ----------
+      No molde das lâminas do IPAM e de quem desenvolveu: a foto sob véu verde, a logo clara do
+      Consórcio à esquerda e, à direita, o texto do trabalho e, ao lado do fio ocre, os nomes com
+      o cargo abaixo. O nome do Consórcio fica só na logo. */}
+  {consorcio?.pessoas?.length > 0 && (
+    <section id="consorcio" class="ve-cons">
+      <div class="ve-quadro-foto"><div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.consorcio.arquivo}')`}></div></div>
+      <div class="ve-miolo">
+        <div class="ve-cons-grade">
+          <img class="ve-cons-logo ve-surge" src="/logo-consorcio-clara.avif" alt="Consórcio Interestadual da Amazônia Legal" width="986" height="348" loading="lazy" />
+          <div>
+            <div class="ve-rubrica ve-surge" style="--i:1"><b>05</b><span class="ve-chapeu">{tx(consorcio.chapeu)}</span><i></i></div>
+            <h2 class="ve-cons-titulo ve-surge" style="--i:2">{tx(consorcio.titulo)}</h2>
+            {consorcio.texto && <p class="ve-cons-texto ve-surge" style="--i:3">{tx(consorcio.texto)}</p>}
+            <ul class="ve-cons-nomes ve-surge" style="--i:4">
+              {consorcio.pessoas.map(({ nome, cargo }) => <li>{tx(nome)}<span>{tx(cargo)}</span></li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <a class="ve-cred" href={FOTOS.consorcio.url} target="_blank" rel="noopener">{credito(FOTOS.consorcio)}</a>
+    </section>
+  )}
+
+  {/* ---------- 06 · IPAM: os guarás em cor, sob um véu verde ---------- */}
   <section id="calculo" class="ve-ipam">
     <div class="ve-quadro-foto"><div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.ipam.arquivo}')`}></div></div>
     <div class="ve-miolo">
-      <div class="ve-rubrica ve-surge"><b>05</b><span class="ve-chapeu">{tx(estePainel.chapeu)}</span><i></i></div>
+      <div class="ve-rubrica ve-surge"><b>06</b><span class="ve-chapeu">{tx(estePainel.chapeu)}</span><i></i></div>
       <div class="ve-ipam-grade">
         {/* A marca é verde e cinza sobre transparente: vai numa placa clara, na moldura das lâminas. */}
         <aside class="ve-ipam-placa ve-surge" aria-label={tx(contribuicao.rotulo)}>
@@ -382,19 +409,28 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
           <a href="https://ipam.org.br" target="_blank" rel="noreferrer">ipam.org.br ↗</a>
         </aside>
         <div>
-          {/* a abertura vem logo abaixo do título; depois, os dois cartões */}
+          {/* a abertura vem logo abaixo do título; depois, os dois cartões e a equipe do instituto */}
           <h2 class="ve-ipam-titulo ve-surge" style="--i:1">{tx(estePainel.titulo)}</h2>
           <p class="ve-ipam-contexto ve-surge" style="--i:2">{tx(estePainel.abertura)}</p>
           <div class="ve-ipam-itens ve-surge" style="--i:3">
             {estePainel.itens.map(({ titulo, texto }) => <article><h3>{tx(titulo)}</h3><p>{tx(texto)}</p></article>)}
           </div>
+          {/* os nomes em duas colunas, na ordem da lista, cada um com o cargo abaixo */}
+          {equipeIpam.length > 0 && (
+            <div class="ve-ipam-equipe ve-surge" style="--i:4">
+              <h3>{tx(equipeIpamRotulo)}</h3>
+              <ul style={`--linhas:${Math.ceil(equipeIpam.length / 2)}`}>
+                {equipeIpam.map(({ nome, cargo }) => <li>{tx(nome)}<span>{tx(cargo)}</span></li>)}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
     <a class="ve-cred" href={FOTOS.ipam.url} target="_blank" rel="noopener">{credito(FOTOS.ipam)}</a>
   </section>
 
-  {/* ---------- 06 · quem desenvolveu: o rio Crôa, com o selo do governo do Acre e da SEPLAN ----------
+  {/* ---------- 07 · quem desenvolveu: o rio Crôa, com o selo do governo do Acre e da SEPLAN ----------
       As marcas ficam direto sobre a foto, empilhadas como um selo (brasão, governo, o traço
       amarelo da SEPLAN, a logo em versão clara). Os nomes das instituições só aparecem nas
       marcas: o texto ao lado fala do trabalho, sem repeti-los. */}
@@ -409,7 +445,7 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
           <img class="ve-dev-logo" src="/logo-seplan-depo-clara.svg" alt="SEPLAN · Secretaria de Estado de Planejamento · Departamento de Estudos e Planejamento Orçamentário" width="1960" height="292" loading="lazy" />
         </div>
         <div>
-          <div class="ve-rubrica ve-surge" style="--i:1"><b>06</b><span class="ve-chapeu">{tx(desenvolvimento.chapeu)}</span><i></i></div>
+          <div class="ve-rubrica ve-surge" style="--i:1"><b>07</b><span class="ve-chapeu">{tx(desenvolvimento.chapeu)}</span><i></i></div>
           <h2 class="ve-dev-titulo ve-surge" style="--i:2">{tx(desenvolvimento.titulo)}</h2>
           <p class="ve-dev-texto ve-surge" style="--i:3">{tx(desenvolvimento.texto)}</p>
           {/* os créditos repetem o fio amarelo da logo da SEPLAN: o rótulo e, junto ao fio, os nomes; primeiro a
@@ -447,7 +483,7 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
     </span>
   </section>
 
-  {/* ---------- 07 · explore: os cartões apoiados na borda da foto ---------- */}
+  {/* ---------- 08 · explore: os cartões apoiados na borda da foto ---------- */}
   <div class="ve-quadro-foto ve-explorar-foto">
     <div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.explorar.arquivo}')`}>
       {/* A mesma correnteza do topo, só no rio à esquerda e no fio d'água atrás do arbusto. */}
@@ -457,7 +493,7 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
   </div>
   <section id="explorar" class="ve-miolo ve-explorar">
     <div class="ve-explorar-titulo ve-surge">
-      <div class="ve-rubrica"><b>07</b><span class="ve-chapeu">{tx(explorar.chapeu)}</span></div>
+      <div class="ve-rubrica"><b>08</b><span class="ve-chapeu">{tx(explorar.chapeu)}</span></div>
       <h2>{tx(explorar.titulo)}</h2>
     </div>
     {/* Três cartões lado a lado, cada um com o desenho do que a aba tem. O cartão sob o

@@ -29,6 +29,8 @@ export const FOTOS = {
   visao: mtur('40163460135', 'combu-belem-40163460135.webp', 'Ilha do Combu, Belém (PA)', 'Bruna Brandão'),
   governanca: mtur('40993767631', 'chapada-cidade-de-pedra-40993767631.webp', 'Chapada dos Guimarães (MT)', 'Flávio André'),
   governancaFundo: mtur('40064777855', 'pantanal-pocone-40064777855.webp', 'Pantanal, Poconé (MT)', 'Flávio André'),
+  // a do Consórcio vem da aba Projetos: as fotos daqui já aparecem em outras lâminas
+  consorcio: { ...mtur('40263808814', '', 'Arquipélago de Mariuá, Barcelos (AM)', 'Ana Claudia Jatahy'), arquivo: '/photos/prioridades/am-barcelos-40263808814.webp' },
   ipam: mtur('39167467930', 'soure-guaras-39167467930.webp', 'Fazenda Bom Jesus, Soure (PA)', 'Bruna Brandão'),
   explorar: mtur('40064981205', 'flona-tapajos-40064981205.webp', 'Flona do Tapajós, Belterra (PA)', 'Tiago Silveira')
 };
