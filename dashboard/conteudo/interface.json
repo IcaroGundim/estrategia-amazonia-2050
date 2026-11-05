@@ -2292,19 +2292,19 @@
     },
     "Prioridades dos Estados · 2º semestre de 2026": {
       "pt": "Prioridades dos Estados · 2º semestre de 2026",
-      "en": "State priorities · 2nd half of 2026"
+      "en": "State Priorities for 2026"
     },
     "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.": {
       "pt": "As Secretarias de Planejamento dos nove estados do Consórcio indicaram os projetos que puxam a Estratégia em cada território.",
-      "en": "The planning departments of the Consortium's nine states named the projects that drive the Strategy in each territory."
+      "en": "The Planning Secretariats of the nine Consortium states have identified the flagship projects that advance the Strategy in each territory."
     },
     "projetos prioritários": {
       "pt": "projetos prioritários",
-      "en": "priority projects"
+      "en": "Priority projects"
     },
     "estados do Consórcio": {
       "pt": "estados do Consórcio",
-      "en": "Consortium states"
+      "en": "States"
     },
     "eixos da Estratégia": {
       "pt": "eixos da Estratégia",
@@ -2312,19 +2312,19 @@
     },
     "Em conclusão": {
       "pt": "Em conclusão",
-      "en": "Nearly complete"
+      "en": "Final Stage"
     },
     "Em execução": {
       "pt": "Em execução",
-      "en": "Under way"
+      "en": "Ongoing"
     },
     "Em elaboração": {
       "pt": "Em elaboração",
-      "en": "Being prepared"
+      "en": "Being drafted"
     },
     "Não iniciada": {
       "pt": "Não iniciada",
-      "en": "Not started"
+      "en": "Pending start"
     },
     "Sem informação": {
       "pt": "Sem informação",
@@ -2487,8 +2487,8 @@
       "en": "see the projects ↓"
     },
     "clique num estado para ver os projetos dele": {
-      "pt": "clique num estado para ver os projetos dele",
-      "en": "click a state to see its projects"
+      "pt": "clique em um estado para ver os projetos dele",
+      "en": "Select a state to view its projects"
     },
     "O caminho de cada eixo até": {
       "pt": "O caminho de cada eixo até",
