@@ -1,0 +1,80 @@
+---
+// Um projeto prioritário (aba Projetos): os textos que o estado escreveu, em
+// português e inglês. A situação, o eixo e as categorias de entrave vêm da
+// planilha da priorização e já se traduzem sozinhos; ficam fora daqui.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Campo from '../../../components/admin/Campo.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import { ErroDeEdicao, leJson, salvaJson, texto, textoOuNulo } from '../../../lib/admin/edicao';
+import { CAMPOS_TRADUZIVEIS, type CampoTraduzivel, type Prioridade } from '../../../lib/prioridades';
+
+interface Prioridades { itens: Prioridade[] }
+
+const sessao = Astro.locals.sessao!;
+const n = Number(Astro.params.n);
+const lido = await leJson<Prioridades>('prioridades');
+let projeto = lido.dados.itens[n - 1];
+if (!Number.isInteger(n) || !projeto) return new Response('Projeto não encontrado.', { status: 404 });
+
+let erro: string | null = null;
+let versao = lido.versao;
+const salvo = Astro.url.searchParams.get('salvo');
+
+// o que a tela mandou, nos dois idiomas; o inglês vazio sai do arquivo
+const lerCampos = (dados: FormData) => {
+  const pt = Object.fromEntries(CAMPOS_TRADUZIVEIS.map((campo) => [campo, texto(dados, campo)])) as Record<CampoTraduzivel, string>;
+  const en = Object.fromEntries(CAMPOS_TRADUZIVEIS.map((campo) => [campo, textoOuNulo(dados, `${campo}__en`)]).filter(([, valor]) => valor));
+  return { pt, en };
+};
+
+if (Astro.request.method === 'POST') {
+  const dados = await Astro.request.formData();
+  versao = texto(dados, 'versao') || versao;
+  const { pt, en } = lerCampos(dados);
+  try {
+    if (!pt.projeto) throw new ErroDeEdicao('O nome do projeto é obrigatório.');
+    await salvaJson<Prioridades>('prioridades', versao, (doc) => {
+      const alvo = doc.itens[n - 1];
+      if (!alvo || alvo.uf !== projeto.uf) throw new ErroDeEdicao('A lista de projetos mudou depois que esta tela foi aberta. Recarregue a página e refaça a mudança.');
+      Object.assign(alvo, pt);
+      if (Object.keys(en).length) alvo.en = en;
+      else delete alvo.en;
+      return doc;
+    }, `edita o projeto ${pt.projeto} (${projeto.uf})`, { usuario: sessao.usuario, nome: sessao.nome });
+    return Astro.redirect(`/admin/projetos/${n}?salvo=1`, 303);
+  } catch (falha) {
+    erro = falha instanceof ErroDeEdicao ? falha.message : `Não consegui salvar: ${(falha as Error).message}`;
+    // Mantém o que a pessoa digitou na tela.
+    projeto = { ...projeto, ...pt, en };
+  }
+}
+
+const total = lido.dados.itens.length;
+---
+
+<Admin title={projeto.projeto} sessao={sessao}>
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/projetos">Projetos</a> / {projeto.estado}</p>
+    <h1>{projeto.projeto}</h1>
+    <p>{projeto.estado} · {projeto.situacao}. Em português, o texto como o estado enviou; ao lado, a versão em inglês, que aparece em /en/projects. Campo em inglês vazio: o site em inglês mostra o português.</p>
+    <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
+
+    <form class="admin-form" method="post">
+      <input type="hidden" name="versao" value={versao} />
+      <Campo nome="projeto" rotulo="Nome do projeto" valor={projeto.projeto} en={projeto.en?.projeto} comEn obrigatorio largo />
+      <Campo nome="resultado" rotulo="Resultado esperado" tipo="area" valor={projeto.resultado} en={projeto.en?.resultado} comEn largo />
+      <Campo nome="avancos" rotulo="Avanços" tipo="area" linhas={10} valor={projeto.avancos} en={projeto.en?.avancos} comEn largo ajuda='O site quebra em parágrafos nos marcadores "Resultado 1:" (ou "Result 1:"), "a)", "b.1)" e "*".' />
+      <Campo nome="maturidade" rotulo="Maturidade" valor={projeto.maturidade} en={projeto.en?.maturidade} comEn largo ajuda="Quando é igual à situação, não aparece no site." />
+      <Campo nome="financiamento" rotulo="Financiamento" tipo="area" valor={projeto.financiamento} en={projeto.en?.financiamento} comEn largo />
+      <Campo nome="entraveTexto" rotulo="Entraves, nas palavras do estado" tipo="area" valor={projeto.entraveTexto} en={projeto.en?.entraveTexto} comEn largo />
+      <div class="admin-acoes">
+        <button type="submit" class="admin-botao">Salvar no rascunho</button>
+        {n > 1 && <a class="admin-botao is-secundario" href={`/admin/projetos/${n - 1}`}>← Anterior</a>}
+        {n < total && <a class="admin-botao is-secundario" href={`/admin/projetos/${n + 1}`}>Próximo →</a>}
+        <a class="admin-botao is-secundario" href="/admin/projetos">Voltar</a>
+      </div>
+    </form>
+  </section>
+</Admin>

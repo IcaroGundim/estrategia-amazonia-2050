@@ -24,15 +24,17 @@ export interface Usuario {
   acesso?: Acesso;
 }
 
-export const NOME_DO_ACESSO: Record<Acesso, string> = { textos: 'só textos' };
+export const NOME_DO_ACESSO: Record<Acesso, string> = { textos: 'só textos e traduções' };
 
 // O que cada acesso restrito abre: o caminho exato ou qualquer coisa abaixo
 // dele. Sair vale para todos. Salvar texto grava no rascunho, e quem revisa
-// texto também publica, pela tela de Textos. Atualizar a prévia publicada
+// texto também publica, pela tela de Textos. Quem revisa texto edita ainda o
+// texto dos indicadores (Catálogo, sem os dados deles) e dos projetos, em pt
+// e en; a ficha técnica fica de fora. Atualizar a prévia publicada
 // (/api/admin/previa) continua de fora. O primeiro caminho é a tela inicial.
 const SEMPRE = ['/api/admin/sair'];
 const LIBERADO: Record<Acesso, string[]> = {
-  textos: ['/admin/textos', '/admin/ajuda', '/admin/senha', '/api/admin/publicar']
+  textos: ['/admin/textos', '/admin/catalogo', '/admin/projetos', '/admin/ajuda', '/admin/senha', '/api/admin/publicar']
 };
 
 /**

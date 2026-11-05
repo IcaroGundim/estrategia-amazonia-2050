@@ -144,6 +144,11 @@ export function rota(chave, idioma = IDIOMA_PADRAO) {
   return ROTAS.find((item) => item.chave === chave)?.[idioma] ?? '/';
 }
 
+// A nota técnica em PDF (gerada por `npm run nota-tecnica`) explica as fontes,
+// o cálculo e a comparação dos estados: é o "como ler os dados" do Panorama.
+// Só existe em português, então é a mesma nas duas línguas.
+export const NOTA_TECNICA = '/downloads/nota-tecnica-painel-amazonia-2050.pdf';
+
 /** O mesmo lugar na outra língua, preservando âncora e busca. */
 export function rotaEquivalente(chave, idioma, sufixo = '') {
   return rota(chave, idioma) + sufixo;

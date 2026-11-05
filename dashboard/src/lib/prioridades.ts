@@ -5,13 +5,31 @@
 // de um projeto do estado aparece uma vez, numa nota acima das colunas.
 import dados from '../../conteudo/prioridades.json';
 
+/** Os textos que os estados escreveram: são os que ganham versão em inglês na administração (Projetos). */
+export const CAMPOS_TRADUZIVEIS = ['projeto', 'resultado', 'avancos', 'maturidade', 'financiamento', 'entraveTexto'] as const;
+export type CampoTraduzivel = (typeof CAMPOS_TRADUZIVEIS)[number];
+
 export interface Prioridade {
   uf: string; estado: string; eixo: number; linha: string; projeto: string; resultado: string;
   situacao: string; avancos: string; cortado: boolean; maturidade: string; financiamento: string;
   entrave: string; entraveTexto: string; entraveFinanceiro: string;
+  en?: Partial<Record<CampoTraduzivel, string | null>>;
 }
 export const PRIORIDADES = dados.itens as Prioridade[];
 export const ATUALIZADO = dados.atualizado;
+
+/**
+ * O projeto na língua da página. Em inglês, cada texto que tem tradução troca;
+ * o que não tem fica como o estado enviou. A maturidade igual à situação não
+ * aparece, então continua em português para a comparação valer.
+ */
+export function noIdioma(p: Prioridade, lang: string): Prioridade {
+  if (lang !== 'en' || !p.en) return p;
+  const trocas = CAMPOS_TRADUZIVEIS.filter((campo) => p.en![campo] && !(campo === 'maturidade' && p.maturidade === p.situacao));
+  return { ...p, ...Object.fromEntries(trocas.map((campo) => [campo, p.en![campo]])) };
+}
+/** Se algum texto escrito pelo estado ainda não tem versão em inglês. */
+export const faltaTraducao = () => PRIORIDADES.some((p) => CAMPOS_TRADUZIVEIS.some((campo) => p[campo] && !p.en?.[campo] && !(campo === 'maturidade' && p.maturidade === p.situacao)));
 
 /** Da mais adiantada à sem informação: é a ordem das colunas e da navegação. */
 export const SITUACOES = ['Em conclusão', 'Em execução', 'Em elaboração', 'Não iniciada', 'Sem informação'];
@@ -66,11 +84,11 @@ export function maturidadeCurta(p: Prioridade): { curto: string; resto: string }
 }
 /** Os avanços em parágrafos, quebrando nos marcadores que a planilha usa ("Resultado 1:", "a)", "b.1)", "*"). */
 export const paragrafos = (texto: string) =>
-  texto.split(/\s(?=Resultado \d+\s*[:–-]|[a-f]\)\s|[a-f]\.\d\)\s|\*\s?[A-ZÀ-Ú])/).map((s) => s.trim()).filter(Boolean);
+  texto.split(/\s(?=(?:Resultado|Result) \d+\s*[:–-]|[a-f]\)\s|[a-f]\.\d\)\s|\*\s?[A-ZÀ-Ú])/).map((s) => s.trim()).filter(Boolean);
 
-/** Os projetos de um estado na ordem das colunas, e o texto repetido entre eles. */
-export function doEstado(uf: string) {
-  const lista = PRIORIDADES.filter((p) => p.uf === uf);
+/** Os projetos de um estado na ordem das colunas, e o texto repetido entre eles, na língua da página. */
+export function doEstado(uf: string, lang: string) {
+  const lista = PRIORIDADES.filter((p) => p.uf === uf).map((p) => noIdioma(p, lang));
   const situacoes = SITUACOES.filter((s) => lista.some((p) => p.situacao === s));
   const ordem = situacoes.flatMap((s) => lista.filter((p) => p.situacao === s));
   const repetidos: { campo: 'resultado' | 'avancos'; texto: string; projetos: Prioridade[] }[] = [];

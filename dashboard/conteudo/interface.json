@@ -643,7 +643,7 @@
         "Descrito pelo estado",
         "Sobre os dados",
         "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
-        "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.",
+        "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.",
         "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons)."
       ],
       "alvo": ".pr-capa"
@@ -2462,9 +2462,9 @@
       "pt": "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
       "en": "State priorities, compiled by the Legal Amazon Interstate Consortium from information provided by the state planning departments, with the status as of October 2026. Each state named its priorities and reported on their status, progress and constraints."
     },
-    "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.": {
-      "pt": "Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.",
-      "en": "Project names and descriptions appear as the states submitted them, in Portuguese."
+    "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.": {
+      "pt": "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.",
+      "en": "Project texts that have not been translated yet appear as the states submitted them, in Portuguese."
     },
     "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).": {
       "pt": "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).",

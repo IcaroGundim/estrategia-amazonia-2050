@@ -4,7 +4,7 @@ import '../styles/global.css';
 // Depois da folha geral, e só ela: a camada de celular e tablet sobrescreve o
 // que o desenho de computador define. Ver o cabeçalho do arquivo.
 import '../styles/mobile.css';
-import { IDIOMAS, IDIOMA_PADRAO, ehTraducao, rota, traduzirCom } from '../i18n/index.js';
+import { IDIOMAS, IDIOMA_PADRAO, NOTA_TECNICA, ehTraducao, rota, traduzirCom } from '../i18n/index.js';
 
 interface Props {
   title: string;
@@ -57,16 +57,18 @@ const NAVEGACAO = [
 ];
 
 // O atalho da topbar leva a uma âncora da Visão Geral, que é a mesma dos dois
-// lados: só o caminho da rota muda de língua. A Visão Geral não tem atalho: o
-// "Baixar nota técnica" que ficava ali saiu do painel.
+// lados: só o caminho da rota muda de língua. No Panorama ele abre a nota
+// técnica em PDF, que explica o cálculo. A Visão Geral não tem atalho.
 const ACOES: Partial<Record<string, { destino: string; rotulo: string }>> = {
-  index: { destino: rota('metodologia', lang), rotulo: 'Como ler os dados' },
+  index: { destino: NOTA_TECNICA, rotulo: 'Como ler os dados' },
   metas: { destino: `${rota('metodologia', lang)}#a-estrategia`, rotulo: 'Sobre a Estratégia' },
   // A carteira é do Consórcio e mora no site dele; o painel só a apresenta.
   projetos: { destino: 'https://www.brazilianamazonprojects.com', rotulo: 'Site da carteira' }
 };
 
 const acao = ACOES[pagina];
+// o site da carteira e o PDF abrem noutra aba, sem tirar a pessoa do painel
+const novaAba = acao && /^http|\.pdf$/.test(acao.destino);
 ---
 
 <!doctype html>
@@ -165,7 +167,7 @@ const acao = ACOES[pagina];
             empurra o idioma para a direita da barra (ver global.css). */}
         <div class="topbar-actions">
           {acao && (
-            <a class="outline-button action-link" href={acao.destino} target={acao.destino.startsWith('http') ? '_blank' : undefined} rel={acao.destino.startsWith('http') ? 'noopener' : undefined}>{t(acao.rotulo)}</a>
+            <a class="outline-button action-link" href={acao.destino} target={novaAba ? '_blank' : undefined} rel={novaAba ? 'noopener' : undefined}>{t(acao.rotulo)}</a>
           )}
         </div>
 

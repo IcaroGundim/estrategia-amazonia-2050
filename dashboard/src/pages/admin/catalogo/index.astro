@@ -29,7 +29,7 @@ const nivel = (status: string) => {
     <p class="admin-chapeu"><a href="/admin">Início</a> / Catálogo</p>
     <h1>Catálogo de indicadores</h1>
     <p>Os {catalogo.eixos.reduce((soma, eixo) => soma + eixo.indicadores.length, 0)} indicadores da Estratégia, por eixo. O texto de cada um (nome, meta, descrição, fonte, situação da coleta) edita-se aqui; os números ficam na tela de valores.</p>
-    <div class="admin-acoes"><a class="admin-botao" href="/admin/catalogo/novo">Criar indicador</a></div>
+    {!Astro.locals.acesso && <div class="admin-acoes"><a class="admin-botao" href="/admin/catalogo/novo">Criar indicador</a></div>}
     <Busca placeholder="Buscar indicador por código, nome ou unidade" />
   </section>
 

@@ -18,6 +18,7 @@ export const ARQUIVOS = {
   painel: 'conteudo/painel.json',
   fichas: 'conteudo/fichas.json',
   projecoes: 'conteudo/projecoes.json',
+  prioridades: 'conteudo/prioridades.json',
   usuarios: 'conteudo/usuarios.json',
   valores: 'conteudo/valores.csv'
 } as const;

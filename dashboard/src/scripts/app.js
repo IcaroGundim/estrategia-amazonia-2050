@@ -1,16 +1,11 @@
 import { aoEntrarNaPagina, BANDEIRA_REGIAO, bindMenu, bindVista, escape, flagImage, readResponse, sinalDaPagina } from './shared.js';
 import { centroidOf, mapPath, projecaoPara } from './mapa.js';
-import { idiomaAtual, localeDe, rota, t, tp } from '../i18n/index.js';
+import { NOTA_TECNICA, idiomaAtual, localeDe, t, tp } from '../i18n/index.js';
 import { carregaConteudo } from './conteudo.js';
 
 /** Descrição da bandeira de um estado, que muda de preposição entre as línguas. */
 function bandeiraDe(nome) {
   return tp('Bandeira do {estado}', { estado: nome });
-}
-
-/** Os links internos do painel precisam do caminho da língua em curso. */
-function rotaVisaoGeral() {
-  return rota('metodologia', idiomaAtual());
 }
 
 // Ordinal. Em português é º ou ª conforme o gênero da palavra que segue —
@@ -380,7 +375,7 @@ function renderIndicatorCard() {
       <div><dt>${t('Fonte')}</dt><dd>${escape(fonte)}</dd></div>
     </dl>
     ${parcial ? `<p class="map-year-warning">${t('Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.')}</p>` : ''}
-    <a href="${rotaVisaoGeral()}#calculo">${t('Entenda o cálculo')} <span aria-hidden="true">↗</span></a>`;
+    <a href="${NOTA_TECNICA}" target="_blank" rel="noopener">${t('Entenda o cálculo')} <span aria-hidden="true">↗</span></a>`;
 }
 
 function renderPanelView() {

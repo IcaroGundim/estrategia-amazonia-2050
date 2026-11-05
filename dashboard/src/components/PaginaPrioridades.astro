@@ -12,11 +12,12 @@
 // src/scripts/prioridades.js só o move, anima e põe os botões de navegação.
 // Sem script, os cards ficam fechados e a página continua legível.
 //
-// Os nomes e as descrições dos projetos ficam em português também em /en: são
-// como os estados os enviaram, e a página diz isso.
+// Os textos que os estados escreveram (nome, resultado, avanços, entraves…) vão
+// em inglês em /en quando alguém os traduziu na administração (Projetos); o
+// que ainda não tem tradução fica como o estado enviou, e a página diz isso.
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
 import { ESTADOS } from '../lib/visao-geral';
-import { COR_SITUACAO, FOTOS_DOS_PROJETOS, PRIORIDADES, SITUACOES, doEstado, fraseDoEntrave, maturidadeCurta, nomeCurto, paragrafos, type Prioridade } from '../lib/prioridades';
+import { COR_SITUACAO, FOTOS_DOS_PROJETOS, PRIORIDADES, SITUACOES, doEstado, faltaTraducao, fraseDoEntrave, maturidadeCurta, nomeCurto, paragrafos, type Prioridade } from '../lib/prioridades';
 import { ALTURA, LARGURA, MAPA as MAPA_COMPLETO } from '../lib/mapa-prioridades';
 
 interface Props { lang?: string }
@@ -80,7 +81,7 @@ const notaRepetida = (r: ReturnType<typeof doEstado>['repetidos'][number], total
   return tp(chave, { n: r.projetos.length, projetos: listaDeNomes(r.projetos) });
 };
 const ESTADOS_DA_PAGINA = UFS.map((uf, k) => {
-  const e = estadoDe(uf), info = doEstado(uf);
+  const e = estadoDe(uf), info = doEstado(uf, lang);
   return { uf, n: k + 1, nome: e.nome, bandeira: e.bandeira, foto: e.foto, licenca: e.licenca, municipio: e.municipio, ...info,
     colunas: info.situacoes.map((s) => ({ situacao: s, projetos: info.lista.filter((p) => p.situacao === s) })) };
 });
@@ -220,7 +221,7 @@ const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próxi
   <footer class="pr-sobre">
     <h2>{t('Sobre os dados')}</h2>
     <p>{t('Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.')}</p>
-    {lang === 'en' && <p>{t('Os nomes e as descrições dos projetos estão como os estados os enviaram, em português.')}</p>}
+    {lang === 'en' && faltaTraducao() && <p>{t('Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.')}</p>}
     <p>{t('Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).')}</p>
     <ul class="pr-creditos">
       {creditosFotos.map((c) => <li>{c.lugar} · {c.url ? <a href={c.url} target="_blank" rel="noopener">{c.autor}</a> : c.autor}{c.licenca && <>, <a href={c.licenca.url} target="_blank" rel="noopener">{c.licenca.nome}</a></>}</li>)}

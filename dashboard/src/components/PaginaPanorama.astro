@@ -2,7 +2,7 @@
 // Corpo do Panorama, comum às duas línguas. As páginas de `pages/` são só a
 // casca que escolhe o idioma — assim o arranjo existe num lugar só e não há
 // como as duas versões divergirem em silêncio.
-import { IDIOMA_PADRAO, rota, traduzirCom } from '../i18n/index.js';
+import { IDIOMA_PADRAO, NOTA_TECNICA, traduzirCom } from '../i18n/index.js';
 import PaginaProjecoes from './PaginaProjecoes.astro';
 
 interface Props {
@@ -71,7 +71,7 @@ const t = traduzirCom(lang, Astro.locals.interface);
               <h2 data-ranking-title>{t('Síntese comparativa')}</h2>
               <small data-ranking-subtitle>{t('maior pontuação = melhor posição')}</small>
             </div>
-            <a class="text-button" href={`${rota('metodologia', lang)}#calculo`}>{t('Critérios')} <span aria-hidden="true">↗</span></a>
+            <a class="text-button" href={NOTA_TECNICA} target="_blank" rel="noopener">{t('Critérios')} <span aria-hidden="true">↗</span></a>
           </div>
           <ol id="ranking-list" class="ranking-list" aria-live="polite"></ol>
         </section>

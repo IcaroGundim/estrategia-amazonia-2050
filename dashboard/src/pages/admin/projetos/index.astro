@@ -1,0 +1,53 @@
+---
+// Lista dos projetos prioritários dos estados (aba Projetos), por estado, com
+// o caminho para editar o texto de cada um em português e inglês.
+export const prerender = false;
+
+import Admin from '../../../layouts/Admin.astro';
+import Mensagens from '../../../components/admin/Mensagens.astro';
+import Busca from '../../../components/admin/Busca.astro';
+import { leJson } from '../../../lib/admin/edicao';
+import { CAMPOS_TRADUZIVEIS, type Prioridade } from '../../../lib/prioridades';
+
+interface Prioridades { itens: Prioridade[] }
+
+const sessao = Astro.locals.sessao!;
+const { dados } = await leJson<Prioridades>('prioridades');
+const salvo = Astro.url.searchParams.get('salvo');
+
+// os projetos guardam o número da posição na lista, que é o endereço da edição
+const itens = dados.itens.map((p, i) => ({ ...p, n: i + 1 }));
+const estados = [...new Set(itens.map((p) => p.estado))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+// quantos textos do projeto já têm inglês, dos que o estado preencheu
+const traducao = (p: Prioridade) => {
+  const campos = CAMPOS_TRADUZIVEIS.filter((campo) => p[campo] && !(campo === 'maturidade' && p.maturidade === p.situacao));
+  const feitos = campos.filter((campo) => p.en?.[campo]).length;
+  return feitos === campos.length ? 'traduzido' : feitos ? 'parcial' : 'pendente';
+};
+const ROTULO = { traduzido: 'inglês completo', parcial: 'inglês em parte', pendente: 'sem inglês' };
+const ETIQUETA = { traduzido: 'coletado', parcial: 'parcial', pendente: 'pendente' };
+---
+
+<Admin title="Projetos" sessao={sessao}>
+  <Mensagens salvo={salvo} />
+  <section class="admin-cartao">
+    <p class="admin-chapeu"><a href="/admin">Início</a> / Projetos</p>
+    <h1>Projetos prioritários dos estados</h1>
+    <p>Os {itens.length} projetos da aba Projetos, por estado. O texto de cada um (nome, resultado esperado, avanços, maturidade, financiamento e entraves) edita-se aqui, em português e inglês. Na versão em inglês do site, o que ainda não tiver tradução aparece em português.</p>
+    <Busca placeholder="Buscar projeto por nome ou estado" />
+  </section>
+
+  {estados.map((estado) => (
+    <section class="admin-cartao">
+      <h2>{estado}</h2>
+      <ul class="admin-lista is-compacta">
+        {itens.filter((p) => p.estado === estado).map((p) => (
+          <li>
+            <div><a href={`/admin/projetos/${p.n}`}>{p.projeto}</a><br /><small>{p.situacao}</small></div>
+            <span class={`admin-etiqueta is-${ETIQUETA[traducao(p)]}`}>{ROTULO[traducao(p)]}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Admin>

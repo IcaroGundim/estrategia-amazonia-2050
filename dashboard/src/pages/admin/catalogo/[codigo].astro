@@ -1,6 +1,8 @@
 ---
 // Um indicador do catálogo: os campos de texto, em português e inglês, e a
-// situação da coleta. Em `/admin/catalogo/novo` cria um indicador.
+// situação da coleta. Em `/admin/catalogo/novo` cria um indicador. Uma conta
+// de acesso restrito (só textos) edita só o texto: eixo, linha, unidade, prazo,
+// ano e situação somem da tela e não mudam, e criar indicador fica de fora.
 export const prerender = false;
 
 import Admin from '../../../layouts/Admin.astro';
@@ -15,6 +17,8 @@ interface Catalogo { eixos: { numero: number; nome: string; indicadores: Indicad
 const sessao = Astro.locals.sessao!;
 const codigoDaRota = decodeURIComponent(Astro.params.codigo || '');
 const novo = codigoDaRota === 'novo';
+const restrito = Boolean(Astro.locals.acesso);
+if (novo && restrito) return new Response('Esta conta edita só o texto dos indicadores.', { status: 403 });
 
 const NIVEIS = [
   { valor: 'coletado', rotulo: 'Coletado: há valores para os estados, de fonte pública' },
@@ -48,7 +52,7 @@ if (Astro.request.method === 'POST') {
   const dados = await Astro.request.formData();
   versao = texto(dados, 'versao') || versao;
   const codigo = novo ? texto(dados, 'codigo') : codigoDaRota;
-  const eixoNumero = Number(texto(dados, 'eixo'));
+  const eixoNumero = restrito ? eixoAtual!.numero : Number(texto(dados, 'eixo'));
   try {
     if (novo && !/^[A-Z]\d+(\.\d+)*$/.test(codigo)) throw new ErroDeEdicao('O código precisa ter a forma I1.2.3 ou F3.2 (letra maiúscula, números e pontos).');
     const campos = {
@@ -69,6 +73,9 @@ if (Astro.request.method === 'POST') {
         unidade: textoOuNulo(dados, 'unidade__en')
       }
     };
+    // quem só edita texto não muda os dados do indicador, mesmo que o formulário os mande
+    // (a unidade em inglês vem do dicionário, pela tela de Textos: mudar a de cá apagaria a tradução)
+    if (restrito) Object.assign(campos, { linhaAcao: indicador!.linhaAcao, unidade: indicador!.unidade, prazo: indicador!.prazo, status: indicador!.status, anoRef: indicador!.anoRef, en: { ...campos.en, unidade: indicador!.en?.unidade ?? null } });
     if (!campos.nome) throw new ErroDeEdicao('O nome do indicador é obrigatório.');
     await salvaJson<Catalogo>('catalogo', versao, (catalogo) => {
       const destino = catalogo.eixos.find((eixo) => eixo.numero === eixoNumero);
@@ -105,7 +112,7 @@ const titulo = novo ? 'Criar indicador' : `${indicador!.codigo} ${indicador!.nom
   <section class="admin-cartao">
     <p class="admin-chapeu"><a href="/admin">Início</a> / <a href="/admin/catalogo">Catálogo</a> / {novo ? 'Novo' : indicador!.codigo}</p>
     <h1>{titulo}</h1>
-    <p>{novo ? 'Um indicador novo entra na lista de Metas e indicadores como "pendente" até receber valores. Se a meta dele puder ser confrontada com números, parametrize-a depois em Metas.' : 'Os números deste indicador ficam na tela de valores; aqui é só o texto.'}{!novo && <> Ficha técnica: <a href={`/admin/fichas/${encodeURIComponent(indicador!.codigo)}`}>editar</a>.</>}</p>
+    <p>{novo ? 'Um indicador novo entra na lista de Metas e indicadores como "pendente" até receber valores. Se a meta dele puder ser confrontada com números, parametrize-a depois em Metas.' : 'Os números deste indicador ficam na tela de valores; aqui é só o texto.'}{restrito && ' Esta conta edita o texto; eixo, linha de ação, unidade, prazo e situação da coleta ficam como estão (a unidade em inglês se traduz na tela de Textos).'}{!novo && !restrito && <> Ficha técnica: <a href={`/admin/fichas/${encodeURIComponent(indicador!.codigo)}`}>editar</a>.</>}</p>
     <Mensagens erro={erro} salvo={salvo ? 'Salvo no rascunho.' : null} />
 
     <form class="admin-form" method="post">
@@ -114,22 +121,22 @@ const titulo = novo ? 'Criar indicador' : `${indicador!.codigo} ${indicador!.nom
         {novo
           ? <Campo nome="codigo" rotulo="Código" valor="" obrigatorio ajuda="Ex.: I1.6.1. Não muda depois de criado." />
           : <div class="admin-campo"><span>Código</span><div class="admin-campo-controles"><input type="text" value={indicador!.codigo} disabled /></div></div>}
-        <Campo nome="eixo" rotulo="Eixo" tipo="select" valor={String(eixoAtual?.numero ?? 1)} opcoes={lido.dados.eixos.map((eixo) => ({ valor: String(eixo.numero), rotulo: `${eixo.numero}, ${eixo.nome}` }))} />
-        <Campo nome="linhaAcao" rotulo="Linha de ação" valor={indicador?.linhaAcao} ajuda="Só o número, ex.: 1.1" />
+        {!restrito && <Campo nome="eixo" rotulo="Eixo" tipo="select" valor={String(eixoAtual?.numero ?? 1)} opcoes={lido.dados.eixos.map((eixo) => ({ valor: String(eixo.numero), rotulo: `${eixo.numero}, ${eixo.nome}` }))} />}
+        {!restrito && <Campo nome="linhaAcao" rotulo="Linha de ação" valor={indicador?.linhaAcao} ajuda="Só o número, ex.: 1.1" />}
       </div>
       <Campo nome="nome" rotulo="Nome" valor={indicador?.nome} en={indicador?.en?.nome} comEn obrigatorio largo />
       <Campo nome="meta" rotulo="Meta pactuada" tipo="area" valor={indicador?.meta} en={indicador?.en?.meta} comEn largo />
       <Campo nome="descricao" rotulo="Descrição (o que se mede)" tipo="area" valor={indicador?.descricao} en={indicador?.en?.descricao} comEn largo />
       <div class="admin-form-linha">
-        <Campo nome="unidade" rotulo="Unidade" valor={indicador?.unidade} en={indicador?.en?.unidade} comEn />
-        <Campo nome="prazo" rotulo="Prazo (ano)" tipo="numero" valor={indicador?.prazo} />
-        <Campo nome="anoRef" rotulo="Ano de referência exibido" valor={indicador?.anoRef} ajuda="Texto livre, ex.: 2024 ou 03/2026" />
+        {!restrito && <Campo nome="unidade" rotulo="Unidade" valor={indicador?.unidade} en={indicador?.en?.unidade} comEn />}
+        {!restrito && <Campo nome="prazo" rotulo="Prazo (ano)" tipo="numero" valor={indicador?.prazo} />}
+        {!restrito && <Campo nome="anoRef" rotulo="Ano de referência exibido" valor={indicador?.anoRef} ajuda="Texto livre, ex.: 2024 ou 03/2026" />}
       </div>
       <Campo nome="fonte" rotulo="Fonte" valor={indicador?.fonte} en={indicador?.en?.fonte} comEn largo />
-      <div class="admin-form-linha">
+      {!restrito && <div class="admin-form-linha">
         <Campo nome="nivel" rotulo="Situação da coleta" tipo="select" valor={status.nivel} opcoes={NIVEIS} />
         <Campo nome="statusNota" rotulo="Observação da coleta" valor={status.nota} ajuda="Aparece entre parênteses depois da situação, ex.: proxy SIS/PNADc 2024" largo />
-      </div>
+      </div>}
       <div class="admin-acoes">
         <button type="submit" class="admin-botao">{novo ? 'Criar no rascunho' : 'Salvar no rascunho'}</button>
         <a class="admin-botao is-secundario" href="/admin/catalogo">Voltar</a>
