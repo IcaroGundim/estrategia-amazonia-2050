@@ -200,7 +200,8 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-gov-trilho { position: relative; display: flex; justify-content: center; }
 .ve-gov-trilho::before { content: ""; position: absolute; top: 14px; bottom: 0; width: 2px; background: var(--ocre); }
 .ve-gov-trilho::after { content: ""; position: absolute; top: 0; border: 7px solid transparent; border-top: 0; border-bottom: 12px solid var(--ocre); }
-.ve-gov-trilho span { position: absolute; top: 50%; padding: 8px 0; color: var(--mata-100); font: 600 11px var(--text); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; writing-mode: vertical-rl; transform: rotate(180deg) translateY(50%); text-shadow: 0 0 6px var(--mata), 0 0 12px var(--mata); }
+/* o rótulo corre ao lado da linha, à esquerda dela, e não por cima */
+.ve-gov-trilho span { position: absolute; top: 50%; right: calc(50% + 8px); padding: 8px 0; color: var(--mata-100); font: 600 11px var(--text); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; writing-mode: vertical-rl; transform: rotate(180deg) translateY(50%); text-shadow: 0 0 6px var(--mata), 0 0 12px var(--mata); }
 .ve-gov-escada { display: flex; flex-direction: column; gap: clamp(5px, calc(var(--ve-vh) * 1), 12px); min-width: 0; }
 .ve-gov-degrau { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 40px; }
 .ve-gov-instancia { position: relative; display: grid; gap: 2px; width: 100%; min-width: 0; padding: clamp(6px, calc(var(--ve-vh) * 1.5), 14px) 18px; border: 2px solid transparent; border-radius: 12px; font: inherit; text-align: left; transition: transform .15s, box-shadow .15s; }
