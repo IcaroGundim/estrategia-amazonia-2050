@@ -13,16 +13,52 @@ const { lang = IDIOMA_PADRAO } = Astro.props;
 const t = traduzirCom(lang, Astro.locals.interface);
 ---
 
-<section class="panorama" id="inicio">
+{/* O Panorama tem duas partes, Projeções e Mapa, e um interruptor ao lado do
+    título troca entre elas. Projeções abre primeiro; o endereço #mapa abre o
+    mapa (e #eixo-N, um eixo das projeções). A parte aberta fica em
+    `data-parte` na seção, que o CSS usa para esconder a outra — e o script
+    logo abaixo do cabeçalho já a escolhe antes de a página aparecer, para o
+    mapa não piscar no lugar das projeções. */}
+<section class="panorama" id="inicio" data-parte="projecoes">
   <div class="section-shell">
-    <div class="dashboard-grid">
+    <header class="panorama-topo">
+      <div>
+        <h1 id="map-title">{t('Panorama - ')}<em>{t('Amazônia Legal.')}</em></h1>
+        <p class="lead" data-panorama-lead data-lead-mapa={t('Explore os indicadores oficiais e compare os nove estados')} data-lead-projecoes={t('A trajetória pactuada de cada eixo, da linha de base à meta final')}>{t('A trajetória pactuada de cada eixo, da linha de base à meta final')}</p>
+      </div>
+      <div class="panorama-troca" role="tablist" aria-label={t('Partes do Panorama')}>
+        <button type="button" role="tab" id="aba-projecoes" aria-controls="parte-projecoes" aria-selected="true" data-parte-botao="projecoes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/></svg>{t('Projeções')}
+        </button>
+        <button type="button" role="tab" id="aba-mapa" aria-controls="parte-mapa" aria-selected="false" tabindex="-1" data-parte-botao="mapa">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5 9 4Z"/><path d="M9 4v13M15 6.5v13"/></svg>{t('Mapa')}
+        </button>
+      </div>
+    </header>
+    <script is:inline data-astro-rerun>
+      (function () {
+        if (location.hash !== '#mapa') return;
+        var secao = document.getElementById('inicio');
+        secao.dataset.parte = 'mapa';
+        var lead = secao.querySelector('[data-panorama-lead]');
+        lead.textContent = lead.dataset.leadMapa;
+        secao.querySelectorAll('[data-parte-botao]').forEach(function (b) {
+          var ativa = b.dataset.parteBotao === 'mapa';
+          b.setAttribute('aria-selected', String(ativa));
+          b.tabIndex = ativa ? 0 : -1;
+        });
+      })();
+    </script>
+
+    {/* As trajetórias pactuadas até 2050, por eixo (ver PaginaProjecoes.astro). */}
+    <div class="panorama-parte" id="parte-projecoes" role="tabpanel" aria-labelledby="aba-projecoes" data-parte-painel="projecoes">
+      <PaginaProjecoes lang={lang} />
+    </div>
+
+    <div class="dashboard-grid panorama-parte" id="parte-mapa" role="tabpanel" aria-labelledby="aba-mapa" data-parte-painel="mapa">
       <div class="dashboard-primary">
-        <article class="map-card card" aria-labelledby="map-title">
+        <article class="map-card card">
           <div class="card-heading panorama-heading">
-            <div>
-              <h1 id="map-title">{t('Panorama - ')}<em>{t('Amazônia Legal.')}</em></h1>
-              <p class="lead">{t('Explore os indicadores oficiais e compare os nove estados')}</p>
-            </div>
             <div class="map-controls">
               <div class="select-wrap">
                 <span class="select-wrap-label">{t('Indicador exibido')}</span>
@@ -77,8 +113,58 @@ const t = traduzirCom(lang, Astro.locals.interface);
         </section>
       </aside>
     </div>
-
-    {/* As trajetórias pactuadas até 2050, por eixo, depois do mapa (ver PaginaProjecoes.astro). */}
-    <PaginaProjecoes lang={lang} />
   </div>
 </section>
+
+<script>
+  // O interruptor entre Projeções e Mapa: troca a parte, a frase do título e o
+  // endereço. O mapa fica em #mapa; Projeções fica sem marca ou com o #eixo-N que
+  // ela mesma põe, que é guardado ao ir para o mapa e devolvido na volta.
+  // Liga a cada entrada na página (o site troca de página sem recarregar).
+  import { aoEntrarNaPagina, sinalDaPagina } from '../scripts/shared.js';
+
+  aoEntrarNaPagina('[data-parte-botao]', () => {
+    const secao = document.getElementById('inicio');
+    const botoes = [...secao.querySelectorAll('[data-parte-botao]')];
+    const lead = secao.querySelector('[data-panorama-lead]');
+    const sinal = sinalDaPagina();
+    let enderecoDasProjecoes = location.hash === '#mapa' ? '' : location.hash;
+
+    function abre(parte, { endereco = true } = {}) {
+      secao.dataset.parte = parte;
+      lead.textContent = parte === 'mapa' ? lead.dataset.leadMapa : lead.dataset.leadProjecoes;
+      for (const b of botoes) {
+        const ativa = b.dataset.parteBotao === parte;
+        b.setAttribute('aria-selected', String(ativa));
+        b.tabIndex = ativa ? 0 : -1;
+      }
+      if (!endereco) return;
+      const base = `${location.pathname}${location.search}`;
+      if (parte === 'mapa' && location.hash !== '#mapa') {
+        enderecoDasProjecoes = location.hash;
+        history.replaceState(history.state, '', `${base}#mapa`);
+      }
+      if (parte === 'projecoes' && location.hash === '#mapa') history.replaceState(history.state, '', `${base}${enderecoDasProjecoes}`);
+    }
+
+    // Vale também para a volta pelo histórico, quando o script inline não roda de novo.
+    abre(location.hash === '#mapa' ? 'mapa' : 'projecoes', { endereco: false });
+    botoes.forEach((b) => b.addEventListener('click', () => abre(b.dataset.parteBotao), { signal: sinal }));
+    // As setas trocam de parte, como numa lista de abas (e não chegam ao atalho das projeções).
+    secao.querySelector('.panorama-troca').addEventListener('keydown', (evento) => {
+      if (evento.key !== 'ArrowLeft' && evento.key !== 'ArrowRight') return;
+      evento.preventDefault();
+      evento.stopPropagation();
+      const atual = botoes.findIndex((b) => b.getAttribute('aria-selected') === 'true');
+      const proximo = botoes[(atual + (evento.key === 'ArrowRight' ? 1 : -1) + botoes.length) % botoes.length];
+      proximo.focus();
+      abre(proximo.dataset.parteBotao);
+    }, { signal: sinal });
+    // Um #mapa ou #eixo-N digitado ou vindo de um link na própria página troca a
+    // parte (o eixo, quem abre é projecoes.js).
+    addEventListener('hashchange', () => {
+      if (location.hash === '#mapa') abre('mapa', { endereco: false });
+      else abre('projecoes', { endereco: false });
+    }, { signal: sinal });
+  });
+</script>

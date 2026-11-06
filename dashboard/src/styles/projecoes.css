@@ -182,52 +182,37 @@
 
 /* ---------- os indicadores do eixo ----------
    Fileiras equilibradas de até 3 cartões numa grade de 6 trilhas (--sd vem
-   do script); com um indicador só, o cartão largo tem a série ao lado. */
+   do script); um indicador só fica num cartão do mesmo tamanho dos outros. */
 .pj-corpo { padding: 30px clamp(20px, 2.4vw, 40px) 40px; }
 .pj-inds-topo { margin: 0 0 18px; }
 .pj-inds-topo h3 { margin: 8px 0 0; font: 800 28px/1.05 var(--display); letter-spacing: -.025em; }
 .pj-inds-topo p { margin: 6px 0 0; color: var(--tinta-3); font-size: 13px; }
 .pj-cartoes { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
-.pj-ind { grid-column: span var(--sd, 2); display: grid; grid-template-rows: auto 1fr auto; gap: 12px; min-width: 0; padding: 20px 20px 18px; border: 1px solid var(--linha); border-radius: 16px; background: var(--papel); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .4s, box-shadow .4s, transform .45s var(--pj-abre), opacity .4s var(--pj-abre), scale .5s var(--pj-abre); animation: pj-entra .6s var(--pj-abre) calc(.1s + var(--k) * 55ms) both; }
-.pj-ind:hover, .pj-ind:focus-visible { border-color: var(--mata-300); box-shadow: 0 14px 34px rgba(14, 43, 34, .11); transform: translateY(-4px); outline: none; }
+/* O cartão compacto: o nome e os dois números à esquerda, o traço da trajetória à direita. */
+.pj-ind { grid-column: span var(--sd, 2); display: grid; grid-template-columns: minmax(0, 1fr) 112px; grid-template-rows: auto 1fr; gap: 12px 18px; min-width: 0; padding: 18px 20px; border: 1px solid var(--linha); border-radius: 16px; background: var(--papel); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .4s, box-shadow .4s, transform .45s var(--pj-abre), opacity .4s var(--pj-abre), scale .5s var(--pj-abre); animation: pj-entra .6s var(--pj-abre) calc(.1s + var(--k) * 55ms) both; }
+/* como no mockup: no hover só a borda escurece, sem sombra nem salto */
+.pj-ind:hover, .pj-ind:focus-visible { border-color: var(--mata-500); outline: none; }
 .pj-ind:focus-visible { box-shadow: 0 0 0 3px var(--ocre); }
 .pj-ind > span { display: block; min-width: 0; }
+.pj-ind-txt { grid-column: 1; }
 .pj-ind-topo { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .pj-ind-cod { color: var(--mata-500); font: 600 11px var(--text); letter-spacing: .1em; }
 .pj-tag { padding: 2px 8px; border-radius: 999px; background: #e7efe9; color: var(--mata-700); font-size: 10.5px; font-weight: 600; white-space: nowrap; }
 .pj-tag.is-ref { background: #fbeee0; color: #8a4a12; }
 .pj-tag.is-marcos { background: #efe9de; color: var(--tinta-3); }
-.pj-ind-nome { display: block; margin-top: 10px; }
-.pj-ind-nome strong { display: block; font: 800 17px/1.2 var(--display); letter-spacing: -.015em; text-wrap: balance; }
-.pj-ind-nome small { display: block; margin-top: 4px; color: var(--tinta-4); font-size: 11.5px; }
-.pj-ind > span.pj-ind-num { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 12px; padding-top: 12px; border-top: 1px solid var(--linha-2); }
-.pj-ind-num small { display: block; color: var(--tinta-4); font: 600 10px var(--text); letter-spacing: .12em; }
-.pj-ind-num b { display: block; font: 800 22px/1 var(--display); letter-spacing: -.025em; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.pj-ind-num .is-meta b { color: var(--mata); }
-.pj-seta { padding-bottom: 3px; color: var(--ocre); font-weight: 600; }
-.pj-ver { margin-left: auto; padding-bottom: 3px; color: var(--urucum); font-size: 12px; font-weight: 600; white-space: nowrap; }
-.pj-ver span { display: inline-block; transition: transform .4s var(--pj-abre); }
-.pj-ind:hover .pj-ver span, .pj-ind:focus-visible .pj-ver span { transform: translateX(5px); }
-@media (min-width: 681px) {
-  .pj-ind.is-largo { grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); grid-template-rows: 1fr auto; grid-template-areas: "txt mini" "num mini"; gap: 16px 40px; padding: 26px 28px 22px; }
-  .pj-ind.is-largo .pj-ind-txt { grid-area: txt; }
-  .pj-ind.is-largo .pj-mini-caixa { grid-area: mini; align-self: center; }
-  .pj-ind.is-largo .pj-ind-num { grid-area: num; }
-  .pj-ind.is-largo .pj-ind-nome strong { font-size: 24px; }
-  .pj-ind.is-largo .pj-ind-num b { font-size: 30px; }
-}
-.pj-mini { display: block; max-width: 100%; height: auto; overflow: visible; }
-.pj-mini text { fill: var(--tinta-4); font: 600 10px var(--text); }
-.pj-mini .pj-eixo-x { stroke: var(--linha); }
-.pj-mini .pj-area { fill: url(#pj-mata); }
-.pj-mini .pj-linha { stroke: var(--mata-700); stroke-width: 2.2; }
-.pj-mini .pj-outro { fill: none; stroke: var(--mata-500); stroke-width: 1.3; opacity: .85; }
+.pj-ind-nome { display: block; margin-top: 8px; }
+.pj-ind-nome strong { display: block; font: 800 28px/1.08 var(--display); letter-spacing: -.025em; text-wrap: balance; }
+.pj-ind-nome small { display: block; margin-top: 4px; color: var(--tinta-4); font-size: 12px; }
+.pj-ind > .pj-mini-caixa { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.pj-ind > span.pj-ind-num { grid-column: 1; align-self: end; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-variant-numeric: tabular-nums; }
+.pj-ind-num b { font: 800 21px/1 var(--display); letter-spacing: -.022em; white-space: nowrap; }
+.pj-ind-num b.is-meta { color: var(--mata-700); }
+.pj-ind-num small { color: var(--tinta-4); font-size: 12px; }
+.pj-mini { display: block; overflow: visible; }
+.pj-mini .pj-linha { fill: none; stroke: var(--mata-700); stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.pj-mini .pj-outro { fill: none; stroke: var(--mata-500); stroke-width: 1.2; opacity: .85; }
 .pj-mini .pj-faixa { fill: var(--mata-500); opacity: .1; }
-.pj-mini .pj-marco { fill: var(--papel); stroke: var(--mata-700); stroke-width: 1.8; }
-.pj-mini .pj-base { fill: var(--tinta); stroke: var(--papel); stroke-width: 1.5; }
-.pj-mini .pj-fim { fill: var(--ocre); stroke: var(--papel); stroke-width: 2; }
-.pj-mini text.pj-rot { fill: var(--tinta); font: 700 11px var(--text); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
-.pj-mini text.pj-rot.is-fim { fill: var(--mata); }
+.pj-mini .pj-fim { fill: var(--mata-700); }
 
 /* ---------- o indicador aberto: o cartão que cresce ----------
    O mesmo movimento do card de Projetos (prioridades.css, .pr-aberto); os
@@ -346,7 +331,7 @@
   .pj-titulo { flex: 0 0 260px; grid-template-columns: 30px minmax(0, 1fr) 54px; }
   .pj-titulos-pe { display: none; }
   .pj-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pj-ind { grid-column: span var(--st, 1); }
+  .pj-ind { grid-column: span 1; }
   .pj-placa-grade { grid-template-columns: minmax(0, 1fr); }
   .pj-tab-caixa { flex: none; min-height: 0; }
   .pj-tab-rola { position: relative; inset: auto; max-height: 300px; }
@@ -357,13 +342,6 @@
   .pj-placa-num div + div::before { content: none; }
   .pj-placa-num dd { margin: 0; font-size: 22px; text-align: right; }
   .pj-placa-num dd small { font-size: 11px; }
-}
-/* O último cartão de uma fileira ímpar ocupa a linha inteira no tablet: vira largo. */
-@media (min-width: 681px) and (max-width: 1100px) {
-  .pj-ind.is-largo-t { grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); grid-template-rows: 1fr auto; grid-template-areas: "txt mini" "num mini"; gap: 16px 32px; }
-  .pj-ind.is-largo-t .pj-ind-txt { grid-area: txt; }
-  .pj-ind.is-largo-t .pj-mini-caixa { grid-area: mini; align-self: center; }
-  .pj-ind.is-largo-t .pj-ind-num { grid-area: num; }
 }
 @media (max-width: 680px) {
   .pj { border-radius: 14px; }
@@ -384,6 +362,10 @@
   .pj-kpis dd { font-size: 26px; }
   .pj-cartoes { grid-template-columns: minmax(0, 1fr); }
   .pj-ind { grid-column: auto; }
+  /* No celular o nome ganha a largura toda; os números e o traço dividem a linha de baixo. */
+  .pj-ind-txt { grid-column: 1 / -1; }
+  .pj-ind > .pj-mini-caixa { grid-row: 2; align-self: end; }
+  .pj-ind > span.pj-ind-num { grid-row: 2; }
   .pj-inds-topo h3 { font-size: 24px; }
   .pj-placa-corpo { padding: 18px 16px 16px; }
   /* O pé em duas fileiras: o link na largura toda; embaixo, navegação e fechar. */

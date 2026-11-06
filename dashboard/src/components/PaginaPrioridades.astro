@@ -17,7 +17,7 @@
 // que ainda não tem tradução fica como o estado enviou, e a página diz isso.
 import { IDIOMA_PADRAO, traduzirCom } from '../i18n/index.js';
 import { ESTADOS } from '../lib/visao-geral';
-import { COR_SITUACAO, FOTOS_DOS_PROJETOS, PRIORIDADES, SITUACOES, doEstado, faltaTraducao, fraseDoEntrave, maturidadeCurta, nomeCurto, paragrafos, type Prioridade } from '../lib/prioridades';
+import { COR_SITUACAO, FOTOS_DOS_PROJETOS, PRIORIDADES, SITUACOES, doEstado, fraseDoEntrave, maturidadeCurta, nomeCurto, paragrafos, type Prioridade } from '../lib/prioridades';
 import { ALTURA, LARGURA, MAPA as MAPA_COMPLETO } from '../lib/mapa-prioridades';
 
 interface Props { lang?: string }
@@ -86,7 +86,6 @@ const ESTADOS_DA_PAGINA = UFS.map((uf, k) => {
     colunas: info.situacoes.map((s) => ({ situacao: s, projetos: info.lista.filter((p) => p.situacao === s) })) };
 });
 const fotoDo = (uf: string, idx: number) => FOTOS_DOS_PROJETOS[uf][idx % FOTOS_DOS_PROJETOS[uf].length];
-const creditosFotos = [...UFS.map((uf) => { const e = estadoDe(uf); return { ...e.foto, lugar: `${e.foto.lugar}, ${e.municipio}`, licenca: e.licenca }; }), ...UFS.flatMap((uf) => FOTOS_DOS_PROJETOS[uf].map((foto) => ({ ...foto, licenca: undefined })))];
 // rótulos dos botões do projeto aberto, para o script
 const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próximo →'), fechar: t('× Todos os projetos'), conta: t('{n} de {total}'), verProjetos: t('ver os projetos ↓') });
 ---
@@ -217,14 +216,4 @@ const rotulos = JSON.stringify({ anterior: t('← Anterior'), proximo: t('Próxi
     </div>
   </section>
 
-  <!-- sobre os dados -->
-  <footer class="pr-sobre">
-    <h2>{t('Sobre os dados')}</h2>
-    <p>{t('Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.')}</p>
-    {lang === 'en' && faltaTraducao() && <p>{t('Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.')}</p>}
-    <p>{t('Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).')}</p>
-    <ul class="pr-creditos">
-      {creditosFotos.map((c) => <li>{c.lugar} · {c.url ? <a href={c.url} target="_blank" rel="noopener">{c.autor}</a> : c.autor}{c.licenca && <>, <a href={c.licenca.url} target="_blank" rel="noopener">{c.licenca.nome}</a></>}</li>)}
-    </ul>
-  </footer>
 </div>

@@ -239,8 +239,10 @@
 @media (max-width: 620px) {
   .panorama { padding-top: 18px; }
   .panorama-heading { gap: 12px 20px; margin-bottom: 12px; }
-  .panorama-heading h1 { font-size: 24px; line-height: 1.05; }
-  .panorama-heading .lead { margin-top: 6px; font-size: 13px; line-height: 1.45; }
+  .panorama-topo h1 { font-size: 26px; line-height: 1.05; }
+  .panorama-topo .lead { font-size: 13.5px; }
+  .panorama-troca { width: 100%; }
+  .panorama-troca button { flex: 1; justify-content: center; }
   .select-wrap-label { margin-bottom: 6px; }
   .map-controls { gap: 10px; }
 

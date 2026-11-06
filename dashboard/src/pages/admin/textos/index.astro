@@ -543,7 +543,8 @@ const interfaceGravada = interfaceLida.dados.textos;
       let alvo = doc.querySelector<HTMLElement>(seletor);
       // O alvo pode estar escondido por um ancestral (nas Metas, a vista do
       // eixo aberto inteira), não só por ele mesmo.
-      if ((!alvo || alvo.closest('[hidden]')) && grupo?.dataset.abre) {
+      // (ou pelo CSS, como as partes do Panorama, que somem por `data-parte`).
+      if ((!alvo || alvo.closest('[hidden]') || !alvo.getClientRects().length) && grupo?.dataset.abre) {
         deDentro = true;
         doc.querySelector<HTMLElement>(grupo.dataset.abre)?.click();
         deDentro = false;

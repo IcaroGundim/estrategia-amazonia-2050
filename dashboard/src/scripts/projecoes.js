@@ -332,6 +332,16 @@ function ligaVisao(raiz, eixos, sinal) {
   const vigia = new IntersectionObserver(([entrada]) => lado.classList.toggle('is-fora', !entrada.isIntersecting));
   vigia.observe(lado);
   sinal.addEventListener('abort', () => vigia.disconnect());
+  // A linha do tempo mede a largura uma vez. Se ela foi desenhada com a parte
+  // escondida (o Panorama abriu no Mapa), refaz quando a parte aparece.
+  let larguraVista = lado.clientWidth;
+  const reaparece = new ResizeObserver(() => {
+    const w = lado.clientWidth;
+    if (w > 0 && larguraVista === 0) mostra(atual);
+    larguraVista = w;
+  });
+  reaparece.observe(lado);
+  sinal.addEventListener('abort', () => reaparece.disconnect());
   const segue = () => {
     const k = eixos.findIndex((e) => e.n === atual);
     mostra(eixos[(k + 1) % eixos.length].n);
@@ -676,7 +686,8 @@ function htmlDoHeroi(eixos, e) {
 // Os cartões vão em fileiras equilibradas de até 3 numa grade de 6 trilhas:
 // nenhum fica sozinho num canto com dois terços vazios.
 function spansDe(n) {
-  if (n === 1) return [6];
+  // um indicador só fica do tamanho de um cartão comum (um terço da fileira), sem esticar
+  if (n === 1) return [2];
   const filas = Math.ceil(n / 3);
   const base = Math.floor(n / filas);
   const extra = n % filas;
@@ -688,60 +699,42 @@ function spansDe(n) {
   return saida;
 }
 
-// O minigráfico escreve base, 2030 e meta, com os anos embaixo. Todos os
-// cartões de um eixo usam a mesma régua de anos (`dom`): 2030 cai no mesmo
-// lugar em todos. Um ponto sem lugar para o rótulo sai com ele.
-function miniGrafico(alvo, p, w, dom, anima) {
-  const h = Math.round(clamp(w * 0.22, 112, 150));
-  const m = { t: 24, r: 6, b: 22, l: 6 };
+// O cartão é compacto: o nome e o par de números à esquerda e, à direita, um
+// traço pequeno com a forma da trajetória, sem eixo nem rótulos (os números já
+// estão no cartão). Todos os cartões de um eixo usam a mesma régua de anos
+// (`dom`), para o começo e o fim de cada traço caírem no mesmo lugar.
+// Com cenários, a faixa entre eles e os outros cenários tracejados, finos.
+const TRACO = { w: 112, h: 56 };
+function tracoDoCartao(p, dom, anima) {
+  const { w, h } = TRACO;
+  const m = { t: 5, r: 5, b: 5, l: 3 };
   const vals = p.series.flat().map(([, v]) => v);
   const lo = Math.min(...vals);
   const hi = Math.max(...vals) - lo < 1e-9 ? lo + 1 : Math.max(...vals);
   const px = (a) => m.l + ((a - dom[0]) / (dom[1] - dom[0] || 1)) * (w - m.l - m.r);
   const py = (v) => m.t + (1 - (v - lo) / (hi - lo)) * (h - m.t - m.b);
-  const ptsDe = (s) => s.map(([a, v]) => [px(a), py(v)]);
-  const yEixo = h - m.b;
-  const segs = p.series.flatMap((s) => segmentosDe(ptsDe(s)));
+  const ptsDe = (serie) => serie.map(([a, v]) => [px(a), py(v)]);
   let faixa = '';
   let outros = '';
   if (p.multi) {
-    const topo = p.anos.map((a) => [px(a), py(Math.max(...p.series.map((s) => valorEm(s, a))))]);
-    const fundo = p.anos.slice().reverse().map((a) => [px(a), py(Math.min(...p.series.map((s) => valorEm(s, a))))]);
+    const topo = p.anos.map((a) => [px(a), py(Math.max(...p.series.map((serie) => valorEm(serie, a))))]);
+    const fundo = p.anos.slice().reverse().map((a) => [px(a), py(Math.min(...p.series.map((serie) => valorEm(serie, a))))]);
     faixa = `<polygon class="pj-faixa" points="${pontos([...topo, ...fundo])}"/>`;
-    outros = p.series.map((s, k) => (k === p.iCentral ? '' : `<polyline class="pj-outro" stroke-dasharray="${p.tracos[k]}" points="${pontos(ptsDe(s))}"/>`)).join('');
+    outros = p.series.map((serie, k) => (k === p.iCentral ? '' : `<polyline class="pj-outro" stroke-dasharray="${p.tracos[k]}" points="${pontos(ptsDe(serie))}"/>`)).join('');
   }
   const c = p.central;
-  const pedidos = [{ x: px(p.a0), y: py(p.base), texto: comUnidade(p.base, p.unidade), tipo: 'inicio', tam: 11, peso: 700, ponto: 'pj-base', r: 4 }];
-  // 2030 só com uma série central (em I4.4.1 seria uma média que nenhum cenário tem).
-  if (c && p.a0 < 2030 && p.a1 > 2030 && (!p.soMarcos || temAno(c, 2030))) {
-    const v = valorEm(c, 2030);
-    pedidos.push({ x: px(2030), y: py(v), texto: `${temAno(c, 2030) ? '' : '≈ '}${comUnidade(v, p.unidade)}`, tipo: 'meio', tam: 11, peso: 700, ponto: 'pj-marco', r: 3.4, opcional: true, ano: 2030 });
-  }
-  if (c || p.finsIguais) {
-    const v = p.series[Math.max(0, p.iCentral)].at(-1)[1];
-    pedidos.push({ x: px(p.a1), y: py(v), texto: comUnidade(v, p.unidade), tipo: 'fim', tam: 11, peso: 700, ponto: 'pj-fim', r: 5, cls: 'is-fim' });
-  }
-  const caixas = pedidos.map((q) => caixaDoPonto(q.x, q.y, q.r));
-  const { feitos } = colocaRotulos(pedidos, { segs, caixas, area: { x0: 0, x1: w, y0: 0, y1: yEixo - 1 } });
-  const vivos = feitos.filter((r) => r.ok || !r.opcional);
-  const anosX = [p.a0, ...vivos.filter((r) => r.ano).map((r) => r.ano), p.a1];
-  const eixoX = anosX.map((a) => {
-    const meia = mede(String(a), 10) / 2 + 1;
-    return `<line class="pj-eixo-x" x1="${f1(px(a))}" x2="${f1(px(a))}" y1="${yEixo}" y2="${yEixo + 4}"/><text x="${f1(clamp(px(a), meia, w - meia))}" y="${h - 3}" text-anchor="middle">${a}</text>`;
-  }).join('');
-  alvo.innerHTML = `<svg class="pj-mini" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">
-    <line class="pj-eixo-x" x1="${f1(px(dom[0]))}" x2="${f1(px(dom[1]))}" y1="${yEixo}" y2="${yEixo}"/>
-    ${c ? `<polygon class="pj-area" points="${f1(px(p.a0))},${yEixo} ${pontos(ptsDe(c))} ${f1(px(p.a1))},${yEixo}"/>` : ''}${faixa}${outros}
+  const fim = ptsDe(p.series[Math.max(0, p.iCentral)]).at(-1);
+  return `<svg class="pj-mini" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">${faixa}${outros}
     ${c ? `<polyline class="pj-linha${anima ? ' pj-desenha' : ''}" pathLength="1" points="${pontos(ptsDe(c))}"/>` : ''}
-    ${eixoX}
-    ${vivos.map((r) => `<circle class="${r.ponto}" cx="${f1(r.x)}" cy="${f1(r.y)}" r="${r.r}"/>`).join('')}
-    ${vivos.filter((r) => r.ok).map((r) => textoRot(r, r.cls)).join('')}</svg>`;
+    ${c || p.finsIguais ? `<circle class="pj-fim" cx="${f1(fim[0])}" cy="${f1(fim[1])}" r="3.5"/>` : ''}</svg>`;
 }
 
 function htmlDosCartoes(e) {
   const n = e.inds.length;
   const nc = e.codigos.length;
   const sd = spansDe(n);
+  const dom = n === 1 ? [e.inds[0].a0, e.inds[0].a1] : [e.ini, e.fim];
+  const anima = !reduz();
   const titulo = n === 1 ? t('O indicador com trajetória') : e.series ? tp('As {n} séries com trajetória', { n }) : tp('Os {n} indicadores com trajetória', { n });
   const sub = n === 1
     ? tp('{n} de {total} indicadores do eixo · clique no cartão para abrir a série.', { n: nc, total: e.total })
@@ -754,14 +747,14 @@ function htmlDosCartoes(e) {
       <p>${esc(sub)}</p></div>
     <div class="pj-regiao" data-regiao><div class="pj-cartoes">${e.inds.map((p, k) => {
       const meta = metaDe(p);
-      // No tablet a grade tem duas colunas: o último de uma fileira ímpar ocupa a linha.
-      const largoT = n > 1 && n % 2 === 1 && k === n - 1;
       const sobreMeta = p.multi ? ` · ${p.central ? t(p.cenarios[p.iCentral].nome).toLowerCase() : tp('{n} cenários', { n: p.series.length })}` : '';
-      return `<button type="button" class="pj-ind${n === 1 ? ' is-largo' : ''}${largoT ? ' is-largo-t' : ''}" data-ind="${esc(p.id)}" data-idx="${k}" aria-expanded="false" style="--k:${k};--sd:${sd[k]};--st:${n === 1 || largoT ? 2 : 1}">
+      // A unidade só aparece quando os números não a trazem (%, R$ e × já vêm neles).
+      const unidade = ehPct(p.unidade) || p.unidade.startsWith('R$') || ehX(p.unidade) ? '' : t(UNIDADE_DA_TABELA[p.unidade] || p.unidade);
+      return `<button type="button" class="pj-ind" data-ind="${esc(p.id)}" data-idx="${k}" aria-expanded="false" style="--k:${k};--sd:${sd[k]}">
       <span class="pj-ind-txt"><span class="pj-ind-topo"><span class="pj-ind-cod">${esc(p.codigo)}</span>${etiquetasDe(p)}</span>
-        <span class="pj-ind-nome"><strong>${esc(t(p.nome))}</strong><small>${esc(t(p.unidade))} · ${esc(t('Amazônia Legal'))}</small></span></span>
-      <span class="pj-mini-caixa" data-mini></span>
-      <span class="pj-ind-num"><span><small>${p.a0}</small><b>${esc(comUnidade(p.base, p.unidade))}</b></span><span class="pj-seta" aria-hidden="true">→</span><span class="is-meta"><small>${p.a1}${esc(sobreMeta)}</small><b>${esc(meta.txt)}</b></span><span class="pj-ver">${esc(p.anual ? t('Ver ano a ano') : t('Ver os marcos'))} <span aria-hidden="true">→</span></span></span>
+        <span class="pj-ind-nome"><strong>${esc(t(p.nome))}</strong>${unidade ? `<small>${esc(unidade)}</small>` : ''}</span></span>
+      <span class="pj-mini-caixa">${tracoDoCartao(p, dom, anima)}</span>
+      <span class="pj-ind-num"><b>${esc(comUnidade(p.base, p.unidade))}</b><small>${p.a0} →</small><b class="is-meta">${esc(meta.txt)}</b><small>${p.a1}${esc(sobreMeta)}</small><span class="sr-only">${esc(p.anual ? t('Ver ano a ano') : t('Ver os marcos'))}</span></span>
     </button>`;
     }).join('')}</div></div>
   </div>`;
@@ -786,11 +779,8 @@ function abreEixo(raiz, eixos, n, sinal, { rola = true } = {}) {
     d.addEventListener('pointerenter', () => miraEixo?.mostra(Number(d.dataset.ano)));
     d.addEventListener('pointerleave', () => miraEixo?.esconde());
   });
-  const dom = e.inds.length === 1 ? [e.inds[0].a0, e.inds[0].a1] : [e.ini, e.fim];
   vista.querySelectorAll('.pj-ind').forEach((b) => {
     const p = e.inds[Number(b.dataset.idx)];
-    const mini = b.querySelector('[data-mini]');
-    monta(mini, (w, primeira) => miniGrafico(mini, p, w, dom, primeira && !reduz()));
     // O cartão sob o mouse acende o fio do indicador no gráfico do topo.
     b.addEventListener('mouseenter', () => {
       const fino = vista.querySelector(`[data-fino="${CSS.escape(p.id)}"]`);
@@ -1324,8 +1314,9 @@ async function init() {
 
   // Com um indicador aberto: Esc fecha, as setas passam ao anterior e ao
   // próximo (menos quando o foco está num gráfico ou na tabela, que usam as setas).
+  // Nada disso com a parte Projeções fechada (no Panorama, o Mapa aberto).
   document.addEventListener('keydown', (evento) => {
-    if (!aberto || evento.target.closest('input, textarea, select')) return;
+    if (!aberto || raiz.offsetParent === null || evento.target.closest('input, textarea, select')) return;
     if (evento.key === 'Escape') fechaIndicador();
     else if (evento.target.closest('svg, [data-rola]')) return;
     else if (evento.key === 'ArrowLeft' || evento.key === 'ArrowRight') abreIndicador(aberto.vista, aberto.e, aberto.idx + (evento.key === 'ArrowLeft' ? -1 : 1));
@@ -1335,12 +1326,18 @@ async function init() {
     soltaObservadores();
   });
 
-  // `#eixo-3` abre o terceiro eixo, como em Metas.
+  // `#eixo-3` abre o terceiro eixo, como em Metas — ao carregar e quando o
+  // endereço muda (um link na própria página, o Voltar do navegador).
   const doEndereco = Number(location.hash.match(/^#eixo-(\d+)$/)?.[1]);
   if (doEndereco) abreEixo(raiz, eixos, doEndereco, sinal, { rola: false });
+  addEventListener('hashchange', () => {
+    const n = Number(location.hash.match(/^#eixo-(\d+)$/)?.[1]);
+    if (n && eixos.some((e) => e.n === n)) abreEixo(raiz, eixos, n, sinal, { rola: false });
+  }, { signal: sinal });
 }
 
 aoEntrarNaPagina(ANCORA, () => init().catch((erro) => {
+  console.error(erro);
   const alvo = document.querySelector('[data-pj-lado]');
   if (alvo) alvo.innerHTML = `<p class="load-error">${escape(erro.message)} ${escape(t('Atualize a página para tentar novamente.'))}</p>`;
 }));

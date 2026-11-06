@@ -56,9 +56,14 @@
         "Carregando painel…",
         "Síntese comparativa",
         "maior pontuação = melhor posição",
-        "Critérios"
+        "Critérios",
+        "A trajetória pactuada de cada eixo, da linha de base à meta final",
+        "Partes do Panorama",
+        "Projeções",
+        "Mapa"
       ],
-      "alvo": ".map-card"
+      "alvo": ".map-card",
+      "abre": "#aba-mapa"
     },
     {
       "titulo": "Metas: os cinco eixos",
@@ -370,7 +375,8 @@
         "Conectividade digital (IBC-AMZ)",
         "ANATEL"
       ],
-      "alvo": "#map-indicator-card"
+      "alvo": "#map-indicator-card",
+      "abre": "#aba-mapa"
     },
     {
       "titulo": "Panorama: como o valor regional é montado",
@@ -385,7 +391,8 @@
         "Média simples dos nove estados. A leitura regional correta ponderaria pela potência instalada de cada estado, que não está na base consolidada.",
         "Média simples dos nove estados. Ponderar pelo PIB exigiria o PIB do mesmo ano de referência em todos os estados, o que a série não oferece."
       ],
-      "alvo": "#state-panel"
+      "alvo": "#state-panel",
+      "abre": "#aba-mapa"
     },
     {
       "titulo": "Panorama: painel lateral",
@@ -421,7 +428,8 @@
         "Ano em curso: a série ainda não fechou, então o valor não é comparável aos anos anteriores.",
         "Não foi possível carregar os dados do painel."
       ],
-      "alvo": ".dashboard-sidebar"
+      "alvo": ".dashboard-sidebar",
+      "abre": "#aba-mapa"
     },
     {
       "titulo": "Panorama: unidades e rótulos do cartão",
@@ -457,7 +465,8 @@
         "Cooperação que atravessa fronteiras.",
         "recorte de exibição"
       ],
-      "alvo": "#map-indicator-card"
+      "alvo": "#map-indicator-card",
+      "abre": "#aba-mapa"
     },
     {
       "titulo": "Panorama: projeções até 2050",
@@ -547,7 +556,8 @@
         "número de municípios",
         "número de sistemas"
       ],
-      "alvo": ".pj"
+      "alvo": ".pj",
+      "abre": "#aba-projecoes"
     },
     {
       "titulo": "Metas: trajetória pactuada até 2050",
@@ -689,11 +699,7 @@
         "Técnico",
         "Institucional e político",
         "Licenciamento e questão fundiária",
-        "Descrito pelo estado",
-        "Sobre os dados",
-        "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
-        "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.",
-        "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons)."
+        "Descrito pelo estado"
       ],
       "alvo": ".pr-capa"
     }
@@ -2507,22 +2513,6 @@
       "pt": "Descrito pelo estado",
       "en": "Described by the state"
     },
-    "Sobre os dados": {
-      "pt": "Sobre os dados",
-      "en": "About the data"
-    },
-    "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.": {
-      "pt": "Priorização dos Estados, consolidada pelo Consórcio Interestadual da Amazônia Legal a partir das informações das Secretarias de Planejamento, com a situação de outubro de 2026. Cada estado indicou as suas prioridades e respondeu pela situação, pelos avanços e pelos entraves.",
-      "en": "State priorities, compiled by the Legal Amazon Interstate Consortium from information provided by the state planning departments, with the status as of October 2026. Each state named its priorities and reported on their status, progress and constraints."
-    },
-    "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.": {
-      "pt": "Os textos dos projetos que ainda não têm tradução estão como os estados os enviaram, em português.",
-      "en": "Project texts that have not been translated yet appear as the states submitted them, in Portuguese."
-    },
-    "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).": {
-      "pt": "Fotos do Ministério do Turismo (Flickr MTur Destinos, domínio público), exceto a do rio Crôa (Wikimedia Commons).",
-      "en": "Photos from Brazil's Ministry of Tourism (Flickr MTur Destinos, public domain), except the Crôa river photo (Wikimedia Commons)."
-    },
     "Os projetos prioritários": {
       "pt": "Os projetos prioritários",
       "en": "Priority projects"
@@ -2882,6 +2872,22 @@
     "As bandeiras dos nove estados da Amazônia Legal, unidas em um anel.": {
       "pt": "As bandeiras dos nove estados da Amazônia Legal, unidas em um anel.",
       "en": "The flags of the nine states of the Legal Amazon, joined in a ring."
+    },
+    "A trajetória pactuada de cada eixo, da linha de base à meta final": {
+      "pt": "A trajetória pactuada de cada eixo, da linha de base à meta final",
+      "en": "The agreed pathway for each pillar, from the baseline to the final target"
+    },
+    "Partes do Panorama": {
+      "pt": "Partes do Panorama",
+      "en": "Parts of this page"
+    },
+    "Projeções": {
+      "pt": "Projeções",
+      "en": "Projections"
+    },
+    "Mapa": {
+      "pt": "Mapa",
+      "en": "Map"
     }
   }
 }

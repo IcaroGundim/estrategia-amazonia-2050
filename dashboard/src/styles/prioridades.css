@@ -180,14 +180,6 @@
 .pr-entraves i { display: block; height: 10px; border-radius: 99px; background: var(--ocre); }
 .pr-entraves em { font-style: normal; font-weight: 700; text-align: right; }
 
-/* ---------- sobre os dados ---------- */
-.pr-sobre { padding: 56px var(--pr-margem) 72px; color: var(--tinta-2); font-size: 14px; }
-.pr-sobre h2 { margin: 0 0 10px; color: var(--mata); font: 700 20px var(--display); }
-.pr-sobre p { max-width: 820px; margin: 0 0 8px; }
-.pr-creditos { margin: 14px 0 0; padding: 0; columns: 3 260px; column-gap: 32px; color: var(--tinta-3); font-size: 12.5px; list-style: none; }
-.pr-creditos li { margin-bottom: 4px; break-inside: avoid; }
-.pr-creditos a { color: inherit; }
-
 @media (prefers-reduced-motion: reduce) {
   .pr-aberto, .pr-regiao, .pr-colunas, .pr-card, .pr-card-foto, .pr-panorama-foto { transition: none; }
 }
