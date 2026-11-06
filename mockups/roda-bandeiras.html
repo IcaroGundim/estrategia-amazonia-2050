@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roda das bandeiras — esboço</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Libre+Franklin:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--mata:#0e2b22;--mata-700:#1d4d35;--urucum:#c0451f;--areia:#f5f0e8;--papel:#fff;--linha:#ddd3c6;--tinta:#1a1613;--tinta-3:#5c544c;--tinta-4:#8a8078;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--text:'Libre Franklin',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--areia);color:var(--tinta);font:15px/1.55 var(--text)}
+main{max-width:980px;margin:auto;padding:28px 24px 56px}
+.sobre{display:inline-flex;align-items:center;gap:10px;color:var(--urucum);font:600 11px var(--text);letter-spacing:.16em;text-transform:uppercase}
+.sobre::before{content:"";width:26px;height:2px;background:currentColor}
+h1{margin:6px 0 18px;font:800 clamp(24px,2.6vw,32px)/1.05 var(--display);letter-spacing:-.03em}
+.quadro{padding:28px;background:var(--papel);border:1px solid var(--linha);border-radius:14px}
+.quadro.is-escuro{background:var(--mata);border-color:var(--mata)}
+.quadro canvas{display:block;width:min(100%,640px);height:auto;margin:auto}
+.pe{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;margin-top:14px;color:var(--tinta-4);font-size:13px}
+.pe a{color:var(--mata-700);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+  <span class="sobre">Esboço · fora da plataforma</span>
+  <h1>Roda das bandeiras da Amazônia Legal</h1>
+  <div class="quadro" id="quadro"><canvas id="roda" width="2400" height="2400" aria-label="As nove bandeiras estaduais da Amazônia Legal em um anel"></canvas></div>
+  <div class="pe">
+    <span>Acre, Amazonas, Roraima, Amapá, Pará, Maranhão, Tocantins, Mato Grosso e Rondônia, no sentido horário a partir do topo.</span>
+    <span><a id="fundo">Ver no fundo escuro</a> · <a id="baixa">Baixar PNG</a></span>
+  </div>
+</main>
+
+<script>
+// Como na cédula do BRICS: um anel fino, cada bandeira dobrada no seu trecho do
+// círculo, sem divisórias, todas com o topo para fora (as de baixo ficam de cabeça
+// para baixo para quem olha, como na cédula).
+const PASTA = '/dashboard/public/flags/';
+const ORDEM = [
+  ['AC', 'Bandeira_do_Acre.svg'],
+  ['AM', 'Bandeira_do_Amazonas.svg'],
+  ['RR', 'Bandeira_de_Roraima.svg'],
+  ['AP', 'Bandeira_do_Amapa.svg'],
+  ['PA', 'Bandeira_do_Para.svg'],
+  ['MA', 'Bandeira_do_Maranhao.svg'],
+  ['TO', 'Bandeira_do_Tocantins.svg'],
+  ['MT', 'Bandeira_de_Mato_Grosso.svg'],
+  ['RO', 'Bandeira_de_Rondonia.svg']
+];
+const N = 2400;
+const R = N / 2 * 0.99;      // raio de fora
+const r = R * 0.64;          // raio de dentro: com o anel nesta espessura, as bandeiras quase não deformam
+const SETOR = 2 * Math.PI / ORDEM.length;
+const INICIO = -SETOR / 2;   // a primeira centrada no topo
+
+async function rasteriza([, arquivo]) {
+  const img = new Image();
+  img.src = PASTA + arquivo;
+  await img.decode();
+  const w = 1600, h = Math.round(w * img.naturalHeight / img.naturalWidth);
+  const c = new OffscreenCanvas(w, h);
+  c.getContext('2d').drawImage(img, 0, 0, w, h);
+  return { w, h, d: c.getContext('2d').getImageData(0, 0, w, h).data };
+}
+
+function amostra(p, u, v, out, k) {
+  const x = Math.min(p.w - 1.001, Math.max(0, u * p.w - 0.5));
+  const y = Math.min(p.h - 1.001, Math.max(0, v * p.h - 0.5));
+  const x0 = x | 0, y0 = y | 0, fx = x - x0, fy = y - y0;
+  const i00 = (y0 * p.w + x0) * 4, i10 = i00 + 4, i01 = i00 + p.w * 4, i11 = i01 + 4, d = p.d;
+  for (let c = 0; c < 4; c++) {
+    const a = d[i00 + c] + (d[i10 + c] - d[i00 + c]) * fx;
+    const b = d[i01 + c] + (d[i11 + c] - d[i01 + c]) * fx;
+    out[k + c] = a + (b - a) * fy;
+  }
+}
+
+function desenha(bandeiras) {
+  const g = document.querySelector('#roda').getContext('2d');
+  const img = g.createImageData(N, N), out = img.data, c0 = N / 2;
+  for (let py = 0; py < N; py++) {
+    const dy = py + 0.5 - c0;
+    for (let px = 0; px < N; px++) {
+      const dx = px + 0.5 - c0;
+      const rho = Math.hypot(dx, dy);
+      if (rho > R + 1 || rho < r - 1) continue;
+      let t = Math.atan2(dx, -dy) - INICIO;
+      t = ((t % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+      const i = Math.min(ORDEM.length - 1, Math.floor(t / SETOR));
+      const u = (t - i * SETOR) / SETOR;             // 0 → 1 no sentido horário
+      const v = (R - rho) / (R - r);                 // 0 (topo da bandeira) na borda de fora
+      const k = (py * N + px) * 4;
+      amostra(bandeiras[i], u, Math.min(1, Math.max(0, v)), out, k);
+      out[k + 3] *= Math.min(1, Math.max(0, R - rho + 0.5)) * Math.min(1, Math.max(0, rho - r + 0.5));
+    }
+  }
+  g.putImageData(img, 0, 0);
+  // Um fio bem leve na borda de fora e na de dentro: várias bandeiras têm branco, e
+  // sem ele o anel some sobre o papel branco nesses trechos.
+  g.save();
+  g.translate(c0, c0);
+  g.strokeStyle = 'rgba(26, 22, 19, .22)';
+  g.lineWidth = 3;
+  for (const raio of [R - 1.5, r + 1.5]) { g.beginPath(); g.arc(0, 0, raio, 0, 2 * Math.PI); g.stroke(); }
+  g.restore();
+}
+
+(async () => {
+  desenha(await Promise.all(ORDEM.map(rasteriza)));
+})();
+
+document.querySelector('#fundo').addEventListener('click', (e) => {
+  const escuro = document.querySelector('#quadro').classList.toggle('is-escuro');
+  e.target.textContent = escuro ? 'Ver no fundo claro' : 'Ver no fundo escuro';
+});
+document.querySelector('#baixa').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.download = 'roda_amazonia_legal.png';
+  a.href = document.querySelector('#roda').toDataURL('image/png');
+  a.click();
+});
+</script>
+</body>
+</html>

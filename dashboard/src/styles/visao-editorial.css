@@ -87,6 +87,15 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-visao .ve-chapeu, .ve-selo { color: var(--ocre); }
 .ve-selo { margin: clamp(10px, calc(var(--ve-vh) * 2), 22px) 0 0; font: 700 11px var(--text); letter-spacing: .16em; text-transform: uppercase; }
 .ve-visao blockquote { margin: 8px 0 0; font: 600 clamp(13.5px, min(1.5vw, calc(var(--ve-vh) * 2.4)), 21px)/1.42 var(--display); color: var(--areia); letter-spacing: -.005em; }
+/* A roda das bandeiras à esquerda; a rubrica e o título ao lado dela. A roda dá
+   uma volta a cada dois minutos (e fica parada para quem pede menos movimento). */
+.ve-visao-cabeca { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(18px, 2.4vw, 34px); margin-bottom: clamp(4px, calc(var(--ve-vh) * 1), 10px); }
+.ve-visao-cabeca .ve-rubrica { margin-bottom: 12px; }
+/* a sombra fica na moldura, que não gira, para não rodar junto com a roda */
+.ve-visao-roda { width: clamp(110px, min(12vw, calc(var(--ve-vh) * 19)), 180px); filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .28)); }
+.ve-visao-roda img { width: 100%; height: auto; animation: ve-gira 120s linear infinite; }
+@keyframes ve-gira { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ve-visao-roda img { animation: none; } }
 .ve-visao-texto { max-width: 600px; margin: clamp(8px, calc(var(--ve-vh) * 1.6), 14px) 0 0; font-size: clamp(12.5px, calc(var(--ve-vh) * 1.85), 15px); line-height: 1.5; }
 .ve-apoios-chapeu { margin: clamp(10px, calc(var(--ve-vh) * 3), 26px) 0 4px; color: var(--ocre); font: 700 11px var(--text); letter-spacing: .14em; text-transform: uppercase; }
 .ve-pagina .ve-apoios-titulo { margin: 0 0 clamp(8px, calc(var(--ve-vh) * 1.4), 12px); color: var(--areia); font-size: clamp(17px, min(1.6vw, calc(var(--ve-vh) * 2.6)), 22px); line-height: 1.2; }
@@ -227,7 +236,8 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 
 /* ---------- 05 · consórcio: o arquipélago de Mariuá sob véu verde, no molde das lâminas 06 e 07 ----------
    a água azul vai para o verde (multiply) e o véu fecha mais à esquerda (a logo) e à direita (o texto) */
-.ve-cons { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(var(--ve-tela), 680px); padding-block: clamp(48px, calc(var(--ve-vh) * 8), 104px); overflow: hidden; color: var(--areia); }
+/* A mesma altura da lâmina do IPAM: uma tela inteira. */
+.ve-cons { position: relative; isolation: isolate; display: flex; align-items: center; min-height: var(--ve-tela); padding-block: clamp(28px, calc(var(--ve-vh) * 6), 96px); overflow: hidden; color: var(--areia); }
 .ve-cons > .ve-quadro-foto { position: absolute; inset: 0; z-index: -2; }
 .ve-cons::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--mata); mix-blend-mode: multiply; opacity: .35; }
 .ve-cons > .ve-quadro-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .72) 0%, rgba(8, 26, 20, .42) 36%, rgba(8, 26, 20, .66) 58%, rgba(8, 26, 20, .82) 100%); }
@@ -235,7 +245,26 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-cons .ve-rubrica i { background: rgba(245, 240, 232, .25); }
 .ve-cons .ve-chapeu { color: var(--ocre); }
 .ve-cons-grade { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 96px); align-items: center; }
-.ve-cons-logo { justify-self: center; width: min(100%, 340px); height: auto; filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .35)); }
+/* A placa do Consórcio: a moldura do IPAM (.ve-ipam-placa), com passe-partout
+   verde-mata, porque a logo é clara. */
+.ve-ipam-placa.ve-cons-placa {
+  justify-self: center; width: min(100%, 320px); background: var(--mata);
+  /* o perfil em branco, com a mesma luz do alto da moldura do IPAM */
+  border-color: #fff;
+  border-image: linear-gradient(160deg, #ffffff 0%, #f4f1ec 30%, #ddd7cd 66%, #f7f5f1 100%) 1;
+  /* as sombras da moldura do IPAM, com o fio de fora em ocre, bem fino */
+  box-shadow:
+    inset 0 0 0 2px var(--ocre),
+    inset 0 0 0 3px rgba(14, 43, 34, .35),
+    inset 0 6px 14px -8px rgba(14, 43, 34, .5),
+    0 0 0 1px var(--ocre),
+    0 32px 60px -22px rgba(0, 0, 0, .7),
+    0 4px 12px -4px rgba(0, 0, 0, .4);
+}
+.ve-ipam-placa.ve-cons-placa span { color: var(--ocre); }
+.ve-ipam-placa.ve-cons-placa img { width: min(100%, 230px); }
+.ve-ipam-placa.ve-cons-placa a { color: var(--areia); }
+.ve-ipam-placa.ve-cons-placa a:hover, .ve-cons-placa a:focus-visible { color: var(--ocre); }
 .ve-pagina .ve-cons-titulo { margin: 0; color: var(--areia); font: 800 clamp(28px, 3vw, 46px)/1.04 var(--display); letter-spacing: -.025em; text-wrap: balance; text-shadow: 0 2px 14px rgba(0, 0, 0, .25); }
 .ve-cons-texto { max-width: 620px; margin: 18px 0 0; color: #fff; font-size: clamp(16px, min(1.45vw, calc(var(--ve-vh) * 2.6)), 19px); line-height: 1.6; text-shadow: 0 1px 2px rgba(0, 0, 0, .7), 0 0 14px rgba(0, 0, 0, .45); }
 /* os nomes junto ao fio ocre, em duas colunas, cada um com o cargo em versalete abaixo, como nos créditos da SEPLAN */
@@ -320,6 +349,21 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
 .ve-ipam-equipe ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: column; grid-template-rows: repeat(var(--linhas, 4), auto); gap: clamp(6px, calc(var(--ve-vh) * 1.2), 10px) 28px; margin: 10px 0 0; padding: 0; list-style: none; }
 .ve-ipam-equipe li { display: flex; flex-direction: column; color: #fff; font: 600 clamp(14px, calc(var(--ve-vh) * 2), 15.5px)/1.4 var(--text); }
 .ve-ipam-equipe span { color: var(--ocre); font: 700 10.5px/1.4 var(--text); letter-spacing: .1em; text-transform: uppercase; }
+
+/* Uma escala só para as três lâminas de quem fez a Estratégia (05 Consórcio, 06 IPAM, 07
+   desenvolvimento): título, texto de abertura, nomes e cargos no mesmo tamanho. Ela segue
+   a lâmina do IPAM, que tem mais conteúdo e precisa caber numa tela; as outras duas descem
+   até ela. O `.ve-pagina` na frente vence as regras de cada lâmina, acima. */
+.ve-cons, .ve-ipam, .ve-dev {
+  --ve-org-titulo: clamp(26px, min(2.6vw, calc(var(--ve-vh) * 4.3)), 38px);
+  --ve-org-texto: clamp(15px, min(1.25vw, calc(var(--ve-vh) * 2.1)), 17.5px);
+  --ve-org-nome: clamp(14.5px, min(1.1vw, calc(var(--ve-vh) * 1.9)), 16px);
+}
+.ve-pagina :is(.ve-cons-titulo, .ve-ipam-titulo, .ve-dev-titulo) { font-size: var(--ve-org-titulo); line-height: 1.08; }
+.ve-pagina :is(.ve-cons-texto, .ve-ipam-contexto, .ve-dev-texto) { font-size: var(--ve-org-texto); line-height: 1.6; }
+.ve-pagina :is(.ve-cons-nomes li, .ve-ipam-equipe li, .ve-dev-nomes, .ve-dev-gestao li) { font-size: var(--ve-org-nome); line-height: 1.45; }
+.ve-pagina :is(.ve-cons-nomes span, .ve-ipam-equipe span, .ve-dev-gestao span, .ve-dev-coord span) { font-size: 10.5px; letter-spacing: .12em; }
+.ve-pagina .ve-ipam-itens p { font-size: var(--ve-org-nome); }
 
 /* ---------- 08 · explore: os cartões apoiados na borda da foto ---------- */
 .ve-explorar-foto { height: clamp(280px, 36vw, 460px); }
@@ -412,13 +456,15 @@ a.ve-cred:hover, .ve-cred a:hover { color: #fff; text-decoration: underline; tex
   .ve-visao { grid-template-columns: minmax(0, 1fr); }
   .ve-apoios { grid-template-columns: minmax(0, 1fr); }
   .ve-visao-coluna { padding: 44px 20px; }
+  .ve-visao-cabeca { grid-template-columns: minmax(0, 1fr); }
+  .ve-visao-roda { width: 140px; }
 }
 @media (max-width: 760px) {
   .ve-secao.is-tela { display: block; height: auto; padding-block: 56px; }
   .ve-estados-topo, .ve-eixos-topo { grid-template-columns: minmax(0, 1fr); }
   .ve-ipam-itens { grid-template-columns: minmax(0, 1fr); }
   .ve-cons-grade { grid-template-columns: minmax(0, 1fr); }
-  .ve-cons-logo { justify-self: start; width: min(100%, 220px); }
+  .ve-ipam-placa.ve-cons-placa { justify-self: start; max-width: 300px; }
   .ve-cons-nomes { grid-template-columns: minmax(0, 1fr); }
   .ve-ipam-equipe ul { grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; grid-template-rows: none; }
   /* no celular a lista vem em cima e o painel embaixo, com a foto sobre o texto */

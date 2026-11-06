@@ -1122,7 +1122,7 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-detail-chart { margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--linha-2); }
 .goals-detail-chart-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .goals-detail-chart-head h3 { color: var(--tinta-3); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; }
-.goals-chart-year { display: flex; align-items: center; gap: 6px; color: var(--tinta-4); font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.goals-chart-year { margin-left: auto; display: flex; align-items: center; gap: 6px; color: var(--tinta-4); font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .goals-year-dropdown { position: relative; letter-spacing: 0; text-transform: none; }
 .goals-year-dropdown .dropdown-toggle { min-width: 76px; min-height: 30px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 3px 8px 3px 10px; border: 1px solid var(--linha); border-radius: 5px; background: var(--papel); color: var(--tinta-2); font-size: 11px; font-weight: 600; }
 .goals-year-dropdown .dropdown-toggle:hover:not(:disabled) { border-color: var(--urucum); }

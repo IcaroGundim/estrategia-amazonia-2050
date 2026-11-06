@@ -217,8 +217,18 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
       <a class="ve-cred" href={FOTOS.visao.url} target="_blank" rel="noopener">{credito(FOTOS.visao)}</a>
     </div>
     <div class="ve-visao-coluna">
-      <div class="ve-rubrica ve-surge"><b>01</b><span class="ve-chapeu">{tx(visao2050.chapeu)}</span><i></i></div>
-      <h2 class="ve-surge" style="--i:1">{tx(visao2050.titulo)}</h2>
+      {/* A roda das nove bandeiras abre a coluna, ao lado da rubrica e do título: a visão é de uma região
+          só, feita pelos nove estados. Ela gira devagar (a moldura entra com o resto da lâmina; quem gira
+          é a imagem). A imagem sai de mockups/roda-bandeiras.html, com as bandeiras oficiais de public/flags. */}
+      <div class="ve-visao-cabeca">
+        <div class="ve-visao-roda ve-surge">
+          <img src="/roda-bandeiras.webp" width="960" height="960" loading="lazy" alt={t('As bandeiras dos nove estados da Amazônia Legal, unidas em um anel.')} />
+        </div>
+        <div>
+          <div class="ve-rubrica ve-surge" style="--i:1"><b>01</b><span class="ve-chapeu">{tx(visao2050.chapeu)}</span><i></i></div>
+          <h2 class="ve-surge" style="--i:2">{tx(visao2050.titulo)}</h2>
+        </div>
+      </div>
       <p class="ve-selo ve-surge" style="--i:2">{tx(visao2050.selo)}</p>
       <blockquote class="ve-surge" style="--i:2">{tx(visaoDestaque)}</blockquote>
       {visaoResto.map((paragrafo, i) => <p class="ve-visao-texto ve-surge" style={`--i:${3 + i}`}>{tx(paragrafo)}</p>)}
@@ -381,7 +391,12 @@ const FICHAS = DESVIOS.map(([dx, dy, r], k) => {
       <div class="ve-quadro-foto"><div class="ve-img" data-ve-parallax style={`background-image:url('${FOTOS.consorcio.arquivo}')`}></div></div>
       <div class="ve-miolo">
         <div class="ve-cons-grade">
-          <img class="ve-cons-logo ve-surge" src="/logo-consorcio-clara.avif" alt="Consórcio Interestadual da Amazônia Legal" width="986" height="348" loading="lazy" />
+          {/* A mesma moldura da placa do IPAM. A logo do Consórcio é clara, então o passe-partout é verde-mata. */}
+          <aside class="ve-ipam-placa ve-cons-placa ve-surge" aria-label={t('Coordenação da Estratégia')}>
+            <span>{t('Coordenação da Estratégia')}</span>
+            <img src="/logo-consorcio-clara.avif" alt="Consórcio Interestadual da Amazônia Legal" width="986" height="348" loading="lazy" />
+            <a href="https://www.consorcioamazonialegal.gov.br" target="_blank" rel="noreferrer">consorcioamazonialegal.gov.br ↗</a>
+          </aside>
           <div>
             <div class="ve-rubrica ve-surge" style="--i:1"><b>05</b><span class="ve-chapeu">{tx(consorcio.chapeu)}</span><i></i></div>
             <h2 class="ve-cons-titulo ve-surge" style="--i:2">{tx(consorcio.titulo)}</h2>

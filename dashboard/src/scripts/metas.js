@@ -250,7 +250,9 @@ function renderGrafico(meta, { formata = (v) => valor(meta, v) } = {}) {
   }).join('');
   const temAlvo = linhas.some((item) => Number.isFinite(item.alvo));
 
-  return `<div class="goals-detail-chart-head"><h3>${t('Amazônia Legal e estados')}</h3>${seletor}</div>
+  // Com a linha da Amazônia Legal logo abaixo, o título só a repetiria.
+  const titulo = linhaRegional.length ? '' : `<h3>${t('Amazônia Legal e estados')}</h3>`;
+  return `<div class="goals-detail-chart-head">${titulo}${seletor}</div>
     <div class="goals-chart-bars" role="list" aria-label="${tp('Valor da Amazônia Legal e dos estados em {ano}', { ano: escape(ano) })}">${barras}</div>
     ${temAlvo ? `<p class="goals-chart-legend"><i aria-hidden="true"></i> ${t('marcador da meta')}</p>` : ''}`;
 }
@@ -563,11 +565,10 @@ function corpoResultado(meta) {
 
   // A meta pactuada abre o painel, no mesmo destaque dos coletados sem meta
   // numérica: é o compromisso que os números abaixo medem.
-  const prazo = meta.prazo ? ` · ${tp('até {prazo}', { prazo: meta.prazo })}` : '';
 
   return `
     <section class="coletado-meta">
-      <h3>${t('Meta pactuada')}${escape(prazo)}</h3>
+      <h3>${t('Meta pactuada')}</h3>
       <p class="coletado-meta-texto">${escape(metaTextoDe(meta) || t('Meta não informada.'))}</p>
     </section>
 
@@ -787,7 +788,6 @@ function corpoColetado(item) {
   const { serie, atual } = focoColetado(item);
   // A meta pactuada abre o painel, como nas metas, com o motivo de ela não
   // ter patamar logo abaixo.
-  const prazo = item.prazo ? ` · ${tp('até {prazo}', { prazo: item.prazo })}` : '';
   const temSerie = serie.length >= 2;
   const hoje = atualDoColetado(item);
   const ritmoAnual = temSerie ? ritmo(serie) : null;
@@ -797,7 +797,7 @@ function corpoColetado(item) {
 
   return `
     <section class="coletado-meta">
-      <h3>${t('Meta pactuada')}${escape(prazo)}</h3>
+      <h3>${t('Meta pactuada')}</h3>
       <p class="coletado-meta-texto">${escape(metaTextoDe(item) || t('Meta não informada.'))}</p>
       ${item.motivo ? `<p class="coletado-meta-motivo">${escape(motivoDe(item))}</p>` : ''}
     </section>

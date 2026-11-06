@@ -340,7 +340,8 @@
         "Explorar metas e indicadores",
         "Estratégia",
         "Eixos",
-        "Governança"
+        "Governança",
+        "Coordenação da Estratégia"
       ]
     },
     {
@@ -353,7 +354,8 @@
         "Capa da Estratégia Regional Amazônia 2050: uma arara em voo sobre a floresta escura, com o título da publicação, a marca do Consórcio e as bandeiras dos nove estados consorciados.",
         "Vista aérea da floresta e de um rio próximo a Manaus, no Amazonas.",
         "Paisagem do Parque Estadual do Jalapão, no Tocantins.",
-        "Fachada e cúpula do Teatro Amazonas, em Manaus."
+        "Fachada e cúpula do Teatro Amazonas, em Manaus.",
+        "As bandeiras dos nove estados da Amazônia Legal, unidas em um anel."
       ]
     },
     {
@@ -2872,6 +2874,14 @@
     "número de sistemas": {
       "pt": "número de sistemas",
       "en": "number of systems"
+    },
+    "Coordenação da Estratégia": {
+      "pt": "Coordenação da Estratégia",
+      "en": "Coordinating the Strategy"
+    },
+    "As bandeiras dos nove estados da Amazônia Legal, unidas em um anel.": {
+      "pt": "As bandeiras dos nove estados da Amazônia Legal, unidas em um anel.",
+      "en": "The flags of the nine states of the Legal Amazon, joined in a ring."
     }
   }
 }
