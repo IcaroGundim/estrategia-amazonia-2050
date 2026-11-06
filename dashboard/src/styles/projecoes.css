@@ -1,9 +1,9 @@
 /* Projeções no Panorama, depois do mapa (PaginaProjecoes.astro,
    src/scripts/projecoes.js). A vista dos eixos segue "Cinco eixos de implementação" da Visão Geral: os
    títulos numerados à esquerda, com a barra urucum que corre no eixo no ar, e
-   o cartão branco com a foto e a linha do tempo à direita. O eixo aberto tem a
-   trajetória no topo escuro e os cartões dos indicadores; o indicador abre
-   crescendo no lugar do cartão, como em Projetos. */
+   o cartão branco com a foto e a linha do tempo à direita. O eixo aberto tem um
+   cartão claro com o caminho do eixo em gráfico editorial e os cartões dos
+   indicadores; o indicador abre crescendo no lugar do cartão, como em Projetos. */
 
 .pj { --pj-abre: cubic-bezier(.22, 1, .36, 1); position: relative; margin-top: clamp(20px, 1.7vw, 34px); overflow: hidden; border: 1px solid var(--linha); border-radius: 18px; background: var(--areia); }
 .pj-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -109,93 +109,125 @@
 .pj-surge { animation: pj-surge .6s var(--pj-abre) both; }
 @keyframes pj-surge { from { opacity: 0; } }
 .pj-linha { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.pj-hoje line { stroke-dasharray: 2 4; }
-.pj-hoje text { font: 600 9.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
+.pj-tempo .pj-hoje line { stroke-dasharray: 2 4; }
+.pj-tempo .pj-hoje text { font: 600 9.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
 
-/* no fundo claro */
-.pj-claro { display: block; width: 100%; height: auto; overflow: visible; }
-.pj-claro .pj-grade line { stroke: var(--linha-2); }
-.pj-claro .pj-grade text, .pj-claro .pj-anos text { fill: var(--tinta-4); font: 600 10.5px var(--text); }
-.pj-claro .pj-hoje line { stroke: var(--tinta-4); }
-.pj-claro .pj-hoje text { fill: var(--tinta-3); }
-.pj-claro .pj-area, .pj-mini .pj-area { fill: url(#pj-mata); }
-.pj-claro .pj-linha { stroke: var(--mata-700); stroke-width: 2.8; }
-.pj-claro .pj-fino { fill: none; stroke: var(--mata-300); stroke-width: 1.3; opacity: .55; transition: stroke .25s, stroke-width .25s, opacity .25s; }
-.pj-claro .pj-fino.is-ativo { stroke: var(--urucum); stroke-width: 2.4; opacity: 1; }
-.pj-claro .pj-marco { fill: var(--papel); stroke: var(--mata-700); stroke-width: 2; }
-.pj-claro .pj-marco-txt { fill: var(--tinta); font: 800 12px var(--display); }
-.pj-outro { fill: none; stroke: var(--mata-500); stroke-width: 1.3; stroke-dasharray: 4 4; opacity: .7; }
-.pj-faixa { fill: var(--mata-500); opacity: .1; }
-.pj-ponto { fill: var(--papel); stroke: var(--mata-700); stroke-width: 2; }
-.pj-ponto.is-base { fill: var(--tinta); stroke: var(--papel); }
-.pj-ponto.is-fim { fill: var(--ocre); stroke: var(--papel); }
-.pj-valor { fill: var(--tinta); font: 600 11.5px var(--text); }
+/* Os gráficos do eixo aberto são desenhados na largura real da caixa
+   (projecoes.js, monta) e a dica é HTML, presa à caixa. */
+.pj-graf { position: relative; min-width: 0; touch-action: pan-y; }
+.pj-graf svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+.pj-graf svg:focus { outline: none; }
+.pj-graf svg:focus-visible { outline: 2px solid var(--mata-500); outline-offset: 4px; border-radius: 4px; }
+.pj-graf .pj-mira { opacity: 0; transition: opacity .15s; pointer-events: none; }
+.pj-graf.is-mirando .pj-mira { opacity: 1; }
+.pj-dica { position: absolute; top: 0; left: 0; z-index: 3; min-width: 120px; padding: 7px 11px; border-radius: 9px; background: var(--tinta); color: var(--papel); font: 500 12px/1.45 var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s; box-shadow: 0 8px 22px rgba(14, 43, 34, .22); }
+.pj-graf.is-mirando .pj-dica { opacity: 1; }
+.pj-dica b { font-weight: 700; }
+.pj-dica i { color: #c9bfb3; font-style: normal; font-size: 11px; }
+.pj-dica span { display: flex; align-items: center; gap: 8px; }
+.pj-dica span em { margin-left: auto; padding-left: 14px; font-style: normal; font-weight: 600; }
+.pj-dica span.is-central { font-weight: 700; }
+.pj-dica small { display: block; margin-top: 2px; color: #c9bfb3; font-size: 11px; }
+.pj-dica svg { flex: none; }
+.pj-graf-cab { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 6px; }
+.pj-eixo-y { color: var(--tinta-3); font: 600 12.5px var(--text); }
 
-/* no topo escuro do eixo aberto */
-.pj-escuro { display: block; width: 100%; height: auto; overflow: visible; }
-.pj-escuro .pj-grade line { stroke: rgba(255, 255, 255, .08); }
-.pj-escuro .pj-grade text, .pj-escuro .pj-anos text { fill: var(--mata-300); font: 600 10.5px var(--text); }
-.pj-escuro .pj-hoje line { stroke: rgba(245, 240, 232, .45); }
-.pj-escuro .pj-hoje text { fill: var(--areia); }
-.pj-escuro .pj-area { fill: url(#pj-ouro); }
-.pj-escuro .pj-linha { stroke: var(--ocre); stroke-width: 2.8; }
-.pj-escuro .pj-fino { fill: none; stroke: rgba(245, 240, 232, .16); stroke-width: 1.1; transition: stroke .25s, stroke-width .25s; }
-.pj-escuro .pj-fino.is-ativo { stroke: var(--areia); stroke-width: 2; }
-.pj-escuro .pj-marco { fill: var(--mata); stroke: var(--ocre); stroke-width: 2; }
-.pj-escuro .pj-marco-txt { fill: var(--areia); font: 700 12px var(--text); }
-
-/* ---------- o eixo aberto ---------- */
-/* O topo é verde liso, sem foto: o título à esquerda e a trajetória à direita. */
-.pj-heroi { position: relative; overflow: hidden; background: var(--mata); color: var(--areia); }
-.pj-heroi-in { position: relative; padding: 22px clamp(20px, 2.4vw, 40px) 34px; }
-.pj-heroi .pj-sobre { color: var(--ocre); }
+/* ---------- o eixo aberto ----------
+   Claro como os cartões de baixo: as abas ficam na areia e o conteúdo num
+   cartão branco. O gráfico é editorial: uma linha, sem área, grade leve e só
+   dois rótulos (2030 e a meta final). */
+.pj-heroi { color: var(--tinta); }
+.pj-heroi-in { padding: 24px clamp(20px, 2.4vw, 40px) 0; }
 .pj-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 22px; }
-.pj-voltar { padding: 8px 0; border: 0; background: none; color: var(--mata-100); font: 600 13px var(--text); cursor: pointer; }
-.pj-voltar:hover, .pj-voltar:focus-visible { color: var(--ocre); outline: none; }
-.pj-abas { display: flex; flex-wrap: wrap; gap: 6px; }
-.pj-aba { max-width: 260px; overflow: hidden; padding: 7px 14px; border: 1px solid rgba(245, 240, 232, .22); border-radius: 999px; background: rgba(14, 43, 34, .35); color: var(--mata-100); font-size: 12px; font-weight: 600; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; backdrop-filter: blur(6px); transition: border-color .3s, background .3s, color .3s; }
-.pj-aba:hover, .pj-aba:focus-visible { border-color: var(--ocre); color: var(--areia); outline: none; }
-.pj-aba[aria-current] { border-color: var(--ocre); background: var(--ocre); color: var(--mata); }
-.pj-heroi-grade { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); align-items: end; gap: 30px 50px; margin-top: 38px; }
-.pj-heroi h2 { margin: 12px 0 0; color: var(--areia); font: 800 clamp(30px, 3.2vw, 46px)/1.04 var(--display); letter-spacing: -.03em; text-wrap: balance; }
+.pj-voltar { flex: none; padding: 8px 0; border: 0; background: none; color: var(--tinta-3); font: 600 13px var(--text); cursor: pointer; }
+.pj-voltar:hover, .pj-voltar:focus-visible { color: var(--tinta); outline: none; }
+.pj-abas { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.pj-aba { max-width: 260px; overflow: hidden; padding: 7px 14px; border: 1px solid var(--linha); border-radius: 999px; background: var(--papel); color: var(--tinta-3); font-size: 12px; font-weight: 600; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; transition: border-color .2s, color .2s, background .2s; }
+.pj-aba:hover, .pj-aba:focus-visible { border-color: var(--tinta-4); color: var(--tinta); outline: none; }
+.pj-aba[aria-current] { border-color: var(--mata); background: var(--mata); color: var(--papel); }
+.pj-heroi-grade { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: start; gap: 30px 56px; margin-top: 18px; padding: 30px clamp(18px, 2.4vw, 36px) 26px; border: 1px solid var(--linha); border-radius: 16px; background: var(--papel); }
+.pj-heroi h2 { margin: 12px 0 0; color: var(--tinta); font: 800 clamp(30px, 3.2vw, 46px)/1.04 var(--display); letter-spacing: -.03em; text-wrap: balance; }
 .pj-heroi h2:focus { outline: none; }
-.pj-heroi p { margin: 14px 0 0; max-width: 52ch; color: var(--mata-100); font-size: 15px; }
+.pj-heroi-txt > p { margin: 14px 0 0; max-width: 52ch; color: var(--tinta-3); font-size: 15px; }
+.pj-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0 0; border-top: 1px solid var(--linha); }
+.pj-kpis div { padding: 14px 14px 14px 0; border-bottom: 1px solid var(--linha-2); }
+.pj-kpis div:nth-child(even) { padding-left: 18px; border-left: 1px solid var(--linha-2); }
+.pj-kpis div[data-ano] { cursor: default; }
+.pj-kpis dt { color: var(--tinta-4); font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
+.pj-kpis dd { margin: 4px 0 0; color: var(--tinta); font: 800 32px/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; transition: color .2s; }
+.pj-kpis div[data-ano]:hover dd { color: var(--mata-500); }
+.pj-kpis dd small { margin-left: 6px; color: var(--tinta-3); font: 500 12px var(--text); letter-spacing: 0; }
+.pj-kpis dd small.is-linha { display: block; margin: 6px 0 0; }
 .pj-heroi-graf { min-width: 0; }
-.pj-leg { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; color: var(--mata-300); font-size: 11.5px; }
-.pj-leg span { display: inline-flex; align-items: center; gap: 8px; }
-.pj-leg i { width: 20px; height: 3px; border-radius: 2px; background: var(--ocre); }
-.pj-leg i.is-fino { height: 1.5px; background: rgba(245, 240, 232, .4); }
-.pj-leg i.is-hoje { height: 0; border-top: 1.5px dashed rgba(245, 240, 232, .5); background: none; }
+.pj-leg { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--tinta-3); font-size: 12px; }
+.pj-leg span { display: inline-flex; align-items: center; gap: 7px; }
+.pj-leg i { width: 16px; height: 2px; background: var(--mata-700); }
+.pj-leg i.is-fino { height: 1px; background: #c9bfb2; }
+.pj-heroi-nota { margin: 6px 0 0; color: var(--tinta-4); font-size: 12px; }
 
+.pj-sobrio .pj-grade line { stroke: var(--linha-2); }
+.pj-sobrio .pj-grade line.is-base { stroke: var(--linha); }
+.pj-sobrio .pj-grade text, .pj-sobrio .pj-anos text { fill: var(--tinta-4); font: 500 11px var(--text); }
+.pj-sobrio .pj-hoje line { stroke: var(--linha); }
+.pj-sobrio .pj-hoje text { fill: var(--tinta-4); font: 500 11px var(--text); }
+.pj-sobrio .pj-linha { stroke: var(--mata-700); stroke-width: 2; }
+.pj-sobrio .pj-fino { fill: none; stroke: #d3cabe; stroke-width: 1; transition: stroke .2s; }
+.pj-sobrio .pj-fino.is-ativo { stroke: var(--mata-300); stroke-width: 1.5; }
+.pj-sobrio .pj-fino-fim { fill: #c9bfb2; }
+.pj-sobrio .pj-marco { fill: var(--papel); stroke: var(--mata-700); stroke-width: 1.5; }
+.pj-sobrio .pj-marco.is-fim { fill: var(--mata-700); }
+.pj-sobrio .pj-rot { fill: var(--tinta); font: 600 12px var(--text); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.pj-sobrio .pj-mira line { stroke: var(--tinta-4); stroke-width: .75; }
+.pj-sobrio .pj-mira circle { r: 3.5; fill: var(--mata-700); stroke: var(--papel); stroke-width: 1.5; }
+
+/* ---------- os indicadores do eixo ----------
+   Fileiras equilibradas de até 3 cartões numa grade de 6 trilhas (--sd vem
+   do script); com um indicador só, o cartão largo tem a série ao lado. */
 .pj-corpo { padding: 30px clamp(20px, 2.4vw, 40px) 40px; }
-.pj-inds-topo { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
-.pj-inds-topo h3 { margin: 8px 0 0; font-size: 28px; line-height: 1.05; letter-spacing: -.025em; }
-.pj-inds-topo p { margin: 0; color: var(--tinta-4); font-size: 12.5px; }
-.pj-cartoes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.pj-ind { display: grid; grid-template-rows: auto auto 1fr auto; gap: 12px; padding: 20px 20px 18px; border: 1px solid var(--linha); border-radius: 16px; background: var(--papel); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .4s, box-shadow .4s, transform .45s var(--pj-abre), opacity .4s var(--pj-abre), scale .5s var(--pj-abre); animation: pj-entra .6s var(--pj-abre) calc(.1s + var(--k) * 55ms) both; }
+.pj-inds-topo { margin: 0 0 18px; }
+.pj-inds-topo h3 { margin: 8px 0 0; font: 800 28px/1.05 var(--display); letter-spacing: -.025em; }
+.pj-inds-topo p { margin: 6px 0 0; color: var(--tinta-3); font-size: 13px; }
+.pj-cartoes { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.pj-ind { grid-column: span var(--sd, 2); display: grid; grid-template-rows: auto 1fr auto; gap: 12px; min-width: 0; padding: 20px 20px 18px; border: 1px solid var(--linha); border-radius: 16px; background: var(--papel); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: border-color .4s, box-shadow .4s, transform .45s var(--pj-abre), opacity .4s var(--pj-abre), scale .5s var(--pj-abre); animation: pj-entra .6s var(--pj-abre) calc(.1s + var(--k) * 55ms) both; }
 .pj-ind:hover, .pj-ind:focus-visible { border-color: var(--mata-300); box-shadow: 0 14px 34px rgba(14, 43, 34, .11); transform: translateY(-4px); outline: none; }
 .pj-ind:focus-visible { box-shadow: 0 0 0 3px var(--ocre); }
+.pj-ind > span { display: block; min-width: 0; }
 .pj-ind-topo { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .pj-ind-cod { color: var(--mata-500); font: 600 11px var(--text); letter-spacing: .1em; }
-.pj-tag { padding: 2px 8px; border-radius: 999px; background: #e7efe9; color: var(--mata-700); font-size: 10.5px; font-weight: 600; }
+.pj-tag { padding: 2px 8px; border-radius: 999px; background: #e7efe9; color: var(--mata-700); font-size: 10.5px; font-weight: 600; white-space: nowrap; }
 .pj-tag.is-ref { background: #fbeee0; color: #8a4a12; }
+.pj-tag.is-marcos { background: #efe9de; color: var(--tinta-3); }
+.pj-ind-nome { display: block; margin-top: 10px; }
 .pj-ind-nome strong { display: block; font: 800 17px/1.2 var(--display); letter-spacing: -.015em; text-wrap: balance; }
 .pj-ind-nome small { display: block; margin-top: 4px; color: var(--tinta-4); font-size: 11.5px; }
-.pj-mini { display: block; width: 100%; height: auto; overflow: visible; }
-.pj-mini .pj-linha { stroke: var(--mata-700); stroke-width: 2.2; }
-.pj-mini .pj-outro { stroke-width: 1.2; stroke-dasharray: 3 3; }
-.pj-mini .pj-marco { fill: var(--papel); stroke: var(--mata-700); stroke-width: 1.5; }
-.pj-mini .pj-base { fill: var(--tinta); }
-.pj-mini .pj-fim { fill: var(--ocre); stroke: var(--papel); stroke-width: 2; }
-.pj-mini text { fill: var(--tinta-4); font: 600 10px var(--text); }
-.pj-ind-num { display: grid; grid-template-columns: auto auto auto 1fr; align-items: end; gap: 12px; padding-top: 12px; border-top: 1px solid var(--linha-2); }
+.pj-ind > span.pj-ind-num { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 12px; padding-top: 12px; border-top: 1px solid var(--linha-2); }
 .pj-ind-num small { display: block; color: var(--tinta-4); font: 600 10px var(--text); letter-spacing: .12em; }
-.pj-ind-num b { display: block; font: 800 22px/1 var(--display); letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+.pj-ind-num b { display: block; font: 800 22px/1 var(--display); letter-spacing: -.025em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pj-ind-num .is-meta b { color: var(--mata); }
 .pj-seta { padding-bottom: 3px; color: var(--ocre); font-weight: 600; }
-.pj-ver { justify-self: end; padding-bottom: 3px; color: var(--urucum); font-size: 12px; font-weight: 600; }
+.pj-ver { margin-left: auto; padding-bottom: 3px; color: var(--urucum); font-size: 12px; font-weight: 600; white-space: nowrap; }
 .pj-ver span { display: inline-block; transition: transform .4s var(--pj-abre); }
 .pj-ind:hover .pj-ver span, .pj-ind:focus-visible .pj-ver span { transform: translateX(5px); }
+@media (min-width: 681px) {
+  .pj-ind.is-largo { grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); grid-template-rows: 1fr auto; grid-template-areas: "txt mini" "num mini"; gap: 16px 40px; padding: 26px 28px 22px; }
+  .pj-ind.is-largo .pj-ind-txt { grid-area: txt; }
+  .pj-ind.is-largo .pj-mini-caixa { grid-area: mini; align-self: center; }
+  .pj-ind.is-largo .pj-ind-num { grid-area: num; }
+  .pj-ind.is-largo .pj-ind-nome strong { font-size: 24px; }
+  .pj-ind.is-largo .pj-ind-num b { font-size: 30px; }
+}
+.pj-mini { display: block; max-width: 100%; height: auto; overflow: visible; }
+.pj-mini text { fill: var(--tinta-4); font: 600 10px var(--text); }
+.pj-mini .pj-eixo-x { stroke: var(--linha); }
+.pj-mini .pj-area { fill: url(#pj-mata); }
+.pj-mini .pj-linha { stroke: var(--mata-700); stroke-width: 2.2; }
+.pj-mini .pj-outro { fill: none; stroke: var(--mata-500); stroke-width: 1.3; opacity: .85; }
+.pj-mini .pj-faixa { fill: var(--mata-500); opacity: .1; }
+.pj-mini .pj-marco { fill: var(--papel); stroke: var(--mata-700); stroke-width: 1.8; }
+.pj-mini .pj-base { fill: var(--tinta); stroke: var(--papel); stroke-width: 1.5; }
+.pj-mini .pj-fim { fill: var(--ocre); stroke: var(--papel); stroke-width: 2; }
+.pj-mini text.pj-rot { fill: var(--tinta); font: 700 11px var(--text); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.pj-mini text.pj-rot.is-fim { fill: var(--mata); }
 
 /* ---------- o indicador aberto: o cartão que cresce ----------
    O mesmo movimento do card de Projetos (prioridades.css, .pr-aberto); os
@@ -213,38 +245,94 @@
 .pj-placa.is-cheia .pj-placa-corpo { opacity: 1; transform: none; transition: opacity .3s ease .12s, transform .55s var(--pj-abre) .12s; }
 .pj-placa.is-fechando .pj-placa-corpo { opacity: 0; transform: translateY(4px); transition: opacity .25s ease-in; }
 .pj-placa.is-trocando .pj-placa-corpo { opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; }
-/* O rosto: a cópia do cartão, por cima, no primeiro e no último quadro. */
-.pj-rosto { position: absolute; top: 0; left: 0; z-index: 2; display: grid; grid-template-rows: auto auto 1fr auto; gap: 12px; padding: 20px 20px 18px; pointer-events: none; opacity: 1; transition: opacity .26s ease; }
-.pj-placa.is-cheia .pj-rosto { opacity: 0; transition: opacity .25s ease .05s; }
-.pj-placa.is-fechando:not(.is-cheia) .pj-rosto { opacity: 1; transition: opacity .24s ease-out .1s; }
+
+/* Base, 2030 e meta ficam no cabeçalho, ao lado do título; a coluna lateral
+   fica só com a tabela, esticada na altura do gráfico. */
+.pj-placa-cab { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px 40px; }
+.pj-placa-cab > div:first-child { flex: 1 1 420px; min-width: 0; }
 .pj-placa-titulo { margin: 10px 0 0; color: var(--mata); font: 800 clamp(22px, 2vw, 28px)/1.12 var(--display); letter-spacing: -.02em; text-wrap: balance; outline: none; }
 .pj-placa-sub { margin: 4px 0 0; color: var(--tinta-4); font-size: 12.5px; }
-.pj-placa-grade { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; margin-top: 20px; }
-.pj-placa-legenda { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; color: var(--tinta-3); font-size: 11.5px; }
+.pj-placa-num { display: flex; flex-wrap: wrap; gap: 12px 0; margin: 0; }
+.pj-placa-num div { position: relative; }
+.pj-placa-num div + div { margin-left: 22px; padding-left: 28px; }
+.pj-placa-num div + div::before { content: "→"; position: absolute; left: 0; top: 22px; color: var(--ocre); font-weight: 600; }
+.pj-placa-num dt { color: var(--tinta-4); font: 600 10px var(--text); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.pj-placa-num dd { margin: 3px 0 0; font: 800 28px/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pj-placa-num dd small { display: block; margin-top: 4px; color: var(--tinta-4); font: 500 11.5px var(--text); letter-spacing: 0; white-space: normal; }
+.pj-placa-num div.is-meta dd { color: var(--mata); }
+.pj-placa-grade { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 28px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--linha-2); }
+.pj-placa-graf { min-width: 0; }
+.pj-placa-legenda { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--tinta-3); font-size: 11.5px; }
 .pj-placa-legenda span { display: inline-flex; align-items: center; gap: 7px; }
-.pj-placa-legenda i { width: 18px; height: 3px; border-radius: 2px; background: var(--mata-700); }
-.pj-placa-legenda i.is-bola { width: 9px; height: 9px; border-radius: 50%; background: var(--tinta); }
-.pj-placa-legenda i.is-tracejado { height: 0; border-top: 1.5px dashed var(--mata-500); background: none; }
-.pj-placa-num { display: flex; gap: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--linha-2); }
-.pj-placa-num small { display: block; color: var(--tinta-4); font: 600 10px var(--text); letter-spacing: .14em; text-transform: uppercase; }
-.pj-placa-num b { display: block; margin-top: 3px; font: 800 28px/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.pj-placa-num div:last-child b { color: var(--mata); }
-.pj-placa-nav { display: flex; align-items: center; gap: 8px; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--linha); color: var(--tinta-4); font-size: 12.5px; font-variant-numeric: tabular-nums; }
-.pj-placa-nav button { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border: 0; border-radius: 999px; background: #ece5d8; color: var(--tinta); font: 600 13px var(--text); cursor: pointer; transition: background .2s, transform .2s; }
-.pj-placa-nav button:hover:not(:disabled) { transform: translateY(-1px); background: #e3d9c6; }
-.pj-placa-nav button:disabled { opacity: .35; cursor: default; }
-.pj-placa-nav button:focus-visible { outline: 2px solid var(--ocre); outline-offset: 2px; }
-.pj-placa-nav span { margin: 0 4px; }
-.pj-placa-fechar { margin-left: auto; }
-.pj-tabela { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
-.pj-tabela th, .pj-tabela td { padding: 6px 4px; border-bottom: 1px solid var(--linha-2); text-align: right; }
-.pj-tabela th:first-child, .pj-tabela td:first-child { padding-left: 0; text-align: left; }
-.pj-tabela thead th { border-bottom: 1.5px solid var(--mata); color: var(--tinta-4); font: 600 10px/1.3 var(--text); letter-spacing: .1em; }
-.pj-tabela tbody th { font-weight: 600; }
-.pj-aviso { margin: 18px 0 0; padding: 14px 16px; border-radius: 12px; background: #fbeee0; color: #5e3a17; font-size: 13px; }
+.pj-placa-legenda i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--tinta); }
+.pj-placa-legenda i.is-meta { width: 10px; height: 10px; background: var(--ocre); }
+
+.pj-claro .pj-grade line { stroke: var(--linha-2); }
+.pj-claro .pj-grade line.is-zero { stroke: var(--linha); }
+.pj-claro .pj-grade text, .pj-claro .pj-anos text { fill: var(--tinta-4); font: 600 10.5px var(--text); }
+/* "Hoje" é uma marca no eixo dos anos, não uma linha atravessando o gráfico. */
+.pj-claro .pj-anos .pj-hoje-marca { fill: var(--urucum); }
+.pj-claro .pj-anos text.is-hoje { fill: var(--urucum); font: 600 9.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
+.pj-claro .pj-area { fill: url(#pj-mata); }
+.pj-claro .pj-linha { stroke: var(--mata-700); stroke-width: 2.8; }
+.pj-claro .pj-outro { fill: none; stroke: var(--mata-500); stroke-width: 1.5; stroke-linecap: round; }
+.pj-claro .pj-faixa { fill: var(--mata-500); opacity: .1; }
+.pj-claro .pj-ponto { fill: var(--papel); stroke: var(--mata-700); stroke-width: 2; }
+.pj-claro .pj-ponto.is-marco { fill: var(--mata-500); stroke: var(--papel); stroke-width: 1.5; }
+.pj-claro .pj-ponto.is-base { fill: var(--tinta); stroke: var(--papel); }
+.pj-claro .pj-ponto.is-fim { fill: var(--ocre); stroke: var(--papel); }
+.pj-claro .pj-ponto.is-fim-outro { fill: var(--papel); stroke: var(--mata-500); stroke-width: 1.6; }
+/* O rótulo ganha um contorno do papel e fica na primeira posição livre. */
+.pj-claro .pj-rot { fill: var(--tinta); font: 600 11.5px var(--text); paint-order: stroke; stroke: var(--papel); stroke-width: 4px; stroke-linejoin: round; }
+.pj-claro .pj-rot.is-fim { font-weight: 700; fill: var(--mata); }
+.pj-claro .pj-rot.is-marco { font-weight: 500; font-size: 11px; fill: var(--tinta-3); }
+.pj-claro .pj-rot.is-cen { font-weight: 500; fill: var(--tinta-3); }
+.pj-claro .pj-rot.is-cen.is-central { font-weight: 700; fill: var(--mata); }
+.pj-claro .pj-mira line { stroke: var(--tinta-4); }
+.pj-claro .pj-mira circle { fill: var(--mata-700); stroke: var(--papel); stroke-width: 2; }
+.pj-claro .pj-mira circle.is-outro { fill: var(--papel); stroke: var(--mata-500); }
+
+/* A tabela é ano a ano de verdade, rolável dentro da caixa, com o cabeçalho
+   preso, as mesmas casas decimais e a unidade no cabeçalho. */
+.pj-placa-tab { display: flex; flex-direction: column; min-width: 0; }
+.pj-tab-cab { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; margin-bottom: 8px; }
+.pj-tab-cab b { color: var(--tinta-3); font: 600 10.5px var(--text); letter-spacing: .14em; text-transform: uppercase; }
+.pj-tab-cab small { color: var(--tinta-4); font-size: 11.5px; }
+.pj-tab-caixa { position: relative; flex: 1; min-height: 220px; }
+.pj-tab-rola { position: absolute; inset: 0; overflow: auto; overscroll-behavior: contain; border-bottom: 1px solid var(--linha-2); }
+/* A pista de que a tabela rola: um degradê no pé, que some no fim. */
+.pj-tab-caixa::after { content: ""; position: absolute; left: 0; right: 0; bottom: 1px; height: 38px; background: linear-gradient(rgba(255, 255, 255, 0), var(--papel)); pointer-events: none; transition: opacity .2s; }
+.pj-tab-caixa.is-fim::after { opacity: 0; }
+.pj-tabela { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.pj-tabela th, .pj-tabela td { padding: 5px 6px; border-bottom: 1px solid var(--linha-2); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pj-tabela th:first-child, .pj-tabela td:first-child { width: 6.4em; padding-left: 2px; text-align: left; }
+.pj-tabela thead th { position: sticky; top: 0; z-index: 1; background: var(--papel); border-bottom: 1.5px solid var(--mata); color: var(--tinta-4); font: 600 10.5px/1.3 var(--text); white-space: normal; vertical-align: bottom; }
+/* O ano e as marcas (base, hoje, meta) quebram em duas linhas em vez de virar "2026…". */
+.pj-tabela tbody th { font-weight: 500; color: var(--tinta-3); white-space: normal; line-height: 1.25; }
+.pj-tabela tbody td { color: var(--tinta-2); }
+.pj-tabela tbody th small { display: inline-block; margin-left: 5px; color: var(--urucum); font: 600 9px var(--text); letter-spacing: .08em; text-transform: uppercase; }
+.pj-tabela tr.is-marco th, .pj-tabela tr.is-marco td { color: var(--tinta); font-weight: 700; }
+.pj-tabela tr.is-lacuna td { color: var(--tinta-4); font-style: italic; font-size: 11.5px; text-align: left; white-space: normal; }
+.pj-tabela tbody tr[data-ano] { transition: background .15s; }
+.pj-tabela tbody tr.is-mira { background: #f3ede2; }
+.pj-tabela td.is-central { color: var(--mata); }
+
+.pj-placa-notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px 24px; margin-top: 18px; }
+.pj-aviso { margin: 0; padding: 12px 14px; border-radius: 12px; background: #fbeee0; color: #5e3a17; font-size: 12.5px; }
 .pj-aviso strong { color: #8a4a12; }
-.pj-nota { margin: 12px 0 0; color: var(--tinta-3); font-size: 12.5px; }
-.pj-ir { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; padding: 12px 18px; border-radius: 999px; background: var(--mata); color: var(--areia); font-size: 13px; font-weight: 600; text-decoration: none; }
+.pj-nota { margin: 0; padding: 12px 0 0; border-top: 1px solid var(--linha-2); color: var(--tinta-3); font-size: 12.5px; }
+
+/* Com um indicador só, a navegação some; com vários, só os botões que levam
+   a algum lugar, cada um com o código do vizinho. */
+.pj-placa-pe { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 8px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--linha); color: var(--tinta-4); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.pj-placa-pe .pj-pe-dir { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.pj-placa-pe button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; border: 0; border-radius: 999px; background: #ece5d8; color: var(--tinta); font: 600 13px var(--text); white-space: nowrap; cursor: pointer; transition: background .2s, transform .2s; }
+.pj-placa-pe button b { color: var(--mata-500); font: 700 11px var(--text); letter-spacing: .06em; }
+.pj-placa-pe button:hover { transform: translateY(-1px); background: #e3d9c6; }
+.pj-placa-pe button:focus-visible { outline: 2px solid var(--ocre); outline-offset: 2px; }
+.pj-placa-pe .pj-conta { margin: 0 4px; white-space: nowrap; }
+.pj-placa-pe .pj-fechar { margin-left: 8px; }
+.pj-ir { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; white-space: nowrap; border-radius: 999px; background: var(--mata); color: var(--areia); font-size: 13px; font-weight: 600; text-decoration: none; }
 .pj-ir span { color: var(--ocre); }
 .pj-ir:hover, .pj-ir:focus-visible { background: var(--mata-700); outline: none; }
 
@@ -258,6 +346,24 @@
   .pj-titulo { flex: 0 0 260px; grid-template-columns: 30px minmax(0, 1fr) 54px; }
   .pj-titulos-pe { display: none; }
   .pj-cartoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pj-ind { grid-column: span var(--st, 1); }
+  .pj-placa-grade { grid-template-columns: minmax(0, 1fr); }
+  .pj-tab-caixa { flex: none; min-height: 0; }
+  .pj-tab-rola { position: relative; inset: auto; max-height: 300px; }
+  /* No tablet e no celular, base, 2030 e meta viram uma lista (rótulo à esquerda, valor à direita),
+     sem a seta solta na ponta da linha. */
+  .pj-placa-num { display: grid; width: 100%; gap: 0; }
+  .pj-placa-num div, .pj-placa-num div + div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--linha-2); }
+  .pj-placa-num div + div::before { content: none; }
+  .pj-placa-num dd { margin: 0; font-size: 22px; text-align: right; }
+  .pj-placa-num dd small { font-size: 11px; }
+}
+/* O último cartão de uma fileira ímpar ocupa a linha inteira no tablet: vira largo. */
+@media (min-width: 681px) and (max-width: 1100px) {
+  .pj-ind.is-largo-t { grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); grid-template-rows: 1fr auto; grid-template-areas: "txt mini" "num mini"; gap: 16px 32px; }
+  .pj-ind.is-largo-t .pj-ind-txt { grid-area: txt; }
+  .pj-ind.is-largo-t .pj-mini-caixa { grid-area: mini; align-self: center; }
+  .pj-ind.is-largo-t .pj-ind-num { grid-area: num; }
 }
 @media (max-width: 680px) {
   .pj { border-radius: 14px; }
@@ -270,13 +376,23 @@
   .pj-dados { padding: 16px 18px 6px; }
   .pj-rodape { margin: 0 18px; }
   .pj-abrir { width: 100%; justify-content: center; }
-  .pj-abas { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none; }
-  .pj-heroi-grade { margin-top: 28px; }
-  .pj-inds-topo { flex-direction: column; align-items: flex-start; }
+  /* As abas viram uma faixa que rola de lado, com um degradê na ponta dizendo que há mais. */
+  .pj-abas { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px 64px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+  .pj-abas::-webkit-scrollbar { display: none; }
+  .pj-aba { flex: none; max-width: 230px; }
+  .pj-heroi-grade { padding: 22px 16px 18px; }
+  .pj-kpis dd { font-size: 26px; }
   .pj-cartoes { grid-template-columns: minmax(0, 1fr); }
-  .pj-placa-corpo { padding: 18px 18px 16px; }
-  .pj-placa-grade { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .pj-placa-nav { flex-wrap: wrap; }
+  .pj-ind { grid-column: auto; }
+  .pj-inds-topo h3 { font-size: 24px; }
+  .pj-placa-corpo { padding: 18px 16px 16px; }
+  /* O pé em duas fileiras: o link na largura toda; embaixo, navegação e fechar. */
+  .pj-placa-pe { flex-direction: column; align-items: stretch; }
+  .pj-ir { justify-content: center; padding: 10px 12px; font-size: 12.5px; }
+  .pj-placa-pe .pj-pe-dir { margin-left: 0; justify-content: space-between; gap: 6px; }
+  .pj-placa-pe .pj-pe-txt { display: none; }
+  .pj-placa-pe button { padding: 7px 11px; font-size: 12.5px; }
+  .pj-placa-pe .pj-fechar { margin-left: auto; width: 36px; height: 34px; padding: 0; justify-content: center; font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

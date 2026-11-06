@@ -1,0 +1,46 @@
+ESTRATÉGIA AMAZÔNIA 2050 · VERSÃO PORTÁTIL (SEM INTERNET)
+=========================================================
+
+Este é o painel completo (Visão Geral, Panorama, Metas e Projetos, em
+português e inglês), para abrir num computador sem internet. Não precisa
+instalar nada: o programa traz o painel dentro dele.
+
+
+COMO ABRIR
+----------
+
+Windows
+  1. Dê dois cliques em  Amazonia2050-Windows.exe
+  2. Na primeira vez o Windows pode mostrar "O Windows protegeu o
+     computador". Clique em "Mais informações" e depois em
+     "Executar assim mesmo". (Aparece porque o programa não tem assinatura
+     digital paga; o aviso não volta depois.)
+  3. Se o firewall perguntar sobre acesso à rede, pode clicar em Cancelar:
+     o painel só funciona neste computador e não precisa de rede.
+
+Mac
+  - Apple Silicon (M1, M2, M3, M4…): Amazonia2050-Mac-AppleSilicon
+  - Processador Intel:               Amazonia2050-Mac-Intel
+  Dê dois cliques. Se o macOS disser que não pode verificar o
+  desenvolvedor, clique com o botão direito no arquivo, escolha "Abrir" e
+  confirme.
+
+Uma janela preta (terminal) abre com o endereço do painel e o navegador
+abre sozinho em  http://localhost:4321  (ou na porta seguinte, se a 4321
+estiver ocupada).
+
+
+DURANTE O USO
+-------------
+
+- Deixe a janela preta aberta (pode minimizar). Fechar a janela encerra o
+  painel.
+- Fechou o navegador sem querer? Dê dois cliques no programa de novo: ele
+  percebe que o painel já está rodando e só abre o navegador.
+- Funciona sem internet: dados, mapas, fotos, fichas técnicas e downloads
+  das planilhas estão todos dentro do programa.
+- Precisam de internet só os links que levam para fora do painel (site da
+  carteira de projetos, créditos das fotos, fontes dos dados).
+- A administração (/admin) não existe nesta versão.
+- A janela preta mostra a data dos dados. Para atualizar, é preciso gerar o
+  programa de novo (npm run portatil, na pasta dashboard do projeto).

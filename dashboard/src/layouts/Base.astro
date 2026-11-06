@@ -126,12 +126,8 @@ const novaAba = acao && /^http|\.pdf$/.test(acao.destino);
     {ehTraducao(lang) && dados.length > 0 && (
       <link rel="preload" as="fetch" type="application/json" href="/data/i18n/en.json" />
     )}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Libre+Franklin:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    {/* Fontes servidas pelo próprio site (scripts/baixar-fontes.mjs): abrem sem internet. */}
+    <link rel="stylesheet" href="/fonts/fontes.css" />
   </head>
   <body>
     <a class="skip-link" href="#conteudo">{t('Pular para o conteúdo')}</a>

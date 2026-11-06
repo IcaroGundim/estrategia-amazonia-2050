@@ -101,7 +101,8 @@
         "Eixos da Estratégia",
         "Economia",
         "Infraestrutura",
-        "Coleta do eixo"
+        "Coleta do eixo",
+        "Parte dos indicadores será coletada no 1º ciclo de monitoramento com os estados."
       ],
       "alvo": ".eixo-cabeca",
       "abre": ".eixo-cartao"
@@ -476,27 +477,73 @@
         "Meta final",
         "Indicadores",
         "Ver o indicador do eixo",
-        "Um indicador do eixo tem trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.",
-        "O indicador do eixo tem trajetória ano a ano até a meta.",
-        "{n} indicadores do eixo têm trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.",
-        "{n} indicadores do eixo têm trajetória ano a ano até a meta.",
         "{eixo} · trajetória pactuada",
         "Média do eixo",
         "Cada indicador",
-        "Hoje ({ano})",
         "O indicador com trajetória",
         "Os {n} indicadores com trajetória",
-        "Clique num indicador para ver ano a ano.",
         "{n} cenários",
         "Só referência",
         "Ver ano a ano",
         "Meta do ano",
-        "Média dos cenários",
         "Linha de base · {ano}",
         "Meta · {ano}",
         "Linha de base",
-        "Outros cenários",
-        "Ver o indicador em Metas e indicadores"
+        "Ver o indicador em Metas e indicadores",
+        "Cada série",
+        "Com trajetória",
+        "Em 2030",
+        "Em 2030 · {cenario}",
+        "Ano a ano",
+        "As {n} séries com trajetória",
+        "Caminho do eixo {nome} até a meta, de {a0} a {a1}: {pct} em 2030. Use as setas para ler ano a ano.",
+        "Linha de base: {rotulo}",
+        "Nenhum dos cenários é a meta do catálogo: no caminho do eixo entra a média deles.",
+        "Tabela: {titulo}",
+        "% do caminho até a meta",
+        "0% = linha de base · 100% = meta final de cada indicador",
+        "0% = {base} em {a0} · 100% = {fim} em {a1}",
+        "Um dos {total} indicadores do eixo tem trajetória pactuada: de {base} em {a0} a {fim} em {a1}.",
+        "Ver os marcos",
+        "base",
+        "cenário {nome}, a meta do catálogo",
+        "conforme o cenário",
+        "de {total} indicadores",
+        "do caminho",
+        "em {n} séries",
+        "em {unidade}",
+        "igual nos {n} cenários",
+        "meta",
+        "meta em {ano}",
+        "{a0}–{a1} · {n} valores · {unidade}",
+        "{anos}: sem valor na planilha",
+        "{nome} (meta do catálogo)",
+        "{nome}: de {base} em {a0} a {meta} em {a1}. Use as setas para ler ano a ano.",
+        "{n} de {total} indicadores do eixo · clique no cartão para abrir a série.",
+        "{n} de {total} indicadores do eixo · clique num cartão para abrir a série.",
+        "{n} de {total} indicadores do eixo, em {series} séries · clique num cartão para abrir a série.",
+        "{n} dos {total} indicadores do eixo têm trajetória pactuada. A linha escura é a média do caminho de todos.",
+        "{n} marcos · {unidade} · entre eles não há valor pactuado",
+        "{pct} do caminho",
+        "{pct} do caminho até a meta",
+        "Percentual (%)",
+        "Reais (mi = milhões)",
+        "Índice de 0 a 100",
+        "Por 100 mil habitantes",
+        "Óbitos",
+        "Sistemas",
+        "R$ privado por R$ público (×)",
+        "em R$ milhões",
+        "em R$ bilhões",
+        "índice de 0 a 100",
+        "CNUC/MMA 2026 (42 de 199 UCs)",
+        "IBC-AMZ 2025 ponderado",
+        "km efetivo sobre km físico, 2025",
+        "Censo 2022",
+        "Ver as {n} séries",
+        "número de óbitos",
+        "número de municípios",
+        "número de sistemas"
       ],
       "alvo": ".pj"
     },
@@ -941,6 +988,10 @@
     "Coleta do eixo": {
       "pt": "Coleta do eixo",
       "en": "Data collected"
+    },
+    "Parte dos indicadores será coletada no 1º ciclo de monitoramento com os estados.": {
+      "pt": "Parte dos indicadores será coletada no 1º ciclo de monitoramento com os estados.",
+      "en": "Some indicators will be collected in the first monitoring cycle with the states."
     },
     "Todos": {
       "pt": "Todos",
@@ -1544,7 +1595,7 @@
     },
     "Eixos": {
       "pt": "Eixos",
-      "en": "Axes"
+      "en": "Pillars"
     },
     "Governança": {
       "pt": "Governança",
@@ -2554,22 +2605,6 @@
       "pt": "Ver o indicador do eixo",
       "en": "See the pillar's indicator"
     },
-    "Um indicador do eixo tem trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.": {
-      "pt": "Um indicador do eixo tem trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.",
-      "en": "One indicator in this pillar has a year-by-year pathway to its target; the other {resto} have no projection yet."
-    },
-    "O indicador do eixo tem trajetória ano a ano até a meta.": {
-      "pt": "O indicador do eixo tem trajetória ano a ano até a meta.",
-      "en": "The pillar's indicator has a year-by-year pathway to its target."
-    },
-    "{n} indicadores do eixo têm trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.": {
-      "pt": "{n} indicadores do eixo têm trajetória ano a ano até a meta; os outros {resto} ainda não têm projeção.",
-      "en": "{n} indicators in this pillar have a year-by-year pathway to their targets; the other {resto} have no projection yet."
-    },
-    "{n} indicadores do eixo têm trajetória ano a ano até a meta.": {
-      "pt": "{n} indicadores do eixo têm trajetória ano a ano até a meta.",
-      "en": "{n} indicators in this pillar have a year-by-year pathway to their targets."
-    },
     "{eixo} · trajetória pactuada": {
       "pt": "{eixo} · trajetória pactuada",
       "en": "{eixo} · agreed pathway"
@@ -2582,10 +2617,6 @@
       "pt": "Cada indicador",
       "en": "Each indicator"
     },
-    "Hoje ({ano})": {
-      "pt": "Hoje ({ano})",
-      "en": "Today ({ano})"
-    },
     "O indicador com trajetória": {
       "pt": "O indicador com trajetória",
       "en": "The indicator with a pathway"
@@ -2593,10 +2624,6 @@
     "Os {n} indicadores com trajetória": {
       "pt": "Os {n} indicadores com trajetória",
       "en": "The {n} indicators with a pathway"
-    },
-    "Clique num indicador para ver ano a ano.": {
-      "pt": "Clique num indicador para ver ano a ano.",
-      "en": "Click an indicator to see it year by year."
     },
     "{n} cenários": {
       "pt": "{n} cenários",
@@ -2614,10 +2641,6 @@
       "pt": "Meta do ano",
       "en": "Year's target"
     },
-    "Média dos cenários": {
-      "pt": "Média dos cenários",
-      "en": "Average of the scenarios"
-    },
     "Linha de base · {ano}": {
       "pt": "Linha de base · {ano}",
       "en": "Baseline · {ano}"
@@ -2630,13 +2653,225 @@
       "pt": "Linha de base",
       "en": "Baseline"
     },
-    "Outros cenários": {
-      "pt": "Outros cenários",
-      "en": "Other scenarios"
-    },
     "Ver o indicador em Metas e indicadores": {
       "pt": "Ver o indicador em Metas e indicadores",
       "en": "See the indicator in Goals & indicators"
+    },
+    "Cada série": {
+      "pt": "Cada série",
+      "en": "Each series"
+    },
+    "Com trajetória": {
+      "pt": "Com trajetória",
+      "en": "With a pathway"
+    },
+    "Em 2030": {
+      "pt": "Em 2030",
+      "en": "By 2030"
+    },
+    "Em 2030 · {cenario}": {
+      "pt": "Em 2030 · {cenario}",
+      "en": "By 2030 · {cenario}"
+    },
+    "Ano a ano": {
+      "pt": "Ano a ano",
+      "en": "Year by year"
+    },
+    "As {n} séries com trajetória": {
+      "pt": "As {n} séries com trajetória",
+      "en": "The {n} series with a pathway"
+    },
+    "Caminho do eixo {nome} até a meta, de {a0} a {a1}: {pct} em 2030. Use as setas para ler ano a ano.": {
+      "pt": "Caminho do eixo {nome} até a meta, de {a0} a {a1}: {pct} em 2030. Use as setas para ler ano a ano.",
+      "en": "Progress of the {nome} pillar towards its target, {a0} to {a1}: {pct} by 2030. Use the arrow keys to read year by year."
+    },
+    "Linha de base: {rotulo}": {
+      "pt": "Linha de base: {rotulo}",
+      "en": "Baseline: {rotulo}"
+    },
+    "Nenhum dos cenários é a meta do catálogo: no caminho do eixo entra a média deles.": {
+      "pt": "Nenhum dos cenários é a meta do catálogo: no caminho do eixo entra a média deles.",
+      "en": "None of the scenarios is the catalogue target: the pillar's progress uses their average."
+    },
+    "Tabela: {titulo}": {
+      "pt": "Tabela: {titulo}",
+      "en": "Table: {titulo}"
+    },
+    "% do caminho até a meta": {
+      "pt": "% do caminho até a meta",
+      "en": "% of the way to the target"
+    },
+    "0% = linha de base · 100% = meta final de cada indicador": {
+      "pt": "0% = linha de base · 100% = meta final de cada indicador",
+      "en": "0% = baseline · 100% = each indicator's final target"
+    },
+    "0% = {base} em {a0} · 100% = {fim} em {a1}": {
+      "pt": "0% = {base} em {a0} · 100% = {fim} em {a1}",
+      "en": "0% = {base} in {a0} · 100% = {fim} in {a1}"
+    },
+    "Um dos {total} indicadores do eixo tem trajetória pactuada: de {base} em {a0} a {fim} em {a1}.": {
+      "pt": "Um dos {total} indicadores do eixo tem trajetória pactuada: de {base} em {a0} a {fim} em {a1}.",
+      "en": "One of the pillar's {total} indicators has an agreed pathway: from {base} in {a0} to {fim} in {a1}."
+    },
+    "Ver os marcos": {
+      "pt": "Ver os marcos",
+      "en": "See the milestones"
+    },
+    "base": {
+      "pt": "base",
+      "en": "baseline"
+    },
+    "cenário {nome}, a meta do catálogo": {
+      "pt": "cenário {nome}, a meta do catálogo",
+      "en": "{nome} scenario, the catalogue target"
+    },
+    "conforme o cenário": {
+      "pt": "conforme o cenário",
+      "en": "depending on the scenario"
+    },
+    "de {total} indicadores": {
+      "pt": "de {total} indicadores",
+      "en": "of {total} indicators"
+    },
+    "do caminho": {
+      "pt": "do caminho",
+      "en": "of the way"
+    },
+    "em {n} séries": {
+      "pt": "em {n} séries",
+      "en": "in {n} series"
+    },
+    "em {unidade}": {
+      "pt": "em {unidade}",
+      "en": "in {unidade}"
+    },
+    "igual nos {n} cenários": {
+      "pt": "igual nos {n} cenários",
+      "en": "the same across the {n} scenarios"
+    },
+    "meta": {
+      "pt": "meta",
+      "en": "target"
+    },
+    "meta em {ano}": {
+      "pt": "meta em {ano}",
+      "en": "target in {ano}"
+    },
+    "{a0}–{a1} · {n} valores · {unidade}": {
+      "pt": "{a0}–{a1} · {n} valores · {unidade}",
+      "en": "{a0}–{a1} · {n} values · {unidade}"
+    },
+    "{anos}: sem valor na planilha": {
+      "pt": "{anos}: sem valor na planilha",
+      "en": "{anos}: no value in the spreadsheet"
+    },
+    "{nome} (meta do catálogo)": {
+      "pt": "{nome} (meta do catálogo)",
+      "en": "{nome} (catalogue target)"
+    },
+    "{nome}: de {base} em {a0} a {meta} em {a1}. Use as setas para ler ano a ano.": {
+      "pt": "{nome}: de {base} em {a0} a {meta} em {a1}. Use as setas para ler ano a ano.",
+      "en": "{nome}: from {base} in {a0} to {meta} in {a1}. Use the arrow keys to read year by year."
+    },
+    "{n} de {total} indicadores do eixo · clique no cartão para abrir a série.": {
+      "pt": "{n} de {total} indicadores do eixo · clique no cartão para abrir a série.",
+      "en": "{n} of the pillar's {total} indicators · click the card to open the series."
+    },
+    "{n} de {total} indicadores do eixo · clique num cartão para abrir a série.": {
+      "pt": "{n} de {total} indicadores do eixo · clique num cartão para abrir a série.",
+      "en": "{n} of the pillar's {total} indicators · click a card to open the series."
+    },
+    "{n} de {total} indicadores do eixo, em {series} séries · clique num cartão para abrir a série.": {
+      "pt": "{n} de {total} indicadores do eixo, em {series} séries · clique num cartão para abrir a série.",
+      "en": "{n} of the pillar's {total} indicators, in {series} series · click a card to open the series."
+    },
+    "{n} dos {total} indicadores do eixo têm trajetória pactuada. A linha escura é a média do caminho de todos.": {
+      "pt": "{n} dos {total} indicadores do eixo têm trajetória pactuada. A linha escura é a média do caminho de todos.",
+      "en": "{n} of the pillar's {total} indicators have an agreed pathway. The dark line is their average progress."
+    },
+    "{n} marcos · {unidade} · entre eles não há valor pactuado": {
+      "pt": "{n} marcos · {unidade} · entre eles não há valor pactuado",
+      "en": "{n} milestones · {unidade} · no agreed values in between"
+    },
+    "{pct} do caminho": {
+      "pt": "{pct} do caminho",
+      "en": "{pct} of the way"
+    },
+    "{pct} do caminho até a meta": {
+      "pt": "{pct} do caminho até a meta",
+      "en": "{pct} of the way to the target"
+    },
+    "Percentual (%)": {
+      "pt": "Percentual (%)",
+      "en": "Percentage (%)"
+    },
+    "Reais (mi = milhões)": {
+      "pt": "Reais (mi = milhões)",
+      "en": "Reais (M = millions)"
+    },
+    "Índice de 0 a 100": {
+      "pt": "Índice de 0 a 100",
+      "en": "Index from 0 to 100"
+    },
+    "Por 100 mil habitantes": {
+      "pt": "Por 100 mil habitantes",
+      "en": "Per 100,000 inhabitants"
+    },
+    "Óbitos": {
+      "pt": "Óbitos",
+      "en": "Deaths"
+    },
+    "Sistemas": {
+      "pt": "Sistemas",
+      "en": "Systems"
+    },
+    "R$ privado por R$ público (×)": {
+      "pt": "R$ privado por R$ público (×)",
+      "en": "Private R$ per public R$ (×)"
+    },
+    "em R$ milhões": {
+      "pt": "em R$ milhões",
+      "en": "in R$ millions"
+    },
+    "em R$ bilhões": {
+      "pt": "em R$ bilhões",
+      "en": "in R$ billions"
+    },
+    "índice de 0 a 100": {
+      "pt": "índice de 0 a 100",
+      "en": "index from 0 to 100"
+    },
+    "CNUC/MMA 2026 (42 de 199 UCs)": {
+      "pt": "CNUC/MMA 2026 (42 de 199 UCs)",
+      "en": "CNUC/MMA 2026 (42 of 199 protected areas)"
+    },
+    "IBC-AMZ 2025 ponderado": {
+      "pt": "IBC-AMZ 2025 ponderado",
+      "en": "IBC-AMZ 2025, weighted"
+    },
+    "km efetivo sobre km físico, 2025": {
+      "pt": "km efetivo sobre km físico, 2025",
+      "en": "effective km over physical km, 2025"
+    },
+    "Censo 2022": {
+      "pt": "Censo 2022",
+      "en": "2022 Census"
+    },
+    "Ver as {n} séries": {
+      "pt": "Ver as {n} séries",
+      "en": "See the {n} series"
+    },
+    "número de óbitos": {
+      "pt": "número de óbitos",
+      "en": "number of deaths"
+    },
+    "número de municípios": {
+      "pt": "número de municípios",
+      "en": "number of municipalities"
+    },
+    "número de sistemas": {
+      "pt": "número de sistemas",
+      "en": "number of systems"
     }
   }
 }

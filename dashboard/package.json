@@ -13,7 +13,8 @@
     "check:data": "node --check build-static.mjs && node scripts/conferir-derivacao.mjs",
     "check:i18n": "node scripts/conferir-traducao.mjs",
     "nota-tecnica": "node scripts/gerar-nota-tecnica.mjs",
-    "usuario": "node scripts/usuario.mjs"
+    "usuario": "node scripts/usuario.mjs",
+    "portatil": "node portatil/empacotar.mjs"
   },
   "dependencies": {
     "@astrojs/vercel": "^11.0.10",
@@ -25,5 +26,8 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "postject": "^1.0.0-alpha.6"
   }
 }

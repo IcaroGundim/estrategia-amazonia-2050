@@ -78,3 +78,7 @@ INDICADORES_SEM_DADOS.log
 /.design-sync/projeto/_ds_needs_recompile
 /.design-sync/projeto/templates/*/support.js
 /.design-sync/projeto/templates/*/ds-base.js
+
+# Versão portátil (npm run portatil): executáveis gerados e downloads do Node
+/dashboard/portatil/saida/
+/dashboard/portatil/.cache/

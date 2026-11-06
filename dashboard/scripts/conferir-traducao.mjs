@@ -91,7 +91,7 @@ function textosDeDados() {
   };
   for (const item of le('../public/data/metas.json')?.foraDoPainel || []) anota(item.motivo, `motivo ${item.codigo}`);
   for (const item of le('../conteudo/projecoes.json')?.projecoes || []) {
-    for (const texto of [item.nome, item.unidade, item.motivo, item.nota, ...item.cenarios.map((c) => c.nome)]) anota(texto, `projeção ${item.codigo}`);
+    for (const texto of [item.nome, item.unidade, item.motivo, item.nota, item.baseline?.rotulo, ...item.cenarios.map((c) => c.nome)]) anota(texto, `projeção ${item.codigo}`);
   }
   return saida;
 }

@@ -240,7 +240,7 @@ function renderGrafico(meta, { formata = (v) => valor(meta, v) } = {}) {
       : false;
     const regional = item.regional ? ' is-regional' : '';
     return `<div class="goals-chart-row${regional}${cumpre ? ' is-met' : ''}" role="listitem" aria-label="${escape(item.name)}: ${escape(formata(item.valor))}">
-      <span class="goals-chart-uf">${escape(item.uf)}</span>
+      <span class="goals-chart-uf">${item.regional ? t('Amazônia Legal') : escape(item.uf)}</span>
       <span class="goals-chart-track" aria-hidden="true">
         <i class="goals-chart-fill" style="width:${largura.toFixed(2)}%"></i>
         ${posicaoAlvo === null ? '' : `<i class="goals-chart-target" style="left:${posicaoAlvo.toFixed(2)}%"></i>`}
@@ -490,6 +490,7 @@ function renderCabecalhoDoEixo() {
       <div class="eixo-metrica">
         <div class="eixo-leitura"><b>${porcentagem(coletados)}</b><span>${rotuloEmDuasLinhas(t('Coleta do eixo'))}</span></div>
         ${situacaoDaColeta(resumo)}
+        ${resumo.situacao.pendente || resumo.situacao.parcial ? `<p class="eixo-nota">${t('Parte dos indicadores será coletada no 1º ciclo de monitoramento com os estados.')}</p>` : ''}
       </div>
     </div>`;
 }
@@ -1241,6 +1242,14 @@ function linhaDeCatalogo(item) {
   </button>`;
 }
 
+// As metas em ordem de jornada, da maior para a menor (esquerda para a direita
+// na grade). As sem escala ou sem valor vão para o fim; empates mantêm a ordem
+// do catálogo.
+function porJornada(metas) {
+  const chave = (meta) => fracaoDaJornada(meta) ?? -1;
+  return metas.slice().sort((a, b) => chave(b) - chave(a));
+}
+
 function renderList() {
   const alvo = document.querySelector('#goals-list');
   if (!alvo) return;
@@ -1266,7 +1275,7 @@ function renderList() {
   alvo.innerHTML = [...grupos.values()].sort((a, b) => a.eixo - b.eixo).map(({ eixo, metas, coletados, catalogo }) => {
     const faixaMetas = metas.length
       ? `<p class="goals-faixa">${t('Metas com patamar mensurável')}</p>
-         <div class="goals-cards">${metas.map((meta) => linhaDeMeta(meta, anterior)).join('')}</div>`
+         <div class="goals-cards">${porJornada(metas).map((meta) => linhaDeMeta(meta, anterior)).join('')}</div>`
       : '';
     const faixaColetados = coletados.length
       ? `<p class="goals-faixa">${t('Coletados, sem meta numérica')}</p>

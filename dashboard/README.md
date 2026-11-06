@@ -60,6 +60,7 @@ Abra `http://localhost:4321`. Para conferir a saída real do build, use `npm run
 | `npm run check:data` | Deriva em memória e compara com os JSONs do último commit (`scripts/conferir-derivacao.mjs`). |
 | `npm run check:i18n` | Aponta textos sem tradução e entradas de dicionário sem uso. |
 | `npm run nota-tecnica` | Gera o PDF da nota técnica em `public/downloads/` (exige Edge ou Chrome). |
+| `npm run portatil` | Build do site e executáveis da versão sem internet (Windows e Mac) em `portatil/saida/`. Ver "Versão portátil" abaixo. |
 
 ## O que está no painel
 
@@ -335,6 +336,38 @@ As fichas e o catálogo descrevem os mesmos indicadores a partir de origens inde
 Como a correção do I2.3.1 foi aplicada no `fichas.json`, que é gerado, **ela se perde se o `.docx` for reextraído sem ser corrigido na origem**. Rodar `python scripts/auditar_fichas.py` depois de cada extração mostra se voltou; com `--falhar-se-houver` o script sai com código 1, para uso em verificação automática.
 
 Os detalhes das fichas técnicas publicados em `public/data/fichas.json` são extraídos do arquivo `Fichas Técnicas Indicadores - Amazonia2050.docx` pelo script `dashboard/scripts/extract-fichas.ps1`. O documento contém 52 fichas; os sete indicadores que existem apenas no catálogo são identificados como “ficha técnica não localizada” no painel, sem preenchimento inferido.
+
+## Versão portátil (sem internet)
+
+Para eventos com internet ruim (a COP, por exemplo): um executável que traz o
+site inteiro dentro dele, sobe um servidor só neste computador (`127.0.0.1`,
+porta 4321 ou a próxima livre) e abre o navegador padrão no painel.
+
+```bash
+npm run portatil                 # build do site + executáveis
+npm run portatil -- --sem-build  # reaproveita o último build
+```
+
+Saem em `portatil/saida/` (fora do git): `Amazonia2050-Windows.exe`,
+`Amazonia2050-Mac-AppleSilicon`, `Amazonia2050-Mac-Intel` e o `LEIA-ME.txt`
+para quem vai usar. Os três são gerados a partir de um Mac.
+
+- **Como é feito.** `portatil/empacotar.mjs` junta `.vercel/output/static` num
+  arquivo só, com os redirecionamentos do `config.json` da Vercel, e o embute
+  com `portatil/servidor.cjs` no executável único do Node (SEA). O Node de
+  cada sistema é baixado de nodejs.org na mesma versão do Node local, com o
+  SHA-256 conferido, e fica em `portatil/.cache/`.
+- **O que fica de fora.** A administração (`/admin` mostra um aviso) e os
+  links para outros sites, que continuam sendo links.
+- **Dados congelados.** O executável leva os dados do momento em que foi
+  gerado; a janela do terminal mostra a data e o commit. Dados novos, executável novo.
+- **Sem assinatura paga.** O Windows mostra o aviso do SmartScreen na primeira
+  vez ("Mais informações → Executar assim mesmo"); o Mac leva só a assinatura
+  ad hoc. O `LEIA-ME.txt` explica os dois.
+- **Fontes.** Bricolage Grotesque e Libre Franklin são servidas pelo próprio
+  site (`public/fonts/`, geradas por `scripts/baixar-fontes.mjs`), e não pelo
+  Google, para abrirem sem internet.
+- Para testar sem abrir o navegador: `AMAZONIA2050_SEM_NAVEGADOR=1`.
 
 ## Persistência e deploy
 

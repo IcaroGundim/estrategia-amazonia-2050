@@ -1144,6 +1144,11 @@ button.goals-row:hover .goals-row-name, button.goals-row:focus-visible .goals-ro
 .goals-chart-row.is-regional { margin-bottom: 3px; padding-bottom: 8px; border-bottom: 1px solid var(--linha-2); }
 .goals-chart-row.is-regional .goals-chart-uf, .goals-chart-row.is-regional > b { color: var(--mata); font-weight: 800; }
 .goals-chart-row.is-regional .goals-chart-fill { background: var(--mata); }
+/* "Amazônia Legal" por extenso (a sigla AL se confundiria com Alagoas): o nome
+   ocupa a linha de cima, e a barra fica alinhada com as dos estados. */
+.goals-chart-row.is-regional { row-gap: 4px; }
+.goals-chart-row.is-regional .goals-chart-uf { grid-column: 1 / -1; }
+.goals-chart-row.is-regional .goals-chart-track { grid-column: 2; }
 .goals-chart-target { position: absolute; top: -2px; bottom: -2px; width: 2px; border-radius: 1px; background: var(--tinta-2); transform: translateX(-1px); }
 .goals-chart-row > b { min-width: 48px; color: var(--tinta-2); font-size: 9.5px; font-variant-numeric: tabular-nums; text-align: right; }
 .goals-chart-row.is-selected > b { color: var(--urucum); }
